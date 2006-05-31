@@ -14,87 +14,83 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#ifndef __XARCHIVER_ARCHIVE_H__
-#define __XARCHIVER_ARCHIVE_H__
+#ifndef __LIBXARCHIVER_ARCHIVE_H__
+#define __LIBXARCHIVER_ARCHIVE_H__
 
 G_BEGIN_DECLS
 
-#define XA_ARCHIVE(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_archive_get_type(),      \
-			XAArchive))
+typedef enum
+{
+	LXA_ARCHIVETYPE_UNKNOWN,
+	LXA_ARCHIVETYPE_NONE,
+	LXA_ARCHIVETYPE_RAR,
+	LXA_ARCHIVETYPE_ZIP,
+	LXA_ARCHIVETYPE_ARJ,
+	LXA_ARCHIVETYPE_TAR,
+	LXA_ARCHIVETYPE_RPM,
+	LXA_ARCHIVETYPE_7ZIP,
+	LXA_ARCHIVETYPE_ISO,
+} LXAArchiveType;
 
-#define IS_XA_ARCHIVE(obj)      ( \
+typedef enum
+{
+	LXA_COMPRESSIONTYPE_NONE,
+	LXA_COMPRESSIONTYPE_BZIP2,
+	LXA_COMPRESSIONTYPE_GZIP,
+} LXACompressionType;
+
+
+
+#define LXA_ARCHIVE(obj)         ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
+			lxa_archive_get_type(),      \
+			LXAArchive))
+
+#define LXA_IS_ARCHIVE(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
 			xa_archive_get_type()))
 
-#define XA_ARCHIVE_CLASS(class) ( \
+#define LXA_ARCHIVE_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_archive_get_type(),      \
-			XAArchiveClass))
+			lxa_archive_get_type(),      \
+			LXAArchiveClass))
 
-#define IS_XA_ARCHIVE_CLASS(class) ( \
+#define LXA_IS_ARCHIVE_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_archive_get_type()))
-
-typedef enum
-{
-	XARCHIVETYPE_UNKNOWN,
-	XARCHIVETYPE_BZIP2,
-	XARCHIVETYPE_GZIP,
-	XARCHIVETYPE_RAR,
-	XARCHIVETYPE_ZIP,
-	XARCHIVETYPE_ARJ,
-	XARCHIVETYPE_TAR,
-	XARCHIVETYPE_RPM,
-	XARCHIVETYPE_7ZIP,
-	XARCHIVETYPE_ISO
-} XAArchiveType;
-
-typedef enum
-{
-	XA_ARCHIVESTATUS_IDLE,
-	XA_ARCHIVESTATUS_EXTRACT,
-	XA_ARCHIVESTATUS_ADD,
-	XA_ARCHIVESTATUS_REMOVE,
-	XA_ARCHIVESTATUS_OPEN,
-	XA_ARCHIVESTATUS_RELOAD,
-	XA_ARCHIVESTATUS_ERROR,
-	XA_ARCHIVESTATUS_USER_BREAK
-} XAArchiveStatus;
-
-typedef struct _XAArchive XAArchive;
+			lxa_archive_get_type()))
 
 
-struct _XAArchive
+typedef struct _LXAArchive LXAArchive;
+
+
+struct _LXAArchive
 {
 	GObject parent;
-
-	XAArchiveType type;
-	XAArchiveStatus status;
+	LXAArchiveType type;
+	LXACompressionType compression;
 	gchar *path;
 	gchar *passwd;
-	gint nr_of_files;
-	gint nr_of_dirs;
-	unsigned long long int dummy_size;
-	unsigned int row_cnt;
-	GSList *error_output;
-	GList *row;
 	gboolean has_passwd;
 };
 
-typedef struct _XAArchiveClass XAArchiveClass;
+typedef struct _LXAArchiveClass LXAArchiveClass;
 
-struct _XAArchiveClass
+struct _LXAArchiveClass
 {
 	GObjectClass parent;
 }; 
 
-GType xa_archive_get_type(void);
-XAArchive *xa_archive_new(gchar *, XAArchiveType);
+GType lxa_archive_get_type(void);
+LXAArchive *lxa_archive_new(gchar *, LXAArchiveType, LXACompressionType);
 
-gboolean xa_catch_errors (GIOChannel *ioc, GIOCondition cond, gpointer data);
+gint lxa_archive_compress(LXAArchive *archive);
+gint lxa_archive_decompress(LXAArchive *archive);
+
+gint lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compression);
+
+gint lxa_archive_add(LXAArchive *archive, gchar **files);
+
 
 G_END_DECLS
 
-#endif
+#endif /* __LIBXARCHIVER_ARCHIVE_H__ */

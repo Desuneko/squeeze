@@ -1,12 +1,23 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = libxarchiver src po
+SUBDIRS = libxarchiver src tests po
 
 pixmapsdir       = $(datadir)/pixmaps
+pixmaps_DATA     = pixmaps/xarchiver.png
+
+
+desktopdir = $(datadir)/applications
+desktop_in_files = xarchiver.desktop.in
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST = \
 	autogen.sh \
-	xarchiver.desktop
+	intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in \
+	$(desktop_in_files) \
+	$(pixmaps_DATA)
 
 install-data-local:
 	@$(NORMAL_INSTALL)
@@ -28,8 +39,5 @@ dist-hook:
 	    fi \
 	  done \
 	fi
-
-Applicationsdir = $(datadir)/applications
-Applications_DATA = xarchiver.desktop
 
 ACLOCAL_AMFLAGS = -I m4

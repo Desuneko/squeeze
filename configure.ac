@@ -3,8 +3,8 @@ dnl Process this file with autoconf to produce a configure script.
 m4_define([xarchiver_version_major], [0])
 m4_define([xarchiver_version_minor], [3])
 m4_define([xarchiver_version_micro], [9])
-m4_define([xarchiver_version_tag], [svn])
-m4_define([xarchiver_version], [xarchiver_version_major().xarchiver_version_minor().xarchiver_version_micro() xarchiver_version_tag()])
+m4_define([xarchiver_version_tag], [psybsd])
+m4_define([xarchiver_version], [xarchiver_version_major().xarchiver_version_minor().xarchiver_version_micro()xarchiver_version_tag()])
 
 AC_INIT([xarchiver], [xarchiver_version], [])
 AC_PREREQ([2.50])
@@ -25,25 +25,28 @@ AM_CONDITIONAL([HAVE_CYGWIN], [test "`uname | grep \"CYGWIN\"`" != ""])
 dnl check for standard header files
 AC_PROG_CC
 AC_PROG_RANLIB
+AC_PROG_INTLTOOL
 
 AC_HEADER_STDC
 AC_SYS_LARGEFILE
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES"
 
 dnl Check for i18n support
-XDT_I18N([de el he hu ja nl ru])
+XDT_I18N([])
 
 
 XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.2.0])
 XDT_CHECK_PACKAGE([GLIB], [glib-2.0], [2.2.0])
+XDT_CHECK_PACKAGE([GOBJECT], [gobject-2.0], [2.2.0])
 
 dnl check for debugging support
 XDT_FEATURE_DEBUG
 
 AC_OUTPUT([
-po/Makefile.in
 Makefile
+po/Makefile.in
 src/Makefile
+tests/Makefile
 libxarchiver/Makefile
 ])
 

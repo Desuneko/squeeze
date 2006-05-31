@@ -1,12 +1,12 @@
-Xarchiver 0.4
+#######################################################################
+#                                                                     #
+#>> WARNING <<#>> WARNING <<#>> WARNING <<#>> WARNING <<#>> WARNING <<#
+#                                                                     #
+#######################################################################
 
-To compile xarchiver:
-./configure --prefix=/usr
-make
+This branch does not contain a working copy of xarchiver, currently 
+libxarchiver is being developed and tested.
 
-become root with command su
-make install
+regards,
 
-That's all, enjoy handling archives without GNOME or KDE libs !
-
-Giuseppe Torelli - Colossus
+Stephan Arts

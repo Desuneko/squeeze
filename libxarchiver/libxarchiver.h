@@ -18,19 +18,18 @@
 #ifndef __LIBXARCHIVER_H__
 #define __LIBXARCHIVER_H__
 
+#include <libxarchiver/archive.h>
 
 G_BEGIN_DECLS
 
-void xarchiver_init();
+void lxa_init();
 
-int xarchiver_destroy();
+int  lxa_destroy();
 
-XAArchive *xarchiver_archive_new(gchar *path, XAArchiveType type);
-XASupport *xarchiver_find_archive_support(XAArchive *archive);
-XASupport *xarchiver_find_type_support(XAArchiveType type);
-void       xarchiver_all_support_connect(gchar *signal, GCallback fp);
-void       xarchiver_support_connect(XASupport *support, gchar *signal, GCallback fp);
-GSList *   xarchiver_get_supported_mimetypes(void);
+LXAArchive *lxa_new_archive(gchar *path, LXAArchiveType, LXACompressionType);
+LXAArchive *lxa_open_archive(gchar *path);
+
+void lxa_close_archive(LXAArchive *archive);
 
 G_END_DECLS
 
