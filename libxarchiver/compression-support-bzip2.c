@@ -184,14 +184,11 @@ lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondit
 		out_file = fopen(archive->path, "ab");
 		if(!out_file)
 			g_critical("Could not open file");
-		g_debug("file opened");
 
 		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
 		{
-			g_debug("reading from ioc");
 			if(read)
 			{
-				g_print("writing %d bytes\n", read);
 				fwrite(buf, 1, read, out_file);
 			}
 			read = 0;
@@ -223,14 +220,11 @@ lxa_compression_support_bzip2_parse_output_compress(GIOChannel *ioc, GIOConditio
 		out_file = fopen(archive->path, "ab");
 		if(!out_file)
 			g_critical("Could not open file");
-		g_debug("file opened");
 
 		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
 		{
-			g_debug("reading from ioc");
 			if(read)
 			{
-				g_print("writing %d bytes\n", read);
 				fwrite(buf, 1, read, out_file);
 			}
 			read = 0;

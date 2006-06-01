@@ -124,6 +124,8 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *files)
 			command = g_strconcat("tar -cf ", archive->tmp_file, " ", files->data, NULL);
 	}
 
+	g_debug("EXECUTING: %s\n", command);
+
 	g_shell_parse_argv(command, &argcp, &argvp, NULL);
 	if ( ! g_spawn_async_with_pipes (
 			NULL,
