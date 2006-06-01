@@ -28,6 +28,9 @@
 
 #define _(String) gettext(String)
 
+gint
+lxa_archive_support_add(LXAArchive *archive, GSList *files);
+
 void
 lxa_archive_support_init(LXAArchiveSupport *support);
 void
@@ -60,9 +63,15 @@ lxa_archive_support_get_type ()
 	return lxa_archive_support_type;
 }
 
+gint
+lxa_archive_support_add(LXAArchive *archive, GSList *files)
+{
+}
+
 void
 lxa_archive_support_init(LXAArchiveSupport *support)
 {
+	support->add = lxa_archive_support_add;
 }
 
 void

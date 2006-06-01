@@ -59,14 +59,14 @@ lxa_compression_support_gzip_get_type ()
 	return lxa_compression_support_gzip_type;
 }
 
-int
-lxa_compression_support_gzip_compress(LXAArchive *archive, gchar *filename)
+gint
+lxa_compression_support_gzip_compress(LXAArchive *archive)
 {
 	return 0;
 }
 
-int
-lxa_compression_support_gzip_decompress(LXAArchive *archive, gchar *filename)
+gint
+lxa_compression_support_gzip_decompress(LXAArchive *archive)
 {
 	return 0;
 }
@@ -74,6 +74,8 @@ lxa_compression_support_gzip_decompress(LXAArchive *archive, gchar *filename)
 void
 lxa_compression_support_gzip_init(LXACompressionSupportGzip *support)
 {
+	LXA_COMPRESSION_SUPPORT(support)->id = "gzip";
+	LXA_COMPRESSION_SUPPORT(support)->type = LXA_COMPRESSIONTYPE_GZIP;
 	LXA_COMPRESSION_SUPPORT(support)->compress = lxa_compression_support_gzip_compress;
 	LXA_COMPRESSION_SUPPORT(support)->decompress = lxa_compression_support_gzip_decompress;
 }

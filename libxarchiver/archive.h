@@ -39,6 +39,13 @@ typedef enum
 	LXA_COMPRESSIONTYPE_GZIP,
 } LXACompressionType;
 
+typedef enum
+{
+	LXA_ARCHIVESTATUS_IDLE,
+	LXA_ARCHIVESTATUS_ADD,
+	LXA_ARCHIVESTATUS_EXTRACT,
+	LXA_ARCHIVESTATUS_REMOVE
+} LXAArchiveStatus;
 
 
 #define LXA_ARCHIVE(obj)         ( \
@@ -66,9 +73,11 @@ typedef struct _LXAArchive LXAArchive;
 struct _LXAArchive
 {
 	GObject parent;
+	LXAArchiveStatus status;
 	LXAArchiveType type;
 	LXACompressionType compression;
 	gchar *path;
+	gchar *tmp_file;
 	gchar *passwd;
 	gboolean has_passwd;
 };
@@ -83,12 +92,14 @@ struct _LXAArchiveClass
 GType lxa_archive_get_type(void);
 LXAArchive *lxa_archive_new(gchar *, LXAArchiveType, LXACompressionType);
 
+void lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
+
 gint lxa_archive_compress(LXAArchive *archive);
 gint lxa_archive_decompress(LXAArchive *archive);
 
 gint lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compression);
 
-gint lxa_archive_add(LXAArchive *archive, gchar **files);
+gint lxa_archive_add(LXAArchive *archive, GSList *files);
 
 
 G_END_DECLS

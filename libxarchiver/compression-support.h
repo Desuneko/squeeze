@@ -47,8 +47,9 @@ struct _LXACompressionSupport
 {
 	GObject parent;
 	LXACompressionType type;
-	int (*compress) (LXAArchive *, gchar *filename);
-	int (*decompress) (LXAArchive *, gchar *filename);
+	gchar *id;
+	gint (*compress) (LXAArchive *);
+	gint (*decompress) (LXAArchive *);
 };
 
 typedef struct _LXACompressionSupportClass LXACompressionSupportClass;

@@ -29,6 +29,12 @@
 
 #define _(String) gettext(String)
 
+gboolean
+lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondition cond, gpointer data);
+
+gboolean
+lxa_compression_support_bzip2_parse_output_compress(GIOChannel *ioc, GIOCondition cond, gpointer data);
+
 void
 lxa_compression_support_bzip2_init(LXACompressionSupportBzip2 *support);
 void
@@ -59,21 +65,90 @@ lxa_compression_support_bzip2_get_type ()
 	return lxa_compression_support_bzip2_type;
 }
 
-int
-lxa_compression_support_bzip2_compress(LXAArchive *archive, gchar *filename)
+gint
+lxa_compression_support_bzip2_compress(LXAArchive *archive)
 {
+	g_debug("Compressing bzip2");
+	if(!archive->tmp_file)
+	{
+		g_critical("compression tried but no tmp_file specified");
+		return 1;
+	}
+
+	gchar **argvp;
+	gint argcp;
+	gchar *command = g_strconcat("bzip2 -kfzc ", archive->tmp_file, NULL);
+	gint child_pid;
+
+	GIOChannel *ioc;
+	gint out_fd;
+	GError *error = NULL;
+
+	g_shell_parse_argv(command, &argcp, &argvp, NULL);
+	if ( ! g_spawn_async_with_pipes (
+			NULL,
+			argvp,
+			NULL,
+			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+			NULL,
+			NULL,
+			&child_pid,
+			NULL,
+			&out_fd,
+			NULL,
+			NULL) )
+		return 1;
+	ioc = g_io_channel_unix_new(out_fd);
+	g_io_channel_set_encoding(ioc, NULL, &error);
+	g_io_channel_set_flags(ioc, G_IO_FLAG_NONBLOCK, &error);
+	g_io_add_watch(ioc, G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL, lxa_compression_support_bzip2_parse_output_compress, archive);
 	return 0;
 }
 
-int
-lxa_compression_support_bzip2_decompress(LXAArchive *archive, gchar *filename)
+gint
+lxa_compression_support_bzip2_decompress(LXAArchive *archive)
 {
+	g_debug("Decompressing bzip2");
+	if(!archive->tmp_file)
+	{
+		g_critical("decompression tried but no tmp_file specified");
+		return 1;
+	}
+	gchar **argvp;
+	gint argcp;
+	gchar *command = g_strconcat("bzip2 -kfdc ", archive->path, NULL);
+	gint child_pid;
+
+	GIOChannel *ioc;
+	gint out_fd;
+	GError *error = NULL;
+
+	g_shell_parse_argv(command, &argcp, &argvp, NULL);
+	if ( ! g_spawn_async_with_pipes (
+			NULL,
+			argvp,
+			NULL,
+			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+			NULL,
+			NULL,
+			&child_pid,
+			NULL,
+			&out_fd,
+			NULL,
+			NULL) )
+		return 1;
+	ioc = g_io_channel_unix_new(out_fd);
+	g_io_channel_set_encoding(ioc, NULL, &error);
+	g_io_channel_set_flags(ioc, G_IO_FLAG_NONBLOCK, &error);
+	g_io_add_watch(ioc, G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL, lxa_compression_support_bzip2_parse_output_decompress, archive);
 	return 0;
 }
 
 void
 lxa_compression_support_bzip2_init(LXACompressionSupportBzip2 *support)
 {
+	LXA_COMPRESSION_SUPPORT(support)->id = "bzip2";
+	LXA_COMPRESSION_SUPPORT(support)->type = LXA_COMPRESSIONTYPE_BZIP2;
 	LXA_COMPRESSION_SUPPORT(support)->compress = lxa_compression_support_bzip2_compress;
 	LXA_COMPRESSION_SUPPORT(support)->decompress = lxa_compression_support_bzip2_decompress;
 }
@@ -93,4 +168,83 @@ lxa_compression_support_bzip2_new()
 	support = g_object_new(LXA_TYPE_COMPRESSION_SUPPORT_BZIP2, NULL);
 	
 	return LXA_COMPRESSION_SUPPORT(support);
+}
+
+gboolean
+lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondition cond, gpointer data)
+{
+	FILE *out_file = NULL;
+	LXAArchive *archive = data;
+	gchar *buf = g_new0(gchar, 1024);
+	guint read = 0;
+	GError *error = NULL;
+
+	if(cond & (G_IO_PRI | G_IO_IN))
+	{
+		out_file = fopen(archive->path, "ab");
+		if(!out_file)
+			g_critical("Could not open file");
+		g_debug("file opened");
+
+		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
+		{
+			g_debug("reading from ioc");
+			if(read)
+			{
+				g_print("writing %d bytes\n", read);
+				fwrite(buf, 1, read, out_file);
+			}
+			read = 0;
+		}
+		fclose(out_file);
+	}
+	g_free(buf);
+	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	{
+		g_debug("shutting down ioc");
+		g_io_channel_shutdown ( ioc,TRUE,NULL );
+		g_io_channel_unref (ioc);
+		return FALSE;
+	}
+	return TRUE;
+}
+
+gboolean
+lxa_compression_support_bzip2_parse_output_compress(GIOChannel *ioc, GIOCondition cond, gpointer data)
+{
+	FILE *out_file = NULL;
+	LXAArchive *archive = data;
+	gchar *buf = g_new0(gchar, 1024);
+	guint read = 0;
+	GError *error = NULL;
+
+	if(cond & (G_IO_PRI | G_IO_IN))
+	{
+		out_file = fopen(archive->path, "ab");
+		if(!out_file)
+			g_critical("Could not open file");
+		g_debug("file opened");
+
+		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
+		{
+			g_debug("reading from ioc");
+			if(read)
+			{
+				g_print("writing %d bytes\n", read);
+				fwrite(buf, 1, read, out_file);
+			}
+			read = 0;
+		}
+		fclose(out_file);
+	}
+	g_free(buf);
+	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	{
+		g_debug("shutting down ioc");
+		g_io_channel_shutdown ( ioc,TRUE,NULL );
+		g_io_channel_unref (ioc);
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+		return FALSE;
+	}
+	return TRUE;
 }

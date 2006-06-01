@@ -27,7 +27,17 @@
 #include "archive-support.h"
 #include "archive-support-gnu-tar.h"
 
+#include "compression-support.h"
+
+#include "internals.h"
+
 #define _(String) gettext(String)
+
+gint
+lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *files);
+
+void
+lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data);
 
 void
 lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support);
@@ -62,6 +72,10 @@ lxa_archive_support_gnu_tar_get_type ()
 void
 lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 {
+	LXA_ARCHIVE_SUPPORT(support)->id = "Gnu Tar";
+	LXA_ARCHIVE_SUPPORT(support)->type = LXA_ARCHIVETYPE_TAR;
+
+	LXA_ARCHIVE_SUPPORT(support)->add = lxa_archive_support_gnu_tar_add;
 }
 
 void
@@ -79,4 +93,69 @@ lxa_archive_support_gnu_tar_new()
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, NULL);
 	
 	return LXA_ARCHIVE_SUPPORT(support);
+}
+
+gint
+lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *files)
+{
+	g_debug("Adding to tar archive");
+	gchar **argvp;
+	gint argcp;
+	gchar *command;
+	gint child_pid;
+
+	gint i = 0;
+
+	gint out_fd;
+	GError *error = NULL;
+
+	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
+	{
+		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+			command = g_strconcat("tar -rf ", archive->path, " ", files->data, NULL);
+		else
+			command = g_strconcat("tar -cf ", archive->path, " ", files->data, NULL);
+	}
+	else
+	{
+		if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
+			command = g_strconcat("tar -rf ", archive->tmp_file, " ", files->data, NULL);
+		else
+			command = g_strconcat("tar -cf ", archive->tmp_file, " ", files->data, NULL);
+	}
+
+	g_shell_parse_argv(command, &argcp, &argvp, NULL);
+	if ( ! g_spawn_async_with_pipes (
+			NULL,
+			argvp,
+			NULL,
+			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+			NULL,
+			NULL,
+			&child_pid,
+			NULL,
+			&out_fd,
+			NULL,
+			NULL) )
+		return 1;
+	g_child_watch_add(child_pid, lxa_archive_support_gnu_tar_child_watch_func, archive);
+	return 0;
+}
+
+void
+lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data)
+{
+	GSList *find_result;
+	LXACompressionSupport *compression_support;
+	LXAArchive *archive = data;
+	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
+	{
+		find_result = g_slist_find_custom(lxa_compression_support_list, &(archive->compression), lookup_compression_support);
+		if(find_result)
+		{
+			compression_support = find_result->data;
+			compression_support->compress(archive);
+		}
+	} else
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
 }

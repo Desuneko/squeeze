@@ -2,6 +2,16 @@
 #include <glib-object.h>
 #include <libxarchiver/libxarchiver.h>
 
+GMainLoop *loop;
+
+void
+test_archive_status_changed(LXAArchive *archive, gpointer data)
+{
+	if(archive->status == LXA_ARCHIVESTATUS_IDLE)
+		g_main_loop_quit(loop);
+
+}
+
 int
 main(int argc, char **argv)
 {
@@ -16,12 +26,15 @@ main(int argc, char **argv)
 		g_critical("Could not create a new archive");
 		return 1;
 	}
-	gchar *files[] = {"./composite-archives/content", NULL};
+	GSList *files = NULL;
+	files = g_slist_prepend(files, "./composite-archives/content");
+
 	ret = lxa_archive_add(archive, files);
-	if(ret)
-	{
-		g_critical("Could not add content");
-		return 1;
-	}
+
+	g_signal_connect(G_OBJECT(archive), "lxa_status_changed", G_CALLBACK(test_archive_status_changed), NULL);
+
+	loop = g_main_loop_new(NULL, TRUE);
+	g_main_loop_run(loop);
+
 	return 0;
 }

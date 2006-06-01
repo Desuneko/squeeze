@@ -60,14 +60,14 @@ lxa_compression_support_get_type ()
 	return lxa_compression_support_type;
 }
 
-int
-lxa_compression_support_compress(LXAArchive *archive, gchar *filename)
+gint
+lxa_compression_support_compress(LXAArchive *archive)
 {
 	return -1;
 }
 
-int
-lxa_compression_support_decompress(LXAArchive *archive, gchar *filename)
+gint
+lxa_compression_support_decompress(LXAArchive *archive)
 {
 	return -1;
 }
@@ -75,6 +75,7 @@ lxa_compression_support_decompress(LXAArchive *archive, gchar *filename)
 void
 lxa_compression_support_init(LXACompressionSupport *support)
 {
+	support->type = LXA_COMPRESSIONTYPE_NONE;
 	support->compress = lxa_compression_support_compress;
 	support->decompress = lxa_compression_support_decompress;
 }
