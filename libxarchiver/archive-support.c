@@ -29,53 +29,84 @@
 #define _(String) gettext(String)
 
 void
-lxa_archivesupport_init(LXAArchiveSupport *support);
+lxa_archive_support_init(LXAArchiveSupport *support);
 void
-lxa_archivesupport_class_init(LXAArchiveSupportClass *supportclass);
+lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass);
+
+static guint lxa_archive_support_signals[2];
 
 GType
-lxa_archivesupport_get_type ()
+lxa_archive_support_get_type ()
 {
-	static GType lxa_archivesupport_type = 0;
+	static GType lxa_archive_support_type = 0;
 
- 	if (!lxa_archivesupport_type)
+ 	if (!lxa_archive_support_type)
 	{
- 		static const GTypeInfo lxa_archivesupport_info = 
+ 		static const GTypeInfo lxa_archive_support_info = 
 		{
 			sizeof (LXAArchiveSupportClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) lxa_archivesupport_class_init,
+			(GClassInitFunc) lxa_archive_support_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
 			sizeof (LXAArchiveSupport),
 			0,
-			(GInstanceInitFunc) lxa_archivesupport_init,
+			(GInstanceInitFunc) lxa_archive_support_init,
 		};
 
-		lxa_archivesupport_type = g_type_register_static (G_TYPE_OBJECT, "LXAArchiveSupport", &lxa_archivesupport_info, 0);
+		lxa_archive_support_type = g_type_register_static (G_TYPE_OBJECT, "LXAArchiveSupport", &lxa_archive_support_info, 0);
 	}
-	return lxa_archivesupport_type;
+	return lxa_archive_support_type;
 }
 
 void
-lxa_archivesupport_init(LXAArchiveSupport *support)
+lxa_archive_support_init(LXAArchiveSupport *support)
 {
 }
 
 void
-lxa_archivesupport_class_init(LXAArchiveSupportClass *supportclass)
+lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
-	LXAArchiveSupportClass *klass = LXA_ARCHIVESUPPORT_CLASS (supportclass);
+	LXAArchiveSupportClass *klass = LXA_ARCHIVE_SUPPORT_CLASS (supportclass);
+
+	lxa_archive_support_signals[0] = g_signal_new("lxa_add_complete",
+			G_TYPE_FROM_CLASS(supportclass),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
+	lxa_archive_support_signals[1] = g_signal_new("lxa_extract_complete",
+			G_TYPE_FROM_CLASS(supportclass),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
 }
 
 LXAArchiveSupport*
-lxa_archivesupport_new()
+lxa_archive_support_new()
 {
 	LXAArchiveSupport*support;
 
-	support = g_object_new(LXA_TYPE_ARCHIVESUPPORT, NULL);
+	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT, NULL);
 	
 	return support;
+}
+
+void
+lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXAArchive *archive)
+{
+	g_signal_emit(G_OBJECT(support), lxa_archive_support_signals[signal_id], 0, archive);
 }

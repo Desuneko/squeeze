@@ -29,53 +29,99 @@
 #define _(String) gettext(String)
 
 void
-lxa_compressionsupport_init(LXACompressionSupport *support);
+lxa_compression_support_init(LXACompressionSupport *support);
 void
-lxa_compressionsupport_class_init(LXACompressionSupportClass *supportclass);
+lxa_compression_support_class_init(LXACompressionSupportClass *supportclass);
+
+static guint lxa_compression_support_signals[2];
 
 GType
-lxa_compressionsupport_get_type ()
+lxa_compression_support_get_type ()
 {
-	static GType lxa_compressionsupport_type = 0;
+	static GType lxa_compression_support_type = 0;
 
- 	if (!lxa_compressionsupport_type)
+ 	if (!lxa_compression_support_type)
 	{
- 		static const GTypeInfo lxa_compressionsupport_info = 
+ 		static const GTypeInfo lxa_compression_support_info = 
 		{
 			sizeof (LXACompressionSupportClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) lxa_compressionsupport_class_init,
+			(GClassInitFunc) lxa_compression_support_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
 			sizeof (LXACompressionSupport),
 			0,
-			(GInstanceInitFunc) lxa_compressionsupport_init,
+			(GInstanceInitFunc) lxa_compression_support_init,
 		};
 
-		lxa_compressionsupport_type = g_type_register_static (G_TYPE_OBJECT, "LXACompressionSupport", &lxa_compressionsupport_info, 0);
+		lxa_compression_support_type = g_type_register_static (G_TYPE_OBJECT, "LXACompressionSupport", &lxa_compression_support_info, 0);
 	}
-	return lxa_compressionsupport_type;
+	return lxa_compression_support_type;
 }
 
-void
-lxa_compressionsupport_init(LXACompressionSupport *support)
+int
+lxa_compression_support_compress(LXAArchive *archive, gchar *filename)
 {
+	return -1;
+}
+
+int
+lxa_compression_support_decompress(LXAArchive *archive, gchar *filename)
+{
+	return -1;
 }
 
 void
-lxa_compressionsupport_class_init(LXACompressionSupportClass *supportclass)
+lxa_compression_support_init(LXACompressionSupport *support)
+{
+	support->compress = lxa_compression_support_compress;
+	support->decompress = lxa_compression_support_decompress;
+}
+
+void
+lxa_compression_support_class_init(LXACompressionSupportClass *supportclass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
-	LXACompressionSupportClass *klass = LXA_COMPRESSIONSUPPORT_CLASS (supportclass);
+	LXACompressionSupportClass *klass = LXA_COMPRESSION_SUPPORT_CLASS (supportclass);
+
+	lxa_compression_support_signals[0] = g_signal_new("lxa_compress_complete",
+			G_TYPE_FROM_CLASS(supportclass),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
+
+	lxa_compression_support_signals[1] = g_signal_new("lxa_decompress_complete",
+			G_TYPE_FROM_CLASS(supportclass),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
 }
 
 LXACompressionSupport*
-lxa_compressionsupport_new()
+lxa_compression_support_new()
 {
 	LXACompressionSupport*support;
 
-	support = g_object_new(LXA_TYPE_COMPRESSIONSUPPORT, NULL);
+	support = g_object_new(LXA_TYPE_COMPRESSION_SUPPORT, NULL);
 	
 	return support;
+}
+
+void
+lxa_compression_support_emit_signal(LXACompressionSupport *support, guint signal_id, LXAArchive *archive)
+{
+	g_signal_emit(G_OBJECT(support), lxa_compression_support_signals[signal_id], 0, archive);
 }

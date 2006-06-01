@@ -15,31 +15,31 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#ifndef __LIBXARCHIVER_COMPRESSIONSUPPORT_H__
-#define __LIBXARCHIVER_COMPRESSIONSUPPORT_H__
+#ifndef __LIBXARCHIVER_COMPRESSION_SUPPORT_H__
+#define __LIBXARCHIVER_COMPRESSION_SUPPORT_H__
 
 G_BEGIN_DECLS
 
 
-#define LXA_TYPE_COMPRESSIONSUPPORT lxa_compressionsupport_get_type()
+#define LXA_TYPE_COMPRESSION_SUPPORT lxa_compression_support_get_type()
 
-#define LXA_COMPRESSIONSUPPORT(obj)         ( \
+#define LXA_COMPRESSION_SUPPORT(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LXA_TYPE_COMPRESSIONSUPPORT,      \
+			LXA_TYPE_COMPRESSION_SUPPORT,      \
 			LXACompressionSupport))
 
-#define LXA_IS_COMPRESSIONSUPPORT(obj)      ( \
+#define LXA_IS_COMPRESSION_SUPPORT(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LXA_TYPE_COMPRESSIONSUPPORT))
+			LXA_TYPE_COMPRESSION_SUPPORT))
 
-#define LXA_COMPRESSIONSUPPORT_CLASS(klass) ( \
+#define LXA_COMPRESSION_SUPPORT_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LXA_TYPE_COMPRESSIONSUPPORT,      \
+			LXA_TYPE_COMPRESSION_SUPPORT,      \
 			LXACompressionSupportClass))
 
-#define LXA_IS_COMPRESSIONSUPPORT_CLASS(klass) ( \
+#define LXA_IS_COMPRESSION_SUPPORT_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LXA_TYPE_COMPRESSIONSUPPORT))
+			LXA_TYPE_COMPRESSION_SUPPORT))
 
 typedef struct _LXACompressionSupport LXACompressionSupport;
 
@@ -47,6 +47,8 @@ struct _LXACompressionSupport
 {
 	GObject parent;
 	LXACompressionType type;
+	int (*compress) (LXAArchive *, gchar *filename);
+	int (*decompress) (LXAArchive *, gchar *filename);
 };
 
 typedef struct _LXACompressionSupportClass LXACompressionSupportClass;
@@ -56,9 +58,13 @@ struct _LXACompressionSupportClass
 	GObjectClass parent;
 }; 
 
-GType                    lxa_compressionsupport_get_type(void);
-LXACompressionSupport *  lxa_compressionsupport_new();
+#define              LXA_C_S_COMPRESS_COMPLETE     0
+#define              LXA_C_S_DECOMPRESS_COMPLETE   1
+
+GType                    lxa_compression_support_get_type(void);
+LXACompressionSupport *  lxa_compression_support_new();
+void                     lxa_compression_support_emit_signal(LXACompressionSupport *support, guint signal_id, LXAArchive *archive);
 
 G_END_DECLS
 
-#endif /* __LIBXARCHIVER_ARCHIVESUPPORT_H__ */
+#endif /* __LIBXARCHIVER_COMPRESSION_SUPPORT_H__ */

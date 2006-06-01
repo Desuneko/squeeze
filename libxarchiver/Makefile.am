@@ -4,7 +4,10 @@ libxarchiver_a_SOURCES =            \
 	libxarchiver.c libxarchiver.h     \
 	archive.c archive.h \
 	archive-support.c archive-support.h \
-	compression-support.c compression-support.h
+	archive-support-gnu-tar.c archive-support-gnu-tar.h \
+	compression-support.c compression-support.h \
+	compression-support-gzip.c compression-support-gzip.h \
+	compression-support-bzip2.c compression-support-bzip2.h
 
 libxarchiver_a_CFLAGS = \
 	$(GLIB_CFLAGS)

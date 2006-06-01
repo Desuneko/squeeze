@@ -19,6 +19,12 @@
 #include <glib.h>
 #include <glib-object.h>
 #include "libxarchiver.h"
+#include "archive-support.h"
+#include "archive-support-gnu-tar.h"
+
+#include "compression-support.h"
+#include "compression-support-gzip.h"
+#include "compression-support-bzip2.h"
 
 void
 lxa_init()
