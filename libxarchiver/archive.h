@@ -78,6 +78,7 @@ struct _LXAArchive
 	LXACompressionType compression;
 	gchar *path;
 	gchar *tmp_file;
+	gpointer tmp_data;
 	gchar *passwd;
 	gboolean has_passwd;
 };

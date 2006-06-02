@@ -156,6 +156,7 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 	}
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_ADD);
 	
+	archive->tmp_data = files;
 
 	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
 	{
@@ -178,7 +179,7 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 				if(find_result)
 				{
 					archive_support = find_result->data;
-					archive_support->add(archive, files);
+					archive_support->add(archive);
 				} else
 					return 2;
 			}
@@ -192,6 +193,6 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 	{
 		find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
 		archive_support = find_result->data;
-		archive_support->add(archive, files);
+		archive_support->add(archive);
 	}
 }

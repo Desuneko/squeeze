@@ -34,7 +34,7 @@
 #define _(String) gettext(String)
 
 gint
-lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *files);
+lxa_archive_support_gnu_tar_add(LXAArchive *archive);
 
 void
 lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data);
@@ -96,7 +96,7 @@ lxa_archive_support_gnu_tar_new()
 }
 
 gint
-lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *files)
+lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 {
 	g_debug("Adding to tar archive");
 	gchar **argvp;
@@ -105,6 +105,8 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *files)
 	gint child_pid;
 
 	gint i = 0;
+
+	GSList *files = archive->tmp_data;
 
 	gint out_fd;
 	GError *error = NULL;

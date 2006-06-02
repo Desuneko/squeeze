@@ -27,6 +27,10 @@
 #include "compression-support.h"
 #include "compression-support-gzip.h"
 
+#include "archive-support.h"
+
+#include "internals.h"
+
 #define _(String) gettext(String)
 
 gboolean
@@ -83,6 +87,8 @@ lxa_compression_support_gzip_compress(LXAArchive *archive)
 	GIOChannel *ioc;
 	gint out_fd;
 	GError *error = NULL;
+
+	g_unlink(archive->path);
 
 	g_shell_parse_argv(command, &argcp, &argvp, NULL);
 	if ( ! g_spawn_async_with_pipes (
@@ -173,6 +179,8 @@ lxa_compression_support_gzip_new()
 gboolean
 lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
+	GSList *find_result;
+	LXAArchiveSupport *archive_support;
 	FILE *out_file = NULL;
 	LXAArchive *archive = data;
 	gchar *buf = g_new0(gchar, 1024);
@@ -184,14 +192,11 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 		out_file = fopen(archive->path, "ab");
 		if(!out_file)
 			g_critical("Could not open file");
-		g_debug("file opened");
 
 		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
 		{
-			g_debug("reading from ioc");
 			if(read)
 			{
-				g_print("writing %d bytes\n", read);
 				fwrite(buf, 1, read, out_file);
 			}
 			read = 0;
@@ -204,6 +209,20 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 		g_debug("shutting down ioc");
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
+		if(!(cond & G_IO_ERR))
+		{
+			find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
+			if(find_result)
+			{
+				archive_support = find_result->data;
+				switch(archive->status)
+				{
+					case LXA_ARCHIVESTATUS_ADD:
+						archive_support->add(archive);
+						break;
+				}
+			}
+		}
 		return FALSE;
 	}
 	return TRUE;
