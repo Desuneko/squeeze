@@ -36,6 +36,9 @@
 gint
 lxa_archive_support_gnu_tar_add(LXAArchive *archive);
 
+gint
+lxa_archive_support_gnu_tar_extract(LXAArchive *archive);
+
 void
 lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data);
 
@@ -76,6 +79,7 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 	LXA_ARCHIVE_SUPPORT(support)->type = LXA_ARCHIVETYPE_TAR;
 
 	LXA_ARCHIVE_SUPPORT(support)->add = lxa_archive_support_gnu_tar_add;
+	LXA_ARCHIVE_SUPPORT(support)->extract = lxa_archive_support_gnu_tar_extract;
 }
 
 void
@@ -146,13 +150,64 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 	return 0;
 }
 
+gint
+lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
+{
+	g_debug("Extracting tar archive");
+	gchar **argvp;
+	gint argcp;
+	gchar *command;
+	gint child_pid;
+
+	gint i = 0;
+
+	GSList *files = archive->tmp_data;
+
+	gint out_fd;
+	GError *error = NULL;
+
+	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
+	{
+		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+			command = g_strconcat("tar -xf ", archive->path, " -C ", files->data, NULL);
+		else
+			return 1;
+	}
+	else
+	{
+		if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
+			command = g_strconcat("tar -xf ", archive->tmp_file, " -C ", files->data, NULL);
+		else
+			return 1;
+	}
+
+	g_debug("EXECUTING: %s\n", command);
+
+	g_shell_parse_argv(command, &argcp, &argvp, NULL);
+	if ( ! g_spawn_async_with_pipes (
+			NULL,
+			argvp,
+			NULL,
+			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+			NULL,
+			NULL,
+			&child_pid,
+			NULL,
+			&out_fd,
+			NULL,
+			NULL) )
+		return 1;
+	g_child_watch_add(child_pid, lxa_archive_support_gnu_tar_child_watch_func, archive);
+	return 0;
+}
+
 void
 lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data)
 {
 	GSList *find_result;
 	LXACompressionSupport *compression_support;
 	LXAArchive *archive = data;
-	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
+	if((archive->compression != LXA_COMPRESSIONTYPE_NONE) && (archive->status != LXA_ARCHIVESTATUS_EXTRACT))
 	{
 		find_result = g_slist_find_custom(lxa_compression_support_list, &(archive->compression), lookup_compression_support);
 		if(find_result)

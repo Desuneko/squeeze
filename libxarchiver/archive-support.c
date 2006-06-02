@@ -29,7 +29,8 @@
 #define _(String) gettext(String)
 
 gint
-lxa_archive_support_add(LXAArchive *archive);
+lxa_archive_support_dummy(LXAArchive *archive);
+
 
 void
 lxa_archive_support_init(LXAArchiveSupport *support);
@@ -64,14 +65,15 @@ lxa_archive_support_get_type ()
 }
 
 gint
-lxa_archive_support_add(LXAArchive *archive)
+lxa_archive_support_dummy(LXAArchive *archive)
 {
 }
 
 void
 lxa_archive_support_init(LXAArchiveSupport *support)
 {
-	support->add = lxa_archive_support_add;
+	support->add = lxa_archive_support_dummy;
+	support->extract = lxa_archive_support_dummy;
 }
 
 void

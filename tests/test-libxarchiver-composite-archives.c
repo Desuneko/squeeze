@@ -10,8 +10,6 @@ test_archive_status_changed(LXAArchive *archive, gpointer data)
 {
 	if(archive->status == LXA_ARCHIVESTATUS_IDLE)
 	{
-		test++;
-		if(test == 3)
 			g_main_loop_quit(loop);
 	}
 }
@@ -46,15 +44,10 @@ main(int argc, char **argv)
 	}
 
 	GSList *files = NULL;
-	files = g_slist_prepend(files, "./composite-archives/content");
 
-	ret = lxa_archive_add(archive_tbz2, files);
-	ret = lxa_archive_add(archive_tgz, files);
-	ret = lxa_archive_add(archive_tar, files);
+	ret = lxa_archive_extract(archive_tbz2, files, "./composite-archives/extract/");
 
 	g_signal_connect(G_OBJECT(archive_tbz2), "lxa_status_changed", G_CALLBACK(test_archive_status_changed), NULL);
-	g_signal_connect(G_OBJECT(archive_tgz), "lxa_status_changed", G_CALLBACK(test_archive_status_changed), NULL);
-	g_signal_connect(G_OBJECT(archive_tar), "lxa_status_changed", G_CALLBACK(test_archive_status_changed), NULL);
 
 	loop = g_main_loop_new(NULL, TRUE);
 	g_main_loop_run(loop);

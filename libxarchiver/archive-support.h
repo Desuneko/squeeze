@@ -48,7 +48,8 @@ struct _LXAArchiveSupport
 	GObject parent;
 	LXAArchiveType type;
 	gchar *id;
-	gint (*add)(LXAArchive *);
+	gint (*add)     (LXAArchive *);
+	gint (*extract) (LXAArchive *);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
