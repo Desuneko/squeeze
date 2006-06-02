@@ -189,7 +189,7 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
-		out_file = fopen(archive->path, "ab");
+		out_file = fopen(archive->tmp_file, "ab");
 		if(!out_file)
 			g_critical("Could not open file");
 

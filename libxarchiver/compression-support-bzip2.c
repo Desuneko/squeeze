@@ -189,7 +189,7 @@ lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondit
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
-		out_file = fopen(archive->path, "ab");
+		out_file = fopen(archive->tmp_file, "ab");
 		if(!out_file)
 			g_critical("Could not open file");
 
