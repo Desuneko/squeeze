@@ -223,6 +223,9 @@ lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondit
 					case LXA_ARCHIVESTATUS_EXTRACT:
 						archive_support->extract(archive);
 						break;
+					case LXA_ARCHIVESTATUS_REMOVE:
+						archive_support->remove(archive);
+						break;
 				}
 			}
 		}

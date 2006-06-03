@@ -74,6 +74,7 @@ lxa_archive_support_init(LXAArchiveSupport *support)
 {
 	support->add = lxa_archive_support_dummy;
 	support->extract = lxa_archive_support_dummy;
+	support->remove = lxa_archive_support_dummy;
 }
 
 void

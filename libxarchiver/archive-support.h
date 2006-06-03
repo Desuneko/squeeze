@@ -50,6 +50,7 @@ struct _LXAArchiveSupport
 	gchar *id;
 	gint (*add)     (LXAArchive *);
 	gint (*extract) (LXAArchive *);
+	gint (*remove)  (LXAArchive *);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
