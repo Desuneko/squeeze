@@ -122,3 +122,30 @@ lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXA
 {
 	g_signal_emit(G_OBJECT(support), lxa_archive_support_signals[signal_id], 0, archive);
 }
+
+gint
+lxa_archive_support_execute_with_child_watch(gchar *command, LXAArchive *archive, GChildWatchFunc function)
+{
+	gchar **argvp;
+	gint argcp;
+	gint out_fd;
+	if (archive->child_pid)
+		return 1;
+
+	g_shell_parse_argv(command, &argcp, &argvp, NULL);
+	if ( ! g_spawn_async_with_pipes (
+			NULL,
+			argvp,
+			NULL,
+			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+			NULL,
+			NULL,
+			&(archive->child_pid),
+			NULL,
+			&out_fd,
+			NULL,
+			NULL) )
+		return 1;
+	g_child_watch_add(archive->child_pid, function, archive);
+	return 0;
+}

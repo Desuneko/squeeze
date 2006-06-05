@@ -17,6 +17,7 @@
  */
 
 #include <stdio.h>
+#include <signal.h>
 #include <glib.h>
 #include <glib-object.h> 
 #include "archive.h"
@@ -320,4 +321,13 @@ lxa_archive_remove(LXAArchive *archive, GSList *files)
 		} else
 			return 2;
 	}
+}
+
+gint
+lxa_archive_stop(LXAArchive *archive)
+{
+	if(kill(archive->child_pid, SIGABRT) < 0)
+		return 1;
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_USERBREAK);
+	archive->child_pid = 0;
 }

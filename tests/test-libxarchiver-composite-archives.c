@@ -29,23 +29,10 @@ main(int argc, char **argv)
 		return 1;
 	}
 
-	LXAArchive *archive_tgz = lxa_new_archive("./composite-archives/archive.tar.gz", LXA_ARCHIVETYPE_TAR, LXA_COMPRESSIONTYPE_GZIP);
-	if(archive_tgz == NULL)
-	{
-		g_critical("Could not create a new archive");
-		return 1;
-	}
-
-	LXAArchive *archive_tar = lxa_new_archive("./composite-archives/archive.tar", LXA_ARCHIVETYPE_TAR, LXA_COMPRESSIONTYPE_NONE);
-	if(archive_tar == NULL)
-	{
-		g_critical("Could not create a new archive");
-		return 1;
-	}
-
 	GSList *files = NULL;
+	files = g_slist_prepend(files, "./composite-archives/content/gpl.txt");
 
-	ret = lxa_archive_extract(archive_tbz2, files, "./composite-archives/extract/");
+	ret = lxa_archive_add(archive_tbz2, files);
 
 	g_signal_connect(G_OBJECT(archive_tbz2), "lxa_status_changed", G_CALLBACK(test_archive_status_changed), NULL);
 

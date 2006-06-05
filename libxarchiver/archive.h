@@ -44,7 +44,8 @@ typedef enum
 	LXA_ARCHIVESTATUS_IDLE,
 	LXA_ARCHIVESTATUS_ADD,
 	LXA_ARCHIVESTATUS_EXTRACT,
-	LXA_ARCHIVESTATUS_REMOVE
+	LXA_ARCHIVESTATUS_REMOVE,
+	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
 
@@ -79,6 +80,7 @@ struct _LXAArchive
 	gchar *path;
 	gchar *tmp_file;
 	gpointer tmp_data;
+	GPid child_pid;
 	gchar *passwd;
 	gboolean has_passwd;
 };
@@ -102,6 +104,8 @@ gint lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compres
 
 gint lxa_archive_add(LXAArchive *archive, GSList *files);
 gint lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination);
+
+gint lxa_archive_stop(LXAArchive *archive);
 
 
 G_END_DECLS

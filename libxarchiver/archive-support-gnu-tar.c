@@ -107,17 +107,8 @@ gint
 lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 {
 	g_debug("Adding to tar archive");
-	gchar **argvp;
-	gint argcp;
 	gchar *command;
-	gint child_pid;
-
-	gint i = 0;
-
 	GSList *files = archive->tmp_data;
-
-	gint out_fd;
-	GError *error = NULL;
 
 	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
 	{
@@ -135,22 +126,9 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 	}
 
 	g_debug("EXECUTING: %s\n", command);
-
-	g_shell_parse_argv(command, &argcp, &argvp, NULL);
-	if ( ! g_spawn_async_with_pipes (
-			NULL,
-			argvp,
-			NULL,
-			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			NULL,
-			NULL,
-			&child_pid,
-			NULL,
-			&out_fd,
-			NULL,
-			NULL) )
+	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
 		return 1;
-	g_child_watch_add(child_pid, lxa_archive_support_gnu_tar_child_watch_func, archive);
+
 	return 0;
 }
 
@@ -158,17 +136,8 @@ gint
 lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 {
 	g_debug("Extracting tar archive");
-	gchar **argvp;
-	gint argcp;
 	gchar *command;
-	gint child_pid;
-
-	gint i = 0;
-
 	GSList *files = archive->tmp_data;
-
-	gint out_fd;
-	GError *error = NULL;
 
 	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
 	{
@@ -186,22 +155,8 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 	}
 
 	g_debug("EXECUTING: %s\n", command);
-
-	g_shell_parse_argv(command, &argcp, &argvp, NULL);
-	if ( ! g_spawn_async_with_pipes (
-			NULL,
-			argvp,
-			NULL,
-			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			NULL,
-			NULL,
-			&child_pid,
-			NULL,
-			&out_fd,
-			NULL,
-			NULL) )
+	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
 		return 1;
-	g_child_watch_add(child_pid, lxa_archive_support_gnu_tar_child_watch_func, archive);
 	return 0;
 }
 
@@ -209,17 +164,9 @@ gint
 lxa_archive_support_gnu_tar_remove(LXAArchive *archive)
 {
 	g_debug("Removing from tar archive");
-	gchar **argvp;
-	gint argcp;
 	gchar *command;
-	gint child_pid;
-
-	gint i = 0;
 
 	GSList *files = archive->tmp_data;
-
-	gint out_fd;
-	GError *error = NULL;
 
 	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
 	{
@@ -237,22 +184,9 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive)
 	}
 
 	g_debug("EXECUTING: %s\n", command);
-
-	g_shell_parse_argv(command, &argcp, &argvp, NULL);
-	if ( ! g_spawn_async_with_pipes (
-			NULL,
-			argvp,
-			NULL,
-			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			NULL,
-			NULL,
-			&child_pid,
-			NULL,
-			&out_fd,
-			NULL,
-			NULL) )
+	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
 		return 1;
-	g_child_watch_add(child_pid, lxa_archive_support_gnu_tar_child_watch_func, archive);
+
 	return 0;
 
 }
@@ -273,4 +207,6 @@ lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer dat
 		}
 	} else
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+
+	archive->child_pid = 0;
 }
