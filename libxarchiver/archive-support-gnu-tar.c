@@ -106,7 +106,9 @@ lxa_archive_support_gnu_tar_new()
 gint
 lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 {
+#ifdef DEBUG
 	g_debug("Adding to tar archive");
+#endif
 	gchar *command;
 	GSList *files = archive->tmp_data;
 
@@ -125,7 +127,9 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 			command = g_strconcat("tar -cf ", archive->tmp_file, " ", files->data, NULL);
 	}
 
+#ifdef DEBUG
 	g_debug("EXECUTING: %s\n", command);
+#endif
 	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
 		return 1;
 
@@ -135,7 +139,9 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 gint
 lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 {
+#ifdef DEBUG
 	g_debug("Extracting tar archive");
+#endif
 	gchar *command;
 	GSList *files = archive->tmp_data;
 
@@ -154,7 +160,9 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 			return 1;
 	}
 
+#ifdef DEBUG
 	g_debug("EXECUTING: %s\n", command);
+#endif
 	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
 		return 1;
 	return 0;
@@ -163,7 +171,9 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 gint
 lxa_archive_support_gnu_tar_remove(LXAArchive *archive)
 {
+#ifdef DEBUG
 	g_debug("Removing from tar archive");
+#endif
 	gchar *command;
 
 	GSList *files = archive->tmp_data;
@@ -183,7 +193,9 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive)
 			return 2;
 	}
 
+#ifdef DEBUG
 	g_debug("EXECUTING: %s\n", command);
+#endif
 	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
 		return 1;
 

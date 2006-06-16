@@ -39,8 +39,10 @@ lxa_init()
 	lxa_compression_support_list = g_slist_prepend(lxa_compression_support_list, lxa_compression_support_bzip2_new());
 
 	lxa_tmp_dir = g_get_tmp_dir();
+#ifdef DEBUG
 	g_debug("lxa_tmp_dir: %s\n", lxa_tmp_dir);
 	g_debug("lxa_cmp_list_length: %d\n", g_slist_length(lxa_compression_support_list));
+#endif
 }
 
 int
@@ -70,5 +72,5 @@ lxa_open_archive(gchar *path)
 void
 lxa_close_archive(LXAArchive *archive)
 {
-
+	g_unlink(archive->tmp_file);
 }

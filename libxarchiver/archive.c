@@ -118,6 +118,7 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 void
 lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 {
+	archive->oldstatus = archive->status;
 	archive->status = status;
 	g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
 }
@@ -152,7 +153,9 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 
 	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
 	{
+#ifdef DEBUG
 		g_debug("archive is buzy...");
+#endif
 		return 1;
 	}
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_ADD);
@@ -213,7 +216,9 @@ lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination)
 
 	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
 	{
+#ifdef DEBUG
 		g_debug("archive is buzy...");
+#endif
 		return 1;
 	}
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_EXTRACT);
@@ -273,7 +278,9 @@ lxa_archive_remove(LXAArchive *archive, GSList *files)
 
 	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
 	{
+#ifdef DEBUG
 		g_debug("archive is buzy...");
+#endif
 		return 1;
 	}
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REMOVE);

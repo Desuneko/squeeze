@@ -1,14 +1,14 @@
-TESTS = test-libxarchiver-composite-archives
+TESTS = test_add_gnu_tar
 
-check_PROGRAMS = test-libxarchiver-composite-archives
+check_PROGRAMS = test_add_gnu_tar
 
-test_libxarchiver_composite_archives_SOURCES = \
-	test-libxarchiver-composite-archives.c
+test_add_gnu_tar_SOURCES = \
+    gnu_tar_main.c
 
-test_libxarchiver_composite_archives_CFLAGS = \
+test_add_gnu_tar_CFLAGS = \
 	@GLIB_CFLAGS@
 
-test_libxarchiver_composite_archives_LDADD = \
+test_add_gnu_tar_LDADD = \
 	$(top_srcdir)/libxarchiver/libxarchiver.a \
 	$(GLIB_LIBS) $(GOBJECT_LIBS)
 

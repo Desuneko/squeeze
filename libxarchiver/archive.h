@@ -11,9 +11,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Library General Public License for more details.
  * *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
+ *  along with this program; if not, write to the Free Software *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #ifndef __LIBXARCHIVER_ARCHIVE_H__
 #define __LIBXARCHIVER_ARCHIVE_H__
 
@@ -29,14 +27,14 @@ typedef enum
 	LXA_ARCHIVETYPE_TAR,
 	LXA_ARCHIVETYPE_RPM,
 	LXA_ARCHIVETYPE_7ZIP,
-	LXA_ARCHIVETYPE_ISO,
+	LXA_ARCHIVETYPE_ISO
 } LXAArchiveType;
 
 typedef enum
 {
 	LXA_COMPRESSIONTYPE_NONE,
 	LXA_COMPRESSIONTYPE_BZIP2,
-	LXA_COMPRESSIONTYPE_GZIP,
+	LXA_COMPRESSIONTYPE_GZIP
 } LXACompressionType;
 
 typedef enum
@@ -45,6 +43,7 @@ typedef enum
 	LXA_ARCHIVESTATUS_ADD,
 	LXA_ARCHIVESTATUS_EXTRACT,
 	LXA_ARCHIVESTATUS_REMOVE,
+	LXA_ARCHIVESTATUS_ERROR,
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
@@ -75,6 +74,7 @@ struct _LXAArchive
 {
 	GObject parent;
 	LXAArchiveStatus status;
+	LXAArchiveStatus oldstatus;
 	LXAArchiveType type;
 	LXACompressionType compression;
 	gchar *path;

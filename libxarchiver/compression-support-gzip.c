@@ -72,7 +72,9 @@ lxa_compression_support_gzip_get_type ()
 gint
 lxa_compression_support_gzip_compress(LXAArchive *archive)
 {
+#ifdef DEBUG
 	g_debug("Compressing gzip");
+#endif
 	if(!archive->tmp_file)
 	{
 		g_critical("compression tried but no tmp_file specified");
@@ -114,7 +116,9 @@ lxa_compression_support_gzip_compress(LXAArchive *archive)
 gint
 lxa_compression_support_gzip_decompress(LXAArchive *archive)
 {
+#ifdef DEBUG
 	g_debug("Decompressing bzip2");
+#endif
 	if(!archive->tmp_file)
 	{
 		g_critical("decompression tried but no tmp_file specified");
@@ -206,7 +210,9 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 	g_free(buf);
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
+#ifdef DEBUG
 		g_debug("shutting down ioc");
+#endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
 		if(!(cond & G_IO_ERR))
@@ -225,6 +231,10 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 						break;
 					case LXA_ARCHIVESTATUS_REMOVE:
 						archive_support->remove(archive);
+						break;
+					case LXA_ARCHIVESTATUS_USERBREAK: // abort
+						g_unlink(archive->tmp_file);
+						lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
 						break;
 				}
 			}
@@ -262,7 +272,9 @@ lxa_compression_support_gzip_parse_output_compress(GIOChannel *ioc, GIOCondition
 	g_free(buf);
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
+#ifdef DEBUG
 		g_debug("shutting down ioc");
+#endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
