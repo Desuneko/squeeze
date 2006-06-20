@@ -83,8 +83,10 @@ lxa_compression_support_init(LXACompressionSupport *support)
 void
 lxa_compression_support_class_init(LXACompressionSupportClass *supportclass)
 {
+	/*
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
 	LXACompressionSupportClass *klass = LXA_COMPRESSION_SUPPORT_CLASS (supportclass);
+	*/
 
 	lxa_compression_support_signals[0] = g_signal_new("lxa_compress_complete",
 			G_TYPE_FROM_CLASS(supportclass),

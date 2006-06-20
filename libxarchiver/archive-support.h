@@ -51,6 +51,7 @@ struct _LXAArchiveSupport
 	gint (*add)     (LXAArchive *);
 	gint (*extract) (LXAArchive *);
 	gint (*remove)  (LXAArchive *);
+	gint (*view)    (LXAArchive *);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
@@ -60,13 +61,16 @@ struct _LXAArchiveSupportClass
 	GObjectClass parent;
 }; 
 
-#define              LXA_A_S_ADD_COMPLETE     0
-#define              LXA_A_S_EXTRACT_COMPLETE 1
-
 GType                lxa_archive_support_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_new();
 void                 lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXAArchive *archive);
-gint                 lxa_archive_support_execute_with_child_watch(gchar *command, LXAArchive *archive, GChildWatchFunc function);
+gint                 lxa_archive_support_execute(
+		gchar *command, 
+		LXAArchive *archive, 
+		GChildWatchFunc function, 
+		GIOFunc f_in, 
+		GIOFunc f_out, 
+		GIOFunc f_err);
 
 G_END_DECLS
 

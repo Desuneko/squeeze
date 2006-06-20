@@ -16,11 +16,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <glib-object.h>
 #include <libintl.h>
 #include "archive.h"
@@ -166,8 +166,10 @@ lxa_compression_support_gzip_init(LXACompressionSupportGzip *support)
 void
 lxa_compression_support_gzip_class_init(LXACompressionSupportGzipClass *supportclass)
 {
+	/*
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
 	LXACompressionSupportGzipClass *klass = LXA_COMPRESSION_SUPPORT_GZIP_CLASS (supportclass);
+	*/
 }
 
 LXACompressionSupport*
@@ -232,9 +234,12 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 					case LXA_ARCHIVESTATUS_REMOVE:
 						archive_support->remove(archive);
 						break;
-					case LXA_ARCHIVESTATUS_USERBREAK: // abort
+					case LXA_ARCHIVESTATUS_USERBREAK: /* abort */
 						g_unlink(archive->tmp_file);
 						lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+						break;
+					case LXA_ARCHIVESTATUS_IDLE:
+					case LXA_ARCHIVESTATUS_ERROR:
 						break;
 				}
 			}

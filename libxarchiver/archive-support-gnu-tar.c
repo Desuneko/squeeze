@@ -42,8 +42,14 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive);
 gint
 lxa_archive_support_gnu_tar_remove(LXAArchive *archive);
 
+gint
+lxa_archive_support_gnu_tar_view(LXAArchive *archive);
+
 void
 lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data);
+
+gboolean
+lxa_archive_support_gnu_tar_view_func(GIOChannel *source, GIOCondition condition, gpointer data);
 
 void
 lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support);
@@ -78,19 +84,24 @@ lxa_archive_support_gnu_tar_get_type ()
 void
 lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 {
-	LXA_ARCHIVE_SUPPORT(support)->id = "Gnu Tar";
-	LXA_ARCHIVE_SUPPORT(support)->type = LXA_ARCHIVETYPE_TAR;
+	LXAArchiveSupport *archive_support = LXA_ARCHIVE_SUPPORT(support);
 
-	LXA_ARCHIVE_SUPPORT(support)->add = lxa_archive_support_gnu_tar_add;
-	LXA_ARCHIVE_SUPPORT(support)->extract = lxa_archive_support_gnu_tar_extract;
-	LXA_ARCHIVE_SUPPORT(support)->remove = lxa_archive_support_gnu_tar_remove;
+	archive_support->id = "Gnu Tar";
+	archive_support->type = LXA_ARCHIVETYPE_TAR;
+
+	archive_support->add = lxa_archive_support_gnu_tar_add;
+	archive_support->extract = lxa_archive_support_gnu_tar_extract;
+	archive_support->remove = lxa_archive_support_gnu_tar_remove;
+	archive_support->view = lxa_archive_support_gnu_tar_view;
 }
 
 void
 lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclass)
 {
+	/*
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
 	LXAArchiveSupportGnuTarClass *klass = LXA_ARCHIVE_SUPPORT_GNU_TAR_CLASS (supportclass);
+	*/
 }
 
 LXAArchiveSupport*
@@ -130,7 +141,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 #ifdef DEBUG
 	g_debug("EXECUTING: %s\n", command);
 #endif
-	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
+	if(lxa_archive_support_execute(command, archive, lxa_archive_support_gnu_tar_child_watch_func, NULL, NULL, NULL))
 		return 1;
 
 	return 0;
@@ -163,7 +174,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 #ifdef DEBUG
 	g_debug("EXECUTING: %s\n", command);
 #endif
-	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
+	if(lxa_archive_support_execute(command, archive, lxa_archive_support_gnu_tar_child_watch_func, NULL, NULL, NULL))
 		return 1;
 	return 0;
 }
@@ -196,11 +207,40 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive)
 #ifdef DEBUG
 	g_debug("EXECUTING: %s\n", command);
 #endif
-	if(lxa_archive_support_execute_with_child_watch(command, archive, lxa_archive_support_gnu_tar_child_watch_func))
+	if(lxa_archive_support_execute(command, archive, lxa_archive_support_gnu_tar_child_watch_func, NULL, NULL, NULL))
 		return 1;
 
 	return 0;
 
+}
+
+gint
+lxa_archive_support_gnu_tar_view(LXAArchive *archive)
+{
+
+#ifdef DEBUG
+	g_debug("Viewing contents of tar archive");
+#endif
+
+	gchar *command;
+	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
+	{
+		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+			command = g_strconcat("tar --list -f ", archive->path, NULL);
+		else
+			return 2;
+	}
+	else
+	{
+		if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
+			command = g_strconcat("tar --list -f ", archive->tmp_file, NULL);
+		else
+			return 2;
+	}
+
+	if(lxa_archive_support_execute(command, archive, lxa_archive_support_gnu_tar_child_watch_func, NULL, lxa_archive_support_gnu_tar_view_func, NULL))
+		return 1;
+	return 0;
 }
 
 void
@@ -221,4 +261,10 @@ lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer dat
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
 
 	archive->child_pid = 0;
+}
+
+gboolean
+lxa_archive_support_gnu_tar_view_func(GIOChannel *source, GIOCondition condition, gpointer data)
+{
+	return FALSE;
 }

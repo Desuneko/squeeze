@@ -1,1 +1,19 @@
-... a lot
+
+Summary:
+  ... a lot
+
+Long Version:
+  Write view support for gnu-tar support object.
+
+	Implement transaction-options for archive-support objects
+	Implement transaction-options for compression-support objects
+
+	Extend testing: 
+	  Test Add
+		     Remove
+				 Extract
+				 View
+	
+	Optimize memory usage and library size (remove duplicate code)
+
+	See if we can avoid using /tmp when possible.

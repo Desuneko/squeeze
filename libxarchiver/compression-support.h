@@ -59,9 +59,6 @@ struct _LXACompressionSupportClass
 	GObjectClass parent;
 }; 
 
-#define              LXA_C_S_COMPRESS_COMPLETE     0
-#define              LXA_C_S_DECOMPRESS_COMPLETE   1
-
 GType                    lxa_compression_support_get_type(void);
 LXACompressionSupport *  lxa_compression_support_new();
 void                     lxa_compression_support_emit_signal(LXACompressionSupport *support, guint signal_id, LXAArchive *archive);

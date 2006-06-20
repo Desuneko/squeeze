@@ -26,8 +26,27 @@ void lxa_init();
 
 int  lxa_destroy();
 
-LXAArchive *lxa_new_archive(gchar *path, LXAArchiveType, LXACompressionType);
-LXAArchive *lxa_open_archive(gchar *path);
+/*
+ * XAArchive*
+ * lxa_new_archive(gchar *path, LXAArchiveType type, gboolean overwrite)
+ *
+ */
+gint
+lxa_new_archive(gchar *path, LXAArchiveType, LXACompressionType, gboolean overwrite, LXAArchive **lp_archive);
+
+/*
+ *
+ * XAArchive*
+ * lxa_open_archive(gchar *path)
+ *   path: path to archive to open
+ *
+ * returns:
+ * archive object when archive exists.
+ * NULL when archive does not exist.
+ *
+ */
+gint
+lxa_open_archive(gchar *path, LXAArchive **lp_archive);
 
 void lxa_close_archive(LXAArchive *archive);
 

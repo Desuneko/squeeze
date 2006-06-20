@@ -1,1 +1,5 @@
-src/main.c
+libxarchiver/libxarchiver.c
+libxarchiver/archive.c
+libxarchiver/archive-support.c
+libxarchiver/compression-support.c
+libxarchiver/internals.c

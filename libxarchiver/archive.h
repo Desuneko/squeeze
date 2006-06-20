@@ -104,6 +104,7 @@ gint lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compres
 
 gint lxa_archive_add(LXAArchive *archive, GSList *files);
 gint lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination);
+gint lxa_archive_view(LXAArchive *archive, guint start, guint max);
 
 gint lxa_archive_stop(LXAArchive *archive);
 

@@ -19,6 +19,7 @@
 const gchar *lxa_tmp_dir;
 GSList *lxa_archive_support_list;
 GSList *lxa_compression_support_list;
+GSList *lxa_tmp_files_list;
 
 gint
 lookup_archive_support( gconstpointer support , gconstpointer type);

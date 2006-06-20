@@ -17,6 +17,7 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <glib-object.h>
 #include "libxarchiver.h"
 #include "archive-support.h"
@@ -48,25 +49,44 @@ lxa_init()
 int
 lxa_destroy()
 {
-
+	g_slist_foreach(lxa_tmp_files_list,(void *)g_unlink, NULL);
+	g_slist_foreach(lxa_tmp_files_list,(void *)g_free, NULL);
+	g_slist_free(lxa_tmp_files_list);
+	return 0;
 }
 
 /*
- * XAArchive* lxa_new_archive(gchar *path, LXAArchiveType type)
+ * XAArchive* lxa_new_archive(gchar *path, LXAArchiveType type, gboolean overwrite)
  *
  */
-LXAArchive *
-lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression)
+gint
+lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression, gboolean overwrite, LXAArchive **lp_archive)
 {
+	if(overwrite)
+		g_unlink(path);
+
+	if(g_file_test(path, G_FILE_TEST_EXISTS))
+	{
+		(*lp_archive) = NULL;
+		return 1;
+	}
+
 	LXAArchive *archive = lxa_archive_new(path, type, compression);
-	return archive;
+	(*lp_archive) = archive;
+	return 0;
 }
 
-LXAArchive *
-lxa_open_archive(gchar *path)
+/*
+ *
+ * XAArchive* lxa_open_archive(gchar *path)
+ *
+ */
+gint
+lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 {
 	LXAArchive *archive = lxa_archive_new(path, LXA_ARCHIVETYPE_UNKNOWN, LXA_COMPRESSIONTYPE_NONE);
-	return archive;
+	(*lp_archive) = archive;
+	return 0;
 }
 
 void

@@ -16,9 +16,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
 #include <signal.h>
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <glib-object.h> 
 #include "archive.h"
 #include "archive-support.h"
@@ -126,6 +126,7 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 gint
 lxa_archive_compress(LXAArchive *archive)
 {
+	return 0;
 }
 
 gint
@@ -137,11 +138,13 @@ lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compression)
 		archive->compression = compression;
 	}
 	lxa_archive_compress(archive);
+	return 0;
 }
 
 gint
 lxa_archive_decompress(LXAArchive *archive)
 {
+	return 0;
 }
 
 gint
@@ -168,10 +171,16 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 		if(find_result)
 		{
 			compression_support = find_result->data;
+			if(archive->tmp_file)
+			{
+				g_free(archive->tmp_file);
+				archive->tmp_file = NULL;
+			}
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			/* since we only need the filename: we unlink it */
 			g_unlink(archive->tmp_file);
+			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
 
 			/* Check if the archive already exists */
 			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
@@ -203,6 +212,7 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 		} else
 			return 2;
 	}
+	return 0;
 }
 
 gint
@@ -231,10 +241,16 @@ lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination)
 		if(find_result)
 		{
 			compression_support = find_result->data;
+			if(archive->tmp_file)
+			{
+				g_free(archive->tmp_file);
+				archive->tmp_file = NULL;
+			}
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			/* since we only need the filename: we unlink it */
 			g_unlink(archive->tmp_file);
+			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
 
 			/* Check if the archive already exists */
 			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
@@ -266,7 +282,7 @@ lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination)
 		} else
 			return 2;
 	}
-
+	return 0;
 }
 
 gint
@@ -293,10 +309,16 @@ lxa_archive_remove(LXAArchive *archive, GSList *files)
 		if(find_result)
 		{
 			compression_support = find_result->data;
+			if(archive->tmp_file)
+			{
+				g_free(archive->tmp_file);
+				archive->tmp_file = NULL;
+			}
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			/* since we only need the filename: we unlink it */
 			g_unlink(archive->tmp_file);
+			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
 
 			/* Check if the archive already exists */
 			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
@@ -328,6 +350,14 @@ lxa_archive_remove(LXAArchive *archive, GSList *files)
 		} else
 			return 2;
 	}
+	return 0;
+}
+
+gint
+lxa_archive_view(LXAArchive *archive, guint start, guint max)
+{
+
+	return 0;
 }
 
 gint
@@ -337,4 +367,6 @@ lxa_archive_stop(LXAArchive *archive)
 		return 1;
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_USERBREAK);
 	archive->child_pid = 0;
+	return 0;
 }
+
