@@ -109,9 +109,22 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 	else
 		archive->path = NULL;
 
-	archive->compression = compression;
-	archive->type = type;
-	
+	if(compression == LXA_COMPRESSIONTYPE_UNKNOWN)
+	{
+			/*Discover compression-type*/
+
+	}
+	else
+	{
+		archive->compression = compression;
+		if(type == LXA_ARCHIVETYPE_UNKNOWN)
+		{
+			/*Discover archive-type*/
+
+		}
+		else
+			archive->type = type;
+	}
 	return archive;
 }
 
@@ -124,25 +137,41 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 }
 
 gint
-lxa_archive_compress(LXAArchive *archive)
+lxa_archive_decompress(LXAArchive *archive)
 {
-	return 0;
-}
-
-gint
-lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compression)
-{
+	GSList *find_result;
+	LXACompressionSupport *compression_support;
 	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
 	{
-		lxa_archive_decompress(archive);
-		archive->compression = compression;
+		find_result = g_slist_find_custom(lxa_compression_support_list, &(archive->compression), lookup_compression_support);
+		if(find_result)
+		{
+			compression_support = find_result->data;
+			if(archive->tmp_file)
+			{
+				g_free(archive->tmp_file);
+				archive->tmp_file = NULL;
+			}
+			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
+			g_mkstemp(archive->tmp_file);
+			/* since we only need the filename: we unlink it */
+			g_unlink(archive->tmp_file);
+			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
+
+			/* Check if the archive already exists */
+			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+				compression_support->decompress(archive);
+			else
+				return 1;
+		}
 	}
-	lxa_archive_compress(archive);
+	else
+		return 2;
 	return 0;
 }
 
 gint
-lxa_archive_decompress(LXAArchive *archive)
+lxa_archive_compress(LXAArchive *archive)
 {
 	return 0;
 }
@@ -151,7 +180,6 @@ gint
 lxa_archive_add(LXAArchive *archive, GSList *files)
 {
 	GSList *find_result;
-	LXACompressionSupport *compression_support;
 	LXAArchiveSupport *archive_support;
 
 	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
@@ -165,53 +193,14 @@ lxa_archive_add(LXAArchive *archive, GSList *files)
 	
 	archive->tmp_data = files;
 
-	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
+	lxa_archive_decompress(archive);
+	find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
+	if(find_result)
 	{
-		find_result = g_slist_find_custom(lxa_compression_support_list, &(archive->compression), lookup_compression_support);
-		if(find_result)
-		{
-			compression_support = find_result->data;
-			if(archive->tmp_file)
-			{
-				g_free(archive->tmp_file);
-				archive->tmp_file = NULL;
-			}
-			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
-			g_mkstemp(archive->tmp_file);
-			/* since we only need the filename: we unlink it */
-			g_unlink(archive->tmp_file);
-			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
-
-			/* Check if the archive already exists */
-			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
-				compression_support->decompress(archive);
-
-			else
-			{
-				find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-				if(find_result)
-				{
-					archive_support = find_result->data;
-					archive_support->add(archive);
-				} else
-					return 2;
-			}
-		} else
-		{
-			g_critical("Could not find compression-support");
+		archive_support = find_result->data;
+		archive_support->add(archive);
+	} else
 			return 2;
-		}
-	}
-	else
-	{
-		find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-		if(find_result)
-		{
-			archive_support = find_result->data;
-			archive_support->add(archive);
-		} else
-			return 2;
-	}
 	return 0;
 }
 
@@ -221,7 +210,6 @@ lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination)
 	if(!destination)
 		return 1;
 	GSList *find_result;
-	LXACompressionSupport *compression_support;
 	LXAArchiveSupport *archive_support;
 
 	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
@@ -235,53 +223,14 @@ lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination)
 	
 	archive->tmp_data = g_slist_prepend(files, destination);
 
-	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
+	lxa_archive_decompress(archive);
+	find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
+	if(find_result)
 	{
-		find_result = g_slist_find_custom(lxa_compression_support_list, &(archive->compression), lookup_compression_support);
-		if(find_result)
-		{
-			compression_support = find_result->data;
-			if(archive->tmp_file)
-			{
-				g_free(archive->tmp_file);
-				archive->tmp_file = NULL;
-			}
-			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
-			g_mkstemp(archive->tmp_file);
-			/* since we only need the filename: we unlink it */
-			g_unlink(archive->tmp_file);
-			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
-
-			/* Check if the archive already exists */
-			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
-				compression_support->decompress(archive);
-
-			else
-			{
-				find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-				if(find_result)
-				{
-					archive_support = find_result->data;
-					archive_support->extract(archive);
-				} else
-					return 2;
-			}
-		} else
-		{
-			g_critical("Could not find compression-support");
+		archive_support = find_result->data;
+		archive_support->extract(archive);
+	} else
 			return 2;
-		}
-	}
-	else
-	{
-		find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-		if(find_result)
-		{
-			archive_support = find_result->data;
-			archive_support->extract(archive);
-		} else
-			return 2;
-	}
 	return 0;
 }
 
@@ -289,7 +238,6 @@ gint
 lxa_archive_remove(LXAArchive *archive, GSList *files)
 {
 	GSList *find_result;
-	LXACompressionSupport *compression_support;
 	LXAArchiveSupport *archive_support;
 
 	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
@@ -303,60 +251,42 @@ lxa_archive_remove(LXAArchive *archive, GSList *files)
 	
 	archive->tmp_data = files;
 
-	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
+	lxa_archive_decompress(archive);
+	find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
+	if(find_result)
 	{
-		find_result = g_slist_find_custom(lxa_compression_support_list, &(archive->compression), lookup_compression_support);
-		if(find_result)
-		{
-			compression_support = find_result->data;
-			if(archive->tmp_file)
-			{
-				g_free(archive->tmp_file);
-				archive->tmp_file = NULL;
-			}
-			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
-			g_mkstemp(archive->tmp_file);
-			/* since we only need the filename: we unlink it */
-			g_unlink(archive->tmp_file);
-			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
-
-			/* Check if the archive already exists */
-			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
-				compression_support->decompress(archive);
-
-			else
-			{
-				find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-				if(find_result)
-				{
-					archive_support = find_result->data;
-					archive_support->remove(archive);
-				} else
-					return 2;
-			}
-		} else
-		{
-			g_critical("Could not find compression-support");
+		archive_support = find_result->data;
+		archive_support->remove(archive);
+	} else
 			return 2;
-		}
-	}
-	else
-	{
-		find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-		if(find_result)
-		{
-			archive_support = find_result->data;
-			archive_support->remove(archive);
-		} else
-			return 2;
-	}
 	return 0;
 }
 
 gint
-lxa_archive_view(LXAArchive *archive, guint start, guint max)
+lxa_archive_view(LXAArchive *archive)
 {
+	GSList *find_result;
+	LXAArchiveSupport *archive_support;
 
+	if(archive->status != LXA_ARCHIVESTATUS_IDLE)
+	{
+#ifdef DEBUG
+		g_debug("archive is buzy...");
+#endif
+		return 1;
+	}
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REMOVE);
+	
+	archive->tmp_data = NULL;
+
+	lxa_archive_decompress(archive);
+	find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
+	if(find_result)
+	{
+		archive_support = find_result->data;
+		archive_support->view(archive);
+	} else
+			return 2;
 	return 0;
 }
 

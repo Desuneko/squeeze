@@ -3,17 +3,23 @@ Summary:
   ... a lot
 
 Long Version:
+  Implement archive-type verification and 'open' support 
+  for existing archives
+
   Write view support for gnu-tar support object.
 
-	Implement transaction-options for archive-support objects
-	Implement transaction-options for compression-support objects
+	Let support objects check if the program in question exists upon object creation.
 
-	Extend testing: 
-	  Test Add
-		     Remove
-				 Extract
-				 View
+  Implement transaction-options for archive-support objects
+  Implement transaction-options for compression-support objects
+    (use g_object_class_properties for that?)
+
+  Extend testing: 
+    Test Add
+         Remove
+         Extract
+         View
 	
-	Optimize memory usage and library size (remove duplicate code)
+  Optimize memory usage and library size (remove duplicate code)
 
-	See if we can avoid using /tmp when possible.
+  See if we can avoid using /tmp when possible.

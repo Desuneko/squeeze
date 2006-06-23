@@ -64,13 +64,6 @@ struct _LXAArchiveSupportClass
 GType                lxa_archive_support_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_new();
 void                 lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXAArchive *archive);
-gint                 lxa_archive_support_execute(
-		gchar *command, 
-		LXAArchive *archive, 
-		GChildWatchFunc function, 
-		GIOFunc f_in, 
-		GIOFunc f_out, 
-		GIOFunc f_err);
 
 G_END_DECLS
 

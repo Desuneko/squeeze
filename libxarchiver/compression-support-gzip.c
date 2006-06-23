@@ -80,36 +80,11 @@ lxa_compression_support_gzip_compress(LXAArchive *archive)
 		g_critical("compression tried but no tmp_file specified");
 		return 1;
 	}
-
-	gchar **argvp;
-	gint argcp;
 	gchar *command = g_strconcat("gzip -c ", archive->tmp_file, NULL);
-	gint child_pid;
-
-	GIOChannel *ioc;
-	gint out_fd;
-	GError *error = NULL;
 
 	g_unlink(archive->path);
-
-	g_shell_parse_argv(command, &argcp, &argvp, NULL);
-	if ( ! g_spawn_async_with_pipes (
-			NULL,
-			argvp,
-			NULL,
-			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			NULL,
-			NULL,
-			&child_pid,
-			NULL,
-			&out_fd,
-			NULL,
-			NULL) )
+	if(lxa_execute(command, archive, NULL, NULL, lxa_compression_support_gzip_parse_output_compress, NULL))
 		return 1;
-	ioc = g_io_channel_unix_new(out_fd);
-	g_io_channel_set_encoding(ioc, NULL, &error);
-	g_io_channel_set_flags(ioc, G_IO_FLAG_NONBLOCK, &error);
-	g_io_add_watch(ioc, G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL, lxa_compression_support_gzip_parse_output_compress, archive);
 	return 0;
 }
 
@@ -124,33 +99,10 @@ lxa_compression_support_gzip_decompress(LXAArchive *archive)
 		g_critical("decompression tried but no tmp_file specified");
 		return 1;
 	}
-	gchar **argvp;
-	gint argcp;
 	gchar *command = g_strconcat("gzip -dc ", archive->path, NULL);
-	gint child_pid;
 
-	GIOChannel *ioc;
-	gint out_fd;
-	GError *error = NULL;
-
-	g_shell_parse_argv(command, &argcp, &argvp, NULL);
-	if ( ! g_spawn_async_with_pipes (
-			NULL,
-			argvp,
-			NULL,
-			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			NULL,
-			NULL,
-			&child_pid,
-			NULL,
-			&out_fd,
-			NULL,
-			NULL) )
+	if(lxa_execute(command, archive, NULL, NULL, lxa_compression_support_gzip_parse_output_decompress, NULL))
 		return 1;
-	ioc = g_io_channel_unix_new(out_fd);
-	g_io_channel_set_encoding(ioc, NULL, &error);
-	g_io_channel_set_flags(ioc, G_IO_FLAG_NONBLOCK, &error);
-	g_io_add_watch(ioc, G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL, lxa_compression_support_gzip_parse_output_decompress, archive);
 	return 0;
 }
 
@@ -233,6 +185,9 @@ lxa_compression_support_gzip_parse_output_decompress(GIOChannel *ioc, GIOConditi
 						break;
 					case LXA_ARCHIVESTATUS_REMOVE:
 						archive_support->remove(archive);
+						break;
+					case LXA_ARCHIVESTATUS_VIEW:
+						archive_support->view(archive);
 						break;
 					case LXA_ARCHIVESTATUS_USERBREAK: /* abort */
 						g_unlink(archive->tmp_file);

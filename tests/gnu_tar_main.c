@@ -40,6 +40,7 @@ test_archive_status_changed(LXAArchive *archive, gpointer data)
 				case(LXA_ARCHIVESTATUS_IDLE):
 				case(LXA_ARCHIVESTATUS_ERROR):
 				case(LXA_ARCHIVESTATUS_USERBREAK):
+				case(LXA_ARCHIVESTATUS_VIEW):
 					break;
 			}
 			test++;
@@ -56,6 +57,7 @@ test_archive_status_changed(LXAArchive *archive, gpointer data)
 				case(LXA_ARCHIVESTATUS_IDLE):
 				case(LXA_ARCHIVESTATUS_ERROR):
 				case(LXA_ARCHIVESTATUS_USERBREAK):
+				case(LXA_ARCHIVESTATUS_VIEW):
 					break;
 			}
 			test++;
@@ -67,6 +69,7 @@ test_archive_status_changed(LXAArchive *archive, gpointer data)
 		case(LXA_ARCHIVESTATUS_ADD):
 		case(LXA_ARCHIVESTATUS_REMOVE):
 		case(LXA_ARCHIVESTATUS_EXTRACT):
+		case(LXA_ARCHIVESTATUS_VIEW):
 			break;
 	}
 	if(test == max_test)

@@ -10,8 +10,11 @@
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Library General Public License for more details.
- * *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software 
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
+ */
+
 #ifndef __LIBXARCHIVER_ARCHIVE_H__
 #define __LIBXARCHIVER_ARCHIVE_H__
 
@@ -19,12 +22,12 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-	LXA_ARCHIVETYPE_UNKNOWN,
-	LXA_ARCHIVETYPE_NONE,
+	LXA_ARCHIVETYPE_NONE,      /* if archive-type is not supported / it is no archive */
+	LXA_ARCHIVETYPE_UNKNOWN,   /* archive-type has not been discovered yet */
+	LXA_ARCHIVETYPE_TAR,
 	LXA_ARCHIVETYPE_RAR,
 	LXA_ARCHIVETYPE_ZIP,
 	LXA_ARCHIVETYPE_ARJ,
-	LXA_ARCHIVETYPE_TAR,
 	LXA_ARCHIVETYPE_RPM,
 	LXA_ARCHIVETYPE_7ZIP,
 	LXA_ARCHIVETYPE_ISO
@@ -33,6 +36,7 @@ typedef enum
 typedef enum
 {
 	LXA_COMPRESSIONTYPE_NONE,
+	LXA_COMPRESSIONTYPE_UNKNOWN,
 	LXA_COMPRESSIONTYPE_BZIP2,
 	LXA_COMPRESSIONTYPE_GZIP
 } LXACompressionType;
@@ -43,6 +47,7 @@ typedef enum
 	LXA_ARCHIVESTATUS_ADD,
 	LXA_ARCHIVESTATUS_EXTRACT,
 	LXA_ARCHIVESTATUS_REMOVE,
+	LXA_ARCHIVESTATUS_VIEW,
 	LXA_ARCHIVESTATUS_ERROR,
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
@@ -100,11 +105,9 @@ void lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
 gint lxa_archive_compress(LXAArchive *archive);
 gint lxa_archive_decompress(LXAArchive *archive);
 
-gint lxa_archive_set_compression(LXAArchive *archive, LXACompressionType compression);
-
 gint lxa_archive_add(LXAArchive *archive, GSList *files);
 gint lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination);
-gint lxa_archive_view(LXAArchive *archive, guint start, guint max);
+gint lxa_archive_view(LXAArchive *archive);
 
 gint lxa_archive_stop(LXAArchive *archive);
 

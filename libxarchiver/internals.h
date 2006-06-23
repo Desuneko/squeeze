@@ -16,6 +16,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#define DEBUG 1
+
 const gchar *lxa_tmp_dir;
 GSList *lxa_archive_support_list;
 GSList *lxa_compression_support_list;
@@ -26,3 +28,11 @@ lookup_archive_support( gconstpointer support , gconstpointer type);
 
 gint
 lookup_compression_support( gconstpointer support , gconstpointer type);
+
+gint lxa_execute(
+		gchar *command, 
+		LXAArchive *archive, 
+		GChildWatchFunc function, 
+		GIOFunc f_in, 
+		GIOFunc f_out, 
+		GIOFunc f_err);

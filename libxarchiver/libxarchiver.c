@@ -84,7 +84,13 @@ lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression
 gint
 lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 {
-	LXAArchive *archive = lxa_archive_new(path, LXA_ARCHIVETYPE_UNKNOWN, LXA_COMPRESSIONTYPE_NONE);
+	if(!g_file_test(path, G_FILE_TEST_EXISTS))
+	{
+		(*lp_archive) = NULL;
+		return 1;
+	}
+
+	LXAArchive *archive = lxa_archive_new(path, LXA_ARCHIVETYPE_UNKNOWN, LXA_COMPRESSIONTYPE_UNKNOWN);
 	(*lp_archive) = archive;
 	return 0;
 }
