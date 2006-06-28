@@ -16,8 +16,7 @@
  */
 
 #ifndef __LIBXARCHIVER_ARCHIVE_H__
-#define __LIBXARCHIVER_ARCHIVE_H__
-
+#define __LIBXARCHIVER_ARCHIVE_H__ 
 G_BEGIN_DECLS
 
 typedef enum
@@ -78,16 +77,16 @@ typedef struct _LXAArchive LXAArchive;
 struct _LXAArchive
 {
 	GObject parent;
-	LXAArchiveStatus status;
-	LXAArchiveStatus oldstatus;
-	LXAArchiveType type;
+	LXAArchiveStatus   status;
+	LXAArchiveStatus   oldstatus;
+	LXAArchiveType     type;
 	LXACompressionType compression;
-	gchar *path;
-	gchar *tmp_file;
-	gpointer tmp_data;
-	GPid child_pid;
-	gchar *passwd;
-	gboolean has_passwd;
+	gchar             *path;
+	gchar             *tmp_file;
+	gpointer           tmp_data;
+	GPid               child_pid;
+	gchar             *passwd;
+	gboolean           has_passwd;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;
@@ -107,7 +106,7 @@ gint lxa_archive_decompress(LXAArchive *archive);
 
 gint lxa_archive_add(LXAArchive *archive, GSList *files);
 gint lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination);
-gint lxa_archive_view(LXAArchive *archive);
+gint lxa_archive_view(LXAArchive *archive, gint, gchar **, GType *);
 
 gint lxa_archive_stop(LXAArchive *archive);
 

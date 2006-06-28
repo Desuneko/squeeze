@@ -16,8 +16,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#define DEBUG 1
-
 const gchar *lxa_tmp_dir;
 GSList *lxa_archive_support_list;
 GSList *lxa_compression_support_list;

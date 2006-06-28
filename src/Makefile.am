@@ -1,7 +1,8 @@
 bin_PROGRAMS = xarchiver
 
 xarchiver_SOURCES = \
-	main.c main.h
+	main.c main.h \
+	new_dialog.c new_dialog.h
 
 xarchiver_CFLAGS = \
 	@GTK_CFLAGS@ \

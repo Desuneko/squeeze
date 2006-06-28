@@ -128,3 +128,37 @@ lxa_compression_support_emit_signal(LXACompressionSupport *support, guint signal
 {
 	g_signal_emit(G_OBJECT(support), lxa_compression_support_signals[signal_id], 0, archive);
 }
+
+gboolean
+lxa_compression_discover_type(LXAArchive *archive)
+{
+	FILE *fp = NULL;
+	gchar magic[3];
+
+	fp = fopen(archive->path, "r");
+	if(!fp)
+		return FALSE;
+	if(!fread(magic, 1, 3, fp))
+	{
+		fclose(fp);
+		return FALSE;
+	}
+	/* gzip */
+	if(!memcmp(magic, "\x1f\x8b\x08", 3))
+	{
+		archive->compression = LXA_COMPRESSIONTYPE_GZIP;
+		fclose(fp);
+		return TRUE;
+	}
+
+	/* bzip2 */
+	if(!memcmp(magic, "\x42\x5a\x68", 3))
+	{
+		archive->compression = LXA_COMPRESSIONTYPE_BZIP2;
+		fclose(fp);
+		return TRUE;
+	}
+	archive->compression = LXA_COMPRESSIONTYPE_NONE;
+	fclose(fp);
+	return TRUE;
+}

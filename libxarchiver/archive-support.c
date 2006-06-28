@@ -127,3 +127,43 @@ lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXA
 	g_signal_emit(G_OBJECT(support), lxa_archive_support_signals[signal_id], 0, archive);
 }
 
+gboolean
+lxa_archive_discover_type(LXAArchive *archive)
+{
+	FILE *fp = NULL;
+
+	gchar magic[6];
+	/* 
+	 * Check if the compression-type has been discovered 
+	 */
+	if(archive->compression > 1)
+	{
+		/*
+		 * Extract and check the tmp-file
+		 */
+	}
+	else
+	{ 
+		fp = fopen(archive->path, "r");
+		if(!fp)
+			return FALSE;
+	}
+
+	fseek(fp, 0, SEEK_SET);
+	if ( fseek ( fp , 257, SEEK_CUR ) == 0 ) 
+	{
+		if ( fread ( magic, 1, 5, fp ) )
+		{
+			/* check magic */
+			if ( memcmp ( magic,"ustar",5 ) == 0 )
+			{
+				archive->type = LXA_ARCHIVETYPE_TAR;
+			}
+			/* check extension */
+			else
+			{
+				
+			}
+		}
+	}
+}

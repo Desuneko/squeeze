@@ -112,14 +112,22 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 	if(compression == LXA_COMPRESSIONTYPE_UNKNOWN)
 	{
 			/*Discover compression-type*/
-
+			if(lxa_compression_discover_type(archive))
+				g_debug("COMPRESSION TYPE FOUND");
+			else
+				g_debug("COMPRESSION TYPE NOT FOUND");
+			compression = archive->compression;
 	}
-	else
+	if(compression != LXA_COMPRESSIONTYPE_UNKNOWN)
 	{
 		archive->compression = compression;
 		if(type == LXA_ARCHIVETYPE_UNKNOWN)
 		{
 			/*Discover archive-type*/
+			if(lxa_archive_discover_type(archive))
+				g_debug("ARCHIVE TYPE FOUND");
+			else
+				g_debug("ARCHIVE TYPE NOT FOUND");
 
 		}
 		else
@@ -263,7 +271,7 @@ lxa_archive_remove(LXAArchive *archive, GSList *files)
 }
 
 gint
-lxa_archive_view(LXAArchive *archive)
+lxa_archive_view(LXAArchive *archive, gint column_nr, gchar **column_names,  GType *column_types)
 {
 	GSList *find_result;
 	LXAArchiveSupport *archive_support;
@@ -284,6 +292,11 @@ lxa_archive_view(LXAArchive *archive)
 	if(find_result)
 	{
 		archive_support = find_result->data;
+
+		column_nr = archive_support->column_nr;
+		column_names = archive_support->column_names;
+		column_types = archive_support->column_types;
+
 		archive_support->view(archive);
 	} else
 			return 2;

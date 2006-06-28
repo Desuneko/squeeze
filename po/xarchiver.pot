@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-27 13:04+0200\n"
+"Report-Msgid-Bugs-To: colossus73@gmail.com\n"
+"POT-Creation-Date: 2006-06-28 14:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,186 +16,46 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/main.c:95
-msgid "Done"
+#: ../src/main.c:46 ../src/main.c:47 ../src/main.c:48 ../src/main.c:49
+msgid "a"
 msgstr ""
 
-#: ../src/main.c:171
-msgid "Extracting archive"
+#: ../src/main.c:47
+msgid "FILENAME"
 msgstr ""
 
-#: ../src/main.c:223
+#: ../src/main.c:49
+msgid "PATH"
+msgstr ""
+
+#: ../src/main.c:61
+msgid "Operation complete"
+msgstr ""
+
+#: ../src/main.c:72
 #, c-format
-msgid "File \"%s\" could not be opened, archive not supported\n"
+msgid "Could not add file(s) to archive '%s'"
 msgstr ""
 
-#: ../src/main.c:231
-msgid "Opening archive..."
+#: ../src/main.c:75 ../src/main.c:141
+#, c-format
+msgid "Could not extract archive '%s'"
 msgstr ""
 
-#: ../src/main.c:353 ../src/main-window.c:782
-msgid "Open Archive"
+#: ../src/main.c:78
+#, c-format
+msgid "Could not remove file(s) from archive '%s'"
 msgstr ""
 
-#: ../src/main.c:359
-msgid "archiving app"
+#: ../src/main.c:115
+msgid "[archive name]"
 msgstr ""
 
-#. Archive Menu
-#: ../src/main-window.c:367
-msgid "_Archive"
+#: ../src/main.c:153
+msgid "You should provide at least one file to add\n"
 msgstr ""
 
-#: ../src/main-window.c:379
-msgid "_Test"
-msgstr ""
-
-#. Action Menu
-#: ../src/main-window.c:419
-msgid "A_ction"
-msgstr ""
-
-#: ../src/main-window.c:424
-msgid "_Add File(s)"
-msgstr ""
-
-#: ../src/main-window.c:425
-msgid "Add _Folder"
-msgstr ""
-
-#: ../src/main-window.c:426
-msgid "_Extract"
-msgstr ""
-
-#. Help Menu
-#: ../src/main-window.c:450
-msgid "_Help"
-msgstr ""
-
-#: ../src/main-window.c:549 ../src/main-window.c:808
-msgid "Add Files"
-msgstr ""
-
-#: ../src/main-window.c:550
-msgid "Add files to archive"
-msgstr ""
-
-#: ../src/main-window.c:554 ../src/main-window.c:839
-msgid "Add Folder"
-msgstr ""
-
-#: ../src/main-window.c:555
-msgid "Add folders to archive"
-msgstr ""
-
-#: ../src/main-window.c:559 ../src/extract-dialog.c:98
-msgid "Extract"
-msgstr ""
-
-#: ../src/main-window.c:896
-msgid "Are you sure you want to remove the selected files from the archive?"
-msgstr ""
-
-#: ../src/extract-dialog.c:84
-msgid "Choose destination folder"
-msgstr ""
-
-#: ../src/extract-dialog.c:97
-msgid "Cancel"
-msgstr ""
-
-#: ../src/extract-dialog.c:132
-msgid "Extract to"
-msgstr ""
-
-#: ../src/new-dialog.c:76
-msgid "New archive"
-msgstr ""
-
-#: ../src/property-dialog.c:69
-msgid "Archive Properties"
-msgstr ""
-
-#: ../src/property-dialog.c:139
-msgid "Property"
-msgstr ""
-
-#: ../src/property-dialog.c:143
-msgid "Value"
-msgstr ""
-
-#: ../libxarchiver/support.c:65
-msgid "Verify not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support.c:72
-msgid "Add not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support.c:79
-msgid "Extract not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support.c:86
-msgid "Remove not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support.c:93
-msgid "Testing not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support.c:100
-msgid "Open not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support.c:107
-msgid "View not supported by this support object"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:91 ../libxarchiver/support-gnu-tar.c:88
-msgid "Filename"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:92
-msgid "Original"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:93
-msgid "Compressed"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:94
-msgid "Ratio"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:95 ../libxarchiver/support-gnu-tar.c:92
-msgid "Date"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:96 ../libxarchiver/support-gnu-tar.c:93
-msgid "Time"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:97 ../libxarchiver/support-gnu-tar.c:89
-msgid "Permissions"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:98
-msgid "CRC"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:99
-msgid "Method"
-msgstr ""
-
-#: ../libxarchiver/support-rar.c:100
-msgid "Version"
-msgstr ""
-
-#: ../libxarchiver/support-gnu-tar.c:90
-msgid "Owner / Group"
-msgstr ""
-
-#: ../libxarchiver/support-gnu-tar.c:91
-msgid "Size"
+#: ../src/main.c:169
+#, c-format
+msgid "File '%s' does not exist: ABORTING"
 msgstr ""

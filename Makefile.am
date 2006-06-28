@@ -11,7 +11,7 @@ desktop_in_files = xarchiver.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = \
+EXTRA_DIST = config.rpath m4/ChangeLog  \
 	autogen.sh \
 	intltool-extract.in \
 	intltool-merge.in \

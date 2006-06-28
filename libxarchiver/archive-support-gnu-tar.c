@@ -93,6 +93,21 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 	archive_support->extract = lxa_archive_support_gnu_tar_extract;
 	archive_support->remove = lxa_archive_support_gnu_tar_remove;
 	archive_support->view = lxa_archive_support_gnu_tar_view;
+	archive_support->column_nr = 6;
+	archive_support->column_names = g_new0(gchar *, archive_support->column_nr);
+	archive_support->column_types = g_new0(GType , archive_support->column_nr);
+	archive_support->column_names[0] = _("Filename");
+	archive_support->column_names[1] = _("Permissions");
+	archive_support->column_names[2] = _("Owner/Group");
+	archive_support->column_names[3] = _("Size");
+	archive_support->column_names[4] = _("Date");
+	archive_support->column_names[5] = _("Time");
+	archive_support->column_types[0] = G_TYPE_STRING;
+	archive_support->column_types[1] = G_TYPE_STRING;
+	archive_support->column_types[2] = G_TYPE_STRING;
+	archive_support->column_types[3] = G_TYPE_UINT;
+	archive_support->column_types[4] = G_TYPE_STRING;
+	archive_support->column_types[5] = G_TYPE_STRING;
 }
 
 void
@@ -241,7 +256,21 @@ lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer dat
 }
 
 gboolean
-lxa_archive_support_gnu_tar_view_func(GIOChannel *source, GIOCondition condition, gpointer data)
+lxa_archive_support_gnu_tar_view_func(GIOChannel *ioc, GIOCondition condition, gpointer data)
 {
-	return FALSE;
+	gchar *line = NULL;
+	GIOStatus status = 0;
+	GError *error = NULL;
+
+	if (condition & (G_IO_IN | G_IO_PRI) )
+	{
+		status = g_io_channel_read_line(ioc, &line, NULL,NULL,&error);
+	}
+	else if (condition & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	{
+		g_io_channel_shutdown ( ioc,TRUE,NULL );
+		g_io_channel_unref (ioc);
+		return FALSE;
+	}
+	return TRUE;
 }

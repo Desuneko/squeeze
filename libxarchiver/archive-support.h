@@ -45,13 +45,16 @@ typedef struct _LXAArchiveSupport LXAArchiveSupport;
 
 struct _LXAArchiveSupport
 {
-	GObject parent;
-	LXAArchiveType type;
-	gchar *id;
+	GObject          parent;
+	LXAArchiveType   type;
+	gchar           *id;
 	gint (*add)     (LXAArchive *);
 	gint (*extract) (LXAArchive *);
 	gint (*remove)  (LXAArchive *);
 	gint (*view)    (LXAArchive *);
+	gint             column_nr;
+	gchar          **column_names;
+	GType           *column_types;
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
@@ -64,6 +67,8 @@ struct _LXAArchiveSupportClass
 GType                lxa_archive_support_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_new();
 void                 lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXAArchive *archive);
+
+gboolean             lxa_archive_discover_type(LXAArchive *archive);
 
 G_END_DECLS
 

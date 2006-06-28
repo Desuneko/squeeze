@@ -3,3 +3,6 @@ libxarchiver/archive.c
 libxarchiver/archive-support.c
 libxarchiver/compression-support.c
 libxarchiver/internals.c
+
+src/main.c
+src/new_dialog.c

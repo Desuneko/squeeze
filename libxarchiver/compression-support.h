@@ -63,6 +63,9 @@ GType                    lxa_compression_support_get_type(void);
 LXACompressionSupport *  lxa_compression_support_new();
 void                     lxa_compression_support_emit_signal(LXACompressionSupport *support, guint signal_id, LXAArchive *archive);
 
+gboolean                 lxa_compression_discover_type(LXAArchive *archive);
+
+
 G_END_DECLS
 
 #endif /* __LIBXARCHIVER_COMPRESSION_SUPPORT_H__ */

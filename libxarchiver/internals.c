@@ -46,7 +46,9 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	if (archive->child_pid)
 		return 1;
 
+#ifdef DEBUG
 	g_debug("Executing '%s'", command);
+#endif
 	g_shell_parse_argv(command, &argcp, &argvp, NULL);
 	if ( ! g_spawn_async_with_pipes (
 			NULL,
@@ -63,17 +65,23 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 		return 1;
 	if(function)
 	{
+#ifdef DEBUG
 		g_debug("Adding watch to child");
+#endif
 		g_child_watch_add(archive->child_pid, function, archive);
 	}
 	else
 	{
+#ifdef DEBUG
 		g_debug("Adding default watch to child");
+#endif
 		g_child_watch_add(archive->child_pid, lxa_default_child_watch_func, archive);
 	}
 	if(f_in)
 	{
+#ifdef DEBUG
 		g_debug("Adding watch to stdin");
+#endif
 		ioc_in = g_io_channel_unix_new(fd_in);
 		g_io_channel_set_encoding (ioc_in, "ISO8859-1" , NULL);
 		g_io_channel_set_flags ( ioc_in, G_IO_FLAG_NONBLOCK , NULL );
@@ -81,7 +89,9 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	if(f_out)
 	{
+#ifdef DEBUG
 		g_debug("Adding watch to stdout");
+#endif
 		ioc_out = g_io_channel_unix_new(fd_out);
 		g_io_channel_set_encoding (ioc_out, NULL, NULL);
 		g_io_channel_set_flags ( ioc_out , G_IO_FLAG_NONBLOCK , NULL );
@@ -89,7 +99,9 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	if(f_err)
 	{
+#ifdef DEBUG
 		g_debug("Adding watch to stderr");
+#endif
 		ioc_err = g_io_channel_unix_new(fd_out);
 //  g_io_channel_set_encoding (ioc_err, "ISO8859-1" , NULL);
 		g_io_channel_set_flags ( ioc_err , G_IO_FLAG_NONBLOCK , NULL );

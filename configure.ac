@@ -25,7 +25,7 @@ AM_CONDITIONAL([HAVE_CYGWIN], [test "`uname | grep \"CYGWIN\"`" != ""])
 dnl check for standard header files
 AC_PROG_CC
 AC_PROG_RANLIB
-AC_PROG_INTLTOOL
+AC_PROG_INTLTOOL([0.31], [no-xml])
 
 AC_HEADER_STDC
 AC_SYS_LARGEFILE
