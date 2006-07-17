@@ -33,9 +33,7 @@ typedef enum
 } LXAArchiveType;
 
 typedef enum
-{
-	LXA_COMPRESSIONTYPE_NONE,
-	LXA_COMPRESSIONTYPE_UNKNOWN,
+{ LXA_COMPRESSIONTYPE_NONE, LXA_COMPRESSIONTYPE_UNKNOWN,
 	LXA_COMPRESSIONTYPE_BZIP2,
 	LXA_COMPRESSIONTYPE_GZIP
 } LXACompressionType;
@@ -43,6 +41,7 @@ typedef enum
 typedef enum
 {
 	LXA_ARCHIVESTATUS_IDLE,
+	LXA_ARCHIVESTATUS_INIT,
 	LXA_ARCHIVESTATUS_ADD,
 	LXA_ARCHIVESTATUS_EXTRACT,
 	LXA_ARCHIVESTATUS_REMOVE,
@@ -97,11 +96,10 @@ struct _LXAArchiveClass
 }; 
 
 GType lxa_archive_get_type(void);
-LXAArchive *lxa_archive_new(gchar *, LXAArchiveType, LXACompressionType);
+LXAArchive *lxa_archive_new(gchar *, LXAArchiveType, LXACompressionType, GCallback);
 
 void lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
 
-gint lxa_archive_compress(LXAArchive *archive);
 gint lxa_archive_decompress(LXAArchive *archive);
 
 gint lxa_archive_add(LXAArchive *archive, GSList *files);

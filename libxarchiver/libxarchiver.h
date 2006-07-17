@@ -22,33 +22,56 @@
 
 G_BEGIN_DECLS
 
+/*
+ * void
+ * lxa_init()
+ */
 void lxa_init();
 
-int  lxa_destroy();
-
 /*
- * XAArchive*
- * lxa_new_archive(gchar *path, LXAArchiveType type, gboolean overwrite)
- *
+ * void
+ * lxa_destroy()
  */
-gint
-lxa_new_archive(gchar *path, LXAArchiveType, LXACompressionType, gboolean overwrite, LXAArchive **lp_archive);
+void lxa_destroy();
 
 /*
- *
- * XAArchive*
- * lxa_open_archive(gchar *path)
- *   path: path to archive to open
+ * gint
+ * lxa_new_archive(gchar *path,
+ *                 LXAArchiveType type,
+ *                 gboolean overwrite,
+ *                 LXAArchive &&lp_archive)
  *
  * returns:
- * archive object when archive exists.
- * NULL when archive does not exist.
- *
+ * 0 -- success
  */
 gint
-lxa_open_archive(gchar *path, LXAArchive **lp_archive);
+lxa_new_archive( gchar *path,
+                 LXAArchiveType,
+                 LXACompressionType,
+                 gboolean overwrite,
+                 LXAArchive **lp_archive );
 
-void lxa_close_archive(LXAArchive *archive);
+/*
+ * gint 
+ * lxa_open_archive(gchar *path,
+ *                  LXAArchive **lp_archive)
+ *
+ * returns:
+ * 0 -- success
+ */
+gint
+lxa_open_archive( gchar *path, 
+                  LXAArchive **lp_archive,
+									GCallback initialized_func);
+
+/*
+ * void 
+ * lxa_close_archive( LXAArchive **lp_archive )
+ *
+ */
+void 
+lxa_close_archive( LXAArchive *archive );
+
 
 G_END_DECLS
 

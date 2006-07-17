@@ -37,7 +37,7 @@ static void
 lxa_archive_finalize(GObject *object);
 
 
-static guint lxa_archive_signals[1];
+static guint lxa_archive_signals[3];
 
 GType
 lxa_archive_get_type ()
@@ -83,6 +83,28 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 			1,
 			G_TYPE_POINTER,
 			NULL);
+
+	lxa_archive_signals[1] = g_signal_new("lxa_init_complete",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
+			NULL);
+	lxa_archive_signals[2] = g_signal_new("lxa_operation_failure",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
 }
 
 static void
@@ -99,7 +121,7 @@ lxa_archive_finalize(GObject *object)
 }
 
 LXAArchive *
-lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression)
+lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression, GCallback initialized_func)
 {
 	LXAArchive *archive;
 
@@ -108,6 +130,9 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 		archive->path = g_strdup(path);
 	else
 		archive->path = NULL;
+
+	g_signal_connect(G_OBJECT(archive), "lxa_init_complete", initialized_func, NULL);
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_INIT);
 
 	if(compression == LXA_COMPRESSIONTYPE_UNKNOWN)
 	{
@@ -118,9 +143,8 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 				g_debug("COMPRESSION TYPE NOT FOUND");
 			compression = archive->compression;
 	}
-	if(compression != LXA_COMPRESSIONTYPE_UNKNOWN)
+	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
 	{
-		archive->compression = compression;
 		if(type == LXA_ARCHIVETYPE_UNKNOWN)
 		{
 			/*Discover archive-type*/
@@ -128,10 +152,8 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 				g_debug("ARCHIVE TYPE FOUND");
 			else
 				g_debug("ARCHIVE TYPE NOT FOUND");
-
-		}
-		else
 			archive->type = type;
+		}
 	}
 	return archive;
 }
@@ -141,6 +163,8 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 {
 	archive->oldstatus = archive->status;
 	archive->status = status;
+	if(archive->oldstatus == LXA_ARCHIVESTATUS_INIT && archive->status == LXA_ARCHIVESTATUS_IDLE)
+		g_signal_emit(G_OBJECT(archive), lxa_archive_signals[1], 0, archive);
 	g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
 }
 
@@ -155,32 +179,27 @@ lxa_archive_decompress(LXAArchive *archive)
 		if(find_result)
 		{
 			compression_support = find_result->data;
-			if(archive->tmp_file)
+			if(!archive->tmp_file)
 			{
-				g_free(archive->tmp_file);
-				archive->tmp_file = NULL;
+				archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
+				g_mkstemp(archive->tmp_file);
 			}
-			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
-			g_mkstemp(archive->tmp_file);
 			/* since we only need the filename: we unlink it */
-			g_unlink(archive->tmp_file);
 			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
 
 			/* Check if the archive already exists */
 			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+			{
+				if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
+					g_unlink(archive->tmp_file);
 				compression_support->decompress(archive);
+			}
 			else
 				return 1;
 		}
 	}
 	else
 		return 2;
-	return 0;
-}
-
-gint
-lxa_archive_compress(LXAArchive *archive)
-{
 	return 0;
 }
 

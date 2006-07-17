@@ -141,6 +141,13 @@ lxa_archive_discover_type(LXAArchive *archive)
 		/*
 		 * Extract and check the tmp-file
 		 */
+		if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
+		{
+			fp = fopen(archive->tmp_file, "r");
+			if(!fp)
+				return FALSE;
+		} else
+			return FALSE;
 	}
 	else
 	{ 
@@ -162,8 +169,11 @@ lxa_archive_discover_type(LXAArchive *archive)
 			/* check extension */
 			else
 			{
-				
 			}
 		}
 	}
+	if(archive->type == LXA_ARCHIVETYPE_UNKNOWN)
+		archive->type == LXA_ARCHIVETYPE_NONE;
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+	return TRUE;
 }

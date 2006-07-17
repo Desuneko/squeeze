@@ -148,6 +148,7 @@ lxa_compression_discover_type(LXAArchive *archive)
 	{
 		archive->compression = LXA_COMPRESSIONTYPE_GZIP;
 		fclose(fp);
+		lxa_archive_decompress(archive);
 		return TRUE;
 	}
 
@@ -156,6 +157,7 @@ lxa_compression_discover_type(LXAArchive *archive)
 	{
 		archive->compression = LXA_COMPRESSIONTYPE_BZIP2;
 		fclose(fp);
+		lxa_archive_decompress(archive);
 		return TRUE;
 	}
 	archive->compression = LXA_COMPRESSIONTYPE_NONE;

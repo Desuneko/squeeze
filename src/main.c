@@ -36,6 +36,11 @@ gchar *extract_archive_path = NULL;
 gboolean add_archive  = FALSE;
 gchar *add_archive_path = NULL;
 
+gchar **_argv;
+gint _argc;
+
+gpointer command;
+
 gint opened_archives = 0;
 
 /*
@@ -58,12 +63,15 @@ archive_status_changed(LXAArchive *archive, gpointer data)
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_IDLE):
-			msg_string = _("Operation complete");
-			dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg_string, archive->path);
-			gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
-			gtk_dialog_run (GTK_DIALOG (dialog) );
-			gtk_widget_destroy (GTK_WIDGET (dialog) );
-			opened_archives--;
+			if(archive->oldstatus != LXA_ARCHIVESTATUS_INIT)
+			{
+				msg_string = _("Operation complete");
+				dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,msg_string, archive->path);
+				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+				gtk_dialog_run (GTK_DIALOG (dialog) );
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
+				opened_archives--;
+			}
 			break;
 		case(LXA_ARCHIVESTATUS_ERROR):
 			switch(archive->oldstatus)
@@ -84,8 +92,9 @@ archive_status_changed(LXAArchive *archive, gpointer data)
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
 			opened_archives--;
 			break;
-		case(LXA_ARCHIVESTATUS_USERBREAK):
 		case(LXA_ARCHIVESTATUS_ADD):
+			break;
+		case(LXA_ARCHIVESTATUS_USERBREAK):
 		case(LXA_ARCHIVESTATUS_REMOVE):
 		case(LXA_ARCHIVESTATUS_EXTRACT):
 		case(LXA_ARCHIVESTATUS_VIEW):
@@ -95,6 +104,42 @@ archive_status_changed(LXAArchive *archive, gpointer data)
 	{
 		gtk_main_quit();
 	}
+}
+
+void
+archive_operation_failed(LXAArchive *archive, gpointer data)
+{
+
+
+}
+
+void
+archive_initialized(LXAArchive *archive, gpointer data)
+{
+	GtkWidget *dialog;
+	GSList *files = NULL;
+	gint i = 0;
+	if(add_archive_path)
+	{
+		for(i = 1; i < _argc; i++)
+		{
+			if(g_file_test(_argv[i], G_FILE_TEST_EXISTS))
+				files = g_slist_prepend(files, _argv[i]);
+			else
+			{
+				dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("File '%s' does not exist: ABORTING"), _argv[i]);
+				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+				gtk_dialog_run (GTK_DIALOG (dialog) );
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
+				g_slist_free(files);
+				lxa_close_archive(archive);
+				gtk_main_quit();
+			}
+		}
+		lxa_archive_add(archive, files);
+	}
+	if(extract_archive_path)
+		lxa_archive_extract(archive, files, extract_archive_path);
 }
 
 int main(int argc, char **argv)
@@ -116,6 +161,8 @@ int main(int argc, char **argv)
 
 	lxa_init();
 
+	_argc = argc;
+	_argv = argv;
 	if(extract_archive_path || extract_archive)
 	{
 		if(argc == 1)
@@ -130,10 +177,12 @@ int main(int argc, char **argv)
 		}
 		for(i = 1; i < argc; i++)
 		{
-			if(!lxa_open_archive(argv[i], &xa_archive))
+			if(!lxa_open_archive(argv[i], &xa_archive, G_CALLBACK(archive_initialized)))
 			{
 				opened_archives++;
 				g_signal_connect(G_OBJECT(xa_archive), "lxa_status_changed", G_CALLBACK(archive_status_changed), NULL);
+				g_signal_connect(G_OBJECT(xa_archive), "lxa_init_complete", G_CALLBACK(archive_initialized), NULL);
+				g_signal_connect(G_OBJECT(xa_archive), "lxa_operation_failure",  G_CALLBACK(archive_operation_failed), NULL);
 				lxa_archive_extract(xa_archive, files, extract_archive_path);
 			}
 			else
@@ -157,26 +206,12 @@ int main(int argc, char **argv)
 		}
 		if(add_archive_path)
 		{
-			if(!lxa_open_archive(add_archive_path, &xa_archive))
+			if(!lxa_open_archive(add_archive_path, &xa_archive, G_CALLBACK(archive_initialized)))
 			{
-				opened_archives++;
-				for(i = 1; i < argc; i++)
-				{
-					if(g_file_test(argv[i], G_FILE_TEST_EXISTS))
-						files = g_slist_prepend(files, argv[i]);
-					else
-					{
-						dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("File '%s' does not exist: ABORTING"), argv[i]);
-						gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
-						gtk_dialog_run (GTK_DIALOG (dialog) );
-						gtk_widget_destroy (GTK_WIDGET (dialog) );
-						g_slist_free(files);
-						lxa_close_archive(xa_archive);
-						return 1;
-					}
-				}
 				g_signal_connect(G_OBJECT(xa_archive), "lxa_status_changed", G_CALLBACK(archive_status_changed), NULL);
-				lxa_archive_add(xa_archive, files);
+				g_signal_connect(G_OBJECT(xa_archive), "lxa_init_complete", G_CALLBACK(archive_initialized), NULL);
+				g_signal_connect(G_OBJECT(xa_archive), "lxa_operation_failure",  G_CALLBACK(archive_operation_failed), NULL);
+				opened_archives++;
 			}
 			else
 			{

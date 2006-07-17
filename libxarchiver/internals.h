@@ -27,6 +27,12 @@ lookup_archive_support( gconstpointer support , gconstpointer type);
 gint
 lookup_compression_support( gconstpointer support , gconstpointer type);
 
+/*
+ * gint
+ * lxa_execute(gchar *command)
+ *
+ * general function for executing child-apps
+ */
 gint lxa_execute(
 		gchar *command, 
 		LXAArchive *archive, 
@@ -34,3 +40,4 @@ gint lxa_execute(
 		GIOFunc f_in, 
 		GIOFunc f_out, 
 		GIOFunc f_err);
+

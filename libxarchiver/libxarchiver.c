@@ -46,13 +46,12 @@ lxa_init()
 #endif
 }
 
-int
+void
 lxa_destroy()
 {
 	g_slist_foreach(lxa_tmp_files_list,(void *)g_unlink, NULL);
 	g_slist_foreach(lxa_tmp_files_list,(void *)g_free, NULL);
 	g_slist_free(lxa_tmp_files_list);
-	return 0;
 }
 
 /*
@@ -71,7 +70,7 @@ lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, type, compression);
+	LXAArchive *archive = lxa_archive_new(path, type, compression, NULL);
 	(*lp_archive) = archive;
 	return 0;
 }
@@ -82,7 +81,7 @@ lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression
  *
  */
 gint
-lxa_open_archive(gchar *path, LXAArchive **lp_archive)
+lxa_open_archive(gchar *path, LXAArchive **lp_archive, GCallback initialized_func)
 {
 	if(!g_file_test(path, G_FILE_TEST_EXISTS))
 	{
@@ -90,7 +89,7 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, LXA_ARCHIVETYPE_UNKNOWN, LXA_COMPRESSIONTYPE_UNKNOWN);
+	LXAArchive *archive = lxa_archive_new(path, LXA_ARCHIVETYPE_UNKNOWN, LXA_COMPRESSIONTYPE_UNKNOWN, initialized_func);
 	(*lp_archive) = archive;
 	return 0;
 }

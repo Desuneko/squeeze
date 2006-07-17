@@ -142,7 +142,7 @@ gboolean
 lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
 	GSList *find_result;
-	LXAArchiveSupport *archive_support;
+	LXAArchiveSupport *archive_support = NULL;
 	FILE *out_file = NULL;
 	LXAArchive *archive = data;
 	gchar *buf = g_new0(gchar, 1024);
@@ -179,31 +179,39 @@ lxa_compression_support_bzip2_parse_output_decompress(GIOChannel *ioc, GIOCondit
 			if(find_result)
 			{
 				archive_support = find_result->data;
-				switch(archive->status)
-				{
-					case LXA_ARCHIVESTATUS_ADD:
+			}
+			switch(archive->status)
+			{
+				case LXA_ARCHIVESTATUS_ADD:
+					if(archive_support)
 						archive_support->add(archive);
-						break;
-					case LXA_ARCHIVESTATUS_EXTRACT:
+					break;
+				case LXA_ARCHIVESTATUS_EXTRACT:
+					if(archive_support)
 						archive_support->extract(archive);
-						break;
-					case LXA_ARCHIVESTATUS_REMOVE:
+					break;
+				case LXA_ARCHIVESTATUS_REMOVE:
+					if(archive_support)
 						archive_support->remove(archive);
-						break;
-					case LXA_ARCHIVESTATUS_VIEW:
+					break;
+				case LXA_ARCHIVESTATUS_VIEW:
+					if(archive_support)
 						archive_support->view(archive);
-						break;
-					case LXA_ARCHIVESTATUS_USERBREAK: /* abort */
-						g_unlink(archive->tmp_file);
-						lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
-						break;
-					case LXA_ARCHIVESTATUS_IDLE:
-					case LXA_ARCHIVESTATUS_ERROR:
-						break;
-				}
+					break;
+				case LXA_ARCHIVESTATUS_INIT:
+					lxa_archive_discover_type(archive);
+					break;
+				case LXA_ARCHIVESTATUS_USERBREAK: /* abort */
+					g_unlink(archive->tmp_file);
+					lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+					break;
+				case LXA_ARCHIVESTATUS_IDLE:
+				case LXA_ARCHIVESTATUS_ERROR:
+					break;
 			}
 		}
-		return FALSE; }
+		return FALSE; 
+	}
 	return TRUE;
 }
 
