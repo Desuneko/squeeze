@@ -72,6 +72,18 @@ lxa_open_archive( gchar *path,
 void 
 lxa_close_archive( LXAArchive *archive );
 
+/*
+ *
+ */
+GSList *
+lxa_get_supported_compression_types();
+
+/*
+ *
+ */
+GSList *
+lxa_get_supported_archive_types();
+
 
 G_END_DECLS
 

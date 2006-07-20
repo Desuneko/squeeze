@@ -165,7 +165,8 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 	archive->status = status;
 	if(archive->oldstatus == LXA_ARCHIVESTATUS_INIT && archive->status == LXA_ARCHIVESTATUS_IDLE)
 		g_signal_emit(G_OBJECT(archive), lxa_archive_signals[1], 0, archive);
-	g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
+	else
+		g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
 }
 
 gint
@@ -184,12 +185,12 @@ lxa_archive_decompress(LXAArchive *archive)
 				archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
 				g_mkstemp(archive->tmp_file);
 			}
-			/* since we only need the filename: we unlink it */
 			lxa_tmp_files_list = g_slist_prepend(lxa_tmp_files_list, archive->tmp_file);
 
 			/* Check if the archive already exists */
 			if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
 			{
+				/* since we only need the filename: we unlink it */
 				if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
 					g_unlink(archive->tmp_file);
 				compression_support->decompress(archive);
@@ -250,14 +251,18 @@ lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination)
 	
 	archive->tmp_data = g_slist_prepend(files, destination);
 
-	lxa_archive_decompress(archive);
-	find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
-	if(find_result)
+	if(archive->compression != LXA_COMPRESSIONTYPE_NONE)
+		lxa_archive_decompress(archive);
+	else
 	{
-		archive_support = find_result->data;
-		archive_support->extract(archive);
-	} else
+		find_result = g_slist_find_custom(lxa_archive_support_list, &(archive->type), lookup_archive_support);
+		if(find_result)
+		{
+			archive_support = find_result->data;
+			archive_support->extract(archive);
+		} else
 			return 2;
+	}
 	return 0;
 }
 

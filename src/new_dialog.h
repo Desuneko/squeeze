@@ -16,43 +16,43 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_NEW_DIALOG_H__
-#define __XARCHIVER_NEW_DIALOG_H__
+#ifndef __XARCHIVER_NEW_ARCHIVE_DIALOG_H__
+#define __XARCHIVER_NEW_ARCHIVE_DIALOG_H__
 G_BEGIN_DECLS
 
-#define XA_NEW_DIALOG(obj)         ( \
+#define XA_NEW_ARCHIVE_DIALOG(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_new_dialog_get_type(),      \
-			XANewDialog))
+			xa_new_archive_dialog_get_type(),      \
+			XANewArchiveDialog))
 
-#define XA_IS_NEW_DIALOG(obj)      ( \
+#define XA_IS_NEW_ARCHIVE_DIALOG(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_new_dialog_get_type()))
+			xa_new_archive_dialog_get_type()))
 
-#define XA_NEW_DIALOG_CLASS(class) ( \
+#define XA_NEW_ARCHIVE_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_new_dialog_get_type(),      \
-			XANewDialogClass))
+			xa_new_archive_dialog_get_type(),      \
+			XANewArchiveDialogClass))
 
-#define XA_IS_NEW_DIALOG_CLASS(class) ( \
+#define XA_IS_NEW_ARCHIVE_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_new_dialog_get_type()))
+			xa_new_archive_dialog_get_type()))
 
-typedef struct _XANewDialog XANewDialog;
+typedef struct _XANewArchiveDialog XANewArchiveDialog;
 
-struct _XANewDialog
+struct _XANewArchiveDialog
 {
 	GtkDialog parent;
 };
 
-typedef struct _XANewDialogClass XANewDialogClass;
+typedef struct _XANewArchiveDialogClass XANewArchiveDialogClass;
 
-struct _XANewDialogClass
+struct _XANewArchiveDialogClass
 {
 	GtkDialogClass parent;
 };
 
-GtkWidget *xa_new_dialog_new();
+GtkWidget *xa_new_archive_dialog_new();
 
 G_END_DECLS
-#endif /* __XARCHIVER_NEW_DIALOG_H__ */
+#endif /* __XARCHIVER_NEW_ARCHIVE_DIALOG_H__ */

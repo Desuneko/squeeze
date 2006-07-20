@@ -22,56 +22,60 @@
 #include "new_dialog.h"
 
 static void
-xa_new_dialog_class_init(XANewDialogClass *archive_class);
+xa_new_archive_dialog_class_init(XANewArchiveDialogClass *archive_class);
 
 static void
-xa_new_dialog_init(XANewDialog *archive);
+xa_new_archive_dialog_init(XANewArchiveDialog *archive);
 
 static void
-xa_new_dialog_finalize(GObject *object);
+xa_new_archive_dialog_finalize(GObject *object);
 
 GType
-xa_new_dialog_get_type ()
+xa_new_archive_dialog_get_type ()
 {
-	static GType xa_new_dialog_type = 0;
+	static GType xa_new_archive_dialog_type = 0;
 
- 	if (!xa_new_dialog_type)
+ 	if (!xa_new_archive_dialog_type)
 	{
- 		static const GTypeInfo xa_new_dialog_info = 
+ 		static const GTypeInfo xa_new_archive_dialog_info = 
 		{
-			sizeof (XANewDialogClass),
+			sizeof (XANewArchiveDialogClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_new_dialog_class_init,
+			(GClassInitFunc) xa_new_archive_dialog_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XANewDialog),
+			sizeof (XANewArchiveDialog),
 			0,
-			(GInstanceInitFunc) xa_new_dialog_init,
+			(GInstanceInitFunc) xa_new_archive_dialog_init,
 			NULL
 		};
 
-		xa_new_dialog_type = g_type_register_static (GTK_TYPE_DIALOG, "XANewDialog", &xa_new_dialog_info, 0);
+		xa_new_archive_dialog_type = g_type_register_static (GTK_TYPE_DIALOG, "XANewArchiveDialog", &xa_new_archive_dialog_info, 0);
 	}
-	return xa_new_dialog_type;
+	return xa_new_archive_dialog_type;
 }
 
 static void
-xa_new_dialog_class_init(XANewDialogClass *archive_class)
+xa_new_archive_dialog_class_init(XANewArchiveDialogClass *dialog_class)
 {
-
 }
 
 static void
-xa_new_dialog_init(XANewDialog *archive)
+xa_new_archive_dialog_init(XANewArchiveDialog *dialog)
 {
+	gtk_window_set_title(GTK_WINDOW(dialog), _("Create archive"));
+	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			GTK_STOCK_NEW, GTK_RESPONSE_OK,
+			NULL);
 	
 }
 
 GtkWidget *
-xa_new_dialog_new()
+xa_new_archive_dialog_new()
 {
 	GtkWidget *dialog;
-	dialog = g_object_new(xa_new_dialog_get_type(), NULL);
+	dialog = g_object_new(xa_new_archive_dialog_get_type(), NULL);
 	return dialog;
 }

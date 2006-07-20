@@ -4,23 +4,32 @@ Summary:
 
 Long Version:
 
-  Implement archive-type verification and 'open' support 
-  for existing archives
+  Implement archive-type verification and 'open' support for existing archives
+    - done for tar
+               tar.gz
+               tar.bz2
 
-  Write view support for gnu-tar support object.
+	Implement 'NewArchiveDialog'
 
-  Let support objects check if the program in question exists upon object creation.
+	Implement 'ExtractArchiveDialog'
 
   Implement transaction-options for archive-support objects
   Implement transaction-options for compression-support objects
     (use g_object_class_properties for that?)
+
+  Let support objects check if the program in question exists upon object creation.
+
+	add configure-options to enable / disable support-objects.
+
+  Optimize memory usage and library size (remove duplicate code)
 
   Extend testing: 
     Test Add
          Remove
          Extract
          View
-	
-  Optimize memory usage and library size (remove duplicate code)
+  
 
   See if we can avoid using /tmp when possible.
+  Write view support for gnu-tar support object.
+
