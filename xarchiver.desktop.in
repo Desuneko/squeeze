@@ -11,4 +11,4 @@ Type=Application
 X-MultipleArgs=false
 Categories=GTK;Application;Utility;
 StartupNotify=true
-MimeType=application/x-gzip;application/x-bzip2;application/x-tar;application/x-compressed-tar;
+MimeType=application/x-gzip;application/x-bzip;application/x-bzip-compressed-tar;application/x-tar;application/x-compressed-tar;
