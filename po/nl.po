@@ -6,13 +6,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
-"Report-Msgid-Bugs-To: colossus73@gmail.com\n"
-"POT-Creation-Date: 2006-07-20 16:36+0200\n"
+"Report-Msgid-Bugs-To: psybsd@gmail.com\n"
+"POT-Creation-Date: 2006-07-22 19:29+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -72,6 +72,14 @@ msgstr "[archief naam]"
 msgid "You should provide at least one file to add\n"
 msgstr "U moet ten minste een bestand toevoegen\n"
 
-#: ../src/new_dialog.c:67
-msgid "Create archive"
-msgstr "Maak archief"
+#: ../src/new_dialog.c:68
+msgid "Archive type:"
+msgstr "Archieftype:"
+
+#: ../src/new_dialog.c:70
+msgid "Automatic"
+msgstr "Automatisch"
+
+#: ../src/new_dialog.c:86
+msgid "Create new archive"
+msgstr "Maak nieuw archief"

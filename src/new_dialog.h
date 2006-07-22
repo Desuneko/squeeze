@@ -42,14 +42,15 @@ typedef struct _XANewArchiveDialog XANewArchiveDialog;
 
 struct _XANewArchiveDialog
 {
-	GtkDialog parent;
+	GtkFileChooserDialog parent;
+	GtkWidget *filetype_selector;
 };
 
 typedef struct _XANewArchiveDialogClass XANewArchiveDialogClass;
 
 struct _XANewArchiveDialogClass
 {
-	GtkDialogClass parent;
+	GtkFileChooserDialogClass parent;
 };
 
 GtkWidget *xa_new_archive_dialog_new();

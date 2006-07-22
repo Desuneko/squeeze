@@ -159,6 +159,7 @@ lxa_archive_discover_type(LXAArchive *archive)
 	fseek(fp, 0, SEEK_SET);
 	if ( fseek ( fp , 257, SEEK_CUR ) == 0 ) 
 	{
+		/* TAR */
 		if ( fread ( magic, 1, 5, fp ) )
 		{
 			/* check magic */
