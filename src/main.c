@@ -198,6 +198,7 @@ int main(int argc, char **argv)
 				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 				gtk_dialog_run (GTK_DIALOG (dialog) );
 				gtk_widget_destroy (GTK_WIDGET (dialog) );
+				return 1;
 			}
 		}
 	}

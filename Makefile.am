@@ -3,41 +3,28 @@
 SUBDIRS = libxarchiver src tests po
 
 pixmapsdir       = $(datadir)/pixmaps
-pixmaps_DATA     = pixmaps/xarchiver.png
+pixmaps_DATA     = pixmaps//xarchiver.png
 
+wrapperdir = $(libexecdir)/thunar-archive-plugin/
+wrapper_SCRIPTS = xarchiver.tap
 
 desktopdir = $(datadir)/applications
 desktop_in_files = xarchiver.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = config.rpath m4/ChangeLog  \
+EXTRA_DIST = \
 	autogen.sh \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
+	xarchiver.tap \
 	$(desktop_in_files) \
-	$(pixmaps_DATA)
+	$(pixmaps_DATA) \
+	$(wrapper_DATA)
 
-install-data-local:
-	@$(NORMAL_INSTALL)
-	if test -d $(srcdir)/pixmaps; then \
-	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/pixmaps; \
-	  for pixmap in $(srcdir)/pixmaps/*; do \
-	    if test -f $$pixmap; then \
-	      $(INSTALL_DATA) $$pixmap $(DESTDIR)$(pkgdatadir)/pixmaps; \
-	    fi \
-	  done \
-	fi
-
-dist-hook:
-	if test -d pixmaps; then \
-	  mkdir $(distdir)/pixmaps; \
-	  for pixmap in pixmaps/*; do \
-	    if test -f $$pixmap; then \
-	      cp -p $$pixmap $(distdir)/pixmaps; \
-	    fi \
-	  done \
-	fi
-
-ACLOCAL_AMFLAGS = -I m4
+DISTCLEANFILES = \
+	intltool-extract \
+	intltool-merge \
+	intltool-update \
+	$(desktop_DATA)
