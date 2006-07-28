@@ -9,6 +9,9 @@ Long Version:
                tar.gz
                tar.bz2
 
+	Implement lxa_archivetype_supported() function
+	Implement lxa_compressiontype_supported() function
+
 	Implement 'NewArchiveDialog'
 
 	Implement 'ExtractArchiveDialog'
@@ -28,7 +31,6 @@ Long Version:
          Remove
          Extract
          View
-  
 
   See if we can avoid using /tmp when possible.
   Write view support for gnu-tar support object.

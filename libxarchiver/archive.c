@@ -143,6 +143,13 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 				g_debug("COMPRESSION TYPE NOT FOUND");
 			compression = archive->compression;
 	}
+	else
+	{
+		archive->compression = compression;
+		archive->type = type;
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+		return archive;
+	}
 	if(archive->compression == LXA_COMPRESSIONTYPE_NONE)
 	{
 		if(type == LXA_ARCHIVETYPE_UNKNOWN)
@@ -152,7 +159,7 @@ lxa_archive_new(gchar *path, LXAArchiveType type, LXACompressionType compression
 				g_debug("ARCHIVE TYPE FOUND");
 			else
 				g_debug("ARCHIVE TYPE NOT FOUND");
-			archive->type = type;
+			type = archive->type;
 		}
 	}
 	return archive;

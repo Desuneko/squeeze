@@ -44,31 +44,22 @@ gpointer command;
 
 gint opened_archives = 0;
 
-/*
- * Using roughly the same interface as File-roller.
- */
 static GOptionEntry entries[] =
 {
 	{	"extract-to", 'x', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &extract_archive_path,
-		N_("Extract the archive to the specified folder and quits."),
+		N_(""),
 		N_("[destination path]")
 	},
 	{	"extract", 'e', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &extract_archive,
-		N_("Extract the archive by asking the destination folder and quits."),
+		N_(""),
 		NULL
 	},
 	{	"add-to", 'd', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &add_archive_path,
-		N_("Add files to the specified archive and quits."),
+		N_(""),
 		N_("[archive path] [file1] [file2] ... [fileN]")
 	},
-	/*
-	{	"add", 'a', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &add_archive,
-		N_("Add files to the specified archive by asking their filenames and quits."),
-		NULL
-	},
-	*/
 	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &new_archive,
-		N_("Ask for the archive to be created, add files to it and quits."),
+		N_(""),
 		N_("[file1] [file2] ... [fileN]")
 	},
 	{ NULL }
@@ -163,6 +154,9 @@ int main(int argc, char **argv)
 	gint result = 0;
 	gint i = 0;
 	GSList *files = NULL;
+	LXAArchiveType new_archivetype;
+	LXACompressionType new_compressiontype;
+	gchar *temp_path;
 	
   #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -227,21 +221,94 @@ int main(int argc, char **argv)
 		}
 		else /* No file-name provided, a new archive has to be created: */
 		{
-			/* TODO: Show new archive dialog */
 			dialog = xa_new_archive_dialog_new();
 			result = gtk_dialog_run (GTK_DIALOG (dialog) );
-			gtk_widget_destroy (GTK_WIDGET (dialog) );
-			if(result == GTK_RESPONSE_CANCEL)
+			if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
+			{
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
 				return 2;
+			}
 			if(result == GTK_RESPONSE_OK)
 			{
 				/* do crazy stuff */
-				return 0;
+				new_archivetype = xa_new_archive_dialog_get_archive_type(XA_NEW_ARCHIVE_DIALOG(dialog));
+				new_compressiontype = xa_new_archive_dialog_get_compression_type(XA_NEW_ARCHIVE_DIALOG(dialog));
+				add_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+				if(new_archivetype == LXA_ARCHIVETYPE_UNKNOWN)
+				{
+					/* auto-detect*/
+					if(g_str_has_suffix(add_archive_path, ".tgz") || g_str_has_suffix(add_archive_path, ".tar.gz"))
+					{
+						new_archivetype = LXA_ARCHIVETYPE_TAR;
+						new_compressiontype = LXA_COMPRESSIONTYPE_GZIP;
+					}
+					if(g_str_has_suffix(add_archive_path, ".tbz") || g_str_has_suffix(add_archive_path, ".tar.bz") || g_str_has_suffix(add_archive_path, ".tar.bz2"))
+					{
+						new_archivetype = LXA_ARCHIVETYPE_TAR;
+						new_compressiontype = LXA_COMPRESSIONTYPE_BZIP2;
+					}
+					if(g_str_has_suffix(add_archive_path, ".tar"))
+					{
+						new_archivetype = LXA_ARCHIVETYPE_TAR;
+						new_compressiontype = LXA_COMPRESSIONTYPE_NONE;
+					}
+				}
+				if(new_archivetype != LXA_ARCHIVETYPE_UNKNOWN)
+				{
+					if(new_archivetype == LXA_ARCHIVETYPE_TAR)
+					{
+						if(new_compressiontype == LXA_COMPRESSIONTYPE_GZIP)
+						{
+							if(!g_str_has_suffix(add_archive_path, ".tgz") && !g_str_has_suffix(add_archive_path, ".tar.gz"))
+							{
+								temp_path = g_strconcat(add_archive_path, ".tar.gz",  NULL);
+								g_free(add_archive_path);
+								add_archive_path = temp_path;
+							}
+							g_debug("TAR.GZ\n");
+						}
+						if(new_compressiontype == LXA_COMPRESSIONTYPE_BZIP2)
+						{
+							if(!g_str_has_suffix(add_archive_path, ".tbz") && !g_str_has_suffix(add_archive_path, ".tar.bz") && !g_str_has_suffix(add_archive_path, ".tar.bz2"))
+							{
+								temp_path = g_strconcat(add_archive_path, ".tar.bz2",  NULL);
+								g_free(add_archive_path);
+								add_archive_path = temp_path;
+							}
+							g_debug("TAR.BZ2\n");
+						}
+						if(new_compressiontype == LXA_COMPRESSIONTYPE_NONE)
+						{
+							if(!g_str_has_suffix(add_archive_path, ".tar"))
+							{
+								temp_path = g_strconcat(add_archive_path, ".tar",  NULL);
+								g_free(add_archive_path);
+								add_archive_path = temp_path;
+							}
+							g_debug("TAR\n");
+						}
+					}
+					if(!lxa_new_archive(add_archive_path, new_archivetype, new_compressiontype, TRUE, &xa_archive, G_CALLBACK(archive_initialized)))
+					{
+						g_signal_connect(G_OBJECT(xa_archive), "lxa_status_changed", G_CALLBACK(archive_status_changed), NULL);
+						g_signal_connect(G_OBJECT(xa_archive), "lxa_init_complete", G_CALLBACK(archive_initialized), NULL);
+						g_signal_connect(G_OBJECT(xa_archive), "lxa_operation_failure",  G_CALLBACK(archive_operation_failed), NULL);
+						opened_archives++;
+					}
+				}
+				else
+				{
+					gtk_widget_destroy (GTK_WIDGET (dialog) );
+					dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Archive type unknown\n"));
+					gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+					gtk_dialog_run (GTK_DIALOG (dialog) );
+				}
 			}
+			gtk_widget_destroy (GTK_WIDGET (dialog) );
 		}
 	}
 
-	if(!add_archive && !extract_archive && !extract_archive_path && !add_archive_path)
+	if(!new_archive && !extract_archive && !extract_archive_path && !add_archive_path)
 		return 0;
 
 	gtk_main();

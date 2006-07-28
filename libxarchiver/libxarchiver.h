@@ -49,7 +49,8 @@ lxa_new_archive( gchar *path,
                  LXAArchiveType,
                  LXACompressionType,
                  gboolean overwrite,
-                 LXAArchive **lp_archive );
+                 LXAArchive **lp_archive,
+								 GCallback initialized_func);
 
 /*
  * gint 

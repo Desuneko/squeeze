@@ -41,8 +41,7 @@ lxa_init()
 
 	lxa_tmp_dir = g_get_tmp_dir();
 #ifdef DEBUG
-	g_debug("lxa_tmp_dir: %s\n", lxa_tmp_dir);
-	g_debug("lxa_cmp_list_length: %d\n", g_slist_length(lxa_compression_support_list));
+	g_debug("lxa_tmp_dir: %s\n", lxa_tmp_dir); g_debug("lxa_cmp_list_length: %d\n", g_slist_length(lxa_compression_support_list));
 #endif
 }
 
@@ -59,7 +58,7 @@ lxa_destroy()
  *
  */
 gint
-lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression, gboolean overwrite, LXAArchive **lp_archive)
+lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression, gboolean overwrite, LXAArchive **lp_archive, GCallback initialized_func)
 {
 	if(overwrite)
 		g_unlink(path);
@@ -70,7 +69,7 @@ lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, type, compression, NULL);
+	LXAArchive *archive = lxa_archive_new(path, type, compression, initialized_func);
 	(*lp_archive) = archive;
 	return 0;
 }
@@ -98,4 +97,20 @@ void
 lxa_close_archive(LXAArchive *archive)
 {
 	g_unlink(archive->tmp_file);
+}
+
+gboolean
+lxa_archivetype_supported (LXAArchiveType type)
+{
+	if(g_slist_find_custom(lxa_archive_support_list, &type, lookup_archive_support))
+		return TRUE;
+	return FALSE;
+}
+
+gboolean
+lxa_compressiontype_supported (LXACompressionType type)
+{
+	if(g_slist_find_custom(lxa_compression_support_list, &type, lookup_compression_support))
+		return TRUE;
+	return FALSE;
 }
