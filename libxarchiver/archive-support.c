@@ -170,6 +170,22 @@ lxa_archive_discover_type(LXAArchive *archive)
 			/* check extension */
 			else
 			{
+				switch(archive->compression)
+				{
+					case(LXA_COMPRESSIONTYPE_NONE):
+						if(g_str_has_suffix(archive->path, ".tar"))
+							archive->type = LXA_ARCHIVETYPE_TAR;
+							break;
+					case(LXA_COMPRESSIONTYPE_GZIP):
+						if(g_str_has_suffix(archive->path, ".tar.gz") || g_str_has_suffix(archive->path, ".tgz"))
+							archive->type = LXA_ARCHIVETYPE_TAR;
+							break;
+					case(LXA_COMPRESSIONTYPE_BZIP2):
+						if(g_str_has_suffix(archive->path, ".tar.bz2") || g_str_has_suffix(archive->path, ".tbz2") || g_str_has_suffix(archive->path, ".tar.bz") || g_str_has_suffix(archive->path, ".tbz"))
+							archive->type = LXA_ARCHIVETYPE_TAR;
+							break;
+				}
+
 			}
 		}
 	}
