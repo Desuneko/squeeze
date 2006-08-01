@@ -47,19 +47,19 @@ gint opened_archives = 0;
 static GOptionEntry entries[] =
 {
 	{	"extract-to", 'x', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &extract_archive_path,
-		N_(""),
+		"",
 		N_("[destination path]")
 	},
 	{	"extract", 'e', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &extract_archive,
-		N_(""),
+		"",
 		NULL
 	},
 	{	"add-to", 'd', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &add_archive_path,
-		N_(""),
+		"",
 		N_("[archive path] [file1] [file2] ... [fileN]")
 	},
 	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &new_archive,
-		N_(""),
+		"",
 		N_("[file1] [file2] ... [fileN]")
 	},
 	{ NULL }
@@ -303,6 +303,7 @@ int main(int argc, char **argv)
 					dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Archive type unknown\n"));
 					gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 					gtk_dialog_run (GTK_DIALOG (dialog) );
+					return 1;
 				}
 			}
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
