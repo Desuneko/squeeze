@@ -15,53 +15,50 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#ifndef __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__
-#define __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__
+#ifndef __LIBXARCHIVER_ARCHIVE_SUPPORT_ZIP_H__
+#define __LIBXARCHIVER_ARCHIVE_SUPPORT_ZIP_H__
 
 G_BEGIN_DECLS
 
 
-#define LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR lxa_archive_support_gnu_tar_get_type()
+#define LXA_TYPE_ARCHIVE_SUPPORT_ZIP lxa_archive_support_zip_get_type()
 
-#define LXA_ARCHIVE_SUPPORT_GNU_TAR(obj)         ( \
+#define LXA_ARCHIVE_SUPPORT_ZIP(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR,      \
-			LXAArchiveSupportGnuTar))
+			LXA_TYPE_ARCHIVE_SUPPORT_ZIP,      \
+			LXAArchiveSupportZip))
 
-#define LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(obj)      ( \
+#define LXA_IS_ARCHIVE_SUPPORT_ZIP(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR))
+			LXA_TYPE_ARCHIVE_SUPPORT_ZIP))
 
-#define LXA_ARCHIVE_SUPPORT_GNU_TAR_CLASS(klass) ( \
+#define LXA_ARCHIVE_SUPPORT_ZIP_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR,      \
-			LXAArchiveSupportGnuTarClass))
+			LXA_TYPE_ARCHIVE_SUPPORT_ZIP,      \
+			LXAArchiveSupportZipClass))
 
-#define LXA_IS_ARCHIVE_SUPPORT_GNU_TAR_CLASS(klass) ( \
+#define LXA_IS_ARCHIVE_SUPPORT_ZIP_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR))
+			LXA_TYPE_ARCHIVE_SUPPORT_ZIP))
 
-typedef struct _LXAArchiveSupportGnuTar LXAArchiveSupportGnuTar;
+typedef struct _LXAArchiveSupportZip LXAArchiveSupportZip;
 
-struct _LXAArchiveSupportGnuTar
+struct _LXAArchiveSupportZip
 {
 	LXAArchiveSupport parent;
 	LXAArchiveType type;
-	gboolean _extr_overwrite;
-	gboolean _extr_touch;
-	guint    _extr_strip;
 };
 
-typedef struct _LXAArchiveSupportGnuTarClass LXAArchiveSupportGnuTarClass;
+typedef struct _LXAArchiveSupportZipClass LXAArchiveSupportZipClass;
 
-struct _LXAArchiveSupportGnuTarClass
+struct _LXAArchiveSupportZipClass
 {
 	LXAArchiveSupportClass parent;
 }; 
 
-GType                lxa_archive_support_gnu_tar_get_type(void);
-LXAArchiveSupport *  lxa_archive_support_gnu_tar_new();
+GType                lxa_archive_support_zip_get_type(void);
+LXAArchiveSupport *  lxa_archive_support_zip_new();
 
 G_END_DECLS
 
-#endif /* __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__ */
+#endif /* __LIBXARCHIVER_ARCHIVE_SUPPORT_ZIP_H__ */

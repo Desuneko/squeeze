@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 
 #include "new_dialog.h"
+#include "extract_dialog.h"
 #include "main.h"
 
 gboolean no_gui = FALSE;
@@ -47,19 +48,19 @@ gint opened_archives = 0;
 static GOptionEntry entries[] =
 {
 	{	"extract-to", 'x', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &extract_archive_path,
-		"",
+		NULL,
 		N_("[destination path]")
 	},
 	{	"extract", 'e', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &extract_archive,
-		"",
+		NULL,
 		NULL
 	},
 	{	"add-to", 'd', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &add_archive_path,
-		"",
+		NULL,
 		N_("[archive path] [file1] [file2] ... [fileN]")
 	},
 	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &new_archive,
-		"",
+		NULL,
 		N_("[file1] [file2] ... [fileN]")
 	},
 	{ NULL }
@@ -182,6 +183,13 @@ int main(int argc, char **argv)
 			/* 
 			 * TODO: Show extract-dialog.
 			 */
+			dialog = xa_extract_archive_dialog_new();
+			result = gtk_dialog_run (GTK_DIALOG (dialog) );
+			if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
+			{
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
+				return 2;
+			}
 		}
 		for(i = 1; i < argc; i++)
 		{
@@ -234,10 +242,13 @@ int main(int argc, char **argv)
 				/* do crazy stuff */
 				new_archivetype = xa_new_archive_dialog_get_archive_type(XA_NEW_ARCHIVE_DIALOG(dialog));
 				new_compressiontype = xa_new_archive_dialog_get_compression_type(XA_NEW_ARCHIVE_DIALOG(dialog));
-				add_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+				add_archive_path = xa_new_archive_dialog_get_filename(XA_NEW_ARCHIVE_DIALOG(dialog));
 				if(new_archivetype == LXA_ARCHIVETYPE_UNKNOWN)
 				{
-					/* auto-detect*/
+					/* auto-detect
+				   * FIXME: should not work if type is unsupported
+					 * TODO: Move this code to new_dialog, if possible 
+					 */
 					if(g_str_has_suffix(add_archive_path, ".tgz") || g_str_has_suffix(add_archive_path, ".tar.gz"))
 					{
 						new_archivetype = LXA_ARCHIVETYPE_TAR;
@@ -251,6 +262,11 @@ int main(int argc, char **argv)
 					if(g_str_has_suffix(add_archive_path, ".tar"))
 					{
 						new_archivetype = LXA_ARCHIVETYPE_TAR;
+						new_compressiontype = LXA_COMPRESSIONTYPE_NONE;
+					}
+					if(g_str_has_suffix(add_archive_path, ".zip"))
+					{
+						new_archivetype = LXA_ARCHIVETYPE_ZIP;
 						new_compressiontype = LXA_COMPRESSIONTYPE_NONE;
 					}
 				}
@@ -288,6 +304,16 @@ int main(int argc, char **argv)
 							}
 							g_debug("TAR\n");
 						}
+					}
+					if(new_archivetype == LXA_ARCHIVETYPE_ZIP)
+					{
+							if(!g_str_has_suffix(add_archive_path, ".zip"))
+							{
+								temp_path = g_strconcat(add_archive_path, ".zip",  NULL);
+								g_free(add_archive_path);
+								add_archive_path = temp_path;
+							}
+							g_debug("ZIP\n");
 					}
 					if(!lxa_new_archive(add_archive_path, new_archivetype, new_compressiontype, TRUE, &xa_archive, G_CALLBACK(archive_initialized)))
 					{

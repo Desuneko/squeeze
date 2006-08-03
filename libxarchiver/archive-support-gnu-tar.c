@@ -33,6 +33,13 @@
 
 #define _(String) gettext(String)
 
+enum
+{
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE = 1,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP
+};
+
 gint
 lxa_archive_support_gnu_tar_add(LXAArchive *archive);
 
@@ -47,6 +54,11 @@ lxa_archive_support_gnu_tar_view(LXAArchive *archive);
 
 void
 lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer data);
+
+void
+lxa_archive_support_gnu_tar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+void
+lxa_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 gboolean
 lxa_archive_support_gnu_tar_view_func(GIOChannel *source, GIOCondition condition, gpointer data);
@@ -113,19 +125,45 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 void
 lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclass)
 {
-	/*
-	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
+	GObjectClass *object_class = G_OBJECT_CLASS (supportclass);
+	GParamSpec *pspec = NULL;
 	LXAArchiveSupportGnuTarClass *klass = LXA_ARCHIVE_SUPPORT_GNU_TAR_CLASS (supportclass);
-	*/
+
+	object_class->set_property = lxa_archive_support_gnu_tar_set_property;
+	object_class->get_property = lxa_archive_support_gnu_tar_get_property;
+
+	pspec = g_param_spec_boolean("extract-overwrite",
+		"Overwrite exisiting files",
+		"Overwrite existing files on extraction",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE, pspec);
+
+	pspec = g_param_spec_boolean("extract-touch",
+		"Touch files",
+		"Touch files",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH, pspec);
+
+	pspec = g_param_spec_uint("extract-strip",
+		"Strip directories",
+		"Strip directories",
+		0,
+		128,
+		0,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP, pspec);
 }
 
 LXAArchiveSupport*
 lxa_archive_support_gnu_tar_new()
 {
+	guint i;
 	LXAArchiveSupportGnuTar *support;
 
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, NULL);
-	
+
 	return LXA_ARCHIVE_SUPPORT(support);
 }
 
@@ -159,6 +197,9 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive)
 gint
 lxa_archive_support_gnu_tar_extract(LXAArchive *archive)
 {
+	/*
+	 * TODO: use extract- options
+	 */
 	gchar *command;
 	GSList *files = archive->tmp_data;
 
@@ -253,6 +294,29 @@ lxa_archive_support_gnu_tar_child_watch_func(GPid pid, gint status, gpointer dat
 		}
 	} else
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+}
+
+void
+lxa_archive_support_gnu_tar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_overwrite = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_touch = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_strip = g_value_get_uint(value);
+			break;
+	}
+}
+
+void
+lxa_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+
 }
 
 gboolean

@@ -22,6 +22,7 @@
 #include "libxarchiver.h"
 #include "archive-support.h"
 #include "archive-support-gnu-tar.h"
+#include "archive-support-zip.h"
 
 #include "compression-support.h"
 #include "compression-support-gzip.h"
@@ -34,12 +35,14 @@ lxa_init()
 {
 	lxa_archive_support_list = g_slist_alloc();
 	lxa_archive_support_list = g_slist_prepend(lxa_archive_support_list, lxa_archive_support_gnu_tar_new());
+	lxa_archive_support_list = g_slist_prepend(lxa_archive_support_list, lxa_archive_support_zip_new());
 
 	lxa_compression_support_list = g_slist_alloc();
 	lxa_compression_support_list = g_slist_prepend(lxa_compression_support_list, lxa_compression_support_gzip_new());
 	lxa_compression_support_list = g_slist_prepend(lxa_compression_support_list, lxa_compression_support_bzip2_new());
 
 	lxa_tmp_dir = g_get_tmp_dir();
+
 #ifdef DEBUG
 	g_debug("lxa_tmp_dir: %s\n", lxa_tmp_dir); g_debug("lxa_cmp_list_length: %d\n", g_slist_length(lxa_compression_support_list));
 #endif

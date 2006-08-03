@@ -60,6 +60,7 @@ GtkWidget *xa_new_archive_dialog_new();
 
 LXAArchiveType     xa_new_archive_dialog_get_archive_type (XANewArchiveDialog *);
 LXACompressionType xa_new_archive_dialog_get_compression_type (XANewArchiveDialog *);
+gchar *            xa_new_archive_dialog_get_filename (XANewArchiveDialog *dialog);
 
 G_END_DECLS
 #endif /* __XARCHIVER_NEW_ARCHIVE_DIALOG_H__ */

@@ -5,6 +5,7 @@ libxarchiver_a_SOURCES =            \
 	archive.c archive.h \
 	internals.c internals.h           \
 	archive-support.c archive-support.h \
+	archive-support-zip.c archive-support-zip.h \
 	archive-support-gnu-tar.c archive-support-gnu-tar.h \
 	compression-support.c compression-support.h \
 	compression-support-gzip.c compression-support-gzip.h \

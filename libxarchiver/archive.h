@@ -78,16 +78,14 @@ typedef struct _LXAArchive LXAArchive;
 struct _LXAArchive
 {
 	GObject parent;
-	LXAArchiveStatus   status;
-	LXAArchiveStatus   oldstatus;
-	LXAArchiveType     type;
-	LXACompressionType compression;
-	gchar             *path;
-	gchar             *tmp_file;
-	gpointer           tmp_data;
-	GPid               child_pid;
-	gchar             *passwd;
-	gboolean           has_passwd;
+	LXAArchiveStatus       status;
+	LXAArchiveStatus       oldstatus;
+	LXAArchiveType         type;
+	LXACompressionType     compression;
+	gchar                 *path;
+	gchar                 *tmp_file;
+	gpointer               tmp_data;
+	GPid                   child_pid;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;

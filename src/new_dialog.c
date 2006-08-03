@@ -213,3 +213,11 @@ xa_new_archive_dialog_get_compression_type (XANewArchiveDialog *dialog)
 	g_free(ct_value);
 	return type;
 }
+
+gchar *
+xa_new_archive_dialog_get_filename (XANewArchiveDialog *dialog)
+{
+	gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+
+	return filename;
+}

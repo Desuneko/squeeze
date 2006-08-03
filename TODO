@@ -4,26 +4,32 @@ Summary:
 
 Long Version:
 
+	Make ArchiveSupport functions ArchiveSupport aware.
+
   Implement archive-type verification and 'open' support for existing archives
-    - done for tar
-               tar.gz
-               tar.bz2
-
-	Implement lxa_archivetype_supported() function
-	Implement lxa_compressiontype_supported() function
-
-	Implement 'NewArchiveDialog'
+	  - .rar
+		- .arj
+		- .iso
+		- .7zip
 
 	Implement 'ExtractArchiveDialog'
 
   Implement transaction-options for archive-support objects
+    - implement option listing
+		- implement set_property code
+
   Implement transaction-options for compression-support objects
-    (use g_object_class_properties for that?)
+    - implement option listing
+		- implement set_property code
 
   Let support objects check if the program in question exists upon object creation.
 
 	add configure-options to enable / disable support-objects.
 
+  add support for libarchive
+
+  See if we can avoid using /tmp when possible.
+  Write view support for all support objects.
   Optimize memory usage and library size (remove duplicate code)
 
   Extend testing: 
@@ -32,6 +38,19 @@ Long Version:
          Extract
          View
 
-  See if we can avoid using /tmp when possible.
-  Write view support for gnu-tar support object.
+  add passwd property to archive
 
+
+---------------------------------------------------------------
+| DONE                                                   DONE |
+---------------------------------------------------------------
+	Implement lxa_archivetype_supported() function           DONE
+	Implement lxa_compressiontype_supported() function       DONE
+
+	Implement 'NewArchiveDialog'                             DONE
+
+  Implement archive-type verification and 'open' support for existing archives
+    - done for .tar
+               .tar.gz
+               .tar.bz2
+							 .zip
