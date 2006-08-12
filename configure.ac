@@ -38,6 +38,7 @@ XDT_I18N([nl])
 XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.2.0])
 XDT_CHECK_PACKAGE([GLIB], [glib-2.0], [2.2.0])
 XDT_CHECK_PACKAGE([GOBJECT], [gobject-2.0], [2.2.0])
+XDT_CHECK_PACKAGE([THUNARVFS], [thunar-vfs-1], [0.3.3])
 
 dnl check for debugging support
 XDT_FEATURE_DEBUG

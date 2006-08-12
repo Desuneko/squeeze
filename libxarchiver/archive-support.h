@@ -41,34 +41,47 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
 			LXA_TYPE_ARCHIVE_SUPPORT))
 
+
 typedef struct _LXAArchiveSupport LXAArchiveSupport;
 
 struct _LXAArchiveSupport
 {
-	GObject          parent;
-	LXAArchiveType   type;
-	gchar           *id;
-	gint (*add)     (LXAArchive *);
-	gint (*extract) (LXAArchive *);
-	gint (*remove)  (LXAArchive *);
-	gint (*view)    (LXAArchive *);
-	gint             column_nr;
-	gchar          **column_names;
-	GType           *column_types;
+	GObject       parent;
+	gchar        *id;
+	GSList       *mime;
+/*
+ * The following functions should _NOT_ be called directly.
+ *
+ * lxa_archive_support_add()
+ * lxa_archive_support_extract()
+ * 
+ * should be called instead.
+ */
+	gint        (*add)(LXAArchiveSupport *support, LXAArchive *archive, GSList *files);
+	gint        (*extract)(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
 
 struct _LXAArchiveSupportClass
 {
-	GObjectClass parent;
+	GObjectClass  parent;
 }; 
 
 GType                lxa_archive_support_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_new();
-void                 lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXAArchive *archive);
+void                 lxa_archive_support_add_mime(LXAArchiveSupport *support, gchar *mime);
+gboolean             lxa_archive_support_mime_supported(LXAArchiveSupport *,const gchar *mime);
 
-gboolean             lxa_archive_discover_type(LXAArchive *archive);
+gboolean             lxa_register_support(LXAArchiveSupport *);
+LXAArchiveSupport *  lxa_get_support_for_mime(gchar *mime);
+LXAArchiveSupport *  lxa_get_support_for_mime_from_slist(GSList *list, gchar *mime);
+
+gint                 lxa_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime);
+gint                 lxa_archive_support_lookup_support(gconstpointer support, gconstpointer mime);
+
+gint                 lxa_archive_support_add(LXAArchiveSupport *, LXAArchive *, GSList *);
+gint                 lxa_archive_support_extract(LXAArchiveSupport *, LXAArchive *, gchar *, GSList *);
 
 G_END_DECLS
 

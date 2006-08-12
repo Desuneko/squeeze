@@ -17,11 +17,15 @@
  */
 
 #include <config.h>
-#include <gettext.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
 #include "extract_dialog.h"
+
+enum
+{
+	XA_EXTRACT_ARCHIVE_DIALOG_ARCHIVE = 1
+};
 
 static void
 xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *archive_class);
@@ -29,8 +33,11 @@ xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *archive_class)
 static void
 xa_extract_archive_dialog_init(XAExtractArchiveDialog *archive);
 
-static void
-xa_extract_archive_dialog_finalize(GObject *object);
+void
+xa_extract_archive_dialog_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+
+void
+xa_extract_archive_dialog_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 GType
 xa_extract_archive_dialog_get_type ()
@@ -66,13 +73,16 @@ xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *dialog_class)
 static void
 xa_extract_archive_dialog_init(XAExtractArchiveDialog *dialog)
 {
+	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
+			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+			_("Extract"), GTK_RESPONSE_OK,
+			NULL);
 }
 
 GtkWidget *
-xa_extract_archive_dialog_new()
+xa_extract_archive_dialog_new(LXAArchive *archive)
 {
 	GtkWidget *dialog;
-	GtkFileFilter *filter = NULL;
 
 	dialog = g_object_new(xa_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 

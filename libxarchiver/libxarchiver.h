@@ -18,7 +18,13 @@
 #ifndef __LIBXARCHIVER_H__
 #define __LIBXARCHIVER_H__
 
+#define EXO_API_SUBJECT_TO_CHANGE
+
+#include <thunar-vfs/thunar-vfs.h>
 #include <libxarchiver/archive.h>
+#include <libxarchiver/archive-support.h>
+#include <libxarchiver/archive-support-zip.h>
+#include <libxarchiver/archive-support-gnu-tar.h>
 
 G_BEGIN_DECLS
 
@@ -46,11 +52,9 @@ void lxa_destroy();
  */
 gint
 lxa_new_archive( gchar *path,
-                 LXAArchiveType,
-                 LXACompressionType,
                  gboolean overwrite,
-                 LXAArchive **lp_archive,
-								 GCallback initialized_func);
+                 gchar *mime,
+                 LXAArchive **lp_archive);
 
 /*
  * gint 
@@ -62,8 +66,7 @@ lxa_new_archive( gchar *path,
  */
 gint
 lxa_open_archive( gchar *path, 
-                  LXAArchive **lp_archive,
-									GCallback initialized_func);
+                  LXAArchive **lp_archive);
 
 /*
  * void 
@@ -72,19 +75,6 @@ lxa_open_archive( gchar *path,
  */
 void 
 lxa_close_archive( LXAArchive *archive );
-
-/*
- *
- */
-GSList *
-lxa_get_supported_compression_types();
-
-/*
- *
- */
-GSList *
-lxa_get_supported_archive_types();
-
 
 G_END_DECLS
 

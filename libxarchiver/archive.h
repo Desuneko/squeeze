@@ -21,28 +21,7 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-	LXA_ARCHIVETYPE_NONE,      /* if archive-type is not supported / it is no archive */
-	LXA_ARCHIVETYPE_UNKNOWN,   /* archive-type has not been discovered yet */
-	LXA_ARCHIVETYPE_TAR,
-	LXA_ARCHIVETYPE_RAR,
-	LXA_ARCHIVETYPE_ZIP,
-	LXA_ARCHIVETYPE_ARJ,
-	LXA_ARCHIVETYPE_RPM,
-	LXA_ARCHIVETYPE_7ZIP,
-	LXA_ARCHIVETYPE_ISO
-} LXAArchiveType;
-
-typedef enum
-{ 
-	LXA_COMPRESSIONTYPE_NONE, 
-	LXA_COMPRESSIONTYPE_UNKNOWN,
-	LXA_COMPRESSIONTYPE_BZIP2,
-	LXA_COMPRESSIONTYPE_GZIP
-} LXACompressionType;
-
-typedef enum
-{
-	LXA_ARCHIVESTATUS_IDLE,
+	LXA_ARCHIVESTATUS_IDLE = 0,
 	LXA_ARCHIVESTATUS_INIT,
 	LXA_ARCHIVESTATUS_ADD,
 	LXA_ARCHIVESTATUS_EXTRACT,
@@ -78,13 +57,8 @@ typedef struct _LXAArchive LXAArchive;
 struct _LXAArchive
 {
 	GObject parent;
-	LXAArchiveStatus       status;
-	LXAArchiveStatus       oldstatus;
-	LXAArchiveType         type;
-	LXACompressionType     compression;
 	gchar                 *path;
-	gchar                 *tmp_file;
-	gpointer               tmp_data;
+	gchar                 *mime;
 	GPid                   child_pid;
 };
 
@@ -95,19 +69,10 @@ struct _LXAArchiveClass
 	GObjectClass parent;
 }; 
 
-GType lxa_archive_get_type(void);
-LXAArchive *lxa_archive_new(gchar *, LXAArchiveType, LXACompressionType, GCallback);
+GType              lxa_archive_get_type(void);
+LXAArchive        *lxa_archive_new(gchar *, gchar *);
 
-void lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
-
-gint lxa_archive_decompress(LXAArchive *archive);
-
-gint lxa_archive_add(LXAArchive *archive, GSList *files);
-gint lxa_archive_extract(LXAArchive *archive, GSList *files, gchar *destination);
-gint lxa_archive_view(LXAArchive *archive, gint, gchar **, GType *);
-
-gint lxa_archive_stop(LXAArchive *archive);
-
+gchar             *lxa_archive_discover_mime(LXAArchive *archive);
 
 G_END_DECLS
 

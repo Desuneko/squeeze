@@ -46,10 +46,7 @@ typedef struct _LXAArchiveSupportGnuTar LXAArchiveSupportGnuTar;
 struct _LXAArchiveSupportGnuTar
 {
 	LXAArchiveSupport parent;
-	LXAArchiveType type;
-	gboolean _extr_overwrite;
-	gboolean _extr_touch;
-	guint    _extr_strip;
+	gchar *app_name;
 };
 
 typedef struct _LXAArchiveSupportGnuTarClass LXAArchiveSupportGnuTarClass;
@@ -61,6 +58,9 @@ struct _LXAArchiveSupportGnuTarClass
 
 GType                lxa_archive_support_gnu_tar_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_gnu_tar_new();
+
+gint                 lxa_archive_support_gnu_tar_add(LXAArchiveSupport *, LXAArchive *, GSList *);
+gint                 lxa_archive_support_gnu_tar_extract(LXAArchiveSupport *, LXAArchive *, gchar *, GSList *);
 
 G_END_DECLS
 

@@ -16,29 +16,26 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
+#define EXO_API_SUBJECT_TO_CHANGE
+
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <glib-object.h>
-#include <libintl.h>
+#include <thunar-vfs/thunar-vfs.h>
+
 #include "archive.h"
 #include "archive-support.h"
 
-#define _(String) gettext(String)
-
-gint
-lxa_archive_support_dummy(LXAArchive *archive);
-
+#include "internals.h"
 
 void
 lxa_archive_support_init(LXAArchiveSupport *support);
 void
 lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass);
 
-static guint lxa_archive_support_signals[2];
-
+/*
+ *
+ */
 GType
 lxa_archive_support_get_type ()
 {
@@ -64,21 +61,19 @@ lxa_archive_support_get_type ()
 	return lxa_archive_support_type;
 }
 
-gint
-lxa_archive_support_dummy(LXAArchive *archive)
-{
-	return -1;
-}
-
+/*
+ *
+ */
 void
 lxa_archive_support_init(LXAArchiveSupport *support)
 {
-	support->add     = lxa_archive_support_dummy;
-	support->extract = lxa_archive_support_dummy;
-	support->remove  = lxa_archive_support_dummy;
-	support->view    = lxa_archive_support_dummy;
+	support->add = NULL;
+	support->extract = NULL;
 }
 
+/*
+ *
+ */
 void
 lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass)
 {
@@ -86,31 +81,11 @@ lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass)
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
 	LXAArchiveSupportClass *klass = LXA_ARCHIVE_SUPPORT_CLASS (supportclass);
 	*/
-
-	lxa_archive_support_signals[0] = g_signal_new("lxa_add_complete",
-			G_TYPE_FROM_CLASS(supportclass),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE,
-			1,
-			G_TYPE_POINTER,
-			NULL);
-	lxa_archive_support_signals[1] = g_signal_new("lxa_extract_complete",
-			G_TYPE_FROM_CLASS(supportclass),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE,
-			1,
-			G_TYPE_POINTER,
-			NULL);
 }
 
+/*
+ *
+ */
 LXAArchiveSupport*
 lxa_archive_support_new()
 {
@@ -121,76 +96,80 @@ lxa_archive_support_new()
 	return support;
 }
 
+/*
+ *
+ */
 void
-lxa_archive_support_emit_signal(LXAArchiveSupport *support, guint signal_id, LXAArchive *archive)
+lxa_archive_support_add_mime(LXAArchiveSupport *support, gchar *mime)
 {
-	g_signal_emit(G_OBJECT(support), lxa_archive_support_signals[signal_id], 0, archive);
+	support->mime = g_slist_prepend(support->mime, mime);	
 }
 
+/*
+ *
+ */
 gboolean
-lxa_archive_discover_type(LXAArchive *archive)
+lxa_archive_support_mime_supported(LXAArchiveSupport *support, const gchar *mime)
 {
-	FILE *fp = NULL;
-
-	gchar magic[6];
-	/* 
-	 * Check if the compression-type has been discovered 
-	 */
-	if(archive->compression > 1)
-	{
-		/*
-		 * Extract and check the tmp-file
-		 */
-		if(g_file_test(archive->tmp_file, G_FILE_TEST_EXISTS))
-		{
-			fp = fopen(archive->tmp_file, "r");
-			if(!fp)
-				return FALSE;
-		} else
-			return FALSE;
-	}
-	else
-	{ 
-		fp = fopen(archive->path, "r");
-		if(!fp)
-			return FALSE;
-	}
-
-	fseek(fp, 0, SEEK_SET);
-	if ( fseek ( fp , 257, SEEK_CUR ) == 0 ) 
-	{
-		/* TAR */
-		if ( fread ( magic, 1, 5, fp ) )
-		{
-			/* check magic */
-			if ( memcmp ( magic,"ustar",5 ) == 0 )
-			{
-				archive->type = LXA_ARCHIVETYPE_TAR;
-			}
-			/* check extension */
-			else
-			{
-				switch(archive->compression)
-				{
-					case(LXA_COMPRESSIONTYPE_NONE):
-						if(g_str_has_suffix(archive->path, ".tar"))
-							archive->type = LXA_ARCHIVETYPE_TAR;
-							break;
-					case(LXA_COMPRESSIONTYPE_GZIP):
-						if(g_str_has_suffix(archive->path, ".tar.gz") || g_str_has_suffix(archive->path, ".tgz"))
-							archive->type = LXA_ARCHIVETYPE_TAR;
-							break;
-					case(LXA_COMPRESSIONTYPE_BZIP2):
-						if(g_str_has_suffix(archive->path, ".tar.bz2") || g_str_has_suffix(archive->path, ".tbz2") || g_str_has_suffix(archive->path, ".tar.bz") || g_str_has_suffix(archive->path, ".tbz"))
-							archive->type = LXA_ARCHIVETYPE_TAR;
-							break;
-				}
-
-			}
-		}
-	}
-	if(archive->type == LXA_ARCHIVETYPE_UNKNOWN)
-		archive->type == LXA_ARCHIVETYPE_NONE;
-	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+	GSList *result = g_slist_find_custom(support->mime, mime, lxa_archive_support_lookup_mime);
+	if(!result)
+		return FALSE;
 	return TRUE;
 }
+
+/*
+ *
+ */
+gboolean
+lxa_register_support(LXAArchiveSupport *support)
+{ 
+	if(!LXA_IS_ARCHIVE_SUPPORT(support))
+		return FALSE;
+
+	lxa_archive_support_list = g_slist_prepend(lxa_archive_support_list, support);	
+	g_object_ref(support);
+
+	return TRUE;
+}
+
+/*
+ *
+ */
+LXAArchiveSupport *
+lxa_get_support_for_mime(gchar *mime)
+{
+	return lxa_get_support_for_mime_from_slist(lxa_archive_support_list, mime);
+}
+
+/*
+ *
+ */
+LXAArchiveSupport *
+lxa_get_support_for_mime_from_slist(GSList *list, gchar *mime)
+{
+	GSList *result = g_slist_find_custom(list, mime, lxa_archive_support_lookup_support);
+	if(result)
+		return result->data;
+	return NULL;
+}
+
+/*
+ *
+ */
+gint
+lxa_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime)
+{
+	return g_strcasecmp((gchar *)support_mime, (gchar *)mime);
+}
+
+/*
+ *
+ */
+gint
+lxa_archive_support_lookup_support(gconstpointer support, gconstpointer mime)
+{
+	if(lxa_archive_support_mime_supported(LXA_ARCHIVE_SUPPORT(support), (gchar *)mime))
+		return 0;
+	else
+		return 1;
+}		

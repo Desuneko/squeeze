@@ -1,33 +1,32 @@
+
+/*
+ *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
+ */
+
+#define EXO_API_SUBJECT_TO_CHANGE
+
 #include <glib.h>
 #include <glib-object.h>
+#include <thunar-vfs/thunar-vfs.h>
 
 #include "archive.h"
 #include "archive-support.h"
-#include "compression-support.h"
 
 #include "internals.h"
-
-gint
-lookup_archive_support( gconstpointer support , gconstpointer type)
-{
-	if(support == 0)
-		return 1;
-	if(((const LXAArchiveSupport *)support)->type == *(LXAArchiveType *)type)
-		return 0;
-	else
-		return 1;
-}
-
-gint
-lookup_compression_support( gconstpointer support , gconstpointer type)
-{
-	if(support == 0)
-		return 1;
-	if(((const LXACompressionSupport *)support)->type == *(LXACompressionType *)type)
-		return 0;
-	else
-		return 1;
-}
 
 void
 lxa_default_child_watch_func(GPid pid, gint status, gpointer data)
@@ -109,3 +108,21 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	return 0;
 }
+
+gchar *
+lxa_concat_filenames(GSList *filenames)
+{
+	GSList *_filenames = filenames;
+	gchar *concat_str = " ";
+
+	while(_filenames)
+	{
+		if(g_file_test(_filenames->data, G_FILE_TEST_EXISTS))
+		{
+			concat_str = g_strconcat(concat_str, " ", _filenames->data,  NULL);
+		}
+		_filenames = _filenames->next;
+	}
+	return concat_str;
+}
+

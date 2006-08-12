@@ -16,44 +16,30 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
+
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-#include "libxarchiver.h"
-#include "archive-support.h"
-#include "archive-support-gnu-tar.h"
-#include "archive-support-zip.h"
 
-#include "compression-support.h"
-#include "compression-support-gzip.h"
-#include "compression-support-bzip2.h"
+#include "libxarchiver.h"
+
 
 #include "internals.h"
 
 void
 lxa_init()
 {
-	lxa_archive_support_list = g_slist_alloc();
-	lxa_archive_support_list = g_slist_prepend(lxa_archive_support_list, lxa_archive_support_gnu_tar_new());
-	lxa_archive_support_list = g_slist_prepend(lxa_archive_support_list, lxa_archive_support_zip_new());
-
-	lxa_compression_support_list = g_slist_alloc();
-	lxa_compression_support_list = g_slist_prepend(lxa_compression_support_list, lxa_compression_support_gzip_new());
-	lxa_compression_support_list = g_slist_prepend(lxa_compression_support_list, lxa_compression_support_bzip2_new());
-
 	lxa_tmp_dir = g_get_tmp_dir();
+	lxa_mime_database = thunar_vfs_mime_database_get_default();
 
-#ifdef DEBUG
-	g_debug("lxa_tmp_dir: %s\n", lxa_tmp_dir); g_debug("lxa_cmp_list_length: %d\n", g_slist_length(lxa_compression_support_list));
-#endif
+	lxa_register_support(lxa_archive_support_zip_new());
+	lxa_register_support(lxa_archive_support_gnu_tar_new());
 }
 
 void
 lxa_destroy()
 {
-	g_slist_foreach(lxa_tmp_files_list,(void *)g_unlink, NULL);
-	g_slist_foreach(lxa_tmp_files_list,(void *)g_free, NULL);
-	g_slist_free(lxa_tmp_files_list);
+	g_object_unref(lxa_mime_database);
 }
 
 /*
@@ -61,7 +47,7 @@ lxa_destroy()
  *
  */
 gint
-lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression, gboolean overwrite, LXAArchive **lp_archive, GCallback initialized_func)
+lxa_new_archive(gchar *path, gboolean overwrite, gchar *mime, LXAArchive **lp_archive)
 {
 	if(overwrite)
 		g_unlink(path);
@@ -72,7 +58,7 @@ lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, type, compression, initialized_func);
+	LXAArchive *archive = lxa_archive_new(path, mime);
 	(*lp_archive) = archive;
 	return 0;
 }
@@ -83,7 +69,7 @@ lxa_new_archive(gchar *path, LXAArchiveType type, LXACompressionType compression
  *
  */
 gint
-lxa_open_archive(gchar *path, LXAArchive **lp_archive, GCallback initialized_func)
+lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 {
 	if(!g_file_test(path, G_FILE_TEST_EXISTS))
 	{
@@ -91,7 +77,7 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive, GCallback initialized_fun
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, LXA_ARCHIVETYPE_UNKNOWN, LXA_COMPRESSIONTYPE_UNKNOWN, initialized_func);
+	LXAArchive *archive = lxa_archive_new(path, NULL);
 	(*lp_archive) = archive;
 	return 0;
 }
@@ -99,21 +85,4 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive, GCallback initialized_fun
 void
 lxa_close_archive(LXAArchive *archive)
 {
-	g_unlink(archive->tmp_file);
-}
-
-gboolean
-lxa_archivetype_supported (LXAArchiveType type)
-{
-	if(g_slist_find_custom(lxa_archive_support_list, &type, lookup_archive_support))
-		return TRUE;
-	return FALSE;
-}
-
-gboolean
-lxa_compressiontype_supported (LXACompressionType type)
-{
-	if(g_slist_find_custom(lxa_compression_support_list, &type, lookup_compression_support))
-		return TRUE;
-	return FALSE;
 }

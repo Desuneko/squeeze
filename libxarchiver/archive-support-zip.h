@@ -46,7 +46,6 @@ typedef struct _LXAArchiveSupportZip LXAArchiveSupportZip;
 struct _LXAArchiveSupportZip
 {
 	LXAArchiveSupport parent;
-	LXAArchiveType type;
 };
 
 typedef struct _LXAArchiveSupportZipClass LXAArchiveSupportZipClass;
@@ -58,6 +57,9 @@ struct _LXAArchiveSupportZipClass
 
 GType                lxa_archive_support_zip_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_zip_new();
+
+gint                 lxa_archive_support_zip_add(LXAArchiveSupport *, LXAArchive *, GSList *);
+gint                 lxa_archive_support_zip_extract(LXAArchiveSupport *, LXAArchive *, gchar *, GSList *);
 
 G_END_DECLS
 

@@ -16,16 +16,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-const gchar *lxa_tmp_dir;
-GSList *lxa_archive_support_list;
-GSList *lxa_compression_support_list;
-GSList *lxa_tmp_files_list;
-
-gint
-lookup_archive_support( gconstpointer support , gconstpointer type);
-
-gint
-lookup_compression_support( gconstpointer support , gconstpointer type);
+const gchar            *lxa_tmp_dir;
+ThunarVfsMimeDatabase  *lxa_mime_database;
+GSList                 *lxa_archive_support_list;
 
 /*
  * gint
@@ -33,11 +26,15 @@ lookup_compression_support( gconstpointer support , gconstpointer type);
  *
  * general function for executing child-apps
  */
-gint lxa_execute(
-		gchar *command, 
-		LXAArchive *archive, 
-		GChildWatchFunc function, 
-		GIOFunc f_in, 
-		GIOFunc f_out, 
-		GIOFunc f_err);
+gint 
+lxa_execute(
+            gchar *command, 
+            LXAArchive *archive, 
+            GChildWatchFunc function, 
+            GIOFunc f_in, 
+            GIOFunc f_out, 
+            GIOFunc f_err);
+
+gchar *
+lxa_concat_filenames(GSList *filenames);
 
