@@ -37,6 +37,8 @@ lxa_archive_init(LXAArchive *archive);
 static void
 lxa_archive_finalize(GObject *object);
 
+static gint lxa_archive_signals[1];
+
 
 GType
 lxa_archive_get_type ()
@@ -70,6 +72,18 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 	GObjectClass *object_class = G_OBJECT_CLASS(archive_class);
 
 	object_class->finalize = lxa_archive_finalize;
+	
+	lxa_archive_signals[0] = g_signal_new("lxa_status_changed",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
 }
 
 static void
@@ -103,7 +117,23 @@ lxa_archive_new(gchar *path, gchar *mime)
 		mime_info = thunar_vfs_mime_info_new(mime, -1);
 	
 	archive->mime = g_strdup(thunar_vfs_mime_info_get_name(mime_info));
-	g_print("%s\n", archive->mime);
+	
+	if(!lxa_get_support_for_mime(archive->mime))
+	{
+		g_object_unref(archive);
+		archive = NULL;
+	}
 
 	return archive;
+}
+
+void 
+lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
+{
+	if(archive->status != status)
+	{
+		archive->old_status = archive->status;
+		archive->status = status;
+		g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
+	}
 }

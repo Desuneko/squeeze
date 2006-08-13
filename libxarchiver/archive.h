@@ -59,6 +59,8 @@ struct _LXAArchive
 	GObject parent;
 	gchar                 *path;
 	gchar                 *mime;
+	LXAArchiveStatus       status;
+	LXAArchiveStatus       old_status;
 	GPid                   child_pid;
 };
 
@@ -73,6 +75,7 @@ GType              lxa_archive_get_type(void);
 LXAArchive        *lxa_archive_new(gchar *, gchar *);
 
 gchar             *lxa_archive_discover_mime(LXAArchive *archive);
+void               lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
 
 G_END_DECLS
 

@@ -33,6 +33,7 @@ lxa_default_child_watch_func(GPid pid, gint status, gpointer data)
 {
 	LXAArchive *archive = data;
 	archive->child_pid = 0;
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
 }
 
 gint

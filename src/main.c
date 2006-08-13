@@ -64,8 +64,14 @@ static GOptionEntry entries[] =
 };
 
 void
-archive_status_changed(LXAArchive *archive, gpointer data)
+xa_archive_status_changed(LXAArchive *archive, gpointer data)
 {
+	if(archive->status == LXA_ARCHIVESTATUS_IDLE)
+	{
+		opened_archives--;
+	}
+	if(opened_archives <= 0)
+		gtk_main_quit();
 }
 
 void
@@ -124,6 +130,8 @@ int main(int argc, char **argv)
 		{
 			if(!lxa_open_archive(argv[i], &lpArchive))
 			{
+				g_signal_connect(G_OBJECT(lpArchive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
+				opened_archives++;
 				lpSupport = lxa_get_support_for_mime(lpArchive->mime);
 				lxa_archive_support_extract(lpSupport, lpArchive, extract_archive_path, NULL);
 			}
@@ -146,13 +154,24 @@ int main(int argc, char **argv)
 				gtk_widget_destroy (GTK_WIDGET (dialog) );
 			}
 			if(lxa_new_archive(add_archive_path, TRUE, NULL, &lpArchive))
+			{
+				/* Could not create archive (mime type unsupported) */
 				return 1;
+			}
+			else
+				opened_archives++;
 		}
 		else
 		{
 			if(lxa_open_archive(add_archive_path, &lpArchive))
+			{
+				/* Could not open archive (mime type not supported or file did not exsit)*/
 				return 1;
+			}
+			else
+				opened_archives++;
 		}
+		g_signal_connect(G_OBJECT(lpArchive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
 		GSList *files = NULL;
 		for(i = 1; i < argc; i++)
 		{

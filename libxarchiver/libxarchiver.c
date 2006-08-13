@@ -60,6 +60,8 @@ lxa_new_archive(gchar *path, gboolean overwrite, gchar *mime, LXAArchive **lp_ar
 
 	LXAArchive *archive = lxa_archive_new(path, mime);
 	(*lp_archive) = archive;
+	if(!archive)
+		return 1;
 	return 0;
 }
 
@@ -79,6 +81,8 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 
 	LXAArchive *archive = lxa_archive_new(path, NULL);
 	(*lp_archive) = archive;
+	if(!archive)
+		return 1;
 	return 0;
 }
 

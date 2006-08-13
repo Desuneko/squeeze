@@ -179,7 +179,10 @@ gint
 lxa_archive_support_add(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
 {
 	if(support->add)
+	{
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_ADD);
 		return support->add(support, archive, files);
+	}
 	else
 		g_critical("ADD NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
@@ -189,7 +192,10 @@ gint
 lxa_archive_support_extract(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files)
 {
 	if(support->extract)
+	{
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_EXTRACT);
 		return support->extract(support, archive, dest_path, files);
+	}
 	else
 		g_critical("EXTRACT NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
@@ -199,7 +205,10 @@ gint
 lxa_archive_support_remove(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
 {
 	if(support->remove)
+	{
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REMOVE);
 		return support->remove(support, archive, files);
+	}
 	else
 		g_critical("REMOVE NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
