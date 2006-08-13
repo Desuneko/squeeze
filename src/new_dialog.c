@@ -73,6 +73,7 @@ xa_new_archive_dialog_init(XANewArchiveDialog *dialog)
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			GTK_STOCK_NEW, GTK_RESPONSE_OK,
 			NULL);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
 }
 
 GtkWidget *

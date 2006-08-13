@@ -1,17 +1,29 @@
-dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl Copyright (c) 2006
+dnl         The Xfce development team. All rights reserved.
+dnl
+dnl Originally written for Xfce by Benedikt Meurer <benny@xfce.org>
+dnl Modified by Stephan Arts <psybsd@gmail.com>
+dnl
 
+dnl ***************************
+dnl *** Version information ***
+dnl ***************************
+m4_define([xarchiver_version_branch], [psybsd])
 m4_define([xarchiver_version_major], [0])
 m4_define([xarchiver_version_minor], [3])
 m4_define([xarchiver_version_micro], [9])
-m4_define([xarchiver_version_tag], [psybsd])
-m4_define([xarchiver_version], [xarchiver_version_major().xarchiver_version_minor().xarchiver_version_micro()xarchiver_version_tag()])
+m4_define([xarchiver_version_nano], []) # Leave empty for no nano version
+m4_define([xarchiver_version_build], [r@REVISION@])
+m4_define([xarchiver_version_tag], [svn]) # Leave empty for releases
+m4_define([xarchiver_version], [ifelse(xarchiver_version_branch(), [], [xarchiver_version_major().xarchiver_version_minor().xarchiver_version_micro()ifelse(xarchiver_version_nano(), [], [], [.xarchiver_version_nano()])], [xarchiver_version_branch()])-ifelse(xarchiver_version_tag(), [svn], [xarchiver_version_tag()-xarchiver_version_build()], [xarchiver_version_tag()])])
 
-AC_INIT([xarchiver], [xarchiver_version], [])
+AC_INIT([Xarchiver], [xarchiver_version], [])
 AC_PREREQ([2.50])
 
 
 XARCHIVER_VERSION=xarchiver_version
-AM_INIT_AUTOMAKE([xarchiver], [$XARCHIVER_VERSION])
+AM_INIT_AUTOMAKE([Xarchiver], [$XARCHIVER_VERSION])
 AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 
@@ -32,7 +44,7 @@ AC_SYS_LARGEFILE
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES"
 
 dnl Check for i18n support
-XDT_I18N([nl])
+XDT_I18N([@LINGUAS@])
 
 
 XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.2.0])

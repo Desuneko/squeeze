@@ -2,7 +2,8 @@ bin_PROGRAMS = xarchiver
 
 xarchiver_SOURCES = \
 	main.c main.h \
-	new_dialog.c new_dialog.h \ 
+	main_window.c main_window.h \
+	new_dialog.c new_dialog.h \
 	extract_dialog.c extract_dialog.h
 
 xarchiver_CFLAGS = \

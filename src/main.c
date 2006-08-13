@@ -88,6 +88,7 @@ int main(int argc, char **argv)
 {
 	gint result = 0;
 	GtkWidget *dialog = NULL;
+	GtkWidget *main_window = NULL;
 	LXAArchive *lpArchive;
 	LXAArchiveSupport *lpSupport;
 	GError *cli_error = NULL;
@@ -183,6 +184,14 @@ int main(int argc, char **argv)
 		}
 		lpSupport = lxa_get_support_for_mime(lpArchive->mime);
 		lxa_archive_support_add(lpSupport, lpArchive, files);
+	}
+
+	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
+	{
+		/* Show main window */
+		main_window = xa_main_window_new();
+		gtk_widget_show_all(main_window);
+		g_signal_connect(G_OBJECT(main_window), "destroy", gtk_main_quit, NULL);
 	}
 
 	gtk_main();
