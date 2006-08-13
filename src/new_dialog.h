@@ -42,24 +42,17 @@ typedef struct _XANewArchiveDialog XANewArchiveDialog;
 
 struct _XANewArchiveDialog
 {
-	GtkFileSelection parent;
-	GtkWidget *filetype_selector;
-	GtkListStore *filetype_model;
-	GSList *archivetype_list;
-	GSList *compressiontype_list;
+	GtkFileChooserDialog parent;
 };
 
 typedef struct _XANewArchiveDialogClass XANewArchiveDialogClass;
 
 struct _XANewArchiveDialogClass
 {
-	GtkFileSelectionClass parent;
+	GtkFileChooserDialogClass parent;
 };
 
 GtkWidget *xa_new_archive_dialog_new();
-
-gchar *            xa_new_archive_dialog_get_filename (XANewArchiveDialog *dialog);
-gchar *            xa_new_archive_dialog_get_mimetype (XANewArchiveDialog *dialog);
 
 G_END_DECLS
 #endif /* __XARCHIVER_NEW_ARCHIVE_DIALOG_H__ */

@@ -80,15 +80,11 @@ xa_new_archive_dialog_new()
 {
 	GtkWidget *dialog;
 
-	dialog = g_object_new(xa_new_archive_dialog_get_type(), "title", _("Create new archive"), "action", GTK_FILE_CHOOSER_ACTION_SAVE, "do-overwrite-confirmation", TRUE, NULL);
+	dialog = g_object_new(xa_new_archive_dialog_get_type(),
+			"title", _("Create new archive"),
+			"action", GTK_FILE_CHOOSER_ACTION_SAVE,
+			"do-overwrite-confirmation", TRUE,
+			NULL);
 
 	return dialog;
-}
-
-gchar *
-xa_new_archive_dialog_get_filename (XANewArchiveDialog *dialog)
-{
-	gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-
-	return filename;
 }

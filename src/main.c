@@ -155,6 +155,10 @@ int main(int argc, char **argv)
 			}
 			if(lxa_new_archive(add_archive_path, TRUE, NULL, &lpArchive))
 			{
+				dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not create archive, MIME-type unsupported"));
+				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+				gtk_dialog_run (GTK_DIALOG (dialog) );
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
 				/* Could not create archive (mime type unsupported) */
 				return 1;
 			}
