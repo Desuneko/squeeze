@@ -69,6 +69,7 @@ lxa_archive_support_init(LXAArchiveSupport *support)
 {
 	support->add = NULL;
 	support->extract = NULL;
+	support->remove = NULL;
 }
 
 /*
@@ -173,3 +174,33 @@ lxa_archive_support_lookup_support(gconstpointer support, gconstpointer mime)
 	else
 		return 1;
 }		
+
+gint
+lxa_archive_support_add(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
+{
+	if(support->add)
+		return support->add(support, archive, files);
+	else
+		g_critical("ADD NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+	return -1;
+}
+
+gint
+lxa_archive_support_extract(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files)
+{
+	if(support->extract)
+		return support->extract(support, archive, dest_path, files);
+	else
+		g_critical("EXTRACT NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+	return -1;
+}
+
+gint
+lxa_archive_support_remove(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
+{
+	if(support->remove)
+		return support->remove(support, archive, files);
+	else
+		g_critical("REMOVE NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+	return -1;
+}

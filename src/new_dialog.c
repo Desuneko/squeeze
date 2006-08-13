@@ -79,39 +79,8 @@ GtkWidget *
 xa_new_archive_dialog_new()
 {
 	GtkWidget *dialog;
-	GtkFileFilter *filter = NULL;
 
 	dialog = g_object_new(xa_new_archive_dialog_get_type(), "title", _("Create new archive"), "action", GTK_FILE_CHOOSER_ACTION_SAVE, "do-overwrite-confirmation", TRUE, NULL);
-
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_mime_type(filter, "application/x-tar");
-	gtk_file_filter_add_mime_type(filter, "application/x-compressed-tar");
-	gtk_file_filter_add_mime_type(filter, "application/x-bzip-compressed-tar");
-	gtk_file_filter_add_mime_type(filter, "application/x-zip");
-	gtk_file_filter_add_mime_type(filter, "application/zip");
-	gtk_file_filter_set_name(filter, _("All Archives"));
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
-
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_mime_type(filter, "application/x-tar");
-	gtk_file_filter_set_name(filter, _("Tar (uncompressed) '.tar'"));
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
-
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_mime_type(filter, "application/x-compressed-tar");
-	gtk_file_filter_set_name(filter, _("Gzip compressed Tar '.tar.gz'"));
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
-
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_mime_type(filter, "application/x-bzip-compressed-tar");
-	gtk_file_filter_set_name(filter, _("Bzip2 compressed Tar '.tar.bz2'"));
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
-
-	filter = gtk_file_filter_new();
-	gtk_file_filter_add_mime_type(filter, "application/x-zip");
-	gtk_file_filter_add_mime_type(filter, "application/zip");
-	gtk_file_filter_set_name(filter, _("Zip '.zip'"));
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 	return dialog;
 }

@@ -129,31 +129,37 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	if(new_archive)
+	if(new_archive || add_archive_path)
 	{
-		dialog = xa_new_archive_dialog_new();
-		result = gtk_dialog_run (GTK_DIALOG (dialog) );
-		if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
+		if(!add_archive_path)
 		{
-			gtk_widget_destroy (GTK_WIDGET (dialog) );
-			return 2;
-		}
-		if(result == GTK_RESPONSE_OK)
-		{
-			add_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-			gtk_widget_destroy (GTK_WIDGET (dialog) );
-			if(!lxa_new_archive(add_archive_path, TRUE, NULL, &lpArchive))
+			dialog = xa_new_archive_dialog_new();
+			result = gtk_dialog_run (GTK_DIALOG (dialog) );
+			if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
 			{
-				GSList *files = NULL;
-				for(i = 1; i < argc; i++)
-				{
-					files = g_slist_prepend(files, argv[i]);
-				}
-				lpSupport = lxa_get_support_for_mime(lpArchive->mime);
-				lxa_archive_support_add(lpSupport, lpArchive, files);
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
+				return 2;
 			}
+			if(result == GTK_RESPONSE_OK)
+			{
+				add_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
+			}
+			if(lxa_new_archive(add_archive_path, TRUE, NULL, &lpArchive))
+				return 1;
 		}
-
+		else
+		{
+			if(lxa_open_archive(add_archive_path, &lpArchive))
+				return 1;
+		}
+		GSList *files = NULL;
+		for(i = 1; i < argc; i++)
+		{
+			files = g_slist_prepend(files, argv[i]);
+		}
+		lpSupport = lxa_get_support_for_mime(lpArchive->mime);
+		lxa_archive_support_add(lpSupport, lpArchive, files);
 	}
 
 	gtk_main();

@@ -107,23 +107,3 @@ lxa_archive_new(gchar *path, gchar *mime)
 
 	return archive;
 }
-
-gint
-lxa_archive_support_add(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
-{
-	if(support->add)
-		return support->add(support, archive, files);
-	else
-		g_critical("ADD NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
-	return -1;
-}
-
-gint
-lxa_archive_support_extract(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files)
-{
-	if(support->extract)
-		return support->extract(support, archive, dest_path, files);
-	else
-		g_critical("EXTRACT NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
-	return -1;
-}

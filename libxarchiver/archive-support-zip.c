@@ -149,3 +149,30 @@ lxa_archive_support_zip_extract(LXAArchiveSupport *support, LXAArchive *archive,
 	}
 	return 0;
 }
+
+gint
+lxa_archive_support_zip_remove(LXAArchiveSupport *support, LXAArchive *archive, GSList *filenames)
+{
+	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(support))
+	{
+		g_critical("Support is not zip");
+		return -1;
+	}
+
+	if(!lxa_archive_support_mime_supported(support, archive->mime))
+	{
+		return 1;
+	}
+	else
+	{
+		gchar *command = NULL;
+		gchar *files = lxa_concat_filenames(filenames);
+		if(!g_strcasecmp((gchar *)archive->mime, "application/x-zip") || 
+		   !g_strcasecmp((gchar *)archive->mime, "application/zip"))
+		{
+			command = g_strconcat("zip -d ", archive->path, " ", files, NULL);
+			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
+		}
+	}
+	return 0;
+}

@@ -59,6 +59,7 @@ struct _LXAArchiveSupport
  */
 	gint        (*add)(LXAArchiveSupport *support, LXAArchive *archive, GSList *files);
 	gint        (*extract)(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files);
+	gint        (*remove)(LXAArchiveSupport *support, LXAArchive *archive, GSList *files);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
@@ -82,6 +83,7 @@ gint                 lxa_archive_support_lookup_support(gconstpointer support, g
 
 gint                 lxa_archive_support_add(LXAArchiveSupport *, LXAArchive *, GSList *);
 gint                 lxa_archive_support_extract(LXAArchiveSupport *, LXAArchive *, gchar *, GSList *);
+gint                 lxa_archive_support_remove(LXAArchiveSupport *, LXAArchive *, GSList *);
 
 G_END_DECLS
 

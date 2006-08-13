@@ -84,6 +84,7 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 
 	archive_support->add = lxa_archive_support_gnu_tar_add;
 	archive_support->extract = lxa_archive_support_gnu_tar_extract;
+	archive_support->remove = lxa_archive_support_gnu_tar_remove;
 }
 
 void
@@ -172,13 +173,45 @@ lxa_archive_support_gnu_tar_extract(LXAArchiveSupport *support, LXAArchive *arch
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(support)->app_name, " -zxf ", archive->path, " -C ", dest_path, " ", files, NULL);
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(support)->app_name, " -jxf ", archive->path, " -C ", dest_path, " ", files, NULL);
-			if(command)
-			{
-				g_debug("Extracting archive '%s' to '%s'", archive->path, dest_path);
-				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
-			}	
 		} else
 			return 1;
+		if(command)
+			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
+	}
+	return 0;
+}
+
+gint
+lxa_archive_support_gnu_tar_remove(LXAArchiveSupport *support, LXAArchive *archive, GSList *filenames)
+{
+	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(support))
+	{
+		g_critical("Support is not GNU TAR");
+		return -1;
+	}
+
+	if(!lxa_archive_support_mime_supported(support, archive->mime))
+	{
+		return 1;
+	}
+	else
+	{
+		gchar *command = NULL;
+		gchar *files = lxa_concat_filenames(filenames);
+		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+		{
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tar"))
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(support)->app_name, " -f ", archive->path, " --delete ", files, NULL);
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(support)->app_name, " -Zf ", archive->path, " --delete ", files, NULL);
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(support)->app_name, " -zf ", archive->path, " --delete ", files, NULL);
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(support)->app_name, " -jf ", archive->path, " --delete ", files, NULL);
+		} else
+			return 1;
+		if(command)
+			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 	}
 	return 0;
 }
