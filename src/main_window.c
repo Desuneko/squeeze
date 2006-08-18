@@ -20,13 +20,15 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
+#include "main_window_menu_bar.h"
+#include "main_window_tool_bar.h"
 #include "main_window.h"
 
 static void
-xa_main_window_class_init(XAMainWindowClass *archive_class);
+xa_main_window_class_init(XAMainWindowClass *);
 
 static void
-xa_main_window_init(XAMainWindow *archive);
+xa_main_window_init(XAMainWindow *);
 
 GType
 xa_main_window_get_type ()
@@ -55,13 +57,26 @@ xa_main_window_get_type ()
 }
 
 static void
-xa_main_window_class_init(XAMainWindowClass *dialog_class)
+xa_main_window_class_init(XAMainWindowClass *window_class)
 {
 }
 
 static void
-xa_main_window_init(XAMainWindow *dialog)
+xa_main_window_init(XAMainWindow *window)
 {
+	gtk_window_set_default_icon_from_file(DATADIR "/pixmaps/xarchiver.png", NULL);
+	window->main_vbox = gtk_vbox_new(FALSE, 0);
+	window->menubar = xa_main_window_menu_bar_new();
+	window->toolbar = xa_main_window_tool_bar_new();
+
+	gtk_box_pack_start(GTK_BOX(window->main_vbox), window->menubar, 0, FALSE, FALSE);
+	gtk_box_pack_start(GTK_BOX(window->main_vbox), window->toolbar, 0, FALSE, FALSE);
+
+	gtk_widget_show(window->main_vbox);
+	gtk_widget_show_all(window->menubar);
+	gtk_widget_show_all(window->toolbar);
+
+	gtk_container_add(GTK_CONTAINER(window), window->main_vbox);
 }
 
 GtkWidget *
@@ -70,8 +85,40 @@ xa_main_window_new()
 	GtkWidget *window;
 
 	window = g_object_new(xa_main_window_get_type(),
-			"title", PACKAGE_STRING,
+			"title", "Xarchiver " PACKAGE_VERSION,
 			NULL);
 
 	return window;
+}
+
+GtkWidget *
+xa_main_window_find_image(gchar *filename, GtkIconSize size)
+{
+	GError *error = NULL;
+    GtkWidget *file_image;
+	gchar *path;
+	path = g_strconcat(DATADIR, "/xarchiver/pixmaps/", filename, NULL);
+	GdkPixbuf *file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
+	if(!file_pixbuf)
+	{
+		/*
+		* perhaps xarchiver has not been installed and is being executed from source dir
+		*/
+		g_free(error);
+		error = NULL;
+		path = g_strconcat("./pixmaps/", filename, NULL);
+		file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
+    }
+    if(file_pixbuf)
+    {
+		file_image = gtk_image_new_from_pixbuf(file_pixbuf);
+		g_object_unref(file_pixbuf);
+    }
+    else
+	{
+		g_free(error);
+		file_image = gtk_image_new_from_stock(GTK_STOCK_MISSING_IMAGE, size);
+    }
+    g_free(path);
+    return file_image;
 }

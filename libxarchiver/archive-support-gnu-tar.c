@@ -90,6 +90,10 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 void
 lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclass)
 {
+	/* TODO
+	 * Implement properties.
+	 *
+	 */
 }
 
 LXAArchiveSupport*

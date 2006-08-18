@@ -3,6 +3,8 @@ bin_PROGRAMS = xarchiver
 xarchiver_SOURCES = \
 	main.c main.h \
 	main_window.c main_window.h \
+	main_window_menu_bar.c main_window_menu_bar.h \
+	main_window_tool_bar.c main_window_tool_bar.h \
 	new_dialog.c new_dialog.h \
 	extract_dialog.c extract_dialog.h
 

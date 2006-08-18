@@ -18,12 +18,16 @@ m4_define([xarchiver_version_build], [r@REVISION@])
 m4_define([xarchiver_version_tag], [svn]) # Leave empty for releases
 m4_define([xarchiver_version], [ifelse(xarchiver_version_branch(), [], [xarchiver_version_major().xarchiver_version_minor().xarchiver_version_micro()ifelse(xarchiver_version_nano(), [], [], [.xarchiver_version_nano()])], [xarchiver_version_branch()])-ifelse(xarchiver_version_tag(), [svn], [xarchiver_version_tag()-xarchiver_version_build()], [xarchiver_version_tag()])])
 
+AC_COPYRIGHT([Copyright (c) 2006
+        The Xfce development team. All rights reserved.
+
+Written for Xfce by Stephan Arts <psybsd@gmail.com>.])
+
 AC_INIT([Xarchiver], [xarchiver_version], [])
 AC_PREREQ([2.50])
 
-
 XARCHIVER_VERSION=xarchiver_version
-AM_INIT_AUTOMAKE([Xarchiver], [$XARCHIVER_VERSION])
+AM_INIT_AUTOMAKE([xarchiver], [$XARCHIVER_VERSION])
 AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 

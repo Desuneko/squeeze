@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
-"Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-08-03 17:01+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-19 01:15+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,74 +16,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/main.c:52
+#: ../src/main.c:49
 msgid "[destination path]"
 msgstr "[bestemmings map]"
 
-#: ../src/main.c:60
+#: ../src/main.c:57
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[archief map] [bestand1] [bestand2] ... [bestandN]"
 
-#: ../src/main.c:64
+#: ../src/main.c:61
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[bestand1] [bestand2] ... [bestandN]"
 
 #: ../src/main.c:106
-#, c-format
-msgid "Could not add file(s) to archive '%s'"
-msgstr "Kan bestand(en) niet toevoegen aan archief '%s'"
-
-#: ../src/main.c:109 ../src/main.c:205
-#, c-format
-msgid "Could not extract archive '%s'"
-msgstr "Kan archief '%s' niet uitpakken"
-
-#: ../src/main.c:112
-#, c-format
-msgid "Could not remove file(s) from archive '%s'"
-msgstr "Kon bestand(en) niet verwijderen uit archief '%s'"
-
-#: ../src/main.c:135
-#, c-format
-msgid "File '%s' does not exist: ABORTING"
-msgstr "Bestand '%s' bestaat niet"
-
-#: ../src/main.c:169
 msgid "[archive name]"
 msgstr "[archief naam]"
 
-#: ../src/main.c:218
-msgid "You should provide at least one file to add\n"
-msgstr "U moet ten minste een bestand toevoegen\n"
+#: ../src/main.c:159
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
 
-#: ../src/main.c:329
-msgid "Archive type unknown\n"
-msgstr "Onbekend archieftype\n"
-
-#: ../src/new_dialog.c:76
-msgid "Archive type:"
-msgstr "Archieftype:"
-
-#: ../src/new_dialog.c:88
-msgid "Automatic"
-msgstr "Automatisch"
-
-#: ../src/new_dialog.c:98 ../src/new_dialog.c:163
-msgid "Tar (uncompressed) '.tar'"
-msgstr "Tar (ongecomprimeerd) '.tar'"
-
-#: ../src/new_dialog.c:108 ../src/new_dialog.c:169
-msgid "Gzip compressed Tar '.tar.gz'"
-msgstr "Gzip gecomprimeerde Tar '.tar.gz'"
-
-#: ../src/new_dialog.c:118 ../src/new_dialog.c:176
-msgid "Bzip2 compressed Tar '.tar.bz2'"
-msgstr "Bzip2 gecomprimeerde Tar '.tar.bz2'"
-
-#: ../src/new_dialog.c:129 ../src/new_dialog.c:185
-msgid "Zip archive '.zip'"
-msgstr "Zip archief '.zip'"
-
-#: ../src/new_dialog.c:157
+#: ../src/new_dialog.c:85
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
+
+#: ../src/extract_dialog.c:78
+msgid "Extract"
+msgstr "Uitpakken"
+
+#: ../src/extract_dialog.c:87
+msgid "Extract archive"
+msgstr "Archief uitpakken"
+
+#~ msgid "_Archive"
+#~ msgstr "_Archief"
+
+#~ msgid "A_ction"
+#~ msgstr "A_ctie"
+
+#~ msgid "_Help"
+#~ msgstr "_Help"

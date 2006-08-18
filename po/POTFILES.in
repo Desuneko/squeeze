@@ -1,8 +1,13 @@
 libxarchiver/libxarchiver.c
 libxarchiver/archive.c
 libxarchiver/archive-support.c
-libxarchiver/compression-support.c
+libxarchiver/archive-support-gnu-tar.c
+libxarchiver/archive-support-zip.c
 libxarchiver/internals.c
 
 src/main.c
+src/main_window.c
 src/new_dialog.c
+src/extract_dialog.c
+src/main_window_menu_bar.c
+src/main_window_tool_bar.c

@@ -8,11 +8,26 @@ Long Version:
 | IMPORTANT                                         IMPORTANT |
 ---------------------------------------------------------------
   
-  Comment library functionsi
++-+-+-+
+
+	Implement View support (for all support-objects)
++-+-+-+
+
+	Implement Rar Support object.
+
+	Implement UnRar Support object. (separate ?!)
++-+-+-+
+
+  Comment library functions
     (explain their purpose)
++-+-+-+
 
   Make thunar-vfs dependency optional.
     (Can be replaced by an internal libmime)
++-+-+-+
+
+  Implement multi-threading (for libarchive support)
++-+-+-+
 
   Complete TODO-file
-
++-+-+-+

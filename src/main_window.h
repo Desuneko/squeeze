@@ -43,6 +43,9 @@ typedef struct _XAMainWindow XAMainWindow;
 struct _XAMainWindow
 {
 	GtkWindow parent;
+	GtkWidget *main_vbox;
+	GtkWidget *menubar;
+	GtkWidget *toolbar;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -53,6 +56,7 @@ struct _XAMainWindowClass
 };
 
 GtkWidget *xa_main_window_new();
+GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

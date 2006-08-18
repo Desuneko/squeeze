@@ -9,6 +9,6 @@ Icon=xarchiver.png
 Terminal=false
 Type=Application
 X-MultipleArgs=false
-Categories=GTK;Application;Utility;
+Categories=GTK;Archiving;Utility;
 StartupNotify=true
 MimeType=application/x-bzip-compressed-tar;application/x-tar;application/x-compressed-tar;application/x-zip;application/zip;
