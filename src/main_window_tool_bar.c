@@ -86,8 +86,7 @@ xa_main_window_tool_bar_init(XAMainWindowToolBar *toolbar)
 	tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
 	toolbar->tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
 
-	tmp_image = gtk_image_new_from_stock("gtk-delete", GTK_ICON_SIZE_LARGE_TOOLBAR);
-	toolbar->tool_item_remove = gtk_tool_button_new(tmp_image, _("Delete"));
+	toolbar->tool_item_remove = gtk_tool_button_new_from_stock("gtk-delete");
 
 	separator = gtk_separator_tool_item_new ();
 
