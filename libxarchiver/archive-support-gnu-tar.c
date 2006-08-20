@@ -211,6 +211,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 gint
 lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSList *filenames)
 {
+	gchar *command = NULL;
 	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
 		g_critical("Support is not GNU TAR");
@@ -223,7 +224,6 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 	}
 	else
 	{
-		gchar *command = NULL;
 		archive->files = lxa_concat_filenames(filenames);
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_EXTRACT);
 		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
@@ -265,6 +265,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		if(command)
 		{
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
+			g_debug("Extracting archive '%s' to '%s'", archive->path, dest_path);
 			g_free(command);
 		}
 	}

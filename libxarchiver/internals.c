@@ -35,7 +35,10 @@ lxa_default_child_watch_func(GPid pid, gint status, gpointer data)
 	archive->child_pid = 0;
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
 	if(archive->files)
+	{
 		g_free(archive->files);
+		archive->files = NULL;
+	}
 }
 
 gint
@@ -126,6 +129,8 @@ lxa_concat_filenames(GSList *filenames)
 		}
 		_filenames = _filenames->next;
 	}
+	if(!filenames)
+		return NULL;
 	return concat_str;
 }
 
