@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 01:15+0200\n"
+"POT-Creation-Date: 2006-08-20 23:45+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,31 +16,64 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/main.c:49
+#: ../libxarchiver/archive-support-gnu-tar.c:123
+#: ../libxarchiver/archive-support-zip.c:100
+msgid "Overwrite existing files"
+msgstr "Bestaande bestanden overschrijven"
+
+#: ../libxarchiver/archive-support-gnu-tar.c:124
+#: ../libxarchiver/archive-support-zip.c:101
+msgid "Overwrite existing files on extraction"
+msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
+
+#: ../src/main.c:47
 msgid "[destination path]"
 msgstr "[bestemmings map]"
 
-#: ../src/main.c:57
+#: ../src/main.c:55
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[archief map] [bestand1] [bestand2] ... [bestandN]"
 
-#: ../src/main.c:61
+#: ../src/main.c:59
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[bestand1] [bestand2] ... [bestandN]"
 
-#: ../src/main.c:106
+#: ../src/main.c:62
+msgid "Version information"
+msgstr "Versie informatie"
+
+#: ../src/main.c:108
 msgid "[archive name]"
 msgstr "[archief naam]"
 
-#: ../src/main.c:159
+#: ../src/main.c:112
+#, c-format
+msgid ""
+"%s: %s\n"
+"Try xarchiver --help to see a full list of available command line options.\n"
+msgstr ""
+"%s: %s\n"
+"Probeer xarchiver --help om een volledige lijst te zien met beschikbare "
+"opties.\n"
+
+#: ../src/main.c:175
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
+
+#. Could not open archive (mime type not supported or file did not exsit)
+#: ../src/main.c:190
+#, fuzzy
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+"Kan archief niet openen, MIME-type wordt niet ondersteund of bestand bestaat "
+"niet"
 
 #: ../src/new_dialog.c:85
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
 
-#: ../src/extract_dialog.c:78
+#: ../src/extract_dialog.c:78 ../src/main_window_menu_bar.c:117
+#: ../src/main_window_tool_bar.c:87
 msgid "Extract"
 msgstr "Uitpakken"
 
@@ -48,11 +81,22 @@ msgstr "Uitpakken"
 msgid "Extract archive"
 msgstr "Archief uitpakken"
 
-#~ msgid "_Archive"
-#~ msgstr "_Archief"
+#: ../src/main_window_menu_bar.c:75
+msgid "_Archive"
+msgstr "_Archief"
 
-#~ msgid "A_ction"
-#~ msgstr "A_ctie"
+#: ../src/main_window_menu_bar.c:76
+msgid "A_ction"
+msgstr "A_ctie"
 
-#~ msgid "_Help"
-#~ msgstr "_Help"
+#: ../src/main_window_menu_bar.c:77
+msgid "_Help"
+msgstr "_Help"
+
+#: ../src/main_window_menu_bar.c:112 ../src/main_window_tool_bar.c:84
+msgid "Add"
+msgstr "Toevoegen"
+
+#: ../src/main_window_tool_bar.c:90
+msgid "Delete"
+msgstr "Verwijderen"

@@ -23,6 +23,10 @@
 #include "main_window_menu_bar.h"
 #include "main_window.h"
 
+#include "add_dialog.h"
+#include "new_dialog.h"
+#include "extract_dialog.h"
+
 static void
 xa_main_window_menu_bar_class_init(XAMainWindowMenuBarClass *);
 
@@ -66,6 +70,7 @@ xa_main_window_menu_bar_init(XAMainWindowMenuBar *menubar)
 	GtkAccelGroup *accel_group = gtk_accel_group_new();
 
 	GtkWidget *tmp_image;
+	GtkWidget *separator;
 
 	menubar->menu_item_archive = gtk_menu_item_new_with_mnemonic(_("_Archive"));
 	menubar->menu_item_action = gtk_menu_item_new_with_mnemonic(_("A_ction"));
@@ -85,27 +90,42 @@ xa_main_window_menu_bar_init(XAMainWindowMenuBar *menubar)
 
 /* Archive menu */
 	menubar->menu_item_new = gtk_image_menu_item_new_from_stock("gtk-new", accel_group);
-	menubar->menu_item_open = gtk_image_menu_item_new_from_stock("gtk-open", accel_group);
-	menubar->menu_item_quit = gtk_image_menu_item_new_from_stock("gtk-quit", accel_group);
-
 	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), menubar->menu_item_new);
+
+	menubar->menu_item_open = gtk_image_menu_item_new_from_stock("gtk-open", accel_group);
 	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), menubar->menu_item_open);
+
+	separator = gtk_separator_menu_item_new();
+	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), separator);
+
+	menubar->menu_item_properties = gtk_image_menu_item_new_from_stock("gtk-properties", accel_group);
+	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), menubar->menu_item_properties);
+
+	separator = gtk_separator_menu_item_new();
+	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), separator);
+
+	menubar->menu_item_quit = gtk_image_menu_item_new_from_stock("gtk-quit", accel_group);
 	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), menubar->menu_item_quit);
 
 /* Action menu */
 	tmp_image = xa_main_window_find_image("add_button.png", GTK_ICON_SIZE_MENU);
 	menubar->menu_item_add = gtk_image_menu_item_new_with_mnemonic(_("Add"));
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menubar->menu_item_add), tmp_image);
+	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_add);
 
 	tmp_image = xa_main_window_find_image("extract_button.png", GTK_ICON_SIZE_MENU);
 	menubar->menu_item_extract = gtk_image_menu_item_new_with_mnemonic(_("Extract"));
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menubar->menu_item_extract), tmp_image);
+	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_extract);
 
 	menubar->menu_item_remove = gtk_image_menu_item_new_from_stock("gtk-delete", accel_group);
-
-	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_add);
-	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_extract);
 	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_remove);
+
+	separator = gtk_separator_menu_item_new();
+	gtk_container_add(GTK_CONTAINER(menubar->menu_action), separator);
+
+	menubar->menu_item_settings = gtk_image_menu_item_new_from_stock("gtk-preferences", accel_group);
+	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_settings);
 
 /* Help menu */
 	menubar->menu_item_about = gtk_image_menu_item_new_from_stock("gtk-about", accel_group);

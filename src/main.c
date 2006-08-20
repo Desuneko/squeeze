@@ -23,20 +23,18 @@
 #include <gtk/gtk.h>
 
 #include "new_dialog.h"
+#include "add_dialog.h"
 #include "extract_dialog.h"
 #include "main.h"
+#include "main_window.h"
 
-gboolean new_archive  = FALSE;
+gboolean version = FALSE;
 
 gboolean extract_archive  = FALSE;
 gchar *extract_archive_path = NULL;
 
-gboolean add_archive  = FALSE;
-
+gboolean new_archive  = FALSE;
 gchar *add_archive_path = NULL;
-
-gchar **_argv;
-gint _argc;
 
 gpointer command;
 
@@ -59,6 +57,10 @@ static GOptionEntry entries[] =
 	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &new_archive,
 		NULL,
 		N_("[file1] [file2] ... [fileN]")
+	},
+	{ "version", 'v', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &version,
+		N_("Version information"),
+		NULL
 	},
 	{ NULL }
 };
@@ -103,11 +105,25 @@ int main(int argc, char **argv)
 	g_thread_init(NULL);
 
 
-	gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error);
+	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))
+	{
+		if ( cli_error != NULL )
+		{
+			g_print (_("%s: %s\nTry xarchiver --help to see a full list of available command line options.\n"), PACKAGE, cli_error->message);
+			g_error_free (cli_error);
+			return 1;
+		}
+	}
 
 	thunar_vfs_init();
 
 	lxa_init();
+
+	if(version)
+	{
+		g_print("%s\n", PACKAGE_STRING);
+		return 0;
+	}
 
 	if(extract_archive_path || extract_archive)
 	{
@@ -171,6 +187,10 @@ int main(int argc, char **argv)
 			if(lxa_open_archive(add_archive_path, &lpArchive))
 			{
 				/* Could not open archive (mime type not supported or file did not exsit)*/
+				dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not open archive, MIME-type unsupported or file did not exist"));
+				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+				gtk_dialog_run (GTK_DIALOG (dialog) );
+				gtk_widget_destroy (GTK_WIDGET (dialog) );
 				return 1;
 			}
 			else

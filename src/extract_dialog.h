@@ -50,7 +50,7 @@ typedef struct _XAExtractArchiveDialogClass XAExtractArchiveDialogClass;
 
 struct _XAExtractArchiveDialogClass
 {
-	GtkFileChooserDialog parent_class;
+	GtkFileChooserDialogClass parent_class;
 };
 
 GtkWidget *xa_extract_archive_dialog_new();

@@ -16,48 +16,43 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_MAIN_WINDOW_H__
-#define __XARCHIVER_MAIN_WINDOW_H__
+#ifndef __XARCHIVER_ADD_DIALOG_H__
+#define __XARCHIVER_ADD_DIALOG_H__
 G_BEGIN_DECLS
 
-#define XA_MAIN_WINDOW(obj)         ( \
+#define XA_ADD_DIALOG(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_main_window_get_type(),      \
-			XAMainWindow))
+			xa_add_dialog_get_type(),      \
+			XAAddDialog))
 
-#define XA_IS_MAIN_WINDOW(obj)      ( \
+#define XA_IS_ADD_DIALOG(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_main_window_get_type()))
+			xa_add_dialog_get_type()))
 
-#define XA_MAIN_WINDOW_CLASS(class) ( \
+#define XA_ADD_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_main_window_get_type(),      \
-			XAMainWindowClass))
+			xa_add_dialog_get_type(),      \
+			XAAddDialogClass))
 
-#define XA_IS_MAIN_WINDOW_CLASS(class) ( \
+#define XA_IS_ADD_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_main_window_get_type()))
+			xa_add_dialog_get_type()))
 
-typedef struct _XAMainWindow XAMainWindow;
+typedef struct _XAAddDialog XAAddDialog;
 
-struct _XAMainWindow
+struct _XAAddDialog
 {
-	GtkWindow parent;
-	GtkWidget *main_vbox;
-	GtkWidget *menubar;
-	GtkWidget *toolbar;
-	GtkWidget *statusbar;
+	GtkDialog parent;
 };
 
-typedef struct _XAMainWindowClass XAMainWindowClass;
+typedef struct _XAAddDialogClass XAAddDialogClass;
 
-struct _XAMainWindowClass
+struct _XAAddDialogClass
 {
-	GtkWindowClass parent;
+	GtkDialogClass parent;
 };
 
-GtkWidget *xa_main_window_new();
-GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
+GtkWidget *xa_add_dialog_new();
 
 G_END_DECLS
-#endif /* __XARCHIVER_MAIN_WINDOW_H__ */
+#endif /* __XARCHIVER_ADD_DIALOG_H__ */

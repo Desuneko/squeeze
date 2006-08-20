@@ -57,9 +57,9 @@ struct _LXAArchiveSupport
  * 
  * should be called instead.
  */
-	gint        (*add)(LXAArchiveSupport *support, LXAArchive *archive, GSList *files);
-	gint        (*extract)(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files);
-	gint        (*remove)(LXAArchiveSupport *support, LXAArchive *archive, GSList *files);
+	gint        (*add)(LXAArchive *archive, GSList *files);
+	gint        (*extract)(LXAArchive *archive, gchar *dest_path, GSList *files);
+	gint        (*remove)(LXAArchive *archive, GSList *files);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;

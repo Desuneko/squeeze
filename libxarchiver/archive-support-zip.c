@@ -28,10 +28,24 @@
 
 #include "internals.h"
 
+enum
+{
+	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE = 1,
+	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_FRESHEN_EXISTING,
+	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_UPDATE_EXISTING,
+	LXA_ARCHIVE_SUPPORT_ZIP_ADD_COMPRESSION_LEVEL,
+	LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD,
+};
+
 void
 lxa_archive_support_zip_init(LXAArchiveSupportZip *support);
 void
 lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass);
+
+void
+lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+void
+lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 GType
 lxa_archive_support_zip_get_type ()
@@ -75,10 +89,18 @@ lxa_archive_support_zip_init(LXAArchiveSupportZip *support)
 void
 lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 {
-	/*
-	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
-	LXAArchiveSupportZipClass *klass = LXA_ARCHIVE_SUPPORT_ZIP_CLASS (supportclass);
-	*/
+	GObjectClass *object_class = G_OBJECT_CLASS (supportclass);
+	GParamSpec *pspec = NULL;
+
+	object_class->set_property = lxa_archive_support_zip_set_property;
+	object_class->get_property = lxa_archive_support_zip_get_property;
+
+	pspec = g_param_spec_boolean("extract-overwrite",
+		_("Overwrite existing files"),
+		_("Overwrite existing files on extraction"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE, pspec);
 }
 
 LXAArchiveSupport*
@@ -92,15 +114,15 @@ lxa_archive_support_zip_new()
 }
 
 gint
-lxa_archive_support_zip_add(LXAArchiveSupport *support, LXAArchive *archive, GSList *filenames)
+lxa_archive_support_zip_add(LXAArchive *archive, GSList *filenames)
 {
-	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(support))
+	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not zip");
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
 	{
 		return 1;
 	}
@@ -119,15 +141,15 @@ lxa_archive_support_zip_add(LXAArchiveSupport *support, LXAArchive *archive, GSL
 }
 
 gint
-lxa_archive_support_zip_extract(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *filenames)
+lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *filenames)
 {
-	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(support))
+	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not Zip");
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
 	{
 		return 1;
 	}
@@ -151,15 +173,15 @@ lxa_archive_support_zip_extract(LXAArchiveSupport *support, LXAArchive *archive,
 }
 
 gint
-lxa_archive_support_zip_remove(LXAArchiveSupport *support, LXAArchive *archive, GSList *filenames)
+lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 {
-	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(support))
+	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not zip");
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
 	{
 		return 1;
 	}
@@ -175,4 +197,32 @@ lxa_archive_support_zip_remove(LXAArchiveSupport *support, LXAArchive *archive, 
 		}
 	}
 	return 0;
+}
+
+void
+lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_overwrite);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);
+			break;
+	}
+}
+
+void
+lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_overwrite = g_value_get_boolean(value);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);
+			break;
+	}
 }

@@ -62,6 +62,9 @@ struct _LXAArchive
 	LXAArchiveStatus       status;
 	LXAArchiveStatus       old_status;
 	GPid                   child_pid;
+	gpointer               support;
+	gchar                 *tmp_file;
+	gchar                 *files;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;

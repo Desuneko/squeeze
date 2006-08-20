@@ -26,6 +26,9 @@ Long Version:
     (Can be replaced by an internal libmime)
 +-+-+-+
 
+  Increase performance
++-+-+-+ 
+
   Implement multi-threading (for libarchive support)
 +-+-+-+
 

@@ -48,6 +48,7 @@ struct _XAMainWindowMenuBar
 	/* contents of 'archive' menu */
 	GtkWidget *menu_item_new;
 	GtkWidget *menu_item_open;
+	GtkWidget *menu_item_properties;
 	GtkWidget *menu_item_quit;
 
 	GtkWidget *menu_item_action;
@@ -57,6 +58,7 @@ struct _XAMainWindowMenuBar
 	GtkWidget *menu_item_add;
 	GtkWidget *menu_item_extract;
 	GtkWidget *menu_item_remove;
+	GtkWidget *menu_item_settings;
 
 	GtkWidget *menu_item_help;
 	GtkWidget *menu_help;

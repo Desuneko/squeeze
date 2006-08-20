@@ -23,6 +23,10 @@
 #include "main_window_tool_bar.h"
 #include "main_window.h"
 
+#include "add_dialog.h"
+#include "new_dialog.h"
+#include "extract_dialog.h"
+
 static void
 xa_main_window_tool_bar_class_init(XAMainWindowToolBarClass *);
 

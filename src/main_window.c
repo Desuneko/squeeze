@@ -22,6 +22,7 @@
 #include <libxarchiver/libxarchiver.h>
 #include "main_window_menu_bar.h"
 #include "main_window_tool_bar.h"
+#include "main_window_status_bar.h"
 #include "main_window.h"
 
 static void
@@ -68,13 +69,16 @@ xa_main_window_init(XAMainWindow *window)
 	window->main_vbox = gtk_vbox_new(FALSE, 0);
 	window->menubar = xa_main_window_menu_bar_new();
 	window->toolbar = xa_main_window_tool_bar_new();
+	window->statusbar = xa_main_window_status_bar_new();
 
 	gtk_box_pack_start(GTK_BOX(window->main_vbox), window->menubar, 0, FALSE, FALSE);
 	gtk_box_pack_start(GTK_BOX(window->main_vbox), window->toolbar, 0, FALSE, FALSE);
+	gtk_box_pack_end(GTK_BOX(window->main_vbox), window->statusbar, 0, FALSE, FALSE);
 
 	gtk_widget_show(window->main_vbox);
 	gtk_widget_show_all(window->menubar);
 	gtk_widget_show_all(window->toolbar);
+	gtk_widget_show_all(window->statusbar);
 
 	gtk_container_add(GTK_CONTAINER(window), window->main_vbox);
 }
