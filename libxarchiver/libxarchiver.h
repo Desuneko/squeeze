@@ -23,8 +23,6 @@
 #include <thunar-vfs/thunar-vfs.h>
 #include <libxarchiver/archive.h>
 #include <libxarchiver/archive-support.h>
-#include <libxarchiver/archive-support-zip.h>
-#include <libxarchiver/archive-support-gnu-tar.h>
 
 G_BEGIN_DECLS
 

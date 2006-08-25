@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-20 23:45+0200\n"
+"POT-Creation-Date: 2006-08-25 07:21+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:123
-#: ../libxarchiver/archive-support-zip.c:100
+#: ../libxarchiver/archive-support-zip.c:99
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:124
-#: ../libxarchiver/archive-support-zip.c:101
+#: ../libxarchiver/archive-support-zip.c:100
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
@@ -62,7 +62,6 @@ msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
 
 #. Could not open archive (mime type not supported or file did not exsit)
 #: ../src/main.c:190
-#, fuzzy
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type wordt niet ondersteund of bestand bestaat "
@@ -97,6 +96,5 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window_tool_bar.c:90
-msgid "Delete"
-msgstr "Verwijderen"
+#~ msgid "Delete"
+#~ msgstr "Verwijderen"

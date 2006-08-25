@@ -22,6 +22,10 @@
 #include <glib-object.h>
 
 #include "libxarchiver.h"
+#include "libxarchiver/archive-support-zip.h"
+#include "libxarchiver/archive-support-rar.h"
+#include "libxarchiver/archive-support-unrar.h"
+#include "libxarchiver/archive-support-gnu-tar.h"
 
 
 #include "internals.h"
@@ -33,6 +37,10 @@ lxa_init()
 	lxa_mime_database = thunar_vfs_mime_database_get_default();
 
 	lxa_register_support(lxa_archive_support_zip_new());
+	lxa_register_support(lxa_archive_support_rar_new());
+	/* TODO: Implement right commands in unrar
+	lxa_register_support(lxa_archive_support_unrar_new());
+	*/
 	lxa_register_support(lxa_archive_support_gnu_tar_new());
 }
 
