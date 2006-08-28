@@ -85,6 +85,8 @@ gint                 lxa_archive_support_add(LXAArchiveSupport *, LXAArchive *, 
 gint                 lxa_archive_support_extract(LXAArchiveSupport *, LXAArchive *, gchar *, GSList *);
 gint                 lxa_archive_support_remove(LXAArchiveSupport *, LXAArchive *, GSList *);
 
+GSList *             lxa_archive_support_list_properties(LXAArchiveSupport *, gchar *);
+
 G_END_DECLS
 
 #endif /* __LIBXARCHIVER_ARCHIVE_SUPPORT_H__ */

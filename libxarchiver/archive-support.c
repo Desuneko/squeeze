@@ -216,3 +216,20 @@ lxa_archive_support_remove(LXAArchiveSupport *support, LXAArchive *archive, GSLi
 		g_critical("REMOVE NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
 }
+
+GSList *
+lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
+{
+	guint _nprops, i;
+	GObjectClass *support_class = G_OBJECT_GET_CLASS(support);
+	GParamSpec **pspecs = g_object_class_list_properties(support_class, &_nprops);
+	GSList *pspec_list = NULL;
+
+	for(i = 0; i < _nprops; i++)
+	{
+		if(!strncmp(prefix, g_param_spec_get_name(pspecs[i]), strlen(prefix)))
+		{
+			pspec_list = g_slist_prepend(pspec_list, pspecs[i]);
+		}
+	}
+}

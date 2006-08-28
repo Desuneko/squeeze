@@ -200,7 +200,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
-				command = g_strconcat("bunzip -c ", archive->path, NULL);
+				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
 			g_free(command);
 		}
@@ -307,7 +307,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
-				command = g_strconcat("bunzip -c ", archive->path, NULL);
+				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
 			g_free(command);
 		} else
@@ -336,7 +336,7 @@ lxa_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 	if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
 		command = g_strconcat("gzip -c ", archive->tmp_file, NULL);
 	if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
-		command = g_strconcat("bzip -c ", archive->tmp_file, NULL);
+		command = g_strconcat("bzip2 -c ", archive->tmp_file, NULL);
 	lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_compress_parse_output, NULL);
 }
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-25 07:21+0200\n"
+"POT-Creation-Date: 2006-08-29 00:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,12 +53,18 @@ msgid ""
 "Try xarchiver --help to see a full list of available command line options.\n"
 msgstr ""
 
-#: ../src/main.c:175
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/main.c:185
 msgid "Could not create archive, MIME-type unsupported"
 msgstr ""
 
-#. Could not open archive (mime type not supported or file did not exsit)
-#: ../src/main.c:190
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/main.c:202
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 
@@ -66,12 +72,28 @@ msgstr ""
 msgid "Create new archive"
 msgstr ""
 
-#: ../src/extract_dialog.c:78 ../src/main_window_menu_bar.c:117
+#: ../src/extract_dialog.c:69
+msgid "<b>Extract files:</b>"
+msgstr ""
+
+#: ../src/extract_dialog.c:70
+msgid "<b>Options:</b>"
+msgstr ""
+
+#: ../src/extract_dialog.c:80
+msgid "All files"
+msgstr ""
+
+#: ../src/extract_dialog.c:81
+msgid "Selected files"
+msgstr ""
+
+#: ../src/extract_dialog.c:93 ../src/main_window_menu_bar.c:117
 #: ../src/main_window_tool_bar.c:87
 msgid "Extract"
 msgstr ""
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:105
 msgid "Extract archive"
 msgstr ""
 

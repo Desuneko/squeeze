@@ -58,7 +58,6 @@ struct _LXAArchiveSupportUnrarClass
 GType                lxa_archive_support_unrar_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_unrar_new();
 
-gint                 lxa_archive_support_unrar_add(LXAArchive *, GSList *);
 gint                 lxa_archive_support_unrar_extract(LXAArchive *, gchar *, GSList *);
 gint                 lxa_archive_support_unrar_remove(LXAArchive *, GSList *);
 

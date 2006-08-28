@@ -33,13 +33,6 @@ lxa_archive_support_unrar_init(LXAArchiveSupportUnrar *support);
 void
 lxa_archive_support_unrar_class_init(LXAArchiveSupportUnrarClass *supportclass);
 
-gint
-lxa_archive_support_unrar_add(LXAArchive *archive, GSList *filenames);
-gint
-lxa_archive_support_unrar_extract(LXAArchive *archive, gchar *dest_path, GSList *filenames);
-gint
-lxa_archive_support_unrar_remove(LXAArchive *archive, GSList *filenames);
-
 GType
 lxa_archive_support_unrar_get_type ()
 {
@@ -74,7 +67,6 @@ lxa_archive_support_unrar_init(LXAArchiveSupportUnrar *support)
 
 	lxa_archive_support_add_mime(archive_support, "application/x-rar");
 
-	archive_support->add = lxa_archive_support_unrar_add;
 	archive_support->extract = lxa_archive_support_unrar_extract;
 	archive_support->remove = lxa_archive_support_unrar_remove;
 }
@@ -103,33 +95,6 @@ lxa_archive_support_unrar_new()
 	return LXA_ARCHIVE_SUPPORT(support);
 }
 
-gint
-lxa_archive_support_unrar_add(LXAArchive *archive, GSList *filenames)
-{
-	if(!LXA_IS_ARCHIVE_SUPPORT_UNRAR(archive->support))
-	{
-		g_critical("Support is not unrar");
-		return -1;
-	}
-
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
-	{
-		return 1;
-	}
-	else
-	{
-		gchar *command = NULL;
-		gchar *files = lxa_concat_filenames(filenames);
-		if(!g_strcasecmp((gchar *)archive->mime, "application/x-rar"))
-		{
-			/* TODO: Fix commandline issues
-			command = g_strconcat("unrar ", archive->path, " ", files, NULL); 
-			*/
-			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
-		}
-	}
-	return 0;
-}
 
 gint
 lxa_archive_support_unrar_extract(LXAArchive *archive, gchar *dest_path, GSList *filenames)

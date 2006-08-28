@@ -7,15 +7,16 @@ Long Version:
 ---------------------------------------------------------------
 | IMPORTANT                                         IMPORTANT |
 ---------------------------------------------------------------
-  
+
++-+-+-+
+
+	Implement extract options in extract-dialog
 +-+-+-+
 
 	Implement View support (for all support-objects)
 +-+-+-+
 
-	Implement Rar Support object.
-
-	Implement UnRar Support object. (separate ?!)
+	Implement UnRar Support object.
 +-+-+-+
 
   Comment library functions

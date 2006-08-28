@@ -131,18 +131,6 @@ int main(int argc, char **argv)
 		{
 			return 1;
 		}
-		if(!extract_archive_path)
-  		{
-			dialog = xa_extract_archive_dialog_new();
-			result = gtk_dialog_run (GTK_DIALOG (dialog) );
-			if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
-			{
-				gtk_widget_destroy (GTK_WIDGET (dialog) );
-				return 2;
-			}
-			extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-			gtk_widget_destroy (GTK_WIDGET (dialog) );
-		}
 		for(i = 1; i < argc; i++)
 		{
 			if(!lxa_open_archive(argv[i], &lpArchive))
@@ -150,7 +138,26 @@ int main(int argc, char **argv)
 				g_signal_connect(G_OBJECT(lpArchive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
 				opened_archives++;
 				lpSupport = lxa_get_support_for_mime(lpArchive->mime);
-				lxa_archive_support_extract(lpSupport, lpArchive, extract_archive_path, NULL);
+				if(!extract_archive_path)
+  			{
+					dialog = xa_extract_archive_dialog_new(lpSupport, lpArchive, FALSE);
+					result = gtk_dialog_run (GTK_DIALOG (dialog) );
+					if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
+					{
+						gtk_widget_destroy (GTK_WIDGET (dialog) );
+						lxa_close_archive(lpArchive);
+						opened_archives--;
+					}
+					if(result == GTK_RESPONSE_OK)
+					{
+						extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+						lxa_archive_support_extract(lpSupport, lpArchive, extract_archive_path, NULL);
+						g_free(extract_archive_path);
+						extract_archive_path = NULL;
+					}
+				}
+				else
+					lxa_archive_support_extract(lpSupport, lpArchive, extract_archive_path, NULL);
 			}
 		}
 	}
@@ -172,11 +179,13 @@ int main(int argc, char **argv)
 			}
 			if(lxa_new_archive(add_archive_path, TRUE, NULL, &lpArchive))
 			{
+				/* 
+				 * Could not create archive (mime type unsupported) 
+				 */
 				dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not create archive, MIME-type unsupported"));
 				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 				gtk_dialog_run (GTK_DIALOG (dialog) );
 				gtk_widget_destroy (GTK_WIDGET (dialog) );
-				/* Could not create archive (mime type unsupported) */
 				return 1;
 			}
 			else
@@ -186,7 +195,10 @@ int main(int argc, char **argv)
 		{
 			if(lxa_open_archive(add_archive_path, &lpArchive))
 			{
-				/* Could not open archive (mime type not supported or file did not exsit)*/
+				/*
+				 * Could not open archive (mime type not supported or file did not exist)
+				 * Should be a more specific error message.
+				 */ 
 				dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not open archive, MIME-type unsupported or file did not exist"));
 				gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 				gtk_dialog_run (GTK_DIALOG (dialog) );
@@ -210,9 +222,12 @@ int main(int argc, char **argv)
 	{
 		/* Show main window */
 		main_window = xa_main_window_new();
+		gtk_widget_set_size_request(main_window, 400, 300);
 		gtk_widget_show_all(main_window);
 		g_signal_connect(G_OBJECT(main_window), "destroy", gtk_main_quit, NULL);
-	}
+	} else
+		if(!opened_archives)
+			return 0;
 
 	gtk_main();
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-25 07:21+0200\n"
+"POT-Creation-Date: 2006-08-29 00:00+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -56,12 +56,18 @@ msgstr ""
 "Probeer xarchiver --help om een volledige lijst te zien met beschikbare "
 "opties.\n"
 
-#: ../src/main.c:175
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/main.c:185
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
 
-#. Could not open archive (mime type not supported or file did not exsit)
-#: ../src/main.c:190
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/main.c:202
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type wordt niet ondersteund of bestand bestaat "
@@ -71,12 +77,28 @@ msgstr ""
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
 
-#: ../src/extract_dialog.c:78 ../src/main_window_menu_bar.c:117
+#: ../src/extract_dialog.c:69
+msgid "<b>Extract files:</b>"
+msgstr "<b> Bestanden uitpakken:</b>"
+
+#: ../src/extract_dialog.c:70
+msgid "<b>Options:</b>"
+msgstr "<b>Opties:</b>"
+
+#: ../src/extract_dialog.c:80
+msgid "All files"
+msgstr "Alle bestanden"
+
+#: ../src/extract_dialog.c:81
+msgid "Selected files"
+msgstr "Geselecteerde bestanden"
+
+#: ../src/extract_dialog.c:93 ../src/main_window_menu_bar.c:117
 #: ../src/main_window_tool_bar.c:87
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:105
 msgid "Extract archive"
 msgstr "Archief uitpakken"
 
