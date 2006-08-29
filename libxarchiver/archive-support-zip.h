@@ -46,7 +46,8 @@ typedef struct _LXAArchiveSupportZip LXAArchiveSupportZip;
 struct _LXAArchiveSupportZip
 {
 	LXAArchiveSupport parent;
-	gboolean _extr_overwrite;
+	gboolean  _extr_overwrite;
+	gchar    *_extr_password;
 };
 
 typedef struct _LXAArchiveSupportZipClass LXAArchiveSupportZipClass;

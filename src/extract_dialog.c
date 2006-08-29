@@ -31,6 +31,9 @@ xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *archive_class)
 static void
 xa_extract_archive_dialog_init(XAExtractArchiveDialog *archive);
 
+void
+xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data);
+
 GType
 xa_extract_archive_dialog_get_type ()
 {
@@ -120,9 +123,10 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 			{
 				case (G_TYPE_BOOLEAN):
 					test = gtk_check_button_new_with_label(g_param_spec_get_nick(G_PARAM_SPEC(extract_options->data)));
+					g_signal_connect(G_OBJECT(test), "toggled", G_CALLBACK(xa_extract_dialog_option_toggled), (void *)g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
 					gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
 					break;
-				case (G_TYPE_STRING):
+				case (G_TYPE_STRING): /* TODO: Add text-field */
 					test = gtk_label_new(g_param_spec_get_nick(G_PARAM_SPEC(extract_options->data)));
 					gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
 					break;
@@ -132,4 +136,19 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 	}
 	gtk_widget_show_all(r_vbox);
 	return GTK_WIDGET(dialog);
+}
+
+void
+xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
+{
+	GValue *val = g_new0(GValue, 1);
+	gboolean active;
+
+	val = g_value_init(val, G_TYPE_BOOLEAN);
+
+	g_value_set_boolean(val, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
+
+	g_object_set_property(G_OBJECT(XA_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
+
+	g_free(val);
 }

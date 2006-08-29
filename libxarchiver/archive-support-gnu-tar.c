@@ -265,7 +265,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		if(command)
 		{
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
-			g_debug("Extracting archive '%s' to '%s'", archive->path, dest_path);
+			g_debug("Extracting archive '%s' to '%s'\nUsing command '%s'", archive->path, dest_path, command);
 			g_free(command);
 		}
 	}

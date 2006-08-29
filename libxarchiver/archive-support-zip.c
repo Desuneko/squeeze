@@ -31,8 +31,6 @@
 enum
 {
 	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE = 1,
-	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_FRESHEN_EXISTING,
-	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_UPDATE_EXISTING,
 	LXA_ARCHIVE_SUPPORT_ZIP_ADD_COMPRESSION_LEVEL,
 	LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD,
 };
@@ -94,6 +92,13 @@ lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 
 	object_class->set_property = lxa_archive_support_zip_set_property;
 	object_class->get_property = lxa_archive_support_zip_get_property;
+
+	pspec = g_param_spec_string("extract-password",
+		_("Password"),
+		_("Password"),
+		"",
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD, pspec);
 
 	pspec = g_param_spec_boolean("extract-overwrite",
 		_("Overwrite existing files"),
@@ -207,6 +212,9 @@ lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *val
 		case LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE:
 			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_overwrite);
 			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD:
+			g_value_set_string (value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_password);
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);
 			break;
@@ -220,6 +228,9 @@ lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValu
 	{
 		case LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE:
 			LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_overwrite = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_password = (gchar *)g_value_get_string(value);
 			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);

@@ -225,11 +225,15 @@ lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
 	GParamSpec **pspecs = g_object_class_list_properties(support_class, &_nprops);
 	GSList *pspec_list = NULL;
 
-	for(i = 0; i < _nprops; i++)
+/* Reverse the array, because the list gets prepended
+ * Otherwise the option-list gets reversed
+ */
+	for(i = _nprops; i > 0; i--)
 	{
-		if(!strncmp(prefix, g_param_spec_get_name(pspecs[i]), strlen(prefix)))
+		if(!strncmp(prefix, g_param_spec_get_name(pspecs[i-1]), strlen(prefix)))
 		{
-			pspec_list = g_slist_prepend(pspec_list, pspecs[i]);
+			pspec_list = g_slist_prepend(pspec_list, pspecs[i-1]);
 		}
 	}
+	return pspec_list;
 }

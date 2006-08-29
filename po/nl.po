@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-29 00:00+0200\n"
+"POT-Creation-Date: 2006-08-29 07:38+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -25,6 +25,11 @@ msgstr "Bestaande bestanden overschrijven"
 #: ../libxarchiver/archive-support-zip.c:100
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
+
+#: ../libxarchiver/archive-support-zip.c:107
+#: ../libxarchiver/archive-support-zip.c:108
+msgid "Password"
+msgstr "Wachtwoord"
 
 #: ../src/main.c:47
 msgid "[destination path]"
