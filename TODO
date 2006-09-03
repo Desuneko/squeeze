@@ -10,10 +10,8 @@ Long Version:
 
 +-+-+-+
 
-	Implement extract options in extract-dialog
-+-+-+-+
-
 	Implement View support (for all support-objects)
+		Use Path-entries for path-components. (Should reduce mem-usage on large archives tremendously)
 +-+-+-+
 
 	Implement UnRar Support object.

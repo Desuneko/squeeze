@@ -26,6 +26,7 @@ typedef enum
 	LXA_ARCHIVESTATUS_ADD,
 	LXA_ARCHIVESTATUS_EXTRACT,
 	LXA_ARCHIVESTATUS_REMOVE,
+	LXA_ARCHIVESTATUS_REFRESH,
 	LXA_ARCHIVESTATUS_VIEW,
 	LXA_ARCHIVESTATUS_ERROR,
 	LXA_ARCHIVESTATUS_USERBREAK
@@ -57,14 +58,15 @@ typedef struct _LXAArchive LXAArchive;
 struct _LXAArchive
 {
 	GObject parent;
-	gchar                 *path;
-	gchar                 *mime;
-	LXAArchiveStatus       status;
-	LXAArchiveStatus       old_status;
-	GPid                   child_pid;
-	gpointer               support;
-	gchar                 *tmp_file;
-	gchar                 *files;
+	gchar              *path;
+	gchar              *mime;
+	LXAArchiveStatus    status;
+	LXAArchiveStatus    old_status;
+	GPid                child_pid;
+	gpointer            support;
+	gchar              *tmp_file;
+	gchar              *files;
+	gboolean            has_passwd;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;

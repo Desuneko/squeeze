@@ -47,6 +47,7 @@ struct _XAMainWindow
 	GtkWidget *menubar;
 	GtkWidget *toolbar;
 	GtkWidget *statusbar;
+	LXAArchive *archive;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -58,6 +59,9 @@ struct _XAMainWindowClass
 
 GtkWidget *xa_main_window_new();
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
+
+void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
+void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

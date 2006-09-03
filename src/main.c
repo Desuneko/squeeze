@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	gint result = 0;
 	GtkWidget *dialog = NULL;
 	GtkWidget *main_window = NULL;
-	LXAArchive *lpArchive;
+	LXAArchive *lp_archive;
 	LXAArchiveSupport *lpSupport;
 	GError *cli_error = NULL;
 	gint i = 0;
@@ -133,31 +133,31 @@ int main(int argc, char **argv)
 		}
 		for(i = 1; i < argc; i++)
 		{
-			if(!lxa_open_archive(argv[i], &lpArchive))
+			if(!lxa_open_archive(argv[i], &lp_archive))
 			{
-				g_signal_connect(G_OBJECT(lpArchive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
+				g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
 				opened_archives++;
-				lpSupport = lxa_get_support_for_mime(lpArchive->mime);
+				lpSupport = lxa_get_support_for_mime(lp_archive->mime);
 				if(!extract_archive_path)
   			{
-					dialog = xa_extract_archive_dialog_new(lpSupport, lpArchive, FALSE);
+					dialog = xa_extract_archive_dialog_new(lpSupport, lp_archive, FALSE);
 					result = gtk_dialog_run (GTK_DIALOG (dialog) );
 					if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
 					{
 						gtk_widget_destroy (GTK_WIDGET (dialog) );
-						lxa_close_archive(lpArchive);
+						lxa_close_archive(lp_archive);
 						opened_archives--;
 					}
 					if(result == GTK_RESPONSE_OK)
 					{
 						extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-						lxa_archive_support_extract(lpSupport, lpArchive, extract_archive_path, NULL);
+						lxa_archive_support_extract(lpSupport, lp_archive, extract_archive_path, NULL);
 						g_free(extract_archive_path);
 						extract_archive_path = NULL;
 					}
 				}
 				else
-					lxa_archive_support_extract(lpSupport, lpArchive, extract_archive_path, NULL);
+					lxa_archive_support_extract(lpSupport, lp_archive, extract_archive_path, NULL);
 			}
 		}
 	}
@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 				add_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 				gtk_widget_destroy (GTK_WIDGET (dialog) );
 			}
-			if(lxa_new_archive(add_archive_path, TRUE, NULL, &lpArchive))
+			if(lxa_new_archive(add_archive_path, TRUE, NULL, &lp_archive))
 			{
 				/* 
 				 * Could not create archive (mime type unsupported) 
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			if(lxa_open_archive(add_archive_path, &lpArchive))
+			if(lxa_open_archive(add_archive_path, &lp_archive))
 			{
 				/*
 				 * Could not open archive (mime type not supported or file did not exist)
@@ -208,18 +208,21 @@ int main(int argc, char **argv)
 			else
 				opened_archives++;
 		}
-		g_signal_connect(G_OBJECT(lpArchive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
+		g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
 		GSList *files = NULL;
 		for(i = 1; i < argc; i++)
 		{
 			files = g_slist_prepend(files, argv[i]);
 		}
-		lpSupport = lxa_get_support_for_mime(lpArchive->mime);
-		lxa_archive_support_add(lpSupport, lpArchive, files);
+		lpSupport = lxa_get_support_for_mime(lp_archive->mime);
+		lxa_archive_support_add(lpSupport, lp_archive, files);
 	}
 
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
 	{
+		if(argc > 1)
+			lxa_open_archive(argv[1], &lp_xa_archive);
+		
 		/* Show main window */
 		main_window = xa_main_window_new();
 		gtk_widget_set_size_request(main_window, 400, 300);

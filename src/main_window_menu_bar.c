@@ -107,6 +107,11 @@ xa_main_window_menu_bar_init(XAMainWindowMenuBar *menubar)
 	menubar->menu_item_quit = gtk_image_menu_item_new_from_stock("gtk-quit", accel_group);
 	gtk_container_add(GTK_CONTAINER(menubar->menu_archive), menubar->menu_item_quit);
 
+	g_signal_connect(G_OBJECT(menubar->menu_item_new), "activate", G_CALLBACK(cb_xa_main_new_archive), NULL);
+	g_signal_connect(G_OBJECT(menubar->menu_item_open), "activate", G_CALLBACK(cb_xa_main_open_archive), NULL);
+	/* g_signal_connect(G_OBJECT(menubar->menu_item_properties), "activate", NULL, NULL);*/
+	g_signal_connect(G_OBJECT(menubar->menu_item_quit), "activate", G_CALLBACK(gtk_main_quit), NULL);
+
 /* Action menu */
 	tmp_image = xa_main_window_find_image("add_button.png", GTK_ICON_SIZE_MENU);
 	menubar->menu_item_add = gtk_image_menu_item_new_with_mnemonic(_("Add"));

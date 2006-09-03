@@ -20,8 +20,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
-#include "main_window_tool_bar.h"
 #include "main_window.h"
+#include "main_window_tool_bar.h"
 
 #include "add_dialog.h"
 #include "new_dialog.h"
@@ -77,6 +77,10 @@ xa_main_window_tool_bar_init(XAMainWindowToolBar *toolbar)
 
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_new));
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_open));
+
+	g_signal_connect(G_OBJECT(toolbar->tool_item_new), "clicked", G_CALLBACK(cb_xa_main_new_archive), NULL);
+	g_signal_connect(G_OBJECT(toolbar->tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), NULL);
+
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(separator));
 
 	/* contents of 'action' pane */
@@ -99,9 +103,10 @@ xa_main_window_tool_bar_init(XAMainWindowToolBar *toolbar)
 GtkWidget *
 xa_main_window_tool_bar_new()
 {
-	GtkWidget *toolbar;
+	XAMainWindowToolBar *toolbar;
 
 	toolbar = g_object_new(xa_main_window_tool_bar_get_type(), NULL);
 
-	return toolbar;
+
+	return GTK_WIDGET(toolbar);
 }

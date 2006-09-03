@@ -65,7 +65,8 @@ LXAArchiveSupport *  lxa_archive_support_gnu_tar_new();
 gint                 lxa_archive_support_gnu_tar_add(LXAArchive *, GSList *);
 gint                 lxa_archive_support_gnu_tar_extract(LXAArchive *, gchar *, GSList *);
 gint                 lxa_archive_support_gnu_tar_remove(LXAArchive *, GSList *);
-
+gint                 lxa_archive_support_gnu_tar_refresh(LXAArchive *);
+gint                 lxa_archive_support_gnu_tar_view(LXAArchive *, gchar *);
 G_END_DECLS
 
 #endif /* __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__ */

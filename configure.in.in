@@ -11,7 +11,7 @@ dnl *** Version information ***
 dnl ***************************
 m4_define([xarchiver_version_branch], [psybsd])
 m4_define([xarchiver_version_major], [0])
-m4_define([xarchiver_version_minor], [3])
+m4_define([xarchiver_version_minor], [4])
 m4_define([xarchiver_version_micro], [9])
 m4_define([xarchiver_version_nano], []) # Leave empty for no nano version
 m4_define([xarchiver_version_build], [r@REVISION@])

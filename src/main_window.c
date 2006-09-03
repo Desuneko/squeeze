@@ -24,6 +24,9 @@
 #include "main_window_tool_bar.h"
 #include "main_window_status_bar.h"
 #include "main_window.h"
+#include "new_dialog.h"
+
+#include "main.h"
 
 static void
 xa_main_window_class_init(XAMainWindowClass *);
@@ -99,11 +102,11 @@ GtkWidget *
 xa_main_window_find_image(gchar *filename, GtkIconSize size)
 {
 	GError *error = NULL;
-    GtkWidget *file_image;
+	GtkWidget *file_image;
 	gchar *path;
 	path = g_strconcat(DATADIR, "/xarchiver/pixmaps/", filename, NULL);
 	GdkPixbuf *file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
-	if(!file_pixbuf)
+	if(error)
 	{
 		/*
 		* perhaps xarchiver has not been installed and is being executed from source dir
@@ -112,17 +115,82 @@ xa_main_window_find_image(gchar *filename, GtkIconSize size)
 		error = NULL;
 		path = g_strconcat("./pixmaps/", filename, NULL);
 		file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
-    }
-    if(file_pixbuf)
-    {
+	}
+	if(file_pixbuf)
+	{
 		file_image = gtk_image_new_from_pixbuf(file_pixbuf);
 		g_object_unref(file_pixbuf);
-    }
-    else
+	}
+	else
 	{
 		g_free(error);
 		file_image = gtk_image_new_from_stock(GTK_STOCK_MISSING_IMAGE, size);
-    }
-    g_free(path);
-    return file_image;
+	}
+	g_free(path);
+	return file_image;
+}
+
+void
+cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget *dialog = NULL;
+	gchar *new_archive_path = NULL;
+	gint result = 0;
+	
+	dialog = xa_new_archive_dialog_new();
+	result = gtk_dialog_run (GTK_DIALOG (dialog) );
+	if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
+	{
+		gtk_widget_destroy (GTK_WIDGET (dialog) );
+		return;
+	}
+	if(result == GTK_RESPONSE_OK)
+	{
+		new_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		if(lp_xa_archive)
+		{
+			g_object_unref(lp_xa_archive);
+			lp_xa_archive = NULL;
+		}
+		if(!lxa_new_archive(new_archive_path, TRUE, NULL, &lp_xa_archive))
+		{
+			g_debug("Archive opened");
+		}
+		gtk_widget_destroy (GTK_WIDGET (dialog) );
+	}
+}
+
+void
+cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget *dialog = NULL;
+	gchar *open_archive_path = NULL;
+	gint result = 0;
+	
+	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
+	                                     GTK_WINDOW(gtk_widget_get_ancestor(widget, GTK_TYPE_WINDOW)),
+																			 GTK_FILE_CHOOSER_ACTION_OPEN,
+																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+	result = gtk_dialog_run (GTK_DIALOG (dialog) );
+	if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
+	{
+		gtk_widget_destroy (GTK_WIDGET (dialog) );
+		return;
+	}
+	if(result == GTK_RESPONSE_OK)
+	{
+		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		if(lp_xa_archive)
+		{
+			g_object_unref(lp_xa_archive);
+			lp_xa_archive = NULL;
+		}
+		if(!lxa_open_archive(open_archive_path, &lp_xa_archive))
+		{
+			g_debug("Archive opened");
+		}
+		gtk_widget_destroy (GTK_WIDGET (dialog) );
+	}
+
 }

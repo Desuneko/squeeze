@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-29 07:38+0200\n"
+"POT-Creation-Date: 2006-09-04 01:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,18 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:123
-#: ../libxarchiver/archive-support-zip.c:99
+#: ../libxarchiver/archive-support-gnu-tar.c:127
+#: ../libxarchiver/archive-support-zip.c:104
 msgid "Overwrite existing files"
 msgstr ""
 
-#: ../libxarchiver/archive-support-gnu-tar.c:124
-#: ../libxarchiver/archive-support-zip.c:100
+#: ../libxarchiver/archive-support-gnu-tar.c:128
+#: ../libxarchiver/archive-support-zip.c:105
 msgid "Overwrite existing files on extraction"
 msgstr ""
 
-#: ../libxarchiver/archive-support-zip.c:107
-#: ../libxarchiver/archive-support-zip.c:108
+#: ../libxarchiver/archive-support-zip.c:97
+#: ../libxarchiver/archive-support-zip.c:98
 msgid "Password"
 msgstr ""
 
@@ -73,32 +73,36 @@ msgstr ""
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 
+#: ../src/main_window.c:170
+msgid "Open archive"
+msgstr ""
+
 #: ../src/new_dialog.c:85
 msgid "Create new archive"
 msgstr ""
 
-#: ../src/extract_dialog.c:69
+#: ../src/extract_dialog.c:74
 msgid "<b>Extract files:</b>"
 msgstr ""
 
-#: ../src/extract_dialog.c:70
+#: ../src/extract_dialog.c:75
 msgid "<b>Options:</b>"
 msgstr ""
 
-#: ../src/extract_dialog.c:80
+#: ../src/extract_dialog.c:85
 msgid "All files"
 msgstr ""
 
-#: ../src/extract_dialog.c:81
+#: ../src/extract_dialog.c:86
 msgid "Selected files"
 msgstr ""
 
-#: ../src/extract_dialog.c:93 ../src/main_window_menu_bar.c:117
-#: ../src/main_window_tool_bar.c:87
+#: ../src/extract_dialog.c:98 ../src/main_window_menu_bar.c:122
+#: ../src/main_window_tool_bar.c:91
 msgid "Extract"
 msgstr ""
 
-#: ../src/extract_dialog.c:105
+#: ../src/extract_dialog.c:110
 msgid "Extract archive"
 msgstr ""
 
@@ -114,6 +118,6 @@ msgstr ""
 msgid "_Help"
 msgstr ""
 
-#: ../src/main_window_menu_bar.c:112 ../src/main_window_tool_bar.c:84
+#: ../src/main_window_menu_bar.c:117 ../src/main_window_tool_bar.c:88
 msgid "Add"
 msgstr ""

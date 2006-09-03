@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-29 07:38+0200\n"
+"POT-Creation-Date: 2006-09-04 01:18+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,18 +16,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:123
-#: ../libxarchiver/archive-support-zip.c:99
+#: ../libxarchiver/archive-support-gnu-tar.c:127
+#: ../libxarchiver/archive-support-zip.c:104
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:124
-#: ../libxarchiver/archive-support-zip.c:100
+#: ../libxarchiver/archive-support-gnu-tar.c:128
+#: ../libxarchiver/archive-support-zip.c:105
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
-#: ../libxarchiver/archive-support-zip.c:107
-#: ../libxarchiver/archive-support-zip.c:108
+#: ../libxarchiver/archive-support-zip.c:97
+#: ../libxarchiver/archive-support-zip.c:98
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -78,32 +78,36 @@ msgstr ""
 "Kan archief niet openen, MIME-type wordt niet ondersteund of bestand bestaat "
 "niet"
 
+#: ../src/main_window.c:170
+msgid "Open archive"
+msgstr "Archief openen"
+
 #: ../src/new_dialog.c:85
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
 
-#: ../src/extract_dialog.c:69
+#: ../src/extract_dialog.c:74
 msgid "<b>Extract files:</b>"
 msgstr "<b> Bestanden uitpakken:</b>"
 
-#: ../src/extract_dialog.c:70
+#: ../src/extract_dialog.c:75
 msgid "<b>Options:</b>"
 msgstr "<b>Opties:</b>"
 
-#: ../src/extract_dialog.c:80
+#: ../src/extract_dialog.c:85
 msgid "All files"
 msgstr "Alle bestanden"
 
-#: ../src/extract_dialog.c:81
+#: ../src/extract_dialog.c:86
 msgid "Selected files"
 msgstr "Geselecteerde bestanden"
 
-#: ../src/extract_dialog.c:93 ../src/main_window_menu_bar.c:117
-#: ../src/main_window_tool_bar.c:87
+#: ../src/extract_dialog.c:98 ../src/main_window_menu_bar.c:122
+#: ../src/main_window_tool_bar.c:91
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/extract_dialog.c:105
+#: ../src/extract_dialog.c:110
 msgid "Extract archive"
 msgstr "Archief uitpakken"
 
@@ -119,7 +123,7 @@ msgstr "A_ctie"
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window_menu_bar.c:112 ../src/main_window_tool_bar.c:84
+#: ../src/main_window_menu_bar.c:117 ../src/main_window_tool_bar.c:88
 msgid "Add"
 msgstr "Toevoegen"
 

@@ -48,6 +48,8 @@ void
 lxa_archive_support_gnu_tar_decompress_watch(GPid pid, gint status, gpointer data);
 
 gboolean
+lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+gboolean
 lxa_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
 gboolean
 lxa_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
@@ -108,6 +110,8 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 	archive_support->add = lxa_archive_support_gnu_tar_add;
 	archive_support->extract = lxa_archive_support_gnu_tar_extract;
 	archive_support->remove = lxa_archive_support_gnu_tar_remove;
+	archive_support->refresh = lxa_archive_support_gnu_tar_refresh;
+	archive_support->view = lxa_archive_support_gnu_tar_view;
 }
 
 void
@@ -316,6 +320,32 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 	return 0;
 }
 
+gint
+lxa_archive_support_gnu_tar_view(LXAArchive *archive, gchar *path)
+{
+}
+
+gint
+lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
+{
+	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
+	{
+		g_critical("Support is not GNU TAR");
+		return -1;
+	}
+
+	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	{
+		return 1;
+	}
+	else
+	{
+		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tfv " , archive->path, NULL);
+		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
+		g_free(command);
+	}
+}
+
 void
 lxa_archive_support_gnu_tar_decompress_watch(GPid pid, gint status, gpointer data)
 {
@@ -340,6 +370,39 @@ lxa_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 	lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_compress_parse_output, NULL);
 }
 
+gboolean
+lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+{
+	GIOStatus status = G_IO_STATUS_NORMAL;
+	FILE *out_file = NULL;
+	LXAArchive *archive = data;
+	gchar *line	= NULL;
+	guint read = 0;
+	GError *error = NULL;
+	gchar *command = NULL;
+
+	if(cond & (G_IO_PRI | G_IO_IN))
+	{
+		while(TRUE)
+		{
+			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
+			if (line == NULL)
+ 				break;
+			g_print(".");
+			g_free(line);
+		}
+	}
+	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	{
+#ifdef DEBUG
+		g_debug("shutting down ioc");
+#endif
+		g_io_channel_shutdown ( ioc,TRUE,NULL );
+		g_io_channel_unref (ioc);
+		return FALSE; 
+	}
+	return TRUE;
+}
 gboolean
 lxa_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {

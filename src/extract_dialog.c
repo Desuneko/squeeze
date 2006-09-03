@@ -33,6 +33,8 @@ xa_extract_archive_dialog_init(XAExtractArchiveDialog *archive);
 
 void
 xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data);
+void
+xa_extract_dialog_option_child_notify(GtkWidget *widget, GParamSpec *, gpointer data);
 
 GType
 xa_extract_archive_dialog_get_type ()
@@ -102,7 +104,7 @@ GtkWidget *
 xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, gboolean sel_option)
 {
 	GSList *extract_options;
-	GtkWidget *test;
+	GtkWidget *test, *hbox;
 	XAExtractArchiveDialog *dialog;
 
 	dialog = g_object_new(xa_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
@@ -127,8 +129,15 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 					gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
 					break;
 				case (G_TYPE_STRING): /* TODO: Add text-field */
+					hbox = gtk_hbox_new(FALSE, 0);
 					test = gtk_label_new(g_param_spec_get_nick(G_PARAM_SPEC(extract_options->data)));
-					gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
+					gtk_box_pack_start(GTK_BOX(hbox), test, FALSE, FALSE, 0);
+
+					test = gtk_entry_new();
+					gtk_box_pack_start(GTK_BOX(hbox), test, FALSE, FALSE, 0);
+
+					g_signal_connect(G_OBJECT(test), "child_notify", G_CALLBACK(xa_extract_dialog_option_child_notify), (void *)g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
+					gtk_box_pack_start(GTK_BOX(r_vbox), hbox, FALSE, FALSE, 0);
 					break;
 			}
 			extract_options = extract_options->next;
@@ -150,5 +159,19 @@ xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
 
 	g_object_set_property(G_OBJECT(XA_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
 
+	g_free(val);
+}
+
+void
+xa_extract_dialog_option_child_notify (GtkWidget *widget, GParamSpec *pspec, gpointer data)
+{
+	GValue *val = g_new0(GValue, 1);
+	gboolean active;
+	if(strcmp(g_param_spec_get_name(pspec), "text"))
+	{
+		val = g_value_init(val, G_TYPE_STRING);
+		g_object_get_property(G_OBJECT(widget), "text", val);
+		g_object_set_property(G_OBJECT(XA_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
+	}
 	g_free(val);
 }

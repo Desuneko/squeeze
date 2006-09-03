@@ -18,6 +18,7 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
+#include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
@@ -214,6 +215,34 @@ lxa_archive_support_remove(LXAArchiveSupport *support, LXAArchive *archive, GSLi
 	}
 	else
 		g_critical("REMOVE NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+	return -1;
+}
+
+gint
+lxa_archive_support_refresh(LXAArchiveSupport *support, LXAArchive *archive)
+{
+	if(support->refresh)
+	{
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REFRESH);
+		archive->support = support;
+		return support->refresh(archive);
+	}
+	else
+		g_critical("VIEW NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+	return -1;
+}
+
+gint
+lxa_archive_support_view(LXAArchiveSupport *support, LXAArchive *archive, gchar *path)
+{
+	if(support->view)
+	{
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_VIEW);
+		archive->support = support;
+		return support->view(archive, path);
+	}
+	else
+		g_critical("VIEW NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
 }
 
