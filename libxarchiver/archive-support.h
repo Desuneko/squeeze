@@ -61,7 +61,6 @@ struct _LXAArchiveSupport
 	gint        (*extract)(LXAArchive *archive, gchar *dest_path, GSList *files);
 	gint        (*remove)(LXAArchive *archive, GSList *files);
 	gint        (*refresh)(LXAArchive *archive);
-	GSList     *(*view)(LXAArchive *archive, gchar *path);
 };
 
 typedef struct _LXAArchiveSupportClass LXAArchiveSupportClass;
@@ -87,7 +86,6 @@ gint                 lxa_archive_support_add(LXAArchiveSupport *, LXAArchive *, 
 gint                 lxa_archive_support_extract(LXAArchiveSupport *, LXAArchive *, gchar *, GSList *);
 gint                 lxa_archive_support_remove(LXAArchiveSupport *, LXAArchive *, GSList *);
 gint                 lxa_archive_support_refresh(LXAArchiveSupport *, LXAArchive *);
-GSList              *lxa_archive_support_view(LXAArchiveSupport *, LXAArchive *, gchar *);
 
 GSList *             lxa_archive_support_list_properties(LXAArchiveSupport *, gchar *);
 

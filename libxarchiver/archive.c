@@ -80,10 +80,9 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 			0,
 			NULL,
 			NULL,
-			g_cclosure_marshal_VOID__POINTER,
+			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE,
-			1,
-			G_TYPE_POINTER,
+			0,
 			NULL);
 }
 
@@ -142,7 +141,7 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 gint
 lxa_archive_lookup_dir(gpointer entry, gconstpointer filename)
 {
-	return strcmp(((LXAEntry *)entry)->filename, filename);
+	return strcmp(g_value_get_string(((LXAEntry *)entry)->filename), filename);
 }
 
 /* 
@@ -164,7 +163,9 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	if(!tmp_list)
 	{
 		tmp_entry = g_new0(LXAEntry, 1);
-		tmp_entry->filename = g_strdup(path_items[0]);
+		tmp_entry->filename = g_new0(GValue, 1);
+		tmp_entry->filename = g_value_init(tmp_entry->filename, G_TYPE_STRING);
+		g_value_set_string(tmp_entry->filename, path_items[0]);
 		archive->root_entries = g_slist_prepend(archive->root_entries, tmp_entry);
 		tmp_list = archive->root_entries;
 	}
@@ -174,7 +175,9 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 		if(!tmp_list_children)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
-			tmp_entry->filename = g_strdup(path_items[i]);
+		tmp_entry->filename = g_new0(GValue, 1);
+			tmp_entry->filename = g_value_init(tmp_entry->filename, G_TYPE_STRING);
+			g_value_set_string(tmp_entry->filename, path_items[i]);
 			((LXAEntry *)tmp_list->data)->children = g_slist_prepend(((LXAEntry *)tmp_list->data)->children, tmp_entry);
 			tmp_list_children = ((LXAEntry *)tmp_list->data)->children;
 		}

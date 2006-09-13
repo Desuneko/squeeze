@@ -111,7 +111,6 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 	archive_support->extract = lxa_archive_support_gnu_tar_extract;
 	archive_support->remove = lxa_archive_support_gnu_tar_remove;
 	archive_support->refresh = lxa_archive_support_gnu_tar_refresh;
-	archive_support->view = lxa_archive_support_gnu_tar_view;
 }
 
 void
@@ -318,12 +317,6 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 			return 1;
 	}
 	return 0;
-}
-
-GSList *
-lxa_archive_support_gnu_tar_view(LXAArchive *archive, gchar *path)
-{
-	
 }
 
 gint

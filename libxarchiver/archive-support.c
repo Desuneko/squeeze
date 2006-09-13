@@ -233,20 +233,6 @@ lxa_archive_support_refresh(LXAArchiveSupport *support, LXAArchive *archive)
 }
 
 GSList *
-lxa_archive_support_view(LXAArchiveSupport *support, LXAArchive *archive, gchar *path)
-{
-	if(support->view)
-	{
-		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_VIEW);
-		archive->support = support;
-		return support->view(archive, path);
-	}
-	else
-		g_critical("VIEW NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
-	return NULL;
-}
-
-GSList *
 lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
 {
 	guint _nprops, i;

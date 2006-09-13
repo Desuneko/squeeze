@@ -33,7 +33,7 @@ typedef enum
 } LXAArchiveStatus;
 
 typedef struct {
-	gchar *filename;
+	GValue *filename;
 	GSList *children;
 } LXAEntry;
 

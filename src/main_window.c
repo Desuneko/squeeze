@@ -36,9 +36,9 @@ xa_main_window_get_type ()
 {
 	static GType xa_main_window_type = 0;
 
- 	if (!xa_main_window_type)
+	if (!xa_main_window_type)
 	{
- 		static const GTypeInfo xa_main_window_info = 
+		static const GTypeInfo xa_main_window_info = 
 		{
 			sizeof (XAMainWindowClass),
 			(GBaseInitFunc) NULL,
@@ -283,7 +283,7 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	XAMainWindow *parent_window = XA_MAIN_WINDOW(userdata);
 	
 	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
-	                                     GTK_WINDOW(parent_window),
+																			 GTK_WINDOW(parent_window),
 																			 GTK_FILE_CHOOSER_ACTION_OPEN,
 																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
@@ -322,13 +322,13 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
  *
  */
 void
-xa_main_window_archive_status_changed(LXAArchive *archive, gpointer data)
+xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 {
-	XAMainWindow *main_window = data;
+	XAMainWindow *main_window = XA_MAIN_WINDOW(userdata);
 	if(archive->old_status == LXA_ARCHIVESTATUS_REFRESH)
 	{
 		LXAArchiveSupport *lpSupport = lxa_get_support_for_mime(archive->mime);
-		GSList *items = lxa_archive_support_view(lpSupport, archive, "/");
+		GSList *items = lxa_archive_get_children(archive, "/");
 		xa_main_window_set_contents(main_window, archive, items, "/");
 	}
 }
@@ -343,9 +343,12 @@ void
 xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items, gchar *path)
 {
 	gint x;
+	GtkTreeIter iter;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkListStore *liststore = gtk_list_store_newv(archive->column_number, archive->column_types);
+
+	main_window->working_dir = path;
 
 	for(x = 0; x < archive->column_number; x++)
 	{
@@ -360,6 +363,11 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 		gtk_tree_view_column_set_sort_column_id(column, x);
 		gtk_tree_view_append_column(GTK_TREE_VIEW(main_window->treeview), column);
 	}
-
+	while(items)
+	{
+		gtk_list_store_append(liststore, &iter);
+		gtk_list_store_set_value(liststore, &iter, 0, ((LXAEntry *)items->data)->filename);
+		items = items->next;
+	}
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
