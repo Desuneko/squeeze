@@ -32,6 +32,11 @@ typedef enum
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
+typedef struct {
+	gchar *filename;
+	GSList *children;
+} LXAEntry;
+
 
 #define LXA_ARCHIVE(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
@@ -64,6 +69,7 @@ struct _LXAArchive
 	LXAArchiveStatus    old_status;
 	GPid                child_pid;
 	gpointer            support;
+	GSList             *root_entries;
 	gchar              *tmp_file;
 	gchar              *files;
 	gboolean            has_passwd;
@@ -81,6 +87,10 @@ LXAArchive        *lxa_archive_new(gchar *, gchar *);
 
 gchar             *lxa_archive_discover_mime(LXAArchive *archive);
 void               lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
+gint               lxa_archive_lookup_dir(gpointer entry, gconstpointer filename);
+LXAEntry          *lxa_archive_add_file(LXAArchive *archive, gchar *path);
+GSList            *lxa_archive_get_children(LXAArchive *archive, gchar *path);
+
 
 G_END_DECLS
 

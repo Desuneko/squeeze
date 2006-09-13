@@ -9,6 +9,9 @@ Long Version:
 ---------------------------------------------------------------
 
 +-+-+-+
+  Speedup GUI
+
++-+-+-+
 
 	Implement View support (for all support-objects)
 		Use Path-entries for path-components. (Should reduce mem-usage on large archives tremendously)

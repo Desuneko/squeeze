@@ -232,7 +232,7 @@ lxa_archive_support_refresh(LXAArchiveSupport *support, LXAArchive *archive)
 	return -1;
 }
 
-gint
+GSList *
 lxa_archive_support_view(LXAArchiveSupport *support, LXAArchive *archive, gchar *path)
 {
 	if(support->view)
@@ -243,7 +243,7 @@ lxa_archive_support_view(LXAArchiveSupport *support, LXAArchive *archive, gchar 
 	}
 	else
 		g_critical("VIEW NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
-	return -1;
+	return NULL;
 }
 
 GSList *

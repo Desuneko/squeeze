@@ -320,9 +320,10 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 	return 0;
 }
 
-gint
+GSList *
 lxa_archive_support_gnu_tar_view(LXAArchive *archive, gchar *path)
 {
+	
 }
 
 gint
@@ -340,7 +341,9 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 	}
 	else
 	{
-		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tfv " , archive->path, NULL);
+		//empty archive-tree
+		/* use tvf once implementation of path recognition is stable */
+		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tf " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
 		g_free(command);
 	}
@@ -377,9 +380,14 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	FILE *out_file = NULL;
 	LXAArchive *archive = data;
 	gchar *line	= NULL;
+	gchar **line_items = NULL;
 	guint read = 0;
 	GError *error = NULL;
 	gchar *command = NULL;
+	GSList *tmp_list = NULL;
+	GSList *parent_list = NULL;
+	gint i = 0, n = 0;
+	LXAEntry *entry;
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
@@ -388,8 +396,8 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
 			if (line == NULL)
  				break;
-			g_print(".");
-			g_free(line);
+			entry = lxa_archive_add_file(archive, line);
+			/* TODO: Add data */
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )

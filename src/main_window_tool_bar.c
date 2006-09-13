@@ -60,53 +60,79 @@ xa_main_window_tool_bar_get_type ()
 }
 
 static void
-xa_main_window_tool_bar_class_init(XAMainWindowToolBarClass *toolbar_class)
+xa_main_window_tool_bar_class_init(XAMainWindowToolBarClass *tool_bar_class)
 {
 }
 
 static void
-xa_main_window_tool_bar_init(XAMainWindowToolBar *toolbar)
+xa_main_window_tool_bar_init(XAMainWindowToolBar *tool_bar)
 {
 	GtkToolItem *separator;
 	GtkWidget *tmp_image;
 	
 	/* contents of 'archive' pane */
-	toolbar->tool_item_new = gtk_tool_button_new_from_stock("gtk-new");
-	toolbar->tool_item_open = gtk_tool_button_new_from_stock("gtk-open");
+	tool_bar->tool_item_new = gtk_tool_button_new_from_stock("gtk-new");
+	tool_bar->tool_item_open = gtk_tool_button_new_from_stock("gtk-open");
 	separator = gtk_separator_tool_item_new ();
 
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_new));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_open));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->tool_item_new));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->tool_item_open));
 
-	g_signal_connect(G_OBJECT(toolbar->tool_item_new), "clicked", G_CALLBACK(cb_xa_main_new_archive), NULL);
-	g_signal_connect(G_OBJECT(toolbar->tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), NULL);
+	g_signal_connect(G_OBJECT(tool_bar->tool_item_new), "clicked", G_CALLBACK(cb_xa_main_new_archive), NULL);
+	g_signal_connect(G_OBJECT(tool_bar->tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), NULL);
 
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(separator));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(separator));
 
 	/* contents of 'action' pane */
 	tmp_image = xa_main_window_find_image("add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
-	toolbar->tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
+	tool_bar->tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->tool_item_add), FALSE);
 
 	tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
-	toolbar->tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
+	tool_bar->tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->tool_item_extract), FALSE);
 
-	toolbar->tool_item_remove = gtk_tool_button_new_from_stock("gtk-delete");
+	tool_bar->tool_item_remove = gtk_tool_button_new_from_stock("gtk-delete");
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->tool_item_remove), FALSE);
+
+	g_signal_connect(G_OBJECT(tool_bar->tool_item_extract), "clicked", G_CALLBACK(cb_xa_main_extract_archive), NULL);
 
 	separator = gtk_separator_tool_item_new ();
 
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_add));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_extract));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(toolbar->tool_item_remove));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(separator));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->tool_item_add));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->tool_item_extract));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->tool_item_remove));
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(separator));
 }
 
 GtkWidget *
 xa_main_window_tool_bar_new()
 {
-	XAMainWindowToolBar *toolbar;
+	XAMainWindowToolBar *tool_bar;
 
-	toolbar = g_object_new(xa_main_window_tool_bar_get_type(), NULL);
+	tool_bar = g_object_new(xa_main_window_tool_bar_get_type(), NULL);
 
 
-	return GTK_WIDGET(toolbar);
+	return GTK_WIDGET(tool_bar);
+}
+
+gboolean
+xa_main_window_tool_bar_set_status(XAMainWindowToolBar *toolbar, XAMainWindowStatus status)
+{
+	switch(status)
+	{
+		case(XA_MAIN_WINDOW_STATUS_NONE):
+			gtk_widget_set_sensitive(GTK_WIDGET(toolbar->tool_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(toolbar->tool_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(toolbar->tool_item_remove), FALSE);
+			break;
+		case(XA_MAIN_WINDOW_STATUS_IDLE):
+			gtk_widget_set_sensitive(GTK_WIDGET(toolbar->tool_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(toolbar->tool_item_extract), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(toolbar->tool_item_remove), TRUE);
+			break;
+		case(XA_MAIN_WINDOW_STATUS_BUSY):
+			break;
+	}
+
 }

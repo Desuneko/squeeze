@@ -20,34 +20,72 @@
 #define __XARCHIVER_MAIN_WINDOW_H__
 G_BEGIN_DECLS
 
+typedef enum {
+	XA_MAIN_WINDOW_STATUS_NONE,
+	XA_MAIN_WINDOW_STATUS_IDLE,
+	XA_MAIN_WINDOW_STATUS_BUSY
+}XAMainWindowStatus;
+
+#define XA_TYPE_MAIN_WINDOW xa_main_window_get_type()
+
 #define XA_MAIN_WINDOW(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_main_window_get_type(),      \
+			XA_TYPE_MAIN_WINDOW,      \
 			XAMainWindow))
 
 #define XA_IS_MAIN_WINDOW(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_main_window_get_type()))
+			XA_TYPE_MAIN_WINDOW))
 
 #define XA_MAIN_WINDOW_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_main_window_get_type(),      \
+			XA_TYPE_MAIN_WINDOW,      \
 			XAMainWindowClass))
 
 #define XA_IS_MAIN_WINDOW_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_main_window_get_type()))
+			XA_TYPE_MAIN_WINDOW))
 
 typedef struct _XAMainWindow XAMainWindow;
 
 struct _XAMainWindow
 {
 	GtkWindow parent;
-	GtkWidget *main_vbox;
-	GtkWidget *menubar;
-	GtkWidget *toolbar;
-	GtkWidget *statusbar;
-	LXAArchive *archive;
+	struct {
+		GtkWidget *menu_item_archive;
+		GtkWidget *menu_archive;
+		/* contents of 'archive' menu */
+		GtkWidget *menu_item_new;
+		GtkWidget *menu_item_open;
+		GtkWidget *menu_item_properties;
+		GtkWidget *menu_item_quit;
+
+		GtkWidget *menu_item_action;
+		GtkWidget *menu_action;
+
+		/* contents of 'action' menu */
+		GtkWidget *menu_item_add;
+		GtkWidget *menu_item_extract;
+		GtkWidget *menu_item_remove;
+		GtkWidget *menu_item_settings;
+
+		GtkWidget *menu_item_help;
+		GtkWidget *menu_help;
+
+		/* contents of 'help' menu */
+		GtkWidget *menu_item_about;
+
+	} menubar;
+	struct {
+		/* contents of 'archive' pane */
+		GtkToolItem *tool_item_new;
+		GtkToolItem *tool_item_open;
+
+		/* contents of 'action' pane */
+		GtkToolItem *tool_item_add;
+		GtkToolItem *tool_item_extract;
+		GtkToolItem *tool_item_remove;
+	} toolbar;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -62,6 +100,10 @@ GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
 
 void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
+void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
+
+void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer data);
+void xa_main_window_set_contents(XAMainWindow *, GSList *, gchar *);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

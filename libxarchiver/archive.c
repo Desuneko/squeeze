@@ -18,6 +18,7 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
+#include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h> 
@@ -136,4 +137,66 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 		archive->status = status;
 		g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
 	}
+}
+
+gint
+lxa_archive_lookup_dir(gpointer entry, gconstpointer filename)
+{
+	return strcmp(((LXAEntry *)entry)->filename, filename);
+}
+
+/* 
+ * LXAEntry *
+ * lxa_archive_add_file(LXAArchive *archive, gchar *path);
+ *
+ * Add a file to the archive-tree or return
+ */
+LXAEntry *
+lxa_archive_add_file(LXAArchive *archive, gchar *path)
+{
+	gint i = 0;
+	GSList *tmp_list;
+	GSList *tmp_list_children;
+	gchar **path_items;
+	LXAEntry *tmp_entry;
+	path_items = g_strsplit_set(path, "/\n", -1);
+	tmp_list = g_slist_find_custom(archive->root_entries, path_items[0], (GCompareFunc)lxa_archive_lookup_dir);
+	if(!tmp_list)
+	{
+		tmp_entry = g_new0(LXAEntry, 1);
+		tmp_entry->filename = g_strdup(path_items[0]);
+		archive->root_entries = g_slist_prepend(archive->root_entries, tmp_entry);
+		tmp_list = archive->root_entries;
+	}
+	for(i = 1; path_items[i]?strlen(path_items[i]):0;i++)
+	{
+		tmp_list_children = g_slist_find_custom(((LXAEntry *)tmp_list->data)->children, path_items[i], (GCompareFunc)lxa_archive_lookup_dir);
+		if(!tmp_list_children)
+		{
+			tmp_entry = g_new0(LXAEntry, 1);
+			tmp_entry->filename = g_strdup(path_items[i]);
+			((LXAEntry *)tmp_list->data)->children = g_slist_prepend(((LXAEntry *)tmp_list->data)->children, tmp_entry);
+			tmp_list_children = ((LXAEntry *)tmp_list->data)->children;
+		}
+		tmp_list = tmp_list_children;
+	}
+	g_strfreev(path_items);
+	return tmp_entry;
+}
+
+GSList *
+lxa_archive_get_children(LXAArchive *archive, gchar *path)
+{
+	gint i;
+	GSList *tmp_list = archive->root_entries;
+	gchar **path_items = g_strsplit_set(path, "/\n", -1);
+	for(i = 0; path_items[i]?strlen(path_items[i]):0; i++)
+	{
+		tmp_list = g_slist_find_custom(tmp_list, path_items[i], (GCompareFunc)lxa_archive_lookup_dir);
+		if(!tmp_list)
+			break;
+		tmp_list = ((LXAEntry *)tmp_list->data)->children;
+	}
+	g_strfreev(path_items);
+	return tmp_list;
 }

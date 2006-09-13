@@ -20,23 +20,24 @@
 #define __XARCHIVER_MAIN_WINDOW_TOOLBAR_H__
 G_BEGIN_DECLS
 
+
 #define XA_MAIN_WINDOW_TOOLBAR(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_main_window_toolbar_get_type(),      \
+			xa_main_window_tool_bar_get_type(),      \
 			XAMainWindowToolBar))
 
 #define XA_IS_MAIN_WINDOW_TOOLBAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_main_window_toolbar_get_type()))
+			xa_main_window_tool_bar_get_type()))
 
 #define XA_MAIN_WINDOW_TOOLBAR_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_main_window_toolbar_get_type(),      \
+			xa_main_window_tool_bar_get_type(),      \
 			XAMainWindowToolBarClass))
 
 #define XA_IS_MAIN_WINDOW_TOOLBAR_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_main_window_toolbar_get_type()))
+			xa_main_window_tool_bar_get_type()))
 
 typedef struct _XAMainWindowToolBar XAMainWindowToolBar;
 
@@ -62,6 +63,8 @@ struct _XAMainWindowToolBarClass
 };
 
 GtkWidget *xa_main_window_tool_bar_new();
+
+gboolean xa_main_window_tool_bar_set_status(XAMainWindowToolBar *, XAMainWindowStatus);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_TOOLBAR_H__ */

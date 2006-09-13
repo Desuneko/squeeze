@@ -132,6 +132,8 @@ xa_main_window_menu_bar_init(XAMainWindowMenuBar *menubar)
 	menubar->menu_item_settings = gtk_image_menu_item_new_from_stock("gtk-preferences", accel_group);
 	gtk_container_add(GTK_CONTAINER(menubar->menu_action), menubar->menu_item_settings);
 
+	g_signal_connect(G_OBJECT(menubar->menu_item_extract), "activate", G_CALLBACK(cb_xa_main_extract_archive), NULL);
+
 /* Help menu */
 	menubar->menu_item_about = gtk_image_menu_item_new_from_stock("gtk-about", accel_group);
 	gtk_container_add(GTK_CONTAINER(menubar->menu_help), menubar->menu_item_about);
