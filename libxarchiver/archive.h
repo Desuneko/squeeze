@@ -73,6 +73,9 @@ struct _LXAArchive
 	gchar              *tmp_file;
 	gchar              *files;
 	gboolean            has_passwd;
+	gint                column_number;
+	GType              *column_types;
+	gchar             **column_names;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;

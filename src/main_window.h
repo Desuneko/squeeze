@@ -51,6 +51,8 @@ typedef struct _XAMainWindow XAMainWindow;
 struct _XAMainWindow
 {
 	GtkWindow parent;
+	GtkWidget *treeview;
+	GtkWidget *scrollwindow;
 	struct {
 		GtkWidget *menu_item_archive;
 		GtkWidget *menu_archive;
@@ -103,7 +105,7 @@ void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
 
 void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer data);
-void xa_main_window_set_contents(XAMainWindow *, GSList *, gchar *);
+void xa_main_window_set_contents(XAMainWindow *, LXAArchive *, GSList *, gchar *);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

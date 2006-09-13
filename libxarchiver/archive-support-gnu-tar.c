@@ -341,6 +341,11 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 	}
 	else
 	{
+		archive->column_number = 1;
+		archive->column_types = g_new0(GType, 1);
+		archive->column_types[0] = G_TYPE_STRING;
+		archive->column_names = g_new0(gchar *, 1);
+		archive->column_names[0] = g_strdup("filename");
 		//empty archive-tree
 		/* use tvf once implementation of path recognition is stable */
 		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tf " , archive->path, NULL);
@@ -354,7 +359,6 @@ lxa_archive_support_gnu_tar_decompress_watch(GPid pid, gint status, gpointer dat
 {
 	LXAArchive *archive = data;
 	archive->child_pid = 0;
-
 }
 
 void
@@ -388,6 +392,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	GSList *parent_list = NULL;
 	gint i = 0, n = 0;
 	LXAEntry *entry;
+
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{

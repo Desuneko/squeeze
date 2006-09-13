@@ -173,14 +173,28 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_remove));
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(tool_separator));
 
-	gtk_box_pack_start(GTK_BOX(main_vbox), menubar, 0, FALSE, FALSE);
-	gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, 0, FALSE, FALSE);
-	//gtk_box_pack_end(GTK_BOX(main_vbox), statusbar, 0, FALSE, FALSE);
+/* main view */
+	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
+
+	window->treeview = gtk_tree_view_new();
+
+	gtk_container_add(GTK_CONTAINER(window->scrollwindow), window->treeview);
+
+	gtk_widget_show(window->scrollwindow);
+	gtk_widget_show(window->treeview);
+/* Statusbar */
+
+	statusbar = gtk_statusbar_new();
+
+	gtk_box_pack_start(GTK_BOX(main_vbox), menubar, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(main_vbox), window->scrollwindow, TRUE, TRUE, 0);
+	gtk_box_pack_end(GTK_BOX(main_vbox), statusbar, FALSE, FALSE, 0);
 
 	gtk_widget_show(main_vbox);
 	gtk_widget_show_all(menubar);
 	gtk_widget_show_all(toolbar);
-	//gtk_widget_show_all(statusbar);
+	gtk_widget_show_all(statusbar);
 
 	gtk_container_add(GTK_CONTAINER(window), main_vbox);
 }
@@ -315,7 +329,7 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer data)
 	{
 		LXAArchiveSupport *lpSupport = lxa_get_support_for_mime(archive->mime);
 		GSList *items = lxa_archive_support_view(lpSupport, archive, "/");
-		xa_main_window_set_contents(main_window, items, "/");
+		xa_main_window_set_contents(main_window, archive, items, "/");
 	}
 }
 
@@ -326,7 +340,26 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 }
 
 void 
-xa_main_window_set_contents(XAMainWindow *main_window, GSList *items, gchar *path)
+xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items, gchar *path)
 {
+	gint x;
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+	GtkListStore *liststore = gtk_list_store_newv(archive->column_number, archive->column_types);
 
+	for(x = 0; x < archive->column_number; x++)
+	{
+		switch(archive->column_types[x])
+		{
+			case(G_TYPE_STRING):
+				renderer = gtk_cell_renderer_text_new();
+				column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x, NULL);
+				break;
+		}
+		gtk_tree_view_column_set_resizable(column, TRUE);
+		gtk_tree_view_column_set_sort_column_id(column, x);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(main_window->treeview), column);
+	}
+
+	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
