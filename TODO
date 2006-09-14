@@ -9,8 +9,14 @@ Long Version:
 ---------------------------------------------------------------
 
 +-+-+-+
-  Speedup GUI
+	
+  Fix table column stuff work correctly
++-+-+-+
 
+  Implement table-columns to gnu-tar archive;
++-+-+-+
+
+  Speedup GUI
 +-+-+-+
 
 	Implement View support (for all support-objects)

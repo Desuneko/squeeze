@@ -157,7 +157,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	GSList *tmp_list;
 	GSList *tmp_list_children;
 	gchar **path_items;
-	LXAEntry *tmp_entry;
+	LXAEntry *tmp_entry = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
 	tmp_list = g_slist_find_custom(archive->root_entries, path_items[0], (GCompareFunc)lxa_archive_lookup_dir);
 	if(!tmp_list)
@@ -187,12 +187,15 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	return tmp_entry;
 }
 
+/* FIXME: ***HACK*** ***HACK*** */
 GSList *
 lxa_archive_get_children(LXAArchive *archive, gchar *path)
 {
-	gint i;
+	gint i = 0;
 	GSList *tmp_list = archive->root_entries;
-	gchar **path_items = g_strsplit_set(path, "/\n", -1);
+	if(path[0] == '/')
+		i++;
+	gchar **path_items = g_strsplit_set(&path[i], "/\n", -1);
 	for(i = 0; path_items[i]?strlen(path_items[i]):0; i++)
 	{
 		tmp_list = g_slist_find_custom(tmp_list, path_items[i], (GCompareFunc)lxa_archive_lookup_dir);

@@ -20,6 +20,7 @@
  */
 
 #include <config.h>
+#include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
@@ -151,7 +152,6 @@ void
 xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
 {
 	GValue *val = g_new0(GValue, 1);
-	gboolean active;
 
 	val = g_value_init(val, G_TYPE_BOOLEAN);
 
@@ -166,7 +166,6 @@ void
 xa_extract_dialog_option_child_notify (GtkWidget *widget, GParamSpec *pspec, gpointer data)
 {
 	GValue *val = g_new0(GValue, 1);
-	gboolean active;
 	if(strcmp(g_param_spec_get_name(pspec), "text"))
 	{
 		val = g_value_init(val, G_TYPE_STRING);

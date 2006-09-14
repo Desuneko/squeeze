@@ -345,6 +345,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
 		g_free(command);
 	}
+	return 0;
 }
 
 void
@@ -374,16 +375,8 @@ gboolean
 lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
 	GIOStatus status = G_IO_STATUS_NORMAL;
-	FILE *out_file = NULL;
 	LXAArchive *archive = data;
 	gchar *line	= NULL;
-	gchar **line_items = NULL;
-	guint read = 0;
-	GError *error = NULL;
-	gchar *command = NULL;
-	GSList *tmp_list = NULL;
-	GSList *parent_list = NULL;
-	gint i = 0, n = 0;
 	LXAEntry *entry;
 
 
