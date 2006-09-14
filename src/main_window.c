@@ -17,6 +17,7 @@
  */
 
 #include <config.h>
+#include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
@@ -33,6 +34,9 @@ xa_main_window_init(XAMainWindow *);
 
 void
 cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeViewColumn *column, gpointer userdata);
+
+void 
+xa_main_window_set_contents(XAMainWindow *, LXAArchive *, GSList *);
 
 GType
 xa_main_window_get_type ()
@@ -75,7 +79,10 @@ xa_main_window_init(XAMainWindow *window)
 	GtkWidget     *tmp_image;
 	GtkAccelGroup *accel_group = gtk_accel_group_new();
 
-	window->working_dir = NULL;
+	window->working_node = NULL;
+	window->parent_node = g_new0(GValue, 1);
+	window->parent_node = g_value_init(window->parent_node, G_TYPE_STRING);
+	g_value_set_string(window->parent_node, "..");
 
 	gtk_window_set_default_icon_from_file(DATADIR "/pixmaps/xarchiver.png", NULL);
 	main_vbox = gtk_vbox_new(FALSE, 0);
@@ -352,8 +359,8 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 			gtk_tree_view_append_column(GTK_TREE_VIEW(main_window->treeview), column);
 		}
 		gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
-		GSList *items = lxa_archive_get_children(archive, "");
-		xa_main_window_set_contents(main_window, archive, items, "");
+		main_window->working_node = g_slist_prepend(main_window->working_node, &(archive->root_entry));
+		xa_main_window_set_contents(main_window, archive, archive->root_entry.children);
 	}
 }
 
@@ -364,20 +371,23 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 }
 
 void 
-xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items, gchar *path)
+xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *liststore = gtk_tree_view_get_model(GTK_TREE_VIEW(main_window->treeview));
 
 	gtk_list_store_clear(GTK_LIST_STORE(liststore));
 
-	main_window->working_dir = path;
-
 	while(items)
 	{
 		gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
 		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, ((LXAEntry *)items->data)->filename);
 		items = items->next;
+	}
+	if(g_slist_length(main_window->working_node) > 1)
+	{
+		gtk_list_store_prepend(GTK_LIST_STORE(liststore), &iter);
+		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, main_window->parent_node);
 	}
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
@@ -386,6 +396,7 @@ void
 cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeViewColumn *column, gpointer userdata)
 {
 	GtkTreeIter iter;
+	GSList *items = NULL;
 	GValue *value = g_new0(GValue, 1);
 	XAMainWindow *main_window = userdata;
 
@@ -394,13 +405,25 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	gtk_tree_model_get_iter(tree_model, &iter, treepath);
 	gtk_tree_model_get_value(tree_model, &iter, 0, value);
 
-	gchar *path = g_strconcat(main_window->working_dir, "/", g_value_get_string(value), NULL);
+	const gchar *item_filename = g_value_get_string(value);
+	if(!strcmp(item_filename, "..")) /* pop */
+	{
+		main_window->working_node = g_slist_delete_link(main_window->working_node, main_window->working_node);
+	}
+	else
+	{
+		LXAEntry *entry = lxa_entry_get_child(((LXAEntry *)main_window->working_node->data), item_filename);
+		if(g_slist_length(entry->children))
+		{
+			main_window->working_node = g_slist_prepend(main_window->working_node, entry);
+		}
+		else
+		{ }
+	}
+	items = ((LXAEntry *)main_window->working_node->data)->children;
 
-	g_debug("%s\n", path);
-
-	GSList *items = lxa_archive_get_children(lp_xa_archive, path);
 	if(items)
-		xa_main_window_set_contents(main_window, lp_xa_archive, items, path);
+		xa_main_window_set_contents(main_window, lp_xa_archive, items);
 /*	else*/
 		/* 'view' */
 

@@ -89,6 +89,9 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 static void
 lxa_archive_init(LXAArchive *archive)
 {
+		archive->root_entry.filename = g_new0(GValue, 1);
+		archive->root_entry.filename = g_value_init(archive->root_entry.filename, G_TYPE_STRING);
+		g_value_set_string(archive->root_entry.filename, "/");
 }
 
 static void
@@ -97,6 +100,7 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
+	g_free(archive->root_entry.filename);
 }
 
 LXAArchive *
@@ -159,15 +163,15 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	gchar **path_items;
 	LXAEntry *tmp_entry = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
-	tmp_list = g_slist_find_custom(archive->root_entries, path_items[0], (GCompareFunc)lxa_archive_lookup_dir);
+	tmp_list = g_slist_find_custom(archive->root_entry.children, path_items[0], (GCompareFunc)lxa_archive_lookup_dir);
 	if(!tmp_list)
 	{
 		tmp_entry = g_new0(LXAEntry, 1);
 		tmp_entry->filename = g_new0(GValue, 1);
 		tmp_entry->filename = g_value_init(tmp_entry->filename, G_TYPE_STRING);
 		g_value_set_string(tmp_entry->filename, path_items[0]);
-		archive->root_entries = g_slist_prepend(archive->root_entries, tmp_entry);
-		tmp_list = archive->root_entries;
+		archive->root_entry.children = g_slist_prepend(archive->root_entry.children, tmp_entry);
+		tmp_list = archive->root_entry.children;
 	}
 	for(i = 1; path_items[i]?strlen(path_items[i]):0;i++)
 	{
@@ -175,7 +179,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 		if(!tmp_list_children)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
-		tmp_entry->filename = g_new0(GValue, 1);
+			tmp_entry->filename = g_new0(GValue, 1);
 			tmp_entry->filename = g_value_init(tmp_entry->filename, G_TYPE_STRING);
 			g_value_set_string(tmp_entry->filename, path_items[i]);
 			((LXAEntry *)tmp_list->data)->children = g_slist_prepend(((LXAEntry *)tmp_list->data)->children, tmp_entry);
@@ -187,22 +191,9 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	return tmp_entry;
 }
 
-/* FIXME: ***HACK*** ***HACK*** */
-GSList *
-lxa_archive_get_children(LXAArchive *archive, gchar *path)
+LXAEntry *
+lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
-	gint i = 0;
-	GSList *tmp_list = archive->root_entries;
-	if(path[0] == '/')
-		i++;
-	gchar **path_items = g_strsplit_set(&path[i], "/\n", -1);
-	for(i = 0; path_items[i]?strlen(path_items[i]):0; i++)
-	{
-		tmp_list = g_slist_find_custom(tmp_list, path_items[i], (GCompareFunc)lxa_archive_lookup_dir);
-		if(!tmp_list)
-			break;
-		tmp_list = ((LXAEntry *)tmp_list->data)->children;
-	}
-	g_strfreev(path_items);
-	return tmp_list;
+	GSList *list = g_slist_find_custom(entry->children, filename,(GCompareFunc)lxa_archive_lookup_dir);
+	return (LXAEntry *)list->data;
 }

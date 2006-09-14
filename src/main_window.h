@@ -88,7 +88,8 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_extract;
 		GtkToolItem *tool_item_remove;
 	} toolbar;
-	gchar *working_dir;
+	GValue *parent_node;
+	GSList *working_node;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -106,7 +107,6 @@ void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
 
 void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata);
-void xa_main_window_set_contents(XAMainWindow *, LXAArchive *, GSList *, gchar *);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

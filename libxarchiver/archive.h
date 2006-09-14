@@ -69,13 +69,13 @@ struct _LXAArchive
 	LXAArchiveStatus    old_status;
 	GPid                child_pid;
 	gpointer            support;
-	GSList             *root_entries;
 	gchar              *tmp_file;
 	gchar              *files;
 	gboolean            has_passwd;
 	gint                column_number;
 	GType              *column_types;
 	gchar             **column_names;
+	LXAEntry            root_entry;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;
@@ -93,6 +93,7 @@ void               lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus 
 gint               lxa_archive_lookup_dir(gpointer entry, gconstpointer filename);
 LXAEntry          *lxa_archive_add_file(LXAArchive *archive, gchar *path);
 GSList            *lxa_archive_get_children(LXAArchive *archive, gchar *path);
+LXAEntry          *lxa_entry_get_child(LXAEntry *, const gchar *);
 
 
 G_END_DECLS
