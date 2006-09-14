@@ -388,6 +388,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			if (line == NULL)
  				break;
 			entry = lxa_archive_add_file(archive, line);
+			g_free(line);
 			/* TODO: Add data */
 		}
 	}
@@ -398,6 +399,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 #endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
 		return FALSE; 
 	}
 	return TRUE;

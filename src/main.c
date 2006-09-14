@@ -102,9 +102,6 @@ int main(int argc, char **argv)
  	textdomain (GETTEXT_PACKAGE);
 	#endif
 
-	g_thread_init(NULL);
-
-
 	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))
 	{
 		if ( cli_error != NULL )

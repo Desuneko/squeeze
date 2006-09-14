@@ -321,6 +321,8 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 			gtk_widget_set_sensitive(GTK_WIDGET(parent_window->toolbar.tool_item_remove), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(parent_window->toolbar.tool_item_extract), TRUE);
 			g_signal_connect(G_OBJECT(lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), parent_window);
+			g_slist_free(parent_window->working_node);
+			parent_window->working_node = NULL;
 			lpSupport = lxa_get_support_for_mime(lp_xa_archive->mime);
 			lxa_archive_support_refresh(lpSupport, lp_xa_archive);
 		}
@@ -344,6 +346,13 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 	XAMainWindow *main_window = XA_MAIN_WINDOW(userdata);
 	if(archive->old_status == LXA_ARCHIVESTATUS_REFRESH)
 	{
+		GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(main_window->treeview));
+		while(columns)
+		{
+			gtk_tree_view_remove_column(GTK_TREE_VIEW(main_window->treeview), columns->data);
+			columns = columns->next;
+		}
+		g_list_free(columns);
 		liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
 		for(x = 0; x < archive->column_number; x++)
 		{
@@ -427,6 +436,6 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 /*	else*/
 		/* 'view' */
 
-g_free(value);
-
+	g_value_reset(value);
+	g_free(value);
 }
