@@ -101,6 +101,7 @@ lxa_archive_finalize(GObject *object)
 	if(archive->path)
 		g_free(archive->path);
 	g_free(archive->root_entry.filename);
+	/* TODO: free archive->root_entry.children */
 }
 
 LXAArchive *

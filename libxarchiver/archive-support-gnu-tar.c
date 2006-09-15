@@ -18,6 +18,8 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
+#include <stdlib.h>
+#include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 
@@ -341,7 +343,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 		archive->column_names[0] = g_strdup("filename");
 		//empty archive-tree
 		/* use tvf once implementation of path recognition is stable */
-		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tf " , archive->path, NULL);
+		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tvf " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
 		g_free(command);
 	}
@@ -379,6 +381,11 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	gchar *line	= NULL;
 	LXAEntry *entry;
 
+	GValue *props = NULL; 
+	gint n = 0, a = 0;
+	gchar *temp_filename = NULL;
+	gchar *_size = NULL;
+
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
@@ -387,7 +394,73 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
 			if (line == NULL)
  				break;
-			entry = lxa_archive_add_file(archive, line);
+
+			props = g_new0(GValue, 6);
+
+			g_value_init(&props[0], G_TYPE_INT);
+			gint _rights = 0;
+			/* _rights |= (line[0]  == '-')?0x0:0x00000001; // folder / file? */
+			_rights |= (line[1]  == '-')?0x0:0x00000001;
+			_rights |= (line[2]  == '-')?0x0:0x00000002;
+			_rights |= (line[3]  == '-')?0x0:0x00000004;
+			_rights |= (line[4]  == '-')?0x0:0x00000008;
+			_rights |= (line[5]  == '-')?0x0:0x00000010;
+			_rights |= (line[6]  == '-')?0x0:0x00000020;
+			_rights |= (line[7]  == '-')?0x0:0x00000040;
+			_rights |= (line[9]  == '-')?0x0:0x00000080;
+			_rights |= (line[10] == '-')?0x0:0x00000100;
+			g_value_set_int(&props[0], _rights);
+
+			for(n=13; n < strlen(line); n++)
+				if(line[n] == ' ') break;
+
+			g_value_init(&props[1], G_TYPE_STRING);
+			g_value_set_string(&props[1], g_strndup(&line[11], n-11));
+
+			for(; n < strlen(line); n++)
+				if(line[n] >= '0' && line[n] <= '9') break;
+
+			a = n;
+
+			for(; n < strlen(line); n++)
+				if(line[n] == ' ') break;
+
+			g_value_init(&props[2], G_TYPE_UINT64);
+			_size = g_strndup(&line[a], n-a);
+			g_value_set_uint64(&props[2], (guint64)atof ( _size ));
+			g_free (_size);
+
+			a = n++;
+
+			for(; n < strlen(line); n++) // DATE
+				if(line[n] == ' ') break;
+
+			g_value_init(&props[3], G_TYPE_STRING);
+			g_value_set_string ( &props[3], g_strndup (&line[n-10], 10) );
+
+			a = n++;
+			for (; n < strlen(line); n++) // TIME
+				if (line[n] == ' ') break;
+
+			g_value_init(&props[4], G_TYPE_STRING);
+			g_value_set_string ( &props[4], g_strndup (&line[n-8], 8) );
+
+			g_value_init(&props[5], G_TYPE_STRING);
+
+			gchar *temp = g_strrstr (&line[n],"->"); 
+			if (temp ) 
+			{ 
+				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line) - strlen(temp) - n )); 
+				g_value_set_string (&props[5], g_strstrip(g_strndup (&temp[3] , strlen(temp))) ); 
+			} 
+			else 
+			{ 
+				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line)-n-1)); 
+				g_value_set_string (&props[5], g_strdup(" ") ); 
+			} 
+ 
+			entry = lxa_archive_add_file(archive, temp_filename);
+			entry->props = props;
 			g_free(line);
 			/* TODO: Add data */
 		}

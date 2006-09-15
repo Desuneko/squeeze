@@ -34,6 +34,7 @@ typedef enum
 
 typedef struct {
 	GValue *filename;
+	GValue *props;
 	GSList *children;
 } LXAEntry;
 
