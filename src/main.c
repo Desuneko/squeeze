@@ -217,14 +217,18 @@ int main(int argc, char **argv)
 
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
 	{
-		if(argc > 1)
-			lxa_open_archive(argv[1], &lp_xa_archive);
 		
 		/* Show main window */
 		main_window = xa_main_window_new();
 		gtk_widget_set_size_request(main_window, 400, 300);
 		gtk_widget_show_all(main_window);
 		g_signal_connect(G_OBJECT(main_window), "destroy", gtk_main_quit, NULL);
+
+		if(argc > 1)
+		{
+			lxa_open_archive(argv[1], &lp_xa_archive);
+			g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), main_window);
+		}
 	} else
 		if(!opened_archives)
 			return 0;

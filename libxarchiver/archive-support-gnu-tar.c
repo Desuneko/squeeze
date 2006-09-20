@@ -36,7 +36,12 @@ enum
 {
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE = 1,
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH,
-	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_TIME,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_OWNER,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_RIGHTS
 };
 
 void
@@ -146,6 +151,42 @@ lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclas
 		0,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP, pspec);
+
+	pspec = g_param_spec_boolean("view-size",
+		"View file-size",
+		"View file-size",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE, pspec);
+
+	pspec = g_param_spec_boolean("view-rights",
+		"View permissions",
+		"View permissions",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_RIGHTS, pspec);
+
+	pspec = g_param_spec_boolean("view-owner",
+		"View owner",
+		"View owner",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_OWNER, pspec);
+
+	pspec = g_param_spec_boolean("view-date",
+		"View date",
+		"View date",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE, pspec);
+
+	pspec = g_param_spec_boolean("view-time",
+		"View time",
+		"View time",
+		TRUE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_TIME, pspec);
+
 }
 
 LXAArchiveSupport*
@@ -153,7 +194,7 @@ lxa_archive_support_gnu_tar_new()
 {
 	LXAArchiveSupportGnuTar *support;
 
-	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, NULL);
+	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, "view-time", TRUE, "view-date", TRUE, "view-owner", TRUE, "view-rights", TRUE, NULL);
 
 	return LXA_ARCHIVE_SUPPORT(support);
 }
@@ -324,6 +365,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 gint
 lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 {
+	guint i = 1;
 	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
 		g_critical("Support is not GNU TAR");
@@ -337,12 +379,55 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 	else
 	{
 		archive->column_number = 1;
-		archive->column_types = g_new0(GType, 1);
+		archive->entry_props_size = 0;
+
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) 
+			archive->column_number++;
+
+		archive->column_types = g_new0(GType, archive->column_number);
+		archive->column_names = g_new0(gchar *, archive->column_number);
+
 		archive->column_types[0] = G_TYPE_STRING;
-		archive->column_names = g_new0(gchar *, 1);
-		archive->column_names[0] = g_strdup("filename");
-		//empty archive-tree
-		/* use tvf once implementation of path recognition is stable */
+		archive->column_names[0] = g_strdup("Filename");
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("Rights");
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("Owner");
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) {
+			archive->column_types[i] = G_TYPE_UINT64;
+			archive->column_names[i] = g_strdup("Size");
+			i++;
+			archive->entry_props_size += sizeof(guint64);
+		}
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("Date");
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("Time");
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		//TODO: empty archive-tree
 		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tvf " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
 		g_free(command);
@@ -373,6 +458,7 @@ lxa_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 	lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_compress_parse_output, NULL);
 }
 
+/* TODO: fix g_value stuff */
 gboolean
 lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
@@ -381,8 +467,9 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	gchar *line	= NULL;
 	LXAEntry *entry;
 
-	GValue *props = NULL; 
-	gint n = 0, a = 0;
+	gpointer props = NULL; 
+	gpointer props_iter = NULL;
+	gint n = 0, a = 0, i = 0;
 	gchar *temp_filename = NULL;
 	gchar *_size = NULL;
 
@@ -391,78 +478,85 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	{
 		while(TRUE)
 		{
+			i = 0;
+
 			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
 			if (line == NULL)
  				break;
 
-			props = g_new0(GValue, 6);
+			props = g_malloc0(archive->entry_props_size);
+			props_iter = props;
 
-			g_value_init(&props[0], G_TYPE_INT);
-			gint _rights = 0;
-			/* _rights |= (line[0]  == '-')?0x0:0x00000001; // folder / file? */
-			_rights |= (line[1]  == '-')?0x0:0x00000001;
-			_rights |= (line[2]  == '-')?0x0:0x00000002;
-			_rights |= (line[3]  == '-')?0x0:0x00000004;
-			_rights |= (line[4]  == '-')?0x0:0x00000008;
-			_rights |= (line[5]  == '-')?0x0:0x00000010;
-			_rights |= (line[6]  == '-')?0x0:0x00000020;
-			_rights |= (line[7]  == '-')?0x0:0x00000040;
-			_rights |= (line[9]  == '-')?0x0:0x00000080;
-			_rights |= (line[10] == '-')?0x0:0x00000100;
-			g_value_set_int(&props[0], _rights);
+			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights)
+			{
+				(*(gchar **)props_iter) = g_strndup (line, 10);
+				props_iter += sizeof(gchar *);
+			}
+
 
 			for(n=13; n < strlen(line); n++)
 				if(line[n] == ' ') break;
 
-			g_value_init(&props[1], G_TYPE_STRING);
-			g_value_set_string(&props[1], g_strndup(&line[11], n-11));
+			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner)
+			{
+				(*(gchar **)props_iter) = g_strndup (&line[11], n-11);
+				props_iter += sizeof(gchar *);
+			}
 
 			for(; n < strlen(line); n++)
 				if(line[n] >= '0' && line[n] <= '9') break;
 
-			a = n;
+			a = ++n;
 
 			for(; n < strlen(line); n++)
 				if(line[n] == ' ') break;
 
-			g_value_init(&props[2], G_TYPE_UINT64);
-			_size = g_strndup(&line[a], n-a);
-			g_value_set_uint64(&props[2], (guint64)atof ( _size ));
-			g_free (_size);
+			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
+			{
+				_size = g_strndup(&line[a], n-a);
+				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
+				g_free (_size);
+				props_iter += sizeof(guint64);
+			}
 
-			a = n++;
+			a = ++n;
 
 			for(; n < strlen(line); n++) // DATE
 				if(line[n] == ' ') break;
 
-			g_value_init(&props[3], G_TYPE_STRING);
-			g_value_set_string ( &props[3], g_strndup (&line[n-10], 10) );
+			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date)
+			{
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
+			}
 
-			a = n++;
+			a = ++n;
 			for (; n < strlen(line); n++) // TIME
 				if (line[n] == ' ') break;
 
-			g_value_init(&props[4], G_TYPE_STRING);
-			g_value_set_string ( &props[4], g_strndup (&line[n-8], 8) );
+			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time)
+			{
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
+			}
 
-			g_value_init(&props[5], G_TYPE_STRING);
+			/* g_value_init(&props[5], G_TYPE_STRING);*/
 
 			gchar *temp = g_strrstr (&line[n],"->"); 
 			if (temp ) 
 			{ 
 				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line) - strlen(temp) - n )); 
-				g_value_set_string (&props[5], g_strstrip(g_strndup (&temp[3] , strlen(temp))) ); 
+				/*g_value_set_string (&props[5], g_strstrip(g_strndup (&temp[3] , strlen(temp))) ); */
 			} 
 			else 
 			{ 
 				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line)-n-1)); 
-				g_value_set_string (&props[5], g_strdup(" ") ); 
+				/*g_value_set_string (&props[5], g_strdup(" ") ); */
 			} 
  
 			entry = lxa_archive_add_file(archive, temp_filename);
 			entry->props = props;
 			g_free(line);
-			/* TODO: Add data */
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
@@ -591,6 +685,22 @@ lxa_archive_support_gnu_tar_set_property(GObject *object, guint prop_id, const G
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP:
 			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_strip = g_value_get_uint(value);
 			break;
+
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_size = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_date = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_TIME:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_time = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_OWNER:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_owner = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_RIGHTS:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_rights = g_value_get_boolean(value);
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);
 			break;
@@ -610,6 +720,22 @@ lxa_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue 
 			break;
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP:
 			g_value_set_uint(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_strip);
+			break;
+
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_size);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_date);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_TIME:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_time);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_OWNER:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_owner);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_RIGHTS:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_rights);
 			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);

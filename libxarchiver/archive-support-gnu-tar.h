@@ -50,6 +50,12 @@ struct _LXAArchiveSupportGnuTar
 	gboolean _extr_overwrite;
 	gboolean _extr_touch;
 	guint    _extr_strip;
+
+	gboolean _view_size;
+	gboolean _view_date;
+	gboolean _view_time;
+	gboolean _view_owner;
+	gboolean _view_rights;
 };
 
 typedef struct _LXAArchiveSupportGnuTarClass LXAArchiveSupportGnuTarClass;

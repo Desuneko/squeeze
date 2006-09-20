@@ -324,6 +324,7 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 			g_slist_free(parent_window->working_node);
 			parent_window->working_node = NULL;
 			lpSupport = lxa_get_support_for_mime(lp_xa_archive->mime);
+
 			lxa_archive_support_refresh(lpSupport, lp_xa_archive);
 		}
 
@@ -354,11 +355,13 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 		}
 		g_list_free(columns);
 		liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
+
 		for(x = 0; x < archive->column_number; x++)
 		{
 			switch(archive->column_types[x])
 			{
 				case(G_TYPE_STRING):
+				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
 					column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x, NULL);
 					break;
@@ -382,15 +385,50 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 void 
 xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items)
 {
+	gint i = 0;
 	GtkTreeIter iter;
 	GtkTreeModel *liststore = gtk_tree_view_get_model(GTK_TREE_VIEW(main_window->treeview));
+	GValue *tmp_value;
+	gpointer props;
+	gpointer props_iter;
 
 	gtk_list_store_clear(GTK_LIST_STORE(liststore));
 
 	while(items)
 	{
 		gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
-		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, ((LXAEntry *)items->data)->filename);
+		tmp_value = g_new0(GValue, 1);
+		tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
+		g_value_set_string(tmp_value, ((LXAEntry *)items->data)->filename);
+		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, tmp_value);
+
+		props = ((LXAEntry *)items->data)->props;
+		if(props)
+		{
+			props_iter = props;
+			for(i = 0; i < archive->column_number-1; i++)
+			{
+				tmp_value = g_new0(GValue, 1);
+				tmp_value = g_value_init(tmp_value, archive->column_types[i]);
+				switch(archive->column_types[i])
+				{
+					case(G_TYPE_UINT):
+						g_value_set_uint(tmp_value, *(guint *)props_iter);
+						props_iter += sizeof(guint);
+						break;
+					case(G_TYPE_STRING):
+						g_value_set_string(tmp_value, *(gchar **)props_iter);
+						props_iter += sizeof(gchar *);
+						break;
+					case(G_TYPE_UINT64):
+						g_value_set_uint64(tmp_value, *(guint64 *)props_iter);
+						props_iter += sizeof(guint64);
+						break;
+				}
+				gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i+1, tmp_value);
+				g_free(tmp_value);
+			}
+		}
 		items = items->next;
 	}
 	if(g_slist_length(main_window->working_node) > 1)

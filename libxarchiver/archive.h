@@ -33,11 +33,10 @@ typedef enum
 } LXAArchiveStatus;
 
 typedef struct {
-	GValue *filename;
-	GValue *props;
+	gchar *filename;
 	GSList *children;
+	gpointer props;
 } LXAEntry;
-
 
 #define LXA_ARCHIVE(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
@@ -73,10 +72,11 @@ struct _LXAArchive
 	gchar              *tmp_file;
 	gchar              *files;
 	gboolean            has_passwd;
-	gint                column_number;
+	guint               column_number;
 	GType              *column_types;
 	gchar             **column_names;
 	LXAEntry            root_entry;
+	gushort             entry_props_size;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;

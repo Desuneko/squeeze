@@ -38,6 +38,9 @@ lxa_archive_init(LXAArchive *archive);
 static void
 lxa_archive_finalize(GObject *object);
 
+void
+lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive);
+
 static gint lxa_archive_signals[1];
 
 
@@ -89,9 +92,7 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 static void
 lxa_archive_init(LXAArchive *archive)
 {
-		archive->root_entry.filename = g_new0(GValue, 1);
-		archive->root_entry.filename = g_value_init(archive->root_entry.filename, G_TYPE_STRING);
-		g_value_set_string(archive->root_entry.filename, "/");
+		archive->root_entry.filename = g_strdup("/");
 }
 
 static void
@@ -100,8 +101,8 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	g_free(archive->root_entry.filename);
 	/* TODO: free archive->root_entry.children */
+	lxa_archive_free_entry(&archive->root_entry, archive);
 }
 
 LXAArchive *
@@ -146,7 +147,7 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 gint
 lxa_archive_lookup_dir(gpointer entry, gconstpointer filename)
 {
-	return strcmp(g_value_get_string(((LXAEntry *)entry)->filename), filename);
+	return strcmp(((LXAEntry *)entry)->filename, filename);
 }
 
 /* 
@@ -168,9 +169,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	if(!tmp_list)
 	{
 		tmp_entry = g_new0(LXAEntry, 1);
-		tmp_entry->filename = g_new0(GValue, 1);
-		tmp_entry->filename = g_value_init(tmp_entry->filename, G_TYPE_STRING);
-		g_value_set_string(tmp_entry->filename, path_items[0]);
+		tmp_entry->filename = g_strdup(path_items[0]);
 		archive->root_entry.children = g_slist_prepend(archive->root_entry.children, tmp_entry);
 		tmp_list = archive->root_entry.children;
 	}
@@ -180,9 +179,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 		if(!tmp_list_children)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
-			tmp_entry->filename = g_new0(GValue, 1);
-			tmp_entry->filename = g_value_init(tmp_entry->filename, G_TYPE_STRING);
-			g_value_set_string(tmp_entry->filename, path_items[i]);
+			tmp_entry->filename = g_strdup(path_items[i]);
 			((LXAEntry *)tmp_list->data)->children = g_slist_prepend(((LXAEntry *)tmp_list->data)->children, tmp_entry);
 			tmp_list_children = ((LXAEntry *)tmp_list->data)->children;
 		}
@@ -197,4 +194,31 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
 	GSList *list = g_slist_find_custom(entry->children, filename,(GCompareFunc)lxa_archive_lookup_dir);
 	return (LXAEntry *)list->data;
+}
+
+void
+lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
+{
+	gint i = 0; 
+	gpointer props_iter = entry->props;
+
+	g_slist_foreach(entry->children, (GFunc)lxa_archive_free_entry, archive);
+	if(entry->props)
+	{
+		switch(archive->column_types[i])
+		{
+			case(G_TYPE_STRING):
+				g_free(*(gchar **)props_iter);
+				props_iter += sizeof(gchar *);
+				break;
+			case(G_TYPE_UINT):
+				props_iter += sizeof(guint);
+				break;
+			case(G_TYPE_UINT64):
+				props_iter += sizeof(guint64);
+				break;
+		}
+		g_free(entry->props);
+	}
+	g_free(entry->filename);
 }
