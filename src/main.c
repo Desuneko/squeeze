@@ -86,6 +86,17 @@ archive_initialized(LXAArchive *archive, gpointer data)
 {
 }
 
+void
+cb_main_window_destroy(XAMainWindow *window, gpointer data)
+{
+	if(window->lp_xa_archive)
+		opened_archives--;
+	if(opened_archives <= 0)
+	{
+		gtk_main_quit();
+	}
+}
+
 int main(int argc, char **argv)
 {
 	gint result = 0;
@@ -218,16 +229,35 @@ int main(int argc, char **argv)
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
 	{
 		
-		/* Show main window */
-		main_window = xa_main_window_new();
-		gtk_widget_set_size_request(main_window, 400, 300);
-		gtk_widget_show_all(main_window);
-		g_signal_connect(G_OBJECT(main_window), "destroy", gtk_main_quit, NULL);
-
 		if(argc > 1)
 		{
-			lxa_open_archive(argv[1], &lp_xa_archive);
-			g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), main_window);
+			opened_archives++;
+			for(i = 1; i < argc; i++)
+			{
+				/* Show main window */
+				main_window = xa_main_window_new();
+				g_signal_connect(G_OBJECT(main_window), "destroy", G_CALLBACK(cb_main_window_destroy), NULL);
+
+				if(!xa_main_window_open_archive(XA_MAIN_WINDOW(main_window), argv[i]))
+				{
+					opened_archives++;
+					gtk_widget_set_size_request(main_window, 400, 300);
+					gtk_widget_show_all(main_window);
+				} else
+				{
+					gtk_widget_destroy(main_window);
+				}
+			}
+			opened_archives--;
+			if(opened_archives <= 0)
+				return 1;
+		} else
+		{
+			/* Show main window */
+			main_window = xa_main_window_new();
+			g_signal_connect(G_OBJECT(main_window), "destroy", G_CALLBACK(cb_main_window_destroy), NULL);
+			gtk_widget_set_size_request(main_window, 400, 300);
+			gtk_widget_show_all(main_window);
 		}
 	} else
 		if(!opened_archives)

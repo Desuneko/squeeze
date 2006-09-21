@@ -261,6 +261,7 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = NULL;
 	gchar *new_archive_path = NULL;
+	XAMainWindow *parent_window = XA_MAIN_WINDOW(userdata);
 	gint result = 0;
 	
 	dialog = xa_new_archive_dialog_new();
@@ -273,12 +274,12 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 	if(result == GTK_RESPONSE_OK)
 	{
 		new_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(lp_xa_archive)
+		if(parent_window->lp_xa_archive)
 		{
-			g_object_unref(lp_xa_archive);
-			lp_xa_archive = NULL;
+			g_object_unref(parent_window->lp_xa_archive);
+			parent_window->lp_xa_archive = NULL;
 		}
-		if(!lxa_new_archive(new_archive_path, TRUE, NULL, &lp_xa_archive))
+		if(!lxa_new_archive(new_archive_path, TRUE, NULL, &(parent_window->lp_xa_archive)))
 		{
 			g_debug("Archive opened");
 		}
@@ -292,7 +293,6 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = NULL;
 	gchar *open_archive_path = NULL;
 	gint result = 0;
-	LXAArchiveSupport *lpSupport;
 	XAMainWindow *parent_window = XA_MAIN_WINDOW(userdata);
 	
 	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
@@ -309,28 +309,45 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	if(result == GTK_RESPONSE_OK)
 	{
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(lp_xa_archive)
+		if(parent_window->lp_xa_archive)
 		{
-			g_object_unref(lp_xa_archive);
-			lp_xa_archive = NULL;
+			g_object_unref(parent_window->lp_xa_archive);
+			parent_window->lp_xa_archive = NULL;
 		}
-		if(!lxa_open_archive(open_archive_path, &lp_xa_archive))
-		{
-			g_debug("Archive opened");
-			gtk_widget_set_sensitive(GTK_WIDGET(parent_window->toolbar.tool_item_add), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(parent_window->toolbar.tool_item_remove), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(parent_window->toolbar.tool_item_extract), TRUE);
-			g_signal_connect(G_OBJECT(lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), parent_window);
-			g_slist_free(parent_window->working_node);
-			parent_window->working_node = NULL;
-			lpSupport = lxa_get_support_for_mime(lp_xa_archive->mime);
 
-			lxa_archive_support_refresh(lpSupport, lp_xa_archive);
-		}
+		xa_main_window_open_archive(parent_window, open_archive_path);
 
 		gtk_widget_destroy (GTK_WIDGET (dialog) );
 	}
 
+}
+
+void
+cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
+{
+
+}
+
+gint
+xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path)
+{
+	LXAArchiveSupport *lp_support = NULL;
+
+	if(!lxa_open_archive(archive_path, &window->lp_xa_archive))
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+		g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
+		g_slist_free(window->working_node);
+		window->working_node = NULL;
+		lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
+
+		lxa_archive_support_refresh(lp_support, window->lp_xa_archive);
+		return 0;
+	}
+
+	return 1;
 }
 
 /*
@@ -374,13 +391,12 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 		main_window->working_node = g_slist_prepend(main_window->working_node, &(archive->root_entry));
 		xa_main_window_set_contents(main_window, archive, archive->root_entry.children);
 	}
+	if(archive->status == LXA_ARCHIVESTATUS_IDLE)
+	{
+		/* TODO:Fix stuff */
+	}
 }
 
-void
-cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
-{
-
-}
 
 void 
 xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items)
@@ -470,7 +486,7 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	items = ((LXAEntry *)main_window->working_node->data)->children;
 
 	if(items)
-		xa_main_window_set_contents(main_window, lp_xa_archive, items);
+		xa_main_window_set_contents(main_window, main_window->lp_xa_archive, items);
 /*	else*/
 		/* 'view' */
 

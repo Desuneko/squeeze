@@ -30,21 +30,21 @@ typedef enum {
 
 #define XA_MAIN_WINDOW(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			XA_TYPE_MAIN_WINDOW,      \
+			xa_main_window_get_type(),      \
 			XAMainWindow))
 
 #define XA_IS_MAIN_WINDOW(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_MAIN_WINDOW))
+			xa_main_window_get_type()))
 
 #define XA_MAIN_WINDOW_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			XA_TYPE_MAIN_WINDOW,      \
+			xa_main_window_get_type(),      \
 			XAMainWindowClass))
 
 #define XA_IS_MAIN_WINDOW_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_MAIN_WINDOW))
+			xa_main_window_get_type()))
 
 typedef struct _XAMainWindow XAMainWindow;
 
@@ -88,6 +88,7 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_extract;
 		GtkToolItem *tool_item_remove;
 	} toolbar;
+	LXAArchive *lp_xa_archive;
 	GValue *parent_node;
 	GSList *working_node;
 };
@@ -101,12 +102,14 @@ struct _XAMainWindowClass
 
 GtkWidget *xa_main_window_new();
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
+GType      xa_main_window_get_type ();
 
 void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
 
 void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata);
+gint xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */
