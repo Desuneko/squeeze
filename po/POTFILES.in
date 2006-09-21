@@ -9,5 +9,3 @@ src/main.c
 src/main_window.c
 src/new_dialog.c
 src/extract_dialog.c
-src/main_window_menu_bar.c
-src/main_window_tool_bar.c

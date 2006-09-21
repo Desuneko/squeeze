@@ -195,6 +195,7 @@ lxa_archive_support_gnu_tar_new()
 	LXAArchiveSupportGnuTar *support;
 
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, "view-time", TRUE, "view-date", TRUE, "view-owner", TRUE, "view-rights", TRUE, NULL);
+	/* support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, NULL); */
 
 	return LXA_ARCHIVE_SUPPORT(support);
 }
@@ -472,6 +473,9 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	gint n = 0, a = 0, i = 0;
 	gchar *temp_filename = NULL;
 	gchar *_size = NULL;
+
+	if(!LXA_IS_ARCHIVE(archive))
+		return FALSE;
 
 
 	if(cond & (G_IO_PRI | G_IO_IN))

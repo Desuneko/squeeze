@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 01:18+0200\n"
+"Report-Msgid-Bugs-To: psybsd@gmail.com\n"
+"POT-Creation-Date: 2006-09-21 23:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:127
+#: ../libxarchiver/archive-support-gnu-tar.c:133
 #: ../libxarchiver/archive-support-zip.c:104
 msgid "Overwrite existing files"
 msgstr ""
 
-#: ../libxarchiver/archive-support-gnu-tar.c:128
+#: ../libxarchiver/archive-support-gnu-tar.c:134
 #: ../libxarchiver/archive-support-zip.c:105
 msgid "Overwrite existing files on extraction"
 msgstr ""
@@ -47,11 +47,11 @@ msgstr ""
 msgid "Version information"
 msgstr ""
 
-#: ../src/main.c:108
+#: ../src/main.c:119
 msgid "[archive name]"
 msgstr ""
 
-#: ../src/main.c:112
+#: ../src/main.c:123
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -61,7 +61,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/main.c:185
+#: ../src/main.c:196
 msgid "Could not create archive, MIME-type unsupported"
 msgstr ""
 
@@ -69,55 +69,87 @@ msgstr ""
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/main.c:202
+#: ../src/main.c:213
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 
-#: ../src/main_window.c:170
+#: ../src/main_window.c:94
+msgid "_Archive"
+msgstr ""
+
+#: ../src/main_window.c:95
+msgid "A_ction"
+msgstr ""
+
+#: ../src/main_window.c:96
+msgid "_Help"
+msgstr ""
+
+#: ../src/main_window.c:136 ../src/main_window.c:175
+msgid "Add"
+msgstr ""
+
+#: ../src/main_window.c:141 ../src/main_window.c:179
+#: ../src/extract_dialog.c:99
+msgid "Extract"
+msgstr ""
+
+#: ../src/main_window.c:314
 msgid "Open archive"
+msgstr ""
+
+#: ../src/main_window.c:422
+msgid "Initializing archive..."
+msgstr ""
+
+#: ../src/main_window.c:425
+msgid "Reading archive contents..."
+msgstr ""
+
+#: ../src/main_window.c:428
+msgid "Extracting archive..."
+msgstr ""
+
+#: ../src/main_window.c:431
+msgid "Adding file(s) to archive..."
+msgstr ""
+
+#: ../src/main_window.c:434
+msgid "Removing file(s) from archive..."
+msgstr ""
+
+#: ../src/main_window.c:448
+msgid "Done"
+msgstr ""
+
+#: ../src/main_window.c:481
+msgid "Error"
+msgstr ""
+
+#: ../src/main_window.c:499
+msgid "Cancelled"
 msgstr ""
 
 #: ../src/new_dialog.c:85
 msgid "Create new archive"
 msgstr ""
 
-#: ../src/extract_dialog.c:74
+#: ../src/extract_dialog.c:75
 msgid "<b>Extract files:</b>"
 msgstr ""
 
-#: ../src/extract_dialog.c:75
+#: ../src/extract_dialog.c:76
 msgid "<b>Options:</b>"
 msgstr ""
 
-#: ../src/extract_dialog.c:85
+#: ../src/extract_dialog.c:86
 msgid "All files"
 msgstr ""
 
-#: ../src/extract_dialog.c:86
+#: ../src/extract_dialog.c:87
 msgid "Selected files"
 msgstr ""
 
-#: ../src/extract_dialog.c:98 ../src/main_window_menu_bar.c:122
-#: ../src/main_window_tool_bar.c:91
-msgid "Extract"
-msgstr ""
-
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:111
 msgid "Extract archive"
-msgstr ""
-
-#: ../src/main_window_menu_bar.c:75
-msgid "_Archive"
-msgstr ""
-
-#: ../src/main_window_menu_bar.c:76
-msgid "A_ction"
-msgstr ""
-
-#: ../src/main_window_menu_bar.c:77
-msgid "_Help"
-msgstr ""
-
-#: ../src/main_window_menu_bar.c:117 ../src/main_window_tool_bar.c:88
-msgid "Add"
 msgstr ""

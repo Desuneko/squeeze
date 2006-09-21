@@ -1,5 +1,4 @@
-/*
- *  Copyright (c) 2006 Stephan Arts <psyBSD@gmail.com>
+/* *  Copyright (c) 2006 Stephan Arts <psyBSD@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +22,10 @@
 #include <glib/gstdio.h>
 #include <glib-object.h> 
 #include <thunar-vfs/thunar-vfs.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+
 #include "archive.h"
 #include "archive-support.h"
 
@@ -41,7 +44,7 @@ lxa_archive_finalize(GObject *object);
 void
 lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive);
 
-static gint lxa_archive_signals[1];
+static gint lxa_archive_signals[2];
 
 
 GType
@@ -87,6 +90,17 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 			G_TYPE_NONE,
 			0,
 			NULL);
+
+	lxa_archive_signals[1] = g_signal_new("destroy",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
+			NULL);
 }
 
 static void
@@ -103,6 +117,18 @@ lxa_archive_finalize(GObject *object)
 		g_free(archive->path);
 	/* TODO: free archive->root_entry.children */
 	lxa_archive_free_entry(&archive->root_entry, archive);
+	g_debug("destroying archive");
+	switch(archive->status)
+	{
+		case(LXA_ARCHIVESTATUS_IDLE):
+		case(LXA_ARCHIVESTATUS_ERROR):
+		case(LXA_ARCHIVESTATUS_USERBREAK):
+			break;
+		default:
+			kill ( archive->child_pid , SIGHUP);
+			break;
+	}
+	g_signal_emit(G_OBJECT(archive), lxa_archive_signals[1], 0, archive);
 }
 
 LXAArchive *
@@ -136,11 +162,14 @@ lxa_archive_new(gchar *path, gchar *mime)
 void 
 lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 {
-	if(archive->status != status)
+	if(LXA_IS_ARCHIVE(archive))
 	{
-		archive->old_status = archive->status;
-		archive->status = status;
-		g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
+		if(archive->status != status)
+		{
+			archive->old_status = archive->status;
+			archive->status = status;
+			g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
+		} 
 	}
 }
 
@@ -221,4 +250,11 @@ lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
 		g_free(entry->props);
 	}
 	g_free(entry->filename);
+}
+
+gint
+lxa_stop_archive_child( LXAArchive *archive )
+{
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_USERBREAK);
+	return 0;
 }

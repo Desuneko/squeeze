@@ -27,7 +27,6 @@ typedef enum
 	LXA_ARCHIVESTATUS_EXTRACT,
 	LXA_ARCHIVESTATUS_REMOVE,
 	LXA_ARCHIVESTATUS_REFRESH,
-	LXA_ARCHIVESTATUS_VIEW,
 	LXA_ARCHIVESTATUS_ERROR,
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
@@ -45,7 +44,7 @@ typedef struct {
 
 #define LXA_IS_ARCHIVE(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_archive_get_type()))
+			lxa_archive_get_type()))
 
 #define LXA_ARCHIVE_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
@@ -68,6 +67,9 @@ struct _LXAArchive
 	LXAArchiveStatus    status;
 	LXAArchiveStatus    old_status;
 	GPid                child_pid;
+	GIOChannel         *ioc_in;
+	GIOChannel         *ioc_out;
+	GIOChannel         *ioc_err;
 	gpointer            support;
 	gchar              *tmp_file;
 	gchar              *files;

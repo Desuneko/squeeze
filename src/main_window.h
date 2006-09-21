@@ -53,6 +53,7 @@ struct _XAMainWindow
 	GtkWindow parent;
 	GtkWidget *treeview;
 	GtkWidget *scrollwindow;
+	GtkWidget *statusbar;
 	struct {
 		GtkWidget *menu_item_archive;
 		GtkWidget *menu_archive;
@@ -87,6 +88,7 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_add;
 		GtkToolItem *tool_item_extract;
 		GtkToolItem *tool_item_remove;
+		GtkToolItem *tool_item_stop;
 	} toolbar;
 	LXAArchive *lp_xa_archive;
 	GValue *parent_node;
@@ -107,6 +109,8 @@ GType      xa_main_window_get_type ();
 void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
 void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
+void cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata);
+void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
 void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata);
 gint xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path);

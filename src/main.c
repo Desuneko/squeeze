@@ -90,7 +90,10 @@ void
 cb_main_window_destroy(XAMainWindow *window, gpointer data)
 {
 	if(window->lp_xa_archive)
+	{
+		lxa_close_archive(window->lp_xa_archive);
 		opened_archives--;
+	}
 	if(opened_archives <= 0)
 	{
 		gtk_main_quit();

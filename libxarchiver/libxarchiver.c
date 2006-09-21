@@ -97,4 +97,5 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 void
 lxa_close_archive(LXAArchive *archive)
 {
+	g_object_unref(archive);
 }

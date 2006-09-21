@@ -74,6 +74,9 @@ lxa_open_archive( gchar *path,
 void 
 lxa_close_archive( LXAArchive *archive );
 
+gint
+lxa_stop_archive_child( LXAArchive *archive );
+
 G_END_DECLS
 
 #endif /* __LIBXARCHIVER_H__ */

@@ -9,6 +9,9 @@ Long Version:
 ---------------------------------------------------------------
 
 +-+-+-+
+	Fix 'Stop' Segfault
+
++-+-+-+
 	
   Fix table column stuff work correctly
 +-+-+-+
