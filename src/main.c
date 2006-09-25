@@ -107,6 +107,7 @@ int main(int argc, char **argv)
 	GtkWidget *main_window = NULL;
 	LXAArchive *lp_archive;
 	LXAArchiveSupport *lpSupport;
+	GtkIconTheme *icon_theme = NULL;
 	GError *cli_error = NULL;
 	gint i = 0;
 
@@ -232,19 +233,20 @@ int main(int argc, char **argv)
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
 	{
 		
+		icon_theme = gtk_icon_theme_get_default();
 		if(argc > 1)
 		{
 			opened_archives++;
 			for(i = 1; i < argc; i++)
 			{
 				/* Show main window */
-				main_window = xa_main_window_new();
+				main_window = xa_main_window_new(icon_theme);
 				g_signal_connect(G_OBJECT(main_window), "destroy", G_CALLBACK(cb_main_window_destroy), NULL);
 
 				if(!xa_main_window_open_archive(XA_MAIN_WINDOW(main_window), argv[i]))
 				{
 					opened_archives++;
-					gtk_widget_set_size_request(main_window, 400, 300);
+					gtk_widget_set_size_request(main_window, 500, 350);
 					gtk_widget_show_all(main_window);
 				} else
 				{
@@ -257,9 +259,9 @@ int main(int argc, char **argv)
 		} else
 		{
 			/* Show main window */
-			main_window = xa_main_window_new();
+			main_window = xa_main_window_new(icon_theme);
 			g_signal_connect(G_OBJECT(main_window), "destroy", G_CALLBACK(cb_main_window_destroy), NULL);
-			gtk_widget_set_size_request(main_window, 400, 300);
+			gtk_widget_set_size_request(main_window, 500, 350);
 			gtk_widget_show_all(main_window);
 		}
 	} else

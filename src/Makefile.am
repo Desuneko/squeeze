@@ -5,6 +5,7 @@ xarchiver_SOURCES = \
 	main_window.c main_window.h \
 	new_dialog.c new_dialog.h \
 	add_dialog.c add_dialog.h \
+	preferences_dialog.c preferences_dialog.h \
 	extract_dialog.c extract_dialog.h
 
 xarchiver_CFLAGS = \

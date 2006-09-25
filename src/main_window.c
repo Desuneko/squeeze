@@ -16,6 +16,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+ /*
+		FIXME: File is full of hacks.
+ */
+
 #include <config.h>
 #include <string.h>
 #include <glib.h>
@@ -24,20 +28,38 @@
 #include "main_window.h"
 #include "new_dialog.h"
 #include "extract_dialog.h"
+#include "add_dialog.h"
+#include "preferences_dialog.h"
 
 #include "main.h"
 
-static void
-xa_main_window_class_init(XAMainWindowClass *);
+enum {
+	XA_MAIN_WINDOW_SHOW_ICONS = 1
+};
 
 static void
 xa_main_window_init(XAMainWindow *);
+static void
+xa_main_window_class_init(XAMainWindowClass *);
+static void
+xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void
+xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 void
 cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeViewColumn *column, gpointer userdata);
 
+void
+xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window);
+
 void 
 xa_main_window_set_contents(XAMainWindow *, LXAArchive *, GSList *);
+
+void
+cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata);
+
+void
+cb_xa_main_settings_archive(GtkWidget *widget, gpointer userdata);
 
 GType
 xa_main_window_get_type ()
@@ -68,6 +90,18 @@ xa_main_window_get_type ()
 static void
 xa_main_window_class_init(XAMainWindowClass *window_class)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS (window_class);
+	GParamSpec *pspec = NULL;
+
+	object_class->set_property = xa_main_window_set_property;
+	object_class->get_property = xa_main_window_get_property;
+
+	pspec = g_param_spec_boolean("show_icons",
+		_("Show icons"),
+		_("Show icons"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_MAIN_WINDOW_SHOW_ICONS, pspec);
 }
 
 static void
@@ -85,7 +119,6 @@ xa_main_window_init(XAMainWindow *window)
 	window->parent_node = g_value_init(window->parent_node, G_TYPE_STRING);
 	g_value_set_string(window->parent_node, "..");
 
-	gtk_window_set_default_icon_from_file(DATADIR "/pixmaps/xarchiver.png", NULL);
 	main_vbox = gtk_vbox_new(FALSE, 0);
 
 	menubar = gtk_menu_bar_new();
@@ -120,6 +153,9 @@ xa_main_window_init(XAMainWindow *window)
 	window->menubar.menu_item_properties = gtk_image_menu_item_new_from_stock("gtk-properties", accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_properties);
 
+	window->menubar.menu_item_close = gtk_image_menu_item_new_from_stock("gtk-close", accel_group);
+	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_close);
+
 	menu_separator = gtk_separator_menu_item_new();
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), menu_separator);
 
@@ -128,6 +164,7 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_new), "activate", G_CALLBACK(cb_xa_main_new_archive), window);
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_open), "activate", G_CALLBACK(cb_xa_main_open_archive), window);
+	g_signal_connect(G_OBJECT(window->menubar.menu_item_close), "activate", G_CALLBACK(cb_xa_main_close_archive), window);
 	/* g_signal_connect(G_OBJECT(window->menubar.menu_item_properties), "activate", NULL, NULL);*/
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_quit), "activate", G_CALLBACK(gtk_main_quit), window);
 
@@ -153,6 +190,12 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_xa_main_add_to_archive), window);
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_xa_main_extract_archive), window);
+	g_signal_connect(G_OBJECT(window->menubar.menu_item_settings), "activate", G_CALLBACK(cb_xa_main_settings_archive), window);
+
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), FALSE);
 
 /* Help menu */
 	window->menubar.menu_item_about = gtk_image_menu_item_new_from_stock("gtk-about", accel_group);
@@ -229,15 +272,41 @@ xa_main_window_init(XAMainWindow *window)
 }
 
 GtkWidget *
-xa_main_window_new()
+xa_main_window_new(GtkIconTheme *icon_theme)
 {
 	GtkWidget *window;
+	GdkPixbuf *icon = gtk_icon_theme_load_icon(icon_theme, "xarchiver", 24, 0, NULL);
 
 	window = g_object_new(xa_main_window_get_type(),
 			"title", "Xarchiver " PACKAGE_VERSION,
 			NULL);
+	
+	gtk_window_set_icon(GTK_WINDOW(window), icon);
+	
 
 	return window;
+}
+
+static void
+xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case XA_MAIN_WINDOW_SHOW_ICONS:
+			g_value_set_boolean(value, XA_MAIN_WINDOW(object)->props._show_icons);
+			break;
+	}
+}
+
+static void
+xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case XA_MAIN_WINDOW_SHOW_ICONS:
+			XA_MAIN_WINDOW(object)->props._show_icons = g_value_get_boolean(value);
+			break;
+	}
 }
 
 GtkWidget *
@@ -277,7 +346,8 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = NULL;
 	gchar *new_archive_path = NULL;
-	XAMainWindow *parent_window = XA_MAIN_WINDOW(userdata);
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	LXAArchiveSupport *lp_support = NULL;
 	gint result = 0;
 	
 	dialog = xa_new_archive_dialog_new();
@@ -290,17 +360,51 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 	if(result == GTK_RESPONSE_OK)
 	{
 		new_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(parent_window->lp_xa_archive)
+		if(window->lp_xa_archive)
 		{
-			g_object_unref(parent_window->lp_xa_archive);
-			parent_window->lp_xa_archive = NULL;
+			g_object_unref(window->lp_xa_archive);
+			window->lp_xa_archive = NULL;
 		}
-		if(!lxa_new_archive(new_archive_path, TRUE, NULL, &(parent_window->lp_xa_archive)))
+		if(!lxa_new_archive(new_archive_path, TRUE, NULL, &(window->lp_xa_archive)))
 		{
 			g_debug("Archive opened");
+			g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
+			g_slist_free(window->working_node);
+			window->working_node = NULL;
+			lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
+
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_new), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_open), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
+
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_new), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_open), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
 		}
+		else
+			g_debug("Archive-creation failed");
 		gtk_widget_destroy (GTK_WIDGET (dialog) );
 	}
+}
+
+void
+cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata)
+{
+	g_object_unref(XA_MAIN_WINDOW(userdata)->lp_xa_archive);
+}
+
+void
+cb_xa_main_settings_archive(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget *dialog = xa_preferences_dialog_new();
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy(dialog);
 }
 
 void
@@ -309,10 +413,10 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = NULL;
 	gchar *open_archive_path = NULL;
 	gint result = 0;
-	XAMainWindow *parent_window = XA_MAIN_WINDOW(userdata);
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
 	
 	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
-																			 GTK_WINDOW(parent_window),
+																			 GTK_WINDOW(window),
 																			 GTK_FILE_CHOOSER_ACTION_OPEN,
 																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
@@ -325,13 +429,15 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	if(result == GTK_RESPONSE_OK)
 	{
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(parent_window->lp_xa_archive)
+		if(window->lp_xa_archive)
 		{
-			g_object_unref(parent_window->lp_xa_archive);
-			parent_window->lp_xa_archive = NULL;
+			g_object_unref(window->lp_xa_archive);
+			window->lp_xa_archive = NULL;
 		}
 
-		xa_main_window_open_archive(parent_window, open_archive_path);
+		xa_main_window_open_archive(window, open_archive_path);
+
+
 
 		gtk_widget_destroy (GTK_WIDGET (dialog) );
 	}
@@ -341,6 +447,20 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
+	GtkWidget *dialog = NULL;
+	gint result = 0;
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	LXAArchiveSupport *lp_support = NULL;
+
+	lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
+
+	dialog = xa_add_dialog_new(lp_support, window->lp_xa_archive, FALSE);
+	result = gtk_dialog_run (GTK_DIALOG (dialog) );
+	if(result == GTK_RESPONSE_OK)
+	{
+		gtk_widget_hide(GTK_WIDGET(dialog));
+	}
+	gtk_widget_destroy (GTK_WIDGET (dialog) );
 
 }
 
@@ -379,9 +499,35 @@ cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
 void
 xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 {
-	g_debug("AAA");
+	GtkTreeModel *liststore = gtk_tree_view_get_model(GTK_TREE_VIEW(window->treeview));
+	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
+
+	gtk_list_store_clear(GTK_LIST_STORE(liststore));
+
+	while(columns)
+	{
+		gtk_tree_view_remove_column(GTK_TREE_VIEW(window->treeview), columns->data);
+		columns = columns->next;
+	}
+	g_list_free(columns);
+
 	if(archive == window->lp_xa_archive)
 		window->lp_xa_archive = NULL;
+	
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_new), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_open), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
+
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_new), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_open), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+	g_debug("AAA");
 }
 
 gint
@@ -391,7 +537,6 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path)
 
 	if(!lxa_open_archive(archive_path, &window->lp_xa_archive))
 	{
-		g_signal_connect(G_OBJECT(window->lp_xa_archive), "destroy", G_CALLBACK(xa_main_window_archive_destroyed), window);
 		g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
 		g_slist_free(window->working_node);
 		window->working_node = NULL;
@@ -416,39 +561,42 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 	GtkListStore *liststore = NULL;
 	gint x = 0;
 	XAMainWindow *main_window = XA_MAIN_WINDOW(userdata);
+	gchar *status_message = NULL; 
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_INIT):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Initializing archive..."));
+			status_message = g_strdup(_("Initializing archive..."));
 			break;
 		case(LXA_ARCHIVESTATUS_REFRESH):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Reading archive contents..."));
+			status_message = g_strdup( _("Reading archive contents..."));
 			break;
 		case(LXA_ARCHIVESTATUS_EXTRACT):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Extracting archive..."));
+			status_message = g_strdup(_("Extracting archive..."));
 			break;
 		case(LXA_ARCHIVESTATUS_ADD):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Adding file(s) to archive..."));
+			status_message = g_strdup(_("Adding file(s) to archive..."));
 			break;
 		case(LXA_ARCHIVESTATUS_REMOVE):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Removing file(s) from archive..."));
+			status_message = g_strdup(_("Removing file(s) from archive..."));
+			break;
+		case(LXA_ARCHIVESTATUS_ERROR):
+			status_message = g_strdup(_("Error"));
+			break;
+		case(LXA_ARCHIVESTATUS_USERBREAK):
+			status_message = g_strdup(_("Cancelled"));
 			break;
 		case(LXA_ARCHIVESTATUS_IDLE):
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_new), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_open), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_remove), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_extract), TRUE);
-
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_new), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_open), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_add), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_remove), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_extract), TRUE);
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Done"));
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_stop), FALSE);
+			status_message = g_strdup(_("Done"));
+			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_close), TRUE);
 			if(archive->old_status == LXA_ARCHIVESTATUS_REFRESH)
 			{
+				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_remove), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_extract), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_add), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_remove), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_extract), TRUE);
+
 				GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(main_window->treeview));
 				while(columns)
 				{
@@ -477,43 +625,6 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 				xa_main_window_set_contents(main_window, archive, archive->root_entry.children);
 			}
 			break;
-		case(LXA_ARCHIVESTATUS_ERROR):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Error"));
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_new), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_open), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_new), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_open), TRUE);
-			if(archive->old_status != LXA_ARCHIVESTATUS_REFRESH)
-			{
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_remove), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_extract), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_add), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_remove), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_extract), TRUE);
-				lxa_close_archive(main_window->lp_xa_archive);
-			}
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_stop), FALSE);
-			break;
-		case(LXA_ARCHIVESTATUS_USERBREAK):
-			gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, _("Cancelled"));
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_new), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_open), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_new), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_open), TRUE);
-			if(archive->old_status != LXA_ARCHIVESTATUS_REFRESH)
-			{
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_remove), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_extract), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_add), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_remove), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_extract), TRUE);
-			}
-			else
-				lxa_close_archive(main_window->lp_xa_archive);
-			gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_stop), FALSE);
-			break;
 	}
 	if((archive->status != LXA_ARCHIVESTATUS_IDLE) && 
 		(archive->status != LXA_ARCHIVESTATUS_ERROR) && 
@@ -534,6 +645,16 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 
 		gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_stop), TRUE);
 	}
+	else
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_new), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_open), TRUE);
+
+		gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_new), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_open), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_stop), FALSE);
+	}
+	gtk_statusbar_push(GTK_STATUSBAR(main_window->statusbar), 1, status_message);
 }
 
 
@@ -632,3 +753,4 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	g_value_reset(value);
 	g_free(value);
 }
+

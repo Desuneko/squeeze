@@ -62,13 +62,17 @@ xa_add_dialog_class_init(XAAddDialogClass *dialog_class)
 static void
 xa_add_dialog_init(XAAddDialog *dialog)
 {
-/*
-	GtkWidget *hbox = gtk_hbox_new(FALSE, 10);
-	gtk_box_pack_start (GTK_BOX (hbox),gtk_label_new (_("Archive type:")),FALSE, FALSE, 0);
-	
-	gtk_widget_show_all(hbox);
-	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
-*/
+	GtkWidget *frame = gtk_frame_new(_("Files and folders to add"));
+	dialog->scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dialog->scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (dialog->scrolled_window), GTK_SHADOW_IN);
+	gtk_container_set_border_width(GTK_CONTAINER(dialog->scrolled_window), 5);
+	gtk_container_add(GTK_CONTAINER(frame), dialog->scrolled_window);
+
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, TRUE, TRUE, 5);
+	gtk_widget_show_all(frame);
+
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			GTK_STOCK_ADD, GTK_RESPONSE_OK,

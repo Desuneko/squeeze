@@ -61,6 +61,7 @@ struct _XAMainWindow
 		GtkWidget *menu_item_new;
 		GtkWidget *menu_item_open;
 		GtkWidget *menu_item_properties;
+		GtkWidget *menu_item_close;
 		GtkWidget *menu_item_quit;
 
 		GtkWidget *menu_item_action;
@@ -93,6 +94,9 @@ struct _XAMainWindow
 	LXAArchive *lp_xa_archive;
 	GValue *parent_node;
 	GSList *working_node;
+	struct {
+		gboolean   _show_icons;
+	} props;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -102,7 +106,7 @@ struct _XAMainWindowClass
 	GtkWindowClass parent;
 };
 
-GtkWidget *xa_main_window_new();
+GtkWidget *xa_main_window_new(GtkIconTheme *icon_theme);
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
 GType      xa_main_window_get_type ();
 

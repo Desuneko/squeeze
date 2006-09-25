@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-09-21 23:56+0200\n"
+"POT-Creation-Date: 2006-09-25 00:02+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -78,66 +78,77 @@ msgstr ""
 "Kan archief niet openen, MIME-type wordt niet ondersteund of bestand bestaat "
 "niet"
 
-#: ../src/main_window.c:94
+#: ../src/main_window.c:101
 msgid "_Archive"
 msgstr "_Archief"
 
-#: ../src/main_window.c:95
+#: ../src/main_window.c:102
 msgid "A_ction"
 msgstr "A_ctie"
 
-#: ../src/main_window.c:96
+#: ../src/main_window.c:103
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window.c:136 ../src/main_window.c:175
+#: ../src/main_window.c:147 ../src/main_window.c:191
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:141 ../src/main_window.c:179
+#: ../src/main_window.c:152 ../src/main_window.c:195
 #: ../src/extract_dialog.c:99
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:314
+#: ../src/main_window.c:357
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:422
+#: ../src/main_window.c:507
 msgid "Initializing archive..."
 msgstr "Bezig met initialiseren van archief..."
 
-#: ../src/main_window.c:425
+#: ../src/main_window.c:510
 msgid "Reading archive contents..."
 msgstr "Bezig met lezen van archief..."
 
-#: ../src/main_window.c:428
+#: ../src/main_window.c:513
 msgid "Extracting archive..."
 msgstr "Archief uitpakken..."
 
-#: ../src/main_window.c:431
+#: ../src/main_window.c:516
 msgid "Adding file(s) to archive..."
 msgstr "Bestand(en) toevoegen aan archief..."
 
-#: ../src/main_window.c:434
+#: ../src/main_window.c:519
 msgid "Removing file(s) from archive..."
 msgstr "Bestand(en) toevoegen aan archief..."
 
-#: ../src/main_window.c:448
-msgid "Done"
-msgstr "Klaar"
-
-#: ../src/main_window.c:481
+#: ../src/main_window.c:522
 msgid "Error"
 msgstr "Fout"
 
-#: ../src/main_window.c:499
+#: ../src/main_window.c:525
 msgid "Cancelled"
 msgstr "Geannuleerd"
+
+#: ../src/main_window.c:528
+msgid "Done"
+msgstr "Klaar"
 
 #: ../src/new_dialog.c:85
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
+
+#. * XA_ADD_DIALOG
+#. *  Frame title
+#.
+#: ../src/add_dialog.c:68
+msgid "Files and folders to add"
+msgstr ""
+
+#: ../src/add_dialog.c:82
+msgid "Add file(s) to archive"
+msgstr "Bestand(en) toevoegen aan archief"
 
 #: ../src/extract_dialog.c:75
 msgid "<b>Extract files:</b>"

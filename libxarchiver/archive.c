@@ -44,8 +44,7 @@ lxa_archive_finalize(GObject *object);
 void
 lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive);
 
-static gint lxa_archive_signals[2];
-
+static gint lxa_archive_signals[1];
 
 GType
 lxa_archive_get_type ()
@@ -90,17 +89,6 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 			G_TYPE_NONE,
 			0,
 			NULL);
-
-	lxa_archive_signals[1] = g_signal_new("destroy",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__VOID,
-			G_TYPE_NONE,
-			0,
-			NULL);
 }
 
 static void
@@ -115,9 +103,7 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	/* TODO: free archive->root_entry.children */
 	lxa_archive_free_entry(&archive->root_entry, archive);
-	g_debug("destroying archive");
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_IDLE):
@@ -128,7 +114,6 @@ lxa_archive_finalize(GObject *object)
 			kill ( archive->child_pid , SIGHUP);
 			break;
 	}
-	g_signal_emit(G_OBJECT(archive), lxa_archive_signals[1], 0, archive);
 }
 
 LXAArchive *
@@ -138,6 +123,7 @@ lxa_archive_new(gchar *path, gchar *mime)
 	ThunarVfsMimeInfo *mime_info;
 
 	archive = g_object_new(lxa_archive_get_type(), NULL);
+
 	if(path)
 		archive->path = g_strdup(path);
 	else
@@ -155,7 +141,6 @@ lxa_archive_new(gchar *path, gchar *mime)
 		g_object_unref(archive);
 		archive = NULL;
 	}
-
 	return archive;
 }
 
