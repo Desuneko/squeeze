@@ -833,25 +833,28 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	if(!strcmp(item_filename, "..")) /* pop */
 	{
 		main_window->working_node = g_slist_delete_link(main_window->working_node, main_window->working_node);
+		items = ((LXAEntry *)main_window->working_node->data)->children;
+		xa_main_window_set_contents(main_window, main_window->lp_xa_archive, items);
 	}
 	else
 	{
-		LXAEntry *entry = lxa_entry_get_child(((LXAEntry *)main_window->working_node->data), item_filename);
-		if(entry->is_folder)
+		if(item_filename)
 		{
-			main_window->working_node = g_slist_prepend(main_window->working_node, entry);
-		}
-		else
-		{ 
-			GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(main_window), 0, GTK_MESSAGE_WARNING, GTK_BUTTONS_OK, "Viewing of file is not yet implemented");
-			gtk_dialog_run(GTK_DIALOG(dialog));
-			gtk_widget_destroy(dialog);
-		
+			LXAEntry *entry = lxa_entry_get_child(((LXAEntry *)main_window->working_node->data), item_filename);
+			if(entry->is_folder)
+			{
+				main_window->working_node = g_slist_prepend(main_window->working_node, entry);
+				items = ((LXAEntry *)main_window->working_node->data)->children;
+				xa_main_window_set_contents(main_window, main_window->lp_xa_archive, items);
+			}
+			else
+			{ 
+				GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(main_window), 0, GTK_MESSAGE_WARNING, GTK_BUTTONS_OK, "Viewing of file is not yet implemented");
+				gtk_dialog_run(GTK_DIALOG(dialog));
+				gtk_widget_destroy(dialog);
+			}
 		}
 	}
-	items = ((LXAEntry *)main_window->working_node->data)->children;
-	if(items)
-		xa_main_window_set_contents(main_window, main_window->lp_xa_archive, items);
 
 	g_value_reset(value);
 	g_free(value);
