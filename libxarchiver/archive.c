@@ -184,6 +184,10 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	{
 		tmp_entry = g_new0(LXAEntry, 1);
 		tmp_entry->filename = g_strdup(path_items[0]);
+		if(path[strlen(path)-1] == '/')
+			tmp_entry->is_folder = TRUE;
+		else
+			tmp_entry->is_folder = FALSE;
 		archive->root_entry.children = g_slist_prepend(archive->root_entry.children, tmp_entry);
 		tmp_list = archive->root_entry.children;
 	}
@@ -194,6 +198,10 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
 			tmp_entry->filename = g_strdup(path_items[i]);
+			if(path[strlen(path)-1] == '/')
+				tmp_entry->is_folder = TRUE;
+			else
+				tmp_entry->is_folder = FALSE;
 			((LXAEntry *)tmp_list->data)->children = g_slist_prepend(((LXAEntry *)tmp_list->data)->children, tmp_entry);
 			tmp_list_children = ((LXAEntry *)tmp_list->data)->children;
 		}

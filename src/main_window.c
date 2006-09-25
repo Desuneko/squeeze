@@ -279,7 +279,10 @@ xa_main_window_new(GtkIconTheme *icon_theme)
 
 	window = g_object_new(xa_main_window_get_type(),
 			"title", "Xarchiver " PACKAGE_VERSION,
+			"show-icons", TRUE,
 			NULL);
+	
+	XA_MAIN_WINDOW(window)->icon_theme = icon_theme;
 	
 	gtk_window_set_icon(GTK_WINDOW(window), icon);
 	
@@ -604,21 +607,53 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 					columns = columns->next;
 				}
 				g_list_free(columns);
-				liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
 	
-				for(x = 0; x < archive->column_number; x++)
+				if(main_window->props._show_icons)
 				{
-					switch(archive->column_types[x])
+					GType *column_types = g_new0(GType, archive->column_number+1);
+					for(x = 0; x < archive->column_number; x++)
 					{
-						case(G_TYPE_STRING):
-						case(G_TYPE_UINT64):
-							renderer = gtk_cell_renderer_text_new();
-							column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x, NULL);
-							break;
+						column_types[x+1] = archive->column_types[x];
 					}
+					column_types[0] = G_TYPE_STRING;
+					liststore = gtk_list_store_newv(archive->column_number+1, column_types); 
+
+					renderer = gtk_cell_renderer_pixbuf_new();
+					column = gtk_tree_view_column_new_with_attributes("", renderer, "icon-name", 0, NULL);
 					gtk_tree_view_column_set_resizable(column, TRUE);
-					gtk_tree_view_column_set_sort_column_id(column, x);
+					gtk_tree_view_column_set_sort_column_id(column, 0);
 					gtk_tree_view_append_column(GTK_TREE_VIEW(main_window->treeview), column);
+					for(x = 0; x < archive->column_number; x++)
+					{
+						switch(archive->column_types[x])
+						{
+							case(G_TYPE_STRING):
+							case(G_TYPE_UINT64):
+								renderer = gtk_cell_renderer_text_new();
+								column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x+1, NULL);
+								break;
+						}
+						gtk_tree_view_column_set_resizable(column, TRUE);
+						gtk_tree_view_column_set_sort_column_id(column, x+1);
+						gtk_tree_view_append_column(GTK_TREE_VIEW(main_window->treeview), column);
+					}
+				} else
+				{
+					liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
+					for(x = 0; x < archive->column_number; x++)
+					{
+						switch(archive->column_types[x])
+						{
+							case(G_TYPE_STRING):
+							case(G_TYPE_UINT64):
+								renderer = gtk_cell_renderer_text_new();
+								column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x, NULL);
+								break;
+						}
+						gtk_tree_view_column_set_resizable(column, TRUE);
+						gtk_tree_view_column_set_sort_column_id(column, x);
+						gtk_tree_view_append_column(GTK_TREE_VIEW(main_window->treeview), column);
+					}
 				}
 				gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 				main_window->working_node = g_slist_prepend(main_window->working_node, &(archive->root_entry));
@@ -672,17 +707,29 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 
 	while(items)
 	{
+		i = 0;
 		gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
+		if(main_window->props._show_icons)
+		{
+			tmp_value = g_new0(GValue, 1);
+			tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
+			if(((LXAEntry *)items->data)->is_folder)
+				g_value_set_string(tmp_value, "folder");
+			else
+				g_value_set_string(tmp_value, "unknown");
+			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
+			i++;
+		}
 		tmp_value = g_new0(GValue, 1);
 		tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
 		g_value_set_string(tmp_value, ((LXAEntry *)items->data)->filename);
-		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, tmp_value);
+		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
 
 		props = ((LXAEntry *)items->data)->props;
 		if(props)
 		{
 			props_iter = props;
-			for(i = 0; i < archive->column_number-1; i++)
+			for(; i < archive->column_number-1; i++)
 			{
 				tmp_value = g_new0(GValue, 1);
 				tmp_value = g_value_init(tmp_value, archive->column_types[i]);
@@ -710,7 +757,10 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 	if(g_slist_length(main_window->working_node) > 1)
 	{
 		gtk_list_store_prepend(GTK_LIST_STORE(liststore), &iter);
-		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, main_window->parent_node);
+		if(main_window->props._show_icons)
+			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 1, main_window->parent_node);
+		else
+			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, main_window->parent_node);
 	}
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
@@ -726,7 +776,10 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
 
 	gtk_tree_model_get_iter(tree_model, &iter, treepath);
-	gtk_tree_model_get_value(tree_model, &iter, 0, value);
+	if(main_window->props._show_icons)
+		gtk_tree_model_get_value(tree_model, &iter, 1, value);
+	else
+		gtk_tree_model_get_value(tree_model, &iter, 0, value);
 
 	const gchar *item_filename = g_value_get_string(value);
 	if(!strcmp(item_filename, "..")) /* pop */

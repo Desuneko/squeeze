@@ -91,6 +91,7 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_remove;
 		GtkToolItem *tool_item_stop;
 	} toolbar;
+	GtkIconTheme *icon_theme;
 	LXAArchive *lp_xa_archive;
 	GValue *parent_node;
 	GSList *working_node;
