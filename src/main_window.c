@@ -702,6 +702,7 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 	GValue *tmp_value;
 	gpointer props;
 	gpointer props_iter;
+	gint column_number;
 
 	gtk_list_store_clear(GTK_LIST_STORE(liststore));
 
@@ -729,7 +730,12 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 		if(props)
 		{
 			props_iter = props;
-			for(; i < archive->column_number-1; i++)
+			if(main_window->props._show_icons)
+				column_number = archive->column_number;
+			else
+				column_number = archive->column_number - 1;
+
+			for(; i < column_number; i++)
 			{
 				tmp_value = g_new0(GValue, 1);
 				tmp_value = g_value_init(tmp_value, archive->column_types[i]);
