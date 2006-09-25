@@ -837,19 +837,21 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	else
 	{
 		LXAEntry *entry = lxa_entry_get_child(((LXAEntry *)main_window->working_node->data), item_filename);
-		if(g_slist_length(entry->children))
+		if(entry->is_folder)
 		{
 			main_window->working_node = g_slist_prepend(main_window->working_node, entry);
 		}
 		else
-		{ }
+		{ 
+			GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(main_window), 0, GTK_MESSAGE_WARNING, GTK_BUTTONS_OK, "Viewing of file is not yet implemented");
+			gtk_dialog_run(GTK_DIALOG(dialog));
+			gtk_widget_destroy(dialog);
+		
+		}
 	}
 	items = ((LXAEntry *)main_window->working_node->data)->children;
-
 	if(items)
 		xa_main_window_set_contents(main_window, main_window->lp_xa_archive, items);
-/*	else*/
-		/* 'view' */
 
 	g_value_reset(value);
 	g_free(value);
