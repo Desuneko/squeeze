@@ -770,12 +770,8 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 		if(props)
 		{
 			props_iter = props;
-			if(main_window->props._show_icons)
-				column_number = archive->column_number;
-			else
-				column_number = archive->column_number - 1;
 
-			for(; i < column_number; i++)
+			for(i=1; i < archive->column_number; i++)
 			{
 				tmp_value = g_new0(GValue, 1);
 				tmp_value = g_value_init(tmp_value, archive->column_types[i]);
@@ -794,7 +790,10 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 						props_iter += sizeof(guint64);
 						break;
 				}
-				gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i+1, tmp_value);
+				if(main_window->props._show_icons)
+					gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i+1, tmp_value);
+				else
+					gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
 				g_free(tmp_value);
 			}
 		}
