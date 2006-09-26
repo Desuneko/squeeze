@@ -254,6 +254,8 @@ xa_main_window_init(XAMainWindow *window)
 
 	window->treeview = gtk_tree_view_new();
 
+	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(window->treeview), TRUE);
+
 	gtk_container_add(GTK_CONTAINER(window->scrollwindow), window->treeview);
 
 	gtk_widget_show(window->scrollwindow);
@@ -327,7 +329,7 @@ cb_xa_main_window_style_set(XAMainWindow *window, gpointer userdata)
 	if(window->working_node)
 		items = ((LXAEntry *)window->working_node->data)->children;
 
-	if(!gtk_icon_theme_has_icon(window->icon_theme, "folder"))
+	if(!(gtk_icon_theme_has_icon(window->icon_theme, "folder") && gtk_icon_theme_has_icon(window->icon_theme, "unknown") && gtk_icon_theme_has_icon(window->icon_theme, "go-up")))
 		window->props._show_icons = FALSE;
 	else
 		window->props._show_icons = TRUE;
@@ -690,8 +692,8 @@ xa_main_window_reset_columns(XAMainWindow *window)
 
 		renderer = gtk_cell_renderer_pixbuf_new();
 		column = gtk_tree_view_column_new_with_attributes("", renderer, "icon-name", 0, NULL);
-		gtk_tree_view_column_set_resizable(column, TRUE);
-		gtk_tree_view_column_set_sort_column_id(column, 0);
+		gtk_tree_view_column_set_resizable(column, FALSE);
+		//gtk_tree_view_column_set_sort_column_id(column, 0);
 		gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		for(x = 0; x < archive->column_number; x++)
 		{
@@ -707,6 +709,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 			gtk_tree_view_column_set_sort_column_id(column, x+1);
 			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
+		gtk_tree_view_set_search_column(GTK_TREE_VIEW(window->treeview), 1);
 	} else
 	{
 		liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
@@ -724,6 +727,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 			gtk_tree_view_column_set_sort_column_id(column, x);
 			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
+		gtk_tree_view_set_search_column(GTK_TREE_VIEW(window->treeview), 0);
 	}
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(liststore));
 }
@@ -849,7 +853,7 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 			}
 			else
 			{ 
-				GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(main_window), 0, GTK_MESSAGE_WARNING, GTK_BUTTONS_OK, "Viewing of file is not yet implemented");
+				GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(main_window), 0, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK, "What do you want to do today?");
 				gtk_dialog_run(GTK_DIALOG(dialog));
 				gtk_widget_destroy(dialog);
 			}
