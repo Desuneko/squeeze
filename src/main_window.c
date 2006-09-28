@@ -468,7 +468,12 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 			window->lp_xa_archive = NULL;
 		}
 
-		xa_main_window_open_archive(window, open_archive_path);
+		if(xa_main_window_open_archive(window, open_archive_path))
+		{
+			gtk_widget_destroy (GTK_WIDGET (dialog) );
+			dialog = gtk_message_dialog_new(GTK_WINDOW(window), 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Archive could not be opened");
+			gtk_dialog_run(GTK_DIALOG(dialog));
+		}
 
 
 
