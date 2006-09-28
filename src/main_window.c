@@ -532,23 +532,22 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 			GList *rows = gtk_tree_selection_get_selected_rows(selection, &treemodel);
 			GList *_rows = rows;
 			gchar *working_dir = xa_main_window_get_working_dir(window);
-			while(_rows != NULL)
+			while(_rows)
 			{
-				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, rows->data);
+				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, _rows->data);
 				if(window->props._show_icons)
 					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 1, value);
 				else
 					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
 
-				filenames = g_slist_prepend(filenames, g_strconcat(working_dir, g_value_get_string(value), NULL));
+				filenames = g_slist_prepend(filenames, g_strconcat(working_dir, "/", g_value_get_string(value), NULL));
 				g_value_unset(value);
 				_rows = _rows->next;
 			}
 			g_free(working_dir);
 			g_list_free(rows);
-			lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, filenames);
-		} else
-			lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, NULL);
+		}
+		lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, filenames);
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
 	}

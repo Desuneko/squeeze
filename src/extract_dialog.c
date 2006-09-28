@@ -108,7 +108,7 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 	GtkWidget *test, *hbox;
 	XAExtractArchiveDialog *dialog;
 
-	dialog = g_object_new(xa_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
+	dialog = g_object_new(xa_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 /* Handle 'extract selected files' option */
 	gtk_widget_set_sensitive(dialog->sel_files_radio, sel_option);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dialog->sel_files_radio), sel_option);
