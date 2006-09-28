@@ -8,24 +8,6 @@ Long Version:
 | IMPORTANT                                         IMPORTANT |
 ---------------------------------------------------------------
 
-+-+-+-+
-	Fix 'Stop' Segfault
-
-+-+-+-+
-	
-  Fix table column stuff work correctly
-+-+-+-+
-
-  Implement table-columns to gnu-tar archive;
-+-+-+-+
-
-  Speedup GUI
-+-+-+-+
-
-	Implement View support (for all support-objects)
-		Use Path-entries for path-components. (Should reduce mem-usage on large archives tremendously)
-+-+-+-+
-
 	Implement UnRar Support object.
 +-+-+-+
 

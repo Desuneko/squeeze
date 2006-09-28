@@ -47,6 +47,7 @@ lxa_init()
 void
 lxa_destroy()
 {
+	g_slist_foreach(lxa_archive_support_list, (GFunc)g_object_unref, NULL);
 	g_object_unref(lxa_mime_database);
 }
 

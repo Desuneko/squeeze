@@ -105,6 +105,7 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 
 	lxa_archive_support_add_mime(archive_support, "application/x-tar");
 	/* Check for existence of compress -- required for x-tarz */
+	/* TODO: free return value of g_find_program_in_path */
 	if(g_find_program_in_path("compress"))
 		lxa_archive_support_add_mime(archive_support, "application/x-tarz");
 	/* Check for existence of gzip -- required for x-compressed-tar*/
@@ -278,7 +279,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf ", archive->path,
-						" -C ", dest_path, 
+						" -C \"", dest_path, "\"", 
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
@@ -286,7 +287,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -Zxf ", archive->path,
-						" -C ", dest_path, 
+						" -C \"", dest_path, "\"", 
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
@@ -294,7 +295,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zxf ", archive->path,
-						" -C ", dest_path, 
+						" -C \"", dest_path, "\"", 
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
@@ -302,7 +303,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jxf ", archive->path,
-						" -C ", dest_path, 
+						" -C \"", dest_path, "\"", 
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
