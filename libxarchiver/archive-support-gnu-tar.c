@@ -470,7 +470,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 	gpointer props = NULL; 
 	gpointer props_iter = NULL;
-	gint n = 0, a = 0, i = 0;
+	gint n = 0, a = 0, i = 0, o = 0;
 	gchar *temp_filename = NULL;
 	gchar *_size = NULL;
 
@@ -480,7 +480,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
-		while(TRUE)
+		for(o = 0; o < 500; o++)
 		{
 			i = 0;
 

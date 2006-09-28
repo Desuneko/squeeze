@@ -119,6 +119,7 @@ void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
 void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata);
 gint xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path);
+gchar *xa_main_window_get_working_dir(XAMainWindow *window);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

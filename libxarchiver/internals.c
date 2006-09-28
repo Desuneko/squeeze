@@ -39,11 +39,6 @@ lxa_default_child_watch_func(GPid pid, gint status, gpointer data)
 	{
 		if(archive->status != LXA_ARCHIVESTATUS_REFRESH)
 			lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
-		if(archive->files)
-		{
-			g_free(archive->files);
-			archive->files = NULL;
-		}
 	}
 }
 

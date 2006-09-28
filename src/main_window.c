@@ -255,6 +255,8 @@ xa_main_window_init(XAMainWindow *window)
 	window->treeview = gtk_tree_view_new();
 
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(window->treeview), TRUE);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
+	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
 
 	gtk_container_add(GTK_CONTAINER(window->scrollwindow), window->treeview);
 
@@ -510,16 +512,43 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	gint result = 0;
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
 	LXAArchiveSupport *lp_support = NULL;
+	GSList *filenames = NULL;
+	GValue *value = g_new0(GValue, 1);
+	GtkTreeModel *treemodel = gtk_tree_view_get_model(GTK_TREE_VIEW(window->treeview));
+	GtkTreeIter iter;
+	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
 
 	lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
 
-	dialog = xa_extract_archive_dialog_new(lp_support, window->lp_xa_archive, FALSE);
+
+	dialog = xa_extract_archive_dialog_new(lp_support, window->lp_xa_archive, gtk_tree_selection_count_selected_rows (selection));
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
 	if(result == GTK_RESPONSE_OK)
 	{
 		gtk_widget_hide(GTK_WIDGET(dialog));
 		extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, NULL);
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(dialog)->sel_files_radio)))
+		{
+			GList *rows = gtk_tree_selection_get_selected_rows(selection, &treemodel);
+			GList *_rows = rows;
+			gchar *working_dir = xa_main_window_get_working_dir(window);
+			while(_rows != NULL)
+			{
+				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, rows->data);
+				if(window->props._show_icons)
+					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 1, value);
+				else
+					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
+
+				filenames = g_slist_prepend(filenames, g_strconcat(working_dir, g_value_get_string(value), NULL));
+				g_value_unset(value);
+				_rows = _rows->next;
+			}
+			g_free(working_dir);
+			g_list_free(rows);
+			lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, filenames);
+		} else
+			lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, NULL);
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
 	}
@@ -868,3 +897,22 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 	g_free(value);
 }
 
+gchar *
+xa_main_window_get_working_dir(XAMainWindow *window)
+{
+	gchar *temp = ((LXAEntry *)window->working_node->data)->filename;
+	gchar *path = NULL, *_temp = NULL;
+	GSList *_path = window->working_node->next;
+	while(_path)
+	{
+		_temp = path;
+		if(temp)
+			path = g_strconcat(((LXAEntry *)_path->data)->filename, "/", temp, NULL);
+		else
+			path = g_strconcat(((LXAEntry *)_path->data)->filename, "/", _temp,NULL);
+	
+		g_free(_temp);
+		_path = _path->next;
+	}
+	return temp;
+}
