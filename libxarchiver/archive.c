@@ -135,6 +135,7 @@ lxa_archive_new(gchar *path, gchar *mime)
 		mime_info = thunar_vfs_mime_info_new(mime, -1);
 	
 	archive->mime = g_strdup(thunar_vfs_mime_info_get_name(mime_info));
+	g_debug("Mime-type: %s", archive->mime);
 	
 	if(!lxa_get_support_for_mime(archive->mime))
 	{

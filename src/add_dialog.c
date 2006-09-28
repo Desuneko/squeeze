@@ -61,35 +61,20 @@ xa_add_dialog_class_init(XAAddDialogClass *dialog_class)
 static void
 xa_add_dialog_init(XAAddDialog *dialog)
 {
-	GtkWidget *frame = gtk_frame_new(_("Files and folders to add"));
-	GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
-	GtkWidget *hbox = gtk_hbox_new(FALSE, 5);
-	GtkWidget *button;
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, TRUE, TRUE, 5);
+	GtkWidget *frame = gtk_frame_new(_("Drag Files and folders to bottom list"));
+	GtkWidget *vbox = gtk_vpaned_new();
+	GtkWidget *chooser = gtk_file_chooser_widget_new(GTK_FILE_CHOOSER_ACTION_OPEN);
+	GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
+	gtk_paned_pack1(GTK_PANED(vbox), chooser, TRUE, FALSE);
+	gtk_paned_pack2(GTK_PANED(vbox), scrolled_window, TRUE, FALSE);
 
-	dialog->scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dialog->scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (dialog->scrolled_window), GTK_SHADOW_IN);
-	gtk_container_set_border_width(GTK_CONTAINER(dialog->scrolled_window), 5);
 	gtk_container_add(GTK_CONTAINER(frame), vbox);
-	gtk_box_pack_start(GTK_BOX(vbox), dialog->scrolled_window, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
-	vbox = gtk_vbox_new(FALSE, 0);
-
-	button = gtk_radio_button_new_with_mnemonic(NULL, _("Files"));
-	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
-	button = gtk_radio_button_new_with_mnemonic_from_widget(GTK_RADIO_BUTTON(button), _("Folders"));
-	gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
-
-	gtk_box_pack_start(GTK_BOX(hbox), vbox, FALSE, FALSE, 0);
-
-	button = gtk_button_new_from_stock("gtk-remove");
-	gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
-	button = gtk_button_new_from_stock("gtk-add");
-	gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, FALSE, 0);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	gtk_widget_show_all(frame);
 	gtk_widget_show_all(vbox);
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, TRUE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			GTK_STOCK_ADD, GTK_RESPONSE_OK,
