@@ -905,18 +905,17 @@ gchar *
 xa_main_window_get_working_dir(XAMainWindow *window)
 {
 	gchar *temp = ((LXAEntry *)window->working_node->data)->filename;
-	gchar *path = NULL, *_temp = NULL;
+	gchar *path = g_strdup(temp), *_temp = NULL;
 	GSList *_path = window->working_node->next;
 	while(_path)
 	{
-		_temp = path;
-		if(temp)
-			path = g_strconcat(((LXAEntry *)_path->data)->filename, "/", temp, NULL);
-		else
+		if((((LXAEntry *)_path->data)->filename[0] != '/'))
+		{
+			_temp = path;
 			path = g_strconcat(((LXAEntry *)_path->data)->filename, "/", _temp,NULL);
-	
-		g_free(_temp);
+			g_free(_temp);
+		}
 		_path = _path->next;
 	}
-	return temp;
+	return path;
 }
