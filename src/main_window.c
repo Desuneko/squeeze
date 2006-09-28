@@ -650,19 +650,24 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 		case(LXA_ARCHIVESTATUS_IDLE):
 			status_message = g_strdup(_("Done"));
 			gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_close), TRUE);
-			if(archive->old_status == LXA_ARCHIVESTATUS_REFRESH)
+			switch(archive->old_status)
 			{
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_remove), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_extract), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_add), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_remove), TRUE);
-				gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_extract), TRUE);
 
-				xa_main_window_reset_columns(main_window);
+				case(LXA_ARCHIVESTATUS_REFRESH):
+					xa_main_window_reset_columns(main_window);
 
-				main_window->working_node = g_slist_prepend(main_window->working_node, &(archive->root_entry));
-				xa_main_window_set_contents(main_window, archive, archive->root_entry.children);
+					main_window->working_node = g_slist_prepend(main_window->working_node, &(archive->root_entry));
+					xa_main_window_set_contents(main_window, archive, archive->root_entry.children);
+				case(LXA_ARCHIVESTATUS_EXTRACT):
+					gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
+					gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_remove), TRUE);
+					gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_extract), TRUE);
+					gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_add), TRUE);
+					gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_remove), TRUE);
+					gtk_widget_set_sensitive(GTK_WIDGET(main_window->toolbar.tool_item_extract), TRUE);
+					break;
+				default:
+					break;
 			}
 			break;
 	}
