@@ -119,11 +119,11 @@ gchar *
 lxa_concat_filenames(GSList *filenames)
 {
 	GSList *_filenames = filenames;
-	gchar *concat_str = " ", *_concat_str;
+	gchar *concat_str = g_strdup(" "), *_concat_str;
 
 	while(_filenames)
 	{
-		_concat_str  = concat_str;
+		_concat_str = concat_str;
 		concat_str = g_strconcat(concat_str, " ", _filenames->data,  NULL);
 		_filenames = _filenames->next;
 		g_free(_concat_str);
