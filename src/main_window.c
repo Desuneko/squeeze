@@ -47,6 +47,10 @@ static void
 xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void
 cb_xa_main_window_style_set(XAMainWindow *window, gpointer userdata);
+gboolean
+xa_main_window_add_item(gpointer key, gpointer value, gpointer data);
+void 
+xa_main_window_set_contents(XAMainWindow *, LXAArchive *, GTree *);
 
 void
 xa_main_window_reset_columns(XAMainWindow *window);
@@ -57,8 +61,6 @@ cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeV
 void
 xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window);
 
-void 
-xa_main_window_set_contents(XAMainWindow *, LXAArchive *, GSList *);
 
 void
 cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata);
@@ -326,7 +328,7 @@ xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value,
 static void
 cb_xa_main_window_style_set(XAMainWindow *window, gpointer userdata)
 {
-	GSList *items = NULL;
+	GTree *items = NULL;
 
 	if(window->working_node)
 		items = ((LXAEntry *)window->working_node->data)->children;
@@ -771,72 +773,18 @@ xa_main_window_reset_columns(XAMainWindow *window)
 }
 
 void
-xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSList *items)
+xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GTree *item_tree)
 {
 	gint i = 0;
-	GtkTreeIter iter;
 	GtkTreeModel *liststore = gtk_tree_view_get_model(GTK_TREE_VIEW(main_window->treeview));
+	GtkTreeIter iter;
 	GValue *tmp_value;
-	gpointer props;
-	gpointer props_iter;
-	gint column_number;
 
 	gtk_list_store_clear(GTK_LIST_STORE(liststore));
 
 
-	while(items)
-	{
-		i = 0;
-		gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
-		if(main_window->props._show_icons)
-		{
-			tmp_value = g_new0(GValue, 1);
-			tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
-			if(((LXAEntry *)items->data)->is_folder)
-				g_value_set_string(tmp_value, "folder");
-			else
-				g_value_set_string(tmp_value, "unknown");
-			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
-			i++;
-		}
-		tmp_value = g_new0(GValue, 1);
-		tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
-		g_value_set_string(tmp_value, ((LXAEntry *)items->data)->filename);
-		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
+	g_tree_foreach(item_tree, (GTraverseFunc)xa_main_window_add_item, main_window);
 
-		props = ((LXAEntry *)items->data)->props;
-		if(props)
-		{
-			props_iter = props;
-
-			for(i=1; i < archive->column_number; i++)
-			{
-				tmp_value = g_new0(GValue, 1);
-				tmp_value = g_value_init(tmp_value, archive->column_types[i]);
-				switch(archive->column_types[i])
-				{
-					case(G_TYPE_UINT):
-						g_value_set_uint(tmp_value, *(guint *)props_iter);
-						props_iter += sizeof(guint);
-						break;
-					case(G_TYPE_STRING):
-						g_value_set_string(tmp_value, *(gchar **)props_iter);
-						props_iter += sizeof(gchar *);
-						break;
-					case(G_TYPE_UINT64):
-						g_value_set_uint64(tmp_value, *(guint64 *)props_iter);
-						props_iter += sizeof(guint64);
-						break;
-				}
-				if(main_window->props._show_icons)
-					gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i+1, tmp_value);
-				else
-					gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
-				g_free(tmp_value);
-			}
-		}
-		items = items->next;
-	}
 	if(g_slist_length(main_window->working_node) > 1)
 	{
 		gtk_list_store_prepend(GTK_LIST_STORE(liststore), &iter);
@@ -854,11 +802,76 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive, GSLi
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
 
+gboolean
+xa_main_window_add_item(gpointer key, gpointer value, gpointer data)
+{
+	gint i = 0;
+	GtkTreeIter iter;
+	gpointer props;
+	gpointer props_iter;
+	GValue *tmp_value;
+	gint column_number;
+	XAMainWindow *main_window= XA_MAIN_WINDOW(data);
+	GtkTreeModel *liststore = gtk_tree_view_get_model(GTK_TREE_VIEW(main_window->treeview));
+	gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
+	if(main_window->props._show_icons)
+	{
+		tmp_value = g_new0(GValue, 1);
+		tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
+		if(((LXAEntry*)value)->is_folder)
+			g_value_set_string(tmp_value, "folder");
+		else
+			g_value_set_string(tmp_value, "unknown");
+		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
+		i++;
+	}
+	tmp_value = g_new0(GValue, 1);
+	tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
+	g_value_set_string(tmp_value, (gchar *)key);
+	gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
+
+	props = ((LXAEntry *)value)->props;
+	if(props)
+	{
+		props_iter = props;
+
+		for(i=1; i < main_window->lp_xa_archive->column_number; i++)
+		{
+			tmp_value = g_new0(GValue, 1);
+			tmp_value = g_value_init(tmp_value, main_window->lp_xa_archive->column_types[i]);
+			switch(main_window->lp_xa_archive->column_types[i])
+			{
+				case(G_TYPE_UINT):
+					g_value_set_uint(tmp_value, *(guint *)props_iter);
+					props_iter += sizeof(guint);
+					break;
+				case(G_TYPE_STRING):
+					g_value_set_string(tmp_value, *(gchar **)props_iter);
+					props_iter += sizeof(gchar *);
+					break;
+				case(G_TYPE_UINT64):
+					g_value_set_uint64(tmp_value, *(guint64 *)props_iter);
+					props_iter += sizeof(guint64);
+					break;
+			}
+			if(main_window->props._show_icons)
+				gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i+1, tmp_value);
+			else
+				gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
+			g_free(tmp_value);
+		}
+	}
+	return FALSE;
+}
+
+
+
+
 void
 cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeViewColumn *column, gpointer userdata)
 {
 	GtkTreeIter iter;
-	GSList *items = NULL;
+	GTree *items = NULL;
 	GValue *value = g_new0(GValue, 1);
 	XAMainWindow *main_window = userdata;
 

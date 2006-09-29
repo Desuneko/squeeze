@@ -33,7 +33,7 @@ typedef enum
 
 typedef struct {
 	gchar *filename;
-	GSList *children;
+	GTree *children;
 	gboolean is_folder;
 	gpointer props;
 } LXAEntry;

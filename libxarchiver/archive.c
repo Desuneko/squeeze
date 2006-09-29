@@ -43,6 +43,8 @@ lxa_archive_finalize(GObject *object);
 
 void
 lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive);
+gint
+lxa_archive_lookup_tree_dir(gpointer key, gconstpointer filename);
 
 static gint lxa_archive_signals[1];
 
@@ -95,6 +97,7 @@ static void
 lxa_archive_init(LXAArchive *archive)
 {
 		archive->root_entry.filename = g_strdup("/");
+		archive->root_entry.children = g_tree_new((GCompareFunc)lxa_archive_lookup_tree_dir);
 }
 
 static void
@@ -175,27 +178,26 @@ LXAEntry *
 lxa_archive_add_file(LXAArchive *archive, gchar *path)
 {
 	gint i = 0;
-	GSList *tmp_list;
-	GSList *tmp_list_children;
 	gchar **path_items;
-	LXAEntry *tmp_entry = NULL;
+	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
-	tmp_list = g_slist_find_custom(archive->root_entry.children, path_items[0], (GCompareFunc)lxa_archive_lookup_dir);
-	if(!tmp_list)
+	tmp_entry = g_tree_lookup(archive->root_entry.children, path_items[0]);
+	if(!tmp_entry)
 	{
-		tmp_entry = g_new0(LXAEntry, 1);
+		tmp_entry= g_new0(LXAEntry, 1);
 		tmp_entry->filename = g_strdup(path_items[0]);
 		if(path[strlen(path)-1] == '/')
 			tmp_entry->is_folder = TRUE;
 		else
 			tmp_entry->is_folder = FALSE;
-		archive->root_entry.children = g_slist_prepend(archive->root_entry.children, tmp_entry);
-		tmp_list = archive->root_entry.children;
+		tmp_entry->children = g_tree_new((GCompareFunc)lxa_archive_lookup_tree_dir);
+		g_tree_insert(archive->root_entry.children, tmp_entry->filename, tmp_entry);
 	}
 	for(i = 1; path_items[i]?strlen(path_items[i]):0;i++)
 	{
-		tmp_list_children = g_slist_find_custom(((LXAEntry *)tmp_list->data)->children, path_items[i], (GCompareFunc)lxa_archive_lookup_dir);
-		if(!tmp_list_children)
+		parent = tmp_entry;
+		tmp_entry = g_tree_lookup(parent->children, path_items[i]);
+		if(!tmp_entry)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
 			tmp_entry->filename = g_strdup(path_items[i]);
@@ -203,10 +205,10 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 				tmp_entry->is_folder = TRUE;
 			else
 				tmp_entry->is_folder = FALSE;
-			((LXAEntry *)tmp_list->data)->children = g_slist_prepend(((LXAEntry *)tmp_list->data)->children, tmp_entry);
-			tmp_list_children = ((LXAEntry *)tmp_list->data)->children;
+			tmp_entry->children = g_tree_new((GCompareFunc)lxa_archive_lookup_tree_dir);
+			g_tree_insert(parent->children, tmp_entry->filename, tmp_entry);
 		}
-		tmp_list = tmp_list_children;
+		parent = tmp_entry;
 	}
 	g_strfreev(path_items);
 	return tmp_entry;
@@ -215,8 +217,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 LXAEntry *
 lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
-	GSList *list = g_slist_find_custom(entry->children, filename,(GCompareFunc)lxa_archive_lookup_dir);
-	return (LXAEntry *)list->data;
+	return g_tree_lookup(entry->children, filename);
 }
 
 void
@@ -225,7 +226,7 @@ lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
 	gint i = 0; 
 	gpointer props_iter = entry->props;
 
-	g_slist_foreach(entry->children, (GFunc)lxa_archive_free_entry, archive);
+	//g_slist_foreach(entry->children, (GFunc)lxa_archive_free_entry, archive);
 	if(entry->props)
 	{
 		switch(archive->column_types[i])
@@ -251,4 +252,10 @@ lxa_stop_archive_child( LXAArchive *archive )
 {
 	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_USERBREAK);
 	return 0;
+}
+
+gint
+lxa_archive_lookup_tree_dir(gpointer key, gconstpointer filename)
+{
+	return strcmp(key, filename);
 }
