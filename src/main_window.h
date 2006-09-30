@@ -52,6 +52,7 @@ struct _XAMainWindow
 {
 	GtkWindow parent;
 	GtkWidget *treeview;
+	GtkTreeModel *treemodel;
 	GtkWidget *scrollwindow;
 	GtkWidget *statusbar;
 	struct {
