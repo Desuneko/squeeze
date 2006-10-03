@@ -31,6 +31,8 @@
 
 #include "internals.h"
 
+#define LXA_ENTRY_CHILD_BUFFER_SIZE 300
+
 
 static void
 lxa_archive_class_init(LXAArchiveClass *archive_class);
@@ -43,8 +45,13 @@ lxa_archive_finalize(GObject *object);
 
 void
 lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive);
+
+
 gint
-lxa_archive_lookup_tree_dir(gpointer key, gconstpointer filename);
+lxa_archive_sort_entry_buffer(LXAEntry *entry1, LXAEntry *entry2)
+{
+	return strcmp(entry1->filename, entry2->filename);
+}
 
 static gint lxa_archive_signals[1];
 
@@ -97,7 +104,7 @@ static void
 lxa_archive_init(LXAArchive *archive)
 {
 		archive->root_entry.filename = g_strdup("/");
-		archive->root_entry.children = g_tree_new((GCompareFunc)lxa_archive_lookup_tree_dir);
+		archive->root_entry.children = NULL;
 }
 
 static void
@@ -181,7 +188,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	gchar **path_items;
 	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
-	tmp_entry = g_tree_lookup(archive->root_entry.children, path_items[0]);
+	tmp_entry = lxa_entry_get_child(&archive->root_entry, path_items[0]);
 	if(!tmp_entry)
 	{
 		tmp_entry= g_new0(LXAEntry, 1);
@@ -190,23 +197,25 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 			tmp_entry->is_folder = TRUE;
 		else
 			tmp_entry->is_folder = FALSE;
-		tmp_entry->children = g_tree_new((GCompareFunc)lxa_archive_lookup_tree_dir);
-		g_tree_insert(archive->root_entry.children, tmp_entry->filename, tmp_entry);
+		lxa_entry_add_child(&archive->root_entry, tmp_entry);
+		lxa_entry_flush_buffer(&archive->root_entry);
 	}
 	for(i = 1; path_items[i]?strlen(path_items[i]):0;i++)
 	{
 		parent = tmp_entry;
-		tmp_entry = g_tree_lookup(parent->children, path_items[i]);
+		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
 		if(!tmp_entry)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
 			tmp_entry->filename = g_strdup(path_items[i]);
+			lxa_entry_add_child(parent, tmp_entry);
 			if(path[strlen(path)-1] == '/')
+			{
 				tmp_entry->is_folder = TRUE;
+				lxa_entry_flush_buffer(parent);
+			}
 			else
 				tmp_entry->is_folder = FALSE;
-			tmp_entry->children = g_tree_new((GCompareFunc)lxa_archive_lookup_tree_dir);
-			g_tree_insert(parent->children, tmp_entry->filename, tmp_entry);
 		}
 		parent = tmp_entry;
 	}
@@ -214,11 +223,6 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	return tmp_entry;
 }
 
-LXAEntry *
-lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
-{
-	return g_tree_lookup(entry->children, filename);
-}
 
 void
 lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
@@ -226,7 +230,9 @@ lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
 	gint i = 0; 
 	gpointer props_iter = entry->props;
 
-	//g_slist_foreach(entry->children, (GFunc)lxa_archive_free_entry, archive);
+	for(i = 0; i < entry->n_children; i++)
+		lxa_archive_free_entry(entry->children[i], archive);
+
 	if(entry->props)
 	{
 		switch(archive->column_types[i])
@@ -254,8 +260,111 @@ lxa_stop_archive_child( LXAArchive *archive )
 	return 0;
 }
 
-gint
-lxa_archive_lookup_tree_dir(gpointer key, gconstpointer filename)
+gboolean
+lxa_entry_add_child(LXAEntry *parent, LXAEntry *child)
 {
-	return strcmp(key, filename);
+	guint max_children = 0;
+	guint begin = 0;
+	guint pos = 0;
+	gint cmp = 0;
+	guint old_i = 0;
+	guint new_i = 0;
+	guint size = parent->n_children;
+	guint org_size = parent->n_children;
+	GSList *buffer_iter = NULL;
+	LXAEntry **children_old = (LXAEntry **)parent->children;
+	
+	parent->buffer = g_slist_insert_sorted(parent->buffer, (gpointer)child, (GCompareFunc)lxa_archive_sort_entry_buffer);
+	if(g_slist_length(parent->buffer) == LXA_ENTRY_CHILD_BUFFER_SIZE)
+		lxa_entry_flush_buffer(parent);
+}
+
+LXAEntry *
+lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
+{
+	guint size = entry->n_children;
+	guint pos = 0;
+	gint cmp = 0;
+	while(size)
+	{
+		pos = (size / 2);
+
+		cmp = strcmp(filename, entry->children[pos]->filename);
+		if(!cmp)
+			return entry->children[pos];
+
+		if(cmp < 0)
+		{
+			size = pos;
+		}
+		else
+		{
+			size = size - ++pos;
+		}
+	}
+	return NULL;
+}
+
+void
+lxa_entry_flush_buffer(LXAEntry *entry)
+{
+	g_debug("Flush");
+	guint max_children = 0;
+	guint begin = 0;
+	guint pos = 0;
+	gint cmp = 1;
+	guint old_i = 0;
+	guint new_i = 0;
+	guint size = entry->n_children;
+	GSList *buffer_iter = NULL;
+	LXAEntry **children_old = (LXAEntry **)entry->children;
+
+	max_children = (entry->n_children + g_slist_length(entry->buffer));
+	
+	entry->children = g_new(LXAEntry *, max_children);
+	for(buffer_iter = entry->buffer;buffer_iter;buffer_iter = buffer_iter->next)
+	{
+		size = entry->n_children - begin;
+		while(size)
+		{
+			pos = (size / 2)+begin;
+
+			cmp = strcmp(((LXAEntry *)buffer_iter->data)->filename, children_old[pos]->filename);
+			if(!cmp)
+				break;
+
+			if(cmp < 0)
+			{
+				size = pos - begin;
+			}
+			else
+			{
+				size = size + begin - ++pos;
+				begin = pos;
+			}
+		}
+		if(!cmp)
+		{
+			/* TODO: F*** (aka merge) */
+		}
+		else
+		{
+			while(old_i < pos)
+			{
+				entry->children[new_i++] = children_old[old_i++];
+			}
+			entry->children[new_i++] = buffer_iter->data;
+		}
+	}
+	while(old_i < entry->n_children)
+	{
+		entry->children[new_i++] = children_old[old_i++];
+	}
+	entry->n_children = new_i;
+	g_debug("%d", entry->n_children);
+
+	g_slist_free(entry->buffer);
+	entry->buffer = NULL;
+
+	g_free(children_old);
 }

@@ -31,12 +31,17 @@ typedef enum
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
-typedef struct {
+typedef struct _LXAEntry LXAEntry;
+
+struct _LXAEntry {
 	gchar *filename;
-	GTree *children;
 	gboolean is_folder;
 	gpointer props;
-} LXAEntry;
+	/* */
+	LXAEntry **children;
+	guint   n_children;
+	GSList *buffer;
+};
 
 #define LXA_ARCHIVE(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
@@ -98,6 +103,8 @@ gint               lxa_archive_lookup_dir(gpointer entry, gconstpointer filename
 LXAEntry          *lxa_archive_add_file(LXAArchive *archive, gchar *path);
 GSList            *lxa_archive_get_children(LXAArchive *archive, gchar *path);
 LXAEntry          *lxa_entry_get_child(LXAEntry *, const gchar *);
+gboolean           lxa_entry_add_child(LXAEntry *parent, LXAEntry *child);
+void               lxa_entry_flush_buffer(LXAEntry *entry);
 
 
 G_END_DECLS

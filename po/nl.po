@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-09-25 00:02+0200\n"
+"POT-Creation-Date: 2006-10-02 09:14+0200\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:133
+#: ../libxarchiver/archive-support-gnu-tar.c:134
 #: ../libxarchiver/archive-support-zip.c:104
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:134
+#: ../libxarchiver/archive-support-gnu-tar.c:135
 #: ../libxarchiver/archive-support-zip.c:105
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
@@ -47,11 +47,11 @@ msgstr "[bestand1] [bestand2] ... [bestandN]"
 msgid "Version information"
 msgstr "Versie informatie"
 
-#: ../src/main.c:119
+#: ../src/main.c:120
 msgid "[archive name]"
 msgstr "[archief naam]"
 
-#: ../src/main.c:123
+#: ../src/main.c:124
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -64,7 +64,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/main.c:196
+#: ../src/main.c:197
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
 
@@ -72,66 +72,70 @@ msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/main.c:213
+#: ../src/main.c:214
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type wordt niet ondersteund of bestand bestaat "
 "niet"
 
-#: ../src/main_window.c:101
+#: ../src/main_window.c:107 ../src/main_window.c:108
+msgid "Show icons"
+msgstr ""
+
+#: ../src/main_window.c:134
 msgid "_Archive"
 msgstr "_Archief"
 
-#: ../src/main_window.c:102
+#: ../src/main_window.c:135
 msgid "A_ction"
 msgstr "A_ctie"
 
-#: ../src/main_window.c:103
+#: ../src/main_window.c:136
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window.c:147 ../src/main_window.c:191
+#: ../src/main_window.c:180 ../src/main_window.c:225
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:152 ../src/main_window.c:195
+#: ../src/main_window.c:185 ../src/main_window.c:229
 #: ../src/extract_dialog.c:99
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:357
+#: ../src/main_window.c:455
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:507
+#: ../src/main_window.c:632
 msgid "Initializing archive..."
 msgstr "Bezig met initialiseren van archief..."
 
-#: ../src/main_window.c:510
+#: ../src/main_window.c:635
 msgid "Reading archive contents..."
 msgstr "Bezig met lezen van archief..."
 
-#: ../src/main_window.c:513
+#: ../src/main_window.c:638
 msgid "Extracting archive..."
 msgstr "Archief uitpakken..."
 
-#: ../src/main_window.c:516
+#: ../src/main_window.c:641
 msgid "Adding file(s) to archive..."
 msgstr "Bestand(en) toevoegen aan archief..."
 
-#: ../src/main_window.c:519
+#: ../src/main_window.c:644
 msgid "Removing file(s) from archive..."
 msgstr "Bestand(en) toevoegen aan archief..."
 
-#: ../src/main_window.c:522
+#: ../src/main_window.c:647
 msgid "Error"
 msgstr "Fout"
 
-#: ../src/main_window.c:525
+#: ../src/main_window.c:650
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
-#: ../src/main_window.c:528
+#: ../src/main_window.c:653
 msgid "Done"
 msgstr "Klaar"
 
@@ -139,14 +143,11 @@ msgstr "Klaar"
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
 
-#. * XA_ADD_DIALOG
-#. *  Frame title
-#.
-#: ../src/add_dialog.c:68
-msgid "Files and folders to add"
+#: ../src/add_dialog.c:64
+msgid "Drag Files and folders to bottom list"
 msgstr ""
 
-#: ../src/add_dialog.c:82
+#: ../src/add_dialog.c:91
 msgid "Add file(s) to archive"
 msgstr "Bestand(en) toevoegen aan archief"
 

@@ -58,6 +58,7 @@ struct _XAExtractArchiveDialogClass
 	GtkFileChooserDialogClass parent_class;
 };
 
+GType      xa_extract_archive_dialog_get_type();
 GtkWidget *xa_extract_archive_dialog_new(LXAArchiveSupport *, LXAArchive *, gboolean);
 
 G_END_DECLS
