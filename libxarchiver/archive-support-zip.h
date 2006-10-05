@@ -48,6 +48,14 @@ struct _LXAArchiveSupportZip
 	LXAArchiveSupport parent;
 	gboolean  _extr_overwrite;
 	gchar    *_extr_password;
+
+	gboolean  _view_size;
+	gboolean  _view_time;
+	gboolean  _view_date;
+	gboolean  _view_ratio;
+	gboolean  _view_length;
+	gboolean  _view_method;
+	gboolean  _view_crc_32;
 };
 
 typedef struct _LXAArchiveSupportZipClass LXAArchiveSupportZipClass;

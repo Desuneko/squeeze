@@ -44,8 +44,6 @@ struct _XAArchiveStore
 {
 	GObject parent;
 	gint stamp;
-	guint n_columns;
-	GType *column_types;
 	LXAArchive *archive;
 	GSList *current_entry;
 	LXAEntry up_entry;
@@ -68,5 +66,7 @@ GtkTreeModel *
 xa_archive_store_new(LXAArchive *archive, gboolean show_icons);
 void
 xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
+void
+xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
 
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

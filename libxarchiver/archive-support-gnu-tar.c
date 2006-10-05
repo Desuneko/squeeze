@@ -94,6 +94,7 @@ lxa_archive_support_gnu_tar_get_type ()
 void
 lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 {
+	/* TODO: free return value of g_find_program_in_path */
 	LXAArchiveSupport *archive_support = LXA_ARCHIVE_SUPPORT(support);
 
 	archive_support->id = "Gnu Tar";
@@ -105,7 +106,6 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 
 	lxa_archive_support_add_mime(archive_support, "application/x-tar");
 	/* Check for existence of compress -- required for x-tarz */
-	/* TODO: free return value of g_find_program_in_path */
 	if(g_find_program_in_path("compress"))
 		lxa_archive_support_add_mime(archive_support, "application/x-tarz");
 	/* Check for existence of gzip -- required for x-compressed-tar*/
@@ -195,8 +195,13 @@ lxa_archive_support_gnu_tar_new()
 {
 	LXAArchiveSupportGnuTar *support;
 
-	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, "view-time", TRUE, "view-date", TRUE, "view-owner", TRUE, "view-rights", TRUE, "view-size", TRUE, NULL);
-	/* support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, NULL); */
+	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
+	                       "view-time", TRUE, 
+												 "view-date", TRUE,
+												 "view-owner", TRUE,
+												 "view-rights", TRUE,
+												 "view-size", TRUE,
+												 NULL);
 
 	return LXA_ARCHIVE_SUPPORT(support);
 }
@@ -460,7 +465,6 @@ lxa_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 	lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_compress_parse_output, NULL);
 }
 
-/* TODO: fix g_value stuff */
 gboolean
 lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
@@ -545,18 +549,14 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 				props_iter += sizeof(gchar *);
 			}
 
-			/* g_value_init(&props[5], G_TYPE_STRING);*/
-
 			gchar *temp = g_strrstr (&line[n],"->"); 
 			if (temp ) 
 			{ 
 				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line) - strlen(temp) - n )); 
-				/*g_value_set_string (&props[5], g_strstrip(g_strndup (&temp[3] , strlen(temp))) ); */
 			} 
 			else 
 			{ 
 				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line)-n-1)); 
-				/*g_value_set_string (&props[5], g_strdup(" ") ); */
 			} 
  
 			entry = lxa_archive_add_file(archive, temp_filename);
@@ -727,6 +727,7 @@ lxa_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue 
 			g_value_set_uint(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_strip);
 			break;
 
+/* */
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE:
 			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_size);
 			break;

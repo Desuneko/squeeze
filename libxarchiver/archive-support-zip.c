@@ -33,6 +33,14 @@ enum
 	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE = 1,
 	LXA_ARCHIVE_SUPPORT_ZIP_ADD_COMPRESSION_LEVEL,
 	LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD,
+
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_SIZE,
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_DATE,
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_TIME,
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_RATIO,
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_LENGTH,
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_METHOD,
+	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_CRC_32
 };
 
 void
@@ -215,6 +223,29 @@ lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *val
 		case LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD:
 			g_value_set_string (value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_password);
 			break;
+
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_SIZE:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_size);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_DATE:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_date);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_TIME:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_time);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_RATIO:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_ratio);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_LENGTH:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_length);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_METHOD:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_method);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_CRC_32:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_crc_32);
+			break;
+
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);
 			break;
@@ -232,6 +263,29 @@ lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValu
 		case LXA_ARCHIVE_SUPPORT_ZIP_PASSWORD:
 			LXA_ARCHIVE_SUPPORT_ZIP(object)->_extr_password = (gchar *)g_value_get_string(value);
 			break;
+
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_SIZE:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_size = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_TIME:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_time = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_DATE:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_date = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_RATIO:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_ratio = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_LENGTH:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_length = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_METHOD:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_method = g_value_get_boolean(value);
+			break;
+		case LXA_ARCHIVE_SUPPORT_ZIP_VIEW_CRC_32:
+			LXA_ARCHIVE_SUPPORT_ZIP(object)->_view_crc_32 = g_value_get_boolean(value);
+			break;
+
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID(object,prop_id,pspec);
 			break;

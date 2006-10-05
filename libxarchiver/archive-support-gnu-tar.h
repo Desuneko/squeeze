@@ -20,7 +20,6 @@
 
 G_BEGIN_DECLS
 
-
 #define LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR lxa_archive_support_gnu_tar_get_type()
 
 #define LXA_ARCHIVE_SUPPORT_GNU_TAR(obj)         ( \
@@ -51,6 +50,7 @@ struct _LXAArchiveSupportGnuTar
 	gboolean _extr_touch;
 	guint    _extr_strip;
 
+/* Optional properties */
 	gboolean _view_size;
 	gboolean _view_date;
 	gboolean _view_time;

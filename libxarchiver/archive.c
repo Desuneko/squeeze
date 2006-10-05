@@ -387,7 +387,9 @@ LXAEntry *lxa_entry_children_nth_data(LXAEntry *entry, guint n)
 {
 	g_return_val_if_fail(entry, NULL);
 	lxa_entry_flush_buffer(entry);
-	g_return_val_if_fail(n >= 0 && n < entry->n_children, NULL);
-	return entry->children[n];
+	if(n >= 0 && n < entry->n_children)
+		return entry->children[n];
+	else
+		return NULL;
 }
 

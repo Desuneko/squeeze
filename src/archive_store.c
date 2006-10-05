@@ -132,8 +132,6 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->archive = NULL;
 	as->current_entry = NULL;
 	as->props._show_icons = FALSE;
-	as->n_columns = 0;
-	as->column_types = NULL;
 }
 
 static void
@@ -157,8 +155,12 @@ xa_archive_store_get_n_columns(GtkTreeModel *tree_model)
 	g_return_val_if_fail(XA_IS_ARCHIVE_STORE(tree_model), 0);
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
+	LXAArchive *archive = store->archive;
+
+	if(!archive)
+		return 0;
 	
-	return store->n_columns + store->props._show_icons?1:0;
+	return archive->column_number + store->props._show_icons?1:0;
 }
 
 static GType
@@ -167,6 +169,10 @@ xa_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 	g_return_val_if_fail(XA_IS_ARCHIVE_STORE(tree_model), G_TYPE_INVALID);	
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
+	LXAArchive *archive = store->archive;
+
+	if(!archive)
+		return G_TYPE_INVALID;
 
 	if(store->props._show_icons)
 	{
@@ -175,11 +181,9 @@ xa_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 		index--;
 	}
 
-	g_return_val_if_fail(index < store->n_columns, G_TYPE_INVALID);
+	g_return_val_if_fail(index < archive->column_number, G_TYPE_INVALID);
 
-	g_debug("xa_archive_store_get_column_type {%i} = %i", index, store->column_types[index]);
-
-	return store->column_types[index];
+	return archive->column_types[index];
 }
 
 static gboolean
@@ -227,8 +231,6 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 	iter->user_data2 = store->current_entry->data;
 	iter->user_data3 = GINT_TO_POINTER(index);
 
-	g_debug("xa_archive_store_get_iter {%i, %s}", index, entry->filename);
-
 	return TRUE;
 }
 
@@ -252,8 +254,6 @@ xa_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	GtkTreePath *path = gtk_tree_path_new();
 	gtk_tree_path_append_index(path, pos);
 
-	g_debug("xa_archive_store_get_path = %i", pos);
-
 	return path;
 }
 
@@ -263,8 +263,6 @@ xa_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 static void 
 xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint column, GValue *value)
 {
-	g_debug("xa_archive_store_get_value (%i)", column);
-
 	g_return_if_fail (XA_IS_ARCHIVE_STORE (tree_model));
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
@@ -275,10 +273,10 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	if(store->props._show_icons)
 		column--;
 
-	g_return_if_fail (column < store->n_columns);
+	g_return_if_fail (column < (gint)archive->column_number);
 
 	if(column >= 0)
-		g_value_init(value, store->column_types[column]);
+		g_value_init(value, archive->column_types[column]);
 
 	LXAEntry *entry = ((LXAEntry *)iter->user_data);
 	gpointer props_iter = entry->props;
@@ -294,6 +292,21 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		else if(column == 0)
 		{
 			g_value_set_string(value, "..");
+		}
+		else
+		{
+			switch(archive->column_types[column])
+			{
+				case G_TYPE_STRING:
+					g_value_set_string(value, "");
+					break;
+				case G_TYPE_UINT64:
+					g_value_set_uint64(value, 0);
+					break;
+				case G_TYPE_UINT:
+					g_value_set_uint(value, 0);
+					break;
+			}
 		}
 	}
 	else
@@ -311,7 +324,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		{
 			for(;i<column;i++)
 			{
-				switch(store->column_types[i])
+				switch(archive->column_types[i])
 				{
 					case G_TYPE_STRING:
 						props_iter+=sizeof(gchar *);
@@ -324,7 +337,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 						break;
 				}
 			}
-			switch(store->column_types[column])
+			switch(archive->column_types[column])
 			{
 				case G_TYPE_STRING:
 					g_value_set_string(value, *(gchar **)props_iter);
@@ -360,15 +373,12 @@ xa_archive_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	iter->user_data = entry;
 	iter->user_data3 = GINT_TO_POINTER(pos);
 
-	g_debug("xa_archive_store_iter_next {%i, %s}", pos, entry->filename);
 	return TRUE;
 }
 
 static gboolean
 xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent)
 {
-	g_debug("xa_archive_store_iter_children (%x)", parent);
-
 	g_return_val_if_fail(XA_IS_ARCHIVE_STORE(tree_model), FALSE);
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
@@ -424,7 +434,6 @@ xa_archive_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	/* only support lists: iter is always NULL */
 	g_return_val_if_fail(iter == NULL, FALSE);
 
-	g_debug("xa_archive_store_iter_n_children = %i", lxa_entry_children_length(entry) + (&archive->root_entry == entry)?0:1);
 	return lxa_entry_children_length(entry) + (&archive->root_entry == entry)?0:1;
 }
 
@@ -462,7 +471,6 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 	iter->user_data2 = store->current_entry->data;
 	iter->user_data3 = GINT_TO_POINTER(n);
 
-	g_debug("xa_archive_store_iter_nth_child {%i}", n);
 	return TRUE;
 }
 
@@ -539,7 +547,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	gint index = indices[depth];
 	gint i = 0;
 	GtkTreePath *path_ = NULL;
-	GtkTreeIter *iter = NULL;
+	GtkTreeIter iter;
 
 	if(&archive->root_entry != entry)
 	{
@@ -568,44 +576,45 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, 0);
 
-		iter = g_new(GtkTreeIter, 1);
-
-		iter->stamp = store->stamp;
-		iter->user_data = &store->up_entry;
-		iter->user_data2 = entry;
-		iter->user_data3 = GINT_TO_POINTER(-1);
+		iter.stamp = store->stamp;
+		iter.user_data = &store->up_entry;
+		iter.user_data2 = entry;
+		iter.user_data3 = GINT_TO_POINTER(-1);
 
 		if(0 < prev_size)
-			gtk_tree_model_row_changed(GTK_TREE_MODEL(store), path, iter);
+			gtk_tree_model_row_changed(GTK_TREE_MODEL(store), path_, &iter);
 		else
-			gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path, iter);
+			gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path_, &iter);
 
+		gtk_tree_path_free(path_);
 		i=1;
 	}
 
-	for(index = 0; i < new_size; i++, index++)
+	for(index = 0; index < new_size; i++, index++)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
 
-		iter = g_new(GtkTreeIter, 1);
-
-		iter->stamp = store->stamp;
-		iter->user_data = lxa_entry_children_nth_data(entry, index);
-		iter->user_data2 = entry;
-		iter->user_data3 = GINT_TO_POINTER(index);
+		iter.stamp = store->stamp;
+		iter.user_data = lxa_entry_children_nth_data(entry, index);
+		iter.user_data2 = entry;
+		iter.user_data3 = GINT_TO_POINTER(index);
 
 		if(i < prev_size)
-			gtk_tree_model_row_changed(GTK_TREE_MODEL(store), path_, iter);
+			gtk_tree_model_row_changed(GTK_TREE_MODEL(store), path_, &iter);
 		else
-			gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path_, iter);
+			gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path_, &iter);
+
+		gtk_tree_path_free(path_);
 	}
-	for(; i < prev_size; i++)
+	for(index = prev_size - 1; index >= i; index--)
 	{
 		path_ = gtk_tree_path_new();
-		gtk_tree_path_append_index(path_, i);
+		gtk_tree_path_append_index(path_, index);
 
 		gtk_tree_model_row_deleted(GTK_TREE_MODEL(store), path_);
+
+		gtk_tree_path_free(path_);
 	}
 }
 
@@ -630,7 +639,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 {
 	gint i = 0;
 	GtkTreePath *path_ = NULL;
-	GtkTreeIter *iter = NULL;
+	GtkTreeIter iter;
 	g_return_if_fail(store);
 
 	LXAEntry *entry = NULL;
@@ -647,46 +656,40 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 	}
 
+	for(i = prev_size - 1; i >= 0; i--)
+	{
+		path_ = gtk_tree_path_new();
+		gtk_tree_path_append_index(path_, i);
+
+		gtk_tree_model_row_deleted(GTK_TREE_MODEL(store), path_);
+
+		gtk_tree_path_free(path_);
+	}
+
 	if(!archive)
 	{
-
-		for(i = 0; i < prev_size; i++)
-		{
-			path_ = gtk_tree_path_new();
-			gtk_tree_path_append_index(path_, i);
-
-			gtk_tree_model_row_deleted(GTK_TREE_MODEL(store), path_);
-		}
-
 		store->archive = NULL;
 		store->current_entry = NULL;
 		return;
 	}
+
 	store->archive = archive;
 	store->current_entry = g_slist_prepend(NULL, &archive->root_entry);
 
 	store->up_entry.filename = "..";
-
-	store->n_columns = archive->column_number + 1;
-
-	store->column_types = g_new(GType, store->n_columns);
-
-	store->column_types[0] = G_TYPE_STRING;
-
-	memcpy(store->column_types + 1, archive->column_types, archive->column_number);
 
 	for(i = 0; i < lxa_entry_children_length(&archive->root_entry); i++)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
 
-		iter = g_new(GtkTreeIter, 1);
+		iter.stamp = store->stamp;
+		iter.user_data = lxa_entry_children_nth_data(&archive->root_entry, i);
+		iter.user_data2 = &archive->root_entry;
+		iter.user_data3 = GINT_TO_POINTER(i);
 
-		iter->stamp = store->stamp;
-		iter->user_data = lxa_entry_children_nth_data(&archive->root_entry, i);
-		iter->user_data2 = &archive->root_entry;
-		iter->user_data3 = GINT_TO_POINTER(i);
+		gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path_, &iter);
 
-		gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path_, iter);
+		gtk_tree_path_free(path_);
 	}
 }
