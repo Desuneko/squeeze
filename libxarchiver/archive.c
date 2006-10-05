@@ -31,7 +31,7 @@
 
 #include "internals.h"
 
-#define LXA_ENTRY_CHILD_BUFFER_SIZE 300
+#define LXA_ENTRY_CHILD_BUFFER_SIZE 3
 
 
 static void
@@ -188,6 +188,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	gchar **path_items;
 	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
+/*
 	tmp_entry = lxa_entry_get_child(&archive->root_entry, path_items[0]);
 	if(!tmp_entry)
 	{
@@ -198,11 +199,12 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 		else
 			tmp_entry->is_folder = FALSE;
 		lxa_entry_add_child(&archive->root_entry, tmp_entry);
-		lxa_entry_flush_buffer(&archive->root_entry);
+//		lxa_entry_flush_buffer(&archive->root_entry);
 	}
-	for(i = 1; path_items[i]?strlen(path_items[i]):0;i++)
+*/
+	parent = &archive->root_entry;
+	for(i = 0; path_items[i]?strlen(path_items[i]):0;i++)
 	{
-		parent = tmp_entry;
 		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
 		if(!tmp_entry)
 		{
@@ -212,7 +214,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 			if(path[strlen(path)-1] == '/')
 			{
 				tmp_entry->is_folder = TRUE;
-				lxa_entry_flush_buffer(parent);
+//				lxa_entry_flush_buffer(parent);
 			}
 			else
 				tmp_entry->is_folder = FALSE;
@@ -260,21 +262,39 @@ lxa_stop_archive_child( LXAArchive *archive )
 	return 0;
 }
 
+//TODO: why does this have a return value?
 gboolean
 lxa_entry_add_child(LXAEntry *parent, LXAEntry *child)
 {
-	guint max_children = 0;
-	guint begin = 0;
-	guint pos = 0;
-	gint cmp = 0;
-	guint old_i = 0;
-	guint new_i = 0;
-	guint size = parent->n_children;
-	guint org_size = parent->n_children;
-	GSList *buffer_iter = NULL;
-	LXAEntry **children_old = (LXAEntry **)parent->children;
-	
-	parent->buffer = g_slist_insert_sorted(parent->buffer, (gpointer)child, (GCompareFunc)lxa_archive_sort_entry_buffer);
+	gint cmp = 1;
+	GSList *buffer_iter = parent->buffer;
+	GSList *prev_entry = NULL;
+	GSList *new_entry = NULL;
+
+	for(; buffer_iter; buffer_iter = buffer_iter->next)
+	{
+		cmp = strcmp(child->filename, ((LXAEntry*)buffer_iter->data)->filename);
+
+		if(!cmp)
+		{
+			/* TODO: merge same as in flush */
+			return;
+		}
+		if(cmp < 0)
+			break;
+
+		prev_entry = buffer_iter;
+	}
+
+	new_entry = g_new(GSList, 1);
+	new_entry->next = buffer_iter;
+	new_entry->data = child;
+
+	if(prev_entry)
+		prev_entry->next = new_entry;
+	else
+		parent->buffer = new_entry;
+
 	if(g_slist_length(parent->buffer) == LXA_ENTRY_CHILD_BUFFER_SIZE)
 		lxa_entry_flush_buffer(parent);
 }
@@ -282,16 +302,18 @@ lxa_entry_add_child(LXAEntry *parent, LXAEntry *child)
 LXAEntry *
 lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
+	GSList *buffer_iter = NULL;
 	guint size = entry->n_children;
 	guint pos = 0;
+	guint begin = 0;
 	gint cmp = 0;
 	while(size)
 	{
 		pos = (size / 2);
 
-		cmp = strcmp(filename, entry->children[pos]->filename);
+		cmp = strcmp(filename, entry->children[pos+begin]->filename);
 		if(!cmp)
-			return entry->children[pos];
+			return entry->children[pos+begin];
 
 		if(cmp < 0)
 		{
@@ -300,15 +322,26 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 		else
 		{
 			size = size - ++pos;
+			begin += pos;
 		}
 	}
+
+	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
+	{
+		cmp = strcmp(filename, ((LXAEntry*)buffer_iter->data)->filename);
+
+		if(!cmp)
+			return buffer_iter->data;
+		if(cmp < 0)
+			break;
+	}
+
 	return NULL;
 }
 
 void
 lxa_entry_flush_buffer(LXAEntry *entry)
 {
-	g_debug("Flush");
 	guint max_children = 0;
 	guint begin = 0;
 	guint pos = 0;
@@ -327,20 +360,20 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		size = entry->n_children - begin;
 		while(size)
 		{
-			pos = (size / 2)+begin;
+			pos = (size / 2);
 
-			cmp = strcmp(((LXAEntry *)buffer_iter->data)->filename, children_old[pos]->filename);
+			cmp = strcmp(((LXAEntry *)buffer_iter->data)->filename, children_old[pos+begin]->filename);
 			if(!cmp)
 				break;
 
 			if(cmp < 0)
 			{
-				size = pos - begin;
+				size = pos;
 			}
 			else
 			{
-				size = size + begin - ++pos;
-				begin = pos;
+				size = size - ++pos;
+				begin += pos;
 			}
 		}
 		if(!cmp)
@@ -349,7 +382,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		}
 		else
 		{
-			while(old_i < pos)
+			while(old_i < begin)
 			{
 				entry->children[new_i++] = children_old[old_i++];
 			}
@@ -361,10 +394,24 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		entry->children[new_i++] = children_old[old_i++];
 	}
 	entry->n_children = new_i;
-	g_debug("%d", entry->n_children);
-
-	g_slist_free(entry->buffer);
+	
+	if(entry->buffer)
+		g_slist_free(entry->buffer);
 	entry->buffer = NULL;
 
 	g_free(children_old);
 }
+
+guint lxa_entry_children_length(LXAEntry *entry)
+{
+	g_return_val_if_fail(entry, 0);
+	return entry->n_children;
+}
+
+LXAEntry *lxa_entry_children_nth_data(LXAEntry *entry, guint n)
+{
+	g_return_val_if_fail(entry, NULL);
+	g_return_val_if_fail(n >= 0 && n < entry->n_children, NULL);
+	return entry->children[n];
+}
+

@@ -594,7 +594,6 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
-	g_debug("AAA");
 }
 
 gint
@@ -793,7 +792,6 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive)
 	for(i=0;i<((LXAEntry *)main_window->working_node->data)->n_children; i++)
 		xa_main_window_add_item(((LXAEntry *)main_window->working_node->data)->children[i], main_window);
 
-	g_debug("Nodes: %d\n", ((LXAEntry *)main_window->working_node->data)->n_children);
 
 	if(g_slist_length(main_window->working_node) > 1)
 	{

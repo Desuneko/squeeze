@@ -46,7 +46,9 @@ struct _XAArchiveStore
 	gint stamp;
 	guint n_columns;
 	GType *column_types;
-	GSList *rows;
+	LXAArchive *archive;
+	GSList *current_entry;
+	LXAEntry up_entry;
 	struct {
 		gboolean _show_icons;
 	} props;
@@ -65,6 +67,6 @@ xa_archive_store_get_type();
 GtkTreeModel *
 xa_archive_store_new(LXAArchive *archive, gboolean show_icons);
 void
-xa_archive_store_set_contents(XAArchiveStore *archive_store, GTree *items, gboolean is_root);
+xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
 
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */
