@@ -31,7 +31,10 @@ typedef enum
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
+
 typedef struct _LXAEntry LXAEntry;
+
+#include "slist.h"
 
 struct _LXAEntry {
 	gchar *filename;
@@ -40,7 +43,7 @@ struct _LXAEntry {
 	/* */
 	LXAEntry **children;
 	guint   n_children;
-	GSList *buffer;
+	LXASList *buffer;
 };
 
 #define LXA_ARCHIVE(obj)         ( \

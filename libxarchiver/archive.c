@@ -31,7 +31,7 @@
 
 #include "internals.h"
 
-#define LXA_ENTRY_CHILD_BUFFER_SIZE 3
+#define LXA_ENTRY_CHILD_BUFFER_SIZE 300
 
 
 static void
@@ -266,43 +266,16 @@ lxa_stop_archive_child( LXAArchive *archive )
 gboolean
 lxa_entry_add_child(LXAEntry *parent, LXAEntry *child)
 {
-	gint cmp = 1;
-	GSList *buffer_iter = parent->buffer;
-	GSList *prev_entry = NULL;
-	GSList *new_entry = NULL;
+	parent->buffer = lxa_slist_insert_sorted_single(parent->buffer, child);
 
-	for(; buffer_iter; buffer_iter = buffer_iter->next)
-	{
-		cmp = strcmp(child->filename, ((LXAEntry*)buffer_iter->data)->filename);
-
-		if(!cmp)
-		{
-			/* TODO: merge same as in flush */
-			return;
-		}
-		if(cmp < 0)
-			break;
-
-		prev_entry = buffer_iter;
-	}
-
-	new_entry = g_new(GSList, 1);
-	new_entry->next = buffer_iter;
-	new_entry->data = child;
-
-	if(prev_entry)
-		prev_entry->next = new_entry;
-	else
-		parent->buffer = new_entry;
-
-	if(g_slist_length(parent->buffer) == LXA_ENTRY_CHILD_BUFFER_SIZE)
+	if(lxa_slist_length(parent->buffer) == LXA_ENTRY_CHILD_BUFFER_SIZE)
 		lxa_entry_flush_buffer(parent);
 }
 
 LXAEntry *
 lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
-	GSList *buffer_iter = NULL;
+	LXASList *buffer_iter = NULL;
 	guint size = entry->n_children;
 	guint pos = 0;
 	guint begin = 0;
@@ -328,10 +301,10 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 
 	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
 	{
-		cmp = strcmp(filename, ((LXAEntry*)buffer_iter->data)->filename);
+		cmp = strcmp(filename, buffer_iter->entry->filename);
 
 		if(!cmp)
-			return buffer_iter->data;
+			return buffer_iter->entry;
 		if(cmp < 0)
 			break;
 	}
@@ -342,6 +315,9 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 void
 lxa_entry_flush_buffer(LXAEntry *entry)
 {
+	if(!entry->buffer)
+		return;
+
 	guint max_children = 0;
 	guint begin = 0;
 	guint pos = 0;
@@ -349,10 +325,10 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 	guint old_i = 0;
 	guint new_i = 0;
 	guint size = entry->n_children;
-	GSList *buffer_iter = NULL;
+	LXASList *buffer_iter = NULL;
 	LXAEntry **children_old = (LXAEntry **)entry->children;
 
-	max_children = (entry->n_children + g_slist_length(entry->buffer));
+	max_children = (entry->n_children + lxa_slist_length(entry->buffer));
 	
 	entry->children = g_new(LXAEntry *, max_children);
 	for(buffer_iter = entry->buffer;buffer_iter;buffer_iter = buffer_iter->next)
@@ -362,7 +338,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		{
 			pos = (size / 2);
 
-			cmp = strcmp(((LXAEntry *)buffer_iter->data)->filename, children_old[pos+begin]->filename);
+			cmp = strcmp(buffer_iter->entry->filename, children_old[pos+begin]->filename);
 			if(!cmp)
 				break;
 
@@ -386,7 +362,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 			{
 				entry->children[new_i++] = children_old[old_i++];
 			}
-			entry->children[new_i++] = buffer_iter->data;
+			entry->children[new_i++] = buffer_iter->entry;
 		}
 	}
 	while(old_i < entry->n_children)
@@ -395,8 +371,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 	}
 	entry->n_children = new_i;
 	
-	if(entry->buffer)
-		g_slist_free(entry->buffer);
+	lxa_slist_free(entry->buffer);
 	entry->buffer = NULL;
 
 	g_free(children_old);
@@ -405,12 +380,13 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 guint lxa_entry_children_length(LXAEntry *entry)
 {
 	g_return_val_if_fail(entry, 0);
-	return entry->n_children;
+	return entry->n_children + lxa_slist_length(entry->buffer);
 }
 
 LXAEntry *lxa_entry_children_nth_data(LXAEntry *entry, guint n)
 {
 	g_return_val_if_fail(entry, NULL);
+	lxa_entry_flush_buffer(entry);
 	g_return_val_if_fail(n >= 0 && n < entry->n_children, NULL);
 	return entry->children[n];
 }

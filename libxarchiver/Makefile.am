@@ -3,6 +3,7 @@ noinst_LIBRARIES = libxarchiver.a
 libxarchiver_a_SOURCES =            \
 	libxarchiver.c libxarchiver.h     \
 	internals.c internals.h \
+	slist.c slist.h \
 	archive.c archive.h \
 	archive-support.c archive-support.h \
   archive-support-zip.c archive-support-zip.h \
