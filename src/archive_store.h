@@ -49,6 +49,7 @@ struct _XAArchiveStore
 	LXAEntry up_entry;
 	struct {
 		gboolean _show_icons;
+		gboolean _show_up_dir;
 	} props;
 };
 
@@ -63,7 +64,7 @@ struct _XAArchiveStoreClass
 GType
 xa_archive_store_get_type();
 GtkTreeModel *
-xa_archive_store_new(LXAArchive *archive, gboolean show_icons);
+xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir);
 void
 xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
 void

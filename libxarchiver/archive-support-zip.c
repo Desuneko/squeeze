@@ -48,6 +48,9 @@ lxa_archive_support_zip_init(LXAArchiveSupportZip *support);
 void
 lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass);
 
+gboolean
+lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+
 void
 lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 void
@@ -90,6 +93,8 @@ lxa_archive_support_zip_init(LXAArchiveSupportZip *support)
 
 	archive_support->add = lxa_archive_support_zip_add;
 	archive_support->extract = lxa_archive_support_zip_extract;
+	archive_support->remove = lxa_archive_support_zip_remove;
+	archive_support->refresh = lxa_archive_support_zip_refresh;
 }
 
 void
@@ -114,6 +119,56 @@ lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE, pspec);
+
+	pspec = g_param_spec_boolean("view-size",
+		"View file-size",
+		"View file-size",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_SIZE, pspec);
+
+	pspec = g_param_spec_boolean("view-time",
+		"View time",
+		"View time",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_TIME, pspec);
+
+	pspec = g_param_spec_boolean("view-date",
+		"View date",
+		"View date",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_DATE, pspec);
+
+	pspec = g_param_spec_boolean("view-ratio",
+		"View ratio",
+		"View ratio",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_RATIO, pspec);
+
+	pspec = g_param_spec_boolean("view-length",
+		"View length",
+		"View length",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_LENGTH, pspec);
+
+	pspec = g_param_spec_boolean("view-method",
+		"View method",
+		"View method",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_METHOD, pspec);
+
+	pspec = g_param_spec_boolean("view-crc32",
+		"View CRC-32",
+		"View CRC-32",
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_CRC_32, pspec);
+
 }
 
 LXAArchiveSupport*
@@ -121,7 +176,11 @@ lxa_archive_support_zip_new()
 {
 	LXAArchiveSupportZip *support;
 
-	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_ZIP, NULL);
+	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_ZIP,
+	                       "view-size", TRUE,
+												 "view-time", TRUE,
+												 "view-date", TRUE,
+												 NULL);
 	
 	return LXA_ARCHIVE_SUPPORT(support);
 }
@@ -210,6 +269,171 @@ lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 		}
 	}
 	return 0;
+}
+
+gint
+lxa_archive_support_zip_refresh(LXAArchive *archive)
+{
+	guint i = 1;
+	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
+	{
+		g_critical("Support is not Zip");
+		return -1;
+	}
+
+	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	{
+		return 1;
+	}
+	else
+	{
+		archive->column_number = 1;
+		archive->entry_props_size = 0;
+
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) 
+			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) 
+			archive->column_number++;
+
+		archive->column_types = g_new0(GType, archive->column_number);
+		archive->column_names = g_new0(gchar *, archive->column_number);
+
+		archive->column_types[0] = G_TYPE_STRING;
+		archive->column_names[0] = g_strdup(_("Filename"));
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup(_("Compression method"));
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("Ratio");
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) {
+			archive->column_types[i] = G_TYPE_UINT64;
+			archive->column_names[i] = g_strdup(_("Size"));
+			i++;
+			archive->entry_props_size += sizeof(guint64);
+		}
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
+			archive->column_types[i] = G_TYPE_UINT64;
+			archive->column_names[i] = g_strdup(_("Length"));
+			i++;
+			archive->entry_props_size += sizeof(guint64);
+		}
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup(_("Date"));
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup(_("Time"));
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("CRC-32");
+			i++;
+			archive->entry_props_size += sizeof(gchar *);
+		}
+
+		gchar *command = g_strconcat("unzip -lv -qq " , archive->path, NULL);
+		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_zip_refresh_parse_output, NULL);
+		g_free(command);
+	}
+}
+
+gboolean
+lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+{
+	GIOStatus status = G_IO_STATUS_NORMAL;
+	LXAArchive *archive = data;
+	gchar *line	= NULL;
+	LXAEntry *entry;
+
+	gpointer props = NULL; 
+	gpointer props_iter = NULL;
+	gint n = 0, a = 0, i = 0, o = 0;
+	gchar *temp_filename = NULL;
+	gchar *_size = NULL;
+
+	if(!LXA_IS_ARCHIVE(archive))
+		return FALSE;
+
+
+	if(cond & (G_IO_PRI | G_IO_IN))
+	{
+		for(o = 0; o < 500; o++)
+		{
+			i = 0;
+
+			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
+			if (line == NULL)
+ 				break; 
+			/* length, method , size, ratio, date, time, crc-32, filename*/
+
+			props = g_malloc0(archive->entry_props_size);
+			props_iter = props;
+
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length)
+			{
+
+			}
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method)
+			{
+
+			}
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size)
+			{
+
+			}
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio)
+			{
+
+			}
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date)
+			{
+
+			}
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time)
+			{
+
+			}
+			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
+			{
+
+			}
+
+			entry = lxa_archive_add_file(archive, temp_filename);
+			entry->props = props;
+			g_free(line);
+		}
+	}
+	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	{
+#ifdef DEBUG
+		g_debug("shutting down ioc");
+#endif
+		g_io_channel_shutdown ( ioc,TRUE,NULL );
+		g_io_channel_unref (ioc);
+		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+		return FALSE; 
+	}
+	return TRUE;
 }
 
 void

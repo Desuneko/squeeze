@@ -35,6 +35,17 @@ xa_archive_tree_model_init(GtkTreeModelIface *tm_interface);
 static void
 xa_archive_tree_sartable_init(GtkTreeSortableIface *ts_interface);
 
+/* properties */
+enum {
+	XA_ARCHIVE_STORE_SHOW_ICONS = 1, 
+	XA_ARCHIVE_STORE_SHOW_UP_DIR
+};
+
+static void
+xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void
+xa_archive_store_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+
 /* tree model */
 static GtkTreeModelFlags
 xa_archive_store_get_flags(GtkTreeModel *tree_model);
@@ -132,14 +143,62 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->archive = NULL;
 	as->current_entry = NULL;
 	as->props._show_icons = FALSE;
+	as->props._show_up_dir = TRUE;
+	as->up_entry.filename = "..";
+	as->up_entry.props = NULL;
 }
 
 static void
 xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS (as_class);
+	GParamSpec *pspec = NULL;
 
+	object_class->set_property = xa_archive_store_set_property;
+	object_class->get_property = xa_archive_store_get_property;
+
+	pspec = g_param_spec_boolean("show_icons",
+		_("Show mime icons"),
+		_("Show the mime type icons for each entry"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SHOW_ICONS, pspec);
+
+	pspec = g_param_spec_boolean("show_up_dir",
+		_("Show up dir entry"),
+		_("Show \'..\' to go to the parent directory"),
+		TRUE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SHOW_UP_DIR, pspec);
 }
 
+static void
+xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case XA_ARCHIVE_STORE_SHOW_ICONS:
+			XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value);
+			break;
+		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
+			XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value);
+			break;
+	}
+}
+
+static void
+xa_archive_store_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case XA_ARCHIVE_STORE_SHOW_ICONS:
+			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._show_icons);
+			break;
+		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
+			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._show_up_dir);
+			break;
+	}
+}
 
 static GtkTreeModelFlags
 xa_archive_store_get_flags(GtkTreeModel *tree_model)
@@ -209,7 +268,7 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 
 	gint index = indices[depth];
 
-	if(&archive->root_entry != entry)
+	if(store->props._show_up_dir && &archive->root_entry != entry)
 		index--;
 
 	if(index == -1)
@@ -248,7 +307,7 @@ xa_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 //	gint pos = lxa_entry_children_index(store->current_entry, iter->user_data);
 	gint pos = GPOINTER_TO_INT(iter->user_data3);
 
-	if(&archive->root_entry != entry)
+	if(store->props._show_up_dir && &archive->root_entry != entry)
 		pos++;
 
 	GtkTreePath *path = gtk_tree_path_new();
@@ -282,18 +341,18 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	gpointer props_iter = entry->props;
 	gint i = 1;
 
-	if(strcmp(entry->filename, "..") == 0)
+	if(column == -1)
 	{
-		if(column == -1)
-		{
-			g_value_init(value, G_TYPE_STRING);
-			g_value_set_string(value, "go-up");
-		}
-		else if(column == 0)
-		{
-			g_value_set_string(value, "..");
-		}
-		else
+		g_value_init(value, G_TYPE_STRING);
+		g_value_set_string(value, (strcmp(entry->filename, ".."))?entry->is_folder?"folder":"unknown":"go-up");
+	}
+	else if(column == 0)
+	{
+		g_value_set_string(value, (strcmp(entry->filename, ".."))?entry->filename:"..");
+	}
+	else
+	{
+		if(!props_iter)
 		{
 			switch(archive->column_types[column])
 			{
@@ -307,18 +366,6 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 					g_value_set_uint(value, 0);
 					break;
 			}
-		}
-	}
-	else
-	{
-		if(column == -1)
-		{
-			g_value_init(value, G_TYPE_STRING);
-			g_value_set_string(value, entry->is_folder?"folder":"unknown");
-		}
-		else if(column == 0)
-		{
-			g_value_set_string(value, entry->filename);
 		}
 		else
 		{
@@ -391,7 +438,7 @@ xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, Gtk
 	/* only support lists: parent is always NULL */
 	g_return_val_if_fail(parent == NULL, FALSE);
 
-	if(&archive->root_entry != entry)
+	if(store->props._show_up_dir && &archive->root_entry != entry)
 	{
 		entry = &store->up_entry;
 		iter->user_data3 = GINT_TO_POINTER(-1);
@@ -452,7 +499,7 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 	/* only support lists: parent is always NULL */
 	g_return_val_if_fail(parent == NULL, FALSE);
 
-	if(&archive->root_entry != entry)
+	if(store->props._show_up_dir && &archive->root_entry != entry)
 		n--;
 
 	if(n == -1)
@@ -482,7 +529,7 @@ xa_archive_store_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTr
 
 
 GtkTreeModel *
-xa_archive_store_new(LXAArchive *archive, gboolean show_icons)
+xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir)
 {
 	XAArchiveStore *tree_model;
 	GType *column_types;
@@ -512,6 +559,7 @@ xa_archive_store_new(LXAArchive *archive, gboolean show_icons)
 	tree_model->column_types = archive->column_types;
 	*/
 	tree_model->props._show_icons = show_icons;
+	tree_model->props._show_up_dir = show_up_dir;
 
 	xa_archive_store_set_contents(tree_model, archive);
 
@@ -549,7 +597,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	GtkTreePath *path_ = NULL;
 	GtkTreeIter iter;
 
-	if(&archive->root_entry != entry)
+	if(store->props._show_up_dir && &archive->root_entry != entry)
 	{
 		prev_size++;
 		index--;
@@ -572,7 +620,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 
 	new_size = lxa_entry_children_length(entry);
 
-	if(&archive->root_entry != entry) { 
+	if(store->props._show_up_dir && &archive->root_entry != entry) { 
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, 0);
 
@@ -651,7 +699,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		prev_size = lxa_entry_children_length(entry);
 		
 
-		if(&store->archive->root_entry != entry)
+		if(store->props._show_up_dir && &store->archive->root_entry != entry)
 			prev_size++;
 
 	}
@@ -675,8 +723,6 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 	store->archive = archive;
 	store->current_entry = g_slist_prepend(NULL, &archive->root_entry);
-
-	store->up_entry.filename = "..";
 
 	for(i = 0; i < lxa_entry_children_length(&archive->root_entry); i++)
 	{
