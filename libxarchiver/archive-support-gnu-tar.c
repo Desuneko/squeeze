@@ -114,6 +114,9 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 	/* Check for existence of bzip2 -- required for x-bzip-compressed-tar */
 	if(g_find_program_in_path("bzip2"))
 		lxa_archive_support_add_mime(archive_support, "application/x-bzip-compressed-tar");
+	/* Check for existence of lzop -- required for x-tzo */
+	if(g_find_program_in_path("lzop"))
+		lxa_archive_support_add_mime(archive_support, "application/x-tzo");
 
 	archive_support->add = lxa_archive_support_gnu_tar_add;
 	archive_support->extract = lxa_archive_support_gnu_tar_extract;
@@ -234,6 +237,8 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zcf ", archive->path, " ", archive->files, NULL);
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jcf ", archive->path, " ", archive->files, NULL);
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -cf ", archive->path, " ", archive->files, NULL);
 			if(command)
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 		} else
@@ -254,6 +259,8 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
 				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
 			g_free(command);
 		}
@@ -313,6 +320,14 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
 			}
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+			{
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf --use-compress-program=lzop ", archive->path,
+						" -C \"", dest_path, "\"", 
+						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
+						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+						archive->files, NULL);
+			}
 		} else
 			return 1;
 		if(command)
@@ -361,6 +376,8 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
 				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
+			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
 			g_free(command);
 		} else
@@ -372,6 +389,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 gint
 lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 {
+	gchar *command = NULL;
 	guint i = 1;
 	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
@@ -434,8 +452,10 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
-		//TODO: empty archive-tree
-		gchar *command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " tvf " , archive->path, NULL);
+		if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+			command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -tvf " , archive->path, NULL);
+		else
+			command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -tvf " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
 		g_free(command);
 	}
@@ -462,6 +482,8 @@ lxa_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 		command = g_strconcat("gzip -c ", archive->tmp_file, NULL);
 	if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
 		command = g_strconcat("bzip2 -c ", archive->tmp_file, NULL);
+	if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+		command = g_strconcat("lzop -c ", archive->path, NULL);
 	lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_compress_parse_output, NULL);
 }
 
