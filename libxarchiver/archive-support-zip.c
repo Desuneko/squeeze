@@ -18,6 +18,7 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
+#include <string.h>
 #include <glib.h>
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
@@ -180,6 +181,10 @@ lxa_archive_support_zip_new()
 	                       "view-size", TRUE,
 												 "view-time", TRUE,
 												 "view-date", TRUE,
+												 "view-method", TRUE,
+												 "view-ratio", TRUE,
+												 "view-length", TRUE,
+												 "view-crc32", TRUE,
 												 NULL);
 	
 	return LXA_ARCHIVE_SUPPORT(support);
@@ -296,6 +301,8 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 			archive->column_number++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) 
 			archive->column_number++;
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) 
+			archive->column_number++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
 			archive->column_number++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) 
@@ -308,15 +315,16 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 
 		archive->column_types[0] = G_TYPE_STRING;
 		archive->column_names[0] = g_strdup(_("Filename"));
+
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
+			archive->column_types[i] = G_TYPE_UINT64;
+			archive->column_names[i] = g_strdup(_("Length"));
+			i++;
+			archive->entry_props_size += sizeof(guint64);
+		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) {
 			archive->column_types[i] = G_TYPE_STRING;
 			archive->column_names[i] = g_strdup(_("Compression method"));
-			i++;
-			archive->entry_props_size += sizeof(gchar *);
-		}
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup("Ratio");
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
@@ -326,11 +334,11 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 			i++;
 			archive->entry_props_size += sizeof(guint64);
 		}
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
-			archive->column_types[i] = G_TYPE_UINT64;
-			archive->column_names[i] = g_strdup(_("Length"));
+		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
+			archive->column_types[i] = G_TYPE_STRING;
+			archive->column_names[i] = g_strdup("Ratio");
 			i++;
-			archive->entry_props_size += sizeof(guint64);
+			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) {
 			archive->column_types[i] = G_TYPE_STRING;
@@ -388,39 +396,89 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 
 			props = g_malloc0(archive->entry_props_size);
 			props_iter = props;
+			for(n=0; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length)
 			{
-
+				_size = g_strndup(&line[a], n-a);
+				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
+				g_free (_size);
+				props_iter += sizeof(guint64);
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
+
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method)
 			{
-
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
+
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size)
 			{
-
+				_size = g_strndup(&line[a], n-a);
+				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
+				g_free (_size);
+				props_iter += sizeof(guint64);
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
+
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio)
 			{
-
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
+
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date)
 			{
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
 
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
+
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time)
 			{
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
 
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			a = n;
+			for(; n < strlen(line) && line[n] != ' '; n++);
+
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
 			{
-
+				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
+				props_iter += sizeof(gchar *);
 			}
+
+			for(; n < strlen(line) && line[n] == ' '; n++);
+			temp_filename = g_strstrip(g_strndup(&line[n], strlen(line)-n-1)); 
 
 			entry = lxa_archive_add_file(archive, temp_filename);
 			entry->props = props;
 			g_free(line);
+			g_free(temp_filename);
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
