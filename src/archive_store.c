@@ -374,7 +374,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	if(column == -1)
 	{
 		g_value_init(value, G_TYPE_STRING);
-		g_value_set_string(value, (strcmp(entry->filename, ".."))?entry->is_folder?"folder":"unknown":"go-up");
+		g_value_set_string(value, (strcmp(entry->filename, ".."))?entry->mime_type:"go-up");
 	}
 	else if(column == 0)
 	{
@@ -749,7 +749,9 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 		entry = lxa_entry_children_nth_data(entry, index);
 
 		g_return_if_fail(entry);
-		g_return_if_fail(entry->is_folder);
+		/* TODO Signal file-activated */
+		if(strcmp(entry->mime_type, "folder"))
+			return;
 
 		store->current_entry = g_slist_prepend(store->current_entry, entry);
 	}

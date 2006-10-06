@@ -38,8 +38,8 @@ typedef struct _LXAEntry LXAEntry;
 
 struct _LXAEntry {
 	gchar *filename;
-	gboolean is_folder;
 	gpointer props;
+	gchar *mime_type;
 	/* */
 	LXAEntry **children;
 	guint   n_children;

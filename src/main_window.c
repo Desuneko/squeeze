@@ -56,8 +56,6 @@ xa_main_window_set_contents(XAMainWindow *, LXAArchive *);
 void
 xa_main_window_reset_columns(XAMainWindow *window);
 
-void
-cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeViewColumn *column, gpointer userdata);
 
 void
 xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window);
@@ -264,7 +262,6 @@ xa_main_window_init(XAMainWindow *window)
 
 	gtk_widget_show(window->scrollwindow);
 	gtk_widget_show(window->treeview);
-//	g_signal_connect(G_OBJECT(window->treeview), "row-activated", G_CALLBACK(cb_xa_main_item_activated), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -280,7 +277,6 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_widget_show_all(window->statusbar);
 
 	gtk_container_add(GTK_CONTAINER(window), main_vbox);
-	g_signal_connect(G_OBJECT(window), "style-set", G_CALLBACK(cb_xa_main_window_style_set), NULL);
 }
 
 GtkWidget *
@@ -323,25 +319,6 @@ xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value,
 			XA_MAIN_WINDOW(object)->props._show_icons = g_value_get_boolean(value);
 			break;
 	}
-}
-
-static void
-cb_xa_main_window_style_set(XAMainWindow *window, gpointer userdata)
-{
-	if(!(gtk_icon_theme_has_icon(window->icon_theme, "folder") && gtk_icon_theme_has_icon(window->icon_theme, "unknown") && gtk_icon_theme_has_icon(window->icon_theme, "go-up")))
-		window->props._show_icons = FALSE;
-	else
-		window->props._show_icons = TRUE;
-
-	if(window->working_node)
-	{
-		if(((LXAEntry *)window->working_node->data)->children)
-		{
-			xa_main_window_reset_columns(window);
-			xa_main_window_set_contents(window, window->lp_xa_archive);
-		}
-	}
-	
 }
 
 GtkWidget *
@@ -820,10 +797,7 @@ xa_main_window_add_item(LXAEntry *entry, gpointer data)
 	{
 		tmp_value = g_new0(GValue, 1);
 		tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
-		if(entry->is_folder)
-			g_value_set_string(tmp_value, "folder");
-		else
-			g_value_set_string(tmp_value, "unknown");
+		g_value_set_string(tmp_value, entry->mime_type);
 		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
 		g_value_unset(tmp_value);
 		g_free(tmp_value);
@@ -872,50 +846,6 @@ xa_main_window_add_item(LXAEntry *entry, gpointer data)
 }
 
 
-
-void
-cb_xa_main_item_activated(GtkTreeView *treeview, GtkTreePath *treepath, GtkTreeViewColumn *column, gpointer userdata)
-{
-	GtkTreeIter iter;
-	GValue *value = g_new0(GValue, 1);
-	XAMainWindow *main_window = userdata;
-
-	GtkTreeModel *tree_model = gtk_tree_view_get_model(treeview);
-
-	gtk_tree_model_get_iter(tree_model, &iter, treepath);
-	if(main_window->props._show_icons)
-		gtk_tree_model_get_value(tree_model, &iter, 1, value);
-	else
-		gtk_tree_model_get_value(tree_model, &iter, 0, value);
-
-	const gchar *item_filename = (gchar *)g_value_get_string(value);
-	if(!strcmp(item_filename, ".."))
-	{
-		main_window->working_node = g_slist_delete_link(main_window->working_node, main_window->working_node);
-		xa_main_window_set_contents(main_window, main_window->lp_xa_archive);
-	}
-	else
-	{
-		if(item_filename)
-		{
-			LXAEntry *entry = lxa_entry_get_child(((LXAEntry *)main_window->working_node->data), item_filename);
-			if(entry->is_folder)
-			{
-				main_window->working_node = g_slist_prepend(main_window->working_node, entry);
-				xa_main_window_set_contents(main_window, main_window->lp_xa_archive);
-			}
-			else
-			{ 
-				GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(main_window), 0, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK, "What do you want to do today?");
-				gtk_dialog_run(GTK_DIALOG(dialog));
-				gtk_widget_destroy(dialog);
-			}
-		}
-	}
-
-	g_value_unset(value);
-	g_free(value);
-}
 
 gchar *
 xa_main_window_get_working_dir(XAMainWindow *window)

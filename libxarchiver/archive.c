@@ -188,20 +188,6 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	gchar **path_items;
 	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
-/*
-	tmp_entry = lxa_entry_get_child(&archive->root_entry, path_items[0]);
-	if(!tmp_entry)
-	{
-		tmp_entry= g_new0(LXAEntry, 1);
-		tmp_entry->filename = g_strdup(path_items[0]);
-		if(path[strlen(path)-1] == '/')
-			tmp_entry->is_folder = TRUE;
-		else
-			tmp_entry->is_folder = FALSE;
-		lxa_entry_add_child(&archive->root_entry, tmp_entry);
-//		lxa_entry_flush_buffer(&archive->root_entry);
-	}
-*/
 	parent = &archive->root_entry;
 	for(i = 0; path_items[i]?strlen(path_items[i]):0;i++)
 	{
@@ -213,11 +199,10 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 			lxa_entry_add_child(parent, tmp_entry);
 			if(path[strlen(path)-1] == '/')
 			{
-				tmp_entry->is_folder = TRUE;
-//				lxa_entry_flush_buffer(parent);
+				tmp_entry->mime_type = "folder";
 			}
 			else
-				tmp_entry->is_folder = FALSE;
+				tmp_entry->mime_type = "unknown";
 		}
 		parent = tmp_entry;
 	}
