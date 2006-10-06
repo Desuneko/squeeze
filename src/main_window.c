@@ -222,8 +222,7 @@ xa_main_window_init(XAMainWindow *window)
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), window);
 
 /* Action pane */
-	tmp_image = xa_main_window_find_image("add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
-	window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
+	window->toolbar.tool_item_add = gtk_tool_button_new_from_stock("gtk-go-up");
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
 
 	tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -488,21 +487,8 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
-	GtkWidget *dialog = NULL;
-	gint result = 0;
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	LXAArchiveSupport *lp_support = NULL;
-
-	lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
-
-	dialog = xa_add_dialog_new(lp_support, window->lp_xa_archive, FALSE);
-	result = gtk_dialog_run (GTK_DIALOG (dialog) );
-	if(result == GTK_RESPONSE_OK)
-	{
-		gtk_widget_hide(GTK_WIDGET(dialog));
-	}
-	gtk_widget_destroy (GTK_WIDGET (dialog) );
-
+	xa_archive_store_go_up(XA_ARCHIVE_STORE(window->treemodel));
 }
 
 void

@@ -33,7 +33,7 @@ static void
 xa_archive_tree_model_init(GtkTreeModelIface *tm_interface);
 
 static void
-xa_archive_tree_sartable_init(GtkTreeSortableIface *ts_interface);
+xa_archive_tree_sortable_init(GtkTreeSortableIface *ts_interface);
 
 /* properties */
 enum {
@@ -71,6 +71,8 @@ static gboolean
 xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent, gint n);
 static gboolean
 xa_archive_store_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *child);
+static void
+xa_archive_store_refresh(XAArchiveStore *store, gint prev_size);
 
 static void
 cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data);
@@ -80,7 +82,12 @@ static gboolean
 xa_archive_store_get_sort_column_id(GtkTreeSortable *sortable, gint *sort_col_id, GtkSortType *order);
 static void
 xa_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id, GtkSortType order);
-
+static void
+xa_archive_store_set_sort_func(GtkTreeSortable *, gint, GtkTreeIterCompareFunc, gpointer, GtkDestroyNotify);
+static void
+xa_archive_store_set_default_sort_func(GtkTreeSortable *, GtkTreeIterCompareFunc, gpointer, GtkDestroyNotify);
+static gboolean
+xa_archive_store_has_default_sort_func(GtkTreeSortable *);
 
 GType
 xa_archive_store_get_type()
@@ -116,6 +123,16 @@ xa_archive_store_get_type()
 	};
 
 	g_type_add_interface_static (xa_archive_store_type, GTK_TYPE_TREE_MODEL, &tree_model_info);
+
+	static const GInterfaceInfo tree_sort_info =
+	{
+		(GInterfaceInitFunc) xa_archive_tree_sortable_init,
+			NULL,
+			NULL
+	};
+
+	g_type_add_interface_static (xa_archive_store_type, GTK_TYPE_TREE_SORTABLE, &tree_sort_info);
+
 	return xa_archive_store_type;
 }
 
@@ -137,6 +154,16 @@ xa_archive_tree_model_init(GtkTreeModelIface *iface)
 }
 
 static void
+xa_archive_tree_sortable_init(GtkTreeSortableIface *iface)
+{
+	iface->get_sort_column_id    = xa_archive_store_get_sort_column_id;
+	iface->set_sort_column_id    = xa_archive_store_set_sort_column_id;
+	iface->set_sort_func         = xa_archive_store_set_sort_func;        	/*NOT SUPPORTED*/
+	iface->set_default_sort_func = xa_archive_store_set_default_sort_func;	/*NOT SUPPORTED*/
+	iface->has_default_sort_func = xa_archive_store_has_default_sort_func;
+}
+
+static void
 xa_archive_store_init(XAArchiveStore *as)
 {
 	as->stamp = g_random_int();
@@ -146,6 +173,9 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->props._show_up_dir = TRUE;
 	as->up_entry.filename = "..";
 	as->up_entry.props = NULL;
+	as->sort_column = GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID;
+	as->sort_order = GTK_SORT_ASCENDING;
+	as->sort_list = NULL;
 }
 
 static void
@@ -528,6 +558,55 @@ xa_archive_store_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTr
 }
 
 
+static gboolean
+xa_archive_store_get_sort_column_id(GtkTreeSortable *sortable, gint *sort_col_id, GtkSortType *order)
+{
+	g_return_val_if_fail(XA_IS_ARCHIVE_STORE(sortable), FALSE);
+
+	XAArchiveStore *store = XA_ARCHIVE_STORE(sortable);
+
+	if(sort_col_id)
+		*sort_col_id = store->sort_column;
+
+	if(order)
+		*order = store->sort_order;
+
+	return store->sort_order >= 0;
+}
+
+static void
+xa_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id, GtkSortType order)
+{
+	g_return_if_fail(XA_IS_ARCHIVE_STORE(sortable));
+
+	XAArchiveStore *store = XA_ARCHIVE_STORE(sortable);
+
+	if(store->sort_column == sort_col_id && store->sort_order == order)
+		return;
+
+	store->sort_column = sort_col_id;
+	store->sort_order = order;
+}
+
+static void
+xa_archive_store_set_sort_func(GtkTreeSortable *s, gint i, GtkTreeIterCompareFunc f, gpointer p, GtkDestroyNotify d)
+{
+	g_warning("%s is not supported by the XAArchiveStore model", __FUNCTION__);
+}
+
+static void
+xa_archive_store_set_default_sort_func(GtkTreeSortable *s, GtkTreeIterCompareFunc f, gpointer p, GtkDestroyNotify d)
+{
+	g_warning("%s is not supported by the XAArchiveStore model", __FUNCTION__);
+}
+
+static gboolean
+xa_archive_store_has_default_sort_func(GtkTreeSortable *s)
+{
+	return TRUE;
+}
+
+
 GtkTreeModel *
 xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir)
 {
@@ -573,52 +652,19 @@ xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview)
 }
 
 static void
-cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 {
-	g_return_if_fail(XA_IS_ARCHIVE_STORE(user_data));	
-
-	XAArchiveStore *store = XA_ARCHIVE_STORE(user_data);
 	LXAArchive *archive = store->archive;
 	LXAEntry *entry = store->current_entry->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
-	gint *indices = gtk_tree_path_get_indices(path);
-	gint depth = gtk_tree_path_get_depth(path) - 1;
-
-	/* only support list: depth is always 0 */
-	g_return_if_fail(depth == 0);
-
-	gint prev_size = lxa_entry_children_length(entry);
-	gint new_size = 0;
-	gint index = indices[depth];
+	gint new_size = lxa_entry_children_length(entry);
 	gint i = 0;
+	gint index = 0;
 	GtkTreePath *path_ = NULL;
 	GtkTreeIter iter;
-
-	if(store->props._show_up_dir && &archive->root_entry != entry)
-	{
-		prev_size++;
-		index--;
-	}
-
-	if(index == -1)
-	{
-		store->current_entry = g_slist_delete_link(store->current_entry, store->current_entry);
-		entry = store->current_entry->data;
-	}
-	else
-	{
-		entry = lxa_entry_children_nth_data(entry, index);
-
-		g_return_if_fail(entry);
-		g_return_if_fail(entry->is_folder);
-
-		store->current_entry = g_slist_prepend(store->current_entry, entry);
-	}
-
-	new_size = lxa_entry_children_length(entry);
 
 	if(store->props._show_up_dir && &archive->root_entry != entry) { 
 		path_ = gtk_tree_path_new();
@@ -664,6 +710,76 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 
 		gtk_tree_path_free(path_);
 	}
+}
+
+static void
+cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+{
+	g_return_if_fail(XA_IS_ARCHIVE_STORE(user_data));	
+
+	XAArchiveStore *store = XA_ARCHIVE_STORE(user_data);
+	LXAArchive *archive = store->archive;
+	LXAEntry *entry = store->current_entry->data;
+
+	g_return_if_fail(archive);
+	g_return_if_fail(entry);
+
+	gint *indices = gtk_tree_path_get_indices(path);
+	gint depth = gtk_tree_path_get_depth(path) - 1;
+
+	/* only support list: depth is always 0 */
+	g_return_if_fail(depth == 0);
+
+	gint prev_size = lxa_entry_children_length(entry);
+	gint index = indices[depth];
+
+	if(store->props._show_up_dir && &archive->root_entry != entry)
+	{
+		prev_size++;
+		index--;
+	}
+
+	if(index == -1)
+	{
+		store->current_entry = g_slist_delete_link(store->current_entry, store->current_entry);
+		entry = store->current_entry->data;
+	}
+	else
+	{
+		entry = lxa_entry_children_nth_data(entry, index);
+
+		g_return_if_fail(entry);
+		g_return_if_fail(entry->is_folder);
+
+		store->current_entry = g_slist_prepend(store->current_entry, entry);
+	}
+
+	xa_archive_store_refresh(store, prev_size);
+}
+
+void
+xa_archive_store_go_up(XAArchiveStore *store)
+{
+	LXAArchive *archive = store->archive;
+	LXAEntry *entry = store->current_entry->data;
+
+	g_return_if_fail(archive);
+	g_return_if_fail(entry);
+
+	gint prev_size = lxa_entry_children_length(entry);
+
+	if(store->props._show_up_dir && &archive->root_entry != entry)
+	{
+		prev_size++;
+	}
+
+	store->current_entry = g_slist_delete_link(store->current_entry, store->current_entry);
+	entry = store->current_entry->data;
+
+	// TODO: signal or something
+	g_return_if_fail(entry);
+
+	xa_archive_store_refresh(store, prev_size);
 }
 
 /*

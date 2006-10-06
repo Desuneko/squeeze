@@ -54,6 +54,8 @@ struct _LXAArchiveSupport
  *
  * lxa_archive_support_add()
  * lxa_archive_support_extract()
+ * lxa_archive_support_remove()
+ * lxa_archive_support_refresh()
  * 
  * should be called instead.
  */

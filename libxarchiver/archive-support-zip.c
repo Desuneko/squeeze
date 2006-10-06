@@ -181,10 +181,7 @@ lxa_archive_support_zip_new()
 	                       "view-size", TRUE,
 												 "view-time", TRUE,
 												 "view-date", TRUE,
-												 "view-method", TRUE,
 												 "view-ratio", TRUE,
-												 "view-length", TRUE,
-												 "view-crc32", TRUE,
 												 NULL);
 	
 	return LXA_ARCHIVE_SUPPORT(support);

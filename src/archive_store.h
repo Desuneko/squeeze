@@ -47,6 +47,9 @@ struct _XAArchiveStore
 	LXAArchive *archive;
 	GSList *current_entry;
 	LXAEntry up_entry;
+	gint sort_column;
+	GtkSortType sort_order;
+	LXAEntry **sort_list;
 	struct {
 		gboolean _show_icons;
 		gboolean _show_up_dir;
@@ -69,5 +72,7 @@ void
 xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
 void
 xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
+void
+xa_archive_store_go_up(XAArchiveStore *store);
 
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

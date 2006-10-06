@@ -37,11 +37,11 @@ lxa_init()
 	lxa_mime_database = thunar_vfs_mime_database_get_default();
 
 	lxa_register_support(lxa_archive_support_zip_new());
+	lxa_register_support(lxa_archive_support_gnu_tar_new());
 	/* TODO: Implement right commands in unrar
 	lxa_register_support(lxa_archive_support_rar_new());
 	lxa_register_support(lxa_archive_support_unrar_new());
 	*/
-	lxa_register_support(lxa_archive_support_gnu_tar_new());
 }
 
 void
