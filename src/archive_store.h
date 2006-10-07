@@ -75,5 +75,13 @@ void
 xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
 void
 xa_archive_store_go_up(XAArchiveStore *store);
+gchar *
+xa_archive_store_get_pwd(XAArchiveStore *store);
+GSList *
+xa_archive_store_get_pwd_list(XAArchiveStore *store);
+gchar *
+xa_archive_store_get_basename(XAArchiveStore *store);
+gint
+xa_archive_store_set_pwd(XAArchiveStore *store, gchar *path);
 
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

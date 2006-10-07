@@ -91,6 +91,10 @@ xa_archive_store_has_default_sort_func(GtkTreeSortable *);
 
 static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b);
+static void
+xa_archive_quicksort(XAArchiveStore *store, gint left, gint right);
+static void
+xa_archive_insertionsort(XAArchiveStore *store, gint left, gint right);
 
 static void
 xa_archive_store_sort(XAArchiveStore *store);
@@ -638,13 +642,13 @@ xa_archive_store_has_default_sort_func(GtkTreeSortable *s)
 static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 {
-	LXAEntry *swap = a;
+	LXAEntry *swap = b;
 	if(store->sort_order == GTK_SORT_DESCENDING)
 	{
-		a = b;
-		b = swap;
+		b = a;
+		a = swap;
 	}
-	
+
 	LXAArchive *archive = store->archive;
 	gint column = store->sort_column;
 	gpointer props_a = a->props;
@@ -716,15 +720,8 @@ xa_archive_store_sort(XAArchiveStore *store)
 		return;
 
 	LXAEntry *pentry = (LXAEntry*)store->current_entry->data;
-	LXAEntry *entry = NULL;
 	gint psize = lxa_entry_children_length(pentry);
 	gint i = 0;
-	gint j = 0;
-	gint sort_size = 0;
-	gint size = 0;
-	gint pos = 0;
-	gint begin = 0;
-	gint cmp = 1;
 
 	if(psize <= 1)
 		return;
@@ -733,33 +730,72 @@ xa_archive_store_sort(XAArchiveStore *store)
 
 	for(i = 0; i < psize; i++)
 	{
-		size = sort_size;
-		begin = 0;
+		store->sort_list[i] = lxa_entry_children_nth_data(pentry, i);
+	}
+	xa_archive_quicksort(store, 0, psize-1);
+	xa_archive_insertionsort(store, 0, psize-1);
+}
 
-		entry = lxa_entry_children_nth_data(pentry, i);
-		while(size)
+inline void
+swap(LXAEntry **left, LXAEntry **right)
+{
+	LXAEntry *tmp = *right;
+	*right = *left;
+	*left = tmp;
+}
+
+static void
+xa_archive_quicksort(XAArchiveStore *store, gint left, gint right)
+{
+	if(right-left < 30)	return;
+
+	gint i = (left+right)/2;
+	gint j = right-1;
+	LXAEntry *value = NULL;
+	LXAEntry **list = store->sort_list;
+
+	if(xa_archive_entry_compare(store, list[left], list[i]) > 0)
+		swap(list+left, list+i);
+	if(xa_archive_entry_compare(store, list[left], list[right]) > 0)
+		swap(list+left, list+right);
+	if(xa_archive_entry_compare(store, list[i], list[right]) > 0)
+		swap(list+i, list+right);
+	
+	swap(list+i, list+j);
+	i = left;
+	value = list[j];
+
+	for(;;)
+	{
+		while(xa_archive_entry_compare(store, list[++i], value) < 0);
+		while(xa_archive_entry_compare(store, list[--j], value) > 0);
+		if(j<i) break;
+
+		swap(list+i, list+j);
+	}
+	swap(list+i, list+right-1);
+	xa_archive_quicksort(store, left, j);
+	xa_archive_quicksort(store, i+1, right);
+}
+
+static void
+xa_archive_insertionsort(XAArchiveStore *store, gint left, gint right)
+{
+	gint i = 0;
+	gint j = 0;
+	LXAEntry *value = NULL;
+	LXAEntry **list = store->sort_list;
+
+	for(i = left+1; i <= right; i++)
+	{
+		j = i;
+		value = list[i];
+		while(j > left && xa_archive_entry_compare(store, list[j-1], value) > 0)
 		{
-			pos = size / 2;
-			cmp = xa_archive_entry_compare(store, entry, store->sort_list[begin+pos]);
-
-			if(cmp < 0)
-			{
-				size = pos;
-			}
-			else
-			{
-				size -= ++pos;
-				begin += pos;
-			}
+			list[j] = list[j-1];
+			j--;
 		}
-
-		for(j = sort_size; j > begin; j--)
-		{
-			store->sort_list[j] = store->sort_list[j-1];
-		}
-		store->sort_list[begin] = entry;
-
-		sort_size++;
+		list[j] = value;
 	}
 }
 
@@ -993,3 +1029,130 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		gtk_tree_path_free(path_);
 	}
 }
+/*
+gchar *
+xa_archive_store_get_pwd(XAArchiveStore *store)
+{
+	g_return_val_if_fail(store, NULL);
+
+	gint size = 0;
+	gint csize = 0;
+	gchar *path = NULL;
+	gchar *buf = NULL;
+	GSList *iter = store->current_entry;
+
+	while(iter)
+	{
+		size += strlen(((LXAEntry*)iter->data)->filename) + 1;
+		iter = iter->next;
+	}
+
+	if(size)
+	{
+		path = g_new(gchar, size + 1);
+		buf = g_new(gchar, size + 1);
+		path[0] = '\0';
+
+		iter = store->current_entry;
+
+		while(iter)
+		{
+			g_strlcpy(buf, path, size);
+			g_strlcpy(path, ((LXAEntry*)iter->data)->filename, size);
+			csize = g_strlcat(path, buf, size);
+			path[csize] = '/';
+			path[csize+1] = '\0';
+			iter = iter->next;
+		}
+	}
+	g_free(buf);
+	return path;
+}
+*/
+gchar *
+xa_archive_store_get_pwd(XAArchiveStore *store)
+{
+	g_return_val_if_fail(store, NULL);
+
+	gchar *path = NULL;
+	gchar **buf = NULL;
+	GSList *iter = store->current_entry;
+	gint i = g_slist_length(iter);
+
+	if(!i)
+		return NULL;
+
+	buf = g_new(gchar*, i+1);
+	buf[i] = NULL;
+
+	while(iter)
+	{
+		--i;
+		buf[i] = ((LXAEntry*)iter->data)->filename;
+		iter = iter->next;
+	}
+
+	path = g_strjoinv("/", buf);
+
+	g_free(buf);
+
+	return path;
+}
+
+GSList *
+xa_archive_store_get_pwd_list(XAArchiveStore *store)
+{
+	g_return_val_if_fail(store, NULL);
+
+	/* made a copy, don't want someone play with the internals */
+	return g_slist_copy(store->current_entry);
+}
+
+gchar *
+xa_archive_store_get_basename(XAArchiveStore *store)
+{
+	g_return_val_if_fail(store, NULL);
+
+	if(!store->current_entry)
+		return NULL;
+
+	return g_strdup(((LXAEntry*)store->current_entry->data)->filename);
+}
+
+gint
+xa_archive_store_set_pwd(XAArchiveStore *store, gchar *path)
+{
+	g_return_val_if_fail(store, -1);
+
+	if(!store->archive)
+		return -1;
+
+	gchar **buf = g_strsplit(path, "/", 0);
+	gchar **iter = buf;
+	LXAEntry *entry = &store->archive->root_entry;
+	GSList *stack = NULL;
+
+	while(iter)
+	{
+		if(*iter && iter[0])
+		{
+			entry = lxa_entry_get_child(entry, *iter);
+			if(!entry)
+			{
+				g_strfreev(buf);
+				g_slist_free(stack);
+				return -1;
+			}
+			stack = g_slist_prepend(stack, entry);
+		}
+		iter++;
+	}
+
+	g_strfreev(buf);
+
+	g_slist_free(store->current_entry);
+	store->current_entry = stack;
+	
+	return 0;
+}
+
