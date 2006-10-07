@@ -692,7 +692,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 		}
 		column_types[0] = G_TYPE_STRING;
 		//liststore = gtk_list_store_newv(archive->column_number+1, column_types); 
-		liststore = xa_archive_store_new(archive, TRUE, TRUE);
+		liststore = xa_archive_store_new(archive, TRUE, TRUE, window->icon_theme);
 
 		renderer = gtk_cell_renderer_pixbuf_new();
 		column = gtk_tree_view_column_new_with_attributes("", renderer, "icon-name", 0, NULL);
@@ -717,7 +717,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 	} else
 	{
 		//liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
-		liststore = xa_archive_store_new(archive, FALSE, TRUE);
+		liststore = xa_archive_store_new(archive, FALSE, TRUE, window->icon_theme);
 		for(x = 0; x < archive->column_number; x++)
 		{
 			switch(archive->column_types[x])

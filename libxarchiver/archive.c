@@ -269,9 +269,9 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 	{
 		pos = (size / 2);
 
-		cmp = strcmp(filename, entry->children[pos+begin]->filename);
+		cmp = strcmp(filename, entry->children[begin+pos]->filename);
 		if(!cmp)
-			return entry->children[pos+begin];
+			return entry->children[begin+pos];
 
 		if(cmp < 0)
 		{
@@ -279,7 +279,7 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 		}
 		else
 		{
-			size = size - ++pos;
+			size -= ++pos;
 			begin += pos;
 		}
 	}
@@ -323,7 +323,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		{
 			pos = (size / 2);
 
-			cmp = strcmp(buffer_iter->entry->filename, children_old[pos+begin]->filename);
+			cmp = strcmp(buffer_iter->entry->filename, children_old[begin+pos]->filename);
 			if(!cmp)
 				break;
 
@@ -333,7 +333,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 			}
 			else
 			{
-				size = size - ++pos;
+				size -= ++pos;
 				begin += pos;
 			}
 		}

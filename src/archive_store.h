@@ -50,6 +50,7 @@ struct _XAArchiveStore
 	gint sort_column;
 	GtkSortType sort_order;
 	LXAEntry **sort_list;
+	GtkIconTheme *icon_theme;
 	struct {
 		gboolean _show_icons;
 		gboolean _show_up_dir;
@@ -67,7 +68,7 @@ struct _XAArchiveStoreClass
 GType
 xa_archive_store_get_type();
 GtkTreeModel *
-xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir);
+xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);
 void
 xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
 void
