@@ -893,7 +893,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 		g_return_if_fail(entry);
 
 		/* TODO Signal file-activated */
-		if(strcmp(entry->mime_type, "folder"))
+		if(strcmp(entry->mime_type, "inode/directory"))
 			return;
 
 		store->current_entry = g_slist_prepend(store->current_entry, entry);
