@@ -199,10 +199,10 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 			lxa_entry_add_child(parent, tmp_entry);
 			if(path[strlen(path)-1] == '/')
 			{
-				tmp_entry->mime_type = "folder";
+				tmp_entry->mime_type = "inode/directory";
 			}
 			else
-				tmp_entry->mime_type = "unknown";
+				tmp_entry->mime_type = "text/plain";
 		}
 		parent = tmp_entry;
 	}
