@@ -222,10 +222,9 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		 0,
 		 NULL,
 		 NULL,
-		 g_cclosure_marshal_VOID__POINTER,
+		 g_cclosure_marshal_VOID__VOID,
 		 G_TYPE_NONE,
-		 1,
-		 G_TYPE_POINTER,
+		 0,
 		 NULL);
 }
 
@@ -954,6 +953,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 
 	xa_archive_store_sort(store);
 
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 	xa_archive_store_refresh(store, prev_size);
 }
 
@@ -981,6 +981,7 @@ xa_archive_store_go_up(XAArchiveStore *store)
 
 	xa_archive_store_sort(store);
 
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 	xa_archive_store_refresh(store, prev_size);
 }
 
@@ -1169,6 +1170,8 @@ xa_archive_store_set_pwd(XAArchiveStore *store, gchar *path)
 
 	g_slist_free(store->current_entry);
 	store->current_entry = stack;
+
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 	
 	return 0;
 }

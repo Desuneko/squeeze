@@ -3,6 +3,7 @@ bin_PROGRAMS = xarchiver
 xarchiver_SOURCES = \
 	main.c main.h \
 	main_window.c main_window.h \
+	navigation_bar.c navigation_bar.h \
 	path_bar.c path_bar.h \
 	archive_store.c archive_store.h \
 	archive_tree_store.c archive_tree_store.h \

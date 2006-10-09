@@ -25,10 +25,11 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
-#include "main_window.h"
 #include "archive_store.h"
 #include "archive_tree_store.h"
+#include "navigation_bar.h"
 #include "path_bar.h"
+#include "main_window.h"
 #include "new_dialog.h"
 #include "extract_dialog.h"
 #include "add_dialog.h"
@@ -274,7 +275,7 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, FALSE, FALSE, 0);
 
 	if(window->navigationbar)
-		gtk_box_pack_start(GTK_BOX(main_vbox), window->navigationbar, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(main_vbox), GTK_WIDGET(window->navigationbar), FALSE, FALSE, 0);
 
 	gtk_box_pack_start(GTK_BOX(main_vbox), window->scrollwindow, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(main_vbox), window->statusbar, FALSE, FALSE, 0);
@@ -695,6 +696,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 		liststore = xa_archive_store_new(archive, TRUE, TRUE, window->icon_theme);
 /*		liststore = xa_archive_tree_store_new(archive, TRUE, show_only_filenames, FALSE, window->icon_theme); */
 
+
 		column = gtk_tree_view_column_new();
 		renderer = gtk_cell_renderer_pixbuf_new();
 		gtk_tree_view_column_pack_start(column, renderer, FALSE);
@@ -750,6 +752,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(liststore));
 	window->treemodel = GTK_TREE_MODEL(liststore);
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(liststore), GTK_TREE_VIEW(window->treeview));
+	xa_navigation_bar_set_store(window->navigationbar, XA_ARCHIVE_STORE(liststore));
 /*	xa_archive_tree_store_connect_treeview(XA_ARCHIVE_TREE_STORE(liststore), GTK_TREE_VIEW(window->treeview)); */
 }
 

@@ -55,7 +55,7 @@ struct _XAMainWindow
 	GtkTreeModel *treemodel;
 	GtkWidget *scrollwindow;
 	GtkWidget *statusbar;
-	GtkWidget *navigationbar;
+	XANavigationBar *navigationbar;
 	struct {
 		GtkWidget *menu_item_archive;
 		GtkWidget *menu_archive;

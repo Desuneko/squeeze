@@ -26,6 +26,8 @@
 #include "add_dialog.h"
 #include "extract_dialog.h"
 #include "main.h"
+#include "archive_store.h"
+#include "navigation_bar.h"
 #include "main_window.h"
 
 gboolean version = FALSE;

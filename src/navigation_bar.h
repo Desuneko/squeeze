@@ -16,46 +16,48 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_PATH_BAR_H__
-#define __XARCHIVER_PATH_BAR_H__
+#ifndef __XARCHIVER_NAVIGATION_BAR_H__
+#define __XARCHIVER_NAVIGATION_BAR_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_PATH_BAR xa_path_bar_get_type()
+#define XA_TYPE_NAVIGATION_BAR xa_navigation_bar_get_type()
 
-#define XA_PATH_BAR(obj)(                \
+#define XA_NAVIGATION_BAR(obj)(                \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			XA_TYPE_PATH_BAR,                  \
-			XAPathBar))
+			XA_TYPE_NAVIGATION_BAR,                  \
+			XANavigationBar))
 
-#define XA_IS_PATH_BAR(obj)      ( \
+#define XA_IS_NAVIGATION_BAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_PATH_BAR))
+			XA_TYPE_NAVIGATION_BAR))
 
-#define XA_PATH_BAR_CLASS(klass) ( \
+#define XA_NAVIGATION_BAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			XA_TYPE_PATH_BAR,      \
-			XAPathBarClass))
+			XA_TYPE_NAVIGATION_BAR,      \
+			XANavigationBarClass))
 
-#define XA_IS_PATH_BAR_CLASS(class) ( \
+#define XA_IS_NAVIGATION_BAR_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_PATH_BAR()))	
+			XA_TYPE_NAVIGATION_BAR()))	
 
-typedef struct _XAPathBar XAPathBar;
+typedef struct _XANavigationBar XANavigationBar;
 
-struct _XAPathBar
+struct _XANavigationBar
 {
-	XANavigationBar parent;
+	GtkToolbar parent;
+	XAArchiveStore *store;
 };
 
-typedef struct _XAPathBarClass XAPathBarClass;
+typedef struct _XANavigationBarClass XANavigationBarClass;
 
-struct _XAPathBarClass
+struct _XANavigationBarClass
 {
-	XANavigationBarClass parent_class;
+	GtkToolbarClass parent_class;
 };
 
-GType      xa_path_bar_get_type();
-XANavigationBar *xa_path_bar_new();
+GType      xa_navigation_bar_get_type();
+GtkWidget *xa_navigation_bar_new();
+void xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store);
 
 G_END_DECLS
 #endif /* __XARCHIVER_EXTRACT_ARCHIVE_DIALOG_H__ */

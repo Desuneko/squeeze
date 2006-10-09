@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
 #include "archive_store.h"
+#include "navigation_bar.h"
 #include "path_bar.h"
 
 
@@ -32,7 +33,7 @@ static void
 xa_path_bar_init(XAPathBar *archive);
 
 static void
-cb_xa_path_bar_pwd_changed(XAArchiveStore *store, gchar *pwd, XAPathBar *bar);
+cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *bar);
 
 GType
 xa_path_bar_get_type ()
@@ -55,38 +56,31 @@ xa_path_bar_get_type ()
 			NULL
 		};
 
-		xa_path_bar_type = g_type_register_static (GTK_TYPE_TOOLBAR, "XAPathBar", &xa_path_bar_info, 0);
+		xa_path_bar_type = g_type_register_static (XA_TYPE_NAVIGATION_BAR, "XAPathBar", &xa_path_bar_info, 0);
 	}
 	return xa_path_bar_type;
 }
 
 static void
-xa_path_bar_class_init(XAPathBarClass *dialog_class)
+xa_path_bar_class_init(XAPathBarClass *path_bar_class)
 {
 }
 
 static void
-xa_path_bar_init(XAPathBar *dialog)
+xa_path_bar_init(XAPathBar *path_bar)
 {
 }
 
-GtkWidget *
+XANavigationBar *
 xa_path_bar_new(XAArchiveStore *store)
 {
-	XAPathBar *bar;
+	XANavigationBar *bar;
 
 	bar = g_object_new(XA_TYPE_PATH_BAR, NULL);
 
-	bar->store = store;
-	if(XA_IS_ARCHIVE_STORE(store))
-		g_signal_connect(G_OBJECT(store), "xa_pwd_changed", (GCallback)cb_xa_path_bar_pwd_changed, bar);
+	if(store)
+		xa_navigation_bar_set_store(XA_NAVIGATION_BAR(bar), store);
 
-	return GTK_WIDGET(bar);
-}
-
-static void
-cb_xa_path_bar_pwd_changed(XAArchiveStore *store, gchar *pwd, XAPathBar *bar)
-{
-	g_print("PWD: %s\n", pwd);
+	return bar;
 }
 
