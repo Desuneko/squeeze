@@ -217,23 +217,33 @@ lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
 	gint i = 0; 
 	gpointer props_iter = entry->props;
 
-	for(i = 0; i < entry->n_children; i++)
-		lxa_archive_free_entry(entry->children[i], archive);
+	lxa_slist_free(entry->buffer);
+	entry->buffer = NULL;
+
+	if(entry->children)
+	{
+		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); i++)
+			lxa_archive_free_entry(entry->children[i], archive);
+		g_free(entry->children);
+	}
 
 	if(entry->props)
 	{
-		switch(archive->column_types[i])
+		for(i=1; i<archive->column_number; i++)
 		{
-			case(G_TYPE_STRING):
-				g_free(*(gchar **)props_iter);
-				props_iter += sizeof(gchar *);
-				break;
-			case(G_TYPE_UINT):
-				props_iter += sizeof(guint);
-				break;
-			case(G_TYPE_UINT64):
-				props_iter += sizeof(guint64);
-				break;
+			switch(archive->column_types[i])
+			{
+				case(G_TYPE_STRING):
+					g_free(*(gchar **)props_iter);
+					props_iter += sizeof(gchar *);
+					break;
+				case(G_TYPE_UINT):
+					props_iter += sizeof(guint);
+					break;
+				case(G_TYPE_UINT64):
+					props_iter += sizeof(guint64);
+					break;
+			}
 		}
 		g_free(entry->props);
 	}
@@ -261,9 +271,9 @@ LXAEntry *
 lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
 	LXASList *buffer_iter = NULL;
-	guint size = entry->n_children;
+	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
 	guint pos = 0;
-	guint begin = 0;
+	guint begin = 1;
 	gint cmp = 0;
 	while(size)
 	{
@@ -304,21 +314,22 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		return;
 
 	guint max_children = 0;
-	guint begin = 0;
+	guint begin = 1;
 	guint pos = 0;
 	gint cmp = 1;
-	guint old_i = 0;
-	guint new_i = 0;
-	guint size = entry->n_children;
+	guint old_i = 1;
+	guint new_i = 1;
+	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
+	gint n_children = size;
 	LXASList *buffer_iter = NULL;
 	LXAEntry **children_old = (LXAEntry **)entry->children;
 
-	max_children = (entry->n_children + lxa_slist_length(entry->buffer));
+	max_children = (n_children + lxa_slist_length(entry->buffer));
 	
-	entry->children = g_new(LXAEntry *, max_children);
+	entry->children = g_new(LXAEntry *, max_children+1);
 	for(buffer_iter = entry->buffer;buffer_iter;buffer_iter = buffer_iter->next)
 	{
-		size = entry->n_children - begin;
+		size = n_children + 1 - begin;
 		while(size)
 		{
 			pos = (size / 2);
@@ -350,11 +361,12 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 			entry->children[new_i++] = buffer_iter->entry;
 		}
 	}
-	while(old_i < entry->n_children)
+	while(old_i <= n_children)
 	{
 		entry->children[new_i++] = children_old[old_i++];
 	}
-	entry->n_children = new_i;
+	n_children = new_i - 1;
+	*entry->children = GINT_TO_POINTER(n_children);
 	
 	lxa_slist_free(entry->buffer);
 	entry->buffer = NULL;
@@ -365,14 +377,15 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 guint lxa_entry_children_length(LXAEntry *entry)
 {
 	g_return_val_if_fail(entry, 0);
-	return entry->n_children + lxa_slist_length(entry->buffer);
+	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
 }
 
 LXAEntry *lxa_entry_children_nth_data(LXAEntry *entry, guint n)
 {
 	g_return_val_if_fail(entry, NULL);
 	lxa_entry_flush_buffer(entry);
-	if(n >= 0 && n < entry->n_children)
+	n++;
+	if(entry->children && n > 0 && n <= GPOINTER_TO_INT(*entry->children))
 		return entry->children[n];
 	else
 		return NULL;

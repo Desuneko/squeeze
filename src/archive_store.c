@@ -41,6 +41,9 @@ enum {
 	XA_ARCHIVE_STORE_SHOW_UP_DIR
 };
 
+/* signals */
+static gint xa_archive_store_signals[1];
+
 static void
 xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
@@ -183,6 +186,8 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->props._show_up_dir = TRUE;
 	as->up_entry.filename = "..";
 	as->up_entry.props = NULL;
+	as->up_entry.children = NULL;
+	as->up_entry.buffer = NULL;
 	as->sort_column = GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID;
 	as->sort_order = GTK_SORT_ASCENDING;
 	as->sort_list = NULL;
@@ -210,6 +215,18 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		TRUE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SHOW_UP_DIR, pspec);
+
+	xa_archive_store_signals[0] = g_signal_new("xa_pwd_changed",
+	   G_TYPE_FROM_CLASS(as_class),
+		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+		 0,
+		 NULL,
+		 NULL,
+		 g_cclosure_marshal_VOID__POINTER,
+		 G_TYPE_NONE,
+		 1,
+		 G_TYPE_POINTER,
+		 NULL);
 }
 
 static void
@@ -411,7 +428,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	}
 	else if(column == 0)
 	{
-		g_value_set_string(value, (strcmp(entry->filename, ".."))?entry->filename:"..");
+		g_value_set_string(value, entry->filename);
 	}
 	else
 	{

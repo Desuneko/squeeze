@@ -42,7 +42,6 @@ struct _LXAEntry {
 	gchar *mime_type;
 	/* */
 	LXAEntry **children;
-	guint   n_children;
 	LXASList *buffer;
 };
 

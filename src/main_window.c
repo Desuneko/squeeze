@@ -26,11 +26,13 @@
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
 #include "main_window.h"
+#include "archive_store.h"
+#include "archive_tree_store.h"
+#include "path_bar.h"
 #include "new_dialog.h"
 #include "extract_dialog.h"
 #include "add_dialog.h"
 #include "preferences_dialog.h"
-#include "archive_store.h"
 
 #include "main.h"
 
@@ -249,6 +251,8 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
+	window->navigationbar = xa_path_bar_new();
+
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
 
@@ -268,6 +272,10 @@ xa_main_window_init(XAMainWindow *window)
 
 	gtk_box_pack_start(GTK_BOX(main_vbox), menubar, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, FALSE, FALSE, 0);
+
+	if(window->navigationbar)
+		gtk_box_pack_start(GTK_BOX(main_vbox), window->navigationbar, FALSE, FALSE, 0);
+
 	gtk_box_pack_start(GTK_BOX(main_vbox), window->scrollwindow, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(main_vbox), window->statusbar, FALSE, FALSE, 0);
 
@@ -465,7 +473,6 @@ void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	xa_archive_store_go_up(XA_ARCHIVE_STORE(window->treemodel));
 }
 
 void
@@ -532,8 +539,8 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	GtkTreeModel *liststore = window->treemodel;
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 
-	//gtk_list_store_clear(GTK_LIST_STORE(liststore));
 	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), NULL);
+/*	xa_archive_tree_store_set_contents(XA_ARCHIVE_TREE_STORE(liststore), NULL); */
 
 	while(columns)
 	{
@@ -671,11 +678,11 @@ xa_main_window_reset_columns(XAMainWindow *window)
 {
 	GtkCellRenderer *renderer = NULL;
 	GtkTreeViewColumn *column = NULL;
-	//GtkListStore *liststore = NULL;
 	GtkTreeModel *liststore = NULL;
 	LXAArchive *archive = window->lp_xa_archive;
 	gint x = 0;
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
+	gboolean show_only_filenames = FALSE;
 	while(columns)
 	{
 		gtk_tree_view_remove_column(GTK_TREE_VIEW(window->treeview), columns->data);
@@ -685,39 +692,45 @@ xa_main_window_reset_columns(XAMainWindow *window)
 
 	if(window->props._show_icons)
 	{
-		GType *column_types = g_new0(GType, archive->column_number+1);
-		for(x = 0; x < archive->column_number; x++)
-		{
-			column_types[x+1] = archive->column_types[x];
-		}
-		column_types[0] = G_TYPE_STRING;
-		//liststore = gtk_list_store_newv(archive->column_number+1, column_types); 
 		liststore = xa_archive_store_new(archive, TRUE, TRUE, window->icon_theme);
+/*		liststore = xa_archive_tree_store_new(archive, TRUE, show_only_filenames, FALSE, window->icon_theme); */
 
+		column = gtk_tree_view_column_new();
 		renderer = gtk_cell_renderer_pixbuf_new();
-		column = gtk_tree_view_column_new_with_attributes("", renderer, "icon-name", 0, NULL);
-		gtk_tree_view_column_set_resizable(column, FALSE);
-		//gtk_tree_view_column_set_sort_column_id(column, 0);
+		gtk_tree_view_column_pack_start(column, renderer, FALSE);
+		gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
+
+		renderer = gtk_cell_renderer_text_new();
+		gtk_tree_view_column_pack_start(column, renderer, TRUE);
+		gtk_tree_view_column_set_attributes(column, renderer, "text", 1, NULL);
+
+		gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+		gtk_tree_view_column_set_sort_column_id(column, 1);
+		gtk_tree_view_column_set_title(column, archive->column_names[0]);
 		gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
-		for(x = 0; x < archive->column_number; x++)
+
+		if(!show_only_filenames)
 		{
-			switch(archive->column_types[x])
+			for(x = 1; x < archive->column_number; x++)
 			{
-				case(G_TYPE_STRING):
-				case(G_TYPE_UINT64):
-					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x+1, NULL);
-					break;
+				switch(archive->column_types[x])
+				{
+					case(G_TYPE_STRING):
+					case(G_TYPE_UINT64):
+						renderer = gtk_cell_renderer_text_new();
+						column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x+1, NULL);
+						break;
+				}
+				gtk_tree_view_column_set_resizable(column, TRUE);
+				gtk_tree_view_column_set_sort_column_id(column, x+1);
+				gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 			}
-			gtk_tree_view_column_set_resizable(column, TRUE);
-			gtk_tree_view_column_set_sort_column_id(column, x+1);
-			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
 		gtk_tree_view_set_search_column(GTK_TREE_VIEW(window->treeview), 1);
 	} else
 	{
-		//liststore = gtk_list_store_newv(archive->column_number, archive->column_types); 
 		liststore = xa_archive_store_new(archive, FALSE, TRUE, window->icon_theme);
+/*		liststore = xa_archive_tree_store_new(archive, FALSE, FALSE, FALSE, window->icon_theme); */
 		for(x = 0; x < archive->column_number; x++)
 		{
 			switch(archive->column_types[x])
@@ -737,6 +750,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(liststore));
 	window->treemodel = GTK_TREE_MODEL(liststore);
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(liststore), GTK_TREE_VIEW(window->treeview));
+/*	xa_archive_tree_store_connect_treeview(XA_ARCHIVE_TREE_STORE(liststore), GTK_TREE_VIEW(window->treeview)); */
 }
 
 void
@@ -750,35 +764,9 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive)
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), NULL);
 
-	//gtk_list_store_clear(GTK_LIST_STORE(liststore));
 	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), archive);
+//	xa_archive_tree_store_set_contents(XA_ARCHIVE_TREE_STORE(liststore), archive);
 
-/*
-	for(i=0;i<((LXAEntry *)main_window->working_node->data)->n_children; i++)
-		xa_main_window_add_item(((LXAEntry *)main_window->working_node->data)->children[i], main_window);
-
-
-	if(g_slist_length(main_window->working_node) > 1)
-	{
-		gtk_list_store_prepend(GTK_LIST_STORE(liststore), &iter);
-		if(main_window->props._show_icons)
-		{
-			tmp_value = g_new0(GValue, 1);
-			tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
-			g_value_set_string(tmp_value, "go-up");
-			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, tmp_value);
-			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 1, main_window->parent_node);
-		}
-		else
-			gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, 0, main_window->parent_node);
-	}
-*/
-/*
-	if(g_slist_length(main_window->working_node) > 1)
-		xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), item_tree, FALSE);
-	else
-		xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), item_tree, TRUE);
-*/
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
 

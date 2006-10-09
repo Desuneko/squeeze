@@ -31,6 +31,9 @@ xa_path_bar_class_init(XAPathBarClass *archive_class);
 static void
 xa_path_bar_init(XAPathBar *archive);
 
+static void
+cb_xa_path_bar_pwd_changed(XAArchiveStore *store, gchar *pwd, XAPathBar *bar);
+
 GType
 xa_path_bar_get_type ()
 {
@@ -75,6 +78,15 @@ xa_path_bar_new(XAArchiveStore *store)
 	bar = g_object_new(XA_TYPE_PATH_BAR, NULL);
 
 	bar->store = store;
+	if(XA_IS_ARCHIVE_STORE(store))
+		g_signal_connect(G_OBJECT(store), "xa_pwd_changed", (GCallback)cb_xa_path_bar_pwd_changed, bar);
 
 	return GTK_WIDGET(bar);
 }
+
+static void
+cb_xa_path_bar_pwd_changed(XAArchiveStore *store, gchar *pwd, XAPathBar *bar)
+{
+	g_print("PWD: %s\n", pwd);
+}
+
