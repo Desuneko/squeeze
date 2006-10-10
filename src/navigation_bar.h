@@ -46,6 +46,10 @@ struct _XANavigationBar
 {
 	GtkToolbar parent;
 	XAArchiveStore *store;
+	GList *history;
+	GList *pwd;
+	gint max_history;
+	GCallback _cb_pwd_changed;
 };
 
 typedef struct _XANavigationBarClass XANavigationBarClass;
@@ -57,7 +61,9 @@ struct _XANavigationBarClass
 
 GType      xa_navigation_bar_get_type();
 GtkWidget *xa_navigation_bar_new();
-void xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store);
+void       xa_navigation_bar_history_push(XANavigationBar *nav_bar, gchar *path);
+void       xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store);
+gint       xa_navigation_bar_history_get_length(XANavigationBar *nav_bar);
 
 G_END_DECLS
-#endif /* __XARCHIVER_EXTRACT_ARCHIVE_DIALOG_H__ */
+#endif /* __XARCHIVER_NAVIGATION_BAR_H__*/

@@ -68,16 +68,22 @@ xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
 static void
 xa_navigation_bar_init(XANavigationBar *navigation_bar)
 {
+	navigation_bar->_cb_pwd_changed = (GCallback)cb_xa_navigation_bar_pwd_changed;
+	navigation_bar->max_history = 10;
 }
 
 void
 xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store)
 {
-	g_return_if_fail(XA_IS_ARCHIVE_STORE(store));
-	g_return_if_fail(XA_IS_NAVIGATION_BAR(navigation_bar));
+	if(store)
+	{
+		g_return_if_fail(XA_IS_ARCHIVE_STORE(store));
+		g_return_if_fail(XA_IS_NAVIGATION_BAR(navigation_bar));
+	}
 
 	navigation_bar->store = store;
-	g_signal_connect(G_OBJECT(store), "xa_pwd_changed", (GCallback)cb_xa_navigation_bar_pwd_changed, navigation_bar);
+	if(store)
+		g_signal_connect(G_OBJECT(store), "xa_pwd_changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
 }
 
 GtkWidget *
@@ -96,6 +102,24 @@ xa_navigation_bar_new(XAArchiveStore *store)
 static void
 cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 {
-	g_print("PWD: %s\n", xa_archive_store_get_pwd(store));
+	gchar *path = xa_archive_store_get_pwd(store);
+	xa_navigation_bar_history_push(bar, path);
+	g_free(path);
 }
 
+void
+xa_navigation_bar_history_push(XANavigationBar *nav_bar, gchar *path)
+{
+	nav_bar->history = g_list_prepend(nav_bar->history, g_strdup(path));
+	if(g_list_length(nav_bar->history) > nav_bar->max_history)
+	{
+		GList *last = g_list_last(nav_bar->history);
+		nav_bar->history = g_list_remove(nav_bar->history, last->data);
+	}
+}
+
+gint
+xa_navigation_bar_history_get_length(XANavigationBar *nav_bar)
+{
+	return g_list_length(nav_bar->history);
+}

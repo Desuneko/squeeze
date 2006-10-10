@@ -28,7 +28,7 @@
 #include "archive_store.h"
 #include "archive_tree_store.h"
 #include "navigation_bar.h"
-#include "path_bar.h"
+#include "tool_bar.h"
 #include "main_window.h"
 #include "new_dialog.h"
 #include "extract_dialog.h"
@@ -223,7 +223,8 @@ xa_main_window_init(XAMainWindow *window)
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), window);
 
 /* Action pane */
-	window->toolbar.tool_item_add = gtk_tool_button_new_from_stock("gtk-go-up");
+	tmp_image = xa_main_window_find_image("add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+	window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
 
 	tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -252,7 +253,7 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
-	window->navigationbar = xa_path_bar_new();
+/*	window->navigationbar = xa_tool_bar_new(NULL);*/
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);

@@ -16,46 +16,50 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_PATH_BAR_H__
-#define __XARCHIVER_PATH_BAR_H__
+#ifndef __XARCHIVER_TOOL_BAR_H__
+#define __XARCHIVER_TOOL_BAR_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_PATH_BAR xa_path_bar_get_type()
+#define XA_TYPE_TOOL_BAR xa_tool_bar_get_type()
 
-#define XA_PATH_BAR(obj)(                \
+#define XA_TOOL_BAR(obj)(                \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			XA_TYPE_PATH_BAR,                  \
-			XAPathBar))
+			XA_TYPE_TOOL_BAR,                  \
+			XAToolBar))
 
-#define XA_IS_PATH_BAR(obj)      ( \
+#define XA_IS_TOOL_BAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_PATH_BAR))
+			XA_TYPE_TOOL_BAR))
 
-#define XA_PATH_BAR_CLASS(klass) ( \
+#define XA_TOOL_BAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			XA_TYPE_PATH_BAR,      \
-			XAPathBarClass))
+			XA_TYPE_TOOL_BAR,      \
+			XAToolBarClass))
 
-#define XA_IS_PATH_BAR_CLASS(class) ( \
+#define XA_IS_TOOL_BAR_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_PATH_BAR()))	
+			XA_TYPE_TOOL_BAR()))	
 
-typedef struct _XAPathBar XAPathBar;
+typedef struct _XAToolBar XAToolBar;
 
-struct _XAPathBar
+struct _XAToolBar
 {
 	XANavigationBar parent;
+	GtkToolItem *back_button;
+	GtkToolItem *forward_button;
+	GtkToolItem *up_button;
+	GtkWidget *path_field;
 };
 
-typedef struct _XAPathBarClass XAPathBarClass;
+typedef struct _XAToolBarClass XAToolBarClass;
 
-struct _XAPathBarClass
+struct _XAToolBarClass
 {
 	XANavigationBarClass parent_class;
 };
 
-GType      xa_path_bar_get_type();
-XANavigationBar *xa_path_bar_new();
+GType      xa_tool_bar_get_type();
+XANavigationBar *xa_tool_bar_new();
 
 G_END_DECLS
-#endif /* __XARCHIVER_EXTRACT_ARCHIVE_DIALOG_H__ */
+#endif /* __XARCHIVER_TOOL_BAR_H__*/

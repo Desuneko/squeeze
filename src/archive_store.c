@@ -1046,6 +1046,8 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 		gtk_tree_path_free(path_);
 	}
+
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 }
 /*
 gchar *

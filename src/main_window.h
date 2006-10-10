@@ -66,14 +66,18 @@ struct _XAMainWindow
 		GtkWidget *menu_item_close;
 		GtkWidget *menu_item_quit;
 
+		GtkWidget *menu_item_view;
+		GtkWidget *menu_view;
+		/* contents of 'view' menu */
+		GtkWidget *menu_location_selector;
+		GtkWidget *menu_item_settings;
+
 		GtkWidget *menu_item_action;
 		GtkWidget *menu_action;
-
 		/* contents of 'action' menu */
 		GtkWidget *menu_item_add;
 		GtkWidget *menu_item_extract;
 		GtkWidget *menu_item_remove;
-		GtkWidget *menu_item_settings;
 
 		GtkWidget *menu_item_help;
 		GtkWidget *menu_help;
