@@ -35,6 +35,14 @@ xa_tool_bar_init(XAToolBar *archive);
 static void
 cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *bar);
 
+static void
+cb_xa_tool_bar_history_back(GtkWidget *button, XAToolBar *nav_bar);
+static void
+cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *nav_bar);
+
+static void
+cb_xa_tool_bar_up(GtkWidget *forward_button, XANavigationBar *nav_bar);
+
 GType
 xa_tool_bar_get_type ()
 {
@@ -75,15 +83,22 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 
 	tool_bar->back_button = gtk_tool_button_new_from_stock("gtk-go-back");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->back_button, 0);
+	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_xa_tool_bar_history_back, XA_NAVIGATION_BAR(tool_bar));
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 
 	tool_bar->forward_button = gtk_tool_button_new_from_stock("gtk-go-forward");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->forward_button, 1);
+	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_xa_tool_bar_history_forward, XA_NAVIGATION_BAR(tool_bar));
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
 	tool_bar->up_button = gtk_tool_button_new_from_stock("gtk-go-up");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->up_button, 2);
+	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_xa_tool_bar_up, XA_NAVIGATION_BAR(tool_bar));
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 
 	button = gtk_tool_button_new_from_stock("gtk-home");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 3);
+	gtk_widget_set_sensitive(GTK_WIDGET(button), 0);
 
 	button = gtk_separator_tool_item_new();
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 4);
@@ -115,14 +130,11 @@ xa_tool_bar_new(XAArchiveStore *store)
 }
 
 static void
-cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *tool_bar)
+xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 {
-	gchar *path= xa_archive_store_get_pwd(store);
-	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(tool_bar), path);
-	g_free(path);
+	gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), path);
 
-	GSList *path_list = xa_archive_store_get_pwd_list(store);
-	if(g_slist_length(path_list) == 1)
+	if(strlen(path) < 1 || (strlen(path) == 1 && path[0] == '/'))
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 	else
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
@@ -133,7 +145,50 @@ cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *tool_bar)
 	}
 	else
 	{
+		if(xa_navigation_bar_history_has_next(XA_NAVIGATION_BAR(tool_bar)))
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
+		else
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
+		if(xa_navigation_bar_history_has_previous(XA_NAVIGATION_BAR(tool_bar)))
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
+		else
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 	}
 }
 
+static void
+cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *tool_bar)
+{
+	gchar *path= xa_archive_store_get_pwd(store);
+	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(tool_bar), path);
+	xa_tool_bar_refresh(tool_bar, path);
+	g_debug("Pushing path '%s'\n", path);
+	g_free(path);
+}
+
+static void
+cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
+{
+	g_debug("back");
+	xa_navigation_bar_history_back(XA_NAVIGATION_BAR(tool_bar));
+	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
+	xa_tool_bar_refresh(tool_bar, path);
+	g_free(path);
+}
+
+static void
+cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *tool_bar)
+{
+	g_debug("forward");
+	xa_navigation_bar_history_forward(XA_NAVIGATION_BAR(tool_bar));
+	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
+	xa_tool_bar_refresh(tool_bar, path);
+	g_free(path);
+}
+
+static void
+cb_xa_tool_bar_up(GtkWidget *forward_button, XANavigationBar *nav_bar)
+{
+	xa_archive_store_go_up(nav_bar->store);
+}

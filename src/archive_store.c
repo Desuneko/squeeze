@@ -23,6 +23,8 @@
 #include <libxarchiver/libxarchiver.h>
 #include "archive_store.h"
 
+static LXAEntry xa_archive_store_up_entry;
+
 static void
 xa_archive_store_class_init(XAArchiveStoreClass *as_class);
 
@@ -184,10 +186,6 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->current_entry = NULL;
 	as->props._show_icons = FALSE;
 	as->props._show_up_dir = TRUE;
-	as->up_entry.filename = "..";
-	as->up_entry.props = NULL;
-	as->up_entry.children = NULL;
-	as->up_entry.buffer = NULL;
 	as->sort_column = GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID;
 	as->sort_order = GTK_SORT_ASCENDING;
 	as->sort_list = NULL;
@@ -226,6 +224,11 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		 G_TYPE_NONE,
 		 0,
 		 NULL);
+
+	xa_archive_store_up_entry.filename = "..";
+	xa_archive_store_up_entry.props = NULL;
+	xa_archive_store_up_entry.children = NULL;
+	xa_archive_store_up_entry.buffer = NULL;
 }
 
 static void
@@ -275,7 +278,7 @@ xa_archive_store_get_n_columns(GtkTreeModel *tree_model)
 	if(!archive)
 		return 0;
 	
-	return archive->column_number + store->props._show_icons?1:0;
+	return archive->column_number + 1;
 }
 
 static GType
@@ -289,12 +292,9 @@ xa_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 	if(!archive)
 		return G_TYPE_INVALID;
 
-	if(store->props._show_icons)
-	{
-		if(index == 0)
-			return G_TYPE_STRING;
-		index--;
-	}
+	if(index == 0)
+		return G_TYPE_STRING;
+	index--;
 
 	g_return_val_if_fail(index < archive->column_number, G_TYPE_INVALID);
 
@@ -329,7 +329,7 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 
 	if(index == -1)
 	{
-		entry = &store->up_entry;
+		entry = &xa_archive_store_up_entry;
 	}
 	else
 	{
@@ -386,8 +386,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 
 	g_return_if_fail(archive);
 
-	if(store->props._show_icons)
-		column--;
+	column--;
 
 	g_return_if_fail (column < (gint)archive->column_number);
 
@@ -405,24 +404,27 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	{
 		g_value_init(value, G_TYPE_STRING);
 
-		if(strcmp(entry->filename, ".."))
+		if(store->props._show_icons)
 		{
-			if(store->icon_theme)
+			if(entry == &xa_archive_store_up_entry)
 			{
-				mime_base = thunar_vfs_mime_database_get_default();
-				mime_info = thunar_vfs_mime_database_get_info(mime_base, entry->mime_type);
-				icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, store->icon_theme);
-
-				if(gtk_icon_theme_has_icon(store->icon_theme, icon_name))
-					g_value_set_string(value, icon_name);
-
-				thunar_vfs_mime_info_unref(mime_info);
-				g_object_unref(mime_base);
+				g_value_set_string(value, "gtk-go-up");
 			}
-		}
-		else
-		{
-			g_value_set_string(value, "gtk-go-up");
+			else
+			{
+				if(store->icon_theme)
+				{
+					mime_base = thunar_vfs_mime_database_get_default();
+					mime_info = thunar_vfs_mime_database_get_info(mime_base, entry->mime_type);
+					icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, store->icon_theme);
+
+					if(gtk_icon_theme_has_icon(store->icon_theme, icon_name))
+						g_value_set_string(value, icon_name);
+
+					thunar_vfs_mime_info_unref(mime_info);
+					g_object_unref(mime_base);
+				}
+			}
 		}
 	}
 	else if(column == 0)
@@ -507,7 +509,7 @@ xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, Gtk
 
 	if(store->props._show_up_dir && &archive->root_entry != entry)
 	{
-		entry = &store->up_entry;
+		entry = &xa_archive_store_up_entry;
 		iter->user_data3 = GINT_TO_POINTER(-1);
 	}
 	else
@@ -573,7 +575,7 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 
 	if(n == -1)
 	{
-		entry = &store->up_entry;
+		entry = &xa_archive_store_up_entry;
 	}
 	else
 	{
@@ -626,7 +628,7 @@ xa_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id,
 	if(store->sort_column == sort_col_id && store->sort_order == order)
 		return;
 
-	if(store->props._show_icons && sort_col_id == 0)
+	if(sort_col_id == 0)
 		return;
 
 	store->sort_column = sort_col_id;
@@ -671,8 +673,7 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 	gpointer props_b = b->props;
 	gint i = 0;
 
-	if(store->props._show_icons)
-		column--;
+	column--;
 
 	if(column < 0)
 		return;
@@ -859,7 +860,7 @@ xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 		gtk_tree_path_append_index(path_, 0);
 
 		iter.stamp = store->stamp;
-		iter.user_data = &store->up_entry;
+		iter.user_data = &xa_archive_store_up_entry;
 		iter.user_data2 = entry;
 		iter.user_data3 = GINT_TO_POINTER(-1);
 
@@ -956,8 +957,8 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 
 	xa_archive_store_sort(store);
 
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 	xa_archive_store_refresh(store, prev_size);
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 }
 
 void
@@ -984,8 +985,8 @@ xa_archive_store_go_up(XAArchiveStore *store)
 
 	xa_archive_store_sort(store);
 
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 	xa_archive_store_refresh(store, prev_size);
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 }
 
 void
@@ -1007,7 +1008,8 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 		if(store->props._show_up_dir && &store->archive->root_entry != entry)
 			prev_size++;
-
+		
+		g_slist_free(store->current_entry);
 	}
 
 	for(i = prev_size - 1; i >= 0; i--)
@@ -1107,10 +1109,11 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	if(!i)
 		return NULL;
 
-	if(i==1)
+//	if(i==1)
 		i++;
 	
 	buf = g_new(gchar*, i);
+	buf[0] = "";
 	i--;
 	buf[i] = NULL;
 
@@ -1124,6 +1127,8 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	}
 
 	i--;
+	buf[i] = lastfile;
+
 	iter = iter->next;
 	if(iter)
 	{
@@ -1163,22 +1168,35 @@ xa_archive_store_get_basename(XAArchiveStore *store)
 	return g_strdup(((LXAEntry*)store->current_entry->data)->filename);
 }
 
-gint
+gboolean
 xa_archive_store_set_pwd(XAArchiveStore *store, gchar *path)
+{
+	gint result = xa_archive_store_set_pwd_silent(store, path);
+
+	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
+	return result;
+}
+
+gboolean
+xa_archive_store_set_pwd_silent(XAArchiveStore *store, gchar *path)
 {
 	g_return_val_if_fail(store, -1);
 
 	if(!store->archive)
-		return -1;
+		return FALSE;
 
-	gchar **buf = g_strsplit(path, "/", 0);
+	gchar **buf = g_strsplit_set(path, "/\n", -1);
 	gchar **iter = buf;
 	LXAEntry *entry = &store->archive->root_entry;
-	GSList *stack = NULL;
+	GSList *stack = g_slist_prepend(NULL, entry);
+	gint prev_size = lxa_entry_children_length(((LXAEntry*)store->current_entry->data));
 
-	while(iter)
+	if(store->props._show_up_dir && &store->archive->root_entry != store->current_entry->data)
+		prev_size++;
+
+	while(*iter)
 	{
-		if(*iter && iter[0])
+		if((*iter)[0])
 		{
 			entry = lxa_entry_get_child(entry, *iter);
 			if(!entry)
@@ -1197,8 +1215,15 @@ xa_archive_store_set_pwd(XAArchiveStore *store, gchar *path)
 	g_slist_free(store->current_entry);
 	store->current_entry = stack;
 
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
+	xa_archive_store_refresh(store, prev_size);
 	
-	return 0;
+	return TRUE;
+}
+
+void
+xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme)
+{
+	if(store)
+		store->icon_theme = icon_theme;
 }
 

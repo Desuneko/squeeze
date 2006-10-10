@@ -110,7 +110,26 @@ cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 void
 xa_navigation_bar_history_push(XANavigationBar *nav_bar, gchar *path)
 {
-	nav_bar->history = g_list_prepend(nav_bar->history, g_strdup(path));
+	nav_bar->history = g_list_insert_before(nav_bar->history, nav_bar->pwd, g_strdup(path));
+	if(!nav_bar->pwd)
+		nav_bar->pwd = nav_bar->history;
+
+	if(g_list_previous(nav_bar->pwd))
+		nav_bar->pwd = g_list_previous(nav_bar->pwd);
+	if(nav_bar->pwd)
+		nav_bar->history = nav_bar->pwd;
+
+	GList *temp_list = g_list_previous(nav_bar->pwd);
+
+	if(nav_bar->history)
+		nav_bar->history->prev = NULL;
+	if(temp_list)
+	{
+		temp_list->next = NULL;
+		temp_list = g_list_first(temp_list);
+		g_list_foreach(temp_list, (GFunc)g_free, NULL);
+		g_list_free(temp_list);
+	}
 	if(g_list_length(nav_bar->history) > nav_bar->max_history)
 	{
 		GList *last = g_list_last(nav_bar->history);
@@ -122,4 +141,38 @@ gint
 xa_navigation_bar_history_get_length(XANavigationBar *nav_bar)
 {
 	return g_list_length(nav_bar->history);
+}
+
+gboolean
+xa_navigation_bar_history_back(XANavigationBar *nav_bar)
+{
+	if(!g_list_next(nav_bar->pwd))
+		return FALSE;
+	nav_bar->pwd = g_list_next(nav_bar->pwd);
+	xa_archive_store_set_pwd_silent(nav_bar->store, nav_bar->pwd->data);
+	return TRUE;
+}
+
+gboolean
+xa_navigation_bar_history_forward(XANavigationBar *nav_bar)
+{
+	if(!g_list_previous(nav_bar->pwd))
+		return FALSE;
+	nav_bar->pwd = g_list_previous(nav_bar->pwd);
+	xa_archive_store_set_pwd_silent(nav_bar->store, nav_bar->pwd->data);
+	return TRUE;
+}
+
+/* This *is* correct!!! */
+gboolean
+xa_navigation_bar_history_has_next(XANavigationBar *nav_bar)
+{
+	return (g_list_previous(nav_bar->pwd)?1:0);
+}
+
+/* idem */
+gboolean
+xa_navigation_bar_history_has_previous(XANavigationBar *nav_bar)
+{
+	return (g_list_next(nav_bar->pwd)?1:0);
 }
