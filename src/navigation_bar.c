@@ -167,12 +167,26 @@ xa_navigation_bar_history_forward(XANavigationBar *nav_bar)
 gboolean
 xa_navigation_bar_history_has_next(XANavigationBar *nav_bar)
 {
-	return (g_list_previous(nav_bar->pwd)?1:0);
+	if(nav_bar->pwd)
+		return (g_list_previous(nav_bar->pwd)?1:0);
+	return FALSE;
 }
 
 /* idem */
 gboolean
 xa_navigation_bar_history_has_previous(XANavigationBar *nav_bar)
 {
-	return (g_list_next(nav_bar->pwd)?1:0);
+	if(nav_bar->pwd)
+		return (g_list_next(nav_bar->pwd)?1:0);
+	return FALSE;
+}
+
+void
+xa_navigation_bar_clear_history(XANavigationBar *nav_bar)
+{
+	nav_bar->pwd = g_list_first(nav_bar->history);
+	g_list_foreach(nav_bar->pwd, (GFunc)g_free, NULL);
+	g_list_free(nav_bar->pwd);
+	nav_bar->history = NULL;
+	nav_bar->pwd = NULL;
 }

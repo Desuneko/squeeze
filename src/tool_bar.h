@@ -48,6 +48,7 @@ struct _XAToolBar
 	GtkToolItem *back_button;
 	GtkToolItem *forward_button;
 	GtkToolItem *up_button;
+	GtkToolItem *home_button;
 	GtkWidget *path_field;
 };
 

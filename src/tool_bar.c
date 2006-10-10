@@ -41,7 +41,12 @@ static void
 cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *nav_bar);
 
 static void
-cb_xa_tool_bar_up(GtkWidget *forward_button, XANavigationBar *nav_bar);
+cb_xa_tool_bar_up(GtkWidget *, XAToolBar *tool_bar);
+static void
+cb_xa_tool_bar_home(GtkWidget *, XAToolBar *tool_bar);
+
+static void
+cb_xa_tool_bar_path_field_activated(GtkWidget *entry, XAToolBar *tool_bar);
 
 GType
 xa_tool_bar_get_type ()
@@ -83,22 +88,23 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 
 	tool_bar->back_button = gtk_tool_button_new_from_stock("gtk-go-back");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->back_button, 0);
-	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_xa_tool_bar_history_back, XA_NAVIGATION_BAR(tool_bar));
+	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_xa_tool_bar_history_back, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 
 	tool_bar->forward_button = gtk_tool_button_new_from_stock("gtk-go-forward");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->forward_button, 1);
-	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_xa_tool_bar_history_forward, XA_NAVIGATION_BAR(tool_bar));
+	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_xa_tool_bar_history_forward, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
 	tool_bar->up_button = gtk_tool_button_new_from_stock("gtk-go-up");
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->up_button, 2);
-	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_xa_tool_bar_up, XA_NAVIGATION_BAR(tool_bar));
+	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_xa_tool_bar_up, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 
-	button = gtk_tool_button_new_from_stock("gtk-home");
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 3);
-	gtk_widget_set_sensitive(GTK_WIDGET(button), 0);
+	tool_bar->home_button = gtk_tool_button_new_from_stock("gtk-home");
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->home_button, 3);
+	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_xa_tool_bar_home, tool_bar);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
 
 	button = gtk_separator_tool_item_new();
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 4);
@@ -107,6 +113,7 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	tool_bar->path_field = gtk_entry_new();
 
 	gtk_container_add(GTK_CONTAINER(button), tool_bar->path_field);
+	g_signal_connect(G_OBJECT(tool_bar->path_field), "activate", (GCallback)cb_xa_tool_bar_path_field_activated, tool_bar);
 	gtk_tool_item_set_visible_horizontal(button, TRUE);
 	gtk_tool_item_set_homogeneous(button, TRUE);
 
@@ -135,9 +142,15 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 	gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), path);
 
 	if(strlen(path) < 1 || (strlen(path) == 1 && path[0] == '/'))
+	{
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
+	}
 	else
+	{
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 1);
+	}
 	if(xa_navigation_bar_history_get_length(XA_NAVIGATION_BAR(tool_bar)) <= 1)
 	{
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
@@ -163,14 +176,12 @@ cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *tool_bar)
 	gchar *path= xa_archive_store_get_pwd(store);
 	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(tool_bar), path);
 	xa_tool_bar_refresh(tool_bar, path);
-	g_debug("Pushing path '%s'\n", path);
 	g_free(path);
 }
 
 static void
 cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
 {
-	g_debug("back");
 	xa_navigation_bar_history_back(XA_NAVIGATION_BAR(tool_bar));
 	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
 	xa_tool_bar_refresh(tool_bar, path);
@@ -180,7 +191,6 @@ cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
 static void
 cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *tool_bar)
 {
-	g_debug("forward");
 	xa_navigation_bar_history_forward(XA_NAVIGATION_BAR(tool_bar));
 	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
 	xa_tool_bar_refresh(tool_bar, path);
@@ -188,7 +198,20 @@ cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *tool_bar)
 }
 
 static void
-cb_xa_tool_bar_up(GtkWidget *forward_button, XANavigationBar *nav_bar)
+cb_xa_tool_bar_up(GtkWidget *forward_button, XAToolBar *tool_bar)
 {
-	xa_archive_store_go_up(nav_bar->store);
+	xa_archive_store_go_up(XA_NAVIGATION_BAR(tool_bar)->store);
+}
+
+static void
+cb_xa_tool_bar_home(GtkWidget *forward_button, XAToolBar *tool_bar)
+{
+	xa_archive_store_set_pwd(XA_NAVIGATION_BAR(tool_bar)->store, "/");
+}
+
+static void
+cb_xa_tool_bar_path_field_activated(GtkWidget *entry, XAToolBar *tool_bar)
+{
+	const gchar *path = gtk_entry_get_text(GTK_ENTRY(entry));
+	xa_archive_store_set_pwd(XA_NAVIGATION_BAR(tool_bar)->store, path);
 }

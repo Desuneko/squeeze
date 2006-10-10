@@ -68,6 +68,7 @@ gboolean   xa_navigation_bar_history_back(XANavigationBar *nav_bar);
 gboolean   xa_navigation_bar_history_forward(XANavigationBar *nav_bar);
 gboolean   xa_navigation_bar_history_has_next(XANavigationBar *nav_bar);
 gboolean   xa_navigation_bar_history_has_previous(XANavigationBar *nav_bar);
+void       xa_navigation_bar_clear_history(XANavigationBar *nav_bar);
 
 G_END_DECLS
 #endif /* __XARCHIVER_NAVIGATION_BAR_H__*/

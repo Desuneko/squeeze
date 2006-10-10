@@ -116,7 +116,6 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	g_print("%u\n", sizeof(LXAEntry));
 	lxa_archive_free_entry(archive, &archive->root_entry);
 	switch(archive->status)
 	{

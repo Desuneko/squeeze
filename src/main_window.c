@@ -257,6 +257,7 @@ xa_main_window_init(XAMainWindow *window)
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window->scrollwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	window->treeview = gtk_tree_view_new();
 
@@ -463,6 +464,7 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(window->lp_xa_archive)
 		{
+			xa_navigation_bar_clear_history(window->navigationbar);
 			xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 			g_object_unref(window->lp_xa_archive);
 			window->lp_xa_archive = NULL;
@@ -551,6 +553,7 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 
 	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), NULL);
+	xa_navigation_bar_clear_history(window->navigationbar);
 /*	xa_archive_tree_store_set_contents(XA_ARCHIVE_TREE_STORE(liststore), NULL); */
 
 	while(columns)
