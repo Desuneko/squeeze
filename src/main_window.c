@@ -456,6 +456,7 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(window->lp_xa_archive)
 		{
+			xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 			g_object_unref(window->lp_xa_archive);
 			window->lp_xa_archive = NULL;
 		}
