@@ -18,7 +18,7 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
 
 		if(!cmp)
 		{
-			/* TODO: merge same as in flush */
+			g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
 			return;
 		}
 		if(cmp < 0)

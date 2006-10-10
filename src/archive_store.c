@@ -337,7 +337,7 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 		if(store->sort_list)
 			entry = store->sort_list[index];
 		else
-			entry = lxa_entry_children_nth_data(entry, index);
+			entry = lxa_entry_children_nth_data(archive, entry, index);
 
 		g_return_val_if_fail(entry, FALSE);
 
@@ -478,7 +478,7 @@ xa_archive_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	if(store->sort_list)
 		entry = store->sort_list[pos];
 	else
-		entry = lxa_entry_children_nth_data(entry, pos);
+		entry = lxa_entry_children_nth_data(store->archive, entry, pos);
 
 	if(!entry)
 		return FALSE;
@@ -515,7 +515,7 @@ xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, Gtk
 		if(store->sort_list)
 			entry = store->sort_list[0];
 		else
-			entry = lxa_entry_children_nth_data(entry, 0);
+			entry = lxa_entry_children_nth_data(archive, entry, 0);
 	
 		g_return_val_if_fail(entry, FALSE);
 	
@@ -580,7 +580,7 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 		if(store->sort_list)
 			entry = store->sort_list[n];
 		else
-			entry = lxa_entry_children_nth_data(entry, n);
+			entry = lxa_entry_children_nth_data(archive, entry, n);
 	
 		g_return_val_if_fail(entry, FALSE);
 	}
@@ -746,7 +746,7 @@ xa_archive_store_sort(XAArchiveStore *store)
 
 	for(i = 0; i < psize; i++)
 	{
-		store->sort_list[i] = lxa_entry_children_nth_data(pentry, i);
+		store->sort_list[i] = lxa_entry_children_nth_data(store->archive, pentry, i);
 	}
 	xa_archive_quicksort(store, 0, psize-1);
 	xa_archive_insertionsort(store, 0, psize-1);
@@ -881,7 +881,7 @@ xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 		if(store->sort_list)
 			iter.user_data = store->sort_list[i];
 		else
-			iter.user_data = lxa_entry_children_nth_data(&archive->root_entry, i);
+			iter.user_data = lxa_entry_children_nth_data(archive, &archive->root_entry, i);
 		iter.user_data2 = entry;
 		iter.user_data3 = GINT_TO_POINTER(index);
 
@@ -907,8 +907,11 @@ static void
 cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
 	g_return_if_fail(XA_IS_ARCHIVE_STORE(user_data));	
-
 	XAArchiveStore *store = XA_ARCHIVE_STORE(user_data);
+
+	g_return_if_fail(store->current_entry);
+
+
 	LXAArchive *archive = store->archive;
 	LXAEntry *entry = store->current_entry->data;
 
@@ -940,7 +943,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 		if(store->sort_list)
 			entry = store->sort_list[index];
 		else
-			entry = lxa_entry_children_nth_data(entry, index);
+			entry = lxa_entry_children_nth_data(archive, entry, index);
 
 		g_return_if_fail(entry);
 
@@ -1038,7 +1041,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		if(store->sort_list)
 			iter.user_data = store->sort_list[i];
 		else
-			iter.user_data = lxa_entry_children_nth_data(&archive->root_entry, i);
+			iter.user_data = lxa_entry_children_nth_data(archive, &archive->root_entry, i);
 		iter.user_data2 = &archive->root_entry;
 		iter.user_data3 = GINT_TO_POINTER(i);
 
@@ -1098,22 +1101,43 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	gchar **buf = NULL;
 	GSList *iter = store->current_entry;
 	gint i = g_slist_length(iter);
+	gchar *lastfile = NULL;
+	gint namelen = 0;
 
 	if(!i)
 		return NULL;
 
-	buf = g_new(gchar*, i+1);
+	if(i==1)
+		i++;
+	
+	buf = g_new(gchar*, i);
+	i--;
 	buf[i] = NULL;
 
-	while(iter)
+	namelen = strlen(((LXAEntry*)iter->data)->filename);
+	lastfile = g_new(gchar, namelen+2);
+	strcpy(lastfile, ((LXAEntry*)iter->data)->filename);
+	if(lastfile[namelen-1] != '/')
 	{
-		--i;
-		buf[i] = ((LXAEntry*)iter->data)->filename;
-		iter = iter->next;
+		lastfile[namelen] = '/';
+		lastfile[namelen+1] = '\0';
+	}
+
+	i--;
+	iter = iter->next;
+	if(iter)
+	{
+		while(iter->next)
+		{
+			--i;
+			buf[i] = ((LXAEntry*)iter->data)->filename;
+			iter = iter->next;
+		}
 	}
 
 	path = g_strjoinv("/", buf);
 
+	g_free(lastfile);
 	g_free(buf);
 
 	return path;

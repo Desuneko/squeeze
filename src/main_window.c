@@ -253,7 +253,7 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
-/*	window->navigationbar = xa_tool_bar_new(NULL);*/
+	/*window->navigationbar = xa_tool_bar_new(NULL);*/
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
@@ -418,7 +418,10 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 void
 cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata)
 {
-	g_object_unref(XA_MAIN_WINDOW(userdata)->lp_xa_archive);
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
+	g_object_unref(window->lp_xa_archive);
+	window->lp_xa_archive = NULL;
 }
 
 void

@@ -106,9 +106,8 @@ LXAEntry          *lxa_archive_add_file(LXAArchive *archive, gchar *path);
 GSList            *lxa_archive_get_children(LXAArchive *archive, gchar *path);
 LXAEntry          *lxa_entry_get_child(LXAEntry *, const gchar *);
 gboolean           lxa_entry_add_child(LXAEntry *parent, LXAEntry *child);
-void               lxa_entry_flush_buffer(LXAEntry *entry);
 guint              lxa_entry_children_length(LXAEntry *entry);
-LXAEntry          *lxa_entry_children_nth_data(LXAEntry *entry, guint n);
+LXAEntry          *lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n);
 //gint               lxa_entry_children_index(LXAEntry *entry, LXAEntry *find);
 
 

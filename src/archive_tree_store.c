@@ -334,7 +334,7 @@ xa_archive_tree_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkT
 		index = indices[i];
 
 		pentry = entry;
-		entry = lxa_entry_children_nth_data(pentry, index);
+		entry = lxa_entry_children_nth_data(archive, pentry, index);
 
 		g_return_val_if_fail(entry, FALSE);
 
@@ -471,7 +471,7 @@ xa_archive_tree_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	gint pos = GPOINTER_TO_INT(iter->user_data3);
 	pos++;
 
-	entry = lxa_entry_children_nth_data(entry, pos);
+	entry = lxa_entry_children_nth_data(store->archive, entry, pos);
 
 	if(!entry)
 		return FALSE;
@@ -538,7 +538,7 @@ xa_archive_tree_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *ite
 		ppos = GPOINTER_TO_INT(parent->user_data3);
 	}
 
-	entry = lxa_entry_children_nth_data(pentry, n);
+	entry = lxa_entry_children_nth_data(archive, pentry, n);
 
 	g_return_val_if_fail(entry, FALSE);
 
@@ -910,7 +910,7 @@ cb_xa_archive_tree_store_row_activated(GtkTreeView *treeview, GtkTreePath *path,
 	for(i = 0; i < depth; i++)
 	{
 		pentry = entry;
-		entry = lxa_entry_children_nth_data(pentry, indices[i]);
+		entry = lxa_entry_children_nth_data(archive, pentry, indices[i]);
 
 		g_return_if_fail(entry);
 	}
@@ -933,7 +933,7 @@ xa_archive_tree_store_refresh(XAArchiveTreeStore *store, GtkTreePath *path, XAPa
 		path_ = gtk_tree_path_copy(path);
 		gtk_tree_path_append_index(path_, i);
 
-		entry = lxa_entry_children_nth_data(ptree->entry, i);
+		entry = lxa_entry_children_nth_data(store->archive, ptree->entry, i);
 		iter.stamp = store->stamp;
 		iter.user_data = entry;
 		iter.user_data2 = ptree;

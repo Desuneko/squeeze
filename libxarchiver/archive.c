@@ -44,7 +44,10 @@ static void
 lxa_archive_finalize(GObject *object);
 
 void
-lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive);
+lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry);
+
+void
+lxa_archive_entry_flush_buffer(LXAArchive *, LXAEntry *entry);
 
 
 gint
@@ -113,7 +116,8 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	lxa_archive_free_entry(&archive->root_entry, archive);
+	g_print("%u\n", sizeof(LXAEntry));
+	lxa_archive_free_entry(archive, &archive->root_entry);
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_IDLE):
@@ -196,7 +200,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);
 			tmp_entry->filename = g_strdup(path_items[i]);
-			lxa_entry_add_child(parent, tmp_entry);
+			lxa_archive_entry_add_child(archive, parent, tmp_entry);
 			if(path[strlen(path)-1] == '/')
 			{
 				tmp_entry->mime_type = "inode/directory";
@@ -212,7 +216,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 
 
 void
-lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
+lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 {
 	gint i = 0; 
 	gpointer props_iter = entry->props;
@@ -223,7 +227,7 @@ lxa_archive_free_entry(LXAEntry *entry, LXAArchive *archive)
 	if(entry->children)
 	{
 		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); i++)
-			lxa_archive_free_entry(entry->children[i], archive);
+			lxa_archive_free_entry(archive, entry->children[i]);
 		g_free(entry->children);
 	}
 
@@ -259,12 +263,12 @@ lxa_stop_archive_child( LXAArchive *archive )
 
 //TODO: why does this have a return value?
 gboolean
-lxa_entry_add_child(LXAEntry *parent, LXAEntry *child)
+lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *child)
 {
 	parent->buffer = lxa_slist_insert_sorted_single(parent->buffer, child);
 
 	if(lxa_slist_length(parent->buffer) == LXA_ENTRY_CHILD_BUFFER_SIZE)
-		lxa_entry_flush_buffer(parent);
+		lxa_archive_entry_flush_buffer(archive, parent);
 }
 
 LXAEntry *
@@ -308,7 +312,7 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 }
 
 void
-lxa_entry_flush_buffer(LXAEntry *entry)
+lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 {
 	if(!entry->buffer)
 		return;
@@ -350,7 +354,7 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 		}
 		if(!cmp)
 		{
-			/* TODO: F*** (aka merge) */
+			g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
 		}
 		else
 		{
@@ -374,16 +378,18 @@ lxa_entry_flush_buffer(LXAEntry *entry)
 	g_free(children_old);
 }
 
-guint lxa_entry_children_length(LXAEntry *entry)
+guint
+lxa_entry_children_length(LXAEntry *entry)
 {
 	g_return_val_if_fail(entry, 0);
 	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
 }
 
-LXAEntry *lxa_entry_children_nth_data(LXAEntry *entry, guint n)
+LXAEntry *
+lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)
 {
 	g_return_val_if_fail(entry, NULL);
-	lxa_entry_flush_buffer(entry);
+	lxa_archive_entry_flush_buffer(archive, entry);
 	n++;
 	if(entry->children && n > 0 && n <= GPOINTER_TO_INT(*entry->children))
 		return entry->children[n];
