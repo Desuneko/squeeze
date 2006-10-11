@@ -44,7 +44,11 @@ enum {
 };
 
 /* signals */
-static gint xa_archive_store_signals[1];
+enum {
+	XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED = 0,
+	XA_ARCHIVE_STORE_SIGNAL_NUMBER
+};
+static gint xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NUMBER];
 
 static void
 xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
@@ -214,7 +218,7 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SHOW_UP_DIR, pspec);
 
-	xa_archive_store_signals[0] = g_signal_new("xa_pwd_changed",
+	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED] = g_signal_new("xa_pwd_changed",
 	   G_TYPE_FROM_CLASS(as_class),
 		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		 0,
@@ -971,7 +975,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	xa_archive_store_sort(store);
 
 	xa_archive_store_refresh(store, prev_size);
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
 void
@@ -999,7 +1003,7 @@ xa_archive_store_go_up(XAArchiveStore *store)
 	xa_archive_store_sort(store);
 
 	xa_archive_store_refresh(store, prev_size);
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
 void
@@ -1067,7 +1071,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		gtk_tree_path_free(path_);
 	}
 
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
 gchar *
@@ -1148,7 +1152,7 @@ xa_archive_store_set_pwd(XAArchiveStore *store, gchar *path)
 {
 	gint result = xa_archive_store_set_pwd_silent(store, path);
 
-	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 	return result;
 }
 

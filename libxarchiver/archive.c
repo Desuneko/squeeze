@@ -409,7 +409,8 @@ lxa_entry_children_length(LXAEntry *entry)
 LXAEntry *
 lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)
 {
-	g_return_val_if_fail(entry, NULL);
+	if(entry == NULL)
+		return NULL;
 	lxa_archive_entry_flush_buffer(archive, entry);
 	n++;
 	/* the first element of the array (*entry->children) contains the size of the array */

@@ -34,6 +34,16 @@ xa_navigation_bar_init(XANavigationBar *archive);
 static void
 cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
 
+static void
+xa_navigation_bar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+static void
+xa_navigation_bar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+
+/* properties */
+enum {
+	XA_NAVIGATION_BAR_NAV_HISTORY = 1
+};
+
 GType
 xa_navigation_bar_get_type ()
 {
@@ -63,6 +73,20 @@ xa_navigation_bar_get_type ()
 static void
 xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS (navigation_bar_class);
+	GParamSpec *pspec = NULL;
+
+	object_class->set_property = xa_navigation_bar_set_property;
+	object_class->get_property = xa_navigation_bar_get_property;
+
+	pspec = g_param_spec_uint("navigation_history",
+		"",
+		"",
+		0,
+		G_MAXUINT,
+		10,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_NAVIGATION_BAR_NAV_HISTORY, pspec);
 }
 
 static void
@@ -70,6 +94,8 @@ xa_navigation_bar_init(XANavigationBar *navigation_bar)
 {
 	navigation_bar->_cb_pwd_changed = (GCallback)cb_xa_navigation_bar_pwd_changed;
 	navigation_bar->max_history = 10;
+	navigation_bar->pwd = NULL;
+	navigation_bar->history = NULL;
 }
 
 void
@@ -168,7 +194,7 @@ gboolean
 xa_navigation_bar_history_has_next(XANavigationBar *nav_bar)
 {
 	if(nav_bar->pwd)
-		return (g_list_previous(nav_bar->pwd)?1:0);
+		return (g_list_previous(nav_bar->pwd)?TRUE:FALSE);
 	return FALSE;
 }
 
@@ -177,7 +203,7 @@ gboolean
 xa_navigation_bar_history_has_previous(XANavigationBar *nav_bar)
 {
 	if(nav_bar->pwd)
-		return (g_list_next(nav_bar->pwd)?1:0);
+		return (g_list_next(nav_bar->pwd)?TRUE:FALSE);
 	return FALSE;
 }
 
@@ -189,4 +215,26 @@ xa_navigation_bar_clear_history(XANavigationBar *nav_bar)
 	g_list_free(nav_bar->pwd);
 	nav_bar->history = NULL;
 	nav_bar->pwd = NULL;
+}
+
+static void
+xa_navigation_bar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case XA_NAVIGATION_BAR_NAV_HISTORY:
+			XA_NAVIGATION_BAR(object)->max_history = g_value_get_uint(value);		
+			break;
+	}
+}
+
+static void
+xa_navigation_bar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	switch(prop_id)
+	{
+		case XA_NAVIGATION_BAR_NAV_HISTORY:
+			g_value_set_uint(value, XA_NAVIGATION_BAR(object)->max_history);
+			break;
+	}
 }

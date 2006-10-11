@@ -293,6 +293,7 @@ xa_main_window_init(XAMainWindow *window)
 	window->treemodel = xa_archive_store_new(NULL, TRUE, TRUE, window->icon_theme);
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(window->treemodel), GTK_TREE_VIEW(window->treeview));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(window->treemodel));
+	xa_navigation_bar_set_store(window->navigationbar, XA_ARCHIVE_STORE(window->treemodel));
 }
 
 GtkWidget *
@@ -552,8 +553,8 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	GtkTreeModel *liststore = window->treemodel;
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 
-	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), NULL);
 	xa_navigation_bar_clear_history(window->navigationbar);
+	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), NULL);
 /*	xa_archive_tree_store_set_contents(XA_ARCHIVE_TREE_STORE(liststore), NULL); */
 
 	while(columns)
@@ -736,7 +737,6 @@ xa_main_window_reset_columns(XAMainWindow *window)
 		}
 	}
 	gtk_tree_view_set_search_column(GTK_TREE_VIEW(window->treeview), 1);
-	xa_navigation_bar_set_store(window->navigationbar, XA_ARCHIVE_STORE(liststore));
 }
 
 void
