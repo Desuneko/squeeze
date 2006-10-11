@@ -45,6 +45,8 @@ lxa_archive_finalize(GObject *object);
 
 void
 lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry);
+void
+lxa_archive_free_entry_no_free(LXAArchive *archive, LXAEntry *entry);
 
 void
 lxa_archive_entry_flush_buffer(LXAArchive *, LXAEntry *entry);
@@ -116,7 +118,7 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	lxa_archive_free_entry(archive, &archive->root_entry);
+	lxa_archive_free_entry_no_free(archive, &archive->root_entry);
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_IDLE):
@@ -213,21 +215,34 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	return tmp_entry;
 }
 
-
 void
 lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 {
+	lxa_archive_free_entry_no_free(archive, entry);
+	g_free(entry);
+}
+
+void
+lxa_archive_free_entry_no_free(LXAArchive *archive, LXAEntry *entry)
+{
 	gint i = 0; 
 	gpointer props_iter = entry->props;
+	LXASList *buffer_iter = entry->buffer;
 
+	for(; buffer_iter; buffer_iter = buffer_iter->next)
+	{
+		lxa_archive_free_entry(archive, buffer_iter->entry);
+	}
 	lxa_slist_free(entry->buffer);
 	entry->buffer = NULL;
 
 	if(entry->children)
 	{
+		/* first elemant of the array (*entry->children) contains the size of the array */
 		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); i++)
 			lxa_archive_free_entry(archive, entry->children[i]);
 		g_free(entry->children);
+		entry->children = NULL;
 	}
 
 	if(entry->props)
@@ -274,10 +289,12 @@ LXAEntry *
 lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {
 	LXASList *buffer_iter = NULL;
+	/* the first element of the array (*entry->children) contains the size of the array */
 	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
 	guint pos = 0;
 	guint begin = 1;
 	gint cmp = 0;
+	/* binary search algoritme */
 	while(size)
 	{
 		pos = (size / 2);
@@ -297,6 +314,7 @@ lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 		}
 	}
 
+	/* search the buffer */
 	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
 	{
 		cmp = strcmp(filename, buffer_iter->entry->filename);
@@ -322,6 +340,7 @@ lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 	gint cmp = 1;
 	guint old_i = 1;
 	guint new_i = 1;
+	/* the first element of the array (*entry->children) contains the size of the array */
 	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
 	gint n_children = size;
 	LXASList *buffer_iter = NULL;
@@ -333,6 +352,7 @@ lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 	for(buffer_iter = entry->buffer;buffer_iter;buffer_iter = buffer_iter->next)
 	{
 		size = n_children + 1 - begin;
+		/* binary search algoritme */
 		while(size)
 		{
 			pos = (size / 2);
@@ -369,6 +389,7 @@ lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 		entry->children[new_i++] = children_old[old_i++];
 	}
 	n_children = new_i - 1;
+	/* the first element of the array (*entry->children) contains the size of the array */
 	*entry->children = GINT_TO_POINTER(n_children);
 	
 	lxa_slist_free(entry->buffer);
@@ -381,6 +402,7 @@ guint
 lxa_entry_children_length(LXAEntry *entry)
 {
 	g_return_val_if_fail(entry, 0);
+	/* the first element of the array (*entry->children) contains the size of the array */
 	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
 }
 
@@ -390,6 +412,7 @@ lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)
 	g_return_val_if_fail(entry, NULL);
 	lxa_archive_entry_flush_buffer(archive, entry);
 	n++;
+	/* the first element of the array (*entry->children) contains the size of the array */
 	if(entry->children && n > 0 && n <= GPOINTER_TO_INT(*entry->children))
 		return entry->children[n];
 	else

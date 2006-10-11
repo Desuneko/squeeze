@@ -234,13 +234,26 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 static void
 xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
+	gint prev_size = 0;
 	switch(prop_id)
 	{
 		case XA_ARCHIVE_STORE_SHOW_ICONS:
-			XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value);
+			if(XA_ARCHIVE_STORE(object)->props._show_icons != g_value_get_boolean(value))
+			{
+				if(XA_ARCHIVE_STORE(object)->current_entry)
+					prev_size = lxa_entry_children_length(((LXAEntry*)XA_ARCHIVE_STORE(object)->current_entry->data));
+				XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value);
+				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
+			}
 			break;
 		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
-			XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value);
+			if(XA_ARCHIVE_STORE(object)->props._show_up_dir != g_value_get_boolean(value))
+			{
+				if(XA_ARCHIVE_STORE(object)->current_entry)
+					prev_size = lxa_entry_children_length(((LXAEntry*)XA_ARCHIVE_STORE(object)->current_entry->data));
+				XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value);
+				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
+			}
 			break;
 	}
 }
@@ -312,8 +325,8 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 	LXAEntry *entry = NULL;
 	if(!store->current_entry)
 		return FALSE;
-	else
-		entry = store->current_entry->data;
+
+	entry = store->current_entry->data;
 
 
 	gint *indices = gtk_tree_path_get_indices(path);
@@ -1000,6 +1013,8 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 	LXAEntry *entry = NULL;
 	gint prev_size =  0;
 
+	g_free(store->sort_list);
+
 	if(store->current_entry)
 	{
 		entry = store->current_entry->data;
@@ -1054,46 +1069,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 	g_signal_emit(store, xa_archive_store_signals[0], 0,NULL);
 }
-/*
-gchar *
-xa_archive_store_get_pwd(XAArchiveStore *store)
-{
-	g_return_val_if_fail(store, NULL);
 
-	gint size = 0;
-	gint csize = 0;
-	gchar *path = NULL;
-	gchar *buf = NULL;
-	GSList *iter = store->current_entry;
-
-	while(iter)
-	{
-		size += strlen(((LXAEntry*)iter->data)->filename) + 1;
-		iter = iter->next;
-	}
-
-	if(size)
-	{
-		path = g_new(gchar, size + 1);
-		buf = g_new(gchar, size + 1);
-		path[0] = '\0';
-
-		iter = store->current_entry;
-
-		while(iter)
-		{
-			g_strlcpy(buf, path, size);
-			g_strlcpy(path, ((LXAEntry*)iter->data)->filename, size);
-			csize = g_strlcat(path, buf, size);
-			path[csize] = '/';
-			path[csize+1] = '\0';
-			iter = iter->next;
-		}
-	}
-	g_free(buf);
-	return path;
-}
-*/
 gchar *
 xa_archive_store_get_pwd(XAArchiveStore *store)
 {
@@ -1109,8 +1085,7 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	if(!i)
 		return NULL;
 
-//	if(i==1)
-		i++;
+	i++;
 	
 	buf = g_new(gchar*, i);
 	buf[0] = "";
