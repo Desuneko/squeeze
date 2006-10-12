@@ -290,7 +290,7 @@ xa_archive_tree_store_get_n_columns(GtkTreeModel *tree_model)
 	if(!archive)
 		return 0;
 	
-	return (store->props._show_only_filename?1:archive->column_number) + (store->props._show_icons?1:0);
+	return (store->props._show_only_filename?0:archive->n_property) + (store->props._show_icons?2:1);
 }
 
 static GType
@@ -304,16 +304,14 @@ xa_archive_tree_store_get_column_type(GtkTreeModel *tree_model, gint index)
 	if(!archive)
 		return G_TYPE_INVALID;
 
-	if(store->props._show_icons)
-	{
-		if(index == 0)
-			return G_TYPE_STRING;
-		index--;
-	}
+	index -= 2;
 
-	g_return_val_if_fail(index < archive->column_number, G_TYPE_INVALID);
+	if(index < 0)
+		return G_TYPE_STRING;
 
-	return archive->column_types[index];
+	g_return_val_if_fail(index < archive->n_property, G_TYPE_INVALID);
+
+	return archive->property_types[index];
 }
 
 static gboolean
@@ -329,7 +327,7 @@ xa_archive_tree_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkT
 	gint *indices = gtk_tree_path_get_indices(path);
 	gint depth = gtk_tree_path_get_depth(path);
 	gint i = 0;
-	LXAEntry *entry = &archive->root_entry;
+	LXAEntry *entry = archive->root_entry;
 	LXAEntry *pentry = NULL;
 	XAParentTree *tree = NULL;
 	XAParentTree *ptree = NULL;
@@ -399,10 +397,10 @@ xa_archive_tree_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gi
 	if(store->props._show_icons)
 		column--;
 
-	g_return_if_fail (column < (gint)archive->column_number);
+	g_return_if_fail (column < (gint)archive->n_property);
 
 	if(column >= 0)
-		g_value_init(value, archive->column_types[column]);
+		g_value_init(value, archive->property_types[column]);
 
 	LXAEntry *entry = ((LXAEntry *)iter->user_data);
 	gpointer props_iter = entry->props;
@@ -427,7 +425,7 @@ xa_archive_tree_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gi
 		{
 			for(i=1;i<column;i++)
 			{
-				switch(archive->column_types[i])
+				switch(archive->property_types[i])
 				{
 					case G_TYPE_STRING:
 						props_iter+=sizeof(gchar *);
@@ -440,7 +438,7 @@ xa_archive_tree_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gi
 						break;
 				}
 			}
-			switch(archive->column_types[column])
+			switch(archive->property_types[column])
 			{
 				case G_TYPE_STRING:
 					g_value_set_string(value, *(gchar **)props_iter);
@@ -502,7 +500,7 @@ xa_archive_tree_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *it
 
 	g_return_val_if_fail(archive, 0);
 
-	LXAEntry *entry = &archive->root_entry;
+	LXAEntry *entry = archive->root_entry;
 
 	if(iter)
 	{
@@ -526,7 +524,7 @@ xa_archive_tree_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *ite
 
 	g_return_val_if_fail(archive, FALSE);
 
-	LXAEntry *pentry = &archive->root_entry;
+	LXAEntry *pentry = archive->root_entry;
 
 	if(parent)
 	{
@@ -672,7 +670,7 @@ xa_archive_entry_compare(XAArchiveTreeStore *store, LXAEntry *a, LXAEntry *b)
 
 	for(i=1;i<column;i++)
 	{
-		switch(archive->column_types[i])
+		switch(archive->property_types[i])
 		{
 			case G_TYPE_STRING:
 				props_a+=sizeof(gchar *);
@@ -689,7 +687,7 @@ xa_archive_entry_compare(XAArchiveTreeStore *store, LXAEntry *a, LXAEntry *b)
 		}
 	}
 
-	switch(archive->column_types[column])
+	switch(archive->property_types[column])
 	{
 		case G_TYPE_STRING:
 			switch(/* string compare type */1)
@@ -895,7 +893,7 @@ cb_xa_archive_tree_store_row_activated(GtkTreeView *treeview, GtkTreePath *path,
 
 	XAArchiveTreeStore *store = XA_ARCHIVE_TREE_STORE(user_data);
 	LXAArchive *archive = store->archive;
-	LXAEntry *entry = &archive->root_entry;
+	LXAEntry *entry = archive->root_entry;
 	LXAEntry *pentry = NULL;
 
 	g_return_if_fail(archive);
@@ -962,7 +960,7 @@ xa_archive_tree_store_set_contents(XAArchiveTreeStore *store, LXAArchive *archiv
 
 	if(store->archive)
 	{
-		entry = &store->archive->root_entry;
+		entry = store->archive->root_entry;
 		prev_size = lxa_entry_children_length(entry);
 	}
 
@@ -985,7 +983,7 @@ xa_archive_tree_store_set_contents(XAArchiveTreeStore *store, LXAArchive *archiv
 	store->archive = archive;
 
 	XAParentTree *tree = g_new(XAParentTree, 1);
-	tree->entry = &archive->root_entry;
+	tree->entry = archive->root_entry;
 	tree->pos = 0;
 	tree->parent = NULL;
 

@@ -15,6 +15,5 @@ libxarchiver_a_CFLAGS = \
 	$(THUNAR_VFS_CFLAGS)
 libxarchiver_a_LIBADD =
 
-
 libxarchiver_includedir= \
 	$(includedir)/libxarchiver

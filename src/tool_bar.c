@@ -212,6 +212,6 @@ cb_xa_tool_bar_home(GtkWidget *forward_button, XAToolBar *tool_bar)
 static void
 cb_xa_tool_bar_path_field_activated(GtkWidget *entry, XAToolBar *tool_bar)
 {
-	gchar *path = gtk_entry_get_text(GTK_ENTRY(entry));
+	const gchar *path = gtk_entry_get_text(GTK_ENTRY(entry));
 	xa_archive_store_set_pwd(XA_ARCHIVE_STORE(XA_NAVIGATION_BAR(tool_bar)->store), path);
 }

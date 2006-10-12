@@ -18,8 +18,8 @@
 #include <config.h>
 #include <glib.h>
 #include <glib-object.h>
-#include <libxarchiver/libxarchiver.h>
 #include <gtk/gtk.h>
+#include <libxarchiver/libxarchiver.h>
 
 #include <gettext.h>
 

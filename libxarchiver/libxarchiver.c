@@ -27,7 +27,10 @@
 #include <thunar-vfs/thunar-vfs.h>
 #else
 #include <gettext.h>
+#include <libxamime/xa_mime.h>
+typedef struct _GtkIconTheme GtkIconTheme;
 #endif
+
 
 #include "libxarchiver.h"
 #include "libxarchiver/archive-support-zip.h"
@@ -36,9 +39,6 @@
 #include "libxarchiver/archive-support-gnu-tar.h"
 
 #include "internals.h"
-
-
-struct GtkIconTheme;
 
 void
 lxa_init()
@@ -122,9 +122,11 @@ lxa_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 	const gchar *mime_type = g_value_get_string(value);
 #ifdef HAVE_THUNAR_VFS
 	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(lxa_mime_database, mime_type);
-	g_value_set_string(value, thunar_vfs_mime_info_lookup_icon_name(mime_info, icon_theme));
-#else
-	g_value_unset(value);
+	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, icon_theme);
+	if(gtk_icon_theme_has_icon(icon_theme, icon_name))
+		g_value_set_string(value, icon_name);
+	else
 #endif
-	g_free((gchar *)mime_type);
+		g_value_set_string(value, NULL);
+	/* g_free((gchar *)mime_type); */
 }

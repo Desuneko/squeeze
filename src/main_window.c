@@ -401,6 +401,7 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 		new_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(window->lp_xa_archive)
 		{
+			xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 			g_object_unref(window->lp_xa_archive);
 			window->lp_xa_archive = NULL;
 		}
@@ -573,6 +574,7 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	g_list_free(columns);
 
 	if(archive == window->lp_xa_archive)
+		xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 		window->lp_xa_archive = NULL;
 	
 	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), FALSE);
@@ -724,19 +726,19 @@ xa_main_window_reset_columns(XAMainWindow *window)
 
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	gtk_tree_view_column_set_sort_column_id(column, 1);
-	gtk_tree_view_column_set_title(column, archive->column_names[0]);
+	gtk_tree_view_column_set_title(column, "Filename");
 	gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 
 	if(!show_only_filenames)
 	{
-		for(x = 1; x < archive->column_number; x++)
+		for(x = 0; x < archive->n_property; x++)
 		{
-			switch(archive->column_types[x])
+			switch(archive->property_types[x])
 			{
 				case(G_TYPE_STRING):
 				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(archive->column_names[x], renderer, "text", x+1, NULL);
+					column = gtk_tree_view_column_new_with_attributes(archive->property_names[x], renderer, "text", x+2, NULL);
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
@@ -797,11 +799,11 @@ xa_main_window_add_item(LXAEntry *entry, gpointer data)
 	{
 		props_iter = props;
 
-		for(i=1; i < main_window->lp_xa_archive->column_number; i++)
+		for(i=0; i < main_window->lp_xa_archive->n_property; i++)
 		{
 			tmp_value = g_new0(GValue, 1);
-			tmp_value = g_value_init(tmp_value, main_window->lp_xa_archive->column_types[i]);
-			switch(main_window->lp_xa_archive->column_types[i])
+			tmp_value = g_value_init(tmp_value, main_window->lp_xa_archive->property_types[i]);
+			switch(main_window->lp_xa_archive->property_types[i])
 			{
 				case(G_TYPE_UINT):
 					g_value_set_uint(tmp_value, *(guint *)props_iter);

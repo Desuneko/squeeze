@@ -2,8 +2,7 @@
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ *  the Free Software Foundation; either version 2 of the License, or *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -121,7 +120,7 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	lxa_archive_free_entry_no_free(archive, &archive->root_entry);
+	lxa_archive_free_entry(archive, archive->root_entry);
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_IDLE):
@@ -215,9 +214,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 			tmp_entry->filename = g_strdup(path_items[i]);
 			lxa_archive_entry_add_child(archive, parent, tmp_entry);
 			if(path[strlen(path)-1] == '/')
-			{
 				tmp_entry->mime_type = "inode/directory";
-			}
 			else
 				tmp_entry->mime_type = "text/plain";
 		}

@@ -23,6 +23,9 @@
 #include <glib-object.h>
 #ifdef HAVE_THUNAR_VFS
 #include <thunar-vfs/thunar-vfs.h>
+#else
+#include <libxamime/xa_mime.h>
+#include <gettext.h>
 #endif /* HAVE_THUNAR_VFS */
 
 #include "archive.h"
