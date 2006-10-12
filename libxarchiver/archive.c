@@ -49,8 +49,6 @@ lxa_archive_finalize(GObject *object);
 
 void
 lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry);
-void
-lxa_archive_free_entry_no_free(LXAArchive *archive, LXAEntry *entry);
 
 void
 lxa_archive_entry_flush_buffer(LXAArchive *, LXAEntry *entry);
@@ -112,8 +110,9 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 static void
 lxa_archive_init(LXAArchive *archive)
 {
-		archive->root_entry.filename = g_strdup("/");
-		archive->root_entry.children = NULL;
+	archive->root_entry = g_new0(LXAEntry, 1);
+	archive->root_entry->filename = g_strdup("/");
+	archive->root_entry->children = NULL;
 }
 
 static void
@@ -206,7 +205,7 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	gchar **path_items;
 	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
-	parent = &archive->root_entry;
+	parent = archive->root_entry;
 	for(i = 0; path_items[i]?strlen(path_items[i]):0;i++)
 	{
 		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
@@ -231,13 +230,6 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 void
 lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 {
-	lxa_archive_free_entry_no_free(archive, entry);
-	g_free(entry);
-}
-
-void
-lxa_archive_free_entry_no_free(LXAArchive *archive, LXAEntry *entry)
-{
 	gint i = 0; 
 	gpointer props_iter = entry->props;
 	LXASList *buffer_iter = entry->buffer;
@@ -260,9 +252,9 @@ lxa_archive_free_entry_no_free(LXAArchive *archive, LXAEntry *entry)
 
 	if(entry->props)
 	{
-		for(i=1; i<archive->column_number; i++)
+		for(i=1; i<archive->n_property; i++)
 		{
-			switch(archive->column_types[i])
+			switch(archive->property_types[i])
 			{
 				case(G_TYPE_STRING):
 					g_free(*(gchar **)props_iter);
@@ -279,6 +271,7 @@ lxa_archive_free_entry_no_free(LXAArchive *archive, LXAEntry *entry)
 		g_free(entry->props);
 	}
 	g_free(entry->filename);
+	g_free(entry);
 }
 
 gint

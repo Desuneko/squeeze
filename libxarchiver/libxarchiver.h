@@ -76,6 +76,9 @@ lxa_close_archive( LXAArchive *archive );
 gint
 lxa_stop_archive_child( LXAArchive *archive );
 
+void
+lxa_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
+
 G_END_DECLS
 
 #endif /* __LIBXARCHIVER_H__ */

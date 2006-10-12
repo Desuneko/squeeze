@@ -85,31 +85,31 @@ xa_support_rar_init(XASupportRar *support)
 {
 	XASupport *xa_support = XA_SUPPORT(support);
 	gint n_columns = 10;
-	gchar **column_names  = g_new0(gchar *, n_columns);
-	GType *column_types  = g_new0(GType, n_columns);
+	gchar **property_names  = g_new0(gchar *, n_columns);
+	GType *property_types  = g_new0(GType, n_columns);
 
-	column_names[0] = _("Filename");
-	column_names[1] = _("Original");
-	column_names[2] = _("Compressed");
-	column_names[3] = _("Ratio");
-	column_names[4] = _("Date");
-	column_names[5] = _("Time");
-	column_names[6] = _("Permissions");
-	column_names[7] = _("CRC");
-	column_names[8] = _("Method");
-	column_names[9] = _("Version");
-	column_types[0] = G_TYPE_STRING;
-	column_types[1] = G_TYPE_UINT64;
-	column_types[2] = G_TYPE_UINT64;
-	column_types[3] = G_TYPE_STRING;
-	column_types[4] = G_TYPE_STRING;
-	column_types[5] = G_TYPE_STRING;
-	column_types[6] = G_TYPE_STRING;
-	column_types[7] = G_TYPE_STRING;
-	column_types[8] = G_TYPE_STRING;
-	column_types[9] = G_TYPE_STRING;
+	property_names[0] = _("Filename");
+	property_names[1] = _("Original");
+	property_names[2] = _("Compressed");
+	property_names[3] = _("Ratio");
+	property_names[4] = _("Date");
+	property_names[5] = _("Time");
+	property_names[6] = _("Permissions");
+	property_names[7] = _("CRC");
+	property_names[8] = _("Method");
+	property_names[9] = _("Version");
+	property_types[0] = G_TYPE_STRING;
+	property_types[1] = G_TYPE_UINT64;
+	property_types[2] = G_TYPE_UINT64;
+	property_types[3] = G_TYPE_STRING;
+	property_types[4] = G_TYPE_STRING;
+	property_types[5] = G_TYPE_STRING;
+	property_types[6] = G_TYPE_STRING;
+	property_types[7] = G_TYPE_STRING;
+	property_types[8] = G_TYPE_STRING;
+	property_types[9] = G_TYPE_STRING;
 
-	xa_support_set_columns(xa_support, n_columns, column_names, column_types);
+	xa_support_set_columns(xa_support, n_columns, property_names, property_types);
 	xa_support->type    = XARCHIVETYPE_RAR;
 	xa_support->verify  = xa_archive_type_rar_verify;
 	xa_support->open    = xa_support_rar_open;
@@ -119,8 +119,8 @@ xa_support_rar_init(XASupportRar *support)
 	xa_support->testing = xa_support_rar_testing;
 	xa_support->parse_output = xa_support_rar_parse_output;
 	
-	g_free (column_names);
-	g_free(column_types);
+	g_free (property_names);
+	g_free(property_types);
 }
 
 static gboolean xa_support_rar_parse_output (GIOChannel *ioc, GIOCondition cond, gpointer data)

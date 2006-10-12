@@ -85,23 +85,23 @@ xa_support_7zip_init(XASupport7zip *support)
 {
 	XASupport *xa_support = XA_SUPPORT(support);
 	gint n_columns = 6;
-	gchar **column_names  = g_new0(gchar *, n_columns);
-	GType *column_types  = g_new0(GType, n_columns);
+	gchar **property_names  = g_new0(gchar *, n_columns);
+	GType *property_types  = g_new0(GType, n_columns);
 		
-	column_names[0] = "Filename";
-	column_names[1] = "Compressed";
-	column_names[2] = "Original";
-	column_names[3] = "Attr";
-	column_names[4] = "Time";
-	column_names[5] = "Date";
-	column_types[0] = G_TYPE_STRING;
-	column_types[1] = G_TYPE_UINT64;
-	column_types[2] = G_TYPE_UINT64;
-	column_types[3] = G_TYPE_STRING;
-	column_types[4] = G_TYPE_STRING;
-	column_types[5] = G_TYPE_STRING;
+	property_names[0] = "Filename";
+	property_names[1] = "Compressed";
+	property_names[2] = "Original";
+	property_names[3] = "Attr";
+	property_names[4] = "Time";
+	property_names[5] = "Date";
+	property_types[0] = G_TYPE_STRING;
+	property_types[1] = G_TYPE_UINT64;
+	property_types[2] = G_TYPE_UINT64;
+	property_types[3] = G_TYPE_STRING;
+	property_types[4] = G_TYPE_STRING;
+	property_types[5] = G_TYPE_STRING;
 
-	xa_support_set_columns(xa_support, n_columns, column_names, column_types);
+	xa_support_set_columns(xa_support, n_columns, property_names, property_types);
 	xa_support->type    = XARCHIVETYPE_7ZIP;
 	xa_support->verify  = xa_archive_type_7zip_verify;
 	xa_support->add     = xa_support_7zip_add;
@@ -111,8 +111,8 @@ xa_support_7zip_init(XASupport7zip *support)
 	xa_support->open    = xa_support_7zip_open;
 	xa_support->parse_output = xa_support_7zip_parse_output;
 
-	g_free (column_names);
-	g_free(column_types);
+	g_free (property_names);
+	g_free(property_types);
 }
 
 gint xa_support_7zip_parse_output (GIOChannel *ioc, GIOCondition cond, gpointer data)

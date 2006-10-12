@@ -72,6 +72,10 @@ struct _LXAArchive
 	GObject parent;
 	gchar              *path;
 	gchar              *mime;
+	guint               n_property;
+	GType              *property_types;
+	gchar             **property_names;
+	LXAEntry           *root_entry;
 	LXAArchiveStatus    status;
 	LXAArchiveStatus    old_status;
 	GPid                child_pid;
@@ -82,10 +86,6 @@ struct _LXAArchive
 	gchar              *tmp_file;
 	gchar              *files;
 	gboolean            has_passwd;
-	guint               column_number;
-	GType              *column_types;
-	gchar             **column_names;
-	LXAEntry            root_entry;
 	gushort             entry_props_size;
 };
 

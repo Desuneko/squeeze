@@ -281,7 +281,7 @@ lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 gint
 lxa_archive_support_zip_refresh(LXAArchive *archive)
 {
-	guint i = 1;
+	guint i = 0;
 	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not Zip");
@@ -294,69 +294,66 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 	}
 	else
 	{
-		archive->column_number = 1;
+		archive->n_property = 0;
 		archive->entry_props_size = 0;
 
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) 
-			archive->column_number++;
+			archive->n_property++;
 
-		archive->column_types = g_new0(GType, archive->column_number);
-		archive->column_names = g_new0(gchar *, archive->column_number);
-
-		archive->column_types[0] = G_TYPE_STRING;
-		archive->column_names[0] = g_strdup(_("Filename"));
+		archive->property_types = g_new0(GType, archive->n_property);
+		archive->property_names = g_new0(gchar *, archive->n_property);
 
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
-			archive->column_types[i] = G_TYPE_UINT64;
-			archive->column_names[i] = g_strdup(_("Length"));
+			archive->property_types[i] = G_TYPE_UINT64;
+			archive->property_names[i] = g_strdup(_("Length"));
 			i++;
 			archive->entry_props_size += sizeof(guint64);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Compression method"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Compression method"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) {
-			archive->column_types[i] = G_TYPE_UINT64;
-			archive->column_names[i] = g_strdup(_("Size"));
+			archive->property_types[i] = G_TYPE_UINT64;
+			archive->property_names[i] = g_strdup(_("Size"));
 			i++;
 			archive->entry_props_size += sizeof(guint64);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup("Ratio");
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup("Ratio");
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Date"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Date"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Time"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Time"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup("CRC-32");
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup("CRC-32");
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}

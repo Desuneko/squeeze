@@ -394,7 +394,7 @@ gint
 lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 {
 	gchar *command = NULL;
-	guint i = 1;
+	guint i = 0;
 	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
 		g_critical("Support is not GNU TAR");
@@ -407,52 +407,50 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 	}
 	else
 	{
-		archive->column_number = 1;
+		archive->n_property = 0;
 		archive->entry_props_size = 0;
 
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) 
-			archive->column_number++;
+			archive->n_property++;
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) 
-			archive->column_number++;
+			archive->n_property++;
 
-		archive->column_types = g_new0(GType, archive->column_number);
-		archive->column_names = g_new0(gchar *, archive->column_number);
+		archive->property_types = g_new0(GType, archive->n_property);
+		archive->property_names = g_new0(gchar *, archive->n_property);
 
-		archive->column_types[0] = G_TYPE_STRING;
-		archive->column_names[0] = g_strdup(_("Filename"));
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Permissions"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Permissions"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Owner/Group"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Owner/Group"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) {
-			archive->column_types[i] = G_TYPE_UINT64;
-			archive->column_names[i] = g_strdup(_("Size"));
+			archive->property_types[i] = G_TYPE_UINT64;
+			archive->property_names[i] = g_strdup(_("Size"));
 			i++;
 			archive->entry_props_size += sizeof(guint64);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Date"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Date"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) {
-			archive->column_types[i] = G_TYPE_STRING;
-			archive->column_names[i] = g_strdup(_("Time"));
+			archive->property_types[i] = G_TYPE_STRING;
+			archive->property_names[i] = g_strdup(_("Time"));
 			i++;
 			archive->entry_props_size += sizeof(gchar *);
 		}

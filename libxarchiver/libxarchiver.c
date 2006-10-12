@@ -38,6 +38,7 @@
 #include "internals.h"
 
 
+struct GtkIconTheme;
 
 void
 lxa_init()
@@ -113,4 +114,17 @@ void
 lxa_close_archive(LXAArchive *archive)
 {
 	g_object_unref(archive);
+}
+
+void
+lxa_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
+{
+	const gchar *mime_type = g_value_get_string(value);
+#ifdef HAVE_THUNAR_VFS
+	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(lxa_mime_database, mime_type);
+	g_value_set_string(value, thunar_vfs_mime_info_lookup_icon_name(mime_info, icon_theme));
+#else
+	g_value_unset(value);
+#endif
+	g_free((gchar *)mime_type);
 }
