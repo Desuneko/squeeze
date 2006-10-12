@@ -21,13 +21,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
-
-#ifdef HAVE_THUNAR_VFS
-#define EXO_API_SUBJECT_TO_CHANGE
-#include <thunar-vfs/thunar-vfs.h>
-#else
+#include <libxarchiver/mime.h>
 #include <gettext.h>
-#endif
 
 #include "archive_store.h"
 
@@ -436,7 +431,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 				if(store->icon_theme)
 				{
 					g_value_set_string(value, entry->mime_type);
-					lxa_convert_mime_to_icon_name(store->icon_theme, value);
+					lxa_mime_convert_to_icon_name(store->icon_theme, value);
 				}
 			}
 		}

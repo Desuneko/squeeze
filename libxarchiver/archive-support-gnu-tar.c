@@ -22,14 +22,9 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-
-#ifdef HAVE_THUNAR_VFS
-#define EXO_API_SUBJECT_TO_CHANGE
-#include <thunar-vfs/thunar-vfs.h>
-#else
 #include <gettext.h>
-#endif
 
+#include "mime.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-gnu-tar.h"

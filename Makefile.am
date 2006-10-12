@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = libxamime libxarchiver src tests po
+SUBDIRS = libxarchiver src tests po
 
 pixmapsdir       = $(datadir)/pixmaps
 pixmaps_DATA     = pixmaps/xarchiver.png \

@@ -21,16 +21,9 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-
-#ifdef HAVE_THUNAR_VFS
-#define EXO_API_SUBJECT_TO_CHANGE
-#include <thunar-vfs/thunar-vfs.h>
-#else
 #include <gettext.h>
-#include <libxamime/xa_mime.h>
-typedef struct _GtkIconTheme GtkIconTheme;
-#endif
 
+#include "mime.h"
 
 #include "libxarchiver.h"
 #include "libxarchiver/archive-support-zip.h"
@@ -44,10 +37,8 @@ void
 lxa_init()
 {
 	lxa_tmp_dir = g_get_tmp_dir();
-#ifdef HAVE_THUNAR_VFS
-	thunar_vfs_init();
-	lxa_mime_database = thunar_vfs_mime_database_get_default();
-#endif /* HAVE_THUNAR_VFS */
+
+	lxa_mime_init();
 
 	lxa_register_support(lxa_archive_support_zip_new());
 	lxa_register_support(lxa_archive_support_gnu_tar_new());
@@ -61,9 +52,8 @@ void
 lxa_destroy()
 {
 	g_slist_foreach(lxa_archive_support_list, (GFunc)g_object_unref, NULL);
-#ifdef HAVE_THUNAR_VFS
-	g_object_unref(lxa_mime_database);
-#endif /* HAVE_THUNAR_VFS */
+
+	lxa_mime_destroy();
 }
 
 /*
@@ -116,17 +106,3 @@ lxa_close_archive(LXAArchive *archive)
 	g_object_unref(archive);
 }
 
-void
-lxa_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
-{
-	const gchar *mime_type = g_value_get_string(value);
-#ifdef HAVE_THUNAR_VFS
-	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(lxa_mime_database, mime_type);
-	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, icon_theme);
-	if(gtk_icon_theme_has_icon(icon_theme, icon_name))
-		g_value_set_string(value, icon_name);
-	else
-#endif
-		g_value_set_string(value, NULL);
-	/* g_free((gchar *)mime_type); */
-}

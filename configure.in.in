@@ -68,7 +68,6 @@ po/Makefile.in
 src/Makefile
 tests/Makefile
 libxarchiver/Makefile
-libxamime/Makefile
 ])
 
 echo "----------------------------------------"

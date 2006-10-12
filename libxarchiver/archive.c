@@ -25,9 +25,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-#ifdef HAVE_THUNAR_VFS
-#include <thunar-vfs/thunar-vfs.h>
-#endif /* HAVE_THUNAR_VFS */
+#include "mime.h"
 
 #include "archive.h"
 #include "archive-support.h"
@@ -137,11 +135,6 @@ LXAArchive *
 lxa_archive_new(gchar *path, gchar *mime)
 {
 	LXAArchive *archive;
-#ifdef HAVE_THUNAR_VFS
-	ThunarVfsMimeInfo *mime_info;
-#else
-
-#endif /* HAVE_THUNAR_VFS */
 
 	archive = g_object_new(lxa_archive_get_type(), NULL);
 
@@ -150,16 +143,10 @@ lxa_archive_new(gchar *path, gchar *mime)
 	else
 		archive->path = NULL;
 
-#ifdef HAVE_THUNAR_VFS
 	if(!mime)
-		mime_info = thunar_vfs_mime_database_get_info_for_file(lxa_mime_database, archive->path, g_path_get_basename(archive->path));
+		archive->mime = lxa_mime_get_mime_type_for_file(archive->path);
 	else
-		mime_info = thunar_vfs_mime_info_new(mime, -1);
-
-	archive->mime = g_strdup(thunar_vfs_mime_info_get_name(mime_info));
-#else
-
-#endif /* HAVE_THUNAR_VFS */
+		archive->mime = g_strdup(mime);
 	
 	g_debug("Mime-type: %s", archive->mime);
 	
