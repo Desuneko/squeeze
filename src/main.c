@@ -1,5 +1,4 @@
-/*
- *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
+/* *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +20,8 @@
 #include <glib-object.h>
 #include <libxarchiver/libxarchiver.h>
 #include <gtk/gtk.h>
+
+#include <gettext.h>
 
 #include "new_dialog.h"
 #include "add_dialog.h"
@@ -128,8 +129,6 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
-
-	thunar_vfs_init();
 
 	lxa_init();
 

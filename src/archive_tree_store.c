@@ -21,6 +21,14 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
+
+#ifdef HAVE_THUNAR_VFS
+#define EXO_API_SUBJECT_TO_CHANGE
+#include <thunar-vfs/thunar-vfs.h>
+#else
+#include <gettext.h>
+#endif
+
 #include "archive_tree_store.h"
 
 typedef struct _XAParentTree XAParentTree;
@@ -400,8 +408,6 @@ xa_archive_tree_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gi
 	gpointer props_iter = entry->props;
 	gint i = 1;
 	const gchar *icon_name = NULL;
-	ThunarVfsMimeDatabase *mime_base = NULL;
-	ThunarVfsMimeInfo *mime_info = NULL;
 
 	if(column == -1)
 	{
@@ -409,15 +415,6 @@ xa_archive_tree_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gi
 
 		if(store->icon_theme)
 		{
-			mime_base = thunar_vfs_mime_database_get_default();
-			mime_info = thunar_vfs_mime_database_get_info(mime_base, entry->mime_type);
-			icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, store->icon_theme);
-
-			if(gtk_icon_theme_has_icon(store->icon_theme, icon_name))
-				g_value_set_string(value, icon_name);
-
-			thunar_vfs_mime_info_unref(mime_info);
-			g_object_unref(mime_base);
 		}
 	}
 	else if(column == 0)

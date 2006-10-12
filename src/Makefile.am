@@ -15,7 +15,7 @@ xarchiver_SOURCES = \
 xarchiver_CFLAGS = \
 	@GTK_CFLAGS@ \
 	@GLIB_CFLAGS@ \
-	@THUNARVFS_CFLAGS@ \
+	@THUNAR_VFS_CFLAGS@ \
 	-DDATADIR=\"$(datadir)\" \
 	-DSRCDIR=\"$(top_srcdir)\" \
 	-DLOCALEDIR=\"$(localedir)\"
@@ -24,7 +24,7 @@ xarchiver_LDADD = \
 	$(top_srcdir)/libxarchiver/libxarchiver.a \
 	@GTK_LIBS@ \
 	@GLIB_LIBS@ \
-	@THUNARVFS_LIBS@
+	@THUNAR_VFS_LIBS@
 
 INCLUDES = \
 	-I${top_srcdir}

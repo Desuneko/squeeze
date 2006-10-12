@@ -22,7 +22,6 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-#include <thunar-vfs/thunar-vfs.h>
 
 #include "archive.h"
 #include "archive-support.h"

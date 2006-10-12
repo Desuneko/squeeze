@@ -25,6 +25,14 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
+
+#ifdef HAVE_THUNAR_VFS
+#define EXO_API_SUBJECT_TO_CHANGE
+#include <thunar-vfs/thunar-vfs.h>
+#else
+#include <gettext.h>
+#endif
+
 #include "archive_store.h"
 #include "archive_tree_store.h"
 #include "navigation_bar.h"
@@ -253,7 +261,7 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
-/*	window->navigationbar = xa_tool_bar_new(NULL); */
+	window->navigationbar = xa_tool_bar_new(NULL); 
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);

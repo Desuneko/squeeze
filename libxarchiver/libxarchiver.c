@@ -17,9 +17,17 @@
  */
 
 
+#include <config.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
+
+#ifdef HAVE_THUNAR_VFS
+#define EXO_API_SUBJECT_TO_CHANGE
+#include <thunar-vfs/thunar-vfs.h>
+#else
+#include <gettext.h>
+#endif
 
 #include "libxarchiver.h"
 #include "libxarchiver/archive-support-zip.h"
@@ -27,14 +35,18 @@
 #include "libxarchiver/archive-support-unrar.h"
 #include "libxarchiver/archive-support-gnu-tar.h"
 
-
 #include "internals.h"
+
+
 
 void
 lxa_init()
 {
 	lxa_tmp_dir = g_get_tmp_dir();
+#ifdef HAVE_THUNAR_VFS
+	thunar_vfs_init();
 	lxa_mime_database = thunar_vfs_mime_database_get_default();
+#endif /* HAVE_THUNAR_VFS */
 
 	lxa_register_support(lxa_archive_support_zip_new());
 	lxa_register_support(lxa_archive_support_gnu_tar_new());
@@ -48,7 +60,9 @@ void
 lxa_destroy()
 {
 	g_slist_foreach(lxa_archive_support_list, (GFunc)g_object_unref, NULL);
+#ifdef HAVE_THUNAR_VFS
 	g_object_unref(lxa_mime_database);
+#endif /* HAVE_THUNAR_VFS */
 }
 
 /*

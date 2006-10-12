@@ -43,6 +43,17 @@ typedef struct _XAPreferencesDialog XAPreferencesDialog;
 struct _XAPreferencesDialog
 {
 	GtkDialog parent;
+	GtkWidget *notebook;
+	struct {
+		struct {
+			GtkWidget *show_icons;
+			GtkWidget *rules_hint;
+			struct {
+				GtkWidget *sort_case;
+				GtkWidget *sort_folders;
+			} sorting;
+		} viewer;
+	} general;
 };
 
 typedef struct _XAPreferencesDialogClass XAPreferencesDialogClass;

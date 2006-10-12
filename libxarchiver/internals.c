@@ -21,7 +21,9 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#ifdef HAVE_THUNAR_VFS
 #include <thunar-vfs/thunar-vfs.h>
+#endif /* HAVE_THUNAR_VFS */
 
 #include "archive.h"
 #include "archive-support.h"

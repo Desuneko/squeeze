@@ -12,7 +12,7 @@ libxarchiver_a_SOURCES =            \
 
 libxarchiver_a_CFLAGS = \
 	$(GLIB_CFLAGS)  \
-	$(THUNARVFS_CFLAGS)
+	$(THUNAR_VFS_CFLAGS)
 libxarchiver_a_LIBADD =
 
 

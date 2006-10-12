@@ -16,8 +16,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-const gchar            *lxa_tmp_dir;
+#ifdef HAVE_THUNAR_VFS
 ThunarVfsMimeDatabase  *lxa_mime_database;
+#endif /* HAVE_THUNAR_VFS */
+
+const gchar            *lxa_tmp_dir;
 GSList                 *lxa_archive_support_list;
 
 /*
@@ -37,4 +40,3 @@ lxa_execute(
 
 gchar *
 lxa_concat_filenames(GSList *filenames);
-

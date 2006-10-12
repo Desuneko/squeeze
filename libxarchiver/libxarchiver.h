@@ -20,7 +20,6 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
-#include <thunar-vfs/thunar-vfs.h>
 #include <libxarchiver/archive.h>
 #include <libxarchiver/archive-support.h>
 

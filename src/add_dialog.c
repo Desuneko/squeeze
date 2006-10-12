@@ -19,6 +19,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
+#include <gettext.h>
+
 #include "add_dialog.h"
 
 static void
