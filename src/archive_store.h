@@ -51,8 +51,10 @@ struct _XAArchiveStore
 	LXAEntry **sort_list;
 	GtkIconTheme *icon_theme;
 	struct {
-		gboolean _show_icons;
-		gboolean _show_up_dir;
+		guint _show_icons : 1;
+		guint _show_up_dir : 1;
+		guint _sort_folders_first : 1;
+		guint _sort_case_sensitive : 1;
 	} props;
 };
 

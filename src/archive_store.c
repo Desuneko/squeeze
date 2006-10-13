@@ -43,7 +43,9 @@ xa_archive_tree_sortable_init(GtkTreeSortableIface *ts_interface);
 /* properties */
 enum {
 	XA_ARCHIVE_STORE_SHOW_ICONS = 1, 
-	XA_ARCHIVE_STORE_SHOW_UP_DIR
+	XA_ARCHIVE_STORE_SHOW_UP_DIR,
+	XA_ARCHIVE_STORE_SORT_FOLDERS_FIRST,
+	XA_ARCHIVE_STORE_SORT_CASE_SENSITIVE
 };
 
 /* signals */
@@ -191,8 +193,10 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->stamp = g_random_int();
 	as->archive = NULL;
 	as->current_entry = NULL;
-	as->props._show_icons = FALSE;
-	as->props._show_up_dir = TRUE;
+	as->props._show_icons = 0;
+	as->props._show_up_dir = 1;
+	as->props._sort_folders_first = 1;
+	as->props._sort_case_sensitive = 1;
 	as->sort_column = GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID;
 	as->sort_order = GTK_SORT_ASCENDING;
 	as->sort_list = NULL;
@@ -221,6 +225,20 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SHOW_UP_DIR, pspec);
 
+	pspec = g_param_spec_boolean("sort_folders_first",
+		_("Sort folders before files"),
+		_("The folders will be put at the top of the list"),
+		TRUE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SORT_FOLDERS_FIRST, pspec);
+
+	pspec = g_param_spec_boolean("sort_case_sensitive",
+		_("Sort text case sensitive"),
+		_("Sort text case sensitive"),
+		TRUE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SORT_CASE_SENSITIVE, pspec);
+
 	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED] = g_signal_new("xa_pwd_changed",
 	   G_TYPE_FROM_CLASS(as_class),
 		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
@@ -245,21 +263,37 @@ xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 	switch(prop_id)
 	{
 		case XA_ARCHIVE_STORE_SHOW_ICONS:
-			if(XA_ARCHIVE_STORE(object)->props._show_icons != g_value_get_boolean(value))
+			if(XA_ARCHIVE_STORE(object)->props._show_icons != g_value_get_boolean(value)?1:0)
 			{
 				if(XA_ARCHIVE_STORE(object)->current_entry)
 					prev_size = lxa_entry_children_length(((LXAEntry*)XA_ARCHIVE_STORE(object)->current_entry->data));
-				XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value);
+				XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value)?1:0;
 				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
 			}
 			break;
 		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
-			if(XA_ARCHIVE_STORE(object)->props._show_up_dir != g_value_get_boolean(value))
+			if(XA_ARCHIVE_STORE(object)->props._show_up_dir != g_value_get_boolean(value)?1:0)
 			{
 				if(XA_ARCHIVE_STORE(object)->current_entry)
 					prev_size = lxa_entry_children_length(((LXAEntry*)XA_ARCHIVE_STORE(object)->current_entry->data));
-				XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value);
+				XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value)?1:0;
 				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
+			}
+			break;
+		case XA_ARCHIVE_STORE_SORT_FOLDERS_FIRST:
+			if(XA_ARCHIVE_STORE(object)->props._sort_folders_first != g_value_get_boolean(value)?1:0)
+			{
+				XA_ARCHIVE_STORE(object)->props._sort_folders_first = g_value_get_boolean(value)?1:0;
+				if(XA_ARCHIVE_STORE(object)->sort_column < 0)
+					XA_ARCHIVE_STORE(object)->sort_column = 1;
+				xa_archive_store_sort(XA_ARCHIVE_STORE(object));
+			}
+			break;
+		case XA_ARCHIVE_STORE_SORT_CASE_SENSITIVE:
+			if(XA_ARCHIVE_STORE(object)->props._sort_case_sensitive != g_value_get_boolean(value)?1:0)
+			{
+				XA_ARCHIVE_STORE(object)->props._sort_case_sensitive = g_value_get_boolean(value)?1:0;
+				xa_archive_store_sort(XA_ARCHIVE_STORE(object));
 			}
 			break;
 	}
@@ -271,10 +305,16 @@ xa_archive_store_get_property(GObject *object, guint prop_id, GValue *value, GPa
 	switch(prop_id)
 	{
 		case XA_ARCHIVE_STORE_SHOW_ICONS:
-			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._show_icons);
+			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._show_icons?TRUE:FALSE);
 			break;
 		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
-			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._show_up_dir);
+			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._show_up_dir?TRUE:FALSE);
+			break;
+		case XA_ARCHIVE_STORE_SORT_FOLDERS_FIRST:
+			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._sort_folders_first?TRUE:FALSE);
+			break;
+		case XA_ARCHIVE_STORE_SORT_CASE_SENSITIVE:
+			g_value_set_boolean(value, XA_ARCHIVE_STORE(object)->props._sort_case_sensitive?TRUE:FALSE);
 			break;
 	}
 }
@@ -673,12 +713,25 @@ xa_archive_store_set_default_sort_func(GtkTreeSortable *s, GtkTreeIterCompareFun
 static gboolean
 xa_archive_store_has_default_sort_func(GtkTreeSortable *s)
 {
-	return TRUE;
+	return XA_ARCHIVE_STORE(s)->props._sort_folders_first?FALSE:TRUE;
 }
 
 static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 {
+	gint cmp_a = 0;
+	gint cmp_b = 0;
+	if(store->props._sort_folders_first)
+	{
+		cmp_a = strcmp(a->mime_type, "inode/directory");
+		cmp_b = strcmp(b->mime_type, "inode/directory");
+
+		if(cmp_a ==  0 && cmp_b != 0)
+			return -1;
+		if(cmp_b ==  0 && cmp_a != 0)
+			return 1;
+	}
+
 	LXAEntry *swap = b;
 	if(store->sort_order == GTK_SORT_DESCENDING)
 	{
@@ -694,8 +747,17 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 
 	column -= 2;
 
-	if(column < 0)
+	if(column < -1)
 		return;
+
+	if(column == -1)
+		switch(store->props._sort_case_sensitive)
+		{
+			case 0: /* case insensitive */
+				return g_ascii_strcasecmp(a->filename, b->filename);
+			case 1: /* case sensitive*/
+				return strcmp(a->filename, b->filename);
+		}
 
 	if(!props_a)
 	{
@@ -704,12 +766,6 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 	if(!props_b)
 	{
 		return props_a?1:0;
-	}
-
-	if(column == -1)
-	{
-		props_a = &(a->filename);
-		props_b = &(b->filename);
 	}
 
 	for(i=0;i<column;i++)
@@ -734,9 +790,11 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 	switch(archive->property_types[column])
 	{
 		case G_TYPE_STRING:
-			switch(/* string compare type */1)
+			switch(store->props._sort_case_sensitive)
 			{
-				default:
+				case 0: /* case insensitive */
+					return g_ascii_strcasecmp(*((gchar**)props_a), *((gchar**)props_b));
+				case 1: /* case sensitive */
 					return strcmp(*((gchar**)props_a), *((gchar**)props_b));
 			}
 		case G_TYPE_UINT64:
@@ -844,9 +902,12 @@ xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_
 
 	tree_model = g_object_new(XA_TYPE_ARCHIVE_STORE, NULL);
 
-	tree_model->props._show_icons = show_icons;
-	tree_model->props._show_up_dir = show_up_dir;
+	tree_model->props._show_icons = show_icons?1:0;
+	tree_model->props._show_up_dir = show_up_dir?1:0;
 	tree_model->icon_theme = icon_theme;
+
+	if(tree_model->props._sort_folders_first)
+		tree_model->sort_column = 1;
 
 	xa_archive_store_set_contents(tree_model, archive);
 
@@ -1199,6 +1260,8 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 
 	g_slist_free(store->current_entry);
 	store->current_entry = stack;
+
+	xa_archive_store_sort(store);
 
 	xa_archive_store_refresh(store, prev_size);
 	
