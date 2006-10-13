@@ -454,7 +454,6 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	LXAEntry *entry = ((LXAEntry *)iter->user_data);
 	gpointer props_iter = entry->props;
 	gint i = 0;
-	const gchar *icon_name = NULL;
 
 	if(column == -2)
 	{
@@ -747,8 +746,7 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 
 	column -= 2;
 
-	if(column < -1)
-		return;
+	g_return_val_if_fail(column > -2, 0);
 
 	if(column == -1)
 		switch(store->props._sort_case_sensitive)
@@ -802,6 +800,8 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 		case G_TYPE_UINT:
 			return (*((guint*)props_a)) - (*((guint*)props_b));
 	}
+
+	g_return_val_if_reached(0);
 }
 
 static void
@@ -897,8 +897,6 @@ GtkTreeModel *
 xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme)
 {
 	XAArchiveStore *tree_model;
-	GType *column_types;
-	gint x;
 
 	tree_model = g_object_new(XA_TYPE_ARCHIVE_STORE, NULL);
 

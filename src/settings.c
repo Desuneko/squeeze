@@ -78,5 +78,6 @@ xa_settings_new(gchar *config_dir)
 gboolean
 xa_settings_load(XASettings *settings)
 {
-	
+//	gint fd = g_open(settings->config_file, O_RDONLY, 0);
+	return FALSE;
 }

@@ -357,6 +357,7 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_zip_refresh_parse_output, NULL);
 		g_free(command);
 	}
+	return 0;
 }
 
 gboolean

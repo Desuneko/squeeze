@@ -29,7 +29,6 @@
 #include <gettext.h>
 
 #include "archive_store.h"
-#include "archive_tree_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
 #include "main_window.h"
@@ -52,8 +51,7 @@ static void
 xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
 xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
-static void
-cb_xa_main_window_style_set(XAMainWindow *window, gpointer userdata);
+
 gboolean
 xa_main_window_add_item(LXAEntry *entry, gpointer data);
 void 
@@ -490,7 +488,6 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
 }
 
 void
@@ -698,7 +695,6 @@ xa_main_window_reset_columns(XAMainWindow *window)
 {
 	GtkCellRenderer *renderer = NULL;
 	GtkTreeViewColumn *column = NULL;
-	GtkTreeModel *liststore = window->treemodel;
 	LXAArchive *archive = window->lp_xa_archive;
 	gint x = 0;
 
@@ -753,11 +749,8 @@ xa_main_window_reset_columns(XAMainWindow *window)
 void
 xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive)
 {
-	guint i = 0;
 	GtkTreeModel *liststore = main_window->treemodel;
 	g_object_ref(liststore);
-	GtkTreeIter iter;
-	GValue *tmp_value;
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), NULL);
 

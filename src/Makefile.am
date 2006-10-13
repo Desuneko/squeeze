@@ -7,7 +7,6 @@ xarchiver_SOURCES = \
 	tool_bar.c tool_bar.h \
 	settings.c settings.h \
 	archive_store.c archive_store.h \
-	archive_tree_store.c archive_tree_store.h \
 	preferences_dialog.c preferences_dialog.h \
 	new_dialog.c new_dialog.h \
 	add_dialog.c add_dialog.h \
