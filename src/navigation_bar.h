@@ -44,7 +44,7 @@ typedef struct _XANavigationBar XANavigationBar;
 
 struct _XANavigationBar
 {
-	GtkToolbar parent;
+	GtkContainer parent;
 	XAArchiveStore *store;
 	GList *history;
 	GList *pwd;

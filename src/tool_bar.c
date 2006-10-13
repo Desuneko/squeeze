@@ -34,6 +34,20 @@ static void
 xa_tool_bar_init(XAToolBar *archive);
 
 static void
+xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition);
+static void
+xa_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation);
+
+static GType
+xa_tool_bar_child_type(GtkContainer *container);
+static void
+xa_tool_bar_add(GtkContainer *container, GtkWidget *child);
+static void
+xa_tool_bar_remove(GtkContainer *container, GtkWidget *child);
+static void
+xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
+
+static void
 cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *bar);
 
 static void
@@ -78,6 +92,19 @@ xa_tool_bar_get_type ()
 static void
 xa_tool_bar_class_init(XAToolBarClass *tool_bar_class)
 {
+	GtkWidgetClass *widget_class;
+	GtkContainerClass *container_class;
+
+	widget_class = (GtkWidgetClass*)tool_bar_class;
+	container_class = (GtkContainerClass*)tool_bar_class;
+
+	widget_class->size_request = xa_tool_bar_size_request;
+	widget_class->size_allocate = xa_tool_bar_size_allocate;
+
+	container_class->add = xa_tool_bar_add;
+	container_class->remove = xa_tool_bar_remove;
+	container_class->forall = xa_tool_bar_forall;
+	container_class->child_type = xa_tool_bar_child_type;
 }
 
 static void
@@ -85,30 +112,37 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 {
 	GtkToolItem *button = NULL;
 	XA_NAVIGATION_BAR(tool_bar)->_cb_pwd_changed = (GCallback)cb_xa_tool_bar_pwd_changed;
-	gtk_toolbar_set_style(GTK_TOOLBAR(tool_bar), GTK_TOOLBAR_ICONS);
+
+	GTK_WIDGET_SET_FLAGS(tool_bar, GTK_NO_WINDOW);
+	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(tool_bar), FALSE);
+
+	tool_bar->bar = GTK_TOOLBAR(gtk_toolbar_new());
+	gtk_toolbar_set_style(GTK_TOOLBAR(tool_bar->bar), GTK_TOOLBAR_ICONS);
+	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->bar));
+	gtk_widget_show(GTK_WIDGET(tool_bar->bar));
 
 	tool_bar->back_button = gtk_tool_button_new_from_stock("gtk-go-back");
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->back_button, 0);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->back_button, 0);
 	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_xa_tool_bar_history_back, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 
 	tool_bar->forward_button = gtk_tool_button_new_from_stock("gtk-go-forward");
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->forward_button, 1);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->forward_button, 1);
 	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_xa_tool_bar_history_forward, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
 	tool_bar->up_button = gtk_tool_button_new_from_stock("gtk-go-up");
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->up_button, 2);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->up_button, 2);
 	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_xa_tool_bar_up, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 
 	tool_bar->home_button = gtk_tool_button_new_from_stock("gtk-home");
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), tool_bar->home_button, 3);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->home_button, 3);
 	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_xa_tool_bar_home, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
 
 	button = gtk_separator_tool_item_new();
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 4);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), button, 4);
 
 	button = gtk_tool_item_new();
 	tool_bar->path_field = gtk_entry_new();
@@ -122,11 +156,12 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	gtk_tool_item_set_visible_horizontal(button, TRUE);
 	gtk_tool_item_set_homogeneous(button, FALSE);
 
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 5);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), button, 5);
 	gtk_widget_show_all(GTK_WIDGET(button));
 	gtk_widget_show(GTK_WIDGET(tool_bar->path_field));
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->path_field), 0);
 
+	gtk_widget_show_all(GTK_WIDGET(tool_bar->bar));
 }
 
 XANavigationBar *
@@ -174,6 +209,78 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 		else
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 	}
+}
+
+static void
+xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
+{
+	XAToolBar *tool_bar = XA_TOOL_BAR(widget);
+
+	if(tool_bar->bar && GTK_WIDGET_VISIBLE(tool_bar->bar))
+		gtk_widget_size_request(GTK_WIDGET(tool_bar->bar), requisition);
+}
+
+static void
+xa_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
+{
+	XAToolBar *tool_bar = XA_TOOL_BAR(widget);
+
+	if(tool_bar->bar && GTK_WIDGET_VISIBLE(tool_bar->bar))
+		gtk_widget_size_allocate(GTK_WIDGET(tool_bar->bar), allocation);
+}
+
+static GType
+xa_tool_bar_child_type(GtkContainer *container)
+{
+	if(!XA_TOOL_BAR(container)->bar)
+		return GTK_TYPE_WIDGET;
+	else
+		return G_TYPE_NONE;
+}
+
+static void
+xa_tool_bar_add(GtkContainer *container, GtkWidget *child)
+{
+	XAToolBar *tool_bar = XA_TOOL_BAR(container);
+
+	g_return_if_fail(GTK_IS_WIDGET(child));
+
+	if(((GtkWidget*)tool_bar->bar) != child)
+	{
+		g_warning("DON'T set another child as toolbar");
+		return;
+	}
+
+	gtk_widget_set_parent(child, GTK_WIDGET(tool_bar));
+}
+
+static void
+xa_tool_bar_remove(GtkContainer *container, GtkWidget *child)
+{
+	XAToolBar *tool_bar = XA_TOOL_BAR(container);
+	gboolean widget_was_visible;
+
+	g_return_if_fail(GTK_IS_WIDGET(child));
+	g_return_if_fail(((GtkWidget*)tool_bar->bar) == child);
+
+	widget_was_visible = GTK_WIDGET_VISIBLE(child);
+
+	gtk_widget_unparent(child);
+	tool_bar->bar = NULL;
+
+	if(widget_was_visible)
+		gtk_widget_queue_resize(GTK_WIDGET(container));
+}
+
+static void
+xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data)
+{
+	XAToolBar *tool_bar = XA_TOOL_BAR(container);
+
+	g_return_if_fail(callback != NULL);
+
+	if(tool_bar->bar)
+		(* callback)(GTK_WIDGET(tool_bar->bar), callback_data);
 }
 
 static void

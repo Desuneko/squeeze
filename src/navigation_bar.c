@@ -65,7 +65,7 @@ xa_navigation_bar_get_type ()
 			NULL
 		};
 
-		xa_navigation_bar_type = g_type_register_static (GTK_TYPE_TOOLBAR, "XANavigationBar", &xa_navigation_bar_info, 0);
+		xa_navigation_bar_type = g_type_register_static (GTK_TYPE_CONTAINER, "XANavigationBar", &xa_navigation_bar_info, 0);
 	}
 	return xa_navigation_bar_type;
 }

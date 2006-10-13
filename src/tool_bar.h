@@ -45,6 +45,7 @@ typedef struct _XAToolBar XAToolBar;
 struct _XAToolBar
 {
 	XANavigationBar parent;
+	GtkToolbar *bar;
 	GtkToolItem *back_button;
 	GtkToolItem *forward_button;
 	GtkToolItem *up_button;
