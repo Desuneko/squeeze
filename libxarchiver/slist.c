@@ -1,4 +1,5 @@
 
+#include <string.h>
 #include <glib.h>
 #include <glib-object.h>
 
@@ -19,7 +20,7 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
 		if(!cmp)
 		{
 			g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
-			return;
+			return NULL;
 		}
 		if(cmp < 0)
 			break;
