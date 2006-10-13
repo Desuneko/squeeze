@@ -25,13 +25,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
-
-#ifdef HAVE_THUNAR_VFS
-#define EXO_API_SUBJECT_TO_CHANGE
-#include <thunar-vfs/thunar-vfs.h>
-#else
+#include <libxarchiver/mime.h>
 #include <gettext.h>
-#endif
 
 #include "archive_store.h"
 #include "archive_tree_store.h"
@@ -709,7 +704,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 
 	GValue *value = g_new0(GValue, 1);
 	value = g_value_init(value, G_TYPE_UINT);
-	g_value_set_uint(value, GTK_ICON_SIZE_MENU);
+	g_value_set_uint(value, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 	gboolean show_only_filenames = FALSE;
@@ -748,7 +743,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
-			gtk_tree_view_column_set_sort_column_id(column, x+1);
+			gtk_tree_view_column_set_sort_column_id(column, x+2);
 			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
 	}
