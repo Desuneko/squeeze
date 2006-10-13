@@ -97,7 +97,7 @@ lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 	if(gtk_icon_theme_has_icon(icon_theme, icon_name))
 		g_value_set_string(value, icon_name);
 	else
-#endif
 		g_value_set_string(value, NULL);
+#endif
 	/* g_free((gchar *)mime_type); */
 }

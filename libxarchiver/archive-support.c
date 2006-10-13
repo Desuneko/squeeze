@@ -16,8 +16,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#define EXO_API_SUBJECT_TO_CHANGE
-
 #include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>

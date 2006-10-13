@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
+#include <gettext.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
@@ -111,15 +112,20 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 
 	button = gtk_tool_item_new();
 	tool_bar->path_field = gtk_entry_new();
+	gtk_tool_item_set_expand(button, TRUE);
+	GtkWidget *hbox = gtk_hbox_new(FALSE, 0);
 
-	gtk_container_add(GTK_CONTAINER(button), tool_bar->path_field);
+	gtk_container_add(GTK_CONTAINER(button), hbox);
+	gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(_("Location:")), FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), tool_bar->path_field, TRUE, TRUE, 5);
 	g_signal_connect(G_OBJECT(tool_bar->path_field), "activate", (GCallback)cb_xa_tool_bar_path_field_activated, tool_bar);
 	gtk_tool_item_set_visible_horizontal(button, TRUE);
-	gtk_tool_item_set_homogeneous(button, TRUE);
+	gtk_tool_item_set_homogeneous(button, FALSE);
 
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar), button, 5);
 	gtk_widget_show_all(GTK_WIDGET(button));
 	gtk_widget_show(GTK_WIDGET(tool_bar->path_field));
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->path_field), 0);
 
 }
 
@@ -177,6 +183,7 @@ cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *tool_bar)
 	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(tool_bar), path);
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->path_field), TRUE);
 }
 
 static void

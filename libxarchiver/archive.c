@@ -14,8 +14,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#define EXO_API_SUBJECT_TO_CHANGE
-
 #include <config.h>
 #include <string.h>
 #include <glib.h>
@@ -32,7 +30,9 @@
 
 #include "internals.h"
 
+#ifndef LXA_ENTRY_CHILD_BUFFER_SIZE
 #define LXA_ENTRY_CHILD_BUFFER_SIZE 300
+#endif
 
 
 static void
@@ -112,6 +112,11 @@ lxa_archive_init(LXAArchive *archive)
 	archive->root_entry->children = NULL;
 }
 
+/** static void
+ * lxa_archive_finalize(GObject *object)
+ *
+ * 
+ */
 static void
 lxa_archive_finalize(GObject *object)
 {
@@ -265,8 +270,7 @@ lxa_stop_archive_child( LXAArchive *archive )
 	return 0;
 }
 
-//TODO: why does this have a return value?
-gboolean
+void
 lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *child)
 {
 	parent->buffer = lxa_slist_insert_sorted_single(parent->buffer, child);
@@ -275,6 +279,8 @@ lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *chi
 		lxa_archive_entry_flush_buffer(archive, parent);
 }
 
+/* FIXME FIXME FIXME FIXME FIXME FIXME FIXME*/
+/* these functions should not even exist    */
 LXAEntry *
 lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
 {

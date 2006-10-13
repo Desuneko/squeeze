@@ -99,13 +99,13 @@ struct _LXAArchiveClass
 GType              lxa_archive_get_type(void);
 LXAArchive        *lxa_archive_new(gchar *, gchar *);
 
-gchar             *lxa_archive_discover_mime(LXAArchive *archive);
 void               lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
 gint               lxa_archive_lookup_dir(gpointer entry, gconstpointer filename);
 LXAEntry          *lxa_archive_add_file(LXAArchive *archive, gchar *path);
+void               lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *child);
+
 GSList            *lxa_archive_get_children(LXAArchive *archive, gchar *path);
 LXAEntry          *lxa_entry_get_child(LXAEntry *, const gchar *);
-gboolean           lxa_entry_add_child(LXAEntry *parent, LXAEntry *child);
 guint              lxa_entry_children_length(LXAEntry *entry);
 LXAEntry          *lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n);
 //gint               lxa_entry_children_index(LXAEntry *entry, LXAEntry *find);
