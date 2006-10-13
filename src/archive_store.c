@@ -530,7 +530,12 @@ xa_archive_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	pos++;
 
 	if(store->sort_list)
-		entry = store->sort_list[pos];
+	{
+		if(pos < lxa_entry_children_length(entry))
+			entry = store->sort_list[pos];
+		else
+			entry = NULL;
+	}
 	else
 		entry = lxa_entry_children_nth_data(store->archive, entry, pos);
 
