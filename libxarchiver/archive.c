@@ -279,51 +279,6 @@ lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *chi
 		lxa_archive_entry_flush_buffer(archive, parent);
 }
 
-/* FIXME FIXME FIXME FIXME FIXME FIXME FIXME*/
-/* these functions should not even exist    */
-LXAEntry *
-lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
-{
-	LXASList *buffer_iter = NULL;
-	/* the first element of the array (*entry->children) contains the size of the array */
-	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
-	guint pos = 0;
-	guint begin = 1;
-	gint cmp = 0;
-	/* binary search algoritme */
-	while(size)
-	{
-		pos = (size / 2);
-
-		cmp = strcmp(filename, entry->children[begin+pos]->filename);
-		if(!cmp)
-			return entry->children[begin+pos];
-
-		if(cmp < 0)
-		{
-			size = pos;
-		}
-		else
-		{
-			size -= ++pos;
-			begin += pos;
-		}
-	}
-
-	/* search the buffer */
-	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
-	{
-		cmp = strcmp(filename, buffer_iter->entry->filename);
-
-		if(!cmp)
-			return buffer_iter->entry;
-		if(cmp < 0)
-			break;
-	}
-
-	return NULL;
-}
-
 void
 lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 {
@@ -401,6 +356,52 @@ lxa_entry_children_length(LXAEntry *entry)
 	/* the first element of the array (*entry->children) contains the size of the array */
 	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
 }
+
+/* FIXME FIXME FIXME FIXME FIXME FIXME FIXME*/
+/* these functions should not even exist do they?  */
+LXAEntry *
+lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
+{
+	LXASList *buffer_iter = NULL;
+	/* the first element of the array (*entry->children) contains the size of the array */
+	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
+	guint pos = 0;
+	guint begin = 1;
+	gint cmp = 0;
+	/* binary search algoritme */
+	while(size)
+	{
+		pos = (size / 2);
+
+		cmp = strcmp(filename, entry->children[begin+pos]->filename);
+		if(!cmp)
+			return entry->children[begin+pos];
+
+		if(cmp < 0)
+		{
+			size = pos;
+		}
+		else
+		{
+			size -= ++pos;
+			begin += pos;
+		}
+	}
+
+	/* search the buffer */
+	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
+	{
+		cmp = strcmp(filename, buffer_iter->entry->filename);
+
+		if(!cmp)
+			return buffer_iter->entry;
+		if(cmp < 0)
+			break;
+	}
+
+	return NULL;
+}
+
 
 LXAEntry *
 lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)

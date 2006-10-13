@@ -68,6 +68,7 @@ lxa_archive_support_init(LXAArchiveSupport *support)
 	support->add = NULL;
 	support->extract = NULL;
 	support->remove = NULL;
+	support->refresh = NULL;
 }
 
 /*
