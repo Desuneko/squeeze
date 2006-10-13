@@ -706,6 +706,11 @@ xa_main_window_reset_columns(XAMainWindow *window)
 	GtkTreeModel *liststore = window->treemodel;
 	LXAArchive *archive = window->lp_xa_archive;
 	gint x = 0;
+
+	GValue *value = g_new0(GValue, 1);
+	value = g_value_init(value, G_TYPE_UINT);
+	g_value_set_uint(value, GTK_ICON_SIZE_MENU);
+
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 	gboolean show_only_filenames = FALSE;
 	while(columns)
@@ -717,6 +722,7 @@ xa_main_window_reset_columns(XAMainWindow *window)
 
 	column = gtk_tree_view_column_new();
 	renderer = gtk_cell_renderer_pixbuf_new();
+	g_object_set_property(G_OBJECT(renderer), "stock-size", value);
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
 

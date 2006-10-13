@@ -1,3 +1,5 @@
+#ifndef __LXA_SLIST_H__
+#define __LXA_SLIST_H__
 
 typedef struct _LXASList LXASList;
 
@@ -15,3 +17,4 @@ lxa_slist_length(LXASList *list);
 void
 lxa_slist_free(LXASList *list);
 
+#endif /* __LXA_SLIST_H__ */
