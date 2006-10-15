@@ -205,14 +205,17 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 			tmp_entry = g_new0(LXAEntry, 1);
 			tmp_entry->filename = g_strdup(path_items[i]);
 			lxa_archive_entry_add_child(archive, parent, tmp_entry);
-			if(path[strlen(path)-1] == '/')
-				tmp_entry->mime_type = g_strdup("inode/directory");
-			else
-				tmp_entry->mime_type = lxa_mime_get_mime_type_for_filename(tmp_entry->filename);
-			g_free(parent->mime_type);
-			parent->mime_type = g_strdup("inode/directory");
+			if(!parent->mime_type)
+				parent->mime_type = g_strdup("inode/directory");
 		}
 		parent = tmp_entry;
+	}
+	if(!tmp_entry->mime_type)
+	{
+		if(path[strlen(path)-1] == '/')
+			tmp_entry->mime_type = g_strdup("inode/directory");
+		else
+			tmp_entry->mime_type = lxa_mime_get_mime_type_for_filename(tmp_entry->filename);
 	}
 	g_strfreev(path_items);
 	return tmp_entry;
