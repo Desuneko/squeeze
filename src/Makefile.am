@@ -5,6 +5,7 @@ xarchiver_SOURCES = \
 	main_window.c main_window.h \
 	navigation_bar.c navigation_bar.h \
 	tool_bar.c tool_bar.h \
+	path_bar.c path_bar.h \
 	settings.c settings.h \
 	archive_store.c archive_store.h \
 	preferences_dialog.c preferences_dialog.h \

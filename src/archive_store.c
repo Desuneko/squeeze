@@ -1033,7 +1033,10 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 
 		/* TODO Signal file-activated */
 		if(strcmp(entry->mime_type, "inode/directory"))
+		{
+			g_debug("file clicked");
 			return;
+		}
 
 		store->current_entry = g_slist_prepend(store->current_entry, entry);
 	}
@@ -1202,8 +1205,16 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 {
 	g_return_val_if_fail(store, NULL);
 
-	/* made a copy, don't want someone play with the internals */
-	return g_slist_copy(store->current_entry);
+	GSList *iter = store->current_entry;
+	GSList *path = NULL;
+	
+	while(iter)
+	{
+		path = g_slist_prepend(path, g_strdup(((LXAEntry*)iter->data)->filename));
+		iter = iter->next;
+	}
+
+	return path;
 }
 
 gchar *
@@ -1234,7 +1245,7 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 	if(!store->archive)
 		return FALSE;
 
-	gchar **buf = g_strsplit_set(path, "/\n", -1);
+	gchar **buf = g_strsplit_set(path, "/\\\n", -1);
 	gchar **iter = buf;
 	LXAEntry *entry = store->archive->root_entry;
 	GSList *stack = g_slist_prepend(NULL, entry);

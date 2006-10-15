@@ -218,12 +218,16 @@ xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 
 	if(tool_bar->bar && GTK_WIDGET_VISIBLE(tool_bar->bar))
 		gtk_widget_size_request(GTK_WIDGET(tool_bar->bar), requisition);
+
+	widget->requisition = *requisition;
 }
 
 static void
 xa_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 {
 	XAToolBar *tool_bar = XA_TOOL_BAR(widget);
+
+	widget->allocation = *allocation;
 
 	if(tool_bar->bar && GTK_WIDGET_VISIBLE(tool_bar->bar))
 		gtk_widget_size_allocate(GTK_WIDGET(tool_bar->bar), allocation);

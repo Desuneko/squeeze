@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 				if(!xa_main_window_open_archive(XA_MAIN_WINDOW(main_window), argv[i]))
 				{
 					opened_archives++;
-					gtk_widget_set_size_request(main_window, 500, 350);
+					gtk_widget_set_size_request(main_window, 300, 300);
 					gtk_widget_show_all(main_window);
 				} else
 				{
