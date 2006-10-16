@@ -2,12 +2,12 @@
 
 SUBDIRS = libxarchiver src tests po
 
-pixmapsdir       = $(datadir)/pixmaps
-pixmaps_DATA     = pixmaps/xarchiver.png \
-                   pixmaps/extract.png \
-									 pixmaps/extract_button.png \
-									 pixmaps/add.png \
-									 pixmaps/add_button.png
+pixmapsdir       = $(datadir)/pixmaps/xarchiver
+pixmaps_DATA     = $(pixmapsdir)/xarchiver.png \
+                   $(pixmapsdir)/extract.png \
+									 $(pixmapsdir)/extract_button.png \
+									 $(pixmapsdir)/add.png \
+									 $(pixmapsdir)/add_button.png
 
 wrapperdir = $(libexecdir)/thunar-archive-plugin/
 wrapper_SCRIPTS = xarchiver.tap
