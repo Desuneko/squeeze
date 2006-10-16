@@ -28,6 +28,7 @@
 #include <libxarchiver/mime.h>
 #include <gettext.h>
 
+#include "settings.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
@@ -52,6 +53,8 @@ static void
 xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
 xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+static void
+xa_main_window_finalize(GObject *object);
 
 gboolean
 xa_main_window_add_item(LXAEntry *entry, gpointer data);
@@ -60,7 +63,6 @@ xa_main_window_set_contents(XAMainWindow *, LXAArchive *);
 
 void
 xa_main_window_reset_columns(XAMainWindow *window);
-
 
 void
 xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window);
@@ -106,6 +108,7 @@ xa_main_window_class_init(XAMainWindowClass *window_class)
 
 	object_class->set_property = xa_main_window_set_property;
 	object_class->get_property = xa_main_window_get_property;
+	object_class->finalize     = xa_main_window_finalize;
 
 	pspec = g_param_spec_boolean("show_icons",
 		_("Show icons"),
@@ -113,6 +116,20 @@ xa_main_window_class_init(XAMainWindowClass *window_class)
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_MAIN_WINDOW_SHOW_ICONS, pspec);
+}
+
+static void
+xa_main_window_finalize(GObject *object)
+{
+	XAMainWindow *window = XA_MAIN_WINDOW(object);
+	xa_settings_set_group(window->settings, "Global");
+	if(!window->navigationbar)
+			xa_settings_write_entry(window->settings, "NavigationBar", "None");
+	if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_PATH_BAR)
+			xa_settings_write_entry(window->settings, "NavigationBar", "PathBar");
+	if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_TOOL_BAR)
+			xa_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
+	xa_settings_save(window->settings);
 }
 
 static void
@@ -124,11 +141,14 @@ xa_main_window_init(XAMainWindow *window)
 	GtkToolItem   *tool_separator;
 	GtkWidget     *tmp_image;
 	GtkAccelGroup *accel_group = gtk_accel_group_new();
+	const gchar   *nav_bar;
 
 	window->working_node = NULL;
 	window->parent_node = g_new0(GValue, 1);
 	window->parent_node = g_value_init(window->parent_node, G_TYPE_STRING);
 	g_value_set_string(window->parent_node, "..");
+
+	window->settings = xa_settings_new(NULL);
 
 	main_vbox = gtk_vbox_new(FALSE, 0);
 
@@ -255,9 +275,17 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
-	//window->navigationbar = xa_tool_bar_new(NULL); 
-	window->navigationbar = xa_path_bar_new(NULL);
-	gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
+	xa_settings_set_group(window->settings, "Global");
+	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "PathBar");
+	if(!strcmp(nav_bar, "ToolBar"))
+		window->navigationbar = xa_tool_bar_new(NULL); 
+	if(!strcmp(nav_bar, "PathBar"))
+		window->navigationbar = xa_path_bar_new(NULL);
+	if(!strcmp(nav_bar, "None"))
+		window->navigationbar = NULL;
+
+	if(window->navigationbar)
+		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
@@ -294,10 +322,14 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_container_add(GTK_CONTAINER(window), main_vbox);
 
 	/* archive model */
-	window->treemodel = xa_archive_store_new(NULL, TRUE, TRUE, window->icon_theme);
+	if(window->navigationbar)
+		window->treemodel = xa_archive_store_new(NULL, TRUE, FALSE, window->icon_theme);
+	else
+		window->treemodel = xa_archive_store_new(NULL, TRUE, TRUE, window->icon_theme);
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(window->treemodel), GTK_TREE_VIEW(window->treeview));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(window->treemodel));
-	xa_navigation_bar_set_store(window->navigationbar, XA_ARCHIVE_STORE(window->treemodel));
+	if(window->navigationbar)
+		xa_navigation_bar_set_store(window->navigationbar, XA_ARCHIVE_STORE(window->treemodel));
 }
 
 GtkWidget *

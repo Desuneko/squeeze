@@ -57,7 +57,11 @@ XDT_CHECK_PACKAGE([GOBJECT], [gobject-2.0], [2.2.0])
 
 XDT_CHECK_OPTIONAL_PACKAGE([THUNAR_VFS], [thunar-vfs-1], [0.4.0], [thunar-vfs],
     AC_HELP_STRING([--disable-thunar-vfs],
-                   [Disable the use Thunar's VFS layer)]))
+                   [Disable the use of Thunar's VFS layer)]))
+
+XDT_CHECK_OPTIONAL_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.3.99], [libxfce4util],
+    AC_HELP_STRING([--disable-libxfce4util],
+                   [Disable the use of libxfce4util)]))
 
 dnl check for debugging support
 XDT_FEATURE_DEBUG

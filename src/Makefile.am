@@ -16,7 +16,8 @@ xarchiver_SOURCES = \
 xarchiver_CFLAGS = \
 	@GTK_CFLAGS@ \
 	@GLIB_CFLAGS@ \
-	@THUNAR_VFS_CFLAGS@ \
+	$(THUNAR_VFS_CFLAGS) \
+	$(XFCE4UTIL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
 	-DSRCDIR=\"$(top_srcdir)\" \
 	-DLOCALEDIR=\"$(localedir)\"

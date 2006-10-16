@@ -9,10 +9,10 @@ Long Version:
 ---------------------------------------------------------------
 
   Make thunar-vfs dependency optional.
-    (Can be replaced by an internal libmime)
+  Make libxfce4-util dependency optional.
 +-+-+-+
 
-	Implement UnRar Support object.
+  Add Settings support
 +-+-+-+
 
   Comment library functions

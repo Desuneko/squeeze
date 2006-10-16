@@ -56,6 +56,7 @@ struct _XAMainWindow
 	GtkWidget *scrollwindow;
 	GtkWidget *statusbar;
 	XANavigationBar *navigationbar;
+	XASettings *settings;
 	struct {
 		GtkWidget *menu_item_archive;
 		GtkWidget *menu_archive;

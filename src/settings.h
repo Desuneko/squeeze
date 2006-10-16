@@ -45,6 +45,7 @@ struct _XASettings
 {
 	GObject parent;
 	gchar *config_file;
+	GObject *xfce_rc;
 };
 
 typedef struct _XASettingsClass XASettingsClass;
@@ -54,10 +55,15 @@ struct _XASettingsClass
 	GObjectClass parent;
 };
 
-XASettings  *xa_settings_new(gchar *config_dir);
-GType        xa_settings_get_type ();
+XASettings   *xa_settings_new();
+GType         xa_settings_get_type ();
 
-gboolean     xa_settings_load(XASettings *);
+gboolean      xa_settings_load(XASettings *);
+gboolean      xa_settings_save(XASettings *);
+
+const gchar  *xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fallback);
+void          xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *value);
+void          xa_settings_set_group(XASettings *settings, const gchar *group);
 
 G_END_DECLS
 

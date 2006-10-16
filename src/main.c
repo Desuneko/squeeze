@@ -23,6 +23,7 @@
 
 #include <gettext.h>
 
+#include "settings.h"
 #include "new_dialog.h"
 #include "add_dialog.h"
 #include "extract_dialog.h"

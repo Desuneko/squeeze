@@ -19,6 +19,10 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#ifdef HAVE_LIBXFCE4UTIL
+#include <libxfce4util/libxfce4util.h>
+#endif
+
 #include "settings.h"
 
 static void
@@ -55,7 +59,11 @@ xa_settings_get_type ()
 static void
 xa_settings_init(XASettings *object)
 {
+#ifdef HAVE_LIBXFCE4UTIL
+	object->xfce_rc = (GObject *)xfce_rc_config_open(XFCE_RESOURCE_CONFIG, "xarchiver/xarchiverrc", FALSE);
+#else
 
+#endif /* HAVE_LIBXFCE4UTIL */
 }
 
 static void
@@ -65,12 +73,9 @@ xa_settings_class_init(XASettingsClass *object_class)
 }
 
 XASettings *
-xa_settings_new(gchar *config_dir)
+xa_settings_new()
 {
 	XASettings *object = g_object_new(XA_TYPE_SETTINGS, NULL);
-	if(!config_dir)
-		config_dir = "~/.config/";
-	object->config_file = g_strconcat(config_dir, "/xarchiver/config.xml", NULL);
 
 	return object;
 }
@@ -78,6 +83,51 @@ xa_settings_new(gchar *config_dir)
 gboolean
 xa_settings_load(XASettings *settings)
 {
-//	gint fd = g_open(settings->config_file, O_RDONLY, 0);
-	return FALSE;
+#ifdef HAVE_LIBXFCE4UTIL
+
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
+	return TRUE;
+}
+
+gboolean
+xa_settings_save(XASettings *settings)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	xfce_rc_flush(XFCE_RC(settings->xfce_rc));
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
+	return TRUE;
+}
+
+void
+xa_settings_set_group(XASettings *settings, const gchar *group)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	xfce_rc_set_group(XFCE_RC(settings->xfce_rc), group);
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
+}
+
+void
+xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *value)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	xfce_rc_write_entry(XFCE_RC(settings->xfce_rc), key, value);
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
+}
+
+const gchar *
+xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fallback)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	return xfce_rc_read_entry(XFCE_RC(settings->xfce_rc), key, fallback);
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
 }
