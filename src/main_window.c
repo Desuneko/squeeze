@@ -124,11 +124,14 @@ xa_main_window_finalize(GObject *object)
 	XAMainWindow *window = XA_MAIN_WINDOW(object);
 	xa_settings_set_group(window->settings, "Global");
 	if(!window->navigationbar)
-			xa_settings_write_entry(window->settings, "NavigationBar", "None");
-	if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_PATH_BAR)
+		xa_settings_write_entry(window->settings, "NavigationBar", "None");
+	else
+	{
+		if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_PATH_BAR)
 			xa_settings_write_entry(window->settings, "NavigationBar", "PathBar");
-	if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_TOOL_BAR)
+		if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_TOOL_BAR)
 			xa_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
+	}
 	xa_settings_save(window->settings);
 }
 
@@ -284,8 +287,11 @@ xa_main_window_init(XAMainWindow *window)
 	if(!strcmp(nav_bar, "None"))
 		window->navigationbar = NULL;
 
+
 	if(window->navigationbar)
+	{
 		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
+	}
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
