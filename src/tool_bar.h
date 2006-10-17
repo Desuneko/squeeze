@@ -51,6 +51,7 @@ struct _XAToolBar
 	GtkToolItem *up_button;
 	GtkToolItem *home_button;
 	GtkWidget *path_field;
+	GtkWidget *hbox;
 };
 
 typedef struct _XAToolBarClass XAToolBarClass;

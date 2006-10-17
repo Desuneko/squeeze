@@ -508,7 +508,8 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(window->lp_xa_archive)
 		{
-			xa_navigation_bar_clear_history(window->navigationbar);
+			if(window->navigationbar)
+				xa_navigation_bar_clear_history(window->navigationbar);
 			xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 			g_object_unref(window->lp_xa_archive);
 			window->lp_xa_archive = NULL;
@@ -595,7 +596,8 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	GtkTreeModel *liststore = window->treemodel;
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 
-	xa_navigation_bar_clear_history(window->navigationbar);
+	if(window->navigationbar)
+		xa_navigation_bar_clear_history(window->navigationbar);
 	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), NULL);
 /*	xa_archive_tree_store_set_contents(XA_ARCHIVE_TREE_STORE(liststore), NULL); */
 

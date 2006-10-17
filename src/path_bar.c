@@ -426,8 +426,8 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
 		{
 			while(buttons)
 			{
-				/* it seems remove also unref de button */
 				gtk_container_remove(GTK_CONTAINER(path_bar), GTK_WIDGET(buttons->data));
+				gtk_widget_unref(GTK_WIDGET(buttons->data));
 				buttons = buttons->next;
 			}
 			if(lastbutton)
@@ -453,6 +453,7 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
 	while(iter)
 	{
 		button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, (const gchar*)iter->data));
+		gtk_widget_ref(GTK_WIDGET(button));
 		gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
 		path_bar->path_button = g_slist_append(path_bar->path_button, button);
 
