@@ -219,6 +219,9 @@ xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 	if(tool_bar->bar && GTK_WIDGET_VISIBLE(tool_bar->bar))
 		gtk_widget_size_request(GTK_WIDGET(tool_bar->bar), requisition);
 
+	if(requisition->width < 400)
+		requisition->width = 400;
+
 	widget->requisition = *requisition;
 }
 

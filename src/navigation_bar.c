@@ -24,6 +24,10 @@
 #include "archive_store.h"
 #include "navigation_bar.h"
 
+#ifndef XA_NAVIGATION_BAR_MAX_HISTORY
+#define XA_NAVIGATION_BAR_MAX_HISTORY 10
+#endif
+
 
 static void
 xa_navigation_bar_class_init(XANavigationBarClass *archive_class);
@@ -84,7 +88,7 @@ xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
 		"",
 		0,
 		G_MAXUINT,
-		10,
+		XA_NAVIGATION_BAR_MAX_HISTORY,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_NAVIGATION_BAR_NAV_HISTORY, pspec);
 }
@@ -93,7 +97,7 @@ static void
 xa_navigation_bar_init(XANavigationBar *navigation_bar)
 {
 	navigation_bar->_cb_pwd_changed = (GCallback)cb_xa_navigation_bar_pwd_changed;
-	navigation_bar->max_history = 10;
+	navigation_bar->max_history = XA_NAVIGATION_BAR_MAX_HISTORY;
 	navigation_bar->pwd = NULL;
 	navigation_bar->history = NULL;
 }
@@ -134,7 +138,7 @@ cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 }
 
 void
-xa_navigation_bar_history_push(XANavigationBar *nav_bar, gchar *path)
+xa_navigation_bar_history_push(XANavigationBar *nav_bar, const gchar *path)
 {
 	nav_bar->history = g_list_insert_before(nav_bar->history, nav_bar->pwd, g_strdup(path));
 	if(!nav_bar->pwd)

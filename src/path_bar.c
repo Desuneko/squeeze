@@ -137,7 +137,15 @@ xa_path_bar_init(XAPathBar *path_bar)
 	gtk_container_add (GTK_CONTAINER (path_bar->right_button), arrow);
 	gtk_widget_show (arrow);
 
-	path_bar->path_button = NULL;
+	path_bar->home_button = GTK_BUTTON(gtk_radio_button_new(NULL));
+	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->home_button));
+	g_signal_connect(G_OBJECT(path_bar->home_button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
+	gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(path_bar->home_button), FALSE);
+	gtk_widget_show(GTK_WIDGET(path_bar->home_button));
+	gtk_widget_ref(GTK_WIDGET(path_bar->home_button));
+
+
+	path_bar->path_button = g_slist_prepend(NULL, path_bar->home_button);
 	path_bar->first_button = NULL;
 
 	gtk_widget_ref(GTK_WIDGET(path_bar));
@@ -233,11 +241,11 @@ xa_path_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 	if(path_bar->path_button && path_bar->path_button->next)
 	{
 		gtk_widget_get_child_requisition(GTK_WIDGET(path_bar->left_button), &child_requisition);
-		requisition->width += child_requisition.width + spacing;
 		requisition->height = MAX(child_requisition.height, requisition->height);
 		gtk_widget_get_child_requisition(GTK_WIDGET(path_bar->right_button), &child_requisition);
-		requisition->width += child_requisition.width;
 		requisition->height = MAX(child_requisition.height, requisition->height);
+
+		requisition->width += (MIN(requisition->height *2/3+5, requisition->height) + spacing) * 2;
 	}
 
 	requisition->width += GTK_CONTAINER(path_bar)->border_width * 2;
@@ -287,12 +295,9 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	/* scroll arrows are needed */
 	if(width > allocation->width)
 	{
-		gtk_widget_get_child_requisition(GTK_WIDGET(path_bar->left_button), &child_requisition);
-		left_width = child_requisition.width;
-		gtk_widget_get_child_requisition(GTK_WIDGET(path_bar->right_button), &child_requisition);
-		right_width = child_requisition.width;
+		right_width = left_width = MIN((allocation->height-(border_width*2))*2/3+5, (allocation->height-(border_width*2)));
 
-		width = left_width + spacing + right_width;
+		width = border_width + left_width + spacing + right_width + border_width;
 
 		if(path_bar->first_button)
 		{
@@ -411,11 +416,14 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
 {
 	GSList *path = xa_archive_store_get_pwd_list(store);
 	GSList *iter = path;
-	GSList *buttons = path_bar->path_button;
+	GSList *buttons = path_bar->path_button->next;
 	GSList *lastbutton = NULL;
-	GtkRadioButton *button = NULL;
-	const gchar *label = NULL;
+	GtkRadioButton *button = GTK_RADIO_BUTTON(path_bar->home_button);
+	const gchar *label = xa_archive_store_get_pwd(store);
 	gint cmp = 0;
+
+	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(path_bar), label);
+	g_free((gchar*)label);
 
 	while(iter && buttons)
 	{
@@ -476,19 +484,28 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
 static void
 cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
 {
-	gchar *path = g_strdup("/");
-	gchar *folder = NULL;
+	gchar *path = g_strdup("");
+	gchar *prev = NULL;
+	const gchar *folder = NULL;
 	GSList *iter = path_bar->path_button;
 
 	while(iter->data != (gpointer)button)
 	{
 		iter = iter->next;
-		folder = path;
-		path = g_strconcat(path, gtk_button_get_label(GTK_BUTTON(iter->data)), "/", NULL);
-		g_free(folder);
+		prev = path;
+		folder = gtk_button_get_label(GTK_BUTTON(iter->data));
+		if(folder[0] == '/')
+			path = g_strconcat(path, folder, NULL);
+		else
+			path = g_strconcat(path, folder, "/", NULL);
+		g_free(prev);
 	}
 
 	xa_archive_store_set_pwd_silent(XA_NAVIGATION_BAR(path_bar)->store, path);
+	g_free(path);
+
+	path = xa_archive_store_get_pwd(XA_NAVIGATION_BAR(path_bar)->store);
+	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(path_bar), path);
 	g_free(path);
 }
 

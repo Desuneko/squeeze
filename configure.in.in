@@ -63,6 +63,26 @@ XDT_CHECK_OPTIONAL_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.3.99], [libxfc
     AC_HELP_STRING([--disable-libxfce4util],
                    [Disable the use of libxfce4util)]))
 
+AC_ARG_ENABLE([pathbar],
+   [AC_HELP_STRING([--disable-pathbar], 
+        [Do not compile support for a PathBar (default=enabled)])],
+        [xa_pathbar=$enableval], 
+        [xa_pathbar=yes])
+if test "$xa_pathbar" = "yes"; then
+	AC_DEFINE([ENABLE_PATHBAR], [1], [Define if we should include pathbar support])
+fi
+AM_CONDITIONAL([ENABLE_PATHBAR], [test "$xa_pathbar" = "yes"])
+
+AC_ARG_ENABLE([toolbar],
+   [AC_HELP_STRING([--disable-toolbar], 
+        [Do not compile support for a ToolBar (default=enabled)])],
+        [xa_toolbar=$enableval], 
+        [xa_toolbar=yes])
+if test "$xa_toolbar" = "yes"; then
+	AC_DEFINE([ENABLE_TOOLBAR], [1], [Define if we should include toolbar support])
+fi
+AM_CONDITIONAL([ENABLE_TOOLBAR], [test "$xa_toolbar" = "yes"])
+
 dnl check for debugging support
 XDT_FEATURE_DEBUG
 

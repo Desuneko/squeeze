@@ -47,6 +47,7 @@ struct _XAPathBar
 	XANavigationBar parent;
 	GtkButton *left_button;
 	GtkButton *right_button;
+	GtkButton *home_button;
 	GSList *path_button;
 	GSList *first_button;
 };

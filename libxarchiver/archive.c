@@ -108,7 +108,7 @@ static void
 lxa_archive_init(LXAArchive *archive)
 {
 	archive->root_entry = g_new0(LXAEntry, 1);
-	archive->root_entry->filename = g_strdup("/");
+	archive->root_entry->filename = NULL;
 	archive->root_entry->children = NULL;
 }
 
@@ -152,9 +152,9 @@ lxa_archive_new(gchar *path, gchar *mime)
 		archive->mime = lxa_mime_get_mime_type_for_file(archive->path);
 	else
 		archive->mime = g_strdup(mime);
-	
+#ifdef DEBUG	
 	g_debug("Mime-type: %s", archive->mime);
-	
+#endif
 	if(!lxa_get_support_for_mime(archive->mime))
 	{
 		g_object_unref(archive);
@@ -197,7 +197,22 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
 	parent = archive->root_entry;
-	for(i = 0; path_items[i]?strlen(path_items[i]):0;i++)
+	if(path_items[i]?strlen(path_items[i])==0:0)
+	{
+		/* has leading / */
+		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
+		if(!tmp_entry)
+		{
+			tmp_entry = g_new0(LXAEntry, 1);
+			tmp_entry->filename = g_strdup("/");
+			lxa_archive_entry_add_child(archive, parent, tmp_entry);
+			if(!parent->mime_type)
+				parent->mime_type = g_strdup("inode/directory");
+		}
+		parent = tmp_entry;
+		++i;
+	}
+	for(; path_items[i]?strlen(path_items[i]):0;++i)
 	{
 		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
 		if(!tmp_entry)

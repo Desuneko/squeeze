@@ -624,11 +624,6 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 	g_return_val_if_fail(archive, FALSE);
 	g_return_val_if_fail(entry, FALSE);
 	g_return_val_if_fail(iter, FALSE);
-	if(iter->stamp != store->stamp)
-	{
-		/* g_debug("stamp: %d pointer: %x", iter->stamp, iter->user_data); */
-		return FALSE;
-	}
 
 	/* only support lists: parent is always NULL */
 	g_return_val_if_fail(parent == NULL, FALSE);
@@ -1166,13 +1161,11 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	gchar *lastfile = NULL;
 	gint namelen = 0;
 
-	if(!i)
-		return NULL;
+	/* we don't want to include de archive rootentry */
+	if(i<=1)
+		return g_strdup("");
 
-	i++;
-	
 	buf = g_new(gchar*, i);
-	buf[0] = "";
 	i--;
 	buf[i] = NULL;
 
@@ -1199,6 +1192,11 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 		}
 	}
 
+	if(buf[0][0] == '/')
+	{
+		buf[0] = "";
+	}
+
 	path = g_strjoinv("/", buf);
 
 	g_free(lastfile);
@@ -1214,25 +1212,18 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 
 	GSList *iter = store->current_entry;
 	GSList *path = NULL;
-	
-	while(iter)
+
+	if(!iter)
+		return NULL;
+
+	/* we don't want to include de archive rootentry */
+	while(iter->next)
 	{
 		path = g_slist_prepend(path, g_strdup(((LXAEntry*)iter->data)->filename));
 		iter = iter->next;
 	}
 
 	return path;
-}
-
-gchar *
-xa_archive_store_get_basename(XAArchiveStore *store)
-{
-	g_return_val_if_fail(store, NULL);
-
-	if(!store->current_entry)
-		return NULL;
-
-	return g_strdup(((LXAEntry*)store->current_entry->data)->filename);
 }
 
 gboolean
@@ -1260,6 +1251,11 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 
 	if(store->props._show_up_dir && store->archive->root_entry != store->current_entry->data)
 		prev_size++;
+
+	if(path[0] == '/' && lxa_entry_get_child(store->archive->root_entry, "/"))
+	{
+		iter[0] = strdup("/");
+	}
 
 	while(*iter)
 	{

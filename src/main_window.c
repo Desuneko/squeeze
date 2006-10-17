@@ -31,8 +31,15 @@
 #include "settings.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
+
+#ifdef ENABLE_TOOLBAR
 #include "tool_bar.h"
+#endif /* ENABLE_TOOLBAR */
+
+#ifdef ENABLE_PATHBAR
 #include "path_bar.h"
+#endif /* ENABLE_PATHBAR */
+
 #include "main_window.h"
 #include "new_dialog.h"
 #include "extract_dialog.h"
@@ -127,10 +134,14 @@ xa_main_window_finalize(GObject *object)
 		xa_settings_write_entry(window->settings, "NavigationBar", "None");
 	else
 	{
+#ifdef ENABLE_PATHBAR
 		if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_PATH_BAR)
 			xa_settings_write_entry(window->settings, "NavigationBar", "PathBar");
+#endif
+#ifdef ENABLE_TOOLBAR
 		if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_TOOL_BAR)
 			xa_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
+#endif
 	}
 	xa_settings_save(window->settings);
 }
@@ -280,13 +291,15 @@ xa_main_window_init(XAMainWindow *window)
 
 	xa_settings_set_group(window->settings, "Global");
 	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "PathBar");
+	window->navigationbar = NULL;
+#ifdef ENABLE_TOOLBAR
 	if(!strcmp(nav_bar, "ToolBar"))
 		window->navigationbar = xa_tool_bar_new(NULL); 
+#endif
+#ifdef ENABLE_PATHBAR
 	if(!strcmp(nav_bar, "PathBar"))
 		window->navigationbar = xa_path_bar_new(NULL);
-	if(!strcmp(nav_bar, "None"))
-		window->navigationbar = NULL;
-
+#endif
 
 	if(window->navigationbar)
 	{
@@ -298,6 +311,7 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window->scrollwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	window->treeview = gtk_tree_view_new();
+	gtk_tree_view_set_rules_hint(window->treeview, TRUE);
 
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(window->treeview), TRUE);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
