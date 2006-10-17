@@ -128,6 +128,6 @@ xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fall
 #ifdef HAVE_LIBXFCE4UTIL
 	return xfce_rc_read_entry(XFCE_RC(settings->xfce_rc), key, fallback);
 #else
-
+	return g_strdup(fallback);
 #endif /* HAVE_LIBXFCE4UTIL */
 }
