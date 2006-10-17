@@ -812,8 +812,11 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAEntry *a, LXAEntry *b)
 static void
 xa_archive_store_sort(XAArchiveStore *store)
 {
-	g_free(store->sort_list);
-	store->sort_list = NULL;
+	if(store->sort_list)
+	{
+		g_free(store->sort_list);
+		store->sort_list = NULL;
+	}
 
 	if(store->sort_column < 0)
 		return;
@@ -1086,7 +1089,11 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 	LXAEntry *entry = NULL;
 	gint prev_size =  0;
 
-	g_free(store->sort_list);
+	if(store->sort_list)
+	{
+		g_free(store->sort_list);
+		store->sort_list = NULL;
+	}
 
 	if(store->current_entry)
 	{

@@ -232,19 +232,24 @@ lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 	{
 		lxa_archive_free_entry(archive, buffer_iter->entry);
 	}
-	lxa_slist_free(entry->buffer);
-	entry->buffer = NULL;
+	if(entry->buffer)
+	{
+		lxa_slist_free(entry->buffer);
+		entry->buffer = NULL;
+	}
 
 	if(entry->children)
 	{
 		/* first elemant of the array (*entry->children) contains the size of the array */
-		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); i++)
+		/* WHY DOES i end up being 2 when *entry->children == 1 ?! */
+		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); ++i)
 			lxa_archive_free_entry(archive, entry->children[i]);
+
 		g_free(entry->children);
 		entry->children = NULL;
 	}
 
-	if(entry->props)
+	if(props_iter)
 	{
 		for(i=1; i<archive->n_property; i++)
 		{
