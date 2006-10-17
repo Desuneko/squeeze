@@ -121,22 +121,22 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	gtk_container_add(GTK_CONTAINER(tool_bar), GTK_WIDGET(tool_bar->bar));
 	gtk_widget_show(GTK_WIDGET(tool_bar->bar));
 
-	tool_bar->back_button = gtk_tool_button_new_from_stock("gtk-go-back");
+	tool_bar->back_button = gtk_tool_button_new_from_stock(GTK_STOCK_GO_BACK);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->back_button, 0);
 	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_xa_tool_bar_history_back, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 
-	tool_bar->forward_button = gtk_tool_button_new_from_stock("gtk-go-forward");
+	tool_bar->forward_button = gtk_tool_button_new_from_stock(GTK_STOCK_GO_FORWARD);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->forward_button, 1);
 	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_xa_tool_bar_history_forward, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
-	tool_bar->up_button = gtk_tool_button_new_from_stock("gtk-go-up");
+	tool_bar->up_button = gtk_tool_button_new_from_stock(GTK_STOCK_GO_UP);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->up_button, 2);
 	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_xa_tool_bar_up, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 
-	tool_bar->home_button = gtk_tool_button_new_from_stock("gtk-home");
+	tool_bar->home_button = gtk_tool_button_new_from_stock(GTK_STOCK_HOME);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->home_button, 3);
 	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_xa_tool_bar_home, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);

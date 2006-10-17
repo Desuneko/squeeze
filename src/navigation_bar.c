@@ -39,6 +39,9 @@ static void
 cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
 
 static void
+cb_xa_navigation_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar);
+
+static void
 xa_navigation_bar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
 xa_navigation_bar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
@@ -96,7 +99,11 @@ xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
 static void
 xa_navigation_bar_init(XANavigationBar *navigation_bar)
 {
+	GTK_WIDGET_SET_FLAGS(navigation_bar, GTK_NO_WINDOW);
+	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(navigation_bar), FALSE);
+
 	navigation_bar->_cb_pwd_changed = (GCallback)cb_xa_navigation_bar_pwd_changed;
+	navigation_bar->_cb_new_archive = (GCallback)cb_xa_navigation_bar_new_archive;
 	navigation_bar->max_history = XA_NAVIGATION_BAR_MAX_HISTORY;
 	navigation_bar->pwd = NULL;
 	navigation_bar->history = NULL;
@@ -113,10 +120,13 @@ xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *sto
 
 	navigation_bar->store = store;
 	if(store)
-		g_signal_connect(G_OBJECT(store), "xa_pwd_changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
+	{
+		g_signal_connect(G_OBJECT(store), "xa-pwd-changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
+		g_signal_connect(G_OBJECT(store), "xa-new-archive", (GCallback)navigation_bar->_cb_new_archive, navigation_bar);
+	}
 }
 
-GtkWidget *
+XANavigationBar *
 xa_navigation_bar_new(XAArchiveStore *store)
 {
 	XANavigationBar *bar;
@@ -126,7 +136,7 @@ xa_navigation_bar_new(XAArchiveStore *store)
 	if(store)
 		xa_navigation_bar_set_store(bar, store);
 
-	return GTK_WIDGET(bar);
+	return bar;
 }
 
 static void
@@ -135,6 +145,12 @@ cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 	gchar *path = xa_archive_store_get_pwd(store);
 	xa_navigation_bar_history_push(bar, path);
 	g_free(path);
+}
+
+static void
+cb_xa_navigation_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
+{
+	xa_navigation_bar_clear_history(bar);
 }
 
 void

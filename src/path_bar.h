@@ -50,6 +50,7 @@ struct _XAPathBar
 	GtkButton *home_button;
 	GSList *path_button;
 	GSList *first_button;
+	guint scroll_timeout;
 };
 
 typedef struct _XAPathBarClass XAPathBarClass;

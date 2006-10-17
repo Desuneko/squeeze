@@ -51,6 +51,7 @@ enum {
 /* signals */
 enum {
 	XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED = 0,
+	XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE,
 	XA_ARCHIVE_STORE_SIGNAL_NUMBER
 };
 static gint xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NUMBER];
@@ -239,7 +240,18 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_ARCHIVE_STORE_SORT_CASE_SENSITIVE, pspec);
 
-	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED] = g_signal_new("xa_pwd_changed",
+	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED] = g_signal_new("xa-pwd-changed",
+	   G_TYPE_FROM_CLASS(as_class),
+		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+		 0,
+		 NULL,
+		 NULL,
+		 g_cclosure_marshal_VOID__VOID,
+		 G_TYPE_NONE,
+		 0,
+		 NULL);
+
+	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE] = g_signal_new("xa-new-archive",
 	   G_TYPE_FROM_CLASS(as_class),
 		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		 0,
@@ -463,7 +475,7 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		{
 			if(entry == &xa_archive_store_up_entry)
 			{
-				g_value_set_string(value, "gtk-go-up");
+				g_value_set_string(value, GTK_STOCK_GO_UP);
 			}
 			else
 			{
@@ -1032,7 +1044,9 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 		/* TODO Signal file-activated */
 		if(strcmp(entry->mime_type, "inode/directory"))
 		{
+#ifdef DEBUG
 			g_debug("file clicked");
+#endif
 			return;
 		}
 
@@ -1119,6 +1133,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 	{
 		store->archive = NULL;
 		store->current_entry = NULL;
+		g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
 		return;
 	}
 
@@ -1146,6 +1161,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		gtk_tree_path_free(path_);
 	}
 
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
@@ -1192,7 +1208,7 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 		}
 	}
 
-	if(buf[0][0] == '/')
+	if(buf[0] != lastfile && buf[0][0] == '/')
 	{
 		buf[0] = "";
 	}
@@ -1243,7 +1259,7 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 	if(!store->archive)
 		return FALSE;
 
-	gchar **buf = g_strsplit_set(path, "/\\\n", -1);
+	gchar **buf = g_strsplit_set(path, "/\n", -1);
 	gchar **iter = buf;
 	LXAEntry *entry = store->archive->root_entry;
 	GSList *stack = g_slist_prepend(NULL, entry);

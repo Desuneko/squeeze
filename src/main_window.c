@@ -32,13 +32,13 @@
 #include "archive_store.h"
 #include "navigation_bar.h"
 
-#ifdef ENABLE_TOOLBAR
-#include "tool_bar.h"
-#endif /* ENABLE_TOOLBAR */
-
 #ifdef ENABLE_PATHBAR
 #include "path_bar.h"
 #endif /* ENABLE_PATHBAR */
+
+#ifdef ENABLE_TOOLBAR
+#include "tool_bar.h"
+#endif /* ENABLE_TOOLBAR */
 
 #include "main_window.h"
 #include "new_dialog.h"
@@ -117,7 +117,7 @@ xa_main_window_class_init(XAMainWindowClass *window_class)
 	object_class->get_property = xa_main_window_get_property;
 	object_class->finalize     = xa_main_window_finalize;
 
-	pspec = g_param_spec_boolean("show_icons",
+	pspec = g_param_spec_boolean("show-icons",
 		_("Show icons"),
 		_("Show icons"),
 		FALSE,
@@ -129,20 +129,31 @@ static void
 xa_main_window_finalize(GObject *object)
 {
 	XAMainWindow *window = XA_MAIN_WINDOW(object);
+
+	xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
+
 	xa_settings_set_group(window->settings, "Global");
 	if(!window->navigationbar)
+	{
 		xa_settings_write_entry(window->settings, "NavigationBar", "None");
+	}
+#ifdef ENABLE_TOOLBAR
+	else if(XA_IS_TOOL_BAR(window->navigationbar))
+	{
+		xa_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
+	}	
+#endif
+#ifdef ENABLE_PATHBAR
+	else if(XA_IS_PATH_BAR(window->navigationbar))
+	{
+		xa_settings_write_entry(window->settings, "NavigationBar", "PathBar");
+	}
+#endif
 	else
 	{
-#ifdef ENABLE_PATHBAR
-		if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_PATH_BAR)
-			xa_settings_write_entry(window->settings, "NavigationBar", "PathBar");
-#endif
-#ifdef ENABLE_TOOLBAR
-		if(G_OBJECT_TYPE(window->navigationbar) == XA_TYPE_TOOL_BAR)
-			xa_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
-#endif
+		xa_settings_write_entry(window->settings, "NavigationBar", "None");
 	}
+	gtk_widget_unref(GTK_WIDGET(window->navigationbar));
 	xa_settings_save(window->settings);
 }
 
@@ -156,6 +167,7 @@ xa_main_window_init(XAMainWindow *window)
 	GtkWidget     *tmp_image;
 	GtkAccelGroup *accel_group = gtk_accel_group_new();
 	const gchar   *nav_bar;
+	gboolean up_dir = TRUE;
 
 	window->working_node = NULL;
 	window->parent_node = g_new0(GValue, 1);
@@ -186,25 +198,25 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_help), window->menubar.menu_help);
 
 /* Archive menu */
-	window->menubar.menu_item_new = gtk_image_menu_item_new_from_stock("gtk-new", accel_group);
+	window->menubar.menu_item_new = gtk_image_menu_item_new_from_stock(GTK_STOCK_NEW, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_new);
 
-	window->menubar.menu_item_open = gtk_image_menu_item_new_from_stock("gtk-open", accel_group);
+	window->menubar.menu_item_open = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_open);
 
 	menu_separator = gtk_separator_menu_item_new();
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), menu_separator);
 
-	window->menubar.menu_item_properties = gtk_image_menu_item_new_from_stock("gtk-properties", accel_group);
+	window->menubar.menu_item_properties = gtk_image_menu_item_new_from_stock(GTK_STOCK_PROPERTIES, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_properties);
 
-	window->menubar.menu_item_close = gtk_image_menu_item_new_from_stock("gtk-close", accel_group);
+	window->menubar.menu_item_close = gtk_image_menu_item_new_from_stock(GTK_STOCK_CLOSE, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_close);
 
 	menu_separator = gtk_separator_menu_item_new();
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), menu_separator);
 
-	window->menubar.menu_item_quit = gtk_image_menu_item_new_from_stock("gtk-quit", accel_group);
+	window->menubar.menu_item_quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_archive), window->menubar.menu_item_quit);
 
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_new), "activate", G_CALLBACK(cb_xa_main_new_archive), window);
@@ -224,13 +236,13 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (window->menubar.menu_item_extract), tmp_image);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_extract);
 
-	window->menubar.menu_item_remove = gtk_image_menu_item_new_from_stock("gtk-delete", accel_group);
+	window->menubar.menu_item_remove = gtk_image_menu_item_new_from_stock(GTK_STOCK_DELETE, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_remove);
 
 	menu_separator = gtk_separator_menu_item_new();
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), menu_separator);
 
-	window->menubar.menu_item_settings = gtk_image_menu_item_new_from_stock("gtk-preferences", accel_group);
+	window->menubar.menu_item_settings = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_settings);
 
 	g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_xa_main_add_to_archive), window);
@@ -243,12 +255,12 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), FALSE);
 
 /* Help menu */
-	window->menubar.menu_item_about = gtk_image_menu_item_new_from_stock("gtk-about", accel_group);
+	window->menubar.menu_item_about = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, accel_group);
 	gtk_container_add(GTK_CONTAINER(window->menubar.menu_help), window->menubar.menu_item_about);
 
 /* Archive pane */
-	window->toolbar.tool_item_new = gtk_tool_button_new_from_stock("gtk-new");
-	window->toolbar.tool_item_open = gtk_tool_button_new_from_stock("gtk-open");
+	window->toolbar.tool_item_new = gtk_tool_button_new_from_stock(GTK_STOCK_NEW);
+	window->toolbar.tool_item_open = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
 	tool_separator = gtk_separator_tool_item_new ();
 
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_new));
@@ -267,7 +279,7 @@ xa_main_window_init(XAMainWindow *window)
 	window->toolbar.tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 
-	window->toolbar.tool_item_remove = gtk_tool_button_new_from_stock("gtk-delete");
+	window->toolbar.tool_item_remove = gtk_tool_button_new_from_stock(GTK_STOCK_DELETE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 
 	tool_separator = gtk_separator_tool_item_new ();
@@ -282,7 +294,7 @@ xa_main_window_init(XAMainWindow *window)
 
 /* control pane */
 
-	window->toolbar.tool_item_stop = gtk_tool_button_new_from_stock("gtk-stop");
+	window->toolbar.tool_item_stop = gtk_tool_button_new_from_stock(GTK_STOCK_STOP);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
 
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_stop));
@@ -292,26 +304,36 @@ xa_main_window_init(XAMainWindow *window)
 	xa_settings_set_group(window->settings, "Global");
 	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "PathBar");
 	window->navigationbar = NULL;
+
 #ifdef ENABLE_TOOLBAR
 	if(!strcmp(nav_bar, "ToolBar"))
+	{
 		window->navigationbar = xa_tool_bar_new(NULL); 
+		up_dir = FALSE;
+	}
 #endif
 #ifdef ENABLE_PATHBAR
 	if(!strcmp(nav_bar, "PathBar"))
+	{
 		window->navigationbar = xa_path_bar_new(NULL);
+		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
+		up_dir = FALSE;
+	}
 #endif
 
-	if(window->navigationbar)
+	if(!window->navigationbar)
 	{
-		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
+		window->navigationbar = xa_navigation_bar_new(NULL);
 	}
+
+	gtk_widget_ref(GTK_WIDGET(window->navigationbar));
 
 /* main view */
 	window->scrollwindow = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window->scrollwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	window->treeview = gtk_tree_view_new();
-	gtk_tree_view_set_rules_hint(window->treeview, TRUE);
+	/* gtk_tree_view_set_rules_hint(window->treeview, TRUE); */
 
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(window->treeview), TRUE);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
@@ -342,12 +364,11 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_container_add(GTK_CONTAINER(window), main_vbox);
 
 	/* archive model */
-	if(window->navigationbar)
-		window->treemodel = xa_archive_store_new(NULL, TRUE, FALSE, window->icon_theme);
-	else
-		window->treemodel = xa_archive_store_new(NULL, TRUE, TRUE, window->icon_theme);
+	window->treemodel = xa_archive_store_new(NULL, TRUE, up_dir, window->icon_theme);
+
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(window->treemodel), GTK_TREE_VIEW(window->treeview));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(window->treemodel));
+
 	if(window->navigationbar)
 		xa_navigation_bar_set_store(window->navigationbar, XA_ARCHIVE_STORE(window->treemodel));
 }
@@ -522,8 +543,6 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(window->lp_xa_archive)
 		{
-			if(window->navigationbar)
-				xa_navigation_bar_clear_history(window->navigationbar);
 			xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 			g_object_unref(window->lp_xa_archive);
 			window->lp_xa_archive = NULL;
@@ -610,8 +629,6 @@ xa_main_window_archive_destroyed(LXAArchive *archive, XAMainWindow *window)
 	GtkTreeModel *liststore = window->treemodel;
 	GList *columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(window->treeview));
 
-	if(window->navigationbar)
-		xa_navigation_bar_clear_history(window->navigationbar);
 	xa_archive_store_set_contents(XA_ARCHIVE_STORE(liststore), NULL);
 /*	xa_archive_tree_store_set_contents(XA_ARCHIVE_TREE_STORE(liststore), NULL); */
 

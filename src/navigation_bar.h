@@ -50,6 +50,7 @@ struct _XANavigationBar
 	GList *pwd;
 	gint max_history;
 	GCallback _cb_pwd_changed;
+	GCallback _cb_new_archive;
 };
 
 typedef struct _XANavigationBarClass XANavigationBarClass;
@@ -60,7 +61,7 @@ struct _XANavigationBarClass
 };
 
 GType      xa_navigation_bar_get_type();
-GtkWidget *xa_navigation_bar_new();
+XANavigationBar *xa_navigation_bar_new();
 void       xa_navigation_bar_history_push(XANavigationBar *nav_bar, const gchar *path);
 void       xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store);
 gint       xa_navigation_bar_history_get_length(XANavigationBar *nav_bar);

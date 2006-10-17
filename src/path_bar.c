@@ -15,6 +15,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+/*
+ * Based on code written by Benedikt Meurer <benny@xfce.org>
+ */
 
 #include <config.h>
 #include <string.h>
@@ -26,6 +29,9 @@
 #include "navigation_bar.h"
 #include "path_bar.h"
 
+#ifndef XA_PATH_BAR_SCROLL_TIMEOUT
+#define XA_PATH_BAR_SCROLL_TIMEOUT 200
+#endif
 
 static void
 xa_path_bar_class_init(XAPathBarClass *archive_class);
@@ -49,13 +55,32 @@ xa_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallb
 
 static void
 cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *bar);
+static void
+cb_xa_path_bar_new_archive(XAArchiveStore *store, XAPathBar *bar);
 
 static void
 cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar);
+
 static void
-cb_xa_path_bar_scroll_left(GtkWidget *widget, gpointer user_data);
+cb_xa_path_bar_scroll_timeout_destroy(gpointer user_data);
+
+static gboolean
+cb_xa_path_bar_scroll_left_timeout(gpointer user_data);
+static gboolean
+cb_xa_path_bar_left_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static gboolean
+cb_xa_path_bar_left_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 static void
-cb_xa_path_bar_scroll_right(GtkWidget *widget, gpointer user_data);
+cb_xa_path_bar_left_button_clicked(GtkWidget *button, gpointer user_data);
+
+static gboolean
+cb_xa_path_bar_scroll_right_timeout(gpointer user_data);
+static gboolean
+cb_xa_path_bar_right_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static gboolean
+cb_xa_path_bar_right_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static void
+cb_xa_path_bar_right_button_clicked(GtkWidget *button, gpointer user_data);
 
 GType
 xa_path_bar_get_type ()
@@ -113,12 +138,15 @@ xa_path_bar_init(XAPathBar *path_bar)
 {
 	GtkWidget *arrow;
 	XA_NAVIGATION_BAR(path_bar)->_cb_pwd_changed = (GCallback)cb_xa_path_bar_pwd_changed;
+	XA_NAVIGATION_BAR(path_bar)->_cb_new_archive = (GCallback)cb_xa_path_bar_new_archive;
 
 	GTK_WIDGET_SET_FLAGS(path_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(path_bar), FALSE);
 
 	path_bar->left_button = GTK_BUTTON(gtk_button_new());
-	g_signal_connect(G_OBJECT(path_bar->left_button), "clicked", G_CALLBACK(cb_xa_path_bar_scroll_left), path_bar);
+/*	g_signal_connect(G_OBJECT(path_bar->left_button), "button-press-event", G_CALLBACK(cb_xa_path_bar_left_button_pressed), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->left_button), "button-release-event", G_CALLBACK(cb_xa_path_bar_left_button_released), path_bar);*/
+	g_signal_connect(G_OBJECT(path_bar->left_button), "clicked", G_CALLBACK(cb_xa_path_bar_left_button_clicked), path_bar);
 	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->left_button));
 	gtk_widget_show(GTK_WIDGET(path_bar->left_button));
 	gtk_widget_ref(GTK_WIDGET(path_bar->left_button));
@@ -128,7 +156,9 @@ xa_path_bar_init(XAPathBar *path_bar)
 	gtk_widget_show (arrow);
 
 	path_bar->right_button = GTK_BUTTON(gtk_button_new());
-	g_signal_connect(G_OBJECT(path_bar->right_button), "clicked", G_CALLBACK(cb_xa_path_bar_scroll_right), path_bar);
+/*	g_signal_connect(G_OBJECT(path_bar->right_button), "button-press-event", G_CALLBACK(cb_xa_path_bar_right_button_pressed), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->right_button), "button-release-event", G_CALLBACK(cb_xa_path_bar_right_button_released), path_bar);*/
+	g_signal_connect(G_OBJECT(path_bar->right_button), "clicked", G_CALLBACK(cb_xa_path_bar_right_button_clicked), path_bar);
 	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->right_button));
 	gtk_widget_show(GTK_WIDGET(path_bar->right_button));
 	gtk_widget_ref(GTK_WIDGET(path_bar->right_button));
@@ -141,12 +171,17 @@ xa_path_bar_init(XAPathBar *path_bar)
 	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->home_button));
 	g_signal_connect(G_OBJECT(path_bar->home_button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
 	gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(path_bar->home_button), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), FALSE);
 	gtk_widget_show(GTK_WIDGET(path_bar->home_button));
 	gtk_widget_ref(GTK_WIDGET(path_bar->home_button));
 
+	arrow = gtk_image_new_from_stock(GTK_STOCK_HOME, GTK_ICON_SIZE_MENU);
+	gtk_container_add (GTK_CONTAINER (path_bar->home_button), arrow);
+	gtk_widget_show (arrow);
 
 	path_bar->path_button = g_slist_prepend(NULL, path_bar->home_button);
 	path_bar->first_button = NULL;
+	path_bar->scroll_timeout = 0;
 
 	gtk_widget_ref(GTK_WIDGET(path_bar));
 }
@@ -412,12 +447,31 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 }
 
 static void
+cb_xa_path_bar_new_archive(XAArchiveStore *store, XAPathBar *path_bar)
+{
+	GSList *buttons = path_bar->path_button->next;
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(path_bar->path_button->data), TRUE);
+
+	while(buttons)
+	{
+		gtk_container_remove(GTK_CONTAINER(path_bar), GTK_WIDGET(buttons->data));
+		gtk_widget_unref(GTK_WIDGET(buttons->data));
+		buttons = buttons->next;
+	}
+	g_slist_free(path_bar->path_button->next);
+	path_bar->path_button->next = NULL;
+
+	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), store->archive?TRUE:FALSE);
+}
+
+static void
 cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
 {
 	GSList *path = xa_archive_store_get_pwd_list(store);
 	GSList *iter = path;
 	GSList *buttons = path_bar->path_button->next;
-	GSList *lastbutton = NULL;
+	GSList *lastbutton = path_bar->path_button;
 	GtkRadioButton *button = GTK_RADIO_BUTTON(path_bar->home_button);
 	const gchar *label = xa_archive_store_get_pwd(store);
 	gint cmp = 0;
@@ -510,7 +564,15 @@ cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
 }
 
 static void
-cb_xa_path_bar_scroll_left(GtkWidget *widget, gpointer user_data)
+cb_xa_path_bar_scroll_timeout_destroy(gpointer user_data)
+{
+	XAPathBar *path_bar = XA_PATH_BAR(user_data);
+
+	path_bar->scroll_timeout = 0;
+}
+
+static gboolean
+cb_xa_path_bar_scroll_left_timeout(gpointer user_data)
 {
 	XAPathBar *path_bar = XA_PATH_BAR(user_data);
 
@@ -528,10 +590,45 @@ cb_xa_path_bar_scroll_left(GtkWidget *widget, gpointer user_data)
 		prev = iter;
 		iter = iter->next;
 	}
+
+	return FALSE;
+}
+
+static gboolean
+cb_xa_path_bar_left_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	XAPathBar *path_bar = XA_PATH_BAR(user_data);
+
+	if(event->type != GDK_BUTTON_PRESS || event->button != 1)
+		return FALSE;
+
+	path_bar->scroll_timeout = g_timeout_add_full(G_PRIORITY_LOW, XA_PATH_BAR_SCROLL_TIMEOUT, cb_xa_path_bar_scroll_left_timeout, user_data, cb_xa_path_bar_scroll_timeout_destroy);
+
+	return FALSE;
+}
+
+static gboolean
+cb_xa_path_bar_left_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	XAPathBar *path_bar = XA_PATH_BAR(user_data);
+
+	if(event->type != GDK_BUTTON_RELEASE || event->button != 1)
+		return FALSE;
+
+	if(path_bar->scroll_timeout)
+		g_source_remove(path_bar->scroll_timeout);
+
+	return FALSE;
 }
 
 static void
-cb_xa_path_bar_scroll_right(GtkWidget *widget, gpointer user_data)
+cb_xa_path_bar_left_button_clicked(GtkWidget *widget, gpointer user_data)
+{
+	cb_xa_path_bar_scroll_left_timeout(user_data);
+}
+
+static gboolean
+cb_xa_path_bar_scroll_right_timeout(gpointer user_data)
 {
 	XAPathBar *path_bar = XA_PATH_BAR(user_data);
 
@@ -540,5 +637,38 @@ cb_xa_path_bar_scroll_right(GtkWidget *widget, gpointer user_data)
 
 	if(path_bar->first_button->next)
 		path_bar->first_button = path_bar->first_button->next;
+}
+
+static gboolean
+cb_xa_path_bar_right_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	XAPathBar *path_bar = XA_PATH_BAR(user_data);
+
+	if(event->type != GDK_BUTTON_PRESS || event->button != 1)
+		return FALSE;
+
+	path_bar->scroll_timeout = g_timeout_add_full(G_PRIORITY_LOW, XA_PATH_BAR_SCROLL_TIMEOUT, cb_xa_path_bar_scroll_right_timeout, user_data, cb_xa_path_bar_scroll_timeout_destroy);
+
+	return FALSE;
+}
+
+static gboolean
+cb_xa_path_bar_right_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+	XAPathBar *path_bar = XA_PATH_BAR(user_data);
+
+	if(event->type != GDK_BUTTON_RELEASE || event->button != 1)
+		return FALSE;
+
+	if(path_bar->scroll_timeout)
+		g_source_remove(path_bar->scroll_timeout);
+
+	return FALSE;
+}
+
+static void
+cb_xa_path_bar_right_button_clicked(GtkWidget *widget, gpointer user_data)
+{
+	cb_xa_path_bar_scroll_right_timeout(user_data);
 }
 

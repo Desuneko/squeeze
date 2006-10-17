@@ -197,10 +197,10 @@ lxa_archive_add_file(LXAArchive *archive, gchar *path)
 	LXAEntry *tmp_entry = NULL, *parent = NULL;
 	path_items = g_strsplit_set(path, "/\n", -1);
 	parent = archive->root_entry;
-	if(path_items[i]?strlen(path_items[i])==0:0)
+	if(path_items[i]?path_items[i][0]=='\0':0)
 	{
 		/* has leading / */
-		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
+		tmp_entry = lxa_entry_get_child(parent, "/");
 		if(!tmp_entry)
 		{
 			tmp_entry = g_new0(LXAEntry, 1);

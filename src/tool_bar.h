@@ -61,7 +61,7 @@ struct _XAToolBarClass
 	XANavigationBarClass parent_class;
 };
 
-GType      xa_tool_bar_get_type();
+GType            xa_tool_bar_get_type();
 XANavigationBar *xa_tool_bar_new();
 
 G_END_DECLS
