@@ -40,9 +40,11 @@ lxa_init()
 
 	lxa_mime_init();
 
-	lxa_register_support(lxa_archive_support_zip_new());
 	lxa_register_support(lxa_archive_support_gnu_tar_new());
-	/* TODO: Implement right commands in unrar
+
+/*
+	lxa_register_support(lxa_archive_support_zip_new());
+	TODO: Implement right commands in unrar
 	lxa_register_support(lxa_archive_support_rar_new());
 	lxa_register_support(lxa_archive_support_unrar_new());
 	*/

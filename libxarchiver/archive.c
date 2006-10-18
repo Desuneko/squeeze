@@ -25,14 +25,29 @@
 
 #include "mime.h"
 
+//#include "entry.h"
 #include "archive.h"
 #include "archive-support.h"
+#include "slist.h"
 
 #include "internals.h"
 
 #ifndef LXA_ENTRY_CHILD_BUFFER_SIZE
 #define LXA_ENTRY_CHILD_BUFFER_SIZE 300
 #endif
+
+#ifndef LXA_MIME_DIRECTORY
+#define LXA_MIME_DIRECTORY "inode/directory"
+#endif
+
+struct _LXAEntry
+{
+	gchar *filename;
+	gchar *mime_type;
+	gpointer props;
+	LXAEntry **children;
+	LXASList *buffer;
+};
 
 
 static void
@@ -44,12 +59,23 @@ lxa_archive_init(LXAArchive *archive);
 static void
 lxa_archive_finalize(GObject *object);
 
-void
-lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry);
+static LXAEntry *
+lxa_entry_new(const gchar *);
 
-void
-lxa_archive_entry_flush_buffer(LXAArchive *, LXAEntry *entry);
+static void
+lxa_archive_entry_free(LXAArchive *, LXAEntry *);
 
+static LXAEntry *
+lxa_entry_get_child(const LXAEntry *entry, const gchar *filename);
+
+static void
+lxa_archive_entry_add_child(LXAArchive *, LXAEntry *, LXAEntry *);
+
+static void
+lxa_archive_entry_flush_buffer(LXAArchive *, LXAEntry *);
+
+static gpointer
+lxa_archive_entry_get_props(LXAArchive *, LXAEntry *);
 
 gint
 lxa_archive_sort_entry_buffer(LXAEntry *entry1, LXAEntry *entry2)
@@ -108,8 +134,6 @@ static void
 lxa_archive_init(LXAArchive *archive)
 {
 	archive->root_entry = g_new0(LXAEntry, 1);
-	archive->root_entry->filename = NULL;
-	archive->root_entry->children = NULL;
 }
 
 /** static void
@@ -123,7 +147,7 @@ lxa_archive_finalize(GObject *object)
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
 		g_free(archive->path);
-	lxa_archive_free_entry(archive, archive->root_entry);
+	lxa_archive_entry_free(archive, archive->root_entry);
 	switch(archive->status)
 	{
 		case(LXA_ARCHIVESTATUS_IDLE):
@@ -178,66 +202,91 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 }
 
 gint
-lxa_archive_lookup_dir(gpointer entry, gconstpointer filename)
+lxa_stop_archive_child( LXAArchive *archive )
 {
-	return strcmp(((LXAEntry *)entry)->filename, filename);
+	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_USERBREAK);
+	return 0;
 }
 
-/* 
- * LXAEntry *
- * lxa_archive_add_file(LXAArchive *archive, gchar *path);
- *
- * Add a file to the archive-tree or return
- */
-LXAEntry *
-lxa_archive_add_file(LXAArchive *archive, gchar *path)
+/********************
+ * LXAArchive stuff *
+ ********************/
+
+LXAArchiveIter *
+lxa_archive_add_file(LXAArchive *archive, const gchar *path)
 {
-	gint i = 0;
-	gchar **path_items;
-	LXAEntry *tmp_entry = NULL, *parent = NULL;
-	path_items = g_strsplit_set(path, "/\n", -1);
-	parent = archive->root_entry;
-	if(path_items[i]?path_items[i][0]=='\0':0)
+	guint i = 0;
+	gchar **path_items = g_strsplit_set(path, "/\n", -1);
+	LXAArchiveIter *parent = (LXAArchiveIter*)archive->root_entry;
+	LXAArchiveIter *child = NULL;
+	gchar *basename;
+
+	while(path_items[i])
 	{
-		/* has leading / */
-		tmp_entry = lxa_entry_get_child(parent, "/");
-		if(!tmp_entry)
+		basename = g_strconcat(path_items[i], path_items[i+1]?"/":NULL, NULL);
+
+		if(basename[0] != '\0')
 		{
-			tmp_entry = g_new0(LXAEntry, 1);
-			tmp_entry->filename = g_strdup("/");
-			lxa_archive_entry_add_child(archive, parent, tmp_entry);
-			if(!parent->mime_type)
-				parent->mime_type = g_strdup("inode/directory");
+			child = lxa_archive_iter_get_child(archive, parent, basename);
+
+			if(!child)
+				child = lxa_archive_iter_add_child(archive, parent, basename);
 		}
-		parent = tmp_entry;
-		++i;
+
+		g_free(basename);
+
+		parent = child;
+		i++;
 	}
-	for(; path_items[i]?strlen(path_items[i]):0;++i)
+
+	return child;
+}
+
+GType
+lxa_archive_get_property_type(LXAArchive *archive, guint i)
+{
+#ifdef DEBUG
+	g_return_if_fail(i < archive->n_property, G_TYPE_INVALID);
+#endif
+	switch(i)
 	{
-		tmp_entry = lxa_entry_get_child(parent, path_items[i]);
-		if(!tmp_entry)
-		{
-			tmp_entry = g_new0(LXAEntry, 1);
-			tmp_entry->filename = g_strdup(path_items[i]);
-			lxa_archive_entry_add_child(archive, parent, tmp_entry);
-			if(!parent->mime_type)
-				parent->mime_type = g_strdup("inode/directory");
-		}
-		parent = tmp_entry;
+		case LXA_ARCHIVE_PROP_FILENAME:
+			return G_TYPE_STRING;
+		case LXA_ARCHIVE_PROP_MIME_TYPE:
+			return G_TYPE_STRING;
+		case LXA_ARCHIVE_PROP_USER:
+			return archive->property_types[i - LXA_ARCHIVE_PROP_USER];
 	}
-	if(!tmp_entry->mime_type)
+}
+
+
+/******************
+ * LXAEntry stuff *
+ ******************/
+
+static LXAEntry *
+lxa_entry_new(const gchar *filename)
+{
+	LXAEntry *entry = g_new0(LXAEntry, 1);
+
+	const gchar *pos = strchr(filename, '/');
+
+	if(pos)
 	{
-		if(path[strlen(path)-1] == '/')
-			tmp_entry->mime_type = g_strdup("inode/directory");
-		else
-			tmp_entry->mime_type = lxa_mime_get_mime_type_for_filename(tmp_entry->filename);
+		entry->filename = g_strndup(filename, (gsize)(pos - filename));
+		entry->mime_type = g_strdup(LXA_MIME_DIRECTORY);
 	}
-	g_strfreev(path_items);
-	return tmp_entry;
+	else
+	{
+		entry->filename = g_strdup(filename);
+		entry->mime_type = lxa_mime_get_mime_type_for_filename(entry->filename);
+	}
+
+	return entry;
 }
 
 void
-lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
+lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 {
 	gint i = 0; 
 	gpointer props_iter = entry->props;
@@ -245,20 +294,17 @@ lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 
 	for(; buffer_iter; buffer_iter = buffer_iter->next)
 	{
-		lxa_archive_free_entry(archive, buffer_iter->entry);
+		lxa_archive_entry_free(archive, buffer_iter->entry);
 	}
-	if(entry->buffer)
-	{
-		lxa_slist_free(entry->buffer);
-		entry->buffer = NULL;
-	}
+	lxa_slist_free(entry->buffer);
+	entry->buffer = NULL;
 
 	if(entry->children)
 	{
 		/* first elemant of the array (*entry->children) contains the size of the array */
 		/* WHY DOES i end up being 2 when *entry->children == 1 ?! */
 		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); ++i)
-			lxa_archive_free_entry(archive, entry->children[i]);
+			lxa_archive_entry_free(archive, entry->children[i]);
 
 		g_free(entry->children);
 		entry->children = NULL;
@@ -266,7 +312,7 @@ lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 
 	if(props_iter)
 	{
-		for(i=1; i<archive->n_property; i++)
+		for(i=0; i<archive->n_property; ++i)
 		{
 			switch(archive->property_types[i])
 			{
@@ -284,18 +330,55 @@ lxa_archive_free_entry(LXAArchive *archive, LXAEntry *entry)
 		}
 		g_free(entry->props);
 	}
+	g_free(entry->mime_type);
 	g_free(entry->filename);
 	g_free(entry);
 }
 
-gint
-lxa_stop_archive_child( LXAArchive *archive )
+static LXAEntry *
+lxa_entry_get_child(const LXAEntry *entry, const gchar *filename)
 {
-	lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_USERBREAK);
-	return 0;
+	LXASList *buffer_iter = NULL;
+	/* the first element of the array (*entry->children) contains the size of the array */
+	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
+	guint pos = 0;
+	guint begin = 1;
+	gint cmp = 0;
+	/* binary search algoritme */
+	while(size)
+	{
+		pos = (size / 2);
+
+		cmp = strcmp(filename, entry->children[begin+pos]->filename);
+		if(!cmp)
+			return entry->children[begin+pos];
+
+		if(cmp < 0)
+		{
+			size = pos;
+		}
+		else
+		{
+			size -= ++pos;
+			begin += pos;
+		}
+	}
+
+	/* search the buffer */
+	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
+	{
+		cmp = strcmp(filename, buffer_iter->entry->filename);
+
+		if(!cmp)
+			return buffer_iter->entry;
+		if(cmp < 0)
+			break;
+	}
+
+	return NULL;
 }
 
-void
+static void
 lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *child)
 {
 	parent->buffer = lxa_slist_insert_sorted_single(parent->buffer, child);
@@ -304,7 +387,7 @@ lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *chi
 		lxa_archive_entry_flush_buffer(archive, parent);
 }
 
-void
+static void
 lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 {
 	if(!entry->buffer)
@@ -374,59 +457,494 @@ lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 	g_free(children_old);
 }
 
-guint
-lxa_entry_children_length(LXAEntry *entry)
+static gpointer
+lxa_archive_entry_get_props(LXAArchive *archive, LXAEntry *entry)
 {
-	g_return_val_if_fail(entry, 0);
-	/* the first element of the array (*entry->children) contains the size of the array */
-	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
-}
+	guint size = 0;
+	guint i;
 
-/* FIXME FIXME FIXME FIXME FIXME FIXME FIXME*/
-/* these functions should not even exist do they?  */
-LXAEntry *
-lxa_entry_get_child(LXAEntry *entry, const gchar *filename)
-{
-	LXASList *buffer_iter = NULL;
-	/* the first element of the array (*entry->children) contains the size of the array */
-	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
-	guint pos = 0;
-	guint begin = 1;
-	gint cmp = 0;
-	/* binary search algoritme */
-	while(size)
+	if(!entry->props)
 	{
-		pos = (size / 2);
-
-		cmp = strcmp(filename, entry->children[begin+pos]->filename);
-		if(!cmp)
-			return entry->children[begin+pos];
-
-		if(cmp < 0)
+		for(i = 0; i < archive->n_property; ++i)
 		{
-			size = pos;
+			switch(archive->property_types[i])
+			{
+				case G_TYPE_STRING:
+					size += sizeof(gchar *);
+					break;
+				case G_TYPE_UINT:
+					size += sizeof(guint);
+					break;
+				case G_TYPE_UINT64:
+					size += sizeof(guint64);
+					break;
+			}
 		}
-		else
-		{
-			size -= ++pos;
-			begin += pos;
-		}
+
+#ifdef DEBUG
+		entry->props = g_malloc0(size);
+#else
+		entry->props = g_malloc(size);
+#endif
 	}
 
-	/* search the buffer */
-	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
-	{
-		cmp = strcmp(filename, buffer_iter->entry->filename);
+	return entry->props;
+}
 
-		if(!cmp)
-			return buffer_iter->entry;
-		if(cmp < 0)
+/************************
+ * LXAArchiveIter stuff *
+ ************************/
+
+/** 
+ * gboolean
+ * lxa_archive_iter_is_directory(const LXAArchive *, const LXAArchiveIter *)
+ *
+ * Check if archive entry is a directory
+ **/
+gboolean
+lxa_archive_iter_is_directory(const LXAArchive *archive, const LXAArchiveIter *iter)
+{
+	if(!strcmp(lxa_archive_iter_get_mime(archive, iter), LXA_MIME_DIRECTORY))
+		return TRUE;
+	return FALSE;
+}
+
+/** 
+ * guint
+ * lxa_archive_iter_n_children(const LXAArchive *, const LXAArchiveIter *)
+ *
+ * return number of children
+ **/
+guint
+lxa_archive_iter_n_children(const LXAArchive *archive, const LXAArchiveIter *iter)
+{
+#ifdef DEBUG
+	g_return_val_if_fail(iter, 0);
+#endif
+	/* the first element of the array (*iter->children) contains the size of the array */
+	return iter->children?GPOINTER_TO_INT(*iter->children):0 + lxa_slist_length(iter->buffer);
+}
+
+/** 
+ * LXAArchiveIter* 
+ * lxa_archive_iter_nth_child(const LXAArchive *, const LXAArchiveIter *, guint)
+ *
+ * return nth child
+ **/
+LXAArchiveIter*
+lxa_archive_iter_nth_child(LXAArchive *archive, LXAArchiveIter *iter, guint n)
+{
+#ifdef DEBUG
+	g_return_val_if_fail(n >= 0, NULL);
+	g_return_val_if_fail(n < lxa_archive_iter_n_children(archive, iter), NULL);
+#endif
+	lxa_archive_entry_flush_buffer(archive, (LXAEntry *)iter);
+	/* the first element of the array (*iter->children) contains the size of the array */
+	return ((LXAEntry *)iter->children[n+1]);
+}
+
+/**
+ * LXAArchiveIter* 
+ * lxa_archive_iter_add_child(LXAArchive *, LXAArchiveIter *, const gchar *)
+ *
+ * return a new child
+ **/
+LXAArchiveIter *
+lxa_archive_iter_add_child(LXAArchive *archive, LXAArchiveIter *parent, const gchar *filename)
+{
+	LXAEntry *entry = lxa_entry_new(filename);
+
+	lxa_archive_entry_add_child(archive, (LXAEntry *)parent, entry);
+
+	return (LXAArchiveIter*)entry;
+}
+
+/**
+ * LXAArchiveIter*
+ * lxa_archive_iter_get_child(const LXAArchive *, const LXAArchiveIter *, const gchar *)
+ *
+ * return the child iter if found
+ **/
+LXAArchiveIter *
+lxa_archive_iter_get_child(const LXAArchive *archive, const LXAArchiveIter *parent, const gchar *filename)
+{
+	return (LXAArchiveIter*)lxa_entry_get_child(parent, filename);
+}
+
+/** 
+ * gboolean 
+ * lxa_archive_iter_del_child(const LXAArchive *, LXAArchiveIter *, LXAArchiveIter *)
+ *
+ * delete a child (if it can be found)
+ **/
+gboolean
+lxa_archive_iter_del_child(LXAArchive *archive, LXAArchiveIter *parent, LXAArchiveIter *child)
+{
+	g_warning("not implemented yet");
+}
+
+/**
+ * const gchar *
+ * lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *)
+ *
+ * returns filename
+ */
+const gchar*
+lxa_archive_iter_get_filename(const LXAArchive *archive, const LXAArchiveIter *iter)
+{
+	return ((LXAEntry *)iter)->filename;
+}
+
+/**
+ * const gchar *
+ * lxa_archive_iter_get_mime(const LXAArchive *, const LXAArchiveIter *)
+ *
+ * returns mime type
+ */
+const gchar*
+lxa_archive_iter_get_mime(const LXAArchive *archive, const LXAArchiveIter *iter)
+{
+	return ((LXAEntry *)iter)->mime_type;
+}
+
+/**
+ * void
+ * lxa_archive_iter_set_mime(const LXAArchive *, const LXAArchiveIter *, const gchar *)
+ *
+ * set mime type to entry
+ */
+void
+lxa_archive_iter_set_mime(LXAArchive *archive, LXAArchiveIter *iter, const gchar *mime)
+{
+	g_free(((LXAEntry *)iter)->mime_type);
+	((LXAEntry *)iter)->mime_type = g_strdup(mime);
+}
+
+/**
+ * void
+ * lxa_archive_iter_set_prop_str(const LXAArchive *, const LXAArchiveIter *, guint, const gchar *)
+ *
+ */
+void
+lxa_archive_iter_set_prop_str(LXAArchive *archive, LXAArchiveIter *iter, guint i, const gchar *str_val)
+{
+	gpointer props_iter = NULL;
+	guint n;
+#ifdef DEBUG
+	g_return_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER));
+	if(i >= LXA_ARCHIVE_PROP_USER)
+		g_return_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_STRING);
+#endif
+
+	switch(i)
+	{
+		case LXA_ARCHIVE_PROP_FILENAME:
+#ifdef DEBUG
+			g_critical("DON'T set filename");
+#endif
+			break;
+		case LXA_ARCHIVE_PROP_MIME_TYPE:
+			lxa_archive_iter_set_mime(archive, iter, str_val);
+			break;
+		default:
+			props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
+			for(n = 0; n < (i-LXA_ARCHIVE_PROP_USER); ++n)
+			{
+				switch(archive->property_types[n])
+				{
+					case G_TYPE_STRING:
+						props_iter += sizeof(gchar *);
+						break;
+					case G_TYPE_UINT:
+						props_iter += sizeof(guint);
+						break;
+					case G_TYPE_UINT64:
+						props_iter += sizeof(guint64);
+						break;
+				}
+			}
+			g_free(*((gchar **)props_iter));
+			(*((gchar **)props_iter)) = g_strdup(str_val);
 			break;
 	}
-
-	return NULL;
 }
 
+/**
+ * void
+ * lxa_archive_iter_set_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint, guint) 
+ *
+ */
+void
+lxa_archive_iter_set_prop_uint(LXAArchive *archive, LXAArchiveIter *iter, guint i, guint int_val)
+{
+	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
+	guint n;
+#ifdef DEBUG
+	g_return_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER));
+	g_return_if_fail(i >= LXA_ARCHIVE_PROP_USER);
+	g_return_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_UINT);
+#endif
+	for(n = 0; n < (i-LXA_ARCHIVE_PROP_USER); ++n)
+	{
+		switch(archive->property_types[n])
+		{
+			case G_TYPE_STRING:
+				props_iter += sizeof(gchar *);
+				break;
+			case G_TYPE_UINT:
+				props_iter += sizeof(guint);
+				break;
+			case G_TYPE_UINT64:
+				props_iter += sizeof(guint64);
+				break;
+		}
+	}
+	(*((guint *)props_iter)) = int_val;
+}
+
+/**
+ * void
+ * lxa_archive_iter_set_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint, guint64) 
+ *
+ */
+void
+lxa_archive_iter_set_prop_uint64(LXAArchive *archive, LXAArchiveIter *iter, guint i, guint64 int64_val)
+{
+	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
+	guint n;
+#ifdef DEBUG
+	g_return_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER));
+	g_return_if_fail(i >= LXA_ARCHIVE_PROP_USER);
+	g_return_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_UINT64);
+#endif
+	for(n = 0; n < (i-LXA_ARCHIVE_PROP_USER); ++n)
+	{
+		switch(archive->property_types[n])
+		{
+			case G_TYPE_STRING:
+				props_iter += sizeof(gchar *);
+				break;
+			case G_TYPE_UINT:
+				props_iter += sizeof(guint);
+				break;
+			case G_TYPE_UINT64:
+				props_iter += sizeof(guint64);
+				break;
+		}
+	}
+	(*((guint64 *)props_iter)) = int64_val;
+}
+
+/**
+ * void
+ * lxa_archive_iter_set_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, const GValue *) 
+ *
+ */
+void
+lxa_archive_iter_set_prop_value(LXAArchive *archive, LXAArchiveIter *iter, guint i, const GValue *value)
+{
+	switch(G_VALUE_TYPE(value))
+	{
+		case G_TYPE_STRING:
+			lxa_archive_iter_set_prop_str(archive, iter, i, g_value_get_string(value));
+			break;
+		case G_TYPE_UINT:
+			lxa_archive_iter_set_prop_uint(archive, iter, i, g_value_get_uint(value));
+			break;
+		case G_TYPE_UINT64:
+			lxa_archive_iter_set_prop_uint64(archive, iter, i, g_value_get_uint64(value));
+			break;
+	}
+}
+
+/**
+ * void
+ * lxa_archive_iter_set_props(const LXAArchive *, const LXAArchiveIter *, guint, ...) 
+ *
+ */
+void
+lxa_archive_iter_set_props(LXAArchive *archive, LXAArchiveIter *iter, ...)
+{
+	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
+	guint i;
+	va_list ap;
+
+	va_start(ap, iter);
+
+	for(i = 0; i < (archive->n_property-LXA_ARCHIVE_PROP_USER); ++i)
+	{
+		switch(archive->property_types[i])
+		{
+			case G_TYPE_STRING:
+				(*((gchar **)props_iter)) = g_strdup(va_arg(ap, gchar*));
+				props_iter += sizeof(gchar *);
+				break;
+			case G_TYPE_UINT:
+				(*((guint *)props_iter)) = va_arg(ap, guint);
+				props_iter += sizeof(guint);
+				break;
+			case G_TYPE_UINT64:
+				(*((guint64 *)props_iter)) = va_arg(ap, guint64);
+				props_iter += sizeof(guint64);
+				break;
+		}
+	}
+
+	va_end(ap);
+}
+
+/**
+ * gboolean 
+ * lxa_archive_iter_get_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, const GValue *) 
+ *
+ */
+gboolean
+lxa_archive_iter_get_prop_value(const LXAArchive *archive, const LXAArchiveIter *iter, guint i, GValue *value)
+{
+	if(i>=LXA_ARCHIVE_PROP_USER)
+		g_value_init(value, archive->property_types[i-LXA_ARCHIVE_PROP_USER]);
+	else
+		g_value_init(value, G_TYPE_STRING);
+
+	switch(G_VALUE_TYPE(value))
+	{
+		case G_TYPE_STRING:
+			g_value_set_string(value, lxa_archive_iter_get_prop_str(archive, iter, i));
+			break;
+		case G_TYPE_UINT:
+			g_value_set_uint(value, lxa_archive_iter_get_prop_uint(archive, iter, i));
+			break;
+		case G_TYPE_UINT64:
+			g_value_set_uint64(value, lxa_archive_iter_get_prop_uint64(archive, iter, i));
+			break;
+	}
+	return TRUE;
+}
+
+/**
+ * const gchar *
+ * lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint) 
+ *
+ */
+const gchar*
+lxa_archive_iter_get_prop_str(const LXAArchive *archive, const LXAArchiveIter *iter, guint i)
+{
+	const gchar *retval = NULL;
+	gpointer props_iter = NULL;
+	guint n;
+#ifdef DEBUG
+	g_return_val_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER), NULL);
+	if(i >= LXA_ARCHIVE_PROP_USER)
+		g_return_val_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_STRING, NULL);
+#endif
+
+	switch(i)
+	{
+		case LXA_ARCHIVE_PROP_FILENAME:
+			retval = lxa_archive_iter_get_filename(archive, iter);
+			break;
+		case LXA_ARCHIVE_PROP_MIME_TYPE:
+			retval = lxa_archive_iter_get_mime(archive, iter);
+			break;
+		default:
+			props_iter = ((LXAEntry *)iter)->props;
+			if(props_iter)
+			{
+				for(n = 0; n < (i-LXA_ARCHIVE_PROP_USER); ++n)
+				{
+					switch(archive->property_types[n])
+					{
+						case G_TYPE_STRING:
+							props_iter += sizeof(gchar *);
+							break;
+						case G_TYPE_UINT:
+							props_iter += sizeof(guint);
+							break;
+						case G_TYPE_UINT64:
+							props_iter += sizeof(guint64);
+							break;
+					}
+				}
+				retval = (*((gchar **)props_iter));
+			}
+			break;
+	}
+	return retval;
+}
+
+/**
+ * guint
+ * lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint) 
+ *
+ */
+guint
+lxa_archive_iter_get_prop_uint(const LXAArchive *archive, const LXAArchiveIter *iter, guint i)
+{
+	gpointer props_iter = ((LXAEntry *)iter)->props;
+	guint n;
+#ifdef DEBUG
+	g_return_val_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER), 0);
+	g_return_val_if_fail(i >= LXA_ARCHIVE_PROP_USER, 0);
+	g_return_val_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_UINT, 0);
+#endif
+	if(!props_iter)
+		return 0;
+	for(n = 0; n < (i-LXA_ARCHIVE_PROP_USER); ++n)
+	{
+		switch(archive->property_types[n])
+		{
+			case G_TYPE_STRING:
+				props_iter += sizeof(gchar *);
+				break;
+			case G_TYPE_UINT:
+				props_iter += sizeof(guint);
+				break;
+			case G_TYPE_UINT64:
+				props_iter += sizeof(guint64);
+				break;
+		}
+	}
+	return (*((guint *)props_iter));
+}
+
+/**
+ * guint64
+ * lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint) 
+ *
+ */
+guint64
+lxa_archive_iter_get_prop_uint64(const LXAArchive *archive, const LXAArchiveIter *iter, guint i)
+{
+	gpointer props_iter = ((LXAEntry *)iter)->props;
+	guint n;
+#ifdef DEBUG
+	g_return_val_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER), 0);
+	g_return_val_if_fail(i >= LXA_ARCHIVE_PROP_USER, 0);
+	g_return_val_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_UINT64, 0);
+#endif
+	if(!props_iter)
+		return 0;
+	for(n = 0; n < (i-LXA_ARCHIVE_PROP_USER); ++n)
+	{
+		switch(archive->property_types[n])
+		{
+			case G_TYPE_STRING:
+				props_iter += sizeof(gchar *);
+				break;
+			case G_TYPE_UINT:
+				props_iter += sizeof(guint);
+				break;
+			case G_TYPE_UINT64:
+				props_iter += sizeof(guint64);
+				break;
+		}
+	}
+	return (*((guint64 *)props_iter));
+}
+
+/**************
+ * Depricated *
+ **************/
 
 LXAEntry *
 lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)
@@ -441,4 +959,13 @@ lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)
 	else
 		return NULL;
 }
+
+guint
+lxa_entry_children_length(LXAEntry *entry)
+{
+	g_return_val_if_fail(entry, 0);
+	/* the first element of the array (*entry->children) contains the size of the array */
+	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
+}
+
 

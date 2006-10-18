@@ -197,12 +197,21 @@ lxa_archive_support_gnu_tar_new()
 {
 	LXAArchiveSupportGnuTar *support;
 
+	/*
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
 	                       "view-time", TRUE, 
 												 "view-date", TRUE,
 												 "view-owner", TRUE,
 												 "view-rights", TRUE,
 												 "view-size", TRUE,
+												 NULL);
+	*/
+	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
+	                       "view-time", FALSE, 
+												 "view-date", FALSE,
+												 "view-owner", FALSE,
+												 "view-rights", FALSE,
+												 "view-size", FALSE,
 												 NULL);
 
 	return LXA_ARCHIVE_SUPPORT(support);
@@ -492,8 +501,6 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	gchar *line	= NULL;
 	LXAEntry *entry;
 
-	gpointer props = NULL; 
-	gpointer props_iter = NULL;
 	gint n = 0, a = 0, i = 0, o = 0;
 	gchar *temp_filename = NULL;
 	gchar *_size = NULL;
@@ -512,13 +519,12 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			if (line == NULL)
  				break;
 
-			props = g_malloc0(archive->entry_props_size);
-			props_iter = props;
-
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights)
 			{
+				/*
 				(*(gchar **)props_iter) = g_strndup (line, 10);
 				props_iter += sizeof(gchar *);
+				*/
 			}
 
 
@@ -527,8 +533,10 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner)
 			{
+				/*
 				(*(gchar **)props_iter) = g_strndup (&line[11], n-11);
 				props_iter += sizeof(gchar *);
+				*/
 			}
 
 			for(; n < strlen(line); n++)
@@ -541,10 +549,12 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
 			{
+				/*
 				_size = g_strndup(&line[a], n-a);
 				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
 				g_free (_size);
 				props_iter += sizeof(guint64);
+				*/
 			}
 
 			a = ++n;
@@ -554,8 +564,10 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date)
 			{
+				/*
 				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
 				props_iter += sizeof(gchar *);
+				*/
 			}
 
 			a = ++n;
@@ -564,8 +576,10 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time)
 			{
+				/*
 				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
 				props_iter += sizeof(gchar *);
+				*/
 			}
 
 			gchar *temp = g_strrstr (&line[n],"->"); 
@@ -579,7 +593,6 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			} 
  
 			entry = lxa_archive_add_file(archive, temp_filename);
-			entry->props = props;
 			g_free(line);
 			g_free(temp_filename);
 		}

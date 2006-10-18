@@ -64,7 +64,7 @@ static void
 xa_main_window_finalize(GObject *object);
 
 gboolean
-xa_main_window_add_item(LXAEntry *entry, gpointer data);
+xa_main_window_add_item(LXAArchiveIter *entry, gpointer data);
 void 
 xa_main_window_set_contents(XAMainWindow *, LXAArchive *);
 
@@ -809,11 +809,11 @@ xa_main_window_reset_columns(XAMainWindow *window)
 				case(G_TYPE_STRING):
 				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(archive->property_names[x], renderer, "text", x+2, NULL);
+					column = gtk_tree_view_column_new_with_attributes(archive->property_names[x], renderer, "text", x+3, NULL);
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
-			gtk_tree_view_column_set_sort_column_id(column, x+2);
+			gtk_tree_view_column_set_sort_column_id(column, x+3);
 			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
 	}
@@ -834,83 +834,18 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
 
-gboolean
-xa_main_window_add_item(LXAEntry *entry, gpointer data)
-{
-	gint i = 0;
-	GtkTreeIter iter;
-	gpointer props;
-	gpointer props_iter;
-	GValue *tmp_value;
-	XAMainWindow *main_window= XA_MAIN_WINDOW(data);
-	GtkTreeModel *liststore = main_window->treemodel;
-	gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
-	if(main_window->props._show_icons)
-	{
-		tmp_value = g_new0(GValue, 1);
-		tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
-		g_value_set_string(tmp_value, entry->mime_type);
-		gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
-		g_value_unset(tmp_value);
-		g_free(tmp_value);
-		i++;
-	}
-	tmp_value = g_new0(GValue, 1);
-	tmp_value = g_value_init(tmp_value, G_TYPE_STRING);
-	g_value_set_string(tmp_value, entry->filename);
-	gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
-	g_value_unset(tmp_value);
-	g_free(tmp_value);
-
-	props = entry->props;
-	if(props)
-	{
-		props_iter = props;
-
-		for(i=0; i < main_window->lp_xa_archive->n_property; i++)
-		{
-			tmp_value = g_new0(GValue, 1);
-			tmp_value = g_value_init(tmp_value, main_window->lp_xa_archive->property_types[i]);
-			switch(main_window->lp_xa_archive->property_types[i])
-			{
-				case(G_TYPE_UINT):
-					g_value_set_uint(tmp_value, *(guint *)props_iter);
-					props_iter += sizeof(guint);
-					break;
-				case(G_TYPE_STRING):
-					g_value_set_string(tmp_value, *(gchar **)props_iter);
-					props_iter += sizeof(gchar *);
-					break;
-				case(G_TYPE_UINT64):
-					g_value_set_uint64(tmp_value, *(guint64 *)props_iter);
-					props_iter += sizeof(guint64);
-					break;
-			}
-			if(main_window->props._show_icons)
-				gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i+1, tmp_value);
-			else
-				gtk_list_store_set_value(GTK_LIST_STORE(liststore), &iter, i, tmp_value);
-			g_value_unset(tmp_value);
-			g_free(tmp_value);
-		}
-	}
-	return FALSE;
-}
-
-
-
 gchar *
 xa_main_window_get_working_dir(XAMainWindow *window)
 {
-	gchar *temp = ((LXAEntry *)window->working_node->data)->filename;
+	const gchar *temp = lxa_archive_iter_get_filename(window->lp_xa_archive, (LXAArchiveIter *)window->working_node->data);
 	gchar *path = g_strdup(temp), *_temp = NULL;
 	GSList *_path = window->working_node->next;
 	while(_path)
 	{
-		if((((LXAEntry *)_path->data)->filename[0] != '/'))
+		if((lxa_archive_iter_get_filename(window->lp_xa_archive, (LXAArchiveIter *)_path->data)[0] != '/'))
 		{
 			_temp = path;
-			path = g_strconcat(((LXAEntry *)_path->data)->filename, "/", _temp,NULL);
+			path = g_strconcat(lxa_archive_iter_get_filename(window->lp_xa_archive, (LXAArchiveIter *)_path->data), "/", _temp,NULL);
 			g_free(_temp);
 		}
 		_path = _path->next;

@@ -4,6 +4,7 @@
 #include <glib-object.h>
 
 #include "archive.h"
+#include "slist.h"
 
 LXASList *
 lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
@@ -15,7 +16,8 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
 
 	for(; iter; iter = iter->next)
 	{
-		cmp = strcmp(entry->filename, ((LXAEntry*)iter->entry)->filename);
+		/* archive can be NULL */
+		cmp = strcmp(lxa_archive_iter_get_filename(NULL, entry), lxa_archive_iter_get_filename( NULL, (LXAEntry*)iter->entry));
 
 		if(!cmp)
 		{

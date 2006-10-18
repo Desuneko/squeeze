@@ -31,19 +31,16 @@ typedef enum
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
+enum
+{
+	LXA_ARCHIVE_PROP_FILENAME = 0,
+	LXA_ARCHIVE_PROP_MIME_TYPE,
+	LXA_ARCHIVE_PROP_USER
+};
 
 typedef struct _LXAEntry LXAEntry;
+typedef LXAEntry LXAArchiveIter;
 
-#include "slist.h"
-
-struct _LXAEntry {
-	gchar *filename;
-	gpointer props;
-	gchar *mime_type;
-	/* */
-	LXAEntry **children;
-	LXASList *buffer;
-};
 
 #define LXA_ARCHIVE(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
@@ -96,20 +93,36 @@ struct _LXAArchiveClass
 	GObjectClass parent;
 }; 
 
-GType              lxa_archive_get_type(void);
-LXAArchive        *lxa_archive_new(gchar *, gchar *);
+GType           lxa_archive_get_type(void);
+LXAArchive     *lxa_archive_new(gchar *, gchar *);
 
-void               lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
-gint               lxa_archive_lookup_dir(gpointer entry, gconstpointer filename);
-LXAEntry          *lxa_archive_add_file(LXAArchive *archive, gchar *path);
-void               lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *child);
+void            lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
 
-GSList            *lxa_archive_get_children(LXAArchive *archive, gchar *path);
-LXAEntry          *lxa_entry_get_child(LXAEntry *, const gchar *);
-guint              lxa_entry_children_length(LXAEntry *entry);
-LXAEntry          *lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n);
-//gint               lxa_entry_children_index(LXAEntry *entry, LXAEntry *find);
+/* new */
+gboolean        lxa_archive_iter_is_directory(const LXAArchive *, const LXAArchiveIter *);
+guint           lxa_archive_iter_n_children(const LXAArchive *, const LXAArchiveIter *);
+LXAArchiveIter *lxa_archive_iter_nth_child(LXAArchive *, LXAArchiveIter *, guint);
+LXAArchiveIter *lxa_archive_iter_add_child(LXAArchive *, LXAArchiveIter *, const gchar *);
+LXAArchiveIter *lxa_archive_iter_get_child(const LXAArchive *, const LXAArchiveIter *, const gchar *);
+gboolean        lxa_archive_iter_del_child(LXAArchive *, LXAArchiveIter *, LXAArchiveIter *);
 
+/* void            lxa_archive_iter_set_filename(LXAArchive *, LXAArchiveIter *, const gchar *); */
+void            lxa_archive_iter_set_mime(LXAArchive *, LXAArchiveIter *, const gchar *);
+void            lxa_archive_iter_set_prop_str(LXAArchive *, LXAArchiveIter *, guint, const gchar *);
+void            lxa_archive_iter_set_prop_uint(LXAArchive *, LXAArchiveIter *, guint, guint);
+void            lxa_archive_iter_set_prop_uint64(LXAArchive *, LXAArchiveIter *, guint, guint64);
+void            lxa_archive_iter_set_prop_value(LXAArchive *, LXAArchiveIter *, guint, const GValue *);
+void            lxa_archive_iter_set_props(LXAArchive *, LXAArchiveIter *, ...);
+
+const gchar    *lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *);
+const gchar    *lxa_archive_iter_get_mime(const LXAArchive *, const LXAArchiveIter *);
+const gchar    *lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint);
+guint           lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint);
+guint64         lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint);
+gboolean        lxa_archive_iter_get_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, GValue *);
+
+LXAArchiveIter *lxa_archive_add_file(LXAArchive *, const gchar *);
+GType           lxa_archive_get_property_type(LXAArchive *, guint);
 
 G_END_DECLS
 
