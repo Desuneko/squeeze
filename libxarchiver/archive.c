@@ -245,8 +245,8 @@ lxa_archive_add_file(LXAArchive *archive, const gchar *path)
 GType
 lxa_archive_get_property_type(LXAArchive *archive, guint i)
 {
-#ifdef DEBUG
-	g_return_if_fail(i < archive->n_property, G_TYPE_INVALID);
+#ifdef DEBUG /* n_property + 2, filename and MIME */
+	g_return_val_if_fail(i < (archive->n_property+2), G_TYPE_INVALID);
 #endif
 	switch(i)
 	{
@@ -257,6 +257,7 @@ lxa_archive_get_property_type(LXAArchive *archive, guint i)
 		case LXA_ARCHIVE_PROP_USER:
 			return archive->property_types[i - LXA_ARCHIVE_PROP_USER];
 	}
+	return G_TYPE_NONE;
 }
 
 
@@ -344,14 +345,26 @@ lxa_entry_get_child(const LXAEntry *entry, const gchar *filename)
 	guint pos = 0;
 	guint begin = 1;
 	gint cmp = 0;
+	const gchar *_pos = strchr(filename, '/');
+	gchar *_filename;
+
+	if(_pos)
+		_filename = g_strndup(filename, (gsize)(_pos - filename));
+	else
+		_filename = g_strdup(filename);
+
+
 	/* binary search algoritme */
 	while(size)
 	{
 		pos = (size / 2);
 
-		cmp = strcmp(filename, entry->children[begin+pos]->filename);
+		cmp = strcmp(_filename, entry->children[begin+pos]->filename);
 		if(!cmp)
+		{
+			g_free(_filename);
 			return entry->children[begin+pos];
+		}
 
 		if(cmp < 0)
 		{
@@ -367,14 +380,18 @@ lxa_entry_get_child(const LXAEntry *entry, const gchar *filename)
 	/* search the buffer */
 	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
 	{
-		cmp = strcmp(filename, buffer_iter->entry->filename);
+		cmp = strcmp(_filename, buffer_iter->entry->filename);
 
 		if(!cmp)
+		{
+			g_free(_filename);
 			return buffer_iter->entry;
+		}
 		if(cmp < 0)
 			break;
 	}
 
+	g_free(_filename);
 	return NULL;
 }
 
@@ -581,6 +598,7 @@ gboolean
 lxa_archive_iter_del_child(LXAArchive *archive, LXAArchiveIter *parent, LXAArchiveIter *child)
 {
 	g_warning("not implemented yet");
+	return FALSE;
 }
 
 /**

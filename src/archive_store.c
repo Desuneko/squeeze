@@ -271,13 +271,14 @@ static void
 xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
 	gint prev_size = 0;
+	XAArchiveStore *store = XA_ARCHIVE_STORE(object);
 	switch(prop_id)
 	{
 		case XA_ARCHIVE_STORE_SHOW_ICONS:
 			if(XA_ARCHIVE_STORE(object)->props._show_icons != g_value_get_boolean(value)?1:0)
 			{
-				if(XA_ARCHIVE_STORE(object)->current_entry)
-					prev_size = lxa_entry_children_length(((LXAArchiveIter*)XA_ARCHIVE_STORE(object)->current_entry->data));
+				if(store->current_entry)
+					prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
 				XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value)?1:0;
 				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
 			}
@@ -285,8 +286,8 @@ xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
 			if(XA_ARCHIVE_STORE(object)->props._show_up_dir != g_value_get_boolean(value)?1:0)
 			{
-				if(XA_ARCHIVE_STORE(object)->current_entry)
-					prev_size = lxa_entry_children_length(((LXAArchiveIter*)XA_ARCHIVE_STORE(object)->current_entry->data));
+				if(store->current_entry)
+					prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
 				XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value)?1:0;
 				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
 			}
@@ -581,7 +582,7 @@ xa_archive_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	/* only support lists: iter is always NULL */
 	g_return_val_if_fail(iter == NULL, FALSE);
 
-	return lxa_entry_children_length(entry) + (archive->root_entry == entry)?0:1;
+	return lxa_archive_iter_n_children(archive, entry) + (archive->root_entry == entry)?0:1;
 }
 
 static gboolean 
@@ -687,6 +688,7 @@ xa_archive_store_has_default_sort_func(GtkTreeSortable *s)
 	return XA_ARCHIVE_STORE(s)->props._sort_folders_first?FALSE:TRUE;
 }
 
+/* FIXME */
 static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIter *b)
 {
@@ -712,7 +714,6 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 
 	LXAArchive *archive = store->archive;
 	gint column = store->sort_column;
-	gint i = 0;
 
 	column--;
 
@@ -748,7 +749,7 @@ xa_archive_store_sort(XAArchiveStore *store)
 		return;
 
 	LXAArchiveIter *pentry = (LXAArchiveIter*)store->current_entry->data;
-	gint psize = lxa_entry_children_length(pentry);
+	gint psize = lxa_archive_iter_n_children(store->archive, pentry);
 	gint i = 0;
 
 	if(psize <= 1)
@@ -861,7 +862,7 @@ xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
-	gint new_size = lxa_entry_children_length(entry);
+	gint new_size = lxa_archive_iter_n_children(archive, entry);
 	gint i = 0;
 	gint index = 0;
 	GtkTreePath *path_ = NULL;
@@ -937,7 +938,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	/* only support list: depth is always 0 */
 	g_return_if_fail(depth == 0);
 
-	gint prev_size = lxa_entry_children_length(entry);
+	gint prev_size = lxa_archive_iter_n_children(archive, entry);
 	gint index = indices[depth];
 
 	if(store->props._show_up_dir && archive->root_entry != entry)
@@ -987,7 +988,7 @@ xa_archive_store_go_up(XAArchiveStore *store)
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
-	gint prev_size = lxa_entry_children_length(entry);
+	gint prev_size = lxa_archive_iter_n_children(archive, entry);
 
 	if(store->props._show_up_dir && archive->root_entry != entry)
 	{
@@ -1026,7 +1027,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 	if(store->current_entry)
 	{
 		entry = store->current_entry->data;
-		prev_size = lxa_entry_children_length(entry);
+		prev_size = lxa_archive_iter_n_children(archive, entry);
 		
 
 		if(store->props._show_up_dir && store->archive->root_entry != entry)
@@ -1062,7 +1063,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 	xa_archive_store_sort(store);
 
-	for(i = 0; i < lxa_entry_children_length(archive->root_entry); i++)
+	for(i = 0; i < lxa_archive_iter_n_children(archive, archive->root_entry); i++)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
@@ -1183,7 +1184,7 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 	gchar **iter = buf;
 	LXAArchiveIter *entry = store->archive->root_entry;
 	GSList *stack = g_slist_prepend(NULL, entry);
-	gint prev_size = lxa_entry_children_length(((LXAArchiveIter*)store->current_entry->data));
+	gint prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
 
 	if(store->props._show_up_dir && store->archive->root_entry != store->current_entry->data)
 		prev_size++;

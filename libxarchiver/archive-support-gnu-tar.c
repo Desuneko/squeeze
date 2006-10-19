@@ -503,7 +503,6 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 
 	gint n = 0, a = 0, i = 0, o = 0;
 	gchar *temp_filename = NULL;
-	gchar *_size = NULL;
 
 	if(!LXA_IS_ARCHIVE(archive))
 		return FALSE;
