@@ -169,11 +169,6 @@ xa_main_window_init(XAMainWindow *window)
 	const gchar   *nav_bar;
 	gboolean up_dir = TRUE;
 
-	window->working_node = NULL;
-	window->parent_node = g_new0(GValue, 1);
-	window->parent_node = g_value_init(window->parent_node, G_TYPE_STRING);
-	g_value_set_string(window->parent_node, "..");
-
 	window->settings = xa_settings_new(NULL);
 
 	main_vbox = gtk_vbox_new(FALSE, 0);
@@ -478,8 +473,6 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 		{
 			g_debug("Archive opened");
 			g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
-			g_slist_free(window->working_node);
-			window->working_node = NULL;
 			lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
 
 			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), TRUE);
@@ -592,7 +585,6 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 		{
 			GList *rows = gtk_tree_selection_get_selected_rows(selection, &treemodel);
 			GList *_rows = rows;
-			gchar *working_dir = xa_main_window_get_working_dir(window);
 			while(_rows)
 			{
 				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, _rows->data);
@@ -601,11 +593,9 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 				else
 					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
 
-				filenames = g_slist_prepend(filenames, g_strconcat(working_dir, "/", g_value_get_string(value), NULL));
 				g_value_unset(value);
 				_rows = _rows->next;
 			}
-			g_free(working_dir);
 			g_list_free(rows);
 		}
 		lxa_archive_support_extract(lp_support, window->lp_xa_archive, extract_archive_path, filenames);
@@ -666,8 +656,6 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path)
 	if(!lxa_open_archive(archive_path, &window->lp_xa_archive))
 	{
 		g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
-		g_slist_free(window->working_node);
-		window->working_node = NULL;
 		lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
 
 		lxa_archive_support_refresh(lp_support, window->lp_xa_archive);
@@ -718,7 +706,6 @@ xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata)
 				case(LXA_ARCHIVESTATUS_REFRESH):
 					xa_main_window_reset_columns(main_window);
 
-					main_window->working_node = g_slist_prepend(main_window->working_node, &(archive->root_entry));
 					xa_main_window_set_contents(main_window, archive);
 				case(LXA_ARCHIVESTATUS_EXTRACT):
 					gtk_widget_set_sensitive(GTK_WIDGET(main_window->menubar.menu_item_add), TRUE);
@@ -793,27 +780,27 @@ xa_main_window_reset_columns(XAMainWindow *window)
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);
-	gtk_tree_view_column_set_attributes(column, renderer, "text", 1, NULL);
+	gtk_tree_view_column_set_attributes(column, renderer, "text", LXA_ARCHIVE_PROP_FILENAME + 1, NULL);
 
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	gtk_tree_view_column_set_sort_column_id(column, 1);
-	gtk_tree_view_column_set_title(column, "Filename");
+	gtk_tree_view_column_set_sort_column_id(column, LXA_ARCHIVE_PROP_FILENAME + 1);
+	gtk_tree_view_column_set_title(column, lxa_archive_get_property_name(archive, LXA_ARCHIVE_PROP_FILENAME));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 
 	if(!show_only_filenames)
 	{
-		for(x = 0; x < archive->n_property; x++)
+		for(x = LXA_ARCHIVE_PROP_USER; x < lxa_archive_n_property(archive); ++x)
 		{
-			switch(archive->property_types[x])
+			switch(lxa_archive_get_property_type(archive, x))
 			{
 				case(G_TYPE_STRING):
 				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(archive->property_names[x], renderer, "text", x+3, NULL);
+					column = gtk_tree_view_column_new_with_attributes(lxa_archive_get_property_name(archive, x), renderer, "text", x+1, NULL);
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
-			gtk_tree_view_column_set_sort_column_id(column, x+3);
+			gtk_tree_view_column_set_sort_column_id(column, x+1);
 			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
 	}
@@ -834,21 +821,3 @@ xa_main_window_set_contents(XAMainWindow *main_window, LXAArchive *archive)
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window->treeview), GTK_TREE_MODEL(liststore));
 }
 
-gchar *
-xa_main_window_get_working_dir(XAMainWindow *window)
-{
-	const gchar *temp = lxa_archive_iter_get_filename(window->lp_xa_archive, (LXAArchiveIter *)window->working_node->data);
-	gchar *path = g_strdup(temp), *_temp = NULL;
-	GSList *_path = window->working_node->next;
-	while(_path)
-	{
-		if((lxa_archive_iter_get_filename(window->lp_xa_archive, (LXAArchiveIter *)_path->data)[0] != '/'))
-		{
-			_temp = path;
-			path = g_strconcat(lxa_archive_iter_get_filename(window->lp_xa_archive, (LXAArchiveIter *)_path->data), "/", _temp,NULL);
-			g_free(_temp);
-		}
-		_path = _path->next;
-	}
-	return path;
-}

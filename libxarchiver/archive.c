@@ -22,6 +22,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <gettext.h>
 
 #include "mime.h"
 
@@ -315,10 +316,33 @@ lxa_archive_get_property_type(LXAArchive *archive, guint i)
 			return G_TYPE_STRING;
 		case LXA_ARCHIVE_PROP_MIME_TYPE:
 			return G_TYPE_STRING;
-		case LXA_ARCHIVE_PROP_USER:
+		default:
 			return archive->property_types[i - LXA_ARCHIVE_PROP_USER];
 	}
-	return G_TYPE_NONE;
+	g_return_val_if_reached(G_TYPE_NONE);
+}
+
+/*
+ * const gchar *
+ * lxa_archive_get_property_name(LXAArchive *, guint)
+ *
+ */
+const gchar *
+lxa_archive_get_property_name(LXAArchive *archive, guint i)
+{
+#ifdef DEBUG /* n_property + 2, filename and MIME */
+	g_return_val_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER), NULL);
+#endif
+	switch(i)
+	{
+		case LXA_ARCHIVE_PROP_FILENAME:
+			return _("Filename");
+		case LXA_ARCHIVE_PROP_MIME_TYPE:
+			return _("Mime type");
+		default:
+			return archive->property_names[i - LXA_ARCHIVE_PROP_USER];
+	}
+	g_return_val_if_reached(NULL);
 }
 
 /*
@@ -702,8 +726,10 @@ lxa_archive_iter_nth_child(LXAArchive *archive, LXAArchiveIter *iter, guint n)
 {
 #ifdef DEBUG
 	g_return_val_if_fail(n >= 0, NULL);
-	g_return_val_if_fail(n < lxa_archive_iter_n_children(archive, iter), NULL);
 #endif
+	if(n >= lxa_archive_iter_n_children(archive, iter))
+		return NULL;
+
 	lxa_archive_entry_flush_buffer(archive, (LXAEntry *)iter);
 	/* the first element of the array (*iter->children) contains the size of the array */
 	return ((LXAEntry *)iter->children[n+1]);
@@ -982,11 +1008,11 @@ lxa_archive_iter_set_propsv(LXAArchive *archive, LXAArchiveIter *iter, gconstpoi
 				props_iter += sizeof(gchar *);
 				break;
 			case G_TYPE_UINT:
-				(*((guint *)props_iter)) = ((const guint)props[i]);
+				(*((guint *)props_iter)) = *((const guint*)props[i]);
 				props_iter += sizeof(guint);
 				break;
 			case G_TYPE_UINT64:
-				(*((guint64 *)props_iter)) = ((const guint)props[i]);
+				(*((guint64 *)props_iter)) = *((const guint*)props[i]);
 				props_iter += sizeof(guint64);
 				break;
 		}
@@ -1141,32 +1167,4 @@ lxa_archive_iter_get_prop_uint64(const LXAArchive *archive, const LXAArchiveIter
 	}
 	return (*((guint64 *)props_iter));
 }
-
-
-/**************
- * Depricated *
- **************/
-
-LXAEntry *
-lxa_entry_children_nth_data(LXAArchive *archive, LXAEntry *entry, guint n)
-{
-	if(entry == NULL)
-		return NULL;
-	lxa_archive_entry_flush_buffer(archive, entry);
-	n++;
-	/* the first element of the array (*entry->children) contains the size of the array */
-	if(entry->children && n > 0 && n <= GPOINTER_TO_INT(*entry->children))
-		return entry->children[n];
-	else
-		return NULL;
-}
-
-guint
-lxa_entry_children_length(LXAEntry *entry)
-{
-	g_return_val_if_fail(entry, 0);
-	/* the first element of the array (*entry->children) contains the size of the array */
-	return entry->children?GPOINTER_TO_INT(*entry->children):0 + lxa_slist_length(entry->buffer);
-}
-
 

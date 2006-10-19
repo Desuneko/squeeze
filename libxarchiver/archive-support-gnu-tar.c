@@ -197,7 +197,7 @@ lxa_archive_support_gnu_tar_new()
 {
 	LXAArchiveSupportGnuTar *support;
 
-	/*
+	/**/
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
 	                       "view-time", TRUE, 
 												 "view-date", TRUE,
@@ -205,7 +205,7 @@ lxa_archive_support_gnu_tar_new()
 												 "view-rights", TRUE,
 												 "view-size", TRUE,
 												 NULL);
-	*/
+	/*/
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
 	                       "view-time", FALSE, 
 												 "view-date", FALSE,
@@ -213,6 +213,7 @@ lxa_archive_support_gnu_tar_new()
 												 "view-rights", FALSE,
 												 "view-size", FALSE,
 												 NULL);
+	*/
 
 	return LXA_ARCHIVE_SUPPORT(support);
 }
@@ -411,52 +412,26 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 	}
 	else
 	{
-		archive->n_property = 0;
-		archive->entry_props_size = 0;
-
-		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) 
-			archive->n_property++;
-
-		archive->property_types = g_new0(GType, archive->n_property);
-		archive->property_names = g_new0(gchar *, archive->n_property);
-
+		i = LXA_ARCHIVE_PROP_USER;
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Permissions"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Permissions"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Owner/Group"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING,_("Owner/Group"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) {
-			archive->property_types[i] = G_TYPE_UINT64;
-			archive->property_names[i] = g_strdup(_("Size"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
-			archive->entry_props_size += sizeof(guint64);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Date"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Date"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Time"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
 			command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -tvf " , archive->path, NULL);
@@ -500,7 +475,10 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	LXAArchive *archive = data;
 	gchar *line	= NULL;
 	LXAEntry *entry;
+	gpointer props[6];
 
+	guint64 size;
+	guint linesize;
 	gint n = 0, a = 0, i = 0, o = 0;
 	gchar *temp_filename = NULL;
 
@@ -518,82 +496,78 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			if (line == NULL)
  				break;
 
+			linesize = strlen(line);
+
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights)
 			{
-				/*
-				(*(gchar **)props_iter) = g_strndup (line, 10);
-				props_iter += sizeof(gchar *);
-				*/
+				line[10] = '\0';
+				props[i] = line;
+				i++;
 			}
 
 
-			for(n=13; n < strlen(line); n++)
+			for(n=13; n < linesize; ++n)
 				if(line[n] == ' ') break;
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner)
 			{
-				/*
-				(*(gchar **)props_iter) = g_strndup (&line[11], n-11);
-				props_iter += sizeof(gchar *);
-				*/
+				line[n] = '\0';
+				props[i] = line+11;
+				i++;
 			}
 
-			for(; n < strlen(line); n++)
+			for(++n; n < linesize; ++n)
 				if(line[n] >= '0' && line[n] <= '9') break;
 
-			a = ++n;
+			a = n;
 
-			for(; n < strlen(line); n++)
+			for(; n < linesize; ++n)
 				if(line[n] == ' ') break;
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
 			{
-				/*
-				_size = g_strndup(&line[a], n-a);
-				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
-				g_free (_size);
-				props_iter += sizeof(guint64);
-				*/
+				line[n] = '\0';
+				size = g_ascii_strtoll(line + a, NULL, 0);
+				props[i] = &size;
+				i++;
 			}
 
 			a = ++n;
 
-			for(; n < strlen(line); n++) // DATE
+			for(; n < linesize; n++) // DATE
 				if(line[n] == ' ') break;
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date)
 			{
-				/*
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
-				*/
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
 
 			a = ++n;
-			for (; n < strlen(line); n++) // TIME
+			for (; n < linesize; n++) // TIME
 				if (line[n] == ' ') break;
 
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time)
 			{
-				/*
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
-				*/
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
+
+			n++;
 
 			gchar *temp = g_strrstr (&line[n],"->"); 
 			if (temp ) 
 			{ 
-				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line) - strlen(temp) - n )); 
+				temp[0] = '\0';
 			} 
-			else 
-			{ 
-				temp_filename = g_strstrip(g_strndup(&line[n], strlen(line)-n-1)); 
-			} 
+
+			temp_filename = g_strchomp(line + n); 
  
 			entry = lxa_archive_add_file(archive, temp_filename);
+			lxa_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
 			g_free(line);
-			g_free(temp_filename);
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )

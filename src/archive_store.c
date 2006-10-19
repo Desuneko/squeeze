@@ -350,7 +350,7 @@ xa_archive_store_get_n_columns(GtkTreeModel *tree_model)
 	if(!archive)
 		return 0;
 	
-	return archive->n_property + 1;
+	return lxa_archive_n_property(archive) + 1;
 }
 
 static GType
@@ -395,7 +395,7 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 
 	gint index = indices[depth];
 
-	if(store->props._show_up_dir && archive->root_entry != entry)
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 		index--;
 
 	if(index == -1)
@@ -435,7 +435,7 @@ xa_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	LXAArchiveIter *entry = (LXAArchiveIter*)iter->user_data2;
 	gint pos = GPOINTER_TO_INT(iter->user_data3);
 
-	if(store->props._show_up_dir && archive->root_entry != entry)
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 		pos++;
 
 	GtkTreePath *path = gtk_tree_path_new();
@@ -537,7 +537,7 @@ xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, Gtk
 	/* only support lists: parent is always NULL */
 	g_return_val_if_fail(parent == NULL, FALSE);
 
-	if(store->props._show_up_dir && archive->root_entry != entry)
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 	{
 		entry = NULL;
 		iter->user_data3 = GINT_TO_POINTER(-1);
@@ -582,7 +582,7 @@ xa_archive_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	/* only support lists: iter is always NULL */
 	g_return_val_if_fail(iter == NULL, FALSE);
 
-	return lxa_archive_iter_n_children(archive, entry) + (archive->root_entry == entry)?0:1;
+	return lxa_archive_iter_n_children(archive, entry) + (lxa_archive_get_iter(archive, NULL) == entry)?0:1;
 }
 
 static gboolean 
@@ -601,7 +601,7 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 	/* only support lists: parent is always NULL */
 	g_return_val_if_fail(parent == NULL, FALSE);
 
-	if(store->props._show_up_dir && archive->root_entry != entry)
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 		n--;
 
 	if(n == -1)
@@ -868,7 +868,7 @@ xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 	GtkTreePath *path_ = NULL;
 	GtkTreeIter iter;
 
-	if(store->props._show_up_dir && archive->root_entry != entry) { 
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry) { 
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, 0);
 
@@ -895,7 +895,7 @@ xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 		if(store->sort_list)
 			iter.user_data = store->sort_list[i];
 		else
-			iter.user_data = lxa_archive_iter_nth_child(archive, archive->root_entry, i);
+			iter.user_data = lxa_archive_iter_nth_child(archive, lxa_archive_get_iter(archive, NULL), i);
 		iter.user_data2 = entry;
 		iter.user_data3 = GINT_TO_POINTER(index);
 
@@ -941,7 +941,7 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	gint prev_size = lxa_archive_iter_n_children(archive, entry);
 	gint index = indices[depth];
 
-	if(store->props._show_up_dir && archive->root_entry != entry)
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 	{
 		prev_size++;
 		index--;
@@ -990,7 +990,7 @@ xa_archive_store_go_up(XAArchiveStore *store)
 
 	gint prev_size = lxa_archive_iter_n_children(archive, entry);
 
-	if(store->props._show_up_dir && archive->root_entry != entry)
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 	{
 		prev_size++;
 	}
@@ -1030,7 +1030,7 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		prev_size = lxa_archive_iter_n_children(archive, entry);
 		
 
-		if(store->props._show_up_dir && store->archive->root_entry != entry)
+		if(store->props._show_up_dir && lxa_archive_get_iter(store->archive, NULL) != entry)
 			prev_size++;
 		
 		g_slist_free(store->current_entry);
@@ -1059,11 +1059,11 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 
 	g_object_ref(archive);
 	store->archive = archive;
-	store->current_entry = g_slist_prepend(NULL, archive->root_entry);
+	store->current_entry = g_slist_prepend(NULL, lxa_archive_get_iter(archive, NULL));
 
 	xa_archive_store_sort(store);
 
-	for(i = 0; i < lxa_archive_iter_n_children(archive, archive->root_entry); i++)
+	for(i = 0; i < lxa_archive_iter_n_children(archive, lxa_archive_get_iter(archive, NULL)); i++)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
@@ -1072,8 +1072,8 @@ xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
 		if(store->sort_list)
 			iter.user_data = store->sort_list[i];
 		else
-			iter.user_data = lxa_archive_iter_nth_child(archive, archive->root_entry, i);
-		iter.user_data2 = archive->root_entry;
+			iter.user_data = lxa_archive_iter_nth_child(archive, lxa_archive_get_iter(archive, NULL), i);
+		iter.user_data2 = lxa_archive_get_iter(archive, NULL);
 		iter.user_data3 = GINT_TO_POINTER(i);
 
 		gtk_tree_model_row_inserted(GTK_TREE_MODEL(store), path_, &iter);
@@ -1186,7 +1186,7 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 	GSList *stack = g_slist_prepend(NULL, entry);
 	gint prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
 
-	if(store->props._show_up_dir && store->archive->root_entry != store->current_entry->data)
+	if(store->props._show_up_dir && lxa_archive_get_iter(store->archive, NULL) != store->current_entry->data)
 		prev_size++;
 
 	if(path[0] == '/' && lxa_archive_iter_get_child(store->archive, entry, "/"))

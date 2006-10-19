@@ -100,8 +100,6 @@ struct _XAMainWindow
 	} toolbar;
 	GtkIconTheme *icon_theme;
 	LXAArchive *lp_xa_archive;
-	GValue *parent_node;
-	GSList *working_node;
 	struct {
 		gboolean   _show_icons;
 	} props;
