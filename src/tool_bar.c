@@ -181,6 +181,7 @@ static void
 xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 {
 	gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), path);
+	gtk_editable_set_position(GTK_EDITABLE(tool_bar->path_field), -1);
 
 	if(strlen(path) < 1 || (strlen(path) == 1 && path[0] == '/'))
 	{

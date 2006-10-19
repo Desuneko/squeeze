@@ -253,6 +253,10 @@ int main(int argc, char **argv)
 				} else
 				{
 					gtk_widget_destroy(main_window);
+					dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Xarchiver\nERROR: Could not open file \"%s\""), argv[i]);
+					gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+					gtk_dialog_run (GTK_DIALOG (dialog) );
+					gtk_widget_destroy (GTK_WIDGET (dialog) );
 				}
 			}
 			opened_archives--;

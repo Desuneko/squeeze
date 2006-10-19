@@ -113,6 +113,7 @@ void            lxa_archive_iter_set_prop_uint(LXAArchive *, LXAArchiveIter *, g
 void            lxa_archive_iter_set_prop_uint64(LXAArchive *, LXAArchiveIter *, guint, guint64);
 void            lxa_archive_iter_set_prop_value(LXAArchive *, LXAArchiveIter *, guint, const GValue *);
 void            lxa_archive_iter_set_props(LXAArchive *, LXAArchiveIter *, ...);
+void            lxa_archive_iter_set_propsv(LXAArchive *, LXAArchiveIter *, gconstpointer *);
 
 const gchar    *lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *);
 const gchar    *lxa_archive_iter_get_mime(const LXAArchive *, const LXAArchiveIter *);
@@ -122,7 +123,12 @@ guint64         lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAAr
 gboolean        lxa_archive_iter_get_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, GValue *);
 
 LXAArchiveIter *lxa_archive_add_file(LXAArchive *, const gchar *);
+LXAArchiveIter *lxa_archive_get_iter(LXAArchive *, const gchar *);
 GType           lxa_archive_get_property_type(LXAArchive *, guint);
+const gchar    *lxa_archive_get_property_name(LXAArchive *, guint);
+void            lxa_archive_set_property_type(LXAArchive *, guint, GType, const gchar *);
+void            lxa_archive_set_property_typesv(LXAArchive *, GType *, const gchar **);
+guint           lxa_archive_n_property(LXAArchive *);
 
 G_END_DECLS
 

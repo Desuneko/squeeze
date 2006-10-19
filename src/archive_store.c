@@ -1182,14 +1182,14 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 
 	gchar **buf = g_strsplit_set(path, "/\n", -1);
 	gchar **iter = buf;
-	LXAArchiveIter *entry = store->archive->root_entry;
+	LXAArchiveIter *entry = lxa_archive_get_iter(store->archive, NULL);
 	GSList *stack = g_slist_prepend(NULL, entry);
 	gint prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
 
 	if(store->props._show_up_dir && store->archive->root_entry != store->current_entry->data)
 		prev_size++;
 
-	if(path[0] == '/' && lxa_archive_iter_get_child(store->archive, store->archive->root_entry, "/"))
+	if(path[0] == '/' && lxa_archive_iter_get_child(store->archive, entry, "/"))
 	{
 		iter[0] = strdup("/");
 	}
