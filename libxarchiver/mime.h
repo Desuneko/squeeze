@@ -45,4 +45,7 @@ lxa_mime_get_mime_info(const gchar *mime_type);
 const gchar *
 lxa_mime_info_get_name(const LXAMimeInfo *mime_info);
 
+void
+lxa_mime_info_unref(LXAMimeInfo *mime_info);
+
 #endif /* __LXA_MIME_H__ */

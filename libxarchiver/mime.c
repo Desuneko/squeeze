@@ -121,3 +121,13 @@ lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 	/* g_free((gchar *)mime_type); */
 }
 
+void
+lxa_mime_info_unref(LXAMimeInfo *mime_info)
+{
+#ifdef HAVE_THUNAR_VFS
+	thunar_vfs_mime_info_unref((ThunarVfsMimeInfo *)mime_info);
+#else
+
+#endif
+
+}

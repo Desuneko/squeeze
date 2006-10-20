@@ -43,7 +43,7 @@
 struct _LXAEntry
 {
 	gchar *filename;
-	const LXAMimeInfo *mime_info;
+	LXAMimeInfo *mime_info;
 	gpointer props;
 	LXAEntry **children;
 	LXASList *buffer;
@@ -506,6 +506,8 @@ lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 		}
 		g_free(entry->props);
 	}
+	if(entry->mime_info)
+		lxa_mime_info_unref(entry->mime_info);
 	g_free(entry->filename);
 	g_free(entry);
 }
@@ -787,7 +789,7 @@ lxa_archive_iter_get_filename(const LXAArchive *archive, const LXAArchiveIter *i
 
 /**
  * const gchar *
- * lxa_archive_iter_get_mime(const LXAArchive *, const LXAArchiveIter *)
+ * lxa_archive_iter_get_mimetype(const LXAArchive *, const LXAArchiveIter *)
  *
  * returns mime type
  */

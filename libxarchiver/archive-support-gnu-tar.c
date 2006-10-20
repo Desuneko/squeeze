@@ -95,6 +95,7 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 {
 	/* TODO: free return value of g_find_program_in_path */
 	LXAArchiveSupport *archive_support = LXA_ARCHIVE_SUPPORT(support);
+	gchar *program_path = NULL;
 
 	archive_support->id = "Gnu Tar";
 
@@ -105,17 +106,33 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 
 	lxa_archive_support_add_mime(archive_support, "application/x-tar");
 	/* Check for existence of compress -- required for x-tarz */
-	if(g_find_program_in_path("compress"))
+	program_path = g_find_program_in_path("compress");
+	if(program_path)
+	{
 		lxa_archive_support_add_mime(archive_support, "application/x-tarz");
+		g_free(program_path);
+	}
 	/* Check for existence of gzip -- required for x-compressed-tar*/
-	if(g_find_program_in_path("gzip"))
+	program_path = g_find_program_in_path("gzip");
+	if(program_path)
+	{
 		lxa_archive_support_add_mime(archive_support, "application/x-compressed-tar");
+		g_free(program_path);
+	}
 	/* Check for existence of bzip2 -- required for x-bzip-compressed-tar */
-	if(g_find_program_in_path("bzip2"))
+	program_path = g_find_program_in_path("bzip2");
+	if(program_path)
+	{
 		lxa_archive_support_add_mime(archive_support, "application/x-bzip-compressed-tar");
+		g_free(program_path);
+	}
 	/* Check for existence of lzop -- required for x-tzo */
-	if(g_find_program_in_path("lzop"))
+	program_path = g_find_program_in_path("lzop");
+	if(program_path)
+	{
 		lxa_archive_support_add_mime(archive_support, "application/x-tzo");
+		g_free(program_path);
+	}
 
 	archive_support->add = lxa_archive_support_gnu_tar_add;
 	archive_support->extract = lxa_archive_support_gnu_tar_extract;
