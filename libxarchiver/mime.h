@@ -1,5 +1,4 @@
-/*
- *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
+/* *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +20,12 @@
 
 #include <gtk/gtkicontheme.h>
 
+#ifdef HAVE_THUNAR_VFS
+typedef struct _ThunarVfsMimeInfo LXAMimeInfo;
+#else
+typedef struct _LXAMimeInfo LXAMimeInfo;
+#endif
+
 void
 lxa_mime_init();
 
@@ -30,9 +35,14 @@ lxa_mime_destroy();
 void
 lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
 
-gchar *
-lxa_mime_get_mime_type_for_file(gchar *path);
-gchar *
-lxa_mime_get_mime_type_for_filename(gchar *filename);
+LXAMimeInfo *
+lxa_mime_get_mime_info_for_file(const gchar *path);
+LXAMimeInfo *
+lxa_mime_get_mime_info_for_filename(const gchar *filename);
+LXAMimeInfo *
+lxa_mime_get_mime_info(const gchar *mime_type);
+
+const gchar *
+lxa_mime_info_get_name(const LXAMimeInfo *mime_info);
 
 #endif /* __LXA_MIME_H__ */

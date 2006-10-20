@@ -473,7 +473,7 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 		{
 			g_debug("Archive opened");
 			g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
-			lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
+			lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime));
 
 			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_new), TRUE);
@@ -572,7 +572,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	GtkTreeIter iter;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
 
-	lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
+	lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime));
 
 
 	dialog = xa_extract_archive_dialog_new(lp_support, window->lp_xa_archive, gtk_tree_selection_count_selected_rows (selection));
@@ -656,7 +656,7 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path)
 	if(!lxa_open_archive(archive_path, &window->lp_xa_archive))
 	{
 		g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
-		lp_support = lxa_get_support_for_mime(window->lp_xa_archive->mime);
+		lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime));
 
 		lxa_archive_support_refresh(lp_support, window->lp_xa_archive);
 		return 0;

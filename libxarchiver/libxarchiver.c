@@ -23,8 +23,6 @@
 #include <glib-object.h>
 #include <gettext.h>
 
-#include "mime.h"
-
 #include "libxarchiver.h"
 #include "libxarchiver/archive-support-zip.h"
 #include "libxarchiver/archive-support-rar.h"

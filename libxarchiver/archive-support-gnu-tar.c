@@ -227,7 +227,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
 	{
 		return 1;
 	}
@@ -287,7 +287,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
 	{
 		return 1;
 	}
@@ -358,7 +358,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
 	{
 		return 1;
 	}
@@ -406,7 +406,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
 	{
 		return 1;
 	}

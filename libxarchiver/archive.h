@@ -68,7 +68,7 @@ struct _LXAArchive
 {
 	GObject parent;
 	gchar              *path;
-	gchar              *mime;
+	LXAMimeInfo        *mime;
 	guint               n_property;
 	GType              *property_types;
 	gchar             **property_names;
@@ -93,42 +93,42 @@ struct _LXAArchiveClass
 	GObjectClass parent;
 }; 
 
-GType           lxa_archive_get_type(void);
-LXAArchive     *lxa_archive_new(gchar *, gchar *);
+GType               lxa_archive_get_type(void);
+LXAArchive         *lxa_archive_new(gchar *, const gchar *);
 
-void            lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
+void                lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
 
 /* new */
-gboolean        lxa_archive_iter_is_directory(const LXAArchive *, const LXAArchiveIter *);
-guint           lxa_archive_iter_n_children(const LXAArchive *, const LXAArchiveIter *);
-LXAArchiveIter *lxa_archive_iter_nth_child(LXAArchive *, LXAArchiveIter *, guint);
-LXAArchiveIter *lxa_archive_iter_add_child(LXAArchive *, LXAArchiveIter *, const gchar *);
-LXAArchiveIter *lxa_archive_iter_get_child(const LXAArchive *, const LXAArchiveIter *, const gchar *);
-gboolean        lxa_archive_iter_del_child(LXAArchive *, LXAArchiveIter *, LXAArchiveIter *);
+gboolean            lxa_archive_iter_is_directory(const LXAArchive *, const LXAArchiveIter *);
+guint               lxa_archive_iter_n_children(const LXAArchive *, const LXAArchiveIter *);
+LXAArchiveIter     *lxa_archive_iter_nth_child(LXAArchive *, LXAArchiveIter *, guint);
+LXAArchiveIter     *lxa_archive_iter_add_child(LXAArchive *, LXAArchiveIter *, const gchar *);
+LXAArchiveIter     *lxa_archive_iter_get_child(const LXAArchive *, const LXAArchiveIter *, const gchar *);
+gboolean            lxa_archive_iter_del_child(LXAArchive *, LXAArchiveIter *, LXAArchiveIter *);
 
 /* void            lxa_archive_iter_set_filename(LXAArchive *, LXAArchiveIter *, const gchar *); */
-void            lxa_archive_iter_set_mime(LXAArchive *, LXAArchiveIter *, const gchar *);
-void            lxa_archive_iter_set_prop_str(LXAArchive *, LXAArchiveIter *, guint, const gchar *);
-void            lxa_archive_iter_set_prop_uint(LXAArchive *, LXAArchiveIter *, guint, guint);
-void            lxa_archive_iter_set_prop_uint64(LXAArchive *, LXAArchiveIter *, guint, guint64);
-void            lxa_archive_iter_set_prop_value(LXAArchive *, LXAArchiveIter *, guint, const GValue *);
-void            lxa_archive_iter_set_props(LXAArchive *, LXAArchiveIter *, ...);
-void            lxa_archive_iter_set_propsv(LXAArchive *, LXAArchiveIter *, gconstpointer *);
+void                lxa_archive_iter_set_mime(LXAArchive *, LXAArchiveIter *, LXAMimeInfo *);
+void                lxa_archive_iter_set_prop_str(LXAArchive *, LXAArchiveIter *, guint, const gchar *);
+void                lxa_archive_iter_set_prop_uint(LXAArchive *, LXAArchiveIter *, guint, guint);
+void                lxa_archive_iter_set_prop_uint64(LXAArchive *, LXAArchiveIter *, guint, guint64);
+void                lxa_archive_iter_set_prop_value(LXAArchive *, LXAArchiveIter *, guint, const GValue *);
+void                lxa_archive_iter_set_props(LXAArchive *, LXAArchiveIter *, ...);
+void                lxa_archive_iter_set_propsv(LXAArchive *, LXAArchiveIter *, gconstpointer *);
 
-const gchar    *lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *);
-const gchar    *lxa_archive_iter_get_mime(const LXAArchive *, const LXAArchiveIter *);
-const gchar    *lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint);
-guint           lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint);
-guint64         lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint);
-gboolean        lxa_archive_iter_get_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, GValue *);
+const gchar        *lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *);
+const gchar        *lxa_archive_iter_get_mimetype(const LXAArchive *, const LXAArchiveIter *);
+const gchar        *lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint);
+guint               lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint);
+guint64             lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint);
+gboolean            lxa_archive_iter_get_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, GValue *);
 
-LXAArchiveIter *lxa_archive_add_file(LXAArchive *, const gchar *);
-LXAArchiveIter *lxa_archive_get_iter(LXAArchive *, const gchar *);
-GType           lxa_archive_get_property_type(LXAArchive *, guint);
-const gchar    *lxa_archive_get_property_name(LXAArchive *, guint);
-void            lxa_archive_set_property_type(LXAArchive *, guint, GType, const gchar *);
-void            lxa_archive_set_property_typesv(LXAArchive *, GType *, const gchar **);
-guint           lxa_archive_n_property(LXAArchive *);
+LXAArchiveIter     *lxa_archive_add_file(LXAArchive *, const gchar *);
+LXAArchiveIter     *lxa_archive_get_iter(LXAArchive *, const gchar *);
+GType               lxa_archive_get_property_type(LXAArchive *, guint);
+const gchar        *lxa_archive_get_property_name(LXAArchive *, guint);
+void                lxa_archive_set_property_type(LXAArchive *, guint, GType, const gchar *);
+void                lxa_archive_set_property_typesv(LXAArchive *, GType *, const gchar **);
+guint               lxa_archive_n_property(LXAArchive *);
 
 G_END_DECLS
 

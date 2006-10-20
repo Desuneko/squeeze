@@ -21,6 +21,7 @@
 #include <glib/gstdio.h>
 #include <glib-object.h>
 
+#include "mime.h"
 #include "archive.h"
 #include "archive-support.h"
 
@@ -136,7 +137,7 @@ lxa_register_support(LXAArchiveSupport *support)
  *
  */
 LXAArchiveSupport *
-lxa_get_support_for_mime(gchar *mime)
+lxa_get_support_for_mime(const gchar *mime)
 {
 	return lxa_get_support_for_mime_from_slist(lxa_archive_support_list, mime);
 }
@@ -145,7 +146,7 @@ lxa_get_support_for_mime(gchar *mime)
  *
  */
 LXAArchiveSupport *
-lxa_get_support_for_mime_from_slist(GSList *list, gchar *mime)
+lxa_get_support_for_mime_from_slist(GSList *list, const gchar *mime)
 {
 	GSList *result = g_slist_find_custom(list, mime, lxa_archive_support_lookup_support);
 	if(result)

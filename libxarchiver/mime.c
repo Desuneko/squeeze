@@ -30,7 +30,13 @@
 
 #ifdef HAVE_THUNAR_VFS
 ThunarVfsMimeDatabase  *lxa_mime_database;
+#else
+struct _LXAMimeInfo
+{
+
+};
 #endif /* HAVE_THUNAR_VFS */
+
 
 void
 lxa_mime_init()
@@ -49,41 +55,54 @@ lxa_mime_destroy()
 #endif /* HAVE_THUNAR_VFS */
 }
 
-gchar *
-lxa_mime_get_mime_type_for_file(gchar *path)
+LXAMimeInfo *
+lxa_mime_get_mime_info_for_file(const gchar *path)
 {
-	gchar *result = NULL;
+	LXAMimeInfo *result = NULL;
 	gchar *base = g_path_get_basename(path);
 
 #ifdef HAVE_THUNAR_VFS
-	ThunarVfsMimeInfo *mime_info;
-
-	mime_info = thunar_vfs_mime_database_get_info_for_file(lxa_mime_database, path, base);
-	
-	result = g_strdup(thunar_vfs_mime_info_get_name(mime_info));
-
-	thunar_vfs_mime_info_unref(mime_info);
+	result = (LXAMimeInfo *)thunar_vfs_mime_database_get_info_for_file(lxa_mime_database, path, base);
+#else
 
 #endif /* HAVE_THUNAR_VFS */
 	g_free(base);
 	return result;
 }
 
-gchar *
-lxa_mime_get_mime_type_for_filename(gchar *filename)
+LXAMimeInfo *
+lxa_mime_get_mime_info_for_filename(const gchar *filename)
 {
-	gchar *result = NULL;
+	LXAMimeInfo *result = NULL;
 
 #ifdef HAVE_THUNAR_VFS
-	ThunarVfsMimeInfo *mime_info;
-
-	mime_info = thunar_vfs_mime_database_get_info_for_name(lxa_mime_database, filename);
-	
-	result = g_strdup(thunar_vfs_mime_info_get_name(mime_info));
-
-	thunar_vfs_mime_info_unref(mime_info);
-
+	result = (LXAMimeInfo *)thunar_vfs_mime_database_get_info_for_name(lxa_mime_database, filename);
+#else
 #endif /* HAVE_THUNAR_VFS */
+	return result;
+}
+
+LXAMimeInfo *
+lxa_mime_get_mime_info(const gchar *mime_type)
+{
+	LXAMimeInfo *result = NULL;
+
+#ifdef HAVE_THUNAR_VFS
+	result = (LXAMimeInfo *)thunar_vfs_mime_database_get_info(lxa_mime_database, mime_type);
+#else
+#endif /* HAVE_THUNAR_VFS */
+	return result;
+
+}
+const gchar *
+lxa_mime_info_get_name(const LXAMimeInfo *mime_info)
+{
+	const gchar *result = NULL;
+#ifdef HAVE_THUNAR_VFS
+	result = thunar_vfs_mime_info_get_name((ThunarVfsMimeInfo *)mime_info);
+#else
+
+#endif
 	return result;
 }
 
@@ -101,3 +120,4 @@ lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 #endif
 	/* g_free((gchar *)mime_type); */
 }
+

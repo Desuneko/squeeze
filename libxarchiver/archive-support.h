@@ -78,8 +78,8 @@ void                 lxa_archive_support_add_mime(LXAArchiveSupport *support, gc
 gboolean             lxa_archive_support_mime_supported(LXAArchiveSupport *,const gchar *mime);
 
 gboolean             lxa_register_support(LXAArchiveSupport *);
-LXAArchiveSupport *  lxa_get_support_for_mime(gchar *mime);
-LXAArchiveSupport *  lxa_get_support_for_mime_from_slist(GSList *list, gchar *mime);
+LXAArchiveSupport *  lxa_get_support_for_mime(const gchar *mime);
+LXAArchiveSupport *  lxa_get_support_for_mime_from_slist(GSList *list, const gchar *mime);
 
 gint                 lxa_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime);
 gint                 lxa_archive_support_lookup_support(gconstpointer support, gconstpointer mime);

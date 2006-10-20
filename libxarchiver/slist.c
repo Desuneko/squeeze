@@ -3,6 +3,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "mime.h"
 #include "archive.h"
 #include "slist.h"
 

@@ -26,7 +26,6 @@
 
 #include "mime.h"
 
-//#include "entry.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "slist.h"
@@ -44,7 +43,7 @@
 struct _LXAEntry
 {
 	gchar *filename;
-	gchar *mime_type;
+	const LXAMimeInfo *mime_info;
 	gpointer props;
 	LXAEntry **children;
 	LXASList *buffer;
@@ -67,7 +66,7 @@ static gchar **
 lxa_archive_get_property_names(LXAArchive *archive, guint size);
 
 static LXAEntry *
-lxa_entry_new(const gchar *);
+lxa_entry_new(LXAArchive *, const gchar *);
 
 static void
 lxa_archive_entry_free(LXAArchive *, LXAEntry *);
@@ -168,7 +167,7 @@ lxa_archive_finalize(GObject *object)
 }
 
 LXAArchive *
-lxa_archive_new(gchar *path, gchar *mime)
+lxa_archive_new(gchar *path, const gchar *mime)
 {
 	LXAArchive *archive;
 
@@ -180,13 +179,13 @@ lxa_archive_new(gchar *path, gchar *mime)
 		archive->path = NULL;
 
 	if(!mime)
-		archive->mime = lxa_mime_get_mime_type_for_file(archive->path);
+		archive->mime = lxa_mime_get_mime_info_for_file(archive->path);
 	else
-		archive->mime = g_strdup(mime);
+		archive->mime = lxa_mime_get_mime_info(mime);
 #ifdef DEBUG	
-	g_debug("Mime-type: %s", archive->mime);
+	g_debug("Mime-type: %s", lxa_mime_info_get_name(archive->mime));
 #endif
-	if(!lxa_get_support_for_mime(archive->mime))
+	if(!lxa_get_support_for_mime(lxa_mime_info_get_name(archive->mime)))
 	{
 		g_object_unref(archive);
 		archive = NULL;
@@ -443,7 +442,7 @@ lxa_archive_get_iter(LXAArchive *archive, const gchar *path)
  ******************/
 
 static LXAEntry *
-lxa_entry_new(const gchar *filename)
+lxa_entry_new(LXAArchive *archive, const gchar *filename)
 {
 	LXAEntry *entry = g_new0(LXAEntry, 1);
 
@@ -452,12 +451,12 @@ lxa_entry_new(const gchar *filename)
 	if(pos)
 	{
 		entry->filename = g_strndup(filename, (gsize)(pos - filename));
-		entry->mime_type = g_strdup(LXA_MIME_DIRECTORY);
+		lxa_archive_iter_set_mime(archive, entry, lxa_mime_get_mime_info(LXA_MIME_DIRECTORY));
 	}
 	else
 	{
 		entry->filename = g_strdup(filename);
-		entry->mime_type = lxa_mime_get_mime_type_for_filename(entry->filename);
+		lxa_archive_iter_set_mime(archive, entry, lxa_mime_get_mime_info_for_filename(entry->filename));
 	}
 
 	return entry;
@@ -479,8 +478,7 @@ lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 
 	if(entry->children)
 	{
-		/* first elemant of the array (*entry->children) contains the size of the array */
-		/* WHY DOES i end up being 2 when *entry->children == 1 ?! */
+		/* first element of the array (*entry->children) contains the size of the array */
 		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); ++i)
 			lxa_archive_entry_free(archive, entry->children[i]);
 
@@ -508,7 +506,6 @@ lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 		}
 		g_free(entry->props);
 	}
-	g_free(entry->mime_type);
 	g_free(entry->filename);
 	g_free(entry);
 }
@@ -694,7 +691,7 @@ lxa_archive_entry_get_props(LXAArchive *archive, LXAEntry *entry)
 gboolean
 lxa_archive_iter_is_directory(const LXAArchive *archive, const LXAArchiveIter *iter)
 {
-	if(!strcmp(lxa_archive_iter_get_mime(archive, iter), LXA_MIME_DIRECTORY))
+	if(!strcmp(lxa_archive_iter_get_mimetype(archive, iter), LXA_MIME_DIRECTORY))
 		return TRUE;
 	return FALSE;
 }
@@ -744,7 +741,7 @@ lxa_archive_iter_nth_child(LXAArchive *archive, LXAArchiveIter *iter, guint n)
 LXAArchiveIter *
 lxa_archive_iter_add_child(LXAArchive *archive, LXAArchiveIter *parent, const gchar *filename)
 {
-	LXAEntry *entry = lxa_entry_new(filename);
+	LXAEntry *entry = lxa_entry_new(archive, filename);
 
 	lxa_archive_entry_add_child(archive, (LXAEntry *)parent, entry);
 
@@ -794,10 +791,10 @@ lxa_archive_iter_get_filename(const LXAArchive *archive, const LXAArchiveIter *i
  *
  * returns mime type
  */
-const gchar*
-lxa_archive_iter_get_mime(const LXAArchive *archive, const LXAArchiveIter *iter)
+const gchar *
+lxa_archive_iter_get_mimetype(const LXAArchive *archive, const LXAArchiveIter *iter)
 {
-	return ((LXAEntry *)iter)->mime_type;
+	return lxa_mime_info_get_name(((LXAEntry *)iter)->mime_info);
 }
 
 /**
@@ -807,10 +804,9 @@ lxa_archive_iter_get_mime(const LXAArchive *archive, const LXAArchiveIter *iter)
  * set mime type to entry
  */
 void
-lxa_archive_iter_set_mime(LXAArchive *archive, LXAArchiveIter *iter, const gchar *mime)
+lxa_archive_iter_set_mime(LXAArchive *archive, LXAArchiveIter *iter, LXAMimeInfo *mime)
 {
-	g_free(((LXAEntry *)iter)->mime_type);
-	((LXAEntry *)iter)->mime_type = g_strdup(mime);
+	((LXAEntry *)iter)->mime_info = mime;
 }
 
 /**
@@ -837,7 +833,9 @@ lxa_archive_iter_set_prop_str(LXAArchive *archive, LXAArchiveIter *iter, guint i
 #endif
 			break;
 		case LXA_ARCHIVE_PROP_MIME_TYPE:
-			lxa_archive_iter_set_mime(archive, iter, str_val);
+#ifdef DEBUG
+			g_critical("DON'T set mimetype");
+#endif
 			break;
 		default:
 			props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
@@ -1012,7 +1010,7 @@ lxa_archive_iter_set_propsv(LXAArchive *archive, LXAArchiveIter *iter, gconstpoi
 				props_iter += sizeof(guint);
 				break;
 			case G_TYPE_UINT64:
-				(*((guint64 *)props_iter)) = *((const guint*)props[i]);
+				(*((guint64 *)props_iter)) = *((const guint64*)props[i]);
 				props_iter += sizeof(guint64);
 				break;
 		}
@@ -1070,7 +1068,7 @@ lxa_archive_iter_get_prop_str(const LXAArchive *archive, const LXAArchiveIter *i
 			retval = lxa_archive_iter_get_filename(archive, iter);
 			break;
 		case LXA_ARCHIVE_PROP_MIME_TYPE:
-			retval = lxa_archive_iter_get_mime(archive, iter);
+			retval = lxa_archive_iter_get_mimetype(archive, iter);
 			break;
 		default:
 			props_iter = ((LXAEntry *)iter)->props;

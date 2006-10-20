@@ -20,6 +20,7 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
+#include <libxarchiver/mime.h>
 #include <libxarchiver/archive.h>
 #include <libxarchiver/archive-support.h>
 

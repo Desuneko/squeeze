@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 			{
 				g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(xa_archive_status_changed), NULL);
 				opened_archives++;
-				lpSupport = lxa_get_support_for_mime(lp_archive->mime);
+				lpSupport = lxa_get_support_for_mime(lxa_mime_info_get_name(lp_archive->mime));
 				if(!extract_archive_path)
   			{
 					dialog = xa_extract_archive_dialog_new(lpSupport, lp_archive, FALSE);
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 		{
 			files = g_slist_prepend(files, argv[i]);
 		}
-		lpSupport = lxa_get_support_for_mime(lp_archive->mime);
+		lpSupport = lxa_get_support_for_mime(lxa_mime_info_get_name(lp_archive->mime));
 		lxa_archive_support_add(lpSupport, lp_archive, files);
 	}
 
