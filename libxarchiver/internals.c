@@ -17,6 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
+#include <config.h>
 #include <glib.h>
 #include <glib-object.h>
 
@@ -25,6 +26,44 @@
 #include "archive-support.h"
 
 #include "internals.h"
+
+#ifdef LXA_TRACE_ALLOCATION
+
+#define __USE_GNU
+
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+static gchar lxa_allocation_file[128];
+
+void lxa_trace_init()
+{
+	snprintf(lxa_allocation_file, 127, "lxa_trace.%d", getpid());
+	fclose( fopen(lxa_allocation_file, "w") );
+}
+
+gpointer lxa_trace_add(const gchar *methode, guint size, gpointer pointer, const gchar *function, const gchar *file, guint line)
+{
+	FILE *fp = fopen(lxa_allocation_file, "a");
+
+	fprintf(fp, "%s:%d %s{ %s(%d) = %p }\n", file, line, function, methode, size, pointer);
+
+	fclose(fp);
+
+	return pointer;
+}
+
+void lxa_trace_del(const gchar *methode, gpointer pointer, const gchar *function, const gchar *file, guint line)
+{
+	FILE *fp = fopen(lxa_allocation_file, "a");
+
+	fprintf(fp, "%s:%d %s{ %s(%p) }\n", file, line, function, methode, pointer);
+
+	fclose(fp);
+}
+
+#endif /* LXA_TRACE_ALLOCATION */
 
 void
 lxa_default_child_watch_func(GPid pid, gint status, gpointer data)
@@ -124,7 +163,7 @@ lxa_concat_filenames(GSList *filenames)
 		_concat_str = concat_str;
 		concat_str = g_strconcat(concat_str, " \"", _filenames->data,"\"",  NULL);
 		_filenames = _filenames->next;
-		g_free(_concat_str);
+		LXA_FREE(_concat_str);
 	}
 	if(!filenames)
 		return NULL;

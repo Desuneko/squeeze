@@ -34,6 +34,8 @@
 void
 lxa_init()
 {
+	LXA_TRACE_INIT;
+
 	lxa_tmp_dir = g_get_tmp_dir();
 
 	lxa_mime_init();

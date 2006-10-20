@@ -5,10 +5,11 @@
 
 #include "mime.h"
 #include "archive.h"
+#include "internals.h"
 #include "slist.h"
 
 LXASList *
-lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
+lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry, GCompareFunc cmp_func)
 {
 	gint cmp = 1;
 	LXASList *iter = list;
@@ -18,7 +19,7 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
 	for(; iter; iter = iter->next)
 	{
 		/* archive can be NULL */
-		cmp = strcmp(lxa_archive_iter_get_filename(NULL, entry), lxa_archive_iter_get_filename( NULL, (LXAEntry*)iter->entry));
+		cmp = cmp_func(entry, (LXAEntry*)iter->entry);
 
 		if(!cmp)
 		{
@@ -31,7 +32,7 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry)
 		prev_entry = iter;
 	}
 
-	new_entry = g_new(LXASList, 1);
+	new_entry = LXA_SLICE_NEW(LXASList);
 	new_entry->next = iter;
 	new_entry->entry = entry;
 
@@ -58,7 +59,7 @@ lxa_slist_free(LXASList *list)
 	for(; list; list = next)
 	{
 		next = list->next;
-		g_free(list);
+		LXA_SLICE_FREE(LXASList, list);
 	}
 }
 

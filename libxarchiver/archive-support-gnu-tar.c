@@ -110,28 +110,28 @@ lxa_archive_support_gnu_tar_init(LXAArchiveSupportGnuTar *support)
 	if(program_path)
 	{
 		lxa_archive_support_add_mime(archive_support, "application/x-tarz");
-		g_free(program_path);
+		LXA_FREE(program_path);
 	}
 	/* Check for existence of gzip -- required for x-compressed-tar*/
 	program_path = g_find_program_in_path("gzip");
 	if(program_path)
 	{
 		lxa_archive_support_add_mime(archive_support, "application/x-compressed-tar");
-		g_free(program_path);
+		LXA_FREE(program_path);
 	}
 	/* Check for existence of bzip2 -- required for x-bzip-compressed-tar */
 	program_path = g_find_program_in_path("bzip2");
 	if(program_path)
 	{
 		lxa_archive_support_add_mime(archive_support, "application/x-bzip-compressed-tar");
-		g_free(program_path);
+		LXA_FREE(program_path);
 	}
 	/* Check for existence of lzop -- required for x-tzo */
 	program_path = g_find_program_in_path("lzop");
 	if(program_path)
 	{
 		lxa_archive_support_add_mime(archive_support, "application/x-tzo");
-		g_free(program_path);
+		LXA_FREE(program_path);
 	}
 
 	archive_support->add = lxa_archive_support_gnu_tar_add;
@@ -273,7 +273,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf ", archive->path, " ", archive->files, NULL);
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
-				g_free(command);
+				LXA_FREE(command);
 				return 0;
 			}
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
@@ -288,7 +288,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
 				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
-			g_free(command);
+			LXA_FREE(command);
 		}
 	}
 	return 0;
@@ -360,7 +360,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		{
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 			g_debug("Extracting archive '%s' to '%s'\nUsing command '%s'", archive->path, dest_path, command);
-			g_free(command);
+			LXA_FREE(command);
 		}
 	}
 	return 0;
@@ -390,7 +390,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f ", archive->path, " --delete ", archive->files, NULL);
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
-				g_free(command);
+				LXA_FREE(command);
 				return 0;
 			}
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
@@ -405,7 +405,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
 				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
-			g_free(command);
+			LXA_FREE(command);
 		} else
 			return 1;
 	}
@@ -455,7 +455,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 		else
 			command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -tvf " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_refresh_parse_output, NULL);
-		g_free(command);
+		LXA_FREE(command);
 	}
 	return 0;
 }
@@ -584,7 +584,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
  
 			entry = lxa_archive_add_file(archive, temp_filename);
 			lxa_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
-			g_free(line);
+			LXA_FREE(line);
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
@@ -604,7 +604,7 @@ lxa_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 {
 	FILE *out_file = NULL;
 	LXAArchive *archive = data;
-	gchar *buf = g_new0(gchar, 1024);
+	gchar *buf = LXA_NEW0(gchar, 1024);
 	guint read = 0;
 	GError *error = NULL;
 	gchar *command = NULL;
@@ -625,7 +625,7 @@ lxa_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 		}
 		fclose(out_file);
 	}
-	g_free(buf);
+	LXA_FREE(buf);
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
 #ifdef DEBUG
@@ -642,13 +642,13 @@ lxa_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 					g_unlink(archive->path);
 					command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf ", archive->tmp_file, " ", archive->files, NULL);
 					lxa_execute(command, archive, lxa_archive_support_gnu_tar_compress_watch, NULL, NULL, NULL);
-					g_free(command);
+					LXA_FREE(command);
 					break;
 				case(LXA_ARCHIVESTATUS_REMOVE):
 					g_unlink(archive->path);
 					command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f ", archive->tmp_file, " --delete ", archive->files, NULL);
 					lxa_execute(command, archive, lxa_archive_support_gnu_tar_compress_watch, NULL, NULL, NULL);
-					g_free(command);
+					LXA_FREE(command);
 					break;
 				default:
 					break;
@@ -664,7 +664,7 @@ lxa_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition 
 {
 	FILE *out_file = NULL;
 	LXAArchive *archive = data;
-	gchar *buf = g_new0(gchar, 1024);
+	gchar *buf = LXA_NEW0(gchar, 1024);
 	guint read = 0;
 	GError *error = NULL;
 
@@ -684,7 +684,7 @@ lxa_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition 
 		}
 		fclose(out_file);
 	}
-	g_free(buf);
+	LXA_FREE(buf);
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
 #ifdef DEBUG

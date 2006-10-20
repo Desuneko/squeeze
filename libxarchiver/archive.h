@@ -73,6 +73,9 @@ struct _LXAArchive
 	GType              *property_types;
 	gchar             **property_names;
 	LXAEntry           *root_entry;
+#ifdef G_THREADS_ENABLED
+	GStaticRWLock       rw_lock;
+#endif
 	LXAArchiveStatus    status;
 	LXAArchiveStatus    old_status;
 	GPid                child_pid;
@@ -83,7 +86,6 @@ struct _LXAArchive
 	gchar              *tmp_file;
 	gchar              *files;
 	gboolean            has_passwd;
-	gushort             entry_props_size;
 };
 
 typedef struct _LXAArchiveClass LXAArchiveClass;
@@ -115,11 +117,6 @@ void                lxa_archive_iter_set_prop_value(LXAArchive *, LXAArchiveIter
 void                lxa_archive_iter_set_props(LXAArchive *, LXAArchiveIter *, ...);
 void                lxa_archive_iter_set_propsv(LXAArchive *, LXAArchiveIter *, gconstpointer *);
 
-const gchar        *lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *);
-const gchar        *lxa_archive_iter_get_mimetype(const LXAArchive *, const LXAArchiveIter *);
-const gchar        *lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint);
-guint               lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint);
-guint64             lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint);
 gboolean            lxa_archive_iter_get_prop_value(const LXAArchive *, const LXAArchiveIter *, guint, GValue *);
 
 LXAArchiveIter     *lxa_archive_add_file(LXAArchive *, const gchar *);

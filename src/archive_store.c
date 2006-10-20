@@ -19,6 +19,7 @@
 #include <config.h>
 #include <string.h>
 #include <glib.h>
+#include <glib-object.h>
 #include <gtk/gtk.h>
 #include <libxarchiver/libxarchiver.h>
 #include <libxarchiver/mime.h>
@@ -692,6 +693,7 @@ xa_archive_store_has_default_sort_func(GtkTreeSortable *s)
 static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIter *b)
 {
+	/*
 	gboolean cmp_a = 0;
 	gboolean cmp_b = 0;
 	if(store->props._sort_folders_first)
@@ -722,9 +724,9 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 		case G_TYPE_STRING:
 			switch(store->props._sort_case_sensitive)
 			{
-				case 0: /* case insensitive */
+				case 0: *//* case insensitive *//*
 					return g_ascii_strcasecmp(lxa_archive_iter_get_prop_str(archive, a, column), lxa_archive_iter_get_prop_str(archive, b, column));
-				case 1: /* case sensitive */
+				case 1: *//* case sensitive *//*
 					return strcmp(lxa_archive_iter_get_prop_str(archive, a, column), lxa_archive_iter_get_prop_str(archive, b, column));
 			}
 		case G_TYPE_UINT64:
@@ -732,7 +734,7 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 		case G_TYPE_UINT:
 			return lxa_archive_iter_get_prop_uint(archive, a, column) - lxa_archive_iter_get_prop_uint(archive, b, column);
 	}
-
+	*/
 	g_return_val_if_reached(0);
 }
 
@@ -1090,8 +1092,9 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 {
 	g_return_val_if_fail(store, NULL);
 
+	GValue *basename = g_new0(GValue, 1);
 	gchar *path = NULL;
-	const gchar **buf = NULL;
+	gchar **buf = NULL;
 	GSList *iter = store->current_entry;
 	gint i = g_slist_length(iter);
 	gchar *lastfile = NULL;
@@ -1101,13 +1104,15 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	if(i<=1)
 		return g_strdup("");
 
-	buf = g_new(const gchar*, i);
+	buf = g_new(gchar*, i);
 	i--;
 	buf[i] = NULL;
 
-	namelen = strlen(lxa_archive_iter_get_filename(store->archive, (LXAArchiveIter*)iter->data));
+	lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, basename);
+	namelen = strlen(g_value_get_string(basename));
 	lastfile = g_new(gchar, namelen+2);
-	strcpy(lastfile, lxa_archive_iter_get_filename(store->archive, (LXAArchiveIter*)iter->data));
+	strcpy(lastfile, g_value_get_string(basename));
+	g_value_unset(basename);
 	if(lastfile[namelen-1] != '/')
 	{
 		lastfile[namelen] = '/';
@@ -1123,22 +1128,23 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 		while(iter->next)
 		{
 			--i;
-			buf[i] = lxa_archive_iter_get_filename(store->archive, (LXAArchiveIter*)iter->data);
+			lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, basename);
+			buf[i] = g_value_dup_string(basename);
+			g_value_unset(basename);
 			iter = iter->next;
 		}
 	}
 
 	if(buf[0] != lastfile && buf[0][0] == '/')
 	{
-		buf[0] = "";
+		buf[0] = g_strdup("");
 	}
 
 	/* why does glib want buf to be gchar** instead of const gchar** ? */
 	path = g_strjoinv("/", (gchar**)buf);
 
-	g_free(lastfile);
-	g_free(buf);
-
+	g_strfreev(buf);
+	g_free(basename);
 	return path;
 }
 
@@ -1147,6 +1153,7 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 {
 	g_return_val_if_fail(store, NULL);
 
+	GValue basename;
 	GSList *iter = store->current_entry;
 	GSList *path = NULL;
 
@@ -1156,7 +1163,9 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 	/* we don't want to include de archive rootentry */
 	while(iter->next)
 	{
-		path = g_slist_prepend(path, g_strdup(lxa_archive_iter_get_filename(store->archive, (LXAArchiveIter*)iter->data)));
+		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, &basename);
+		path = g_slist_prepend(path, g_value_dup_string(&basename));
+		g_value_unset(&basename);
 		iter = iter->next;
 	}
 

@@ -9,7 +9,7 @@ struct _LXASList {
 };
 
 LXASList *
-lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry);
+lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry, GCompareFunc);
 
 guint
 lxa_slist_length(LXASList *list);

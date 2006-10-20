@@ -27,6 +27,8 @@
 #endif
 
 #include "mime.h"
+#include "archive.h"
+#include "internals.h"
 
 #ifdef HAVE_THUNAR_VFS
 ThunarVfsMimeDatabase  *lxa_mime_database;
@@ -66,7 +68,7 @@ lxa_mime_get_mime_info_for_file(const gchar *path)
 #else
 
 #endif /* HAVE_THUNAR_VFS */
-	g_free(base);
+	LXA_FREE(base);
 	return result;
 }
 
@@ -118,7 +120,7 @@ lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 	else
 		g_value_set_string(value, NULL);
 #endif
-	/* g_free((gchar *)mime_type); */
+	/* LXA_FREE((gchar *)mime_type); */
 }
 
 void

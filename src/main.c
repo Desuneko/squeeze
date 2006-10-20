@@ -121,6 +121,10 @@ int main(int argc, char **argv)
  	textdomain (GETTEXT_PACKAGE);
 	#endif
 
+#ifdef G_THREADS_ENABLED
+	g_thread_init(NULL);
+#endif /* G_THREADS_ENABLED */
+
 	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))
 	{
 		if ( cli_error != NULL )

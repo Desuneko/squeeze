@@ -40,6 +40,18 @@
 #define LXA_MIME_DIRECTORY "inode/directory"
 #endif
 
+#ifdef LXA_THREADSAFE
+#define LXA_ARCHIVE_READ_LOCK(lock)      g_static_rw_lock_reader_lock(lock)
+#define LXA_ARCHIVE_READ_UNLOCK(lock)    g_static_rw_lock_reader_unlock(lock)
+#define LXA_ARCHIVE_WRITE_LOCK(lock)     g_static_rw_lock_writer_lock(lock)
+#define LXA_ARCHIVE_WRITE_UNLOCK(lock)   g_static_rw_lock_writer_unlock(lock)
+#else
+#define LXA_ARCHIVE_READ_LOCK(lock)
+#define LXA_ARCHIVE_READ_UNLOCK(lock)
+#define LXA_ARCHIVE_WRITE_LOCK(lock)
+#define LXA_ARCHIVE_WRITE_UNLOCK(lock)
+#endif
+
 struct _LXAEntry
 {
 	gchar *filename;
@@ -82,6 +94,21 @@ lxa_archive_entry_flush_buffer(LXAArchive *, LXAEntry *);
 
 static gpointer
 lxa_archive_entry_get_props(LXAArchive *, LXAEntry *);
+
+static const gchar *
+lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint);
+static guint 
+lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint);
+static guint64 
+lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint);
+
+static const gchar *
+lxa_archive_iter_get_filename(const LXAArchive *, const LXAArchiveIter *);
+static const gchar *
+lxa_archive_iter_get_mimetype(const LXAArchive *, const LXAArchiveIter *);
+
+static gint
+lxa_entry_filename_compare(LXAEntry *, LXAEntry *);
 
 gint
 lxa_archive_sort_entry_buffer(LXAEntry *entry1, LXAEntry *entry2)
@@ -139,7 +166,10 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 static void
 lxa_archive_init(LXAArchive *archive)
 {
-	archive->root_entry = g_new0(LXAEntry, 1);
+	archive->root_entry = LXA_NEW0(LXAEntry, 1);
+#ifdef LXA_THREADSAFE
+	g_static_rw_lock_init(&archive->rw_lock);
+#endif /* LXA_THREADSAFE */
 }
 
 /** static void
@@ -152,7 +182,7 @@ lxa_archive_finalize(GObject *object)
 {
 	LXAArchive *archive = LXA_ARCHIVE(object);
 	if(archive->path)
-		g_free(archive->path);
+		LXA_FREE(archive->path);
 	lxa_archive_entry_free(archive, archive->root_entry);
 	switch(archive->status)
 	{
@@ -196,6 +226,7 @@ lxa_archive_new(gchar *path, const gchar *mime)
 void 
 lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	if(LXA_IS_ARCHIVE(archive))
 	{
 		if(archive->status != status)
@@ -205,6 +236,7 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 			g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
 		} 
 	}
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 gint
@@ -221,6 +253,7 @@ lxa_stop_archive_child( LXAArchive *archive )
 LXAArchiveIter *
 lxa_archive_add_file(LXAArchive *archive, const gchar *path)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	guint i = 0;
 	gchar **path_items = g_strsplit_set(path, "/\n", -1);
 	LXAArchiveIter *parent = (LXAArchiveIter*)archive->root_entry;
@@ -239,12 +272,12 @@ lxa_archive_add_file(LXAArchive *archive, const gchar *path)
 				child = lxa_archive_iter_add_child(archive, parent, basename);
 		}
 
-		g_free(basename);
+		LXA_FREE(basename);
 
 		parent = child;
 		i++;
 	}
-
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 	return child;
 }
 
@@ -257,15 +290,15 @@ lxa_archive_get_property_types(LXAArchive *archive, guint size)
 
 	if(archive->n_property < size)
 	{
-		new_props = g_new0(GType, size);
-		new_names = g_new0(gchar*, size);
+		new_props = LXA_NEW0(GType, size);
+		new_names = LXA_NEW0(gchar*, size);
 		for(i = 0; i < archive->n_property; ++i)
 		{
 			new_props[i] = archive->property_types[i];
 			new_names[i] = archive->property_names[i];
 		}
-		g_free(archive->property_types);
-		g_free(archive->property_names);
+		LXA_FREE(archive->property_types);
+		LXA_FREE(archive->property_names);
 		archive->property_types = new_props;
 		archive->property_names = new_names;
 		archive->n_property = size;
@@ -282,15 +315,15 @@ lxa_archive_get_property_names(LXAArchive *archive, guint size)
 
 	if(archive->n_property < size)
 	{
-		new_types = g_new0(GType, size);
-		new_names = g_new0(gchar*, size);
+		new_types = LXA_NEW0(GType, size);
+		new_names = LXA_NEW0(gchar*, size);
 		for(i = 0; i < archive->n_property; ++i)
 		{
 			new_types[i] = archive->property_types[i];
 			new_names[i] = archive->property_names[i];
 		}
-		g_free(archive->property_types);
-		g_free(archive->property_names);
+		LXA_FREE(archive->property_types);
+		LXA_FREE(archive->property_names);
 		archive->property_types = new_types;
 		archive->property_names = new_names;
 		archive->n_property = size;
@@ -306,19 +339,27 @@ lxa_archive_get_property_names(LXAArchive *archive, guint size)
 GType
 lxa_archive_get_property_type(LXAArchive *archive, guint i)
 {
+	LXA_ARCHIVE_READ_LOCK(&archive->rw_lock);
+
 #ifdef DEBUG /* n_property + 2, filename and MIME */
 	g_return_val_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER), G_TYPE_INVALID);
 #endif
+
+	GType retval = G_TYPE_INVALID;
 	switch(i)
 	{
 		case LXA_ARCHIVE_PROP_FILENAME:
-			return G_TYPE_STRING;
+			retval = G_TYPE_STRING;
+			break;
 		case LXA_ARCHIVE_PROP_MIME_TYPE:
-			return G_TYPE_STRING;
+			retval = G_TYPE_STRING;
+			break;
 		default:
-			return archive->property_types[i - LXA_ARCHIVE_PROP_USER];
+			retval = archive->property_types[i - LXA_ARCHIVE_PROP_USER];
+			break;
 	}
-	g_return_val_if_reached(G_TYPE_NONE);
+	LXA_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
+	return retval;
 }
 
 /*
@@ -329,19 +370,29 @@ lxa_archive_get_property_type(LXAArchive *archive, guint i)
 const gchar *
 lxa_archive_get_property_name(LXAArchive *archive, guint i)
 {
+	LXA_ARCHIVE_READ_LOCK(&archive->rw_lock);
+
 #ifdef DEBUG /* n_property + 2, filename and MIME */
 	g_return_val_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER), NULL);
 #endif
+	
+	const gchar *retval = NULL;
+
 	switch(i)
 	{
 		case LXA_ARCHIVE_PROP_FILENAME:
-			return _("Filename");
+			retval = _("Filename");
+			break;
 		case LXA_ARCHIVE_PROP_MIME_TYPE:
-			return _("Mime type");
+			retval = _("Mime type");
+			break;
 		default:
-			return archive->property_names[i - LXA_ARCHIVE_PROP_USER];
+			retval = archive->property_names[i - LXA_ARCHIVE_PROP_USER];
+			break;
 	}
-	g_return_val_if_reached(NULL);
+
+	LXA_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
+	return retval;
 }
 
 /*
@@ -352,15 +403,20 @@ lxa_archive_get_property_name(LXAArchive *archive, guint i)
 void
 lxa_archive_set_property_type(LXAArchive *archive, guint i, GType type, const gchar *name)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
+
 #ifdef DEBUG
 	g_return_if_fail(i >= LXA_ARCHIVE_PROP_USER);
 #endif
+
 	GType *types_iter = lxa_archive_get_property_types(archive, i+1-LXA_ARCHIVE_PROP_USER);
 	gchar **names_iter = lxa_archive_get_property_names(archive, i+1-LXA_ARCHIVE_PROP_USER);
 
 	types_iter[i-LXA_ARCHIVE_PROP_USER] = type;
-	g_free(names_iter[i-LXA_ARCHIVE_PROP_USER]);
+	LXA_FREE(names_iter[i-LXA_ARCHIVE_PROP_USER]);
 	names_iter[i-LXA_ARCHIVE_PROP_USER] = g_strdup(name);
+
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /*
@@ -371,6 +427,7 @@ lxa_archive_set_property_type(LXAArchive *archive, guint i, GType type, const gc
 void
 lxa_archive_set_property_typesv(LXAArchive *archive, GType *types, const gchar **names)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	guint size = 0;
 	GType *type_iter = types;
 	const gchar **name_iter = names;
@@ -387,13 +444,14 @@ lxa_archive_set_property_typesv(LXAArchive *archive, GType *types, const gchar *
 	while(type_iter && name_iter)
 	{
 		*types_iter = *type_iter;
-		g_free(*names_iter);
+		LXA_FREE(*names_iter);
 		*names_iter = g_strdup(*name_iter);
 		types_iter++;
 		type_iter++;
 		names_iter++;
 		name_iter++;
 	}
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 guint
@@ -405,6 +463,8 @@ lxa_archive_n_property(LXAArchive *archive)
 LXAArchiveIter *
 lxa_archive_get_iter(LXAArchive *archive, const gchar *path)
 {
+	LXA_ARCHIVE_READ_LOCK(&archive->rw_lock);
+
 	if(!path)
 		return (LXAArchiveIter *)archive->root_entry;
 
@@ -433,6 +493,7 @@ lxa_archive_get_iter(LXAArchive *archive, const gchar *path)
 
 	g_strfreev(buf);
 
+	LXA_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
 	return entry;
 }
 
@@ -444,7 +505,7 @@ lxa_archive_get_iter(LXAArchive *archive, const gchar *path)
 static LXAEntry *
 lxa_entry_new(LXAArchive *archive, const gchar *filename)
 {
-	LXAEntry *entry = g_new0(LXAEntry, 1);
+	LXAEntry *entry = LXA_NEW0(LXAEntry, 1);
 
 	const gchar *pos = strchr(filename, '/');
 
@@ -462,7 +523,7 @@ lxa_entry_new(LXAArchive *archive, const gchar *filename)
 	return entry;
 }
 
-void
+static void
 lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 {
 	gint i = 0; 
@@ -482,7 +543,7 @@ lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); ++i)
 			lxa_archive_entry_free(archive, entry->children[i]);
 
-		g_free(entry->children);
+		LXA_FREE(entry->children);
 		entry->children = NULL;
 	}
 
@@ -493,7 +554,7 @@ lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 			switch(archive->property_types[i])
 			{
 				case(G_TYPE_STRING):
-					g_free(*(gchar **)props_iter);
+					LXA_FREE(*(gchar **)props_iter);
 					props_iter += sizeof(gchar *);
 					break;
 				case(G_TYPE_UINT):
@@ -504,12 +565,18 @@ lxa_archive_entry_free(LXAArchive *archive, LXAEntry *entry)
 					break;
 			}
 		}
-		g_free(entry->props);
+		LXA_FREE(entry->props);
 	}
 	if(entry->mime_info)
 		lxa_mime_info_unref(entry->mime_info);
-	g_free(entry->filename);
-	g_free(entry);
+	LXA_FREE(entry->filename);
+	LXA_FREE(entry);
+}
+
+static gint
+lxa_entry_filename_compare(LXAEntry *a, LXAEntry *b)
+{
+	return strcmp(a->filename, b->filename);
 }
 
 static LXAEntry *
@@ -538,7 +605,7 @@ lxa_entry_get_child(const LXAEntry *entry, const gchar *filename)
 		cmp = strcmp(_filename, entry->children[begin+pos]->filename);
 		if(!cmp)
 		{
-			g_free(_filename);
+			LXA_FREE(_filename);
 			return entry->children[begin+pos];
 		}
 
@@ -560,21 +627,21 @@ lxa_entry_get_child(const LXAEntry *entry, const gchar *filename)
 
 		if(!cmp)
 		{
-			g_free(_filename);
+			LXA_FREE(_filename);
 			return buffer_iter->entry;
 		}
 		if(cmp < 0)
 			break;
 	}
 
-	g_free(_filename);
+	LXA_FREE(_filename);
 	return NULL;
 }
 
 static void
 lxa_archive_entry_add_child(LXAArchive *archive, LXAEntry *parent, LXAEntry *child)
 {
-	parent->buffer = lxa_slist_insert_sorted_single(parent->buffer, child);
+	parent->buffer = lxa_slist_insert_sorted_single(parent->buffer, child, (GCompareFunc)lxa_entry_filename_compare);
 
 	if(lxa_slist_length(parent->buffer) == LXA_ENTRY_CHILD_BUFFER_SIZE)
 		lxa_archive_entry_flush_buffer(archive, parent);
@@ -600,7 +667,7 @@ lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 
 	max_children = (n_children + lxa_slist_length(entry->buffer));
 	
-	entry->children = g_new(LXAEntry *, max_children+1);
+	entry->children = LXA_NEW(LXAEntry *, max_children+1);
 	for(buffer_iter = entry->buffer;buffer_iter;buffer_iter = buffer_iter->next)
 	{
 		size = n_children + 1 - begin;
@@ -647,7 +714,7 @@ lxa_archive_entry_flush_buffer(LXAArchive *archive, LXAEntry *entry)
 	lxa_slist_free(entry->buffer);
 	entry->buffer = NULL;
 
-	g_free(children_old);
+	LXA_FREE(children_old);
 }
 
 static gpointer
@@ -674,7 +741,7 @@ lxa_archive_entry_get_props(LXAArchive *archive, LXAEntry *entry)
 			}
 		}
 
-		entry->props = g_malloc0(size);
+		entry->props = LXA_MALLOC0(size);
 	}
 
 	return entry->props;
@@ -781,7 +848,7 @@ lxa_archive_iter_del_child(LXAArchive *archive, LXAArchiveIter *parent, LXAArchi
  *
  * returns filename
  */
-const gchar*
+static const gchar*
 lxa_archive_iter_get_filename(const LXAArchive *archive, const LXAArchiveIter *iter)
 {
 	return ((LXAEntry *)iter)->filename;
@@ -793,7 +860,7 @@ lxa_archive_iter_get_filename(const LXAArchive *archive, const LXAArchiveIter *i
  *
  * returns mime type
  */
-const gchar *
+static const gchar *
 lxa_archive_iter_get_mimetype(const LXAArchive *archive, const LXAArchiveIter *iter)
 {
 	return lxa_mime_info_get_name(((LXAEntry *)iter)->mime_info);
@@ -819,6 +886,8 @@ lxa_archive_iter_set_mime(LXAArchive *archive, LXAArchiveIter *iter, LXAMimeInfo
 void
 lxa_archive_iter_set_prop_str(LXAArchive *archive, LXAArchiveIter *iter, guint i, const gchar *str_val)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
+
 	gpointer props_iter = NULL;
 	guint n;
 #ifdef DEBUG
@@ -856,10 +925,12 @@ lxa_archive_iter_set_prop_str(LXAArchive *archive, LXAArchiveIter *iter, guint i
 						break;
 				}
 			}
-			g_free(*((gchar **)props_iter));
+			LXA_FREE(*((gchar **)props_iter));
 			(*((gchar **)props_iter)) = g_strdup(str_val);
 			break;
 	}
+
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -870,11 +941,13 @@ lxa_archive_iter_set_prop_str(LXAArchive *archive, LXAArchiveIter *iter, guint i
 void
 lxa_archive_iter_set_prop_uint(LXAArchive *archive, LXAArchiveIter *iter, guint i, guint int_val)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
+
 #ifdef DEBUG
 	g_return_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER));
 	g_return_if_fail(i >= LXA_ARCHIVE_PROP_USER);
 	g_return_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_UINT);
-#endif
+#endif /* DEBUG */
 	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
 	guint n;
 
@@ -894,6 +967,8 @@ lxa_archive_iter_set_prop_uint(LXAArchive *archive, LXAArchiveIter *iter, guint 
 		}
 	}
 	(*((guint *)props_iter)) = int_val;
+
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -904,11 +979,13 @@ lxa_archive_iter_set_prop_uint(LXAArchive *archive, LXAArchiveIter *iter, guint 
 void
 lxa_archive_iter_set_prop_uint64(LXAArchive *archive, LXAArchiveIter *iter, guint i, guint64 int64_val)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
+
 #ifdef DEBUG
 	g_return_if_fail(i < (archive->n_property+LXA_ARCHIVE_PROP_USER));
 	g_return_if_fail(i >= LXA_ARCHIVE_PROP_USER);
 	g_return_if_fail(archive->property_types[i-LXA_ARCHIVE_PROP_USER] == G_TYPE_UINT64);
-#endif
+#endif /* DEBUG */
 	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
 	guint n;
 
@@ -928,6 +1005,8 @@ lxa_archive_iter_set_prop_uint64(LXAArchive *archive, LXAArchiveIter *iter, guin
 		}
 	}
 	(*((guint64 *)props_iter)) = int64_val;
+
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -960,6 +1039,8 @@ lxa_archive_iter_set_prop_value(LXAArchive *archive, LXAArchiveIter *iter, guint
 void
 lxa_archive_iter_set_props(LXAArchive *archive, LXAArchiveIter *iter, ...)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
+
 	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
 	guint i;
 	va_list ap;
@@ -986,6 +1067,8 @@ lxa_archive_iter_set_props(LXAArchive *archive, LXAArchiveIter *iter, ...)
 	}
 
 	va_end(ap);
+
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -996,6 +1079,7 @@ lxa_archive_iter_set_props(LXAArchive *archive, LXAArchiveIter *iter, ...)
 void
 lxa_archive_iter_set_propsv(LXAArchive *archive, LXAArchiveIter *iter, gconstpointer *props)
 {
+	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	gpointer props_iter = lxa_archive_entry_get_props(archive, (LXAEntry *)iter);
 	guint i;
 
@@ -1017,6 +1101,8 @@ lxa_archive_iter_set_propsv(LXAArchive *archive, LXAArchiveIter *iter, gconstpoi
 				break;
 		}
 	}
+
+	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -1027,6 +1113,8 @@ lxa_archive_iter_set_propsv(LXAArchive *archive, LXAArchiveIter *iter, gconstpoi
 gboolean
 lxa_archive_iter_get_prop_value(const LXAArchive *archive, const LXAArchiveIter *iter, guint i, GValue *value)
 {
+	LXA_ARCHIVE_READ_LOCK(&archive->rw_lock);
+
 	if(i>=LXA_ARCHIVE_PROP_USER)
 		g_value_init(value, archive->property_types[i-LXA_ARCHIVE_PROP_USER]);
 	else
@@ -1044,15 +1132,17 @@ lxa_archive_iter_get_prop_value(const LXAArchive *archive, const LXAArchiveIter 
 			g_value_set_uint64(value, lxa_archive_iter_get_prop_uint64(archive, iter, i));
 			break;
 	}
+
+	LXA_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
 	return TRUE;
 }
 
 /**
- * const gchar *
+ * static const gchar *
  * lxa_archive_iter_get_prop_str(const LXAArchive *, const LXAArchiveIter *, guint) 
  *
  */
-const gchar*
+static const gchar*
 lxa_archive_iter_get_prop_str(const LXAArchive *archive, const LXAArchiveIter *iter, guint i)
 {
 	const gchar *retval = NULL;
@@ -1099,11 +1189,11 @@ lxa_archive_iter_get_prop_str(const LXAArchive *archive, const LXAArchiveIter *i
 }
 
 /**
- * guint
+ * static guint
  * lxa_archive_iter_get_prop_uint(const LXAArchive *, const LXAArchiveIter *, guint) 
  *
  */
-guint
+static guint
 lxa_archive_iter_get_prop_uint(const LXAArchive *archive, const LXAArchiveIter *iter, guint i)
 {
 	gpointer props_iter = ((LXAEntry *)iter)->props;
@@ -1134,11 +1224,11 @@ lxa_archive_iter_get_prop_uint(const LXAArchive *archive, const LXAArchiveIter *
 }
 
 /**
- * guint64
+ * static guint64
  * lxa_archive_iter_get_prop_uint64(const LXAArchive *, const LXAArchiveIter *, guint) 
  *
  */
-guint64
+static guint64
 lxa_archive_iter_get_prop_uint64(const LXAArchive *archive, const LXAArchiveIter *iter, guint i)
 {
 	gpointer props_iter = ((LXAEntry *)iter)->props;

@@ -307,8 +307,8 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) 
 			archive->n_property++;
 
-		archive->property_types = g_new0(GType, archive->n_property);
-		archive->property_names = g_new0(gchar *, archive->n_property);
+		archive->property_types = LXA_NEW0(GType, archive->n_property);
+		archive->property_names = LXA_NEW0(gchar *, archive->n_property);
 
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
 			archive->property_types[i] = G_TYPE_UINT64;
@@ -355,7 +355,7 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 
 		gchar *command = g_strconcat("unzip -lv -qq " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_zip_refresh_parse_output, NULL);
-		g_free(command);
+		LXA_FREE(command);
 	}
 	return 0;
 }
@@ -389,7 +389,7 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
  				break; 
 			/* length, method , size, ratio, date, time, crc-32, filename*/
 
-			props = g_malloc0(archive->entry_props_size);
+			props = LXA_MALLOC0(archive->entry_props_size);
 			props_iter = props;
 			for(n=0; n < strlen(line) && line[n] == ' '; n++);
 			a = n;
@@ -399,7 +399,7 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 			{
 				_size = g_strndup(&line[a], n-a);
 				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
-				g_free (_size);
+				LXA_FREE (_size);
 				props_iter += sizeof(guint64);
 			}
 
@@ -421,7 +421,7 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 			{
 				_size = g_strndup(&line[a], n-a);
 				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
-				g_free (_size);
+				LXA_FREE (_size);
 				props_iter += sizeof(guint64);
 			}
 
@@ -472,8 +472,8 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 
 			entry = lxa_archive_add_file(archive, temp_filename);
 			entry->props = props;
-			g_free(line);
-			g_free(temp_filename);
+			LXA_FREE(line);
+			LXA_FREE(temp_filename);
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )

@@ -101,7 +101,7 @@ lxa_archive_support_rar_new()
 	if(abs_path)
 	{
 		support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_RAR, NULL);
-		g_free(abs_path);
+		LXA_FREE(abs_path);
 	}
 	
 	return LXA_ARCHIVE_SUPPORT(support);
