@@ -527,7 +527,7 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
 			{
 				line[n] = '\0';
-				size = g_ascii_strtoll(line + a, NULL, 0);
+				size = g_ascii_strtoull(line + a, NULL, 0);
 				props[i] = &size;
 				i++;
 			}
