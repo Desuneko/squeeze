@@ -214,7 +214,6 @@ lxa_archive_support_gnu_tar_new()
 {
 	LXAArchiveSupportGnuTar *support;
 
-	/**/
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
 	                       "view-time", TRUE, 
 												 "view-date", TRUE,
@@ -222,7 +221,7 @@ lxa_archive_support_gnu_tar_new()
 												 "view-rights", TRUE,
 												 "view-size", TRUE,
 												 NULL);
-	/*/
+	/*
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR, 
 	                       "view-time", FALSE, 
 												 "view-date", FALSE,

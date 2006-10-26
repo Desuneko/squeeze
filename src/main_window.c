@@ -63,8 +63,6 @@ xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GPara
 static void
 xa_main_window_finalize(GObject *object);
 
-gboolean
-xa_main_window_add_item(LXAArchiveIter *entry, gpointer data);
 void 
 xa_main_window_set_contents(XAMainWindow *, LXAArchive *);
 

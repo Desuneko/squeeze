@@ -17,7 +17,7 @@
  */
 
 #ifdef DEBUG
-#define LXA_TRACE_ALLOCATION 1
+//#define LXA_TRACE_ALLOCATION 1
 #endif /* DEBUG */
 
 #ifdef LXA_TRACE_ALLOCATION

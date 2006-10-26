@@ -643,7 +643,7 @@ xa_archive_store_get_sort_column_id(GtkTreeSortable *sortable, gint *sort_col_id
 
 	if(sort_col_id)
 		*sort_col_id = store->sort_column;
-
+	
 	if(order)
 		*order = store->sort_order;
 
@@ -693,9 +693,11 @@ xa_archive_store_has_default_sort_func(GtkTreeSortable *s)
 static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIter *b)
 {
-	/*
+	gint retval = 0;
 	gboolean cmp_a = 0;
 	gboolean cmp_b = 0;
+	GValue  *prop_a = g_new0(GValue, 1);
+	GValue  *prop_b = g_new0(GValue, 1);
 	if(store->props._sort_folders_first)
 	{
 		cmp_a = lxa_archive_iter_is_directory(store->archive, a);
@@ -717,25 +719,32 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 	LXAArchive *archive = store->archive;
 	gint column = store->sort_column;
 
-	column--;
+	lxa_archive_iter_get_prop_value(archive, a, column-1, prop_a);
+	lxa_archive_iter_get_prop_value(archive, b, column-1, prop_b);
 
-	switch(lxa_archive_get_property_type(archive, column))
+	switch(lxa_archive_get_property_type(archive, column-1))
 	{
 		case G_TYPE_STRING:
 			switch(store->props._sort_case_sensitive)
 			{
-				case 0: *//* case insensitive *//*
-					return g_ascii_strcasecmp(lxa_archive_iter_get_prop_str(archive, a, column), lxa_archive_iter_get_prop_str(archive, b, column));
-				case 1: *//* case sensitive *//*
-					return strcmp(lxa_archive_iter_get_prop_str(archive, a, column), lxa_archive_iter_get_prop_str(archive, b, column));
+				case 0: /* case insensitive */
+					retval = g_ascii_strcasecmp(g_value_get_string(prop_a), g_value_get_string(prop_b));
+				case 1: /* case sensitive */
+					retval = strcmp(g_value_get_string(prop_a), g_value_get_string(prop_b));
 			}
+			break;
 		case G_TYPE_UINT64:
-			return lxa_archive_iter_get_prop_uint64(archive, a, column) - lxa_archive_iter_get_prop_uint64(archive, b, column);
+			retval = g_value_get_uint64(prop_a) - g_value_get_uint64(prop_b);
+			break;
 		case G_TYPE_UINT:
-			return lxa_archive_iter_get_prop_uint(archive, a, column) - lxa_archive_iter_get_prop_uint(archive, b, column);
+			retval = g_value_get_uint(prop_a) - g_value_get_uint(prop_b);
+			break;
 	}
-	*/
-	g_return_val_if_reached(0);
+	g_value_unset(prop_a);
+	g_value_unset(prop_b);
+	g_free(prop_a);
+	g_free(prop_b);
+	return retval;
 }
 
 static void
