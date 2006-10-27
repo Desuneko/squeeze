@@ -351,7 +351,10 @@ xa_archive_store_get_n_columns(GtkTreeModel *tree_model)
 	if(!archive)
 		return 0;
 	
-	return lxa_archive_n_property(archive) + 1;
+	if(store->props._show_icons)
+		return lxa_archive_n_property(archive) + 1;
+	else
+		return lxa_archive_n_property(archive);
 }
 
 static GType
@@ -365,10 +368,13 @@ xa_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 	if(!archive)
 		return G_TYPE_INVALID;
 
-	index--;
+	if(store->props._show_icons)
+	{
+		index--;
 
-	if(index < 0)
-		return G_TYPE_STRING;
+		if(index < 0)
+			return G_TYPE_STRING;
+	}
 
 	return lxa_archive_get_property_type(archive, index);
 }
@@ -459,7 +465,8 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 
 	g_return_if_fail(archive);
 
-	column--;
+	if(store->props._show_icons)
+		column--;
 
 	if(entry)
 	{
@@ -660,6 +667,7 @@ xa_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id,
 	if(store->sort_column == sort_col_id && store->sort_order == order)
 		return;
 
+	
 	if(sort_col_id == 0)
 		return;
 
@@ -846,7 +854,7 @@ xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_
 
 	tree_model = g_object_new(XA_TYPE_ARCHIVE_STORE, NULL);
 
-	tree_model->props._show_icons = show_icons?1:0;
+	//tree_model->props._show_icons = show_icons?1:0;
 	tree_model->props._show_up_dir = show_up_dir?1:0;
 	tree_model->icon_theme = icon_theme;
 
@@ -1247,3 +1255,16 @@ xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme)
 		store->icon_theme = icon_theme;
 }
 
+gboolean
+xa_archive_store_get_show_icons(XAArchiveStore *store)
+{
+	return store->props._show_icons;
+}
+
+void
+xa_archive_store_set_show_icons(XAArchiveStore *store, gboolean show)
+{
+	gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
+	store->props._show_icons = show?1:0;
+	xa_archive_store_refresh(store, prev_size);
+}

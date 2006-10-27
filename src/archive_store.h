@@ -86,6 +86,10 @@ gboolean
 xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
 gboolean
 xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
+gboolean
+xa_archive_store_get_show_icons(XAArchiveStore *store);
+void
+xa_archive_store_set_show_icons(XAArchiveStore *store, gboolean show);
 void
 xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
 

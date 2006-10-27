@@ -48,10 +48,6 @@
 
 #include "main.h"
 
-enum {
-	XA_MAIN_WINDOW_SHOW_ICONS = 1
-};
-
 static void
 xa_main_window_init(XAMainWindow *);
 static void
@@ -109,18 +105,11 @@ static void
 xa_main_window_class_init(XAMainWindowClass *window_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (window_class);
-	GParamSpec *pspec = NULL;
 
 	object_class->set_property = xa_main_window_set_property;
 	object_class->get_property = xa_main_window_get_property;
 	object_class->finalize     = xa_main_window_finalize;
 
-	pspec = g_param_spec_boolean("show-icons",
-		_("Show icons"),
-		_("Show icons"),
-		FALSE,
-		G_PARAM_READWRITE);
-	g_object_class_install_property(object_class, XA_MAIN_WINDOW_SHOW_ICONS, pspec);
 }
 
 static void
@@ -374,7 +363,6 @@ xa_main_window_new(GtkIconTheme *icon_theme)
 
 	window = g_object_new(xa_main_window_get_type(),
 			"title", "Xarchiver " PACKAGE_VERSION,
-			"show-icons", TRUE,
 			NULL);
 
 	XA_MAIN_WINDOW(window)->icon_theme = icon_theme;
@@ -391,23 +379,11 @@ xa_main_window_new(GtkIconTheme *icon_theme)
 static void
 xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
-	switch(prop_id)
-	{
-		case XA_MAIN_WINDOW_SHOW_ICONS:
-			g_value_set_boolean(value, XA_MAIN_WINDOW(object)->props._show_icons);
-			break;
-	}
 }
 
 static void
 xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
-	switch(prop_id)
-	{
-		case XA_MAIN_WINDOW_SHOW_ICONS:
-			XA_MAIN_WINDOW(object)->props._show_icons = g_value_get_boolean(value);
-			break;
-	}
 }
 
 GtkWidget *
@@ -554,6 +530,17 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(window->treemodel)))
+	{
+		xa_archive_store_set_show_icons(XA_ARCHIVE_STORE(window->treemodel), FALSE);
+		xa_main_window_reset_columns(window);
+	}
+	else
+	{
+		xa_archive_store_set_show_icons(XA_ARCHIVE_STORE(window->treemodel), TRUE);
+		xa_main_window_reset_columns(window);
+	}
 }
 
 void
@@ -586,7 +573,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 			while(_rows)
 			{
 				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, _rows->data);
-				if(window->props._show_icons)
+				if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(treemodel)))
 					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 1, value);
 				else
 					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
@@ -770,20 +757,35 @@ xa_main_window_reset_columns(XAMainWindow *window)
 	}
 	g_list_free(columns);
 
-	column = gtk_tree_view_column_new();
-	renderer = gtk_cell_renderer_pixbuf_new();
-	g_object_set_property(G_OBJECT(renderer), "stock-size", value);
-	gtk_tree_view_column_pack_start(column, renderer, FALSE);
-	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
+	if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(window->treemodel)))
+	{
+		column = gtk_tree_view_column_new();
+		renderer = gtk_cell_renderer_pixbuf_new();
+		g_object_set_property(G_OBJECT(renderer), "stock-size", value);
+		gtk_tree_view_column_pack_start(column, renderer, FALSE);
+		gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
 
-	renderer = gtk_cell_renderer_text_new();
-	gtk_tree_view_column_pack_start(column, renderer, TRUE);
-	gtk_tree_view_column_set_attributes(column, renderer, "text", LXA_ARCHIVE_PROP_FILENAME + 1, NULL);
+		renderer = gtk_cell_renderer_text_new();
+		gtk_tree_view_column_pack_start(column, renderer, TRUE);
+		gtk_tree_view_column_set_attributes(column, renderer, "text", LXA_ARCHIVE_PROP_FILENAME + 1, NULL);
 
-	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	gtk_tree_view_column_set_sort_column_id(column, LXA_ARCHIVE_PROP_FILENAME + 1);
-	gtk_tree_view_column_set_title(column, lxa_archive_get_property_name(archive, LXA_ARCHIVE_PROP_FILENAME));
-	gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
+		gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+		gtk_tree_view_column_set_sort_column_id(column, LXA_ARCHIVE_PROP_FILENAME + 1);
+		gtk_tree_view_column_set_title(column, lxa_archive_get_property_name(archive, LXA_ARCHIVE_PROP_FILENAME));
+		gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
+	}
+	else
+	{
+		column = gtk_tree_view_column_new();
+		renderer = gtk_cell_renderer_text_new();
+		gtk_tree_view_column_pack_start(column, renderer, TRUE);
+		gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+		gtk_tree_view_column_set_attributes(column, renderer, "text", LXA_ARCHIVE_PROP_FILENAME, NULL);
+		gtk_tree_view_column_set_sort_column_id(column, LXA_ARCHIVE_PROP_FILENAME);
+		gtk_tree_view_column_set_title(column, lxa_archive_get_property_name(archive, LXA_ARCHIVE_PROP_FILENAME));
+		gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
+	}
+
 
 	if(!show_only_filenames)
 	{
@@ -794,11 +796,17 @@ xa_main_window_reset_columns(XAMainWindow *window)
 				case(G_TYPE_STRING):
 				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(lxa_archive_get_property_name(archive, x), renderer, "text", x+1, NULL);
+					if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(window->treemodel)))
+						column = gtk_tree_view_column_new_with_attributes(lxa_archive_get_property_name(archive, x), renderer, "text", x+1, NULL);
+					else
+						column = gtk_tree_view_column_new_with_attributes(lxa_archive_get_property_name(archive, x), renderer, "text", x, NULL);
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
-			gtk_tree_view_column_set_sort_column_id(column, x+1);
+			if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(window->treemodel)))
+				gtk_tree_view_column_set_sort_column_id(column, x+1);
+			else
+				gtk_tree_view_column_set_sort_column_id(column, x);
 			gtk_tree_view_append_column(GTK_TREE_VIEW(window->treeview), column);
 		}
 	}

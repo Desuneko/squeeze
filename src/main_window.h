@@ -100,9 +100,10 @@ struct _XAMainWindow
 	} toolbar;
 	GtkIconTheme *icon_theme;
 	LXAArchive *lp_xa_archive;
-	struct {
-		gboolean   _show_icons;
-	} props;
+	LXAArchiveSupport *lp_xa_support;
+	//struct {
+	//	gboolean   _show_icons;
+	//} props;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
