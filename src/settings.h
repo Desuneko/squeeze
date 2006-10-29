@@ -62,7 +62,11 @@ gboolean      xa_settings_load(XASettings *);
 gboolean      xa_settings_save(XASettings *);
 
 const gchar  *xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fallback);
+gboolean      xa_settings_read_bool_entry(XASettings *settings, const gchar *key, const gboolean fallback);
+
 void          xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *value);
+void          xa_settings_write_bool_entry(XASettings *settings, const gchar *key, const gboolean value);
+
 void          xa_settings_set_group(XASettings *settings, const gchar *group);
 
 G_END_DECLS

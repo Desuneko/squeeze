@@ -178,10 +178,13 @@ lxa_archive_support_zip_new()
 	LXAArchiveSupportZip *support;
 
 	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT_ZIP,
+												 "view-length", TRUE,
 	                       "view-size", TRUE,
 												 "view-time", TRUE,
 												 "view-date", TRUE,
 												 "view-ratio", TRUE,
+												 "view-crc32", TRUE,
+												 "view-method", TRUE,
 												 NULL);
 	
 	return LXA_ARCHIVE_SUPPORT(support);
@@ -196,7 +199,7 @@ lxa_archive_support_zip_add(LXAArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -204,8 +207,8 @@ lxa_archive_support_zip_add(LXAArchive *archive, GSList *filenames)
 	{
 		gchar *command = NULL;
 		gchar *files = lxa_concat_filenames(filenames);
-		if(!g_strcasecmp((gchar *)archive->mime, "application/x-zip") || 
-		   !g_strcasecmp((gchar *)archive->mime, "application/zip"))
+		if(!g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+		   !g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
 			command = g_strconcat("zip -r ", archive->path, " ", files, NULL);
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -223,7 +226,7 @@ lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *f
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -233,8 +236,8 @@ lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *f
 		gchar *files = lxa_concat_filenames(filenames);
 		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
 		{
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-zip") || 
-		  	 !g_strcasecmp((gchar *)archive->mime, "application/zip"))
+			if(!g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+		     !g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/zip"))
 			{
 				command = g_strconcat("unzip -o ", archive->path, " -d ", dest_path, " ", files, NULL);
 				g_debug("Extracting archive '%s' to '%s'", archive->path, dest_path);
@@ -255,7 +258,7 @@ lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -263,8 +266,8 @@ lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 	{
 		gchar *command = NULL;
 		gchar *files = lxa_concat_filenames(filenames);
-		if(!g_strcasecmp((gchar *)archive->mime, "application/x-zip") || 
-		   !g_strcasecmp((gchar *)archive->mime, "application/zip"))
+		if(!g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+		   !g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
 			command = g_strconcat("zip -d ", archive->path, " ", files, NULL);
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -283,76 +286,41 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, archive->mime))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
 	else
 	{
-		archive->n_property = 0;
-		archive->entry_props_size = 0;
-
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) 
-			archive->n_property++;
-		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) 
-			archive->n_property++;
-
-		archive->property_types = LXA_NEW0(GType, archive->n_property);
-		archive->property_names = LXA_NEW0(gchar *, archive->n_property);
-
+		i = LXA_ARCHIVE_PROP_USER;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
-			archive->property_types[i] = G_TYPE_UINT64;
-			archive->property_names[i] = g_strdup(_("Length"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Length"));
 			i++;
-			archive->entry_props_size += sizeof(guint64);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Compression method"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING,_("Method"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) {
-			archive->property_types[i] = G_TYPE_UINT64;
-			archive->property_names[i] = g_strdup(_("Size"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
-			archive->entry_props_size += sizeof(guint64);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup("Ratio");
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Ratio"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Date"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Date"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup(_("Time"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32) {
-			archive->property_types[i] = G_TYPE_STRING;
-			archive->property_names[i] = g_strdup("CRC-32");
+			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("CRC-32"));
 			i++;
-			archive->entry_props_size += sizeof(gchar *);
 		}
-
 		gchar *command = g_strconcat("unzip -lv -qq " , archive->path, NULL);
 		lxa_execute(command, archive, NULL, NULL, lxa_archive_support_zip_refresh_parse_output, NULL);
 		LXA_FREE(command);
@@ -368,11 +336,12 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 	gchar *line	= NULL;
 	LXAEntry *entry;
 
-	gpointer props = NULL; 
-	gpointer props_iter = NULL;
+	guint64 size;
+	guint64 length;
+	gpointer props[8]; 
 	gint n = 0, a = 0, i = 0, o = 0;
 	gchar *temp_filename = NULL;
-	gchar *_size = NULL;
+	gint linesize = 0;
 
 	if(!LXA_IS_ARCHIVE(archive))
 		return FALSE;
@@ -388,92 +357,100 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 			if (line == NULL)
  				break; 
 			/* length, method , size, ratio, date, time, crc-32, filename*/
+			linesize = strlen(line);
 
-			props = LXA_MALLOC0(archive->entry_props_size);
-			props_iter = props;
-			for(n=0; n < strlen(line) && line[n] == ' '; n++);
+			for(n=0; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length)
 			{
-				_size = g_strndup(&line[a], n-a);
-				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
-				LXA_FREE (_size);
-				props_iter += sizeof(guint64);
+				line[n]='\0';
+				length = g_ascii_strtoull(line + a, NULL, 0);
+				props[i] = &length;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
+			for(; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method)
 			{
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
+			for(; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size)
 			{
-				_size = g_strndup(&line[a], n-a);
-				(*((guint64 *)props_iter)) = g_ascii_strtoull( _size, NULL, 0);
-				LXA_FREE (_size);
-				props_iter += sizeof(guint64);
+				line[n]='\0';
+				size = g_ascii_strtoull(line + a, NULL, 0);
+				props[i] = &size;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
+			for(; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio)
 			{
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
+			for(; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date)
 			{
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
-
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
+			for(; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time)
 			{
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
-
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
+			for(; n < linesize && line[n] == ' '; n++);
 			a = n;
-			for(; n < strlen(line) && line[n] != ' '; n++);
+			for(; n < linesize && line[n] != ' '; n++);
 
 			if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
 			{
-				(*(gchar **)props_iter) = g_strndup (&line[a], n-a);
-				props_iter += sizeof(gchar *);
+				line[n] = '\0';
+				props[i] = line + a;
+				i++;
 			}
+			n++;
 
-			for(; n < strlen(line) && line[n] == ' '; n++);
-			temp_filename = g_strstrip(g_strndup(&line[n], strlen(line)-n-1)); 
+			for(; n < linesize && line[n] == ' '; n++);
+			temp_filename = g_strchomp(line+n); 
 
 			entry = lxa_archive_add_file(archive, temp_filename);
-			entry->props = props;
+			lxa_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
 			LXA_FREE(line);
-			LXA_FREE(temp_filename);
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )

@@ -7,6 +7,7 @@ libxarchiver_a_SOURCES =            \
 	slist.c slist.h \
 	archive.c archive.h \
 	archive-support.c archive-support.h \
+	archive-support-zip.c archive-support-zip.h \
 	archive-support-gnu-tar.c archive-support-gnu-tar.h
 
 libxarchiver_a_CFLAGS = \

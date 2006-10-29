@@ -668,8 +668,11 @@ xa_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id,
 		return;
 
 	
-	if(sort_col_id == 0)
-		return;
+	if(store->props._show_icons)
+	{
+		if(sort_col_id == 0)
+			return;
+	}
 
 	store->sort_column = sort_col_id;
 	store->sort_order = order;
@@ -702,6 +705,7 @@ static gint
 xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIter *b)
 {
 	gint retval = 0;
+	gint column = 0;
 	gboolean cmp_a = 0;
 	gboolean cmp_b = 0;
 	GValue  *prop_a = g_new0(GValue, 1);
@@ -725,20 +729,27 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 	}
 
 	LXAArchive *archive = store->archive;
-	gint column = store->sort_column;
+	if(store->props._show_icons)
+		column = store->sort_column - 1;
+	else
+	{
+		column = store->sort_column;
+	}
 
-	lxa_archive_iter_get_prop_value(archive, a, column-1, prop_a);
-	lxa_archive_iter_get_prop_value(archive, b, column-1, prop_b);
+	lxa_archive_iter_get_prop_value(archive, a, column, prop_a);
+	lxa_archive_iter_get_prop_value(archive, b, column, prop_b);
 
-	switch(lxa_archive_get_property_type(archive, column-1))
+	switch(lxa_archive_get_property_type(archive, column))
 	{
 		case G_TYPE_STRING:
 			switch(store->props._sort_case_sensitive)
 			{
 				case 0: /* case insensitive */
 					retval = g_ascii_strcasecmp(g_value_get_string(prop_a), g_value_get_string(prop_b));
+					break;
 				case 1: /* case sensitive */
 					retval = strcmp(g_value_get_string(prop_a), g_value_get_string(prop_b));
+					break;
 			}
 			break;
 		case G_TYPE_UINT64:
@@ -854,7 +865,7 @@ xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_
 
 	tree_model = g_object_new(XA_TYPE_ARCHIVE_STORE, NULL);
 
-	//tree_model->props._show_icons = show_icons?1:0;
+	tree_model->props._show_icons = show_icons?1:0;
 	tree_model->props._show_up_dir = show_up_dir?1:0;
 	tree_model->icon_theme = icon_theme;
 
@@ -1261,10 +1272,58 @@ xa_archive_store_get_show_icons(XAArchiveStore *store)
 	return store->props._show_icons;
 }
 
+gboolean
+xa_archive_store_get_sort_case_sensitive(XAArchiveStore *store)
+{
+	return store->props._sort_case_sensitive;
+}
+
+gboolean
+xa_archive_store_get_sort_folders_first(XAArchiveStore *store)
+{
+	return store->props._sort_folders_first;
+}
+
 void
 xa_archive_store_set_show_icons(XAArchiveStore *store, gboolean show)
 {
+	GtkSortType sort_order;
+	gint sort_col = 0;
 	gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
 	store->props._show_icons = show?1:0;
+	if(show)
+	{
+		xa_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
+		xa_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col+1, sort_order);
+	}
+	else
+	{
+		xa_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
+		xa_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col-1, sort_order);
+	}
 	xa_archive_store_refresh(store, prev_size);
+}
+
+void
+xa_archive_store_set_sort_case_sensitive(XAArchiveStore *store, gboolean sort)
+{
+	store->props._sort_case_sensitive= sort?1:0;
+
+	if(store->archive)
+	{
+		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
+		xa_archive_store_refresh(store, prev_size);
+	}
+}
+
+void
+xa_archive_store_set_sort_folders_first(XAArchiveStore *store, gboolean sort)
+{
+	store->props._sort_folders_first = sort?1:0;
+
+	if(store->archive)
+	{
+		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
+		xa_archive_store_refresh(store, prev_size);
+	}
 }

@@ -86,11 +86,15 @@ gboolean
 xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
 gboolean
 xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
-gboolean
-xa_archive_store_get_show_icons(XAArchiveStore *store);
-void
-xa_archive_store_set_show_icons(XAArchiveStore *store, gboolean show);
 void
 xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
+
+gboolean xa_archive_store_get_show_icons(XAArchiveStore *store);
+gboolean xa_archive_store_get_sort_case_sensitive(XAArchiveStore *store);
+gboolean xa_archive_store_get_sort_folders_first(XAArchiveStore *store);
+
+void xa_archive_store_set_show_icons(XAArchiveStore *, gboolean);
+void xa_archive_store_set_sort_case_sensitive(XAArchiveStore *, gboolean);
+void xa_archive_store_set_sort_folders_first(XAArchiveStore *, gboolean);
 
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

@@ -243,7 +243,7 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -254,21 +254,21 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_ADD);
 		if(!g_file_test(archive->path, G_FILE_TEST_EXISTS))
 		{
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tar"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -cf ", archive->path, " ", archive->files, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -Zcf ", archive->path, " ", archive->files, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zcf ", archive->path, " ", archive->files, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jcf ", archive->path, " ", archive->files, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -cf ", archive->path, " ", archive->files, NULL);
 			if(command)
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 		} else
 		{
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf ", archive->path, " ", archive->files, NULL);
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -278,13 +278,13 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			g_unlink(archive->tmp_file);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat("uncompress -c ", archive->path, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
 			LXA_FREE(command);
@@ -303,7 +303,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -313,7 +313,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_EXTRACT);
 		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
 		{
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf ", archive->path,
 						" -C \"", dest_path, "\"", 
@@ -321,7 +321,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -Zxf ", archive->path,
 						" -C \"", dest_path, "\"", 
@@ -329,7 +329,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zxf ", archive->path,
 						" -C \"", dest_path, "\"", 
@@ -337,7 +337,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jxf ", archive->path,
 						" -C \"", dest_path, "\"", 
@@ -345,7 +345,7 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf --use-compress-program=lzop ", archive->path,
 						" -C \"", dest_path, "\"", 
@@ -374,7 +374,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -385,7 +385,7 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REMOVE);
 		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
 		{
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f ", archive->path, " --delete ", archive->files, NULL);
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -395,13 +395,13 @@ lxa_archive_support_gnu_tar_remove(LXAArchive *archive, GSList *filenames)
 			archive->tmp_file = g_strconcat(lxa_tmp_dir, "/xarchiver-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			g_unlink(archive->tmp_file);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat("uncompress -c ", archive->path, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
-			if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lxa_execute(command, archive, lxa_archive_support_gnu_tar_decompress_watch, NULL, lxa_archive_support_gnu_tar_decompress_parse_output, NULL);
 			LXA_FREE(command);
@@ -422,7 +422,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 		return -1;
 	}
 
-	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime)))
+	if(!lxa_archive_support_mime_supported(archive->support, lxa_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -449,7 +449,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 			lxa_archive_set_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
 		}
-		if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+		if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -tvf " , archive->path, NULL);
 		else
 			command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -tvf " , archive->path, NULL);
@@ -473,13 +473,13 @@ lxa_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 	archive->child_pid = 0;
 	gchar *command = NULL;
 
-	if(!g_strcasecmp((gchar *)archive->mime, "application/x-tarz"))
+	if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 		command = g_strconcat("compress -c ", archive->tmp_file, NULL);
-	if(!g_strcasecmp((gchar *)archive->mime, "application/x-compressed-tar"))
+	if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 		command = g_strconcat("gzip -c ", archive->tmp_file, NULL);
-	if(!g_strcasecmp((gchar *)archive->mime, "application/x-bzip-compressed-tar"))
+	if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 		command = g_strconcat("bzip2 -c ", archive->tmp_file, NULL);
-	if(!g_strcasecmp((gchar *)archive->mime, "application/x-tzo"))
+	if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 		command = g_strconcat("lzop -c ", archive->path, NULL);
 	lxa_execute(command, archive, NULL, NULL, lxa_archive_support_gnu_tar_compress_parse_output, NULL);
 }

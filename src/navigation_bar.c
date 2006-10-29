@@ -34,6 +34,8 @@ xa_navigation_bar_class_init(XANavigationBarClass *archive_class);
 
 static void
 xa_navigation_bar_init(XANavigationBar *archive);
+static void
+xa_navigation_bar_finalize(GObject *object);
 
 static void
 cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
@@ -85,6 +87,7 @@ xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
 
 	object_class->set_property = xa_navigation_bar_set_property;
 	object_class->get_property = xa_navigation_bar_get_property;
+	object_class->finalize     = xa_navigation_bar_finalize;
 
 	pspec = g_param_spec_uint("navigation_history",
 		"",
@@ -107,6 +110,16 @@ xa_navigation_bar_init(XANavigationBar *navigation_bar)
 	navigation_bar->max_history = XA_NAVIGATION_BAR_MAX_HISTORY;
 	navigation_bar->pwd = NULL;
 	navigation_bar->history = NULL;
+}
+
+static void
+xa_navigation_bar_finalize(GObject *object)
+{
+	XANavigationBar *navigation_bar = XA_NAVIGATION_BAR(object);
+	if(navigation_bar->_cb_pwd_changed)
+		g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_pwd_changed, navigation_bar);
+	if(navigation_bar->_cb_new_archive)
+		g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_new_archive, navigation_bar);
 }
 
 void

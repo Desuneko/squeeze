@@ -117,7 +117,6 @@ xa_main_window_finalize(GObject *object)
 {
 	XAMainWindow *window = XA_MAIN_WINDOW(object);
 
-	xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 
 	xa_settings_set_group(window->settings, "Global");
 	if(!window->navigationbar)
@@ -140,8 +139,14 @@ xa_main_window_finalize(GObject *object)
 	{
 		xa_settings_write_entry(window->settings, "NavigationBar", "None");
 	}
-	gtk_widget_unref(GTK_WIDGET(window->navigationbar));
+
+	xa_settings_write_bool_entry(window->settings, "ShowIcons", xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(window->treemodel)));
+	xa_settings_write_bool_entry(window->settings, "SortCaseSensitive", xa_archive_store_get_sort_case_sensitive(XA_ARCHIVE_STORE(window->treemodel)));
+	xa_settings_write_bool_entry(window->settings, "SortFoldersFirst", xa_archive_store_get_sort_folders_first(XA_ARCHIVE_STORE(window->treemodel)));
 	xa_settings_save(window->settings);
+
+	gtk_widget_unref(GTK_WIDGET(window->navigationbar));
+	xa_archive_store_set_contents(XA_ARCHIVE_STORE(window->treemodel), NULL);
 }
 
 static void
@@ -155,6 +160,9 @@ xa_main_window_init(XAMainWindow *window)
 	GtkAccelGroup *accel_group = gtk_accel_group_new();
 	const gchar   *nav_bar;
 	gboolean up_dir = TRUE;
+	gboolean show_icons = TRUE;
+	gboolean sort_case = TRUE;
+	gboolean sort_folders = TRUE;
 
 	window->settings = xa_settings_new(NULL);
 
@@ -284,7 +292,7 @@ xa_main_window_init(XAMainWindow *window)
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
 	xa_settings_set_group(window->settings, "Global");
-	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "PathBar");
+	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "None");
 	window->navigationbar = NULL;
 
 #ifdef ENABLE_TOOLBAR
@@ -307,6 +315,10 @@ xa_main_window_init(XAMainWindow *window)
 	{
 		window->navigationbar = xa_navigation_bar_new(NULL);
 	}
+
+	show_icons = xa_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
+	sort_case = xa_settings_read_bool_entry(window->settings, "SortCaseSensitive", TRUE);
+	sort_folders = xa_settings_read_bool_entry(window->settings, "SortFoldersFirst", TRUE);
 
 	gtk_widget_ref(GTK_WIDGET(window->navigationbar));
 
@@ -346,7 +358,10 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_container_add(GTK_CONTAINER(window), main_vbox);
 
 	/* archive model */
-	window->treemodel = xa_archive_store_new(NULL, TRUE, up_dir, window->icon_theme);
+	window->treemodel = xa_archive_store_new(NULL, show_icons, up_dir, window->icon_theme);
+
+	xa_archive_store_set_sort_case_sensitive(XA_ARCHIVE_STORE(window->treemodel), sort_case);
+	xa_archive_store_set_sort_folders_first (XA_ARCHIVE_STORE(window->treemodel), sort_folders);
 
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(window->treemodel), GTK_TREE_VIEW(window->treeview));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(window->treeview), GTK_TREE_MODEL(window->treemodel));
@@ -447,7 +462,7 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 		{
 			g_debug("Archive opened");
 			g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
-			lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime));
+			lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime_info));
 
 			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_close), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_new), TRUE);
@@ -530,17 +545,7 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(window->treemodel)))
-	{
-		xa_archive_store_set_show_icons(XA_ARCHIVE_STORE(window->treemodel), FALSE);
-		xa_main_window_reset_columns(window);
-	}
-	else
-	{
-		xa_archive_store_set_show_icons(XA_ARCHIVE_STORE(window->treemodel), TRUE);
-		xa_main_window_reset_columns(window);
-	}
+/*	XAMainWindow *window = XA_MAIN_WINDOW(userdata);*/
 }
 
 void
@@ -557,7 +562,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	GtkTreeIter iter;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
 
-	lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime));
+	lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime_info));
 
 
 	dialog = xa_extract_archive_dialog_new(lp_support, window->lp_xa_archive, gtk_tree_selection_count_selected_rows (selection));
@@ -641,7 +646,7 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path)
 	if(!lxa_open_archive(archive_path, &window->lp_xa_archive))
 	{
 		g_signal_connect(G_OBJECT(window->lp_xa_archive), "lxa_status_changed", G_CALLBACK(xa_main_window_archive_status_changed), window);
-		lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime));
+		lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(window->lp_xa_archive->mime_info));
 
 		lxa_archive_support_refresh(lp_support, window->lp_xa_archive);
 		return 0;

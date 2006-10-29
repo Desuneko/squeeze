@@ -68,7 +68,7 @@ struct _LXAArchive
 {
 	GObject parent;
 	gchar              *path;
-	LXAMimeInfo        *mime;
+	LXAMimeInfo        *mime_info;
 	guint               n_property;
 	GType              *property_types;
 	gchar             **property_names;

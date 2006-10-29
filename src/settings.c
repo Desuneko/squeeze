@@ -122,6 +122,16 @@ xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *val
 #endif /* HAVE_LIBXFCE4UTIL */
 }
 
+void
+xa_settings_write_bool_entry(XASettings *settings, const gchar *key, const gboolean value)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	xfce_rc_write_bool_entry(XFCE_RC(settings->xfce_rc), key, value);
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
+}
+
 const gchar *
 xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fallback)
 {
@@ -129,5 +139,15 @@ xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fall
 	return xfce_rc_read_entry(XFCE_RC(settings->xfce_rc), key, fallback);
 #else
 	return g_strdup(fallback);
+#endif /* HAVE_LIBXFCE4UTIL */
+}
+
+gboolean
+xa_settings_read_bool_entry(XASettings *settings, const gchar *key, const gboolean fallback)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	return xfce_rc_read_bool_entry(XFCE_RC(settings->xfce_rc), key, fallback);
+#else
+	return fallback;
 #endif /* HAVE_LIBXFCE4UTIL */
 }
