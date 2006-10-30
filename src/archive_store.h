@@ -97,4 +97,6 @@ void xa_archive_store_set_show_icons(XAArchiveStore *, gboolean);
 void xa_archive_store_set_sort_case_sensitive(XAArchiveStore *, gboolean);
 void xa_archive_store_set_sort_folders_first(XAArchiveStore *, gboolean);
 
+gchar *
+xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter);
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

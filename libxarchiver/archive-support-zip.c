@@ -239,7 +239,7 @@ lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *f
 			if(!g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		     !g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/zip"))
 			{
-				command = g_strconcat("unzip -o ", archive->path, " -d ", dest_path, " ", files, NULL);
+				command = g_strconcat("unzip -o ", archive->path, " ", files, " -d ", dest_path, NULL);
 				g_debug("Extracting archive '%s' to '%s'", archive->path, dest_path);
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 			}	

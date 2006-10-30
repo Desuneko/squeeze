@@ -131,7 +131,7 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 					g_signal_connect(G_OBJECT(test), "toggled", G_CALLBACK(xa_extract_dialog_option_toggled), (void *)g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
 					gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
 					break;
-				case (G_TYPE_STRING): /* TODO: Add text-field */
+				case (G_TYPE_STRING):
 					hbox = gtk_hbox_new(FALSE, 4);
 					test = gtk_label_new(g_param_spec_get_nick(G_PARAM_SPEC(extract_options->data)));
 					gtk_box_pack_start(GTK_BOX(hbox), test, FALSE, FALSE, 3);

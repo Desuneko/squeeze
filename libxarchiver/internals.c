@@ -161,7 +161,7 @@ lxa_concat_filenames(GSList *filenames)
 	while(_filenames)
 	{
 		_concat_str = concat_str;
-		concat_str = g_strconcat(concat_str, " \"", _filenames->data,"\"",  NULL);
+		concat_str = g_strconcat(concat_str, g_shell_quote(_filenames->data) , NULL);
 		_filenames = _filenames->next;
 		LXA_FREE(_concat_str);
 	}

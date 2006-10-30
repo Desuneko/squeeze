@@ -1181,7 +1181,7 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 {
 	g_return_val_if_fail(store, NULL);
 
-	GValue basename;
+	GValue *basename = g_new0(GValue, 1);
 	GSList *iter = store->current_entry;
 	GSList *path = NULL;
 
@@ -1191,11 +1191,13 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 	/* we don't want to include de archive rootentry */
 	while(iter->next)
 	{
-		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, &basename);
-		path = g_slist_prepend(path, g_value_dup_string(&basename));
-		g_value_unset(&basename);
+		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, basename);
+		path = g_slist_prepend(path, g_value_dup_string(basename));
+		g_value_unset(basename);
 		iter = iter->next;
 	}
+
+	g_free(basename);
 
 	return path;
 }
@@ -1326,4 +1328,19 @@ xa_archive_store_set_sort_folders_first(XAArchiveStore *store, gboolean sort)
 		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
 		xa_archive_store_refresh(store, prev_size);
 	}
+}
+
+gchar *
+xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter)
+{
+	LXAArchiveIter *entry = iter->user_data;
+
+	GValue *value = g_new0(GValue, 1);
+	
+	lxa_archive_iter_get_prop_value(store->archive, entry, LXA_ARCHIVE_PROP_FILENAME, value);
+
+	if(lxa_archive_iter_is_directory(store->archive, entry))
+		return g_strconcat(g_value_get_string(value), "/", NULL);
+	else
+		return g_value_dup_string(value);
 }

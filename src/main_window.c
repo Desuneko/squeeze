@@ -16,10 +16,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
- /*
-		FIXME: File is full of hacks.
- */
-
 #include <config.h>
 #include <string.h>
 #include <glib.h>
@@ -557,7 +553,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
 	LXAArchiveSupport *lp_support = NULL;
 	GSList *filenames = NULL;
-	GValue *value = g_new0(GValue, 1);
+	gchar *filename = NULL;
 	GtkTreeModel *treemodel = gtk_tree_view_get_model(GTK_TREE_VIEW(window->treeview));
 	GtkTreeIter iter;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (window->treeview) );
@@ -578,12 +574,11 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 			while(_rows)
 			{
 				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, _rows->data);
-				if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(treemodel)))
-					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 1, value);
-				else
-					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
 
-				g_value_unset(value);
+				filename = xa_archive_store_get_filename(XA_ARCHIVE_STORE(treemodel), &iter);
+				
+				filenames = g_slist_prepend(filenames, g_strconcat(xa_archive_store_get_pwd(XA_ARCHIVE_STORE(treemodel)), filename, NULL));
+
 				_rows = _rows->next;
 			}
 			g_list_free(rows);
