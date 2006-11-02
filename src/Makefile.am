@@ -17,6 +17,7 @@ xarchiver_SOURCES = \
 	main.c main.h \
 	main_window.c main_window.h \
 	navigation_bar.c navigation_bar.h \
+	notebook.c notebook.h \
 	$(TOOLBAR_FILES) \
 	$(PATHBAR_FILES) \
 	settings.c settings.h \

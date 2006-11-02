@@ -99,6 +99,7 @@ GType               lxa_archive_get_type(void);
 LXAArchive         *lxa_archive_new(gchar *, const gchar *);
 
 void                lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status);
+const gchar *       lxa_archive_get_filename(LXAArchive *archive);
 
 /* new */
 gboolean            lxa_archive_iter_is_directory(const LXAArchive *, const LXAArchiveIter *);

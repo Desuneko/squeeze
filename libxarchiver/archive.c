@@ -116,7 +116,7 @@ lxa_archive_sort_entry_buffer(LXAEntry *entry1, LXAEntry *entry2)
 	return strcmp(entry1->filename, entry2->filename);
 }
 
-static gint lxa_archive_signals[1];
+static gint lxa_archive_signals[2];
 
 GType
 lxa_archive_get_type ()
@@ -152,6 +152,17 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 	object_class->finalize = lxa_archive_finalize;
 	
 	lxa_archive_signals[0] = g_signal_new("lxa_status_changed",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
+			NULL);
+
+	lxa_archive_signals[1] = g_signal_new("lxa_refreshed",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -234,6 +245,9 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 			archive->old_status = archive->status;
 			archive->status = status;
 			g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
+			if((archive->old_status == LXA_ARCHIVESTATUS_REFRESH) &&
+			  (archive->status == LXA_ARCHIVESTATUS_IDLE))
+				g_signal_emit(G_OBJECT(archive), lxa_archive_signals[1], 0, archive);
 		} 
 	}
 	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
@@ -1258,3 +1272,8 @@ lxa_archive_iter_get_prop_uint64(const LXAArchive *archive, const LXAArchiveIter
 	return (*((guint64 *)props_iter));
 }
 
+const gchar *
+lxa_archive_get_filename(LXAArchive *archive)
+{
+	return g_basename(archive->path);
+}

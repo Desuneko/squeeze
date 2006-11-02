@@ -30,6 +30,7 @@
 #include "main.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
+#include "notebook.h"
 #include "main_window.h"
 
 gboolean version = FALSE;
@@ -93,15 +94,7 @@ archive_initialized(LXAArchive *archive, gpointer data)
 void
 cb_main_window_destroy(XAMainWindow *window, gpointer data)
 {
-	if(window->lp_xa_archive)
-	{
-		lxa_close_archive(window->lp_xa_archive);
-		opened_archives--;
-	}
-	if(opened_archives <= 0)
-	{
-		gtk_main_quit();
-	}
+	gtk_main_quit();
 }
 
 int main(int argc, char **argv)
@@ -238,7 +231,6 @@ int main(int argc, char **argv)
 
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
 	{
-		
 		xa_icon_theme = gtk_icon_theme_get_default();
 		if(argc > 1)
 		{
@@ -249,19 +241,6 @@ int main(int argc, char **argv)
 				main_window = xa_main_window_new(xa_icon_theme);
 				g_signal_connect(G_OBJECT(main_window), "destroy", G_CALLBACK(cb_main_window_destroy), NULL);
 
-				if(!xa_main_window_open_archive(XA_MAIN_WINDOW(main_window), argv[i]))
-				{
-					opened_archives++;
-					gtk_widget_set_size_request(main_window, 500, 350);
-					gtk_widget_show_all(main_window);
-				} else
-				{
-					gtk_widget_destroy(main_window);
-					dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Xarchiver\nERROR: Could not open file \"%s\""), argv[i]);
-					gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
-					gtk_dialog_run (GTK_DIALOG (dialog) );
-					gtk_widget_destroy (GTK_WIDGET (dialog) );
-				}
 			}
 			opened_archives--;
 			if(opened_archives <= 0)

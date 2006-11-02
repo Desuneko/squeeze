@@ -51,12 +51,8 @@ typedef struct _XAMainWindow XAMainWindow;
 struct _XAMainWindow
 {
 	GtkWindow parent;
-	GtkWidget *treeview;
-	GtkTreeModel *treemodel;
-	GtkWidget *scrollwindow;
-	GtkWidget *statusbar;
-	XANavigationBar *navigationbar;
 	XASettings *settings;
+	GtkIconTheme *icon_theme;
 	struct {
 		GtkWidget *menu_item_archive;
 		GtkWidget *menu_archive;
@@ -98,12 +94,9 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_remove;
 		GtkToolItem *tool_item_stop;
 	} toolbar;
-	GtkIconTheme *icon_theme;
-	LXAArchive *lp_xa_archive;
-	LXAArchiveSupport *lp_xa_support;
-	//struct {
-	//	gboolean   _show_icons;
-	//} props;
+	XANavigationBar *navigationbar;
+	GtkWidget *notebook;
+	GtkWidget *statusbar;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -117,15 +110,6 @@ GtkWidget *xa_main_window_new(GtkIconTheme *icon_theme);
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
 GType      xa_main_window_get_type ();
 
-void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
-void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
-void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
-void cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata);
-void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
-
-void xa_main_window_archive_status_changed(LXAArchive *archive, gpointer userdata);
-gint xa_main_window_open_archive(XAMainWindow *window, gchar *archive_path);
-gchar *xa_main_window_get_working_dir(XAMainWindow *window);
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */

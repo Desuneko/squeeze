@@ -465,8 +465,11 @@ xa_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 
 	g_return_if_fail(archive);
 
+/*
 	if(store->props._show_icons)
 		column--;
+		*/
+	column--;
 
 	if(entry)
 	{

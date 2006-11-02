@@ -45,6 +45,7 @@ struct _XAArchiveStore
 	GObject parent;
 	gint stamp;
 	LXAArchive *archive;
+	LXAArchiveSupport *support;
 	GSList *current_entry;
 	gint sort_column;
 	GtkSortType sort_order;
