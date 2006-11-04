@@ -875,7 +875,7 @@ xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_
 	if(tree_model->props._sort_folders_first)
 		tree_model->sort_column = 1;
 
-	xa_archive_store_set_contents(tree_model, archive);
+	xa_archive_store_set_archive(tree_model, archive);
 
 	return GTK_TREE_MODEL(tree_model);
 }
@@ -1041,7 +1041,7 @@ xa_archive_store_go_up(XAArchiveStore *store)
 }
 
 void
-xa_archive_store_set_contents(XAArchiveStore *store, LXAArchive *archive)
+xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 {
 	gint i = 0;
 	GtkTreePath *path_ = NULL;
@@ -1372,4 +1372,10 @@ LXAArchiveSupport *
 xa_archive_store_get_support(XAArchiveStore *archive_store)
 {
 	return archive_store->support;
+}
+
+void
+xa_archive_store_set_support(XAArchiveStore *archive_store, LXAArchiveSupport *support)
+{
+	archive_store->support = support;
 }

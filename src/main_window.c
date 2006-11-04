@@ -66,6 +66,8 @@ static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
 static void
 cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data);
+static void
+cb_xa_main_window_notebook_page_removed(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data);
 
 
 GType
@@ -234,6 +236,7 @@ xa_main_window_init(XAMainWindow *window)
 /* main view */
 	window->notebook = xa_notebook_new(window->navigationbar);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
+	g_signal_connect(G_OBJECT(window->notebook), "page-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -450,13 +453,24 @@ cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
 static void
 cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
-	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
-	{
-		g_debug("Page switched");
-	}
-	else /* All pages are closed */
-	{
-		g_debug("Everything is ok, detected last page removal");
-	}
+	XAMainWindow *window = XA_MAIN_WINDOW(data);
 
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+}
+
+static void
+cb_xa_main_window_notebook_page_removed(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
+{
+	XAMainWindow *window = XA_MAIN_WINDOW(data);
+
+	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+	}
 }

@@ -365,10 +365,16 @@ static void
 cb_xa_tool_bar_store_set(XANavigationBar *bar)
 {
 	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
-
-	gchar *path= xa_archive_store_get_pwd(bar->store);
-
-	xa_tool_bar_refresh(tool_bar, path);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
-	g_free(path);
+	if(bar->store)
+	{
+		gchar *path= xa_archive_store_get_pwd(bar->store);
+		xa_tool_bar_refresh(tool_bar, path);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
+		g_free(path);
+	}
+	else
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
+		xa_tool_bar_refresh(tool_bar, "");
+	}
 }

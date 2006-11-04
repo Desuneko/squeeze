@@ -159,10 +159,12 @@ xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *sto
 		g_signal_connect(G_OBJECT(store), "xa-pwd-changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
 		g_signal_connect(G_OBJECT(store), "xa-new-archive", (GCallback)navigation_bar->_cb_new_archive, navigation_bar);
 		xa_archive_store_get_history(store, &navigation_bar->history, &navigation_bar->pwd);
-
-		/* should be signal, window might want to know */
-		g_signal_emit(G_OBJECT(navigation_bar), xa_navigation_bar_signals[0], 0, navigation_bar);
 	}
+	else
+	{
+		xa_navigation_bar_clear_history(navigation_bar);
+	}
+	g_signal_emit(G_OBJECT(navigation_bar), xa_navigation_bar_signals[0], 0, navigation_bar);
 }
 
 XANavigationBar *
