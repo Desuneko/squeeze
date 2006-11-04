@@ -452,7 +452,7 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 {
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
-		g_debug("Everything is ok, detected last page removal");
+		g_debug("Page switched");
 	}
 	else /* All pages are closed */
 	{
