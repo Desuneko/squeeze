@@ -698,5 +698,49 @@ cb_xa_path_bar_right_clicked(GtkWidget *widget, gpointer user_data)
 static void
 cb_xa_path_bar_store_set(XANavigationBar *bar)
 {
+	GtkRadioButton *button = NULL;
+	XAPathBar *path_bar = XA_PATH_BAR(bar);
+	GSList *buttons = path_bar->path_button->next;
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(path_bar->path_button->data), TRUE);
+
+	while(buttons)
+	{
+		gtk_container_remove(GTK_CONTAINER(path_bar), GTK_WIDGET(buttons->data));
+		gtk_widget_unref(GTK_WIDGET(buttons->data));
+		buttons = buttons->next;
+	}
+	g_slist_free(path_bar->path_button->next);
+	path_bar->path_button->next = NULL;
+
+	if(bar->store)
+	{
+		GSList *path = xa_archive_store_get_pwd_list(bar->store);
+		GSList *iter = path;
+
+		while(iter)
+		{
+			button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, (const gchar*)iter->data));
+			gtk_widget_ref(GTK_WIDGET(button));
+			gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
+			path_bar->path_button = g_slist_append(path_bar->path_button, button);
+
+			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
+
+			gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
+			gtk_widget_show(GTK_WIDGET(button));
+
+			g_free(iter->data);
+			iter = iter->next;
+		}
+
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), TRUE);
+
+		g_slist_free(path);
+
+		path_bar->first_button = g_slist_last(path_bar->path_button);
+	}
+
+	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), bar->store?TRUE:FALSE);
 }
 
