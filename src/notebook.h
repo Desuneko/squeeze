@@ -69,6 +69,8 @@ GType xa_notebook_get_type ();
 void  xa_notebook_set_navigation_bar(XANotebook *, XANavigationBar *);
 void  xa_notebook_add_archive(XANotebook *, LXAArchive *, LXAArchiveSupport *);
 void  xa_notebook_set_icon_theme(XANotebook *, GtkIconTheme *);
+void  xa_notebook_get_active_archive(XANotebook *, LXAArchive **, LXAArchiveSupport **);
+GtkWidget * xa_notebook_get_active_child(XANotebook *notebook);
 
 G_END_DECLS
 #endif /* __XARCHIVER_NOTEBOOK_H__ */

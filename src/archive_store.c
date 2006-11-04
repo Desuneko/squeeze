@@ -1361,3 +1361,15 @@ xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd
 	(*history)=store->navigation.history;
 	(*pwd) = store->navigation.pwd;
 }
+
+LXAArchive *
+xa_archive_store_get_archive(XAArchiveStore *archive_store)
+{
+	return archive_store->archive;
+}
+
+LXAArchiveSupport *
+xa_archive_store_get_support(XAArchiveStore *archive_store)
+{
+	return archive_store->support;
+}

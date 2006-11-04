@@ -71,28 +71,17 @@ struct _XAArchiveStoreClass
 };
 
 
-GType
-xa_archive_store_get_type();
-GtkTreeModel *
-xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);
-void
-xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
-void
-xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
-void
-xa_archive_store_go_up(XAArchiveStore *store);
-gchar *
-xa_archive_store_get_pwd(XAArchiveStore *store);
-GSList *
-xa_archive_store_get_pwd_list(XAArchiveStore *store);
-gchar *
-xa_archive_store_get_basename(XAArchiveStore *store);
-gboolean
-xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
-gboolean
-xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
-void
-xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
+GType xa_archive_store_get_type();
+GtkTreeModel * xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);
+void xa_archive_store_set_contents(XAArchiveStore *archive_store, LXAArchive *archive);
+void xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
+void xa_archive_store_go_up(XAArchiveStore *store);
+gchar * xa_archive_store_get_pwd(XAArchiveStore *store);
+GSList * xa_archive_store_get_pwd_list(XAArchiveStore *store);
+gchar * xa_archive_store_get_basename(XAArchiveStore *store);
+gboolean xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
+gboolean xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
+void xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
 
 gboolean xa_archive_store_get_show_icons(XAArchiveStore *store);
 gboolean xa_archive_store_get_sort_case_sensitive(XAArchiveStore *store);
@@ -109,4 +98,10 @@ void
 xa_archive_store_set_history(XAArchiveStore *store, GList *history, GList *pwd);
 void
 xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd);
+
+LXAArchive *
+xa_archive_store_get_archive(XAArchiveStore *archive_store);
+LXAArchiveSupport *
+xa_archive_store_get_support(XAArchiveStore *archive_store);
+
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

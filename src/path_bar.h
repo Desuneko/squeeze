@@ -51,6 +51,8 @@ struct _XAPathBar
 	GSList *path_button;
 	GSList *first_button;
 	guint scroll_timeout;
+	guint scroll_dir;
+	gboolean scroll_click;
 };
 
 typedef struct _XAPathBarClass XAPathBarClass;

@@ -44,7 +44,7 @@ static void
 xa_notebook_treeview_reset_columns(LXAArchive *archive, GtkTreeView *treeview);
 
 void
-cb_notebook_close_archive(GtkButton *button, GtkTreeView *treeview);
+cb_notebook_close_archive(GtkButton *button, XANotebook *notebook);
 
 void
 cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook);
@@ -203,6 +203,10 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(tree_model), GTK_TREE_VIEW(tree_view));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
+	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), TRUE);
+	else
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), tree_view, lbl_hbox);
 }
 
@@ -212,7 +216,7 @@ cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook)
 }
 
 void
-cb_notebook_close_archive(GtkButton *button, GtkTreeView *treeview)
+cb_notebook_close_archive(GtkButton *button, XANotebook *notebook)
 {
 }
 
@@ -301,4 +305,24 @@ cb_xa_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint 
 	GtkWidget *treeview = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 	xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
+}
+
+void
+xa_notebook_get_active_archive(XANotebook *notebook, LXAArchive **lp_archive, LXAArchiveSupport **lp_support)
+{
+	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+
+	GtkWidget *treeview = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
+	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+
+	(*lp_archive) = xa_archive_store_get_archive(XA_ARCHIVE_STORE(archive_store));
+	(*lp_support) = xa_archive_store_get_support(XA_ARCHIVE_STORE(archive_store));
+}
+
+GtkWidget *
+xa_notebook_get_active_child(XANotebook *notebook)
+{
+	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+
+	return gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
 }

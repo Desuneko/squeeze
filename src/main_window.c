@@ -64,6 +64,9 @@ static void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
+static void
+cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data);
+
 
 GType
 xa_main_window_get_type ()
@@ -230,6 +233,7 @@ xa_main_window_init(XAMainWindow *window)
 
 /* main view */
 	window->notebook = xa_notebook_new(window->navigationbar);
+	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -313,7 +317,6 @@ xa_main_window_find_image(gchar *filename, GtkIconSize size)
 	return file_image;
 }
 
-
 static void
 cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 {
@@ -381,17 +384,79 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	}
 }
 
+
+static void
+cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget *dialog = NULL;
+	gchar *extract_archive_path = NULL;
+	gint result = 0;
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+
+	LXAArchive        *lp_archive = NULL;
+	LXAArchiveSupport *lp_support = NULL;
+
+	GSList *filenames = NULL;
+	GValue *value = g_new0(GValue, 1);
+
+	GtkTreeView *treeview = GTK_TREE_VIEW(xa_notebook_get_active_child(XA_NOTEBOOK(window->notebook)));
+	GtkTreeModel *treemodel = gtk_tree_view_get_model(treeview);
+	GtkTreeIter iter;
+	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
+
+	xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+
+	dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, gtk_tree_selection_count_selected_rows (selection));
+	result = gtk_dialog_run (GTK_DIALOG (dialog) );
+	if(result == GTK_RESPONSE_OK)
+	{
+		gtk_widget_hide(GTK_WIDGET(dialog));
+		extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(dialog)->sel_files_radio)))
+		{
+			GList *rows = gtk_tree_selection_get_selected_rows(selection, &treemodel);
+			GList *_rows = rows;
+			while(_rows)
+			{
+				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, _rows->data);
+				if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(treemodel)))
+					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 1, value);
+				else
+					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
+
+				g_value_unset(value);
+				_rows = _rows->next;
+			}
+			g_list_free(rows);
+		}
+		lxa_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
+		g_free(extract_archive_path);
+		extract_archive_path = NULL;
+	}
+	gtk_widget_destroy (GTK_WIDGET (dialog) );
+
+}
+
 static void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
 }
 
 static void
-cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
+cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
 }
 
 static void
-cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
+cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
+	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
+	{
+		g_debug("Everything is ok, detected last page removal");
+	}
+	else /* All pages are closed */
+	{
+		g_debug("Everything is ok, detected last page removal");
+	}
+
 }
