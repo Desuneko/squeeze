@@ -1347,3 +1347,17 @@ xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter)
 	else
 		return g_value_dup_string(value);
 }
+
+void
+xa_archive_store_set_history(XAArchiveStore *store, GList *history, GList *pwd)
+{
+	store->navigation.history = history;
+	store->navigation.pwd = pwd;
+}
+
+void
+xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd)
+{
+	(*history)=store->navigation.history;
+	(*pwd) = store->navigation.pwd;
+}

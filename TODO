@@ -10,20 +10,26 @@ Long Version:
 
   Make thunar-vfs dependency optional.
   Make libxfce4-util dependency optional.
-+-+-+-+
 
-  Add Settings support
-+-+-+-+
+  Fix navigation-bars to work with notebook
+
+  Close Buttons
+
+	Fix Command-line options
+
+  Add Dialog
+
+  New Dialog 
+
+  Open Dialog 
+
+  Settings support
 
   Comment library functions
     (explain their purpose)
-+-+-+-+
 
   Increase performance
-+-+-+-+ 
 
   Implement multi-threading (for libarchive support)
-+-+-+-+
 
-  Complete TODO-file
-+-+-+-+
+  ... Complete TODO-file

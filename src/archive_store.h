@@ -57,6 +57,10 @@ struct _XAArchiveStore
 		guint _sort_folders_first : 1;
 		guint _sort_case_sensitive : 1;
 	} props;
+	struct {
+		GList *history;
+		GList *pwd;
+	} navigation;
 };
 
 typedef struct _XAArchiveStoreClass XAArchiveStoreClass;
@@ -100,4 +104,9 @@ void xa_archive_store_set_sort_folders_first(XAArchiveStore *, gboolean);
 
 gchar *
 xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter);
+
+void
+xa_archive_store_set_history(XAArchiveStore *store, GList *history, GList *pwd);
+void
+xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd);
 #endif /* __XARCHIVER_ARCHIVE_STORE_H__ */

@@ -23,6 +23,8 @@
 #include <libxarchiver/libxarchiver.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
+#include "tool_bar.h"
+#include "path_bar.h"
 #include "notebook.h"
 
 static void
@@ -40,6 +42,9 @@ xa_notebook_get_property(GObject *object, guint prop_id, GValue *value, GParamSp
 
 static void
 xa_notebook_treeview_reset_columns(LXAArchive *archive, GtkTreeView *treeview);
+
+void
+cb_notebook_close_archive(GtkButton *button, GtkTreeView *treeview);
 
 void
 cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook);
@@ -101,6 +106,11 @@ static void
 xa_notebook_init(XANotebook *notebook)
 {
 	g_signal_connect(G_OBJECT(notebook), "switch-page", G_CALLBACK(cb_xa_notebook_page_switched), NULL);
+	notebook->tool_tips = gtk_tooltips_new();
+	gtk_tooltips_enable(notebook->tool_tips);
+	gtk_notebook_set_tab_border(GTK_NOTEBOOK(notebook), 0);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
+	gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
 }
 
 static void
@@ -115,8 +125,13 @@ xa_notebook_new(XANavigationBar *bar)
 
 	notebook = g_object_new(XA_TYPE_NOTEBOOK, NULL);
 
+	notebook->props._up_dir = TRUE;
 	if(bar)
+	{
 		xa_notebook_set_navigation_bar(notebook, bar);
+		if(XA_IS_TOOL_BAR(bar) || XA_IS_PATH_BAR(bar))
+			notebook->props._up_dir = FALSE;
+	}
 
 	notebook->props._show_icons = TRUE;
 
@@ -156,13 +171,23 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 {
 	GtkWidget *lbl_hbox = gtk_hbox_new(FALSE, 0);
 	GtkWidget *label = gtk_label_new(lxa_archive_get_filename(archive));
-	GtkWidget *close_button = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+	GtkWidget *archive_image = gtk_image_new_from_icon_name(lxa_mime_info_get_icon_name(archive->mime_info, notebook->icon_theme), GTK_ICON_SIZE_MENU);
+	GtkWidget *close_button = gtk_button_new();
+	GtkWidget *close_image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+
+	gtk_button_set_image(GTK_BUTTON(close_button), close_image);
+	gtk_button_set_relief(GTK_BUTTON(close_button), GTK_RELIEF_NONE);
+
+	gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
+	gtk_label_set_max_width_chars(GTK_LABEL(label), 20);
+	gtk_tooltips_set_tip(notebook->tool_tips, label, lxa_archive_get_filename(archive), NULL);
 
 	GtkWidget *tree_view = gtk_tree_view_new();
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(tree_view), TRUE);
 
 	GtkTreeModel *tree_model = xa_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
 
+	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), close_button, FALSE, FALSE, 0);
 	gtk_widget_show_all(lbl_hbox);
@@ -171,15 +196,23 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 	g_signal_connect(G_OBJECT(archive), "lxa_status_changed", G_CALLBACK(cb_notebook_archive_status_changed), notebook);
 	g_signal_connect(G_OBJECT(archive), "lxa_refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
 
+	g_signal_connect(G_OBJECT(close_button), "clicked", G_CALLBACK(cb_notebook_close_archive), tree_view);
+
+
+	lxa_archive_support_refresh(support, archive);
 
 	xa_archive_store_connect_treeview(XA_ARCHIVE_STORE(tree_model), GTK_TREE_VIEW(tree_view));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
-	lxa_archive_support_refresh(support, archive);
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), tree_view, lbl_hbox);
 }
 
 void
 cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook)
+{
+}
+
+void
+cb_notebook_close_archive(GtkButton *button, GtkTreeView *treeview)
 {
 }
 
@@ -265,9 +298,7 @@ xa_notebook_set_icon_theme(XANotebook *notebook, GtkIconTheme *icon_theme)
 static void
 cb_xa_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
-	g_debug("Page switched");
 	GtkWidget *treeview = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 	xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
-	
 }

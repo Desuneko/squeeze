@@ -54,9 +54,11 @@ static void
 xa_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *bar);
+cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
 static void
-cb_xa_path_bar_new_archive(XAArchiveStore *store, XAPathBar *bar);
+cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar);
+static void
+cb_xa_path_bar_store_set(XANavigationBar *bar);
 
 static void
 cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar);
@@ -122,8 +124,9 @@ static void
 xa_path_bar_init(XAPathBar *path_bar)
 {
 	GtkWidget *arrow;
-	XA_NAVIGATION_BAR(path_bar)->_cb_pwd_changed = (GCallback)cb_xa_path_bar_pwd_changed;
-	XA_NAVIGATION_BAR(path_bar)->_cb_new_archive = (GCallback)cb_xa_path_bar_new_archive;
+	XA_NAVIGATION_BAR(path_bar)->_cb_pwd_changed = cb_xa_path_bar_pwd_changed;
+	XA_NAVIGATION_BAR(path_bar)->_cb_new_archive = cb_xa_path_bar_new_archive;
+	XA_NAVIGATION_BAR(path_bar)->_cb_store_set   = cb_xa_path_bar_store_set;
 
 	GTK_WIDGET_SET_FLAGS(path_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(path_bar), FALSE);
@@ -432,8 +435,9 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 }
 
 static void
-cb_xa_path_bar_new_archive(XAArchiveStore *store, XAPathBar *path_bar)
+cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 {
+	XAPathBar *path_bar = XA_PATH_BAR(bar);
 	GSList *buttons = path_bar->path_button->next;
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(path_bar->path_button->data), TRUE);
@@ -451,8 +455,9 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XAPathBar *path_bar)
 }
 
 static void
-cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
+cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 {
+	XAPathBar *path_bar = XA_PATH_BAR(bar);
 	GSList *path = xa_archive_store_get_pwd_list(store);
 	GSList *iter = path;
 	GSList *buttons = path_bar->path_button->next;
@@ -461,7 +466,7 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XAPathBar *path_bar)
 	const gchar *label = xa_archive_store_get_pwd(store);
 	gint cmp = 0;
 
-	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(path_bar), label);
+	xa_navigation_bar_history_push(bar, label);
 	g_free((gchar*)label);
 
 	while(iter && buttons)
@@ -558,3 +563,7 @@ cb_xa_path_bar_right_button_clicked(GtkWidget *widget, gpointer user_data)
 {
 }
 
+static void
+cb_xa_path_bar_store_set(XANavigationBar *bar)
+{
+}

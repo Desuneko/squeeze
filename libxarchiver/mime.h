@@ -44,6 +44,8 @@ lxa_mime_get_mime_info(const gchar *mime_type);
 
 const gchar *
 lxa_mime_info_get_name(const LXAMimeInfo *mime_info);
+const gchar *
+lxa_mime_info_get_icon_name(const LXAMimeInfo *mime_info, GtkIconTheme *icon_theme);
 
 void
 lxa_mime_info_unref(LXAMimeInfo *mime_info);

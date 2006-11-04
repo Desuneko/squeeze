@@ -49,8 +49,9 @@ struct _XANavigationBar
 	GList *history;
 	GList *pwd;
 	gint max_history;
-	GCallback _cb_pwd_changed;
-	GCallback _cb_new_archive;
+	void (*_cb_pwd_changed)(XAArchiveStore *, XANavigationBar *);
+	void (*_cb_new_archive)(XAArchiveStore *, XANavigationBar *);
+	void (*_cb_store_set)(XANavigationBar *);
 };
 
 typedef struct _XANavigationBarClass XANavigationBarClass;

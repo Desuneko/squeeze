@@ -48,9 +48,11 @@ static void
 xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *bar);
+cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
 static void
-cb_xa_tool_bar_new_archive(XAArchiveStore *store, XAToolBar *bar);
+cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar);
+static void
+cb_xa_tool_bar_store_set(XANavigationBar *bar);
 
 static void
 cb_xa_tool_bar_history_back(GtkWidget *button, XAToolBar *nav_bar);
@@ -113,8 +115,9 @@ static void
 xa_tool_bar_init(XAToolBar *tool_bar)
 {
 	GtkToolItem *button = NULL;
-	XA_NAVIGATION_BAR(tool_bar)->_cb_pwd_changed = (GCallback)cb_xa_tool_bar_pwd_changed;
-	XA_NAVIGATION_BAR(tool_bar)->_cb_new_archive = (GCallback)cb_xa_tool_bar_new_archive;
+	XA_NAVIGATION_BAR(tool_bar)->_cb_pwd_changed = cb_xa_tool_bar_pwd_changed;
+	XA_NAVIGATION_BAR(tool_bar)->_cb_new_archive = cb_xa_tool_bar_new_archive;
+	XA_NAVIGATION_BAR(tool_bar)->_cb_store_set   = cb_xa_tool_bar_store_set;
 
 	GTK_WIDGET_SET_FLAGS(tool_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(tool_bar), FALSE);
@@ -165,6 +168,8 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), 0);
 
 	gtk_widget_show_all(GTK_WIDGET(tool_bar->bar));
+
+	g_signal_connect(G_OBJECT(tool_bar), "xa_store_set", (GCallback)cb_xa_tool_bar_store_set, NULL);
 }
 
 XANavigationBar *
@@ -295,26 +300,28 @@ xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallb
 }
 
 static void
-cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XAToolBar *tool_bar)
+cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 {
+	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
 	gchar *path= xa_archive_store_get_pwd(store);
-	xa_navigation_bar_history_push(XA_NAVIGATION_BAR(tool_bar), path);
+
+	xa_navigation_bar_history_push(bar, path);
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
 }
 
 static void
-cb_xa_tool_bar_new_archive(XAArchiveStore *store, XAToolBar *bar)
+cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 {
-	g_return_if_fail(XA_IS_TOOL_BAR(bar));
+	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
 
-	xa_navigation_bar_clear_history(XA_NAVIGATION_BAR(bar));
-	gtk_widget_set_sensitive(GTK_WIDGET(bar->hbox), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(bar->up_button), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(bar->home_button), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(bar->forward_button), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(bar->back_button), FALSE);
+	xa_navigation_bar_clear_history(bar);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), FALSE);
 }
 
 static void
@@ -352,4 +359,16 @@ cb_xa_tool_bar_path_field_activated(GtkWidget *entry, XAToolBar *tool_bar)
 {
 	const gchar *path = gtk_entry_get_text(GTK_ENTRY(entry));
 	xa_archive_store_set_pwd(XA_ARCHIVE_STORE(XA_NAVIGATION_BAR(tool_bar)->store), path);
+}
+
+static void
+cb_xa_tool_bar_store_set(XANavigationBar *bar)
+{
+	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
+
+	gchar *path= xa_archive_store_get_pwd(bar->store);
+
+	xa_tool_bar_refresh(tool_bar, path);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
+	g_free(path);
 }

@@ -108,6 +108,18 @@ lxa_mime_info_get_name(const LXAMimeInfo *mime_info)
 	return result;
 }
 
+const gchar *
+lxa_mime_info_get_icon_name(const LXAMimeInfo *mime_info, GtkIconTheme *icon_theme)
+{
+	const gchar *result = NULL;
+#ifdef HAVE_THUNAR_VFS
+	result = thunar_vfs_mime_info_lookup_icon_name((ThunarVfsMimeInfo *)mime_info, icon_theme);
+#else
+
+#endif
+	return result;
+}
+
 void
 lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 {

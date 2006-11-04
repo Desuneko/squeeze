@@ -53,6 +53,8 @@ enum {
 	XA_NAVIGATION_BAR_NAV_HISTORY = 1
 };
 
+static gint xa_navigation_bar_signals[1];
+
 GType
 xa_navigation_bar_get_type ()
 {
@@ -97,6 +99,17 @@ xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
 		XA_NAVIGATION_BAR_MAX_HISTORY,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, XA_NAVIGATION_BAR_NAV_HISTORY, pspec);
+
+	xa_navigation_bar_signals[0] = g_signal_new("xa_store_set",
+			G_TYPE_FROM_CLASS(navigation_bar_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
+			NULL);
 }
 
 static void
@@ -105,8 +118,8 @@ xa_navigation_bar_init(XANavigationBar *navigation_bar)
 	GTK_WIDGET_SET_FLAGS(navigation_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(navigation_bar), FALSE);
 
-	navigation_bar->_cb_pwd_changed = (GCallback)cb_xa_navigation_bar_pwd_changed;
-	navigation_bar->_cb_new_archive = (GCallback)cb_xa_navigation_bar_new_archive;
+	navigation_bar->_cb_pwd_changed = cb_xa_navigation_bar_pwd_changed;
+	navigation_bar->_cb_new_archive = cb_xa_navigation_bar_new_archive;
 	navigation_bar->max_history = XA_NAVIGATION_BAR_MAX_HISTORY;
 	navigation_bar->pwd = NULL;
 	navigation_bar->history = NULL;
@@ -116,26 +129,39 @@ static void
 xa_navigation_bar_finalize(GObject *object)
 {
 	XANavigationBar *navigation_bar = XA_NAVIGATION_BAR(object);
-	if(navigation_bar->_cb_pwd_changed)
-		g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_pwd_changed, navigation_bar);
-	if(navigation_bar->_cb_new_archive)
-		g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_new_archive, navigation_bar);
+	if(navigation_bar->store)
+	{
+		if(navigation_bar->_cb_pwd_changed)
+			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_pwd_changed, navigation_bar);
+		if(navigation_bar->_cb_new_archive)
+			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_new_archive, navigation_bar);
+	}
 }
 
 void
 xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store)
 {
-	if(store)
+	if(navigation_bar->store)
 	{
-		g_return_if_fail(XA_IS_ARCHIVE_STORE(store));
-		g_return_if_fail(XA_IS_NAVIGATION_BAR(navigation_bar));
+		if(navigation_bar->_cb_pwd_changed)
+			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_pwd_changed, navigation_bar);
+		if(navigation_bar->_cb_new_archive)
+			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_new_archive, navigation_bar);
+
+		xa_archive_store_set_history(navigation_bar->store, navigation_bar->history, navigation_bar->pwd);
 	}
 
 	navigation_bar->store = store;
 	if(store)
 	{
+		g_return_if_fail(XA_IS_ARCHIVE_STORE(store));
+		g_return_if_fail(XA_IS_NAVIGATION_BAR(navigation_bar));
 		g_signal_connect(G_OBJECT(store), "xa-pwd-changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
 		g_signal_connect(G_OBJECT(store), "xa-new-archive", (GCallback)navigation_bar->_cb_new_archive, navigation_bar);
+		xa_archive_store_get_history(store, &navigation_bar->history, &navigation_bar->pwd);
+
+		/* should be signal, window might want to know */
+		g_signal_emit(G_OBJECT(navigation_bar), xa_navigation_bar_signals[0], 0, navigation_bar);
 	}
 }
 

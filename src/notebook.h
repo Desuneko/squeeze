@@ -53,6 +53,7 @@ struct _XANotebook
 		gboolean _up_dir;
 	} props;
 	GtkIconTheme *icon_theme;
+	GtkTooltips *tool_tips;
 };
 
 typedef struct _XANotebookClass XANotebookClass;
