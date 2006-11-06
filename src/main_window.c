@@ -409,7 +409,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	GSList *filenames = NULL;
 	GValue *value = g_new0(GValue, 1);
 
-	GtkTreeView *treeview = GTK_TREE_VIEW(xa_notebook_get_active_child(XA_NOTEBOOK(window->notebook)));
+	GtkTreeView *treeview = GTK_TREE_VIEW(gtk_bin_get_child(GTK_BIN(xa_notebook_get_active_child(XA_NOTEBOOK(window->notebook)))));
 	GtkTreeModel *treemodel = gtk_tree_view_get_model(treeview);
 	GtkTreeIter iter;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
