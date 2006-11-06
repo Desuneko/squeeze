@@ -67,7 +67,7 @@ static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 static void
 cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data);
 static void
-cb_xa_main_window_notebook_page_removed(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data);
+cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data);
 
 
 GType
@@ -236,7 +236,7 @@ xa_main_window_init(XAMainWindow *window)
 /* main view */
 	window->notebook = xa_notebook_new(window->navigationbar);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
-	g_signal_connect(G_OBJECT(window->notebook), "page-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
+	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -360,8 +360,6 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = NULL;
 	gchar *open_archive_path = NULL;
 	gint result = 0;
-	LXAArchive *archive = NULL;
-	LXAArchiveSupport *support = NULL;
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
 	
 	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
@@ -378,11 +376,10 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 	if(result == GTK_RESPONSE_OK)
 	{
 		open_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(!lxa_open_archive(open_archive_path, &archive))
-		{
-			support = lxa_get_support_for_mime(lxa_mime_info_get_name(archive->mime_info));
-			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
-		}
+		if(xa_notebook_get_multi_tab(XA_NOTEBOOK(window->notebook)))
+			xa_main_window_open_archive(window, open_archive_path, -1);
+		else
+			xa_main_window_open_archive(window, open_archive_path, 0);
 		gtk_widget_destroy(dialog);
 	}
 }
@@ -462,7 +459,7 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 }
 
 static void
-cb_xa_main_window_notebook_page_removed(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
+cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data)
 {
 	XAMainWindow *window = XA_MAIN_WINDOW(data);
 
@@ -473,4 +470,21 @@ cb_xa_main_window_notebook_page_removed(XANotebook *notebook, GtkNotebookPage *p
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
 	}
+}
+
+gint
+xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
+{
+	LXAArchive *archive = NULL;
+	LXAArchiveSupport *support = NULL;
+
+	if(!lxa_open_archive(path, &archive))
+	{
+		support = lxa_get_support_for_mime(lxa_mime_info_get_name(archive->mime_info));
+		if(replace < 0)
+			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
+		/* else */
+		return 0;
+	}
+	return 1;
 }

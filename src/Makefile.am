@@ -15,6 +15,7 @@ endif
 
 xarchiver_SOURCES = \
 	main.c main.h \
+	application.c application.h \
 	main_window.c main_window.h \
 	navigation_bar.c navigation_bar.h \
 	notebook.c notebook.h \

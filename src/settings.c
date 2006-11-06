@@ -25,6 +25,8 @@
 
 #include "settings.h"
 
+static XASettings *xa_global_settings = NULL;
+
 static void
 xa_settings_init(XASettings *);
 static void
@@ -75,9 +77,10 @@ xa_settings_class_init(XASettingsClass *object_class)
 XASettings *
 xa_settings_new()
 {
-	XASettings *object = g_object_new(XA_TYPE_SETTINGS, NULL);
+	if(!xa_global_settings)
+		xa_global_settings = g_object_new(XA_TYPE_SETTINGS, NULL);
 
-	return object;
+	return xa_global_settings;
 }
 
 gboolean

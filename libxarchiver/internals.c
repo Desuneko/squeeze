@@ -165,7 +165,5 @@ lxa_concat_filenames(GSList *filenames)
 		_filenames = _filenames->next;
 		LXA_FREE(_concat_str);
 	}
-	if(!filenames)
-		return NULL;
 	return concat_str;
 }

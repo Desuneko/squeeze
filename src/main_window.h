@@ -110,6 +110,8 @@ GtkWidget *xa_main_window_new(GtkIconTheme *icon_theme);
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
 GType      xa_main_window_get_type ();
 
+gint xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace);
+
 
 G_END_DECLS
 #endif /* __XARCHIVER_MAIN_WINDOW_H__ */
