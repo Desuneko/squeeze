@@ -97,6 +97,7 @@ struct _XAMainWindow
 	XANavigationBar *navigationbar;
 	GtkWidget *notebook;
 	GtkWidget *statusbar;
+	XAApplication *app;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;
@@ -106,7 +107,7 @@ struct _XAMainWindowClass
 	GtkWindowClass parent;
 };
 
-GtkWidget *xa_main_window_new(GtkIconTheme *icon_theme);
+GtkWidget *xa_main_window_new(XAApplication *, GtkIconTheme *icon_theme);
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
 GType      xa_main_window_get_type ();
 

@@ -47,6 +47,9 @@ struct _XAApplication
 	GObject parent;
 	GtkIconTheme *icon_theme;
 	XASettings *settings;
+	struct {
+		gboolean _tabs;
+	} props;
 };
 
 typedef struct _XAApplicationClass XAApplicationClass;
@@ -60,6 +63,11 @@ GType      xa_application_get_type();
 XAApplication *xa_application_new(GtkIconTheme *icon_theme);
 
 GtkWidget *xa_application_new_window(XAApplication *);
+
+gint xa_application_extract_archive(XAApplication *, gchar *, gchar *);
+gint xa_application_new_archive(XAApplication *, gchar *, GSList *);
+
+gint xa_application_open_archive(XAApplication *, GtkWidget *, gchar *);
 
 G_END_DECLS
 #endif /* __XARCHIVER_APPLICATION_H__*/

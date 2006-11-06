@@ -37,6 +37,7 @@
 #endif /* ENABLE_TOOLBAR */
 
 #include "notebook.h"
+#include "application.h"
 #include "main_window.h"
 
 #include "new_dialog.h"
@@ -138,6 +139,7 @@ xa_main_window_finalize(GObject *object)
 	xa_settings_save(window->settings);
 
 	gtk_widget_unref(GTK_WIDGET(window->navigationbar));
+	g_object_unref(G_OBJECT(window->app));
 }
 
 static void
@@ -153,7 +155,7 @@ xa_main_window_init(XAMainWindow *window)
 	gboolean sort_case = TRUE;
 	gboolean sort_folders = TRUE;
 
-	window->settings = xa_settings_new(NULL);
+	window->settings = xa_settings_new();
 
 	main_vbox = gtk_vbox_new(FALSE, 0);
 
@@ -244,7 +246,10 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, FALSE, FALSE, 0);
 
 	if(window->navigationbar)
+	{
 		gtk_box_pack_start(GTK_BOX(main_vbox), GTK_WIDGET(window->navigationbar), FALSE, FALSE, 0);
+		gtk_widget_show_all(GTK_WIDGET(window->navigationbar));
+	}
 
 	gtk_box_pack_start(GTK_BOX(main_vbox), window->notebook, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(main_vbox), window->statusbar, FALSE, FALSE, 0);
@@ -258,24 +263,27 @@ xa_main_window_init(XAMainWindow *window)
 }
 
 GtkWidget *
-xa_main_window_new(GtkIconTheme *icon_theme)
+xa_main_window_new(XAApplication *app, GtkIconTheme *icon_theme)
 {
-	GtkWidget *window;
+	XAMainWindow *window;
 	GdkPixbuf *icon;
 
 	window = g_object_new(xa_main_window_get_type(),
 			"title", "Xarchiver " PACKAGE_VERSION,
 			NULL);
 
-	XA_MAIN_WINDOW(window)->icon_theme = icon_theme;
+	window->icon_theme = icon_theme;
 
-	xa_notebook_set_icon_theme(XA_NOTEBOOK(XA_MAIN_WINDOW(window)->notebook), icon_theme);
+	xa_notebook_set_icon_theme(XA_NOTEBOOK(window->notebook), icon_theme);
 
 	icon = gtk_icon_theme_load_icon(icon_theme, "xarchiver", 24, 0, NULL);
 
+	g_object_ref(app);
+	window->app = app;
+
 	gtk_window_set_icon(GTK_WINDOW(window), icon);
 
-	return window;
+	return GTK_WIDGET(window);
 }
 
 static void
@@ -483,7 +491,8 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
 		support = lxa_get_support_for_mime(lxa_mime_info_get_name(archive->mime_info));
 		if(replace < 0)
 			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
-		/* else */
+		else
+			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
 		return 0;
 	}
 	return 1;
