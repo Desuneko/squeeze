@@ -63,7 +63,7 @@ struct _XANotebookClass
 	GtkNotebookClass parent;
 };
 
-GtkWidget   *xa_notebook_new (XANavigationBar *bar);
+GtkWidget   *xa_notebook_new (XANavigationBar *bar, gboolean use_tabs);
 GType xa_notebook_get_type ();
 
 void  xa_notebook_set_navigation_bar(XANotebook *, XANavigationBar *);

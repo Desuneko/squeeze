@@ -154,6 +154,7 @@ xa_main_window_init(XAMainWindow *window)
 	gboolean show_icons = TRUE;
 	gboolean sort_case = TRUE;
 	gboolean sort_folders = TRUE;
+	gboolean use_tabs = TRUE;
 
 	window->settings = xa_settings_new();
 
@@ -232,11 +233,12 @@ xa_main_window_init(XAMainWindow *window)
 	show_icons = xa_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
 	sort_case = xa_settings_read_bool_entry(window->settings, "SortCaseSensitive", TRUE);
 	sort_folders = xa_settings_read_bool_entry(window->settings, "SortFoldersFirst", TRUE);
+	use_tabs = xa_settings_read_bool_entry(window->settings, "UseTabs", TRUE);
 
 	gtk_widget_ref(GTK_WIDGET(window->navigationbar));
 
 /* main view */
-	window->notebook = xa_notebook_new(window->navigationbar);
+	window->notebook = xa_notebook_new(window->navigationbar, use_tabs);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
 /* Statusbar */
@@ -492,7 +494,7 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
 		if(replace < 0)
 			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
 		else
-			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
+			xa_notebook_page_set_archive(XA_NOTEBOOK(window->notebook), archive, support, replace);
 		return 0;
 	}
 	return 1;
