@@ -169,7 +169,7 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 
 	gtk_widget_show_all(GTK_WIDGET(tool_bar->bar));
 
-	g_signal_connect(G_OBJECT(tool_bar), "xa_store_set", (GCallback)cb_xa_tool_bar_store_set, NULL);
+	g_signal_connect(G_OBJECT(tool_bar), "xa-store-set", (GCallback)cb_xa_tool_bar_store_set, NULL);
 }
 
 XANavigationBar *
@@ -191,6 +191,7 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 	gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), path);
 	gtk_editable_set_position(GTK_EDITABLE(tool_bar->path_field), -1);
 
+	/* FIXME: the part about path[0] '/' could be bugged */
 	if(strlen(path) < 1 || (strlen(path) == 1 && path[0] == '/'))
 	{
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
@@ -201,23 +202,15 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 1);
 	}
-	if(xa_navigation_bar_history_get_length(XA_NAVIGATION_BAR(tool_bar)) <= 1)
-	{
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
-	}
+	if(xa_archive_store_has_future(XA_NAVIGATION_BAR(tool_bar)->store))
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
 	else
-	{
-		if(xa_navigation_bar_history_has_next(XA_NAVIGATION_BAR(tool_bar)))
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
-		else
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
-		if(xa_navigation_bar_history_has_previous(XA_NAVIGATION_BAR(tool_bar)))
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
-		else
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
-	}
+	if(xa_archive_store_has_history(XA_NAVIGATION_BAR(tool_bar)->store))
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
+	else
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 }
 
 static void
@@ -305,7 +298,6 @@ cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
 	gchar *path= xa_archive_store_get_pwd(store);
 
-	xa_navigation_bar_history_push(bar, path);
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
@@ -316,7 +308,6 @@ cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 {
 	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
 
-	xa_navigation_bar_clear_history(bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), FALSE);
@@ -327,7 +318,7 @@ cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 static void
 cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
 {
-	xa_navigation_bar_history_back(XA_NAVIGATION_BAR(tool_bar));
+	xa_archive_store_go_back(XA_NAVIGATION_BAR(tool_bar)->store);
 	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
@@ -336,7 +327,7 @@ cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
 static void
 cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *tool_bar)
 {
-	xa_navigation_bar_history_forward(XA_NAVIGATION_BAR(tool_bar));
+	xa_archive_store_go_forward(XA_NAVIGATION_BAR(tool_bar)->store);
 	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
@@ -351,6 +342,7 @@ cb_xa_tool_bar_up(GtkWidget *forward_button, XAToolBar *tool_bar)
 static void
 cb_xa_tool_bar_home(GtkWidget *forward_button, XAToolBar *tool_bar)
 {
+	/* FIXME: the part about "/" could be bugged */
 	xa_archive_store_set_pwd(XA_NAVIGATION_BAR(tool_bar)->store, "/");
 }
 

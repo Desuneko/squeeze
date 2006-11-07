@@ -53,6 +53,8 @@ struct _XAMainWindow
 	GtkWindow parent;
 	XASettings *settings;
 	GtkIconTheme *icon_theme;
+	XAApplication *app;
+	GtkWidget *menu_bar;
 	struct {
 		GtkWidget *menu_item_archive;
 		GtkWidget *menu_archive;
@@ -97,7 +99,7 @@ struct _XAMainWindow
 	XANavigationBar *navigationbar;
 	GtkWidget *notebook;
 	GtkWidget *statusbar;
-	XAApplication *app;
+	GtkWidget *about_dlg;
 };
 
 typedef struct _XAMainWindowClass XAMainWindowClass;

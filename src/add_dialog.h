@@ -44,6 +44,8 @@ struct _XAAddDialog
 {
 	GtkDialog parent;
 	GtkWidget *scrolled_window;
+	GtkWidget *optionframe;
+	LXAArchiveSupport *support;
 };
 
 typedef struct _XAAddDialogClass XAAddDialogClass;
@@ -53,7 +55,7 @@ struct _XAAddDialogClass
 	GtkDialogClass parent;
 };
 
-GtkWidget *xa_add_dialog_new();
+GtkWidget *xa_add_dialog_new(LXAArchiveSupport *support);
 
 G_END_DECLS
 #endif /* __XARCHIVER_ADD_DIALOG_H__ */

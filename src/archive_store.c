@@ -27,6 +27,10 @@
 
 #include "archive_store.h"
 
+#ifndef XA_ARCHIVE_STORE_MAX_HISTORY
+#define XA_ARCHIVE_STORE_MAX_HISTORY 10
+#endif
+
 static void
 xa_archive_store_class_init(XAArchiveStoreClass *as_class);
 
@@ -113,6 +117,9 @@ xa_archive_insertionsort(XAArchiveStore *store, gint left, gint right);
 static void
 xa_archive_store_sort(XAArchiveStore *store);
 
+static void
+xa_archive_store_append_history(XAArchiveStore *store, GSList *entry);
+
 GType
 xa_archive_store_get_type()
 {
@@ -192,7 +199,6 @@ xa_archive_store_init(XAArchiveStore *as)
 {
 	as->stamp = g_random_int();
 	as->archive = NULL;
-	as->current_entry = NULL;
 	as->props._show_icons = 0;
 	as->props._show_up_dir = 1;
 	as->props._sort_folders_first = 1;
@@ -200,6 +206,9 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->sort_column = GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID;
 	as->sort_order = GTK_SORT_ASCENDING;
 	as->sort_list = NULL;
+	as->navigation.history = NULL;
+	as->navigation.present = NULL;
+	as->navigation.maxhistory = XA_ARCHIVE_STORE_MAX_HISTORY;
 }
 
 static void
@@ -278,8 +287,8 @@ xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 		case XA_ARCHIVE_STORE_SHOW_ICONS:
 			if(XA_ARCHIVE_STORE(object)->props._show_icons != g_value_get_boolean(value)?1:0)
 			{
-				if(store->current_entry)
-					prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
+				if(store->navigation.present)
+					prev_size = lxa_archive_iter_n_children(store->archive, (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data);
 				XA_ARCHIVE_STORE(object)->props._show_icons = g_value_get_boolean(value)?1:0;
 				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
 			}
@@ -287,8 +296,8 @@ xa_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 		case XA_ARCHIVE_STORE_SHOW_UP_DIR:
 			if(XA_ARCHIVE_STORE(object)->props._show_up_dir != g_value_get_boolean(value)?1:0)
 			{
-				if(store->current_entry)
-					prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
+				if(store->navigation.present)
+					prev_size = lxa_archive_iter_n_children(store->archive, (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data);
 				XA_ARCHIVE_STORE(object)->props._show_up_dir = g_value_get_boolean(value)?1:0;
 				xa_archive_store_refresh(XA_ARCHIVE_STORE(object), prev_size);
 			}
@@ -388,10 +397,10 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 	LXAArchive *archive = store->archive;
 
 	LXAArchiveIter *entry = NULL;
-	if(!store->current_entry)
+	if(!store->navigation.present)
 		return FALSE;
 
-	entry = store->current_entry->data;
+	entry = ((GSList*)store->navigation.present->data)->data;
 
 
 	gint *indices = gtk_tree_path_get_indices(path);
@@ -423,7 +432,7 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 
 	iter->stamp = store->stamp;
 	iter->user_data = entry;
-	iter->user_data2 = store->current_entry->data;
+	iter->user_data2 = ((GSList*)store->navigation.present->data)->data;
 	iter->user_data3 = GINT_TO_POINTER(index);
 
 	return TRUE;
@@ -540,7 +549,7 @@ xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, Gtk
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
 	LXAArchive *archive = store->archive;
-	LXAArchiveIter *entry = store->current_entry->data;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
 
 	g_return_val_if_fail(archive, FALSE);
 	g_return_val_if_fail(entry, FALSE);
@@ -567,7 +576,7 @@ xa_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, Gtk
 
 	iter->stamp = store->stamp;
 	iter->user_data = entry;
-	iter->user_data2 = store->current_entry->data;
+	iter->user_data2 = ((GSList*)store->navigation.present->data)->data;
 
 	return TRUE;
 }
@@ -585,7 +594,7 @@ xa_archive_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
 	LXAArchive *archive = store->archive;
-	LXAArchiveIter *entry = store->current_entry->data;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
 
 	g_return_val_if_fail(archive, 0);
 	g_return_val_if_fail(entry, 0);
@@ -603,7 +612,7 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 
 	XAArchiveStore *store = XA_ARCHIVE_STORE(tree_model);
 	LXAArchive *archive = store->archive;
-	LXAArchiveIter *entry = store->current_entry->data;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
 
 	g_return_val_if_fail(archive, FALSE);
 	g_return_val_if_fail(entry, FALSE);
@@ -631,7 +640,7 @@ xa_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 
 	iter->stamp = store->stamp;
 	iter->user_data = entry;
-	iter->user_data2 = store->current_entry->data;
+	iter->user_data2 = ((GSList*)store->navigation.present->data)->data;
 	iter->user_data3 = GINT_TO_POINTER(n);
 
 	return TRUE;
@@ -781,7 +790,7 @@ xa_archive_store_sort(XAArchiveStore *store)
 	if(store->sort_column < 0)
 		return;
 
-	LXAArchiveIter *pentry = (LXAArchiveIter*)store->current_entry->data;
+	LXAArchiveIter *pentry = (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data;
 	gint psize = lxa_archive_iter_n_children(store->archive, pentry);
 	gint i = 0;
 
@@ -890,7 +899,7 @@ static void
 xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 {
 	LXAArchive *archive = store->archive;
-	LXAArchiveIter *entry = store->current_entry->data;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
@@ -956,11 +965,11 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	g_return_if_fail(XA_IS_ARCHIVE_STORE(user_data));	
 	XAArchiveStore *store = XA_ARCHIVE_STORE(user_data);
 
-	g_return_if_fail(store->current_entry);
+	g_return_if_fail(store->navigation.present->data);
 
 
 	LXAArchive *archive = store->archive;
-	LXAArchiveIter *entry = store->current_entry->data;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
@@ -974,6 +983,8 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 	gint prev_size = lxa_archive_iter_n_children(archive, entry);
 	gint index = indices[depth];
 
+	GSList *current_entry = store->navigation.present->data;
+
 	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 	{
 		prev_size++;
@@ -982,8 +993,9 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 
 	if(index == -1)
 	{
-		store->current_entry = g_slist_delete_link(store->current_entry, store->current_entry);
-		entry = store->current_entry->data;
+		current_entry = g_slist_copy(current_entry->next);
+		entry = current_entry->data;
+		xa_archive_store_append_history(store, current_entry);
 	}
 	else
 	{
@@ -1003,7 +1015,8 @@ cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 			return;
 		}
 
-		store->current_entry = g_slist_prepend(store->current_entry, entry);
+		current_entry = g_slist_prepend(g_slist_copy(current_entry), entry);
+		xa_archive_store_append_history(store, current_entry);
 	}
 
 	xa_archive_store_sort(store);
@@ -1016,23 +1029,24 @@ void
 xa_archive_store_go_up(XAArchiveStore *store)
 {
 	LXAArchive *archive = store->archive;
-	LXAArchiveIter *entry = store->current_entry->data;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
 	gint prev_size = lxa_archive_iter_n_children(archive, entry);
 
+	GSList *current_entry = store->navigation.present->data;
+
 	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
 	{
 		prev_size++;
 	}
 
-	/* TODO: signal or something */
-	g_return_if_fail(store->current_entry->next);
+	g_return_if_fail(((GSList*)store->navigation.present->data)->next);
 
-	store->current_entry = g_slist_delete_link(store->current_entry, store->current_entry);
-	entry = store->current_entry->data;
+	current_entry = g_slist_copy(current_entry->next);
+	xa_archive_store_append_history(store, current_entry);
 
 	xa_archive_store_sort(store);
 
@@ -1050,6 +1064,9 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 
 	LXAArchiveIter *entry = NULL;
 	gint prev_size =  0;
+	GList *list_iter;
+
+	GSList *current_entry = store->navigation.present->data;
 
 	if(store->sort_list)
 	{
@@ -1057,16 +1074,13 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 		store->sort_list = NULL;
 	}
 
-	if(store->current_entry)
+	if(store->navigation.present)
 	{
-		entry = store->current_entry->data;
+		entry = ((GSList*)store->navigation.present->data)->data;
 		prev_size = lxa_archive_iter_n_children(archive, entry);
-		
 
 		if(store->props._show_up_dir && lxa_archive_get_iter(store->archive, NULL) != entry)
 			prev_size++;
-		
-		g_slist_free(store->current_entry);
 	}
 
 	for(i = prev_size - 1; i >= 0; i--)
@@ -1082,17 +1096,27 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 	if(store->archive)
 		g_object_unref(store->archive);
 
+	for(list_iter = store->navigation.history; list_iter; list_iter = list_iter->next)
+		g_slist_free(list_iter->data);
+
+	g_list_free(store->navigation.history);
+
+	store->navigation.history = NULL;
+	store->navigation.present = NULL;
+
 	if(!archive)
 	{
 		store->archive = NULL;
-		store->current_entry = NULL;
+
 		g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
 		return;
 	}
 
 	g_object_ref(archive);
 	store->archive = archive;
-	store->current_entry = g_slist_prepend(NULL, lxa_archive_get_iter(archive, NULL));
+	current_entry = g_slist_prepend(NULL, lxa_archive_get_iter(archive, NULL));
+
+	xa_archive_store_append_history(store, current_entry);
 
 	xa_archive_store_sort(store);
 
@@ -1126,7 +1150,7 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	GValue *basename = g_new0(GValue, 1);
 	gchar *path = NULL;
 	gchar **buf = NULL;
-	GSList *iter = store->current_entry;
+	GSList *iter = store->navigation.present->data;
 	gint i = g_slist_length(iter);
 	gchar *lastfile = NULL;
 	gint namelen = 0;
@@ -1185,7 +1209,7 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 	g_return_val_if_fail(store, NULL);
 
 	GValue *basename = g_new0(GValue, 1);
-	GSList *iter = store->current_entry;
+	GSList *iter = store->navigation.present->data;
 	GSList *path = NULL;
 
 	if(!iter)
@@ -1206,16 +1230,14 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 }
 
 gboolean
-xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path)
+xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 {
-	gint result = xa_archive_store_set_pwd_silent(store, path);
-
-	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
-	return result;
+	g_critical("depricated %s", __FUNCTION__);
+	return FALSE;
 }
 
 gboolean
-xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
+xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path)
 {
 	g_return_val_if_fail(store, -1);
 
@@ -1226,9 +1248,9 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 	gchar **iter = buf;
 	LXAArchiveIter *entry = lxa_archive_get_iter(store->archive, NULL);
 	GSList *stack = g_slist_prepend(NULL, entry);
-	gint prev_size = lxa_archive_iter_n_children(store->archive, ((LXAArchiveIter*)store->current_entry->data));
+	gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data);
 
-	if(store->props._show_up_dir && lxa_archive_get_iter(store->archive, NULL) != store->current_entry->data)
+	if(store->props._show_up_dir && lxa_archive_get_iter(store->archive, NULL) != ((GSList*)store->navigation.present->data)->data)
 		prev_size++;
 
 	if(path[0] == '/' && lxa_archive_iter_get_child(store->archive, entry, "/"))
@@ -1254,13 +1276,13 @@ xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path)
 
 	g_strfreev(buf);
 
-	g_slist_free(store->current_entry);
-	store->current_entry = stack;
+	xa_archive_store_append_history(store, stack);
 
 	xa_archive_store_sort(store);
 
 	xa_archive_store_refresh(store, prev_size);
-	
+
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 	return TRUE;
 }
 
@@ -1294,7 +1316,7 @@ xa_archive_store_set_show_icons(XAArchiveStore *store, gboolean show)
 {
 	GtkSortType sort_order;
 	gint sort_col = 0;
-	gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
+	gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data);
 	store->props._show_icons = show?1:0;
 	if(show)
 	{
@@ -1316,7 +1338,7 @@ xa_archive_store_set_sort_case_sensitive(XAArchiveStore *store, gboolean sort)
 
 	if(store->archive)
 	{
-		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
+		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data);
 		xa_archive_store_refresh(store, prev_size);
 	}
 }
@@ -1328,7 +1350,7 @@ xa_archive_store_set_sort_folders_first(XAArchiveStore *store, gboolean sort)
 
 	if(store->archive)
 	{
-		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAEntry*)store->current_entry->data);
+		gint prev_size = lxa_archive_iter_n_children(store->archive, (LXAArchiveIter*)((GSList*)store->navigation.present->data)->data);
 		xa_archive_store_refresh(store, prev_size);
 	}
 }
@@ -1352,14 +1374,106 @@ void
 xa_archive_store_set_history(XAArchiveStore *store, GList *history, GList *pwd)
 {
 	store->navigation.history = history;
-	store->navigation.pwd = pwd;
+	store->navigation.present = pwd;
 }
 
 void
 xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd)
 {
 	(*history)=store->navigation.history;
-	(*pwd) = store->navigation.pwd;
+	(*pwd) = store->navigation.present;
+}
+
+gboolean
+xa_archive_store_has_history(XAArchiveStore *store)
+{
+	return store->navigation.present->prev?TRUE:FALSE;
+}
+
+gboolean
+xa_archive_store_has_future(XAArchiveStore *store)
+{
+	return store->navigation.present->next?TRUE:FALSE;
+}
+
+void
+xa_archive_store_go_back(XAArchiveStore *store)
+{
+	LXAArchive *archive = store->archive;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
+
+	g_return_if_fail(archive);
+	g_return_if_fail(entry);
+
+	gint prev_size = lxa_archive_iter_n_children(archive, entry);
+
+	if(xa_archive_store_has_history(store))
+		store->navigation.present = store->navigation.present->prev;
+
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
+	{
+		prev_size++;
+	}
+
+	xa_archive_store_sort(store);
+
+	xa_archive_store_refresh(store, prev_size);
+
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+}
+
+void
+xa_archive_store_go_forward(XAArchiveStore *store)
+{
+	LXAArchive *archive = store->archive;
+	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
+
+	g_return_if_fail(archive);
+	g_return_if_fail(entry);
+
+	gint prev_size = lxa_archive_iter_n_children(archive, entry);
+
+	if(xa_archive_store_has_future(store))
+		store->navigation.present = store->navigation.present->next;
+
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
+	{
+		prev_size++;
+	}
+
+	xa_archive_store_sort(store);
+
+	xa_archive_store_refresh(store, prev_size);
+
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+}
+
+static void
+xa_archive_store_append_history(XAArchiveStore *store, GSList *entry)
+{
+	GList *iter = store->navigation.present;
+
+	if(store->navigation.present)
+	{
+		if(store->navigation.present->next)
+			store->navigation.present->next->prev = NULL;
+
+		while((gboolean)(iter = iter->next))
+			g_slist_free(iter->data);
+
+		g_list_free(store->navigation.present->next);
+
+		store->navigation.present->next = NULL;
+	}
+
+	store->navigation.history = g_list_append(store->navigation.history, entry);
+	store->navigation.present = g_list_last(store->navigation.history);
+
+	while(g_list_length(store->navigation.history) > store->navigation.maxhistory)
+	{
+		g_slist_free(g_list_first(store->navigation.history)->data);
+		store->navigation.history = g_list_delete_link(store->navigation.history, g_list_first(store->navigation.history));
+	}
 }
 
 LXAArchive *

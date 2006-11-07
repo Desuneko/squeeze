@@ -115,6 +115,11 @@ xa_main_window_finalize(GObject *object)
 
 
 	xa_settings_set_group(window->settings, "Global");
+	if(window->menu_bar)
+		xa_settings_write_bool_entry(window->settings, "MenuBar", TRUE);
+	else
+		xa_settings_write_bool_entry(window->settings, "MenuBar", FALSE);
+
 	if(!window->navigationbar)
 	{
 		xa_settings_write_entry(window->settings, "NavigationBar", "None");
@@ -155,10 +160,20 @@ xa_main_window_init(XAMainWindow *window)
 	gboolean sort_case = TRUE;
 	gboolean sort_folders = TRUE;
 	gboolean use_tabs = TRUE;
+	gboolean show_menubar = TRUE;
 
 	window->settings = xa_settings_new();
 
+	xa_settings_set_group(window->settings, "Global");
+
 	main_vbox = gtk_vbox_new(FALSE, 0);
+
+	show_menubar = xa_settings_read_bool_entry(window->settings, "MenuBar", TRUE);
+
+	if(show_menubar)
+	{
+
+	}
 
 	toolbar = gtk_toolbar_new();
 
@@ -205,7 +220,6 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
-	xa_settings_set_group(window->settings, "Global");
 	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "None");
 	window->navigationbar = NULL;
 
@@ -245,6 +259,9 @@ xa_main_window_init(XAMainWindow *window)
 
 	window->statusbar = gtk_statusbar_new();
 
+	if(show_menubar)
+		gtk_box_pack_start(GTK_BOX(main_vbox), window->menu_bar, FALSE, FALSE, 0);
+
 	gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, FALSE, FALSE, 0);
 
 	if(window->navigationbar)
@@ -256,8 +273,9 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_box_pack_start(GTK_BOX(main_vbox), window->notebook, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(main_vbox), window->statusbar, FALSE, FALSE, 0);
 
-	gtk_widget_show(main_vbox);
+	gtk_widget_show_all(main_vbox);
 	gtk_widget_show_all(toolbar);
+	gtk_widget_show_all(GTK_WIDGET(window->navigationbar));
 	gtk_widget_show_all(window->notebook);
 	gtk_widget_show_all(window->statusbar);
 
@@ -450,6 +468,13 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 static void
 cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+
+	LXAArchive        *lp_archive = NULL;
+	LXAArchiveSupport *lp_support = NULL;
+
+	xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+	gtk_dialog_run (GTK_DIALOG (xa_add_dialog_new(lp_support)));
 }
 
 static void

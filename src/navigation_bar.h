@@ -46,9 +46,6 @@ struct _XANavigationBar
 {
 	GtkContainer parent;
 	XAArchiveStore *store;
-	GList *history;
-	GList *pwd;
-	gint max_history;
 	void (*_cb_pwd_changed)(XAArchiveStore *, XANavigationBar *);
 	void (*_cb_new_archive)(XAArchiveStore *, XANavigationBar *);
 	void (*_cb_store_set)(XANavigationBar *);
@@ -63,14 +60,7 @@ struct _XANavigationBarClass
 
 GType      xa_navigation_bar_get_type();
 XANavigationBar *xa_navigation_bar_new();
-void       xa_navigation_bar_history_push(XANavigationBar *nav_bar, const gchar *path);
 void       xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store);
-gint       xa_navigation_bar_history_get_length(XANavigationBar *nav_bar);
-gboolean   xa_navigation_bar_history_back(XANavigationBar *nav_bar);
-gboolean   xa_navigation_bar_history_forward(XANavigationBar *nav_bar);
-gboolean   xa_navigation_bar_history_has_next(XANavigationBar *nav_bar);
-gboolean   xa_navigation_bar_history_has_previous(XANavigationBar *nav_bar);
-void       xa_navigation_bar_clear_history(XANavigationBar *nav_bar);
 
 G_END_DECLS
 #endif /* __XARCHIVER_NAVIGATION_BAR_H__*/

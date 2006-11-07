@@ -38,9 +38,9 @@ static void
 xa_application_class_init(XAApplicationClass *archive_class);
 
 static void
-xa_application_init(XAApplication *archive);
+xa_application_init(XAApplication *);
 static void
-xa_application_finalize(GObject *object);
+xa_application_finalize(GObject *);
 static void
 xa_application_dispose(GObject *object);
 
@@ -98,6 +98,7 @@ xa_application_init(XAApplication *application)
 	xa_settings_set_group(application->settings, "Global");
 
 	application->props._tabs = xa_settings_read_bool_entry(application->settings, "UseTabs", TRUE);
+
 }
 
 static void
@@ -107,11 +108,17 @@ xa_application_dispose(GObject *object)
 }
 
 static void
-xa_application_finalize(GObject *object)
+xa_application_finalize(GObject *object )
 {
+	XAApplication *application = XA_APPLICATION(object);
 #ifdef DEBUG
 	g_debug("Application Destroyed");
 #endif
+	xa_settings_set_group(application->settings, "Global");
+
+	xa_settings_write_bool_entry(application->settings, "UseTabs", application->props._tabs);
+
+	xa_settings_save(application->settings);
 }
 
 XAApplication *
@@ -249,14 +256,20 @@ xa_application_new_archive(XAApplication *app, gchar *archive_path, GSList *file
 gint
 xa_application_open_archive(XAApplication *app, GtkWidget *window, gchar *path)
 {
+	gint retval = 0;
+
 	if(!window)
 	{
 		window = xa_application_new_window(app);
 	}
 	if(app->props._tabs)
-		xa_main_window_open_archive(XA_MAIN_WINDOW(window), path, -1);
+	{
+		retval = xa_main_window_open_archive(XA_MAIN_WINDOW(window), path, -1);
+	}
 	else
-		xa_main_window_open_archive(XA_MAIN_WINDOW(window), path, 0);
-	gtk_widget_show_all(window);
-	return 0;
+	{
+		retval = xa_main_window_open_archive(XA_MAIN_WINDOW(window), path, 0);
+	}
+	gtk_widget_show(window);
+	return retval;
 }

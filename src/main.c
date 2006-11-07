@@ -112,6 +112,7 @@ int main(int argc, char **argv)
 
 #ifdef G_THREADS_ENABLED
 	g_thread_init(NULL);
+	gdk_threads_init();
 #endif /* G_THREADS_ENABLED */
 
 	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))
@@ -126,16 +127,17 @@ int main(int argc, char **argv)
 
 	lxa_init();
 
+	xa_icon_theme = gtk_icon_theme_get_default();
+	xa_app = xa_application_new(xa_icon_theme);
+
+	g_signal_connect(G_OBJECT(xa_app), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
 	if(version)
 	{
 		g_print("%s\n", PACKAGE_STRING);
 		return 0;
 	}
 
-	xa_icon_theme = gtk_icon_theme_get_default();
-	xa_app = xa_application_new(xa_icon_theme);
-
-	g_signal_connect(G_OBJECT(xa_app), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 	if(extract_archive_path || extract_archive)
 	{

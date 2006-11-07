@@ -46,7 +46,6 @@ struct _XAArchiveStore
 	gint stamp;
 	LXAArchive *archive;
 	LXAArchiveSupport *support;
-	GSList *current_entry;
 	gint sort_column;
 	GtkSortType sort_order;
 	LXAEntry **sort_list;
@@ -59,7 +58,8 @@ struct _XAArchiveStore
 	} props;
 	struct {
 		GList *history;
-		GList *pwd;
+		GList *present;
+		guint maxhistory;
 	} navigation;
 };
 
@@ -79,7 +79,7 @@ gchar * xa_archive_store_get_pwd(XAArchiveStore *store);
 GSList * xa_archive_store_get_pwd_list(XAArchiveStore *store);
 gchar * xa_archive_store_get_basename(XAArchiveStore *store);
 gboolean xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
-gboolean xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
+/* depricated */gboolean xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
 void xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
 
 gboolean xa_archive_store_get_show_icons(XAArchiveStore *store);
@@ -93,10 +93,21 @@ void xa_archive_store_set_sort_folders_first(XAArchiveStore *, gboolean);
 gchar *
 xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter);
 
-void
+/* want to depricate these */
+/*void
 xa_archive_store_set_history(XAArchiveStore *store, GList *history, GList *pwd);
 void
 xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd);
+*/
+/* these replace them */
+gboolean
+xa_archive_store_has_history(XAArchiveStore *store);
+gboolean
+xa_archive_store_has_future(XAArchiveStore *store);
+void
+xa_archive_store_go_back(XAArchiveStore *store);
+void
+xa_archive_store_go_forward(XAArchiveStore *store);
 
 LXAArchive *
 xa_archive_store_get_archive(XAArchiveStore *archive_store);
