@@ -36,6 +36,8 @@ enum
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE = 1,
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH,
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_KEEP_NEW,
+	LXA_ARCHIVE_SUPPORT_GNU_TAR_ADD_MODE,
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE,
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE,
 	LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_TIME,
@@ -157,14 +159,14 @@ lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclas
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE, pspec);
 
 	pspec = g_param_spec_boolean("extract-touch",
-		"Touch files",
+		_("Touch files"),
 		"Touch files",
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH, pspec);
 
 	pspec = g_param_spec_uint("extract-strip",
-		"Strip directories",
+		_("Strip directories"),
 		"Strip directories",
 		0,
 		128,
@@ -172,36 +174,50 @@ lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclas
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP, pspec);
 
+	pspec = g_param_spec_boolean("extract-keep-new",
+		_("Keep newer files"),
+		_("Do not overwrite files newer then those in the archive"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_KEEP_NEW, pspec);
+
+	pspec = g_param_spec_string("add-mode",
+		_("Override permissions"),
+		"Override permissions",
+		"",
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_ADD_MODE, pspec);
+
 	pspec = g_param_spec_boolean("view-size",
-		"View file-size",
-		"View file-size",
+		_("Filesize"),
+		_("View filesize"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE, pspec);
 
 	pspec = g_param_spec_boolean("view-rights",
-		"View permissions",
+		_("Permissions"),
 		"View permissions",
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_RIGHTS, pspec);
 
 	pspec = g_param_spec_boolean("view-owner",
-		"View owner",
+		_("Owner/Group"),
 		"View owner",
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_OWNER, pspec);
 
 	pspec = g_param_spec_boolean("view-date",
-		"View date",
+		_("Date"),
 		"View date",
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE, pspec);
 
 	pspec = g_param_spec_boolean("view-time",
-		"View time",
+		_("Time"),
 		"View time",
 		TRUE,
 		G_PARAM_READWRITE);
@@ -255,15 +271,30 @@ lxa_archive_support_gnu_tar_add(LXAArchive *archive, GSList *filenames)
 		if(!g_file_test(archive->path, G_FILE_TEST_EXISTS))
 		{
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tar"))
-				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -cf ", archive->path, " ", archive->files, NULL);
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
+				                      " -cf ", archive->path,
+															" --mode=", LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
+															" ", archive->files, NULL);
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
-				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -Zcf ", archive->path, " ", archive->files, NULL);
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
+				                      " -Zcf ", archive->path,
+															" --mode=", LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
+															" ", archive->files, NULL);
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
-				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zcf ", archive->path, " ", archive->files, NULL);
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
+				                      " -zcf ", archive->path,
+															" --mode=", LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
+															" ", archive->files, NULL);
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
-				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jcf ", archive->path, " ", archive->files, NULL);
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
+				                      " -jcf ", archive->path,
+															" --mode=", LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
+															" ", archive->files, NULL);
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
-				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -cf ", archive->path, " ", archive->files, NULL);
+				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
+				                      " --use-compress-program=lzop -cf ", archive->path,
+															" --mode=", LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
+															" ", archive->files, NULL);
 			if(command)
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 		} else
@@ -297,6 +328,13 @@ gint
 lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSList *filenames)
 {
 	gchar *command = NULL;
+	gchar *command_options = g_strconcat(
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_keep_newer?" --keep-newer-files ":" ",
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+			NULL
+	    );
+
 	if(!LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
 		g_critical("Support is not GNU TAR");
@@ -317,48 +355,47 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf ", archive->path,
 						" -C \"", dest_path, "\"", 
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+						command_options,
 						archive->files, NULL);
 			}
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -Zxf ", archive->path,
 						" -C \"", dest_path, "\"", 
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+						command_options,
 						archive->files, NULL);
 			}
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zxf ", archive->path,
 						" -C \"", dest_path, "\"", 
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+						command_options,
 						archive->files, NULL);
 			}
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jxf ", archive->path,
 						" -C \"", dest_path, "\"", 
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+						command_options,
 						archive->files, NULL);
 			}
 			if(!g_strcasecmp(lxa_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			{
 				command = g_strconcat(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf --use-compress-program=lzop ", archive->path,
 						" -C \"", dest_path, "\"", 
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
-						LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+						command_options,
 						archive->files, NULL);
 			}
 		} else
+		{
+			LXA_FREE(command_options);
 			return 1;
+		}
 		if(command)
 		{
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 			g_debug("Extracting archive '%s' to '%s'\nUsing command '%s'", archive->path, dest_path, command);
+			LXA_FREE(command_options);
 			LXA_FREE(command);
 		}
 	}
@@ -438,7 +475,7 @@ lxa_archive_support_gnu_tar_refresh(LXAArchive *archive)
 			i++;
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) {
-			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Size"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Filesize"));
 			i++;
 		}
 		if(LXA_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) {
@@ -703,14 +740,22 @@ lxa_archive_support_gnu_tar_set_property(GObject *object, guint prop_id, const G
 {
 	switch(prop_id)
 	{
+/* EXTRACT */
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE:
 			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_overwrite = g_value_get_boolean(value);
 			break;
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH:
 			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_touch = g_value_get_boolean(value);
 			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_KEEP_NEW:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_keep_newer = g_value_get_boolean(value);
+			break;
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP:
 			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_strip = g_value_get_uint(value);
+			break;
+/* ADD */
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_ADD_MODE:
+			LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_add_mode = g_value_dup_string(value);
 			break;
 
 /* */
@@ -740,6 +785,7 @@ lxa_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue 
 {
 	switch(prop_id)
 	{
+/* EXTRACT */
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_OVERWRITE:
 			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_overwrite);
 			break;
@@ -748,6 +794,13 @@ lxa_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue 
 			break;
 		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_STRIP:
 			g_value_set_uint(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_strip);
+			break;
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_KEEP_NEW:
+			g_value_set_boolean(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_extr_keep_newer);
+			break;
+/* ADD */
+		case LXA_ARCHIVE_SUPPORT_GNU_TAR_ADD_MODE:
+			g_value_set_string(value, LXA_ARCHIVE_SUPPORT_GNU_TAR(object)->_add_mode);
 			break;
 
 /* */

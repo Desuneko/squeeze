@@ -200,15 +200,23 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 1);
 	}
-	if(xa_archive_store_has_future(XA_NAVIGATION_BAR(tool_bar)->store))
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
-	else
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
+	if(XA_NAVIGATION_BAR(tool_bar)->store)
+	{
+		if(xa_archive_store_has_future(XA_NAVIGATION_BAR(tool_bar)->store))
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
+		else
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
-	if(xa_archive_store_has_history(XA_NAVIGATION_BAR(tool_bar)->store))
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
+		if(xa_archive_store_has_history(XA_NAVIGATION_BAR(tool_bar)->store))
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
+		else
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
+	}
 	else
+	{
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
+	}
 }
 
 static void

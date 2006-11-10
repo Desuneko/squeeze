@@ -22,6 +22,7 @@
 #include <gettext.h>
 
 #include "add_dialog.h"
+#include "widget_factory.h"
 
 static void
 xa_add_dialog_class_init(XAAddDialogClass *archive_class);
@@ -66,10 +67,10 @@ xa_add_dialog_init(XAAddDialog *dialog)
 	GtkWidget *frame = gtk_frame_new(_("Drag Files and folders to bottom list"));
 	dialog->optionframe = gtk_frame_new(_("Options:"));
 	GtkWidget *vpaned = gtk_vpaned_new();
-	GtkWidget *chooser = gtk_file_chooser_widget_new(GTK_FILE_CHOOSER_ACTION_OPEN);
+	//GtkWidget *chooser = gtk_file_chooser_widget_new(GTK_FILE_CHOOSER_ACTION_OPEN);
 	GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
-	gtk_paned_pack1(GTK_PANED(vpaned), chooser, TRUE, FALSE);
+	//gtk_paned_pack1(GTK_PANED(vpaned), chooser, TRUE, FALSE);
 	gtk_paned_pack2(GTK_PANED(vpaned), scrolled_window, TRUE, FALSE);
 
 	gtk_container_add(GTK_CONTAINER(frame), vpaned);
@@ -92,7 +93,8 @@ xa_add_dialog_new(LXAArchiveSupport *support)
 {
 	GSList *add_options;
 	XAAddDialog *dialog;
-	GtkWidget *optionbox, *test, *hbox;
+	GtkWidget *optionbox, *test;
+	XAWidgetFactory *factory = xa_widget_factory_new();
 
 	dialog = g_object_new(xa_add_dialog_get_type(),
 			"title", _("Add file(s) to archive"),
@@ -107,28 +109,13 @@ xa_add_dialog_new(LXAArchiveSupport *support)
 		add_options = lxa_archive_support_list_properties(support, "add");
 		while(add_options)
 		{
-			switch(G_PARAM_SPEC(add_options->data)->value_type)
-			{
-				case G_TYPE_BOOLEAN:
-					test = gtk_check_button_new_with_label(g_param_spec_get_nick(G_PARAM_SPEC(add_options->data)));
-		//			g_signal_connect(G_OBJECT(test), "toggled", G_CALLBACK(cb_xa_add_dialog_option_toggled), g_param_spec_get_name(G_PARAM_SPEC(add_options->data)));
-					gtk_box_pack_start(GTK_BOX(optionbox), test, FALSE, FALSE, 0);
-					break;
-				case G_TYPE_STRING:
-					hbox = gtk_hbox_new(FALSE, 4);
-					test = gtk_label_new(g_param_spec_get_nick(G_PARAM_SPEC(add_options->data)));
-					gtk_box_pack_start(GTK_BOX(hbox), test, FALSE, FALSE, 3);
-
-					test = gtk_entry_new();
-					gtk_box_pack_start(GTK_BOX(hbox), test, TRUE, TRUE, 3);
-
-	//				g_signal_connect(G_OBJECT(test), "child_notify", G_CALLBACK(cb_xa_add_dialog_option_child_norify), g_param_spec_get_name(G_PARAM_SPEC(add_options->data)));
-					gtk_box_pack_start(GTK_BOX(optionbox), hbox, FALSE, FALSE, 0);
-					break;
-			}
+			test = xa_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(add_options->data)));
+			gtk_box_pack_start(GTK_BOX(optionbox), test, FALSE, FALSE, 0);
 			add_options = add_options->next;
 		}
 	}
+
+	gtk_widget_set_size_request(GTK_WIDGET(dialog), 600,400);
 
 	gtk_widget_show_all(optionbox);
 	return (GtkWidget*)dialog;

@@ -360,8 +360,10 @@ xa_notebook_get_active_archive(XANotebook *notebook, LXAArchive **lp_archive, LX
 	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 
-	(*lp_archive) = xa_archive_store_get_archive(XA_ARCHIVE_STORE(archive_store));
-	(*lp_support) = xa_archive_store_get_support(XA_ARCHIVE_STORE(archive_store));
+	if(lp_archive)
+		(*lp_archive) = xa_archive_store_get_archive(XA_ARCHIVE_STORE(archive_store));
+	if(lp_support)
+		(*lp_support) = xa_archive_store_get_support(XA_ARCHIVE_STORE(archive_store));
 }
 
 GtkWidget *
@@ -393,4 +395,14 @@ xa_notebook_page_set_archive(XANotebook *notebook, LXAArchive *archive, LXAArchi
 	}
 	else
 		xa_notebook_add_archive(XA_NOTEBOOK(notebook), archive, support);
+}
+
+LXAArchive*
+xa_notebook_page_get_archive(XANotebook *notebook, gint n)
+{
+		GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
+		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
+		GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+		
+		return xa_archive_store_get_archive(XA_ARCHIVE_STORE(store));
 }

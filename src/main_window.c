@@ -377,7 +377,7 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 		{
 
 		}
-		gtk_widget_destroy (GTK_WIDGET (dialog) );
+		gtk_widget_destroy (dialog );
 	}
 
 }
@@ -438,7 +438,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
 	if(result == GTK_RESPONSE_OK)
 	{
-		gtk_widget_hide(GTK_WIDGET(dialog));
+		gtk_widget_hide(dialog);
 		extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(dialog)->sel_files_radio)))
 		{
@@ -461,7 +461,7 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
 	}
-	gtk_widget_destroy (GTK_WIDGET (dialog) );
+	gtk_widget_destroy (dialog);
 
 }
 
@@ -472,9 +472,18 @@ cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 
 	LXAArchive        *lp_archive = NULL;
 	LXAArchiveSupport *lp_support = NULL;
-
+	GtkWidget         *dialog = NULL;
+	gint result;
 	xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
-	gtk_dialog_run (GTK_DIALOG (xa_add_dialog_new(lp_support)));
+
+	dialog = xa_add_dialog_new(lp_support);
+
+	result = gtk_dialog_run (GTK_DIALOG(dialog));
+	if(result == GTK_RESPONSE_OK)
+	{
+		gtk_widget_hide(dialog);
+	}
+	gtk_widget_destroy (dialog);
 }
 
 static void
@@ -485,12 +494,17 @@ cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
 static void
 cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
+	LXAArchive *lp_archive;
 	XAMainWindow *window = XA_MAIN_WINDOW(data);
 
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+
+	lp_archive = xa_notebook_page_get_archive(notebook, page_nr);
+
+	gtk_window_set_title(GTK_WINDOW(window), lxa_archive_get_filename(lp_archive));
 }
 
 static void

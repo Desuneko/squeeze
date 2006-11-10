@@ -49,6 +49,10 @@ struct _LXAArchiveSupportGnuTar
 	gboolean _extr_overwrite;
 	gboolean _extr_touch;
 	guint    _extr_strip;
+	gboolean _extr_keep_old;
+	gboolean _extr_keep_newer;
+
+	gchar   *_add_mode;
 
 /* Optional properties */
 	gboolean _view_size;
