@@ -26,7 +26,8 @@ xarchiver_SOURCES = \
 	preferences_dialog.c preferences_dialog.h \
 	new_dialog.c new_dialog.h \
 	add_dialog.c add_dialog.h \
-	extract_dialog.c extract_dialog.h
+	extract_dialog.c extract_dialog.h \
+	widget_factory.c widget_factory.h
 
 xarchiver_CFLAGS = \
 	@GTK_CFLAGS@ \

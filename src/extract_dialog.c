@@ -27,6 +27,7 @@
 #include <gettext.h>
 
 #include "extract_dialog.h"
+#include "widget_factory.h"
 
 static void
 xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *archive_class);
@@ -107,8 +108,9 @@ GtkWidget *
 xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, gboolean sel_option)
 {
 	GSList *extract_options;
-	GtkWidget *test, *hbox;
+	GtkWidget *test;
 	XAExtractArchiveDialog *dialog;
+	XAWidgetFactory *factory = xa_widget_factory_new();
 
 	dialog = g_object_new(xa_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 /* Handle 'extract selected files' option */
@@ -124,25 +126,8 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 		extract_options = lxa_archive_support_list_properties(support, "extract");
 		while(extract_options)
 		{
-			switch(G_PARAM_SPEC(extract_options->data)->value_type)
-			{
-				case (G_TYPE_BOOLEAN):
-					test = gtk_check_button_new_with_label(g_param_spec_get_nick(G_PARAM_SPEC(extract_options->data)));
-					g_signal_connect(G_OBJECT(test), "toggled", G_CALLBACK(xa_extract_dialog_option_toggled), (void *)g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
-					gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
-					break;
-				case (G_TYPE_STRING):
-					hbox = gtk_hbox_new(FALSE, 4);
-					test = gtk_label_new(g_param_spec_get_nick(G_PARAM_SPEC(extract_options->data)));
-					gtk_box_pack_start(GTK_BOX(hbox), test, FALSE, FALSE, 3);
-
-					test = gtk_entry_new();
-					gtk_box_pack_start(GTK_BOX(hbox), test, TRUE, TRUE, 3);
-
-					g_signal_connect(G_OBJECT(test), "child_notify", G_CALLBACK(xa_extract_dialog_option_child_notify), (void *)g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
-					gtk_box_pack_start(GTK_BOX(r_vbox), hbox, FALSE, FALSE, 0);
-					break;
-			}
+			test = xa_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
+			gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
 			extract_options = extract_options->next;
 		}
 	}

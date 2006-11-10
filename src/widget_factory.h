@@ -25,7 +25,7 @@ G_BEGIN_DECLS
 			xa_widget_factory_get_type(),      \
 			LXAArchive))
 
-#define LXA_IS_ARCHIVE(obj)      ( \
+#define LXA_IS_WIDGET_FACTORY(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
 			xa_widget_factory_get_type()))
 
@@ -34,13 +34,14 @@ G_BEGIN_DECLS
 			xa_widget_factory_get_type(),      \
 			LXAArchiveClass))
 
-#define LXA_IS_ARCHIVE_CLASS(class) ( \
+#define LXA_IS_WIDGET_FACTORY_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
 			xa_widget_factory_get_type()))
 
 typedef struct
 {
 	GObject parent;
+	GtkTooltips *tips;
 } XAWidgetFactory;
 
 typedef struct
@@ -51,8 +52,7 @@ typedef struct
 GType               xa_widget_factory_get_type(void);
 XAWidgetFactory    *xa_widget_factory_new();
 
-GtkWidget          *xa_widget_factory_create_property_widget(GObject *obj, const gchar *prop);
-/*GtkWidget          *xa_widget_factory_create_property_by_specs(GObject *obj, GParamSpec *prop);*/
+GtkWidget          *xa_widget_factory_create_property_widget(XAWidgetFactory *, GObject *, const gchar *);
 
 #endif /*__XA_WIDGET_FACTORY_H__*/
 

@@ -168,8 +168,6 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), 0);
 
 	gtk_widget_show_all(GTK_WIDGET(tool_bar->bar));
-
-	g_signal_connect(G_OBJECT(tool_bar), "xa-store-set", (GCallback)cb_xa_tool_bar_store_set, NULL);
 }
 
 XANavigationBar *

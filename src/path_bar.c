@@ -198,7 +198,6 @@ xa_path_bar_init(XAPathBar *path_bar)
 	path_bar->scroll_click = TRUE;
 
 	gtk_widget_ref(GTK_WIDGET(path_bar));
-	g_signal_connect(G_OBJECT(path_bar), "xa-store-set", (GCallback)cb_xa_path_bar_store_set, NULL);
 }
 
 XANavigationBar *
@@ -582,7 +581,6 @@ cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
 		g_free(prev);
 	}
 
-	xa_archive_store_set_pwd_silent(XA_NAVIGATION_BAR(path_bar)->store, path);
 	g_free(path);
 }
 
