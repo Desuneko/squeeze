@@ -56,21 +56,18 @@ struct _XAMainWindow
 	XAApplication *app;
 	GtkWidget *menu_bar;
 	struct {
-		GtkWidget *menu_item_archive;
-		GtkWidget *menu_archive;
-		/* contents of 'archive' menu */
+		/* 'file' menu */
+		GtkWidget *menu_item_file;
+		GtkWidget *menu_file;
+		/* contents of 'file' menu */
 		GtkWidget *menu_item_new;
 		GtkWidget *menu_item_open;
 		GtkWidget *menu_item_properties;
 		GtkWidget *menu_item_close;
 		GtkWidget *menu_item_quit;
 
-		GtkWidget *menu_item_view;
-		GtkWidget *menu_view;
-		/* contents of 'view' menu */
-		GtkWidget *menu_location_selector;
-		GtkWidget *menu_item_settings;
 
+		/* 'action' menu */
 		GtkWidget *menu_item_action;
 		GtkWidget *menu_action;
 		/* contents of 'action' menu */
@@ -78,9 +75,16 @@ struct _XAMainWindow
 		GtkWidget *menu_item_extract;
 		GtkWidget *menu_item_remove;
 
+		/* 'view' menu */
+		GtkWidget *menu_item_view;
+		GtkWidget *menu_view;
+		/* contents of 'view' menu */
+		GtkWidget *menu_location_selector;
+		GtkWidget *menu_item_settings;
+
+		/* 'help' menu */
 		GtkWidget *menu_item_help;
 		GtkWidget *menu_help;
-
 		/* contents of 'help' menu */
 		GtkWidget *menu_item_about;
 
@@ -97,6 +101,7 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_stop;
 	} toolbar;
 	XANavigationBar *navigationbar;
+	GtkAccelGroup *accel_group;
 	GtkWidget *notebook;
 	GtkWidget *statusbar;
 	GtkWidget *about_dlg;

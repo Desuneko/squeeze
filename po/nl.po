@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-07 11:17+0100\n"
+"POT-Creation-Date: 2006-11-11 15:09+0100\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -24,35 +24,63 @@ msgstr "Bestandsnaam"
 msgid "Mime type"
 msgstr "Mime type"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:153
+#: ../libxarchiver/archive-support-gnu-tar.c:155
 #: ../libxarchiver/archive-support-zip.c:118
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:154
+#: ../libxarchiver/archive-support-gnu-tar.c:156
 #: ../libxarchiver/archive-support-zip.c:119
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:433
+#: ../libxarchiver/archive-support-gnu-tar.c:162
+msgid "Touch files"
+msgstr "Bestanden aanraken"
+
+#: ../libxarchiver/archive-support-gnu-tar.c:169
+msgid "Strip directories"
+msgstr ""
+
+#: ../libxarchiver/archive-support-gnu-tar.c:178
+msgid "Keep newer files"
+msgstr ""
+
+#: ../libxarchiver/archive-support-gnu-tar.c:179
+msgid "Do not overwrite files newer then those in the archive"
+msgstr ""
+
+#: ../libxarchiver/archive-support-gnu-tar.c:185
+msgid "Override permissions"
+msgstr ""
+
+#: ../libxarchiver/archive-support-gnu-tar.c:192
+#: ../libxarchiver/archive-support-gnu-tar.c:478
+msgid "Filesize"
+msgstr "Bestandsgrootte"
+
+#: ../libxarchiver/archive-support-gnu-tar.c:193
+msgid "View filesize"
+msgstr "Bestandsgrootte weergeven"
+
+#: ../libxarchiver/archive-support-gnu-tar.c:199
+#: ../libxarchiver/archive-support-gnu-tar.c:470
 msgid "Permissions"
 msgstr "Rechten"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:437
+#: ../libxarchiver/archive-support-gnu-tar.c:206
+#: ../libxarchiver/archive-support-gnu-tar.c:474
 msgid "Owner/Group"
 msgstr "Eigenaar/Groep"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:441
-#: ../libxarchiver/archive-support-zip.c:305
-msgid "Size"
-msgstr "Grootte"
-
-#: ../libxarchiver/archive-support-gnu-tar.c:445
+#: ../libxarchiver/archive-support-gnu-tar.c:213
+#: ../libxarchiver/archive-support-gnu-tar.c:482
 #: ../libxarchiver/archive-support-zip.c:313
 msgid "Date"
 msgstr "Datum"
 
-#: ../libxarchiver/archive-support-gnu-tar.c:449
+#: ../libxarchiver/archive-support-gnu-tar.c:220
+#: ../libxarchiver/archive-support-gnu-tar.c:486
 #: ../libxarchiver/archive-support-zip.c:317
 msgid "Time"
 msgstr "Tijd"
@@ -69,6 +97,10 @@ msgstr "Lengte"
 #: ../libxarchiver/archive-support-zip.c:301
 msgid "Method"
 msgstr "Methode"
+
+#: ../libxarchiver/archive-support-zip.c:305
+msgid "Size"
+msgstr "Grootte"
 
 #: ../libxarchiver/archive-support-zip.c:309
 msgid "Ratio"
@@ -108,15 +140,30 @@ msgstr ""
 "Probeer xarchiver --help om een volledige lijst te zien met beschikbare "
 "opties.\n"
 
-#: ../src/main_window.c:194
+#. File menu
+#: ../src/main_window.c:178
+msgid "_File"
+msgstr "_Bestand"
+
+#. Action menu
+#: ../src/main_window.c:181
+msgid "_Action"
+msgstr "_Actie"
+
+#. View menu
+#: ../src/main_window.c:184
+msgid "_View"
+msgstr "B_eeld"
+
+#: ../src/main_window.c:208
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:198 ../src/extract_dialog.c:101
+#: ../src/main_window.c:212 ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:393
+#: ../src/main_window.c:407
 msgid "Open archive"
 msgstr "Archief openen"
 
@@ -124,74 +171,30 @@ msgstr "Archief openen"
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
 
-#: ../src/add_dialog.c:66
-msgid "Drag Files and folders to bottom list"
-msgstr ""
+#: ../src/add_dialog.c:68
+msgid "Options:"
+msgstr "Opties:"
 
-#: ../src/add_dialog.c:93
+#: ../src/add_dialog.c:100
 msgid "Add file(s) to archive"
 msgstr "Bestand(en) toevoegen aan archief"
 
-#: ../src/extract_dialog.c:77
-msgid "<b>Extract files:</b>"
-msgstr "<b> Bestanden uitpakken:</b>"
-
 #: ../src/extract_dialog.c:78
+msgid "<b>Extract files:</b>"
+msgstr "<b>Bestanden uitpakken:</b>"
+
+#: ../src/extract_dialog.c:79
 msgid "<b>Options:</b>"
 msgstr "<b>Opties:</b>"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "All files"
 msgstr "Alle bestanden"
 
-#: ../src/extract_dialog.c:89
+#: ../src/extract_dialog.c:90
 msgid "Selected files"
 msgstr "Geselecteerde bestanden"
 
-#: ../src/extract_dialog.c:113
+#: ../src/extract_dialog.c:115
 msgid "Extract archive"
 msgstr "Archief uitpakken"
-
-#~ msgid "Compression method"
-#~ msgstr "Compressie methode"
-
-#~ msgid "Could not create archive, MIME-type unsupported"
-#~ msgstr "Kan archief niet maken, MIME-type wordt niet ondersteund"
-
-#~ msgid "Could not open archive, MIME-type unsupported or file did not exist"
-#~ msgstr ""
-#~ "Kan archief niet openen, MIME-type wordt niet ondersteund of bestand "
-#~ "bestaat niet"
-
-#~ msgid "_Archive"
-#~ msgstr "_Archief"
-
-#~ msgid "A_ction"
-#~ msgstr "A_ctie"
-
-#~ msgid "_Help"
-#~ msgstr "_Help"
-
-#~ msgid "Initializing archive..."
-#~ msgstr "Bezig met initialiseren van archief..."
-
-#~ msgid "Reading archive contents..."
-#~ msgstr "Bezig met lezen van archief..."
-
-#~ msgid "Extracting archive..."
-#~ msgstr "Archief uitpakken..."
-
-#~ msgid "Adding file(s) to archive..."
-#~ msgstr "Bestand(en) toevoegen aan archief..."
-
-#~ msgid "Removing file(s) from archive..."
-#~ msgstr "Bestand(en) toevoegen aan archief..."
-
-#~ msgid "Error"
-#~ msgstr "Fout"
-
-#~ msgid "Cancelled"
-#~ msgstr "Geannuleerd"
-
-#~ msgid "Done"
-#~ msgstr "Klaar"

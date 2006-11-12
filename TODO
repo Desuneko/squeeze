@@ -8,9 +8,6 @@ Long Version:
 | IMPORTANT                                         IMPORTANT |
 ---------------------------------------------------------------
 
-  Make thunar-vfs dependency optional.
-  Make libxfce4-util dependency optional.
-
   Fix navigation-bars to work with notebook - DONE (Pathbar untested)
 
   Close Buttons - DONE
@@ -23,9 +20,16 @@ Long Version:
 
   Open Dialog 
 
+	MenuBar
+
   Settings support
 
+	DnD
+
 	Non-default actions
+
+  Make thunar-vfs dependency optional.
+  Make libxfce4-util dependency optional.
 
   Comment library functions
     (explain their purpose)

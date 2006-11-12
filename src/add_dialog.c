@@ -64,21 +64,18 @@ xa_add_dialog_class_init(XAAddDialogClass *dialog_class)
 static void
 xa_add_dialog_init(XAAddDialog *dialog)
 {
-	GtkWidget *frame = gtk_frame_new(_("Drag Files and folders to bottom list"));
+	GtkWidget *frame = gtk_frame_new(_("Files and directories to add"));
 	dialog->optionframe = gtk_frame_new(_("Options:"));
-	GtkWidget *vpaned = gtk_vpaned_new();
-	//GtkWidget *chooser = gtk_file_chooser_widget_new(GTK_FILE_CHOOSER_ACTION_OPEN);
+	GtkWidget *vbox = gtk_vbox_new(FALSE,0);
 	GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolled_window), GTK_SHADOW_IN);
-	//gtk_paned_pack1(GTK_PANED(vpaned), chooser, TRUE, FALSE);
-	gtk_paned_pack2(GTK_PANED(vpaned), scrolled_window, TRUE, FALSE);
 
-	gtk_container_add(GTK_CONTAINER(frame), vpaned);
-	gtk_container_set_border_width(GTK_CONTAINER(vpaned), 5);
+	gtk_container_add(GTK_CONTAINER(vbox), scrolled_window);
+	gtk_container_add(GTK_CONTAINER(frame), vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	gtk_widget_show_all(frame);
 	gtk_widget_show_all(dialog->optionframe);
-	gtk_widget_show_all(vpaned);
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), dialog->optionframe, TRUE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 

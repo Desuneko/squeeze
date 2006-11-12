@@ -72,7 +72,6 @@ xa_application_get_type ()
 	return xa_application_type;
 }
 
-/* Destroy code was copied from gtk+-2.8.16 */
 static void
 xa_application_class_init(XAApplicationClass *application_class)
 {
@@ -111,9 +110,7 @@ static void
 xa_application_finalize(GObject *object )
 {
 	XAApplication *application = XA_APPLICATION(object);
-#ifdef DEBUG
-	g_debug("Application Destroyed");
-#endif
+
 	xa_settings_set_group(application->settings, "Global");
 
 	xa_settings_write_bool_entry(application->settings, "UseTabs", application->props._tabs);
