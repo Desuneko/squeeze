@@ -196,6 +196,8 @@ xa_main_window_init(XAMainWindow *window)
 
 		window->menubar.menu_item_properties = gtk_image_menu_item_new_from_stock(GTK_STOCK_PROPERTIES, window->accel_group);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_properties);
+		gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);
+
 		window->menubar.menu_item_close = gtk_image_menu_item_new_from_stock(GTK_STOCK_CLOSE, window->accel_group);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_close);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
@@ -212,9 +214,49 @@ xa_main_window_init(XAMainWindow *window)
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_quit), "activate", G_CALLBACK(cb_xa_main_close_window), window);
 		/* Action menu */
 		window->menubar.menu_item_action = gtk_menu_item_new_with_mnemonic(_("_Action"));
+		window->menubar.menu_action = gtk_menu_new();
+		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_action), window->menubar.menu_action);
+
+		tmp_image = xa_main_window_find_image("add.png", GTK_ICON_SIZE_MENU);
+		window->menubar.menu_item_add = gtk_image_menu_item_new_with_mnemonic(_("_Add"));
+		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_add), tmp_image);
+		gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
+
+		tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_MENU);
+		window->menubar.menu_item_extract = gtk_image_menu_item_new_with_mnemonic(_("_Extract"));
+		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_extract), tmp_image);
+		gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_extract);
+
+		window->menubar.menu_item_remove = gtk_image_menu_item_new_from_stock(GTK_STOCK_DELETE, window->accel_group);
+		gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_remove);
+
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_xa_main_add_to_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_xa_main_extract_archive), window);
 
 		/* View menu */
 		window->menubar.menu_item_view = gtk_menu_item_new_with_mnemonic(_("_View"));
+		window->menubar.menu_view = gtk_menu_new();
+		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_view), window->menubar.menu_view);
+
+		window->menubar.menu_item_nav_bar = gtk_menu_item_new_with_mnemonic(_("_Location Selector"));
+		window->menubar.menu_nav_bar = gtk_menu_new();
+		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_nav_bar), window->menubar.menu_nav_bar);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), window->menubar.menu_item_nav_bar);
+
+		window->menubar.menu_item_no_bar   = gtk_radio_menu_item_new_with_mnemonic(NULL, _("Internal style"));
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_nav_bar), window->menubar.menu_item_no_bar);
+		gtk_check_menu_item_set_active((GtkCheckMenuItem *)window->menubar.menu_item_no_bar, TRUE);
+#ifdef ENABLE_TOOLBAR
+		window->menubar.menu_item_tool_bar = gtk_radio_menu_item_new_with_mnemonic_from_widget(GTK_RADIO_MENU_ITEM(window->menubar.menu_item_no_bar), _("Toolbar style"));
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_nav_bar), window->menubar.menu_item_tool_bar);
+#endif /* ENABLE_TOOLBAR */
+#ifdef ENABLE_PATHBAR
+		window->menubar.menu_item_path_bar = gtk_radio_menu_item_new_with_mnemonic_from_widget(GTK_RADIO_MENU_ITEM(window->menubar.menu_item_no_bar), _("Pathbar style"));
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_nav_bar), window->menubar.menu_item_path_bar);
+#endif /* ENABLE_PATHBAR */
 
 
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_file);
@@ -289,6 +331,7 @@ xa_main_window_init(XAMainWindow *window)
 	if(!window->navigationbar)
 	{
 		window->navigationbar = xa_navigation_bar_new(NULL);
+		up_dir = TRUE;
 	}
 
 	show_icons = xa_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
@@ -299,7 +342,7 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_widget_ref(GTK_WIDGET(window->navigationbar));
 
 /* main view */
-	window->notebook = xa_notebook_new(window->navigationbar, use_tabs);
+	window->notebook = xa_notebook_new(window->navigationbar, use_tabs, window->accel_group);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
 /* Statusbar */
@@ -536,8 +579,8 @@ cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 static void
 cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata)
 {
-	//XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	g_debug("Closing archive");
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	xa_notebook_close_active_archive(XA_NOTEBOOK(window->notebook));
 }
 
 static void
@@ -558,6 +601,10 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 	LXAArchive *lp_archive;
 	XAMainWindow *window = XA_MAIN_WINDOW(data);
 
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), TRUE);
+
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
@@ -576,6 +623,12 @@ cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data)
 	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);
+
+		gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
@@ -597,6 +650,7 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
 		else
 			xa_notebook_page_set_archive(XA_NOTEBOOK(window->notebook), archive, support, replace);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
 		return 0;
 	}
 	else

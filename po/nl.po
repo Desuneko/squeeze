@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-11 15:09+0100\n"
+"POT-Creation-Date: 2006-11-13 10:55+0100\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -44,15 +44,15 @@ msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:178
 msgid "Keep newer files"
-msgstr ""
+msgstr "Bewaar nieuwere bestanden"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:179
 msgid "Do not overwrite files newer then those in the archive"
-msgstr ""
+msgstr "Overschrijf geen bestanden die nieuwer zijn dan die in het archief"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:185
 msgid "Override permissions"
-msgstr ""
+msgstr "Overschrijf rechten"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:192
 #: ../libxarchiver/archive-support-gnu-tar.c:478
@@ -126,11 +126,11 @@ msgstr "[bestand1] [bestand2] ... [bestandN]"
 msgid "Version information"
 msgstr "Versie informatie"
 
-#: ../src/main.c:118
+#: ../src/main.c:117
 msgid "[archive name]"
 msgstr "[archief naam]"
 
-#: ../src/main.c:122
+#: ../src/main.c:121
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -141,41 +141,82 @@ msgstr ""
 "opties.\n"
 
 #. File menu
-#: ../src/main_window.c:178
+#: ../src/main_window.c:185
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu
-#: ../src/main_window.c:181
+#: ../src/main_window.c:216
 msgid "_Action"
 msgstr "_Actie"
 
+#: ../src/main_window.c:221
+msgid "_Add"
+msgstr "_Toevoegen"
+
+#: ../src/main_window.c:226
+msgid "_Extract"
+msgstr "_Uitpakken"
+
 #. View menu
-#: ../src/main_window.c:184
+#: ../src/main_window.c:234
 msgid "_View"
 msgstr "B_eeld"
 
-#: ../src/main_window.c:208
+#: ../src/main_window.c:238
+msgid "_Location Selector"
+msgstr "_Locatie Selecteerder"
+
+#: ../src/main_window.c:243
+msgid "Internal style"
+msgstr "Interne stijl"
+
+#: ../src/main_window.c:247
+msgid "Toolbar style"
+msgstr "Toolbar stijl"
+
+#: ../src/main_window.c:251
+msgid "Pathbar style"
+msgstr "Padbar stijl"
+
+#: ../src/main_window.c:277
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:212 ../src/extract_dialog.c:102
+#: ../src/main_window.c:281 ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:407
+#: ../src/main_window.c:476
 msgid "Open archive"
 msgstr "Archief openen"
+
+#: ../src/main_window.c:646
+msgid "Failed to open file"
+msgstr "Het openen van een bestand is mislukt"
+
+#: ../src/main_window.c:647
+#, c-format
+msgid ""
+"'%s'\n"
+"Could not be opened"
+msgstr ""
+"'%s'\n"
+"Kon niet worden geopend"
 
 #: ../src/new_dialog.c:87
 msgid "Create new archive"
 msgstr "Maak nieuw archief"
 
+#: ../src/add_dialog.c:67
+msgid "Files and directories to add"
+msgstr ""
+
 #: ../src/add_dialog.c:68
 msgid "Options:"
 msgstr "Opties:"
 
-#: ../src/add_dialog.c:100
+#: ../src/add_dialog.c:97
 msgid "Add file(s) to archive"
 msgstr "Bestand(en) toevoegen aan archief"
 

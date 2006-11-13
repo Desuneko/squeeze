@@ -112,7 +112,6 @@ int main(int argc, char **argv)
 
 #ifdef G_THREADS_ENABLED
 	g_thread_init(NULL);
-	gdk_threads_init();
 #endif /* G_THREADS_ENABLED */
 
 	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))

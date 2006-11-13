@@ -60,33 +60,42 @@ struct _XAMainWindow
 		GtkWidget *menu_item_file;
 		GtkWidget *menu_file;
 		/* contents of 'file' menu */
-		GtkWidget *menu_item_new;
-		GtkWidget *menu_item_open;
-		GtkWidget *menu_item_properties;
-		GtkWidget *menu_item_close;
-		GtkWidget *menu_item_quit;
+			GtkWidget *menu_item_new;
+			GtkWidget *menu_item_open;
+			GtkWidget *menu_item_properties;
+			GtkWidget *menu_item_close;
+			GtkWidget *menu_item_quit;
+		/***************************/
 
 
 		/* 'action' menu */
 		GtkWidget *menu_item_action;
 		GtkWidget *menu_action;
 		/* contents of 'action' menu */
-		GtkWidget *menu_item_add;
-		GtkWidget *menu_item_extract;
-		GtkWidget *menu_item_remove;
+			GtkWidget *menu_item_add;
+			GtkWidget *menu_item_extract;
+			GtkWidget *menu_item_remove;
+		/***************************/
 
 		/* 'view' menu */
 		GtkWidget *menu_item_view;
 		GtkWidget *menu_view;
 		/* contents of 'view' menu */
-		GtkWidget *menu_location_selector;
-		GtkWidget *menu_item_settings;
+			GtkWidget *menu_item_nav_bar;
+			GtkWidget *menu_nav_bar;
+			/* contents of 'nav_bar' submenu */
+				GtkWidget *menu_item_tool_bar;
+				GtkWidget *menu_item_path_bar;
+				GtkWidget *menu_item_no_bar;
+			/*********************************/
+			GtkWidget *menu_item_settings;
+		/***************************/
 
 		/* 'help' menu */
 		GtkWidget *menu_item_help;
 		GtkWidget *menu_help;
 		/* contents of 'help' menu */
-		GtkWidget *menu_item_about;
+			GtkWidget *menu_item_about;
 
 	} menubar;
 	struct {
