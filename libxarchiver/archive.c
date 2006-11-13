@@ -1278,3 +1278,10 @@ lxa_archive_get_filename(LXAArchive *archive)
 	g_return_val_if_fail(LXA_IS_ARCHIVE(archive), "<unknown>");
 	return g_basename(archive->path);
 }
+
+LXAArchiveStatus
+lxa_archive_get_status(LXAArchive *archive)
+{
+	g_return_if_fail(LXA_IS_ARCHIVE(archive));
+	return archive->status;
+}

@@ -63,6 +63,7 @@ static void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata);
+static void cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
@@ -235,6 +236,7 @@ xa_main_window_init(XAMainWindow *window)
 
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_xa_main_add_to_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_xa_main_extract_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "clicked", G_CALLBACK(cb_xa_main_remove_from_archive), window);
 
 		/* View menu */
 		window->menubar.menu_item_view = gtk_menu_item_new_with_mnemonic(_("_View"));
@@ -299,6 +301,7 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_add), "clicked", G_CALLBACK(cb_xa_main_add_to_archive), window);
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_extract), "clicked", G_CALLBACK(cb_xa_main_extract_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_remove), "clicked", G_CALLBACK(cb_xa_main_remove_from_archive), window);
 
 /* control pane */
 
@@ -577,6 +580,22 @@ cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 }
 
 static void
+cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
+{
+	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	GtkWidget *dialog = NULL;
+	gint result = 0;
+
+	dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, "Are you sure you want to remove the selected files?");
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
+	if(result == GTK_RESPONSE_OK)
+	{
+		gtk_widget_hide(dialog);
+	}
+	gtk_widget_destroy (dialog);
+}
+
+static void
 cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata)
 {
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
@@ -598,19 +617,32 @@ cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
 static void
 cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
-	LXAArchive *lp_archive;
+	LXAArchive *lp_archive = xa_notebook_page_get_archive(notebook, page_nr);
 	XAMainWindow *window = XA_MAIN_WINDOW(data);
 
-	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), TRUE);
+	if(lp_archive || lxa_archive_get_status(lp_archive) == LXA_ARCHIVESTATUS_IDLE)
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), TRUE);
 
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+	}
+	else
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
 
-	lp_archive = xa_notebook_page_get_archive(notebook, page_nr);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+	}
+
 
 	gtk_window_set_title(GTK_WINDOW(window), lxa_archive_get_filename(lp_archive));
 }
