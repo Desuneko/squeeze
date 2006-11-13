@@ -239,7 +239,7 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 	GtkWidget *tree_view = gtk_tree_view_new();
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(tree_view), TRUE);
 
-	GtkTreeModel *tree_model = xa_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
+	GtkTreeModel *tree_model = xa_archive_store_new(NULL, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, FALSE, FALSE, 0);
@@ -421,7 +421,7 @@ xa_notebook_page_set_archive(XANotebook *notebook, LXAArchive *archive, LXAArchi
 		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 		GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 
-		xa_archive_store_set_archive(XA_ARCHIVE_STORE(store), archive);
+		//xa_archive_store_set_archive(XA_ARCHIVE_STORE(store), archive);
 		xa_archive_store_set_support(XA_ARCHIVE_STORE(store), support);
 
 		g_signal_connect(G_OBJECT(archive), "lxa_status_changed", G_CALLBACK(cb_notebook_archive_status_changed), notebook);

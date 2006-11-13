@@ -93,6 +93,9 @@ static void
 xa_archive_store_refresh(XAArchiveStore *store, gint prev_size);
 
 static void
+xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path);
+
+static void
 cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data);
 
 /* tree sortable */
@@ -425,7 +428,6 @@ xa_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 			entry = store->sort_list[index];
 		else
 			entry = lxa_archive_iter_nth_child(archive, entry, index);
-
 		g_return_val_if_fail(entry, FALSE);
 
 	}
@@ -962,11 +964,13 @@ xa_archive_store_refresh(XAArchiveStore *store, gint prev_size)
 static void
 cb_xa_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-	g_return_if_fail(XA_IS_ARCHIVE_STORE(user_data));	
-	XAArchiveStore *store = XA_ARCHIVE_STORE(user_data);
+	xa_archive_store_file_activated(XA_ARCHIVE_STORE(user_data), path);
+}
 
+static void
+xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
+{
 	g_return_if_fail(store->navigation.present->data);
-
 
 	LXAArchive *archive = store->archive;
 	LXAArchiveIter *entry = ((GSList*)store->navigation.present->data)->data;
@@ -1207,6 +1211,8 @@ GSList *
 xa_archive_store_get_pwd_list(XAArchiveStore *store)
 {
 	g_return_val_if_fail(store, NULL);
+	if(!store->navigation.present)
+		return NULL;
 
 	GValue *basename = g_new0(GValue, 1);
 	GSList *iter = store->navigation.present->data;

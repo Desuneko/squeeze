@@ -53,6 +53,7 @@ struct _XAPathBar
 	guint scroll_timeout;
 	guint scroll_dir;
 	gboolean scroll_click;
+	gboolean updating;
 };
 
 typedef struct _XAPathBarClass XAPathBarClass;

@@ -1275,5 +1275,6 @@ lxa_archive_iter_get_prop_uint64(const LXAArchive *archive, const LXAArchiveIter
 const gchar *
 lxa_archive_get_filename(LXAArchive *archive)
 {
+	g_return_val_if_fail(LXA_IS_ARCHIVE(archive), "<unknown>");
 	return g_basename(archive->path);
 }

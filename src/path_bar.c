@@ -196,6 +196,7 @@ xa_path_bar_init(XAPathBar *path_bar)
 	path_bar->scroll_timeout = 0;
 	path_bar->scroll_dir = XA_SCROLL_NONE;
 	path_bar->scroll_click = TRUE;
+	path_bar->updating = FALSE;
 
 	gtk_widget_ref(GTK_WIDGET(path_bar));
 }
@@ -476,6 +477,8 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 	XAPathBar *path_bar = XA_PATH_BAR(bar);
 	GSList *buttons = path_bar->path_button->next;
 
+	XA_PATH_BAR(bar)->updating = TRUE;
+
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(path_bar->path_button->data), TRUE);
 
 	while(buttons)
@@ -487,7 +490,9 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 	g_slist_free(path_bar->path_button->next);
 	path_bar->path_button->next = NULL;
 
-	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), store->archive?TRUE:FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), (store&&store->archive));
+
+	XA_PATH_BAR(bar)->updating = FALSE;
 }
 
 static void
@@ -499,10 +504,10 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 	GSList *buttons = path_bar->path_button->next;
 	GSList *lastbutton = path_bar->path_button;
 	GtkRadioButton *button = GTK_RADIO_BUTTON(path_bar->home_button);
-	const gchar *label = xa_archive_store_get_pwd(store);
+	const gchar *label;
 	gint cmp = 0;
 
-	g_free((gchar*)label);
+	path_bar->updating = TRUE;
 
 	while(iter && buttons)
 	{
@@ -559,11 +564,15 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 	g_slist_free(path);
 
 	path_bar->first_button = g_slist_last(path_bar->path_button);
+
+	path_bar->updating = FALSE;
 }
 
 static void
 cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
 {
+	if(path_bar->updating)
+		return;
 	gchar *path = g_strdup("");
 	gchar *prev = NULL;
 	const gchar *folder = NULL;
@@ -580,6 +589,8 @@ cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
 			path = g_strconcat(path, folder, "/", NULL);
 		g_free(prev);
 	}
+
+	xa_archive_store_set_pwd(XA_NAVIGATION_BAR(path_bar)->store, path);
 
 	g_free(path);
 }

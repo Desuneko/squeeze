@@ -74,6 +74,7 @@ struct _XAArchiveStoreClass
 GType xa_archive_store_get_type();
 GtkTreeModel * xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);
 void xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
+void xa_archive_store_connect_iconview(XAArchiveStore *store, GtkIconView *iconview);
 void xa_archive_store_go_up(XAArchiveStore *store);
 gchar * xa_archive_store_get_pwd(XAArchiveStore *store);
 GSList * xa_archive_store_get_pwd_list(XAArchiveStore *store);
