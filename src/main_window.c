@@ -575,7 +575,7 @@ cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 	{
 		dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, "Are you sure you want to remove the selected files?");
 		result = gtk_dialog_run(GTK_DIALOG(dialog));
-		if(result == GTK_RESPONSE_OK)
+		if(result == GTK_RESPONSE_YES)
 		{
 			gtk_widget_hide(dialog);
 			xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
