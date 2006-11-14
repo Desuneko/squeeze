@@ -435,6 +435,40 @@ xa_notebook_page_set_archive(XANotebook *notebook, LXAArchive *archive, LXAArchi
 		xa_notebook_add_archive(XA_NOTEBOOK(notebook), archive, support);
 }
 
+GSList *
+xa_notebook_get_selected_items(XANotebook *notebook)
+{
+	GtkWidget *scrolledwindow = xa_notebook_get_active_child(notebook);
+	GtkTreeIter iter;
+	GValue *value = g_new0(GValue, 1);
+	GSList *filenames = NULL;
+
+	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
+	GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+	gchar *pwd = xa_archive_store_get_pwd(XA_ARCHIVE_STORE(store));
+	GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(treeview));
+	GList *rows = gtk_tree_selection_get_selected_rows(selection, &store);
+	GList *_rows = rows;
+	while(_rows)
+	{
+		gtk_tree_model_get_iter(store, &iter, _rows->data);
+		if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(store)))
+			gtk_tree_model_get_value(store, &iter, 1, value);
+		else
+			gtk_tree_model_get_value(store, &iter, 0, value);
+
+		filenames = g_slist_prepend(filenames, g_strconcat(pwd, g_value_get_string(value), NULL));
+
+		g_value_unset(value);
+		_rows = _rows->next;
+	}
+	g_list_free(rows);
+	g_free(pwd);
+	
+	return filenames;
+}
+
+
 LXAArchive*
 xa_notebook_page_get_archive(XANotebook *notebook, gint n)
 {

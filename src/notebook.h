@@ -70,12 +70,14 @@ GType       xa_notebook_get_type ();
 void        xa_notebook_set_navigation_bar(XANotebook *, XANavigationBar *);
 void        xa_notebook_add_archive(XANotebook *, LXAArchive *, LXAArchiveSupport *);
 void        xa_notebook_page_set_archive(XANotebook *, LXAArchive *, LXAArchiveSupport *, gint n);
-LXAArchive* xa_notebook_page_get_archive(XANotebook *, gint n);
+LXAArchive *xa_notebook_page_get_archive(XANotebook *, gint n);
 void        xa_notebook_set_icon_theme(XANotebook *, GtkIconTheme *);
 void        xa_notebook_get_active_archive(XANotebook *, LXAArchive **, LXAArchiveSupport **);
-GtkWidget * xa_notebook_get_active_child(XANotebook *notebook);
+GtkWidget  *xa_notebook_get_active_child(XANotebook *notebook);
 gboolean    xa_notebook_get_multi_tab(XANotebook *notebook);
 void        xa_notebook_close_active_archive(XANotebook *);
+
+GSList     *xa_notebook_get_selected_items(XANotebook *notebook);
 
 G_END_DECLS
 #endif /* __XARCHIVER_NOTEBOOK_H__ */

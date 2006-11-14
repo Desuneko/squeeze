@@ -517,38 +517,20 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	LXAArchive        *lp_archive = NULL;
 	LXAArchiveSupport *lp_support = NULL;
 
-	GSList *filenames = NULL;
-	GValue *value = g_new0(GValue, 1);
-
-	GtkTreeView *treeview = GTK_TREE_VIEW(gtk_bin_get_child(GTK_BIN(xa_notebook_get_active_child(XA_NOTEBOOK(window->notebook)))));
-	GtkTreeModel *treemodel = gtk_tree_view_get_model(treeview);
-	GtkTreeIter iter;
-	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
+	GSList *filenames = xa_notebook_get_selected_items(XA_NOTEBOOK(window->notebook));
 
 	xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
 
-	dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, gtk_tree_selection_count_selected_rows (selection));
+	dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, g_slist_length(filenames));
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
 	if(result == GTK_RESPONSE_OK)
 	{
 		gtk_widget_hide(dialog);
 		extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(dialog)->sel_files_radio)))
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(dialog)->all_files_radio)))
 		{
-			GList *rows = gtk_tree_selection_get_selected_rows(selection, &treemodel);
-			GList *_rows = rows;
-			while(_rows)
-			{
-				gtk_tree_model_get_iter(GTK_TREE_MODEL(treemodel), &iter, _rows->data);
-				if(xa_archive_store_get_show_icons(XA_ARCHIVE_STORE(treemodel)))
-					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 1, value);
-				else
-					gtk_tree_model_get_value(GTK_TREE_MODEL(treemodel), &iter, 0, value);
-
-				g_value_unset(value);
-				_rows = _rows->next;
-			}
-			g_list_free(rows);
+			g_slist_free(filenames);
+			filenames = NULL;
 		}
 		lxa_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
 		g_free(extract_archive_path);
@@ -583,16 +565,24 @@ static void
 cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 {
 	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	LXAArchive        *lp_archive = NULL;
+	LXAArchiveSupport *lp_support = NULL;
 	GtkWidget *dialog = NULL;
 	gint result = 0;
+	GSList *filenames = xa_notebook_get_selected_items(XA_NOTEBOOK(window->notebook));
 
-	dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, "Are you sure you want to remove the selected files?");
-	result = gtk_dialog_run(GTK_DIALOG(dialog));
-	if(result == GTK_RESPONSE_OK)
+	if(filenames)
 	{
-		gtk_widget_hide(dialog);
+		dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, "Are you sure you want to remove the selected files?");
+		result = gtk_dialog_run(GTK_DIALOG(dialog));
+		if(result == GTK_RESPONSE_OK)
+		{
+			gtk_widget_hide(dialog);
+			xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+			lxa_archive_support_remove(lp_support, lp_archive, filenames);
+		}
+		gtk_widget_destroy (dialog);
 	}
-	gtk_widget_destroy (dialog);
 }
 
 static void
