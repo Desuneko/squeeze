@@ -644,7 +644,7 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 	}
 
 
-	gtk_window_set_title(GTK_WINDOW(window), lxa_archive_get_filename(lp_archive));
+	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lxa_archive_get_filename(lp_archive), NULL));
 }
 
 static void

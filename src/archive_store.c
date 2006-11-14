@@ -1143,7 +1143,6 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 	}
 
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
-	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
 gchar *
