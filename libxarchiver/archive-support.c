@@ -115,6 +115,8 @@ lxa_archive_support_mime_supported(LXAArchiveSupport *support, const gchar *mime
 	GSList *result = g_slist_find_custom(support->mime, mime, lxa_archive_support_lookup_mime);
 	if(!result)
 		return FALSE;
+	if(!result->data)
+		return FALSE;
 	return TRUE;
 }
 
@@ -160,7 +162,7 @@ lxa_get_support_for_mime_from_slist(GSList *list, const gchar *mime)
 gint
 lxa_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime)
 {
-	return g_strcasecmp((gchar *)support_mime, (gchar *)mime);
+	return strcmp((gchar *)support_mime, (gchar *)mime);
 }
 
 /*

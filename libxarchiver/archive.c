@@ -204,7 +204,8 @@ lxa_archive_init(LXAArchive *archive)
 static void
 lxa_archive_finalize(GObject *object)
 {
-	LXAArchive *archive = LXA_ARCHIVE(object);
+	g_return_if_fail(LXA_IS_ARCHIVE(object));
+	LXAArchive *archive = (LXAArchive *)(object);
 	if(archive->path)
 		LXA_FREE(archive->path);
 	lxa_archive_entry_free(archive, archive->root_entry);
@@ -215,7 +216,8 @@ lxa_archive_finalize(GObject *object)
 		case(LXA_ARCHIVESTATUS_USERBREAK):
 			break;
 		default:
-			kill ( archive->child_pid , SIGHUP);
+			if(archive->child_pid)
+				kill ( archive->child_pid , SIGHUP);
 			break;
 	}
 }
