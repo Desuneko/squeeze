@@ -236,7 +236,7 @@ xa_main_window_init(XAMainWindow *window)
 
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_xa_main_add_to_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_xa_main_extract_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "clicked", G_CALLBACK(cb_xa_main_remove_from_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "activate", G_CALLBACK(cb_xa_main_remove_from_archive), window);
 
 		/* View menu */
 		window->menubar.menu_item_view = gtk_menu_item_new_with_mnemonic(_("_View"));
