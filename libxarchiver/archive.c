@@ -116,7 +116,7 @@ lxa_archive_sort_entry_buffer(LXAEntry *entry1, LXAEntry *entry2)
 	return strcmp(entry1->filename, entry2->filename);
 }
 
-static gint lxa_archive_signals[2];
+static gint lxa_archive_signals[3];
 
 GType
 lxa_archive_get_type ()
@@ -169,6 +169,17 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 			NULL,
 			NULL,
 			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
+			NULL);
+
+	lxa_archive_signals[2] = g_signal_new("lxa_path_changed",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
 			G_TYPE_NONE,
 			0,
 			NULL);
@@ -238,6 +249,8 @@ void
 lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 {
 	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
+	gchar **path = NULL;
+
 	if(LXA_IS_ARCHIVE(archive))
 	{
 		if(archive->status != status)
@@ -245,9 +258,14 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 			archive->old_status = archive->status;
 			archive->status = status;
 			g_signal_emit(G_OBJECT(archive), lxa_archive_signals[0], 0, archive);
-			if((archive->old_status == LXA_ARCHIVESTATUS_REFRESH) &&
-			  (archive->status == LXA_ARCHIVESTATUS_IDLE))
+			if((archive->old_status == LXA_ARCHIVESTATUS_REFRESH) && (archive->status == LXA_ARCHIVESTATUS_IDLE))
 				g_signal_emit(G_OBJECT(archive), lxa_archive_signals[1], 0, archive);
+			if((archive->old_status == LXA_ARCHIVESTATUS_REMOVE) && (archive->files))
+			{
+				path = g_strsplit(archive->files, " ", 2);
+				g_signal_emit(G_OBJECT(archive), lxa_archive_signals[2], 0, archive, path[0]);
+				g_strfreev(path);
+			}
 		} 
 	}
 	LXA_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
