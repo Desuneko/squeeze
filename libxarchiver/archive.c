@@ -250,6 +250,7 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 {
 	LXA_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	gchar **path = NULL;
+	gchar *_path = NULL;
 
 	if(LXA_IS_ARCHIVE(archive))
 	{
@@ -263,8 +264,10 @@ lxa_archive_set_status(LXAArchive *archive, LXAArchiveStatus status)
 			if((archive->old_status == LXA_ARCHIVESTATUS_REMOVE) && (archive->files))
 			{
 				path = g_strsplit(archive->files, " ", 2);
-				g_signal_emit(G_OBJECT(archive), lxa_archive_signals[2], 0, archive, path[0]);
+				_path = g_path_get_dirname(path[0]);
+				g_signal_emit(G_OBJECT(archive), lxa_archive_signals[2], 0, archive, _path);
 				g_strfreev(path);
+				g_free(_path);
 			}
 		} 
 	}
