@@ -1282,6 +1282,6 @@ lxa_archive_get_filename(LXAArchive *archive)
 LXAArchiveStatus
 lxa_archive_get_status(LXAArchive *archive)
 {
-	g_return_if_fail(LXA_IS_ARCHIVE(archive));
+	g_return_val_if_fail(LXA_IS_ARCHIVE(archive), LXA_ARCHIVESTATUS_ERROR);
 	return archive->status;
 }
