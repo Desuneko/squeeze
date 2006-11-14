@@ -303,7 +303,8 @@ cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 {
 	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
 	gchar *path= xa_archive_store_get_pwd(store);
-
+	if(!path)
+		path = g_strdup("");
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
@@ -326,6 +327,8 @@ cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
 {
 	xa_archive_store_go_back(XA_NAVIGATION_BAR(tool_bar)->store);
 	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
+	if(!path)
+		path = g_strdup("");
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 }
@@ -335,6 +338,8 @@ cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *tool_bar)
 {
 	xa_archive_store_go_forward(XA_NAVIGATION_BAR(tool_bar)->store);
 	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
+	if(!path)
+		path = g_strdup("");
 	xa_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 }
@@ -366,6 +371,8 @@ cb_xa_tool_bar_store_set(XANavigationBar *bar)
 	if(bar->store)
 	{
 		gchar *path= xa_archive_store_get_pwd(bar->store);
+		if(!path)
+			path = g_strdup("");
 		xa_tool_bar_refresh(tool_bar, path);
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
 		g_free(path);

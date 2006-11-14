@@ -40,4 +40,10 @@ Long Version:
 
   Implement multi-threading (for libarchive support)
 
+	In archive store, on delete in parent dir of current entry, check if map still exists, if not move to the ancestor that still exists
+
+	Save trailing folders for path_bar
+
+	In treeview, when going to up dir, select the dir you came from
+
   ... Complete TODO-file

@@ -49,6 +49,7 @@ struct _XAArchiveStore
 	gint sort_column;
 	GtkSortType sort_order;
 	LXAEntry **sort_list;
+	guint list_size;
 	GtkIconTheme *icon_theme;
 	struct {
 		guint _show_icons : 1;
@@ -80,7 +81,6 @@ gchar * xa_archive_store_get_pwd(XAArchiveStore *store);
 GSList * xa_archive_store_get_pwd_list(XAArchiveStore *store);
 gchar * xa_archive_store_get_basename(XAArchiveStore *store);
 gboolean xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
-/* depricated */gboolean xa_archive_store_set_pwd_silent(XAArchiveStore *store, const gchar *path);
 void xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
 
 gboolean xa_archive_store_get_show_icons(XAArchiveStore *store);

@@ -189,6 +189,8 @@ static void
 lxa_archive_init(LXAArchive *archive)
 {
 	archive->root_entry = LXA_NEW0(LXAEntry, 1);
+	archive->status = LXA_ARCHIVESTATUS_INIT;
+	archive->old_status = LXA_ARCHIVESTATUS_INIT;
 #ifdef LXA_THREADSAFE
 	g_static_rw_lock_init(&archive->rw_lock);
 #endif /* LXA_THREADSAFE */
