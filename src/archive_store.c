@@ -55,6 +55,7 @@ enum {
 enum {
 	XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED = 0,
 	XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE,
+	XA_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED,
 	XA_ARCHIVE_STORE_SIGNAL_NUMBER
 };
 static gint xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NUMBER];
@@ -265,7 +266,7 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		 NULL,
 		 g_cclosure_marshal_VOID__VOID,
 		 G_TYPE_NONE,
-		 0,
+		 0, 
 		 NULL);
 
 	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE] = g_signal_new("xa-new-archive",
@@ -277,6 +278,18 @@ xa_archive_store_class_init(XAArchiveStoreClass *as_class)
 		 g_cclosure_marshal_VOID__VOID,
 		 G_TYPE_NONE,
 		 0,
+		 NULL);
+
+	xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED] = g_signal_new("xa-file-activated",
+	   G_TYPE_FROM_CLASS(as_class),
+		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+		 0,
+		 NULL,
+		 NULL,
+		 g_cclosure_marshal_VOID__POINTER,
+		 G_TYPE_NONE,
+		 1,
+		 G_TYPE_STRING,
 		 NULL);
 /*
 	xa_archive_store_up_entry.filename = "..";
@@ -1034,6 +1047,7 @@ xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
 
 	gint *indices = gtk_tree_path_get_indices(path);
 	gint depth = gtk_tree_path_get_depth(path) - 1;
+	GValue *value = g_new0(GValue, 1);
 
 	/* only support list: depth is always 0 */
 	g_return_if_fail(depth == 0);
@@ -1066,6 +1080,9 @@ xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
 #ifdef DEBUG
 			g_debug("file clicked");
 #endif
+			lxa_archive_iter_get_prop_value(archive, entry, LXA_ARCHIVE_PROP_FILENAME, value);
+			g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, g_value_get_string(value), NULL); 
+			g_value_unset(value);
 			return;
 		}
 
@@ -1077,6 +1094,7 @@ xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
 
 	xa_archive_store_refresh(store);
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+	g_free(value);
 }
 
 void

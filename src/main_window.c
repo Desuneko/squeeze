@@ -70,9 +70,11 @@ static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 static void cb_xa_main_close_window(GtkWidget *widget, gpointer userdata);
 
 static void
-cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data);
+cb_xa_main_window_notebook_page_switched(XANotebook *, GtkNotebookPage *, guint, gpointer);
 static void
-cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data);
+cb_xa_main_window_notebook_page_removed(XANotebook *, gpointer);
+static void
+cb_xa_main_window_notebook_file_activated(XANotebook *, gchar *, gpointer);
 
 
 GType
@@ -348,6 +350,7 @@ xa_main_window_init(XAMainWindow *window)
 	window->notebook = xa_notebook_new(window->navigationbar, use_tabs, window->accel_group);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
+	g_signal_connect(G_OBJECT(window->notebook), "xa_file_activated", G_CALLBACK(cb_xa_main_window_notebook_file_activated), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -656,6 +659,54 @@ cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data)
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
 	}
+}
+
+static void
+cb_xa_main_window_notebook_file_activated(XANotebook *notebook, gchar *path, gpointer data)
+{
+	GtkWindow *window = GTK_WINDOW(data);
+	LXAArchive *lp_archive = NULL;
+	LXAArchiveSupport *lp_support = NULL;
+	gchar *extract_archive_path = NULL;
+	GtkWidget *label = gtk_label_new(_("Which action do you want to perform on the selected file(s)?"));
+	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, _("View"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+	GtkWidget *extr_dialog = NULL;
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 20);
+	gtk_widget_show(label);
+	gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_hide(dialog);
+
+	GSList *filenames = g_slist_prepend(NULL, path);
+	switch(result)
+	{
+		case GTK_RESPONSE_OK: /* VIEW */
+			/* extract to tmp and view */
+			break;
+		case GTK_RESPONSE_ACCEPT: /* EXTRACT */
+			xa_notebook_get_active_archive(XA_NOTEBOOK(notebook), &lp_archive, &lp_support);
+			extr_dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, 1);
+			result = gtk_dialog_run (GTK_DIALOG (extr_dialog) );
+			if(result == GTK_RESPONSE_OK)
+			{
+				gtk_widget_hide(extr_dialog);
+				extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(extr_dialog));
+				if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(extr_dialog)->all_files_radio)))
+				{
+					g_slist_free(filenames);
+					filenames = NULL;
+				}
+				lxa_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
+				g_free(extract_archive_path);
+				extract_archive_path = NULL;
+			}
+			gtk_widget_destroy (extr_dialog);
+			
+			break;
+		case GTK_RESPONSE_CANCEL: /* CANCEL */
+			break;
+	}
+	g_slist_free(filenames);
+	gtk_widget_destroy(dialog);
 }
 
 gint

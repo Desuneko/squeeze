@@ -46,10 +46,13 @@ xa_notebook_treeview_reset_columns(LXAArchive *archive, GtkTreeView *treeview);
 static void
 cb_notebook_close_archive(GtkButton *button, GtkWidget *child);
 
-void
+static void
 cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook);
-void
+static void
 cb_notebook_archive_refreshed(LXAArchive *archive, GtkTreeView *tree_view);
+static void
+cb_notebook_file_activated(XAArchiveStore *, gchar *, XANotebook *);
+
 static void
 cb_xa_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *, guint page_nr, gpointer data);
 static void
@@ -121,6 +124,13 @@ xa_notebook_class_init(XANotebookClass *notebook_class)
 			NULL, NULL,
 			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE, 0, NULL);
+
+	xa_notebook_signals[3] = g_signal_new("xa_file_activated",
+			G_TYPE_FROM_CLASS(notebook_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
+			NULL, NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
 
 	pspec = g_param_spec_boolean("multi_tab",
 		"",
@@ -239,6 +249,9 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 	GtkWidget *tree_view = gtk_tree_view_new();
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(tree_view), TRUE);
 
+	GtkTreeSelection *selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (tree_view) );
+	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
+
 	GtkTreeModel *tree_model = xa_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
@@ -252,6 +265,7 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 	g_signal_connect(G_OBJECT(archive), "lxa_refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
 
 	g_signal_connect(G_OBJECT(close_button), "clicked", G_CALLBACK(cb_notebook_close_archive), scroll_window);
+	g_signal_connect(G_OBJECT(tree_model), "xa_file_activated", G_CALLBACK(cb_notebook_file_activated), notebook);
 
 
 	xa_archive_store_set_support(XA_ARCHIVE_STORE(tree_model), support);
@@ -281,7 +295,7 @@ cb_notebook_close_archive(GtkButton *button, GtkWidget *child)
 
 	gint n = gtk_notebook_page_num(notebook, child);
 	gtk_notebook_remove_page(notebook, n);
-	g_signal_emit(G_OBJECT(notebook), xa_notebook_signals[0], 0, notebook);
+	g_signal_emit(G_OBJECT(notebook), xa_notebook_signals[0], 0, NULL);
 }
 
 void
@@ -290,7 +304,7 @@ xa_notebook_close_active_archive(XANotebook *notebook)
 	GtkNotebook *_notebook = GTK_NOTEBOOK(notebook);
 	gint n = gtk_notebook_get_current_page(_notebook);
 	gtk_notebook_remove_page(_notebook, n);
-	g_signal_emit(G_OBJECT(notebook), xa_notebook_signals[0], 0, notebook);
+	g_signal_emit(G_OBJECT(notebook), xa_notebook_signals[0], 0, NULL);
 }
 
 void
@@ -386,6 +400,14 @@ cb_xa_notebook_page_removed(XANotebook *notebook, gpointer data)
 {
 	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 		xa_navigation_bar_set_store(notebook->navigation_bar, NULL);
+}
+
+static void
+cb_notebook_file_activated(XAArchiveStore *store, gchar *filename, XANotebook *notebook)
+{
+	gchar *pwd = xa_archive_store_get_pwd(store);
+	gchar *path = g_strconcat(pwd, filename, NULL);
+	g_signal_emit(G_OBJECT(notebook), xa_notebook_signals[3], 0, path, NULL);
 }
 
 

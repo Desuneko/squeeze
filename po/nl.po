@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-13 10:55+0100\n"
+"POT-Creation-Date: 2006-11-17 20:52+0100\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libxarchiver/archive.c:398
+#: ../libxarchiver/archive.c:424
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: ../libxarchiver/archive.c:401
+#: ../libxarchiver/archive.c:427
 msgid "Mime type"
 msgstr "Mime type"
 
@@ -141,61 +141,70 @@ msgstr ""
 "opties.\n"
 
 #. File menu
-#: ../src/main_window.c:185
+#: ../src/main_window.c:188
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu
-#: ../src/main_window.c:216
+#: ../src/main_window.c:219
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:221
+#: ../src/main_window.c:224
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:226
+#: ../src/main_window.c:230
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:234
+#: ../src/main_window.c:244
 msgid "_View"
 msgstr "B_eeld"
 
-#: ../src/main_window.c:238
+#: ../src/main_window.c:248
 msgid "_Location Selector"
 msgstr "_Locatie Selecteerder"
 
-#: ../src/main_window.c:243
+#: ../src/main_window.c:253
 msgid "Internal style"
 msgstr "Interne stijl"
 
-#: ../src/main_window.c:247
+#: ../src/main_window.c:257
 msgid "Toolbar style"
 msgstr "Toolbar stijl"
 
-#: ../src/main_window.c:251
+#: ../src/main_window.c:261
 msgid "Pathbar style"
 msgstr "Padbar stijl"
 
-#: ../src/main_window.c:277
+#: ../src/main_window.c:287
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:281 ../src/extract_dialog.c:102
+#: ../src/main_window.c:291 ../src/main_window.c:672
+#: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:476
+#: ../src/main_window.c:489
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:646
+#: ../src/main_window.c:671
+msgid "Which action do you want to perform on the selected file(s)?"
+msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
+
+#: ../src/main_window.c:672
+msgid "View"
+msgstr "Weergeven"
+
+#: ../src/main_window.c:735
 msgid "Failed to open file"
 msgstr "Het openen van een bestand is mislukt"
 
-#: ../src/main_window.c:647
+#: ../src/main_window.c:736
 #, c-format
 msgid ""
 "'%s'\n"

@@ -46,4 +46,7 @@ Long Version:
 
 	In treeview, when going to up dir, select the dir you came from
 
+	When retrieving selected items from the treeview, forget the updir item
+	Add trailing '/' to folder filenames when getting it from treeview
+
   ... Complete TODO-file

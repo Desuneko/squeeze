@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-13 10:55+0100\n"
+"POT-Creation-Date: 2006-11-17 20:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libxarchiver/archive.c:398
+#: ../libxarchiver/archive.c:424
 msgid "Filename"
 msgstr ""
 
-#: ../libxarchiver/archive.c:401
+#: ../libxarchiver/archive.c:427
 msgid "Mime type"
 msgstr ""
 
@@ -138,61 +138,70 @@ msgid ""
 msgstr ""
 
 #. File menu
-#: ../src/main_window.c:185
+#: ../src/main_window.c:188
 msgid "_File"
 msgstr ""
 
 #. Action menu
-#: ../src/main_window.c:216
+#: ../src/main_window.c:219
 msgid "_Action"
 msgstr ""
 
-#: ../src/main_window.c:221
+#: ../src/main_window.c:224
 msgid "_Add"
 msgstr ""
 
-#: ../src/main_window.c:226
+#: ../src/main_window.c:230
 msgid "_Extract"
 msgstr ""
 
 #. View menu
-#: ../src/main_window.c:234
+#: ../src/main_window.c:244
 msgid "_View"
 msgstr ""
 
-#: ../src/main_window.c:238
+#: ../src/main_window.c:248
 msgid "_Location Selector"
 msgstr ""
 
-#: ../src/main_window.c:243
+#: ../src/main_window.c:253
 msgid "Internal style"
 msgstr ""
 
-#: ../src/main_window.c:247
+#: ../src/main_window.c:257
 msgid "Toolbar style"
 msgstr ""
 
-#: ../src/main_window.c:251
+#: ../src/main_window.c:261
 msgid "Pathbar style"
 msgstr ""
 
-#: ../src/main_window.c:277
+#: ../src/main_window.c:287
 msgid "Add"
 msgstr ""
 
-#: ../src/main_window.c:281 ../src/extract_dialog.c:102
+#: ../src/main_window.c:291 ../src/main_window.c:672
+#: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr ""
 
-#: ../src/main_window.c:476
+#: ../src/main_window.c:489
 msgid "Open archive"
 msgstr ""
 
-#: ../src/main_window.c:646
+#: ../src/main_window.c:671
+msgid "Which action do you want to perform on the selected file(s)?"
+msgstr ""
+
+#: ../src/main_window.c:672
+msgid "View"
+msgstr ""
+
+#: ../src/main_window.c:735
 msgid "Failed to open file"
 msgstr ""
 
-#: ../src/main_window.c:647
+#: ../src/main_window.c:736
 #, c-format
 msgid ""
 "'%s'\n"

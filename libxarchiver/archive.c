@@ -181,7 +181,8 @@ lxa_archive_class_init(LXAArchiveClass *archive_class)
 			NULL,
 			g_cclosure_marshal_VOID__POINTER,
 			G_TYPE_NONE,
-			0,
+			1,
+			G_TYPE_STRING,
 			NULL);
 }
 
