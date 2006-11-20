@@ -55,6 +55,7 @@ struct _XAMainWindow
 	GtkIconTheme *icon_theme;
 	XAApplication *app;
 	GtkWidget *menu_bar;
+	GtkWidget *main_vbox;
 	struct {
 		/* 'file' menu */
 		GtkWidget *menu_item_file;

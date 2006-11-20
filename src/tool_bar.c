@@ -168,6 +168,7 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), 0);
 
 	gtk_widget_show_all(GTK_WIDGET(tool_bar->bar));
+	gtk_widget_ref((GtkWidget *)tool_bar);
 }
 
 XANavigationBar *

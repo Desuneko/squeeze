@@ -25,12 +25,13 @@
 #include <gettext.h>
 
 #include "settings.h"
-#include "main.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "notebook.h"
 #include "application.h"
 #include "main_window.h"
+
+#include "main.h"
 
 gboolean version = FALSE;
 
@@ -99,8 +100,8 @@ cb_main_window_destroy(XAMainWindow *window, gpointer data)
 int main(int argc, char **argv)
 {
 	GtkWidget *main_window = NULL;
-	XAApplication *xa_app;
 	GtkIconTheme *xa_icon_theme;
+	XAApplication *xa_app = NULL;
 	GError *cli_error = NULL;
 	gint i = 0;
 

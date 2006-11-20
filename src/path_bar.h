@@ -64,7 +64,7 @@ struct _XAPathBarClass
 };
 
 GType      xa_path_bar_get_type();
-XANavigationBar *xa_path_bar_new();
+XANavigationBar *xa_path_bar_new(XAArchiveStore *);
 
 G_END_DECLS
 #endif /* __XARCHIVER_PATH_BAR_H__*/

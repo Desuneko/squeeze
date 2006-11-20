@@ -49,4 +49,12 @@ Long Version:
 	When retrieving selected items from the treeview, forget the updir item
 	Add trailing '/' to folder filenames when getting it from treeview
 
+	Add 'View' support, with internal optional internal or external viewer.
+
+	Let Tab-labels change style on archive-status.
+
+	Add progressbar to statusbar.
+
+	Toggle navigationbar at runtime
+
   ... Complete TODO-file
