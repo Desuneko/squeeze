@@ -228,12 +228,17 @@ xa_notebook_set_navigation_bar(XANotebook *notebook, XANavigationBar *bar)
 		xa_navigation_bar_set_store(notebook->navigation_bar, NULL);
 
 	gint page_nr = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
-	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
-	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+	if(page_nr < 0)
+	{
+		GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
+		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
+		GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+		notebook->navigation_bar = bar;
+		xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
+	}
+	else
+		notebook->navigation_bar = bar;
 
-	notebook->navigation_bar = bar;
-	xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
 }
 
 void
