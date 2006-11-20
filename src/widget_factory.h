@@ -29,13 +29,13 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
 			xa_widget_factory_get_type()))
 
-#define XA_WIDGET_FACTORY_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
+#define XA_WIDGET_FACTORY_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),     \
 			xa_widget_factory_get_type(),      \
 			LXAArchiveClass))
 
-#define LXA_IS_WIDGET_FACTORY_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+#define LXA_IS_WIDGET_FACTORY_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
 			xa_widget_factory_get_type()))
 
 typedef struct
@@ -53,6 +53,9 @@ GType               xa_widget_factory_get_type(void);
 XAWidgetFactory    *xa_widget_factory_new();
 
 GtkWidget          *xa_widget_factory_create_property_widget(XAWidgetFactory *, GObject *, const gchar *);
+GtkWidget          *xa_widget_factory_create_property_menu(XAWidgetFactory *, GObject *, const gchar *);
+GtkWidget          *xa_widget_factory_create_action_widget(XAWidgetFactory *, LXAArchiveSupport *, const gchar *);
+GtkWidget          *xa_widget_factory_create_action_menu(XAWidgetFactory *, LXAArchiveSupport *, const gchar *);
 
 #endif /*__XA_WIDGET_FACTORY_H__*/
 

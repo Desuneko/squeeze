@@ -41,14 +41,29 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
 			LXA_TYPE_ARCHIVE_SUPPORT))
 
-
+typedef struct _LXAUserAction LXAUserAction;
 typedef struct _LXAArchiveSupport LXAArchiveSupport;
+
+typedef void (*LXAUserActionFunc) (LXAArchive *archive, LXAArchiveSupport *support, gpointer user_data);
+
+struct _LXAUserAction
+{
+	gchar *name;
+	gchar *nick;
+	gchar *blurb;
+	gchar *icon;
+	LXAUserActionFunc func;
+	LXAArchive *archive;
+	LXAArchiveSupport *support;
+	gpointer user_data;
+};
 
 struct _LXAArchiveSupport
 {
 	GObject       parent;
 	gchar        *id;
 	GSList       *mime;
+	GSList       *user_action;
 /*
  * The following functions should _NOT_ be called directly.
  *
@@ -90,6 +105,17 @@ gint                 lxa_archive_support_remove(LXAArchiveSupport *, LXAArchive 
 gint                 lxa_archive_support_refresh(LXAArchiveSupport *, LXAArchive *);
 
 GSList *             lxa_archive_support_list_properties(LXAArchiveSupport *, gchar *);
+
+void                 lxa_archive_support_install_action(LXAArchiveSupport *, LXAUserAction *);
+LXAUserAction*       lxa_archive_support_find_action(LXAArchiveSupport *, const gchar *name);
+LXAUserAction**      lxa_archive_support_list_actions(LXAArchiveSupport *, guint *n_actions);
+
+LXAUserAction*       lxa_user_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LXAUserActionFunc func, LXAArchive *archive, LXAArchiveSupport *support, gpointer user_data);
+const gchar*         lxa_user_action_get_name(LXAUserAction*);
+const gchar*         lxa_user_action_get_nick(LXAUserAction*);
+const gchar*         lxa_user_action_get_blurb(LXAUserAction*);
+const gchar*         lxa_user_action_get_icon_name(LXAUserAction*);
+void                 lxa_user_action_execute(LXAUserAction*);
 
 G_END_DECLS
 

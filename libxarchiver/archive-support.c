@@ -70,6 +70,7 @@ lxa_archive_support_init(LXAArchiveSupport *support)
 	support->extract = NULL;
 	support->remove = NULL;
 	support->refresh = NULL;
+	support->user_action = NULL;
 }
 
 /*
@@ -252,4 +253,78 @@ lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
 		}
 	}
 	return pspec_list;
+}
+
+void
+lxa_archive_support_install_action(LXAArchiveSupport *support, LXAUserAction *action)
+{
+	support->user_action = g_slist_append(support->user_action, action);
+}
+
+LXAUserAction*
+lxa_archive_support_find_action(LXAArchiveSupport *support, const gchar *name)
+{
+	GSList *actions = support->user_action;
+	while(actions)
+	{
+		if(strcmp(((LXAUserAction*)actions->data)->name, name) == 0)
+			return (LXAUserAction*)actions->data;
+		actions = actions->next;
+	}
+	return NULL;
+}
+
+LXAUserAction**
+lxa_archive_support_list_actions(LXAArchiveSupport *support, guint *n_actions)
+{
+	LXAUserAction** list;
+	guint i = 0;
+	GSList *actions = support->user_action;
+	(*n_actions) = g_slist_length(actions);
+	list = g_new(LXAUserAction*, *n_actions);
+	while(actions)
+	{
+		list[i++] = (LXAUserAction*)actions->data;
+		actions = actions->next;
+	}
+	return list;
+}
+
+LXAUserAction*
+lxa_user_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LXAUserActionFunc func, LXAArchive *archive, LXAArchiveSupport *support, gpointer user_data)
+{
+	LXAUserAction *action = g_new(LXAUserAction, 1);
+	action->name = g_strdup(name);
+	action->nick = g_strdup(nick);
+	action->blurb = g_strdup(blurb);
+	action->icon = g_strdup(icon);
+	action->func = func;
+	action->archive = archive;
+	action->support = support;
+	action->user_data = user_data;
+	return action;
+}
+
+const gchar*
+lxa_user_action_get_name(LXAUserAction *action)
+{
+	return action->name;
+}
+
+const gchar*
+lxa_user_action_get_nick(LXAUserAction *action)
+{
+	return action->nick;
+}
+
+const gchar*
+lxa_user_action_get_blurb(LXAUserAction *action)
+{
+	return action->blurb;
+}
+
+void
+lxa_user_action_execute(LXAUserAction *action)
+{
+	action->func(action->archive, action->support, action->user_data);
 }

@@ -854,7 +854,7 @@ xa_archive_store_sort(XAArchiveStore *store)
 
 	store->sort_list = g_new(LXAArchiveIter*, psize);
 
-	for(i = 0; i < psize; i++)
+	for(i = 0; i < psize; ++i)
 	{
 		store->sort_list[i] = lxa_archive_iter_nth_child(store->archive, pentry, i);
 	}
@@ -912,7 +912,7 @@ xa_archive_insertionsort(XAArchiveStore *store, gint left, gint right)
 	LXAArchiveIter *value = NULL;
 	LXAArchiveIter **list = store->sort_list;
 
-	for(i = left+1; i <= right; i++)
+	for(i = left+1; i <= right; ++i)
 	{
 		j = i;
 		value = list[i];
@@ -972,7 +972,8 @@ xa_archive_store_refresh(XAArchiveStore *store)
 	GtkTreePath *path_ = NULL;
 	GtkTreeIter iter;
 
-	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry) { 
+	if(store->props._show_up_dir && lxa_archive_get_iter(archive, NULL) != entry)
+	{ 
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, 0);
 
@@ -990,7 +991,7 @@ xa_archive_store_refresh(XAArchiveStore *store)
 		i=1;
 	}
 
-	for(index = 0; index < new_size; i++, index++)
+	for(index = 0; index < new_size; ++i, ++index)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
@@ -1011,7 +1012,7 @@ xa_archive_store_refresh(XAArchiveStore *store)
 		gtk_tree_path_free(path_);
 	}
 
-	for(index = prev_size - 1; index >= i; index--)
+	for(index = prev_size - 1; index >= i; --index)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, index);
@@ -1153,7 +1154,7 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 			prev_size++;
 	}
 
-	for(i = prev_size - 1; i >= 0; i--)
+	for(i = prev_size - 1; i >= 0; --i)
 	{
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
@@ -1200,7 +1201,7 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 
 		store->list_size = lxa_archive_iter_n_children(archive, lxa_archive_get_iter(archive, NULL));
 
-		for(i = 0; i < store->list_size; i++)
+		for(i = 0; i < store->list_size; ++i)
 		{
 			path_ = gtk_tree_path_new();
 			gtk_tree_path_append_index(path_, i);
@@ -1219,7 +1220,7 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 		}
 	}
 
-	g_signal_connect(store->archive, "lxa_status_changed", G_CALLBACK(cb_xa_archive_store_archive_refreshed), store);
+	g_signal_connect(store->archive, "lxa_refreshed", G_CALLBACK(cb_xa_archive_store_archive_refreshed), store);
 
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
 }
