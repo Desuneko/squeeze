@@ -269,7 +269,7 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 	GtkTreeModel *tree_model = xa_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), close_button, FALSE, FALSE, 0);
 	gtk_widget_show_all(lbl_hbox);
 	gtk_widget_show_all(tree_view);
