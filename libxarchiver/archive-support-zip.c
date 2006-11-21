@@ -114,6 +114,7 @@ lxa_archive_support_zip_init(LXAArchiveSupportZip *support)
 																			lxa_archive_support_zip_integrity_test,
 																			archive_support,
 																			NULL);
+	lxa_archive_support_install_action(LXA_ARCHIVE_SUPPORT(support), custom_action);
 }
 
 static void

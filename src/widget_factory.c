@@ -30,6 +30,7 @@
 
 #define XA_PROPERTY_SPEC_DATA "xa-property-spec"
 #define XA_PROPERTY_VALUE_DATA "xa-property-value"
+#define XA_ACTION_CUSTOM_DATA "xa-action-custom"
 
 static void
 xa_widget_factory_class_init(XAWidgetFactoryClass *factory_class);
@@ -64,6 +65,9 @@ static void
 cb_xa_widget_factory_property_changed(GtkWidget *widget, gpointer user_data);
 static void
 cb_xa_widget_factory_property_notify(GObject *obj, GParamSpec *pspec, gpointer user_data);
+
+static void
+cb_xa_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data);
 
 GType
 xa_widget_factory_get_type()
@@ -826,15 +830,17 @@ cb_xa_widget_factory_property_notify(GObject *obj, GParamSpec *pspec, gpointer u
 }
 
 GtkWidget*
-xa_widget_factory_create_action_widget(XAWidgetFactory *factory, LXAArchiveSupport *obj, const gchar *act)
+xa_widget_factory_create_action_widget(XAWidgetFactory *factory, LXAArchiveSupport *support, LXAArchive *archive, const gchar *act)
 {
 	GtkWidget *widget = NULL;
-	LXACustomAction *action = lxa_archive_support_find_action(obj, act);
+	LXACustomAction *action = lxa_archive_support_find_action(support, act);
 
 	if(!action)
 		return NULL;
 
 	widget = gtk_button_new_with_label(lxa_custom_action_get_nick(action));
+	g_object_set_data(G_OBJECT(widget), XA_ACTION_CUSTOM_DATA, action);
+	g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_xa_widget_factory_action_triggered), archive);
 
 	const gchar *large_tip = lxa_custom_action_get_blurb(action);
 	gchar *small_tip = NULL;
@@ -854,29 +860,33 @@ xa_widget_factory_create_action_widget(XAWidgetFactory *factory, LXAArchiveSuppo
 }
 
 GtkWidget*
-xa_widget_factory_create_action_menu_item(XAWidgetFactory *factory, LXAArchiveSupport *obj, const gchar *act)
+xa_widget_factory_create_action_menu_item(XAWidgetFactory *factory, LXAArchiveSupport *support, LXAArchive *archive, const gchar *act)
 {
 	GtkWidget *menu = NULL;
-	LXACustomAction *action = lxa_archive_support_find_action(obj, act);
+	LXACustomAction *action = lxa_archive_support_find_action(support, act);
 
 	if(!action)
 		return NULL;
 
 	menu = gtk_menu_item_new_with_label(lxa_custom_action_get_nick(action));
+	g_object_set_data(G_OBJECT(menu), XA_ACTION_CUSTOM_DATA, action);
+	g_signal_connect(G_OBJECT(menu), "activate", G_CALLBACK(cb_xa_widget_factory_action_triggered), archive);
 
 	return menu;
 }
 
 GtkToolItem*
-xa_widget_factory_create_action_bar(XAWidgetFactory *factory, LXAArchiveSupport *obj, const gchar *act)
+xa_widget_factory_create_action_bar(XAWidgetFactory *factory, LXAArchiveSupport *support, LXAArchive *archive, const gchar *act)
 {
 	GtkToolItem *widget = NULL;
-	LXACustomAction *action = lxa_archive_support_find_action(obj, act);
+	LXACustomAction *action = lxa_archive_support_find_action(support, act);
 
 	if(!action)
 		return NULL;
 
 	widget = gtk_tool_button_new(NULL, lxa_custom_action_get_nick(action));
+	g_object_set_data(G_OBJECT(widget), XA_ACTION_CUSTOM_DATA, action);
+	g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_xa_widget_factory_action_triggered), archive);
 
 	const gchar *large_tip = lxa_custom_action_get_blurb(action);
 	gchar *small_tip = NULL;
@@ -896,20 +906,34 @@ xa_widget_factory_create_action_bar(XAWidgetFactory *factory, LXAArchiveSupport 
 }
 
 GSList*
-xa_widget_factory_create_action_menu(XAWidgetFactory *factory, LXAArchiveSupport *obj)
+xa_widget_factory_create_action_menu(XAWidgetFactory *factory, LXAArchiveSupport *support, LXAArchive *archive)
 {
 	GSList *menu = NULL;
+	GtkWidget *item;
 	guint n_act, i;
-	LXACustomAction **action = lxa_archive_support_list_actions(obj, &n_act);
+	LXACustomAction **action = lxa_archive_support_list_actions(support, &n_act);
 
 	for(i = 0; i < n_act; ++i)
 	{
 		if(strncmp("menu", lxa_custom_action_get_name(action[i]), 4) == 0)
 		{
-			menu = g_slist_append(menu, gtk_menu_item_new_with_label(lxa_custom_action_get_nick(action[i])));
+			item = gtk_menu_item_new_with_label(lxa_custom_action_get_nick(action[i]));
+			g_object_set_data(G_OBJECT(item), XA_ACTION_CUSTOM_DATA, action[i]);
+			g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(cb_xa_widget_factory_action_triggered), archive);
+			menu = g_slist_append(menu, item);
 		}
 	}
 
+	g_free(action);
+
 	return menu;
+}
+
+static void
+cb_xa_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data)
+{
+	LXAArchive *archive = LXA_ARCHIVE(user_data);
+
+	lxa_custom_action_execute(g_object_get_data(G_OBJECT(widget), XA_ACTION_CUSTOM_DATA), archive);
 }
 

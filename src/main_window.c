@@ -505,7 +505,7 @@ xa_main_window_find_image(gchar *filename, GtkIconSize size)
 }
 
 static void
-xa_main_window_new_action_menu(XAMainWindow *window, LXAArchiveSupport *support)
+xa_main_window_new_action_menu(XAMainWindow *window, LXAArchiveSupport *support, LXAArchive *archive)
 {
 	GSList *iter, *list;
 
@@ -522,14 +522,19 @@ xa_main_window_new_action_menu(XAMainWindow *window, LXAArchiveSupport *support)
 
 	if(support)
 	{
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), gtk_separator_menu_item_new());
-		iter = list = xa_widget_factory_create_action_menu(window->widget_factory, support);
-		while(iter)
+		iter = list = xa_widget_factory_create_action_menu(window->widget_factory, support, archive);
+		if(list)
 		{
-			gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), iter->data);
-			iter = iter->next;
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), gtk_separator_menu_item_new());
+
+			do
+			{
+				gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), iter->data);
+			}
+			while((iter = iter->next));
+
+			g_slist_free(list);
 		}
-		g_slist_free(list);
 	}
 
 	gtk_widget_show_all(window->menubar.menu_action);
@@ -712,7 +717,7 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 {
 	LXAArchive *lp_archive;
 	LXAArchiveSupport *lp_support;
-	xa_notebook_get_active_archive(notebook, &lp_archive, &lp_support);
+	xa_notebook_page_get_archive(notebook, &lp_archive, &lp_support, page_nr);
 	XAMainWindow *window = XA_MAIN_WINDOW(data);
 
 	if(lp_archive || lxa_archive_get_status(lp_archive) == LXA_ARCHIVESTATUS_IDLE)
@@ -740,7 +745,7 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 
 	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lxa_archive_get_filename(lp_archive), NULL));
 
-	xa_main_window_new_action_menu(window, lp_support);
+	xa_main_window_new_action_menu(window, lp_support, lp_archive);
 }
 
 static void
