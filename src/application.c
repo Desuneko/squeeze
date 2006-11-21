@@ -32,6 +32,7 @@
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "application.h"
+#include "widget_factory.h"
 #include "main_window.h"
 
 static void

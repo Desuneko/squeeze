@@ -56,6 +56,7 @@ struct _XAMainWindow
 	XAApplication *app;
 	GtkWidget *menu_bar;
 	GtkWidget *main_vbox;
+	XAWidgetFactory *widget_factory;
 	struct {
 		/* 'file' menu */
 		GtkWidget *menu_item_file;

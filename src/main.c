@@ -29,6 +29,7 @@
 #include "navigation_bar.h"
 #include "notebook.h"
 #include "application.h"
+#include "widget_factory.h"
 #include "main_window.h"
 
 #include "main.h"
