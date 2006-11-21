@@ -4,14 +4,7 @@ AUTOMAKE_OPTIONS =							\
 	1.8								\
 	dist-bzip2
 
-SUBDIRS = libxarchiver src po
-
-pixmapsdir       = $(datadir)/pixmaps
-pixmaps_DATA     = pixmaps/xarchiver.png \
-                   pixmaps/extract.png \
-									 pixmaps/extract_button.png \
-									 pixmaps/add.png \
-									 pixmaps/add_button.png
+SUBDIRS = icons pixmaps libxarchiver src po
 
 wrapperdir = $(libexecdir)/thunar-archive-plugin/
 wrapper_SCRIPTS = xarchiver.tap
@@ -28,7 +21,6 @@ EXTRA_DIST = \
 	intltool-update.in \
 	xarchiver.tap \
 	$(desktop_in_files) \
-	$(pixmaps_DATA) \
 	$(wrapper_DATA)
 
 DISTCLEANFILES = \

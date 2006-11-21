@@ -242,13 +242,13 @@ xa_main_window_init(XAMainWindow *window)
 		window->menubar.menu_action = gtk_menu_new();
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_action), window->menubar.menu_action);
 
-		tmp_image = xa_main_window_find_image("add.png", GTK_ICON_SIZE_MENU);
+		tmp_image = xa_main_window_find_image("xarchiver-add.png", GTK_ICON_SIZE_MENU);
 		window->menubar.menu_item_add = gtk_image_menu_item_new_with_mnemonic(_("_Add"));
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_add), tmp_image);
 		gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
 
-		tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_MENU);
+		tmp_image = xa_main_window_find_image("xarchiver-extract.png", GTK_ICON_SIZE_MENU);
 		window->menubar.menu_item_extract = gtk_image_menu_item_new_with_mnemonic(_("_Extract"));
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_extract), tmp_image);
 		gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
@@ -307,11 +307,11 @@ xa_main_window_init(XAMainWindow *window)
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), window);
 
 /* Action pane */
-	tmp_image = xa_main_window_find_image("add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+	tmp_image = xa_main_window_find_image("xarchiver-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
 	window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
 
-	tmp_image = xa_main_window_find_image("extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+	tmp_image = xa_main_window_find_image("xarchiver-extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
 	window->toolbar.tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 
@@ -449,20 +449,15 @@ GtkWidget *
 xa_main_window_find_image(gchar *filename, GtkIconSize size)
 {
 	GError *error = NULL;
+	gint width  = 0;
+	gint height = 0;
 	GtkWidget *file_image;
 	gchar *path;
-	path = g_strconcat(DATADIR, "/pixmaps/", filename, NULL);
-	GdkPixbuf *file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
-	if(error)
-	{
-		/*
-		* perhaps xarchiver has not been installed and is being executed from source dir
-		*/
-		g_free(error);
-		error = NULL;
-		path = g_strconcat("./pixmaps/", filename, NULL);
-		file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
-	}
+	path = g_strconcat(DATADIR, "/pixmaps/xarchiver/", filename, NULL);
+
+	gtk_icon_size_lookup(size, &width, &height);
+
+	GdkPixbuf *file_pixbuf = gdk_pixbuf_new_from_file_at_size(path, width, height, &error);
 	if(file_pixbuf)
 	{
 		file_image = gtk_image_new_from_pixbuf(file_pixbuf);

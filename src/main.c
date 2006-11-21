@@ -113,6 +113,7 @@ int main(int argc, char **argv)
 
 #ifdef G_THREADS_ENABLED
 	g_thread_init(NULL);
+  gdk_threads_init();
 #endif /* G_THREADS_ENABLED */
 
 	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))
@@ -179,7 +180,9 @@ int main(int argc, char **argv)
 
 
 	g_object_unref(xa_app);
+	gdk_threads_enter();
 	gtk_main();
+	gdk_threads_leave();
 	lxa_destroy();
 
 	return 0;

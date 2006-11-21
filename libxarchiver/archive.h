@@ -28,6 +28,7 @@ typedef enum
 	LXA_ARCHIVESTATUS_REMOVE,
 	LXA_ARCHIVESTATUS_REFRESH,
 	LXA_ARCHIVESTATUS_ERROR,
+	LXA_ARCHIVESTATUS_CUSTOM,
 	LXA_ARCHIVESTATUS_USERBREAK
 } LXAArchiveStatus;
 
@@ -78,6 +79,8 @@ struct _LXAArchive
 #endif
 	LXAArchiveStatus    status;
 	LXAArchiveStatus    old_status;
+	gchar              *status_msg;
+	gdouble             progress;
 	GPid                child_pid;
 	GIOChannel         *ioc_in;
 	GIOChannel         *ioc_out;

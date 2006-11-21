@@ -56,5 +56,7 @@ Long Version:
 	Add progressbar to statusbar.
 
 	Toggle navigationbar at runtime
+	
+	Support CustomActionProperties (custom-actions which require additional arguments and configuration)
 
   ... Complete TODO-file
