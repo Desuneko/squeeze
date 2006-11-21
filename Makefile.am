@@ -6,7 +6,7 @@ AUTOMAKE_OPTIONS =							\
 
 SUBDIRS = libxarchiver src po
 
-pixmapsdir       = $(datadir)/pixmaps/xarchiver
+pixmapsdir       = $(datadir)/pixmaps
 pixmaps_DATA     = pixmaps/xarchiver.png \
                    pixmaps/extract.png \
 									 pixmaps/extract_button.png \

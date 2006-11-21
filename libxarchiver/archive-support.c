@@ -70,7 +70,7 @@ lxa_archive_support_init(LXAArchiveSupport *support)
 	support->extract = NULL;
 	support->remove = NULL;
 	support->refresh = NULL;
-	support->user_action = NULL;
+	support->custom_action = NULL;
 }
 
 /*
@@ -256,75 +256,74 @@ lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
 }
 
 void
-lxa_archive_support_install_action(LXAArchiveSupport *support, LXAUserAction *action)
+lxa_archive_support_install_action(LXAArchiveSupport *support, LXACustomAction *action)
 {
-	support->user_action = g_slist_append(support->user_action, action);
+	support->custom_action = g_slist_append(support->custom_action, action);
 }
 
-LXAUserAction*
+LXACustomAction*
 lxa_archive_support_find_action(LXAArchiveSupport *support, const gchar *name)
 {
-	GSList *actions = support->user_action;
+	GSList *actions = support->custom_action;
 	while(actions)
 	{
-		if(strcmp(((LXAUserAction*)actions->data)->name, name) == 0)
-			return (LXAUserAction*)actions->data;
+		if(strcmp(((LXACustomAction*)actions->data)->name, name) == 0)
+			return (LXACustomAction*)actions->data;
 		actions = actions->next;
 	}
 	return NULL;
 }
 
-LXAUserAction**
+LXACustomAction**
 lxa_archive_support_list_actions(LXAArchiveSupport *support, guint *n_actions)
 {
-	LXAUserAction** list;
+	LXACustomAction** list;
 	guint i = 0;
-	GSList *actions = support->user_action;
+	GSList *actions = support->custom_action;
 	(*n_actions) = g_slist_length(actions);
-	list = g_new(LXAUserAction*, *n_actions);
+	list = g_new(LXACustomAction*, *n_actions);
 	while(actions)
 	{
-		list[i++] = (LXAUserAction*)actions->data;
+		list[i++] = (LXACustomAction*)actions->data;
 		actions = actions->next;
 	}
 	return list;
 }
 
-LXAUserAction*
-lxa_user_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LXAUserActionFunc func, LXAArchive *archive, LXAArchiveSupport *support, gpointer user_data)
+LXACustomAction*
+lxa_custom_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LXACustomActionFunc func, LXAArchiveSupport *support, gpointer user_data)
 {
-	LXAUserAction *action = g_new(LXAUserAction, 1);
+	LXACustomAction *action = g_new(LXACustomAction, 1);
 	action->name = g_strdup(name);
 	action->nick = g_strdup(nick);
 	action->blurb = g_strdup(blurb);
 	action->icon = g_strdup(icon);
 	action->func = func;
-	action->archive = archive;
 	action->support = support;
 	action->user_data = user_data;
 	return action;
 }
 
 const gchar*
-lxa_user_action_get_name(LXAUserAction *action)
+lxa_custom_action_get_name(LXACustomAction *action)
 {
 	return action->name;
 }
 
 const gchar*
-lxa_user_action_get_nick(LXAUserAction *action)
+lxa_custom_action_get_nick(LXACustomAction *action)
 {
 	return action->nick;
 }
 
 const gchar*
-lxa_user_action_get_blurb(LXAUserAction *action)
+lxa_custom_action_get_blurb(LXACustomAction *action)
 {
 	return action->blurb;
 }
 
 void
-lxa_user_action_execute(LXAUserAction *action)
+lxa_custom_action_execute(LXACustomAction *action, LXAArchive *archive)
 {
-	action->func(action->archive, action->support, action->user_data);
+	action->func(action->support, archive, action->user_data);
 }

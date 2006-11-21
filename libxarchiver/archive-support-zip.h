@@ -68,11 +68,6 @@ struct _LXAArchiveSupportZipClass
 GType                lxa_archive_support_zip_get_type(void);
 LXAArchiveSupport *  lxa_archive_support_zip_new();
 
-gint                 lxa_archive_support_zip_add(LXAArchive *, GSList *);
-gint                 lxa_archive_support_zip_extract(LXAArchive *, gchar *, GSList *);
-gint                 lxa_archive_support_zip_remove(LXAArchive *, GSList *);
-gint                 lxa_archive_support_zip_refresh(LXAArchive *);
-
 G_END_DECLS
 
 #endif /* __LIBXARCHIVER_ARCHIVE_SUPPORT_ZIP_H__ */

@@ -41,19 +41,18 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
 			LXA_TYPE_ARCHIVE_SUPPORT))
 
-typedef struct _LXAUserAction LXAUserAction;
+typedef struct _LXACustomAction LXACustomAction;
 typedef struct _LXAArchiveSupport LXAArchiveSupport;
 
-typedef void (*LXAUserActionFunc) (LXAArchive *archive, LXAArchiveSupport *support, gpointer user_data);
+typedef void (*LXACustomActionFunc) (LXAArchiveSupport *support, LXAArchive *, gpointer user_data);
 
-struct _LXAUserAction
+struct _LXACustomAction
 {
 	gchar *name;
 	gchar *nick;
 	gchar *blurb;
 	gchar *icon;
-	LXAUserActionFunc func;
-	LXAArchive *archive;
+	LXACustomActionFunc func;
 	LXAArchiveSupport *support;
 	gpointer user_data;
 };
@@ -63,7 +62,7 @@ struct _LXAArchiveSupport
 	GObject       parent;
 	gchar        *id;
 	GSList       *mime;
-	GSList       *user_action;
+	GSList       *custom_action;
 /*
  * The following functions should _NOT_ be called directly.
  *
@@ -106,16 +105,22 @@ gint                 lxa_archive_support_refresh(LXAArchiveSupport *, LXAArchive
 
 GSList *             lxa_archive_support_list_properties(LXAArchiveSupport *, gchar *);
 
-void                 lxa_archive_support_install_action(LXAArchiveSupport *, LXAUserAction *);
-LXAUserAction*       lxa_archive_support_find_action(LXAArchiveSupport *, const gchar *name);
-LXAUserAction**      lxa_archive_support_list_actions(LXAArchiveSupport *, guint *n_actions);
+void                 lxa_archive_support_install_action(LXAArchiveSupport *, LXACustomAction *);
+LXACustomAction*       lxa_archive_support_find_action(LXAArchiveSupport *, const gchar *name);
+LXACustomAction**      lxa_archive_support_list_actions(LXAArchiveSupport *, guint *n_actions);
 
-LXAUserAction*       lxa_user_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LXAUserActionFunc func, LXAArchive *archive, LXAArchiveSupport *support, gpointer user_data);
-const gchar*         lxa_user_action_get_name(LXAUserAction*);
-const gchar*         lxa_user_action_get_nick(LXAUserAction*);
-const gchar*         lxa_user_action_get_blurb(LXAUserAction*);
-const gchar*         lxa_user_action_get_icon_name(LXAUserAction*);
-void                 lxa_user_action_execute(LXAUserAction*);
+LXACustomAction*       lxa_custom_action_new(const gchar *name, 
+                                             const gchar *nick, 
+																						 const gchar *blurb, 
+																						 const gchar *icon, 
+																						 LXACustomActionFunc func, 
+																						 LXAArchiveSupport *support, 
+																						 gpointer user_data);
+const gchar*         lxa_custom_action_get_name(LXACustomAction*);
+const gchar*         lxa_custom_action_get_nick(LXACustomAction*);
+const gchar*         lxa_custom_action_get_blurb(LXACustomAction*);
+const gchar*         lxa_custom_action_get_icon_name(LXACustomAction*);
+void                 lxa_custom_action_execute(LXACustomAction*, LXAArchive *);
 
 G_END_DECLS
 

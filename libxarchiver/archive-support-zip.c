@@ -29,6 +29,8 @@
 
 #include "internals.h"
 
+#define XA_TEST_ACTION_ICON "gtk-index"
+
 enum
 {
 	LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE = 1,
@@ -44,18 +46,25 @@ enum
 	LXA_ARCHIVE_SUPPORT_ZIP_VIEW_CRC_32
 };
 
-void
+static void
 lxa_archive_support_zip_init(LXAArchiveSupportZip *support);
-void
+static void
 lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass);
 
 gboolean
 lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
 
-void
+static void
 lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
-void
+static void
 lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+
+static gint lxa_archive_support_zip_add(LXAArchive *, GSList *);
+static gint lxa_archive_support_zip_extract(LXAArchive *, gchar *, GSList *);
+static gint lxa_archive_support_zip_remove(LXAArchive *, GSList *);
+static gint lxa_archive_support_zip_refresh(LXAArchive *);
+
+static void lxa_archive_support_zip_integrity_test(LXAArchiveSupport *, LXAArchive *, gpointer);
 
 GType
 lxa_archive_support_zip_get_type ()
@@ -82,10 +91,11 @@ lxa_archive_support_zip_get_type ()
 	return lxa_archive_support_zip_type;
 }
 
-void
+static void
 lxa_archive_support_zip_init(LXAArchiveSupportZip *support)
 {
 	LXAArchiveSupport *archive_support = LXA_ARCHIVE_SUPPORT(support);
+	LXACustomAction *custom_action = NULL;
 
 	archive_support->id = "Zip";
 
@@ -96,9 +106,17 @@ lxa_archive_support_zip_init(LXAArchiveSupportZip *support)
 	archive_support->extract = lxa_archive_support_zip_extract;
 	archive_support->remove = lxa_archive_support_zip_remove;
 	archive_support->refresh = lxa_archive_support_zip_refresh;
+	
+	custom_action = lxa_custom_action_new("menu-action-test",
+	                                    _("Test"),
+																			_("Test archive integrity\nTest the integrity of the archive"),
+																			XA_TEST_ACTION_ICON,
+																			lxa_archive_support_zip_integrity_test,
+																			archive_support,
+																			NULL);
 }
 
-void
+static void
 lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (supportclass);
@@ -169,7 +187,6 @@ lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_CRC_32, pspec);
-
 }
 
 LXAArchiveSupport*
@@ -190,7 +207,7 @@ lxa_archive_support_zip_new()
 	return LXA_ARCHIVE_SUPPORT(support);
 }
 
-gint
+static gint
 lxa_archive_support_zip_add(LXAArchive *archive, GSList *filenames)
 {
 	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
@@ -217,7 +234,7 @@ lxa_archive_support_zip_add(LXAArchive *archive, GSList *filenames)
 	return 0;
 }
 
-gint
+static gint
 lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *filenames)
 {
 	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
@@ -249,7 +266,7 @@ lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *f
 	return 0;
 }
 
-gint
+static gint
 lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 {
 	if(!LXA_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
@@ -276,7 +293,7 @@ lxa_archive_support_zip_remove(LXAArchive *archive, GSList *filenames)
 	return 0;
 }
 
-gint
+static gint
 lxa_archive_support_zip_refresh(LXAArchive *archive)
 {
 	guint i = 0;
@@ -466,7 +483,13 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 	return TRUE;
 }
 
-void
+static void
+lxa_archive_support_zip_integrity_test(LXAArchiveSupport *support, LXAArchive *archive, gpointer user_data)
+{
+
+}
+
+static void
 lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
 	switch(prop_id)
@@ -506,7 +529,7 @@ lxa_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *val
 	}
 }
 
-void
+static void
 lxa_archive_support_zip_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
 	switch(prop_id)

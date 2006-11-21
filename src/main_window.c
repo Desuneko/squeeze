@@ -47,6 +47,11 @@
 
 #include "main.h"
 
+enum
+{
+	XA_MAIN_WINDOW_NAVIGATION_STYLE = 1
+};
+
 static void
 xa_main_window_init(XAMainWindow *);
 static void
@@ -112,10 +117,21 @@ static void
 xa_main_window_class_init(XAMainWindowClass *window_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (window_class);
+	GParamSpec *pspec = NULL;
 
 	object_class->set_property = xa_main_window_set_property;
 	object_class->get_property = xa_main_window_get_property;
 	object_class->finalize     = xa_main_window_finalize;
+
+	pspec = g_param_spec_enum("navigation-style",
+		"",
+		"",
+		G_TYPE_ENUM,
+		0,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, XA_MAIN_WINDOW_NAVIGATION_STYLE, pspec);
+
+
 
 }
 
@@ -410,11 +426,23 @@ xa_main_window_new(XAApplication *app, GtkIconTheme *icon_theme)
 static void
 xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
+/*
+	switch(prop_id)
+	{
+
+	}
+*/
 }
 
 static void
 xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
+/*
+	switch(prop_id)
+	{
+
+	}
+*/
 }
 
 GtkWidget *
@@ -423,7 +451,7 @@ xa_main_window_find_image(gchar *filename, GtkIconSize size)
 	GError *error = NULL;
 	GtkWidget *file_image;
 	gchar *path;
-	path = g_strconcat(DATADIR, "/pixmaps/xarchiver/", filename, NULL);
+	path = g_strconcat(DATADIR, "/pixmaps/", filename, NULL);
 	GdkPixbuf *file_pixbuf = gdk_pixbuf_new_from_file(path, &error);
 	if(error)
 	{

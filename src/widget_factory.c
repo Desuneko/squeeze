@@ -723,14 +723,14 @@ GtkWidget*
 xa_widget_factory_create_action_widget(XAWidgetFactory *factory, LXAArchiveSupport *obj, const gchar *act)
 {
 	GtkWidget *widget = NULL;
-	LXAUserAction *action = lxa_archive_support_find_action(obj, act);
+	LXACustomAction *action = lxa_archive_support_find_action(obj, act);
 
 	if(!action)
 		return NULL;
 
-	widget = gtk_button_new_with_label(lxa_user_action_get_nick(action));
+	widget = gtk_button_new_with_label(lxa_custom_action_get_nick(action));
 
-	const gchar *large_tip = lxa_user_action_get_blurb(action);
+	const gchar *large_tip = lxa_custom_action_get_blurb(action);
 	gchar *small_tip = NULL;
 	if(strchr(large_tip, '\n'))
 	{

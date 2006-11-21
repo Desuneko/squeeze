@@ -10,3 +10,5 @@ src/main_window.c
 src/new_dialog.c
 src/add_dialog.c
 src/extract_dialog.c
+
+xarchiver.desktop.in
