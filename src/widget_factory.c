@@ -460,6 +460,7 @@ xa_widget_factory_create_property_widget(XAWidgetFactory *factory, GObject *obj,
 static GtkWidget*
 xa_widget_factory_create_boolean_menu(XAWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
+	GtkWidget *menu = gtk_menu_new();
 	GtkWidget *check = gtk_check_menu_item_new_with_label(g_param_spec_get_nick(pspec));
 
 	g_object_set_data(G_OBJECT(check), XA_PROPERTY_SPEC_DATA, pspec);
@@ -467,7 +468,9 @@ xa_widget_factory_create_boolean_menu(XAWidgetFactory *factory, GObject *obj, GP
 
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_boolean(value));
 
-	return check;
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), check);
+
+	return menu;
 }
 
 static GtkWidget*
@@ -498,8 +501,9 @@ xa_widget_factory_create_enum_menu_group(XAWidgetFactory *factory, GObject *obj,
 static GtkWidget*
 xa_widget_factory_create_enum_menu_list(XAWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
-	GtkWidget *list = gtk_menu_item_new_with_label(g_param_spec_get_nick(pspec));
 	GtkWidget *menu = gtk_menu_new();
+	GtkWidget *list = gtk_menu_item_new_with_label(g_param_spec_get_nick(pspec));
+	GtkWidget *sub = gtk_menu_new();
 	GtkWidget *radio = NULL;
 	guint i, n = G_PARAM_SPEC_ENUM(pspec)->enum_class->n_values;
 	GEnumValue *values = G_PARAM_SPEC_ENUM(pspec)->enum_class->values;
@@ -515,12 +519,14 @@ xa_widget_factory_create_enum_menu_list(XAWidgetFactory *factory, GObject *obj, 
 		if(g_value_get_enum(value) == values[i].value)
 			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(radio), TRUE);
 
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), radio);
+		gtk_menu_shell_append(GTK_MENU_SHELL(sub), radio);
 	}
 
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(list), menu);
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(list), sub);
 
-	return list;
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), list);
+
+	return menu;
 }
 
 static GtkWidget*
@@ -550,8 +556,9 @@ xa_widget_factory_create_flags_menu_group(XAWidgetFactory *factory, GObject *obj
 static GtkWidget*
 xa_widget_factory_create_flags_menu_list(XAWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
-	GtkWidget *list = gtk_menu_item_new_with_label(g_param_spec_get_nick(pspec));
 	GtkWidget *menu = gtk_menu_new();
+	GtkWidget *list = gtk_menu_item_new_with_label(g_param_spec_get_nick(pspec));
+	GtkWidget *sub = gtk_menu_new();
 	GtkWidget *check;
 	guint i, n = G_PARAM_SPEC_ENUM(pspec)->enum_class->n_values;
 	GFlagsValue *values = G_PARAM_SPEC_FLAGS(pspec)->flags_class->values;
@@ -566,12 +573,14 @@ xa_widget_factory_create_flags_menu_list(XAWidgetFactory *factory, GObject *obj,
 
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_enum(value) & values[i].value);
 
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), check);
+		gtk_menu_shell_append(GTK_MENU_SHELL(sub), check);
 	}
 
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(list), menu);
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(list), sub);
 
-	return list;
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), list);
+
+	return menu;
 }
 
 GtkWidget*
@@ -745,5 +754,65 @@ xa_widget_factory_create_action_widget(XAWidgetFactory *factory, LXAArchiveSuppo
 	gtk_widget_show(widget);
 
 	return widget;
+}
+
+GtkWidget*
+xa_widget_factory_create_action_menu_item(XAWidgetFactory *factory, LXAArchiveSupport *obj, const gchar *act)
+{
+	GtkWidget *menu = NULL;
+	LXACustomAction *action = lxa_archive_support_find_action(obj, act);
+
+	if(!action)
+		return NULL;
+
+	menu = gtk_menu_item_new_with_label(lxa_custom_action_get_nick(action));
+
+	return menu;
+}
+
+GtkToolItem*
+xa_widget_factory_create_action_bar(XAWidgetFactory *factory, LXAArchiveSupport *obj, const gchar *act)
+{
+	GtkToolItem *widget = NULL;
+	LXACustomAction *action = lxa_archive_support_find_action(obj, act);
+
+	if(!action)
+		return NULL;
+
+	widget = gtk_tool_button_new(NULL, lxa_custom_action_get_nick(action));
+
+	const gchar *large_tip = lxa_custom_action_get_blurb(action);
+	gchar *small_tip = NULL;
+	if(strchr(large_tip, '\n'))
+	{
+		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);
+		large_tip = strchr(large_tip, '\n') + 1;
+	}
+
+	gtk_tooltips_set_tip(factory->tips, GTK_WIDGET(widget), small_tip?small_tip:large_tip, large_tip);
+
+	g_free(small_tip);
+
+	gtk_widget_show(GTK_WIDGET(widget));
+
+	return widget;
+}
+
+GtkWidget*
+xa_widget_factory_create_action_menu(XAWidgetFactory *factory, LXAArchiveSupport *obj)
+{
+	GtkWidget *menu = gtk_menu_new();
+	guint n_act, i;
+	LXACustomAction **action = lxa_archive_support_list_actions(obj, &n_act);
+
+	for(i = 0; i < n_act; ++i)
+	{
+		if(strncmp("menu", lxa_custom_action_get_name(action[i]), 4) == 0)
+		{
+			gtk_menu_shell_append(GTK_MENU_SHELL(menu), gtk_menu_item_new_with_label(lxa_custom_action_get_nick(action[i])));
+		}
+	}
+
+	return menu;
 }
 

@@ -476,6 +476,8 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 {
 	XAPathBar *path_bar = XA_PATH_BAR(bar);
 	GSList *buttons = path_bar->path_button->next;
+	GSList *path, *iter;
+	GtkRadioButton *button;
 
 	XA_PATH_BAR(bar)->updating = TRUE;
 
@@ -491,6 +493,27 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 	path_bar->path_button->next = NULL;
 
 	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), (store&&store->archive));
+
+	if(store)
+	{
+		iter = path = xa_archive_store_get_trailing(store);
+		while(iter)
+		{
+			button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, (const gchar*)iter->data));
+			gtk_widget_ref(GTK_WIDGET(button));
+			gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
+			path_bar->path_button = g_slist_append(path_bar->path_button, button);
+
+			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
+
+			gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
+			gtk_widget_show(GTK_WIDGET(button));
+
+			g_free(iter->data);
+			iter = iter->next;
+		}
+		g_slist_free(path);
+	}
 
 	XA_PATH_BAR(bar)->updating = FALSE;
 }

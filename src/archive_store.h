@@ -61,6 +61,7 @@ struct _XAArchiveStore
 		GList *history;
 		GList *present;
 		guint maxhistory;
+		GSList *trailing;
 	} navigation;
 };
 
@@ -109,6 +110,8 @@ void
 xa_archive_store_go_back(XAArchiveStore *store);
 void
 xa_archive_store_go_forward(XAArchiveStore *store);
+GSList *
+xa_archive_store_get_trailing(XAArchiveStore *store);
 
 LXAArchive *
 xa_archive_store_get_archive(XAArchiveStore *archive_store);

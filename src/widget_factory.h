@@ -55,7 +55,9 @@ XAWidgetFactory    *xa_widget_factory_new();
 GtkWidget          *xa_widget_factory_create_property_widget(XAWidgetFactory *, GObject *, const gchar *);
 GtkWidget          *xa_widget_factory_create_property_menu(XAWidgetFactory *, GObject *, const gchar *);
 GtkWidget          *xa_widget_factory_create_action_widget(XAWidgetFactory *, LXAArchiveSupport *, const gchar *);
-GtkWidget          *xa_widget_factory_create_action_menu(XAWidgetFactory *, LXAArchiveSupport *, const gchar *);
+GtkWidget          *xa_widget_factory_create_action_menu_item(XAWidgetFactory *, LXAArchiveSupport *, const gchar *);
+GtkToolItem        *xa_widget_factory_create_action_bar(XAWidgetFactory *, LXAArchiveSupport *, const gchar *);
+GtkWidget          *xa_widget_factory_create_action_menu(XAWidgetFactory *, LXAArchiveSupport *);
 
 #endif /*__XA_WIDGET_FACTORY_H__*/
 

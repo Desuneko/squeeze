@@ -125,6 +125,9 @@ static void
 xa_archive_store_append_history(XAArchiveStore *store, GSList *entry);
 
 static void
+xa_archive_store_check_trailing(XAArchiveStore *store);
+
+static void
 cb_xa_archive_store_archive_refreshed(LXAArchive *archive, gpointer user_data);
 
 GType
@@ -219,6 +222,7 @@ xa_archive_store_init(XAArchiveStore *as)
 	as->navigation.history = NULL;
 	as->navigation.present = NULL;
 	as->navigation.maxhistory = XA_ARCHIVE_STORE_MAX_HISTORY;
+	as->navigation.trailing = NULL;
 }
 
 static void
@@ -770,8 +774,10 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 	gint column = 0;
 	gboolean cmp_a = 0;
 	gboolean cmp_b = 0;
-	GValue  *prop_a = g_new0(GValue, 1);
-	GValue  *prop_b = g_new0(GValue, 1);
+	GValue  prop_a;
+	GValue  prop_b;
+	memset(&prop_a, 0, sizeof(GValue));
+	memset(&prop_b, 0, sizeof(GValue));
 	if(store->props._sort_folders_first)
 	{
 		cmp_a = lxa_archive_iter_is_directory(store->archive, a);
@@ -798,8 +804,8 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 		column = store->sort_column;
 	}
 
-	lxa_archive_iter_get_prop_value(archive, a, column, prop_a);
-	lxa_archive_iter_get_prop_value(archive, b, column, prop_b);
+	lxa_archive_iter_get_prop_value(archive, a, column, &prop_a);
+	lxa_archive_iter_get_prop_value(archive, b, column, &prop_b);
 
 	switch(lxa_archive_get_property_type(archive, column))
 	{
@@ -807,24 +813,22 @@ xa_archive_entry_compare(XAArchiveStore *store, LXAArchiveIter *a, LXAArchiveIte
 			switch(store->props._sort_case_sensitive)
 			{
 				case 0: /* case insensitive */
-					retval = g_ascii_strcasecmp(g_value_get_string(prop_a), g_value_get_string(prop_b));
+					retval = g_ascii_strcasecmp(g_value_get_string(&prop_a), g_value_get_string(&prop_b));
 					break;
 				case 1: /* case sensitive */
-					retval = strcmp(g_value_get_string(prop_a), g_value_get_string(prop_b));
+					retval = strcmp(g_value_get_string(&prop_a), g_value_get_string(&prop_b));
 					break;
 			}
 			break;
 		case G_TYPE_UINT64:
-			retval = g_value_get_uint64(prop_a) - g_value_get_uint64(prop_b);
+			retval = g_value_get_uint64(&prop_a) - g_value_get_uint64(&prop_b);
 			break;
 		case G_TYPE_UINT:
-			retval = g_value_get_uint(prop_a) - g_value_get_uint(prop_b);
+			retval = g_value_get_uint(&prop_a) - g_value_get_uint(&prop_b);
 			break;
 	}
-	g_value_unset(prop_a);
-	g_value_unset(prop_b);
-	g_free(prop_a);
-	g_free(prop_b);
+	g_value_unset(&prop_a);
+	g_value_unset(&prop_b);
 	return retval;
 }
 
@@ -1048,7 +1052,8 @@ xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
 
 	gint *indices = gtk_tree_path_get_indices(path);
 	gint depth = gtk_tree_path_get_depth(path) - 1;
-	GValue *value = g_new0(GValue, 1);
+	GValue value;
+	memset(&value, 0, sizeof(GValue));
 
 	/* only support list: depth is always 0 */
 	g_return_if_fail(depth == 0);
@@ -1081,9 +1086,9 @@ xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
 #ifdef DEBUG
 			g_debug("file clicked");
 #endif
-			lxa_archive_iter_get_prop_value(archive, entry, LXA_ARCHIVE_PROP_FILENAME, value);
-			g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, g_value_get_string(value), NULL); 
-			g_value_unset(value);
+			lxa_archive_iter_get_prop_value(archive, entry, LXA_ARCHIVE_PROP_FILENAME, &value);
+			g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, g_value_get_string(&value), NULL); 
+			g_value_unset(&value);
 			return;
 		}
 
@@ -1095,7 +1100,6 @@ xa_archive_store_file_activated(XAArchiveStore *store, GtkTreePath *path)
 
 	xa_archive_store_refresh(store);
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
-	g_free(value);
 }
 
 void
@@ -1179,6 +1183,7 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 
 	store->navigation.history = NULL;
 	store->navigation.present = NULL;
+	store->navigation.trailing = NULL;
 
 	if(!archive)
 	{
@@ -1235,7 +1240,7 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	if(!store->navigation.present)
 		return NULL;
 
-	GValue *basename = g_new0(GValue, 1);
+	GValue basename;
 	gchar *path = NULL;
 	gchar **buf = NULL;
 	GSList *iter = store->navigation.present->data;
@@ -1247,15 +1252,17 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	if(i<=1)
 		return g_strdup("");
 
+	memset(&basename, 0, sizeof(GValue));
+
 	buf = g_new(gchar*, i);
 	i--;
 	buf[i] = NULL;
 
-	lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, basename);
-	namelen = strlen(g_value_get_string(basename));
+	lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, &basename);
+	namelen = strlen(g_value_get_string(&basename));
 	lastfile = g_new(gchar, namelen+2);
-	strcpy(lastfile, g_value_get_string(basename));
-	g_value_unset(basename);
+	strcpy(lastfile, g_value_get_string(&basename));
+	g_value_unset(&basename);
 	if(lastfile[namelen-1] != '/')
 	{
 		lastfile[namelen] = '/';
@@ -1271,9 +1278,9 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 		while(iter->next)
 		{
 			--i;
-			lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, basename);
-			buf[i] = g_value_dup_string(basename);
-			g_value_unset(basename);
+			lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, &basename);
+			buf[i] = g_value_dup_string(&basename);
+			g_value_unset(&basename);
 			iter = iter->next;
 		}
 	}
@@ -1287,7 +1294,6 @@ xa_archive_store_get_pwd(XAArchiveStore *store)
 	path = g_strjoinv("/", (gchar**)buf);
 
 	g_strfreev(buf);
-	g_free(basename);
 	return path;
 }
 
@@ -1301,23 +1307,23 @@ xa_archive_store_get_pwd_list(XAArchiveStore *store)
 	if(!store->navigation.present)
 		return NULL;
 
-	GValue *basename = g_new0(GValue, 1);
+	GValue basename;
 	GSList *iter = store->navigation.present->data;
 	GSList *path = NULL;
 
 	if(!iter)
 		return NULL;
 
+	memset(&basename, 0, sizeof(GValue));
+
 	/* we don't want to include de archive rootentry */
 	while(iter->next)
 	{
-		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, basename);
-		path = g_slist_prepend(path, g_value_dup_string(basename));
-		g_value_unset(basename);
+		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, &basename);
+		path = g_slist_prepend(path, g_value_dup_string(&basename));
+		g_value_unset(&basename);
 		iter = iter->next;
 	}
-
-	g_free(basename);
 
 	return path;
 }
@@ -1455,14 +1461,15 @@ xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter)
 {
 	LXAArchiveIter *entry = iter->user_data;
 
-	GValue *value = g_new0(GValue, 1);
+	GValue value;
+	memset(&value, 0, sizeof(GValue));
 	
-	lxa_archive_iter_get_prop_value(store->archive, entry, LXA_ARCHIVE_PROP_FILENAME, value);
+	lxa_archive_iter_get_prop_value(store->archive, entry, LXA_ARCHIVE_PROP_FILENAME, &value);
 
 	if(lxa_archive_iter_is_directory(store->archive, entry))
-		return g_strconcat(g_value_get_string(value), "/", NULL);
+		return g_strconcat(g_value_get_string(&value), "/", NULL);
 	else
-		return g_value_dup_string(value);
+		return g_value_dup_string(&value);
 }
 
 gboolean
@@ -1503,6 +1510,8 @@ xa_archive_store_go_back(XAArchiveStore *store)
 
 	xa_archive_store_refresh(store);
 
+	xa_archive_store_check_trailing(store);
+
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
@@ -1527,6 +1536,8 @@ xa_archive_store_go_forward(XAArchiveStore *store)
 	xa_archive_store_sort(store);
 
 	xa_archive_store_refresh(store);
+
+	xa_archive_store_check_trailing(store);
 
 	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
@@ -1560,6 +1571,65 @@ xa_archive_store_append_history(XAArchiveStore *store, GSList *entry)
 		g_slist_free(g_list_first(store->navigation.history)->data);
 		store->navigation.history = g_list_delete_link(store->navigation.history, g_list_first(store->navigation.history));
 	}
+
+	xa_archive_store_check_trailing(store);
+}
+
+static void
+xa_archive_store_check_trailing(XAArchiveStore *store)
+{
+	GSList *piter = (GSList*)store->navigation.present->data;
+	GSList *titer = store->navigation.trailing;
+	GValue p, t;
+	memset(&p, 0, sizeof(GValue));
+	memset(&t, 0, sizeof(GValue));
+
+	while(titer && piter)
+	{
+		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)piter->data, LXA_ARCHIVE_PROP_FILENAME, &p);
+		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)titer->data, LXA_ARCHIVE_PROP_FILENAME, &t);
+		if(strcmp(g_value_get_string(&p), g_value_get_string(&t)))
+		{
+			g_slist_free(store->navigation.trailing);
+			store->navigation.trailing = g_slist_copy((GSList*)store->navigation.present->data);
+			g_value_unset(&p);
+			g_value_unset(&t);
+			break;
+		}
+		g_value_unset(&p);
+		g_value_unset(&t);
+
+		piter = piter->next;
+		titer = titer->next;
+	}
+}
+
+GSList *
+xa_archive_store_get_trailing(XAArchiveStore *store)
+{
+#ifdef DEBUG
+	g_return_val_if_fail(store, NULL);
+#endif
+
+	GValue basename;
+	GSList *iter = store->navigation.trailing;
+	GSList *path = NULL;
+
+	if(!iter)
+		return NULL;
+
+	memset(&basename, 0, sizeof(GValue));
+
+	/* we don't want to include de archive rootentry */
+	while(iter->next)
+	{
+		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)iter->data, LXA_ARCHIVE_PROP_FILENAME, &basename);
+		path = g_slist_prepend(path, g_value_dup_string(&basename));
+		g_value_unset(&basename);
+		iter = iter->next;
+	}
+
+	return path;
 }
 
 static void
