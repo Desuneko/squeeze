@@ -107,7 +107,7 @@ lxa_archive_support_zip_init(LXAArchiveSupportZip *support)
 	archive_support->remove = lxa_archive_support_zip_remove;
 	archive_support->refresh = lxa_archive_support_zip_refresh;
 	
-	custom_action = lxa_custom_action_new("menu-action-test",
+	custom_action = lxa_custom_action_new("menu-test",
 	                                    _("Test"),
 																			_("Test archive integrity\nTest the integrity of the archive"),
 																			XA_TEST_ACTION_ICON,
@@ -486,7 +486,7 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 static void
 lxa_archive_support_zip_integrity_test(LXAArchiveSupport *support, LXAArchive *archive, gpointer user_data)
 {
-
+	g_debug("Custom action %s called", __FUNCTION__);
 }
 
 static void

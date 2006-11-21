@@ -300,6 +300,7 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 void
 cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook)
 {
+	g_debug("NOTEBOOK: Archive status changed");
 }
 
 static void
