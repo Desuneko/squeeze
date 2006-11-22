@@ -14,6 +14,10 @@ Long Version:
 
 	Fix Command-line options - DONE
 
+	Toggle navigationbar at runtime - DONE
+	
+	Save trailing folders for path_bar - DONE
+
 	Add Accelerators to Notebook
 
   Add Dialog
@@ -42,8 +46,6 @@ Long Version:
 
 	In archive store, on delete in parent dir of current entry, check if map still exists, if not move to the ancestor that still exists
 
-	Save trailing folders for path_bar
-
 	In treeview, when going to up dir, select the dir you came from
 
 	When retrieving selected items from the treeview, forget the updir item
@@ -55,9 +57,7 @@ Long Version:
 
 	Add progressbar to statusbar.
 
-	Toggle navigationbar at runtime
-	
-	Support CustomActionProperties (custom-actions which require additional arguments and configuration)
+	Support CustomActionProperties (custom-actions which require additional arguments and configuration) Make them class actions insteadof instance actions structs
 
 	An Archive can only be opened once
 

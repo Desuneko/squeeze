@@ -26,6 +26,20 @@ typedef enum {
 	XA_MAIN_WINDOW_STATUS_BUSY
 }XAMainWindowStatus;
 
+typedef enum
+{
+	XA_MAIN_WINDOW_NAVIGATION_INTERNAL,
+#ifdef ENABLE_TOOLBAR
+	XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR,
+#endif
+#ifdef ENABLE_PATHBAR
+	XA_MAIN_WINDOW_NAVIGATION_PATH_BAR
+#endif
+} XAMainWindowNavigationStyle;
+
+#define XA_TYPE_MAIN_WINDOW_NAVIGATION_STYLE (xa_main_window_navigation_style_get_type())
+
+
 #define XA_TYPE_MAIN_WINDOW xa_main_window_get_type()
 
 #define XA_MAIN_WINDOW(obj)         ( \
@@ -83,13 +97,6 @@ struct _XAMainWindow
 		GtkWidget *menu_item_view;
 		GtkWidget *menu_view;
 		/* contents of 'view' menu */
-			GtkWidget *menu_item_nav_bar;
-			GtkWidget *menu_nav_bar;
-			/* contents of 'nav_bar' submenu */
-				GtkWidget *menu_item_tool_bar;
-				GtkWidget *menu_item_path_bar;
-				GtkWidget *menu_item_no_bar;
-			/*********************************/
 			GtkWidget *menu_item_settings;
 		/***************************/
 
@@ -111,6 +118,7 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_remove;
 		GtkToolItem *tool_item_stop;
 	} toolbar;
+	XAMainWindowNavigationStyle nav_style;
 	XANavigationBar *navigationbar;
 	GtkAccelGroup *accel_group;
 	GtkWidget *notebook;
@@ -124,6 +132,8 @@ struct _XAMainWindowClass
 {
 	GtkWindowClass parent;
 };
+
+GType      xa_main_window_navigation_style_get_type();
 
 GtkWidget *xa_main_window_new(XAApplication *, GtkIconTheme *icon_theme);
 GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);

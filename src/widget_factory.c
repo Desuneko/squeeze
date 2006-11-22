@@ -451,16 +451,20 @@ xa_widget_factory_create_property_widget(XAWidgetFactory *factory, GObject *obj,
 		case G_TYPE_DOUBLE:
 			widget = xa_widget_factory_create_numeric_widget(factory, obj, pspec, &value);
 		break;
-		case G_TYPE_ENUM:
-			widget = xa_widget_factory_create_enum_widget_group(factory, obj, pspec, &value);
-			if(0)
-				xa_widget_factory_create_enum_widget_list(factory, obj, pspec, &value);
-		break;
-		case G_TYPE_FLAGS:
-			widget = xa_widget_factory_create_flags_widget(factory, obj, pspec, &value);
-		break;
 		case G_TYPE_STRING:
 			widget = xa_widget_factory_create_string_widget(factory, obj, pspec, &value);
+		break;
+		default:
+			if(G_IS_PARAM_SPEC_ENUM(pspec))
+			{
+				widget = xa_widget_factory_create_enum_widget_group(factory, obj, pspec, &value);
+				if(0)
+					xa_widget_factory_create_enum_widget_list(factory, obj, pspec, &value);
+			}
+			if(G_IS_PARAM_SPEC_FLAGS(pspec))
+			{
+				widget = xa_widget_factory_create_flags_widget(factory, obj, pspec, &value);
+			}
 		break;
 	}
 
@@ -482,6 +486,8 @@ xa_widget_factory_create_boolean_menu(XAWidgetFactory *factory, GObject *obj, GP
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_boolean(value));
 
 	menu = g_slist_append(menu, check);
+
+	gtk_widget_show(check);
 
 	return menu;
 }
@@ -507,6 +513,8 @@ xa_widget_factory_create_enum_menu_group(XAWidgetFactory *factory, GObject *obj,
 			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(radio), TRUE);
 
 		menu = g_slist_append(menu, radio);
+
+		gtk_widget_show(radio);
 	}
 
 	return menu;
@@ -524,7 +532,10 @@ xa_widget_factory_create_enum_menu_list(XAWidgetFactory *factory, GObject *obj, 
 
 	for(i = 0; i < n; ++i)
 	{
-		radio = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(radio), values[i].value_nick);
+		if(radio)
+			radio = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(radio), values[i].value_nick);
+		else
+			radio = gtk_radio_menu_item_new_with_label(NULL, values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(radio), XA_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(radio), XA_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
@@ -540,6 +551,9 @@ xa_widget_factory_create_enum_menu_list(XAWidgetFactory *factory, GObject *obj, 
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(list), sub);
 
 	menu = g_slist_append(menu, list);
+
+	gtk_widget_show_all(sub);
+	gtk_widget_show(list);
 
 	return menu;
 }
@@ -564,6 +578,8 @@ xa_widget_factory_create_flags_menu_group(XAWidgetFactory *factory, GObject *obj
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_enum(value) & values[i].value);
 
 		menu = g_slist_append(menu, check);
+
+		gtk_widget_show(check);
 	}
 
 	return menu;
@@ -596,6 +612,9 @@ xa_widget_factory_create_flags_menu_list(XAWidgetFactory *factory, GObject *obj,
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(list), sub);
 
 	menu = g_slist_append(menu, list);
+
+	gtk_widget_show_all(sub);
+	gtk_widget_show(list);
 
 	return menu;
 }
@@ -633,20 +652,23 @@ xa_widget_factory_create_property_menu(XAWidgetFactory *factory, GObject *obj, c
 		case G_TYPE_UINT64:
 		case G_TYPE_FLOAT:
 		case G_TYPE_DOUBLE:
-		break;*/
-		case G_TYPE_ENUM:
-			menu = xa_widget_factory_create_enum_menu_list(factory, obj, pspec, &value);
-			if(0)
-				xa_widget_factory_create_enum_menu_group(factory, obj, pspec, &value);
 		break;
-		case G_TYPE_FLAGS:
-			menu = xa_widget_factory_create_flags_menu_list(factory, obj, pspec, &value);
-			if(0)
-				xa_widget_factory_create_flags_menu_group(factory, obj, pspec, &value);
-		break;
-		/*
 		case G_TYPE_STRING:
 		break;*/
+		default:
+			if(G_IS_PARAM_SPEC_ENUM(pspec))
+			{
+				menu = xa_widget_factory_create_enum_menu_list(factory, obj, pspec, &value);
+				if(0)
+					xa_widget_factory_create_enum_menu_group(factory, obj, pspec, &value);
+			}
+			if(G_IS_PARAM_SPEC_FLAGS(pspec))
+			{
+				menu = xa_widget_factory_create_flags_menu_list(factory, obj, pspec, &value);
+				if(0)
+					xa_widget_factory_create_flags_menu_group(factory, obj, pspec, &value);
+			}
+		break;
 	}
 
 	g_value_unset(&value);
@@ -699,45 +721,49 @@ cb_xa_widget_factory_property_changed(GtkWidget *widget, gpointer user_data)
 				g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
 			}
 		break;
-		case G_TYPE_ENUM:
-			if(GTK_IS_RADIO_BUTTON(widget))
-			{
-				if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
-				{
-					g_value_set_enum(&value, GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
-					g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-				}
-			}
-			if(GTK_IS_RADIO_MENU_ITEM(widget))
-			{
-				if(gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
-				{
-					g_value_set_enum(&value, GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
-					g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-				}
-			}
-		break;
-		case G_TYPE_FLAGS:
-			if(GTK_IS_CHECK_BUTTON(widget))
-			{
-				g_object_get_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-				// TODO: sync?
-				g_value_set_flags(&value, g_value_get_flags(&value) ^ GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
-				g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-			}
-			if(GTK_IS_CHECK_MENU_ITEM(widget))
-			{
-				g_object_get_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-				// TODO: sync?
-				g_value_set_flags(&value, g_value_get_flags(&value) ^ GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
-				g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-			}
-		break;
 		case G_TYPE_STRING:
 			if(GTK_IS_ENTRY(widget))
 			{
 				g_value_set_string(&value, gtk_entry_get_text(GTK_ENTRY(widget)));
 				g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+			}
+		break;
+		default:
+			if(G_IS_PARAM_SPEC_ENUM(pspec))
+			{
+				if(GTK_IS_RADIO_BUTTON(widget))
+				{
+					if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
+					{
+						g_value_set_enum(&value, GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
+						g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+					}
+				}
+				if(GTK_IS_RADIO_MENU_ITEM(widget))
+				{
+					if(gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
+					{
+						g_value_set_enum(&value, GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
+						g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+					}
+				}
+			}
+			if(G_IS_PARAM_SPEC_FLAGS(pspec))
+			{
+				if(GTK_IS_CHECK_BUTTON(widget))
+				{
+					g_object_get_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+					// TODO: sync?
+					g_value_set_flags(&value, g_value_get_flags(&value) ^ GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
+					g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+				}
+				if(GTK_IS_CHECK_MENU_ITEM(widget))
+				{
+					g_object_get_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+					// TODO: sync?
+					g_value_set_flags(&value, g_value_get_flags(&value) ^ GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
+					g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
+				}
 			}
 		break;
 	}
@@ -793,35 +819,39 @@ cb_xa_widget_factory_property_notify(GObject *obj, GParamSpec *pspec, gpointer u
 				g_value_unset(&other_value);
 			}
 		break;
-		case G_TYPE_ENUM:
-			if(GTK_IS_RADIO_BUTTON(user_data))
-			{
-				g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA))==g_value_get_enum(&value));
-			}
-			if(GTK_IS_RADIO_MENU_ITEM(user_data))
-			{
-				g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
-				gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA))==g_value_get_enum(&value));
-			}
-		break;
-		case G_TYPE_FLAGS:
-			if(GTK_IS_CHECK_BUTTON(user_data))
-			{
-				g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA)) & g_value_get_enum(&value));
-			}
-			if(GTK_IS_CHECK_MENU_ITEM(user_data))
-			{
-				g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
-				gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA)) & g_value_get_enum(&value));
-			}
-		break;
 		case G_TYPE_STRING:
 			if(GTK_IS_ENTRY(user_data))
 			{
 				g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
 				gtk_entry_set_text(GTK_ENTRY(user_data), g_value_get_string(&value));
+			}
+		break;
+		default:
+			if(G_IS_PARAM_SPEC_ENUM(pspec))
+			{
+				if(GTK_IS_RADIO_BUTTON(user_data))
+				{
+					g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
+					gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA))==g_value_get_enum(&value));
+				}
+				if(GTK_IS_RADIO_MENU_ITEM(user_data))
+				{
+					g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
+					gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA))==g_value_get_enum(&value));
+				}
+			}
+			if(G_IS_PARAM_SPEC_FLAGS(pspec))
+			{
+				if(GTK_IS_CHECK_BUTTON(user_data))
+				{
+					g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
+					gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA)) & g_value_get_enum(&value));
+				}
+				if(GTK_IS_CHECK_MENU_ITEM(user_data))
+				{
+					g_object_get_property(obj, g_param_spec_get_name(pspec), &value);
+					gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(user_data), GPOINTER_TO_INT(g_object_get_data(G_OBJECT(user_data), XA_PROPERTY_VALUE_DATA)) & g_value_get_enum(&value));
+				}
 			}
 		break;
 	}
@@ -862,7 +892,7 @@ xa_widget_factory_create_action_widget(XAWidgetFactory *factory, LXAArchiveSuppo
 GtkWidget*
 xa_widget_factory_create_action_menu_item(XAWidgetFactory *factory, LXAArchiveSupport *support, LXAArchive *archive, const gchar *act)
 {
-	GtkWidget *menu = NULL;
+	GtkWidget *menu;
 	LXACustomAction *action = lxa_archive_support_find_action(support, act);
 
 	if(!action)
@@ -871,6 +901,7 @@ xa_widget_factory_create_action_menu_item(XAWidgetFactory *factory, LXAArchiveSu
 	menu = gtk_menu_item_new_with_label(lxa_custom_action_get_nick(action));
 	g_object_set_data(G_OBJECT(menu), XA_ACTION_CUSTOM_DATA, action);
 	g_signal_connect(G_OBJECT(menu), "activate", G_CALLBACK(cb_xa_widget_factory_action_triggered), archive);
+	gtk_widget_show(menu);
 
 	return menu;
 }
@@ -878,7 +909,7 @@ xa_widget_factory_create_action_menu_item(XAWidgetFactory *factory, LXAArchiveSu
 GtkToolItem*
 xa_widget_factory_create_action_bar(XAWidgetFactory *factory, LXAArchiveSupport *support, LXAArchive *archive, const gchar *act)
 {
-	GtkToolItem *widget = NULL;
+	GtkToolItem *widget;
 	LXACustomAction *action = lxa_archive_support_find_action(support, act);
 
 	if(!action)
@@ -921,6 +952,7 @@ xa_widget_factory_create_action_menu(XAWidgetFactory *factory, LXAArchiveSupport
 			g_object_set_data(G_OBJECT(item), XA_ACTION_CUSTOM_DATA, action[i]);
 			g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(cb_xa_widget_factory_action_triggered), archive);
 			menu = g_slist_append(menu, item);
+			gtk_widget_show(item);
 		}
 	}
 

@@ -169,19 +169,7 @@ xa_notebook_new(XANavigationBar *bar, gboolean use_tabs, GtkAccelGroup *accel_gr
 
 	notebook = g_object_new(XA_TYPE_NOTEBOOK, NULL);
 
-	notebook->props._up_dir = TRUE;
-	if(bar)
-	{
-		xa_notebook_set_navigation_bar(notebook, bar);
-#ifdef ENABLE_TOOLBAR
-		if(XA_IS_TOOL_BAR(bar))
-			notebook->props._up_dir = FALSE;
-#endif
-#ifdef ENABLE_PATHBAR
-		if(XA_IS_PATH_BAR(bar))
-			notebook->props._up_dir = FALSE;
-#endif
-	}
+	xa_notebook_set_navigation_bar(notebook, bar);
 
 	notebook->props._show_icons = TRUE;
 	notebook->multi_tab = use_tabs;
@@ -227,6 +215,20 @@ xa_notebook_set_navigation_bar(XANotebook *notebook, XANavigationBar *bar)
 	if(notebook->navigation_bar)
 		xa_navigation_bar_set_store(notebook->navigation_bar, NULL);
 
+	notebook->props._up_dir = TRUE;
+
+	if(bar)
+	{
+#ifdef ENABLE_TOOLBAR
+		if(XA_IS_TOOL_BAR(bar))
+			notebook->props._up_dir = FALSE;
+#endif
+#ifdef ENABLE_PATHBAR
+		if(XA_IS_PATH_BAR(bar))
+			notebook->props._up_dir = FALSE;
+#endif
+	}
+
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
 		gint page_nr = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
@@ -234,7 +236,10 @@ xa_notebook_set_navigation_bar(XANotebook *notebook, XANavigationBar *bar)
 		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 		GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 		notebook->navigation_bar = bar;
-		xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
+		if(bar)
+			xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
+		if(archive_store)
+			g_object_set(G_OBJECT(archive_store), "show_up_dir", notebook->props._up_dir, NULL);
 	}
 	else
 		notebook->navigation_bar = bar;

@@ -1580,27 +1580,45 @@ xa_archive_store_check_trailing(XAArchiveStore *store)
 {
 	GSList *piter = (GSList*)store->navigation.present->data;
 	GSList *titer = store->navigation.trailing;
+	GSList *miter = NULL;
+	gboolean match = FALSE;
 	GValue p, t;
 	memset(&p, 0, sizeof(GValue));
 	memset(&t, 0, sizeof(GValue));
 
-	while(titer && piter)
+	if(titer)
 	{
-		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)piter->data, LXA_ARCHIVE_PROP_FILENAME, &p);
-		lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)titer->data, LXA_ARCHIVE_PROP_FILENAME, &t);
-		if(strcmp(g_value_get_string(&p), g_value_get_string(&t)))
+		while(titer->next && piter->next)
 		{
-			g_slist_free(store->navigation.trailing);
-			store->navigation.trailing = g_slist_copy((GSList*)store->navigation.present->data);
+			lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)piter->data, LXA_ARCHIVE_PROP_FILENAME, &p);
+			lxa_archive_iter_get_prop_value(store->archive, (LXAArchiveIter*)titer->data, LXA_ARCHIVE_PROP_FILENAME, &t);
+			if(strcmp(g_value_get_string(&p), g_value_get_string(&t)) == 0)
+			{
+				titer = titer->next;
+				piter = piter->next;
+				if(!match)
+					miter = piter;
+				match = TRUE;
+			}
+			else if(match)
+			{
+				match = FALSE;
+				piter = miter;
+				titer = store->navigation.trailing;
+			}
+			else
+			{
+				titer = titer->next;
+			}
 			g_value_unset(&p);
 			g_value_unset(&t);
-			break;
 		}
-		g_value_unset(&p);
-		g_value_unset(&t);
+	}
 
-		piter = piter->next;
-		titer = titer->next;
+	if(!match)
+	{
+		g_slist_free(store->navigation.trailing);
+		store->navigation.trailing = g_slist_copy((GSList*)store->navigation.present->data);
 	}
 }
 

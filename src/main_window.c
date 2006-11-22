@@ -17,6 +17,17 @@
  */
 
 #include <config.h>
+
+#undef XA_MAIN_ANY_BAR
+
+#ifdef ENABLE_PATHBAR
+#define XA_MAIN_ANY_BAR 1
+#else
+#ifdef ENABLE_TOOLBAR
+#define XA_MAIN_ANY_BAR 1
+#endif
+#endif
+
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -48,15 +59,6 @@
 #include "preferences_dialog.h"
 
 #include "main.h"
-
-typedef enum
-{
-	XA_MAIN_WINDOW_NAVIGATION_INTERNAL,
-	XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR,
-	XA_MAIN_WINDOW_NAVIGATION_PATH_BAR
-} XAMainWindowNavigationStyle;
-
-#define XA_TYPE_MAIN_WINDOW_NAVIGATION_STYLE (xa_main_window_navigation_style_get_type())
 
 enum
 {
@@ -93,11 +95,9 @@ static void
 cb_xa_main_window_notebook_file_activated(XANotebook *, gchar *, gpointer);
 
 static void
-cb_xa_main_window_set_tool_bar(GtkWidget *widget, gpointer userdata);
-static void
-cb_xa_main_window_set_path_bar(GtkWidget *widget, gpointer userdata);
+xa_main_window_set_navigation(XAMainWindow *window);
 
-static GType
+GType
 xa_main_window_navigation_style_get_type()
 {
 	static GType nav_style_type = 0;
@@ -106,8 +106,12 @@ xa_main_window_navigation_style_get_type()
 	{
 		static GEnumValue style_types[] = {
 			{XA_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", "Internal Style"},
+#ifdef ENABLE_TOOLBAR
 			{XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", "Tool Bar Style"},
+#endif
+#ifdef ENABLE_PATHBAR
 			{XA_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", "Path Bar Style"},
+#endif
 			{0, NULL, NULL}
 		};
 
@@ -214,6 +218,7 @@ xa_main_window_init(XAMainWindow *window)
 	GtkWidget     *menu_separator;
 	GtkWidget     *tmp_image;
 	const gchar   *nav_bar;
+	GSList        *list, *iter;
 	gboolean up_dir = TRUE;
 	gboolean show_icons = TRUE;
 	gboolean sort_case = TRUE;
@@ -299,25 +304,15 @@ xa_main_window_init(XAMainWindow *window)
 		window->menubar.menu_view = gtk_menu_new();
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_view), window->menubar.menu_view);
 
-		window->menubar.menu_item_nav_bar = gtk_menu_item_new_with_mnemonic(_("_Location Selector"));
-		window->menubar.menu_nav_bar = gtk_menu_new();
-		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_nav_bar), window->menubar.menu_nav_bar);
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), window->menubar.menu_item_nav_bar);
-
-		window->menubar.menu_item_no_bar   = gtk_radio_menu_item_new_with_mnemonic(NULL, _("Internal style"));
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_nav_bar), window->menubar.menu_item_no_bar);
-		gtk_check_menu_item_set_active((GtkCheckMenuItem *)window->menubar.menu_item_no_bar, TRUE);
-#ifdef ENABLE_TOOLBAR
-		window->menubar.menu_item_tool_bar = gtk_radio_menu_item_new_with_mnemonic_from_widget(GTK_RADIO_MENU_ITEM(window->menubar.menu_item_no_bar), _("Toolbar style"));
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_nav_bar), window->menubar.menu_item_tool_bar);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_tool_bar), "toggled", G_CALLBACK(cb_xa_main_window_set_tool_bar), window);
-#endif /* ENABLE_TOOLBAR */
-#ifdef ENABLE_PATHBAR
-		window->menubar.menu_item_path_bar = gtk_radio_menu_item_new_with_mnemonic_from_widget(GTK_RADIO_MENU_ITEM(window->menubar.menu_item_no_bar), _("Pathbar style"));
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_nav_bar), window->menubar.menu_item_path_bar);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_path_bar), "toggled", G_CALLBACK(cb_xa_main_window_set_path_bar), window);
-#endif /* ENABLE_PATHBAR */
-
+#ifdef XA_MAIN_ANY_BAR
+		list = xa_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window), "navigation-style");
+		for(iter = list; iter; iter = iter->next)
+		{
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+			gtk_widget_show(iter->data);
+		}
+#endif
+		gtk_widget_show_all(window->menubar.menu_view);
 
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_file);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_action);
@@ -371,11 +366,14 @@ xa_main_window_init(XAMainWindow *window)
 	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
 
 	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "None");
+	window->nav_style = XA_MAIN_WINDOW_NAVIGATION_INTERNAL;
 	window->navigationbar = NULL;
+	up_dir = TRUE;
 
 #ifdef ENABLE_TOOLBAR
 	if(!strcmp(nav_bar, "ToolBar"))
 	{
+		window->nav_style = XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR;
 		window->navigationbar = xa_tool_bar_new(NULL); 
 		up_dir = FALSE;
 	}
@@ -383,16 +381,14 @@ xa_main_window_init(XAMainWindow *window)
 #ifdef ENABLE_PATHBAR
 	if(!strcmp(nav_bar, "PathBar"))
 	{
+		window->nav_style = XA_MAIN_WINDOW_NAVIGATION_PATH_BAR;
 		window->navigationbar = xa_path_bar_new(NULL);
 		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
 		up_dir = FALSE;
 	}
 #endif
 
-	if(!window->navigationbar)
-		up_dir = TRUE;
-	else
-		up_dir = FALSE;
+	g_object_notify(G_OBJECT(window), "navigation-style");
 
 	show_icons = xa_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
 	sort_case = xa_settings_read_bool_entry(window->settings, "SortCaseSensitive", TRUE);
@@ -458,23 +454,26 @@ xa_main_window_new(XAApplication *app, GtkIconTheme *icon_theme)
 static void
 xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
-/*
+	XAMainWindow *window = XA_MAIN_WINDOW(object);
 	switch(prop_id)
 	{
-
+		case XA_MAIN_WINDOW_NAVIGATION_STYLE:
+			g_value_set_enum(value, window->nav_style);
+		break;
 	}
-*/
 }
 
 static void
 xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
-/*
+	XAMainWindow *window = XA_MAIN_WINDOW(object);
 	switch(prop_id)
 	{
-
+		case XA_MAIN_WINDOW_NAVIGATION_STYLE:
+			window->nav_style = g_value_get_enum(value);
+			xa_main_window_set_navigation(window);
+		break;
 	}
-*/
 }
 
 GtkWidget *
@@ -849,47 +848,41 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
 }
 
 static void
-cb_xa_main_window_set_tool_bar(GtkWidget *widget, gpointer userdata)
+xa_main_window_set_navigation(XAMainWindow *window)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	XANavigationBar *tool_bar = NULL; 
+	XANavigationBar *nav_bar = NULL; 
+	gboolean up_dir = TRUE;
 
-	if(gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
+	switch(window->nav_style)
 	{
-		tool_bar = xa_tool_bar_new(NULL);
-
-		xa_notebook_set_navigation_bar(XA_NOTEBOOK(window->notebook), tool_bar);
-
-		if(window->navigationbar)
-			gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
-
-		window->navigationbar = tool_bar;
-		gtk_box_pack_start(GTK_BOX(window->main_vbox), (GtkWidget *)tool_bar, FALSE, FALSE, 0);
-		gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)tool_bar, 2);
-		gtk_widget_show_all((GtkWidget *)tool_bar);
+		case XA_MAIN_WINDOW_NAVIGATION_INTERNAL:
+			break;
+#ifdef ENABLE_TOOLBAR
+		case XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR:
+			nav_bar = xa_tool_bar_new(NULL);
+			up_dir = FALSE;
+			break;
+#endif
+#ifdef ENABLE_PATHBAR
+		case XA_MAIN_WINDOW_NAVIGATION_PATH_BAR:
+			nav_bar = xa_path_bar_new(NULL);
+			up_dir = FALSE;
+			break;
+#endif
+		default:
+			return;
 	}
-}
 
-static void
-cb_xa_main_window_set_path_bar(GtkWidget *widget, gpointer userdata)
-{
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	XANavigationBar *path_bar = NULL; 
+	xa_notebook_set_navigation_bar(XA_NOTEBOOK(window->notebook), nav_bar);
 
-	if(gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
+	if(window->navigationbar)
+		gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
+
+	window->navigationbar = nav_bar;
+	if(nav_bar)
 	{
-		path_bar = xa_path_bar_new(NULL);
-
-		xa_notebook_set_navigation_bar(XA_NOTEBOOK(window->notebook), path_bar);
-
-		if(window->navigationbar)
-			gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
-
-		window->navigationbar = path_bar;
-
-		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
-		gtk_box_pack_start(GTK_BOX(window->main_vbox), (GtkWidget *)path_bar, FALSE, FALSE, 0);
-		gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)path_bar, 2);
-		gtk_widget_show_all((GtkWidget *)path_bar);
-	}
+		gtk_box_pack_start(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, FALSE, FALSE, 0);
+		gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, 2);
+		gtk_widget_show_all((GtkWidget *)nav_bar);
+	}	
 }
