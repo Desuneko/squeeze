@@ -45,7 +45,13 @@ struct _XAAddDialog
 	GtkDialog parent;
 	GtkWidget *scrolled_window;
 	GtkWidget *optionframe;
+	GtkListStore *file_liststore;
+	GtkWidget *file_treeview;
+	GtkWidget *files_radio;
+	GtkWidget *dirs_radio;
 	LXAArchiveSupport *support;
+	GtkWidget *add;
+	GtkWidget *remove;
 };
 
 typedef struct _XAAddDialogClass XAAddDialogClass;

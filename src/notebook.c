@@ -300,13 +300,24 @@ xa_notebook_add_archive(XANotebook *notebook, LXAArchive *archive, LXAArchiveSup
 void
 cb_notebook_archive_status_changed(LXAArchive *archive, XANotebook *notebook)
 {
+#ifdef DEBUG
 	g_debug("NOTEBOOK: Archive status changed");
+#endif /* DEBUG */
 }
 
 static void
 cb_notebook_close_archive(GtkButton *button, GtkWidget *child)
 {
 	GtkNotebook *notebook = GTK_NOTEBOOK(gtk_widget_get_parent(child));
+
+	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(child));
+	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+
+	LXAArchive *archive = xa_archive_store_get_archive(XA_ARCHIVE_STORE(archive_store));
+
+	g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
+
+	lxa_close_archive(archive);
 
 	gint n = gtk_notebook_page_num(notebook, child);
 	gtk_notebook_remove_page(notebook, n);

@@ -160,14 +160,14 @@ lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclas
 
 	pspec = g_param_spec_boolean("extract-touch",
 		_("Touch files"),
-		"Touch files",
+		_("Touch files"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_TOUCH, pspec);
 
 	pspec = g_param_spec_uint("extract-strip",
 		_("Strip directories"),
-		"Strip directories",
+		_("Strip directories"),
 		0,
 		128,
 		0,
@@ -183,7 +183,7 @@ lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclas
 
 	pspec = g_param_spec_string("add-mode",
 		_("Override permissions"),
-		"Override permissions",
+		_("Override permissions"),
 		"",
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_ADD_MODE, pspec);
@@ -197,28 +197,28 @@ lxa_archive_support_gnu_tar_class_init(LXAArchiveSupportGnuTarClass *supportclas
 
 	pspec = g_param_spec_boolean("view-rights",
 		_("Permissions"),
-		"View permissions",
+		_("View permissions"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_RIGHTS, pspec);
 
 	pspec = g_param_spec_boolean("view-owner",
 		_("Owner/Group"),
-		"View owner",
+		_("View owner/group"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_OWNER, pspec);
 
 	pspec = g_param_spec_boolean("view-date",
 		_("Date"),
-		"View date",
+		_("View date"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_DATE, pspec);
 
 	pspec = g_param_spec_boolean("view-time",
 		_("Time"),
-		"View time",
+		_("View time"),
 		TRUE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_GNU_TAR_VIEW_TIME, pspec);

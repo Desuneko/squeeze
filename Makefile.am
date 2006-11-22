@@ -20,6 +20,7 @@ EXTRA_DIST = \
 	intltool-merge.in \
 	intltool-update.in \
 	xarchiver.tap \
+	gettext.h \
 	$(desktop_in_files) \
 	$(wrapper_DATA)
 

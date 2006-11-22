@@ -59,4 +59,14 @@ Long Version:
 	
 	Support CustomActionProperties (custom-actions which require additional arguments and configuration)
 
+	An Archive can only be opened once
+
+
+
   ... Complete TODO-file
+
+BUGS:
+
+	ArchiveStore gets deleted when close button is pressed, archive remains and sends signal when refreshed .
+
+	Archive does not get freed properly. (mem usage keeps growing when opening and closing same archive)

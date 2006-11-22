@@ -25,8 +25,6 @@
 
 #include "libxarchiver.h"
 #include "libxarchiver/archive-support-zip.h"
-#include "libxarchiver/archive-support-rar.h"
-#include "libxarchiver/archive-support-unrar.h"
 #include "libxarchiver/archive-support-gnu-tar.h"
 
 #include "internals.h"
