@@ -423,7 +423,10 @@ cb_xa_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint 
 	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
 	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
-	xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
+	if(notebook->navigation_bar)
+		xa_navigation_bar_set_store(notebook->navigation_bar, XA_ARCHIVE_STORE(archive_store));
+	if(archive_store)
+		g_object_set(G_OBJECT(archive_store), "show_up_dir", notebook->props._up_dir, NULL);
 }
 
 static void

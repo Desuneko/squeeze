@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-22 08:52+0100\n"
+"POT-Creation-Date: 2006-11-23 08:47+0100\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -25,12 +25,12 @@ msgid "Mime type"
 msgstr "Mime type"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:155
-#: ../libxarchiver/archive-support-zip.c:137
+#: ../libxarchiver/archive-support-zip.c:138
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:156
-#: ../libxarchiver/archive-support-zip.c:138
+#: ../libxarchiver/archive-support-zip.c:139
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
@@ -60,13 +60,11 @@ msgstr "Overschrijf rechten"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:192
 #: ../libxarchiver/archive-support-gnu-tar.c:478
-#: ../libxarchiver/archive-support-zip.c:172
-#: ../libxarchiver/archive-support-zip.c:317
 msgid "Filesize"
 msgstr "Bestandsgrootte"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:193
-#: ../libxarchiver/archive-support-zip.c:173
+#: ../libxarchiver/archive-support-zip.c:174
 msgid "View filesize"
 msgstr "Bestandsgrootte weergeven"
 
@@ -90,25 +88,25 @@ msgstr "Eigenaar/Groep tonen"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:213
 #: ../libxarchiver/archive-support-gnu-tar.c:482
-#: ../libxarchiver/archive-support-zip.c:158
-#: ../libxarchiver/archive-support-zip.c:333
+#: ../libxarchiver/archive-support-zip.c:159
+#: ../libxarchiver/archive-support-zip.c:334
 msgid "Date"
 msgstr "Datum"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:214
-#: ../libxarchiver/archive-support-zip.c:159
+#: ../libxarchiver/archive-support-zip.c:160
 msgid "View date"
 msgstr "Datum tonen"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:220
 #: ../libxarchiver/archive-support-gnu-tar.c:486
-#: ../libxarchiver/archive-support-zip.c:151
-#: ../libxarchiver/archive-support-zip.c:337
+#: ../libxarchiver/archive-support-zip.c:152
+#: ../libxarchiver/archive-support-zip.c:338
 msgid "Time"
 msgstr "Tijd"
 
 #: ../libxarchiver/archive-support-gnu-tar.c:221
-#: ../libxarchiver/archive-support-zip.c:152
+#: ../libxarchiver/archive-support-zip.c:153
 msgid "View time"
 msgstr "Tijd tonen"
 
@@ -125,44 +123,49 @@ msgstr ""
 "Test de archief-integriteit\n"
 "Test de integriteit van het archief"
 
-#: ../libxarchiver/archive-support-zip.c:130
 #: ../libxarchiver/archive-support-zip.c:131
+#: ../libxarchiver/archive-support-zip.c:132
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../libxarchiver/archive-support-zip.c:144
-#: ../libxarchiver/archive-support-zip.c:325
-msgid "Compressed Filesize"
-msgstr "Gecomprimeerde Bestandsgrootte"
-
 #: ../libxarchiver/archive-support-zip.c:145
+#: ../libxarchiver/archive-support-zip.c:326
+msgid "Compressed Size"
+msgstr "Gecomprimeerde Grootte"
+
+#: ../libxarchiver/archive-support-zip.c:146
 msgid "View compressed filesize"
 msgstr "Toon gecomprimeerde bestandsgrootte"
 
-#: ../libxarchiver/archive-support-zip.c:165
-#: ../libxarchiver/archive-support-zip.c:329
+#: ../libxarchiver/archive-support-zip.c:166
+#: ../libxarchiver/archive-support-zip.c:330
 msgid "Ratio"
 msgstr "Verhouding"
 
-#: ../libxarchiver/archive-support-zip.c:166
+#: ../libxarchiver/archive-support-zip.c:167
 msgid "View ratio"
 msgstr "Verhouding tonen"
 
-#: ../libxarchiver/archive-support-zip.c:179
-#: ../libxarchiver/archive-support-zip.c:321
+#: ../libxarchiver/archive-support-zip.c:173
+#: ../libxarchiver/archive-support-zip.c:318
+msgid "Size"
+msgstr "Grootte"
+
+#: ../libxarchiver/archive-support-zip.c:180
+#: ../libxarchiver/archive-support-zip.c:322
 msgid "Method"
 msgstr "Methode"
 
-#: ../libxarchiver/archive-support-zip.c:180
+#: ../libxarchiver/archive-support-zip.c:181
 msgid "View method"
 msgstr "Methode tonen"
 
-#: ../libxarchiver/archive-support-zip.c:186
-#: ../libxarchiver/archive-support-zip.c:341
+#: ../libxarchiver/archive-support-zip.c:187
+#: ../libxarchiver/archive-support-zip.c:342
 msgid "Checksum"
 msgstr "Checksom"
 
-#: ../libxarchiver/archive-support-zip.c:187
+#: ../libxarchiver/archive-support-zip.c:188
 msgid "View Checksum"
 msgstr "Toon Checksom"
 
@@ -197,70 +200,54 @@ msgstr ""
 "opties.\n"
 
 #. File menu
-#: ../src/main_window.c:242
+#: ../src/main_window.c:247
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:273
+#: ../src/main_window.c:278
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:278
+#: ../src/main_window.c:283
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:284
+#: ../src/main_window.c:289
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:298
+#: ../src/main_window.c:303
 msgid "_View"
 msgstr "B_eeld"
 
-#: ../src/main_window.c:302
-msgid "_Location Selector"
-msgstr "_Locatie Selecteerder"
-
-#: ../src/main_window.c:307
-msgid "Internal style"
-msgstr "Interne stijl"
-
-#: ../src/main_window.c:311
-msgid "Toolbar style"
-msgstr "Toolbar stijl"
-
-#: ../src/main_window.c:316
-msgid "Pathbar style"
-msgstr "Padbar stijl"
-
-#: ../src/main_window.c:343
+#: ../src/main_window.c:338
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:347 ../src/main_window.c:780
+#: ../src/main_window.c:342 ../src/main_window.c:779
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:586
+#: ../src/main_window.c:585
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:779
+#: ../src/main_window.c:778
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:780
+#: ../src/main_window.c:779
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:843
+#: ../src/main_window.c:842
 msgid "Failed to open file"
 msgstr "Het openen van een bestand is mislukt"
 
-#: ../src/main_window.c:844
+#: ../src/main_window.c:843
 #, c-format
 msgid ""
 "'%s'\n"

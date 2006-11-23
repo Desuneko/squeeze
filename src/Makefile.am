@@ -39,7 +39,7 @@ xarchiver_CFLAGS = \
 	-DLOCALEDIR=\"$(localedir)\"
  
 xarchiver_LDADD = \
-	$(top_srcdir)/libxarchiver/libxarchiver.a \
+	$(top_srcdir)/libxarchiver/libxarchiver-1.la \
 	@GTK_LIBS@ \
 	@GLIB_LIBS@ \
 	@THUNAR_VFS_LIBS@

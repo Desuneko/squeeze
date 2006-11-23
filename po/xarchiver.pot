@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-17 20:52+0100\n"
+"POT-Creation-Date: 2006-11-23 08:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,20 +25,22 @@ msgid "Mime type"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:155
-#: ../libxarchiver/archive-support-zip.c:118
+#: ../libxarchiver/archive-support-zip.c:138
 msgid "Overwrite existing files"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:156
-#: ../libxarchiver/archive-support-zip.c:119
+#: ../libxarchiver/archive-support-zip.c:139
 msgid "Overwrite existing files on extraction"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:162
+#: ../libxarchiver/archive-support-gnu-tar.c:163
 msgid "Touch files"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:169
+#: ../libxarchiver/archive-support-gnu-tar.c:170
 msgid "Strip directories"
 msgstr ""
 
@@ -51,6 +53,7 @@ msgid "Do not overwrite files newer then those in the archive"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:185
+#: ../libxarchiver/archive-support-gnu-tar.c:186
 msgid "Override permissions"
 msgstr ""
 
@@ -60,6 +63,7 @@ msgid "Filesize"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:193
+#: ../libxarchiver/archive-support-zip.c:174
 msgid "View filesize"
 msgstr ""
 
@@ -68,69 +72,121 @@ msgstr ""
 msgid "Permissions"
 msgstr ""
 
+#: ../libxarchiver/archive-support-gnu-tar.c:200
+msgid "View permissions"
+msgstr ""
+
 #: ../libxarchiver/archive-support-gnu-tar.c:206
 #: ../libxarchiver/archive-support-gnu-tar.c:474
 msgid "Owner/Group"
 msgstr ""
 
+#: ../libxarchiver/archive-support-gnu-tar.c:207
+msgid "View owner/group"
+msgstr ""
+
 #: ../libxarchiver/archive-support-gnu-tar.c:213
 #: ../libxarchiver/archive-support-gnu-tar.c:482
-#: ../libxarchiver/archive-support-zip.c:313
+#: ../libxarchiver/archive-support-zip.c:159
+#: ../libxarchiver/archive-support-zip.c:334
 msgid "Date"
+msgstr ""
+
+#: ../libxarchiver/archive-support-gnu-tar.c:214
+#: ../libxarchiver/archive-support-zip.c:160
+msgid "View date"
 msgstr ""
 
 #: ../libxarchiver/archive-support-gnu-tar.c:220
 #: ../libxarchiver/archive-support-gnu-tar.c:486
-#: ../libxarchiver/archive-support-zip.c:317
+#: ../libxarchiver/archive-support-zip.c:152
+#: ../libxarchiver/archive-support-zip.c:338
 msgid "Time"
 msgstr ""
 
+#: ../libxarchiver/archive-support-gnu-tar.c:221
+#: ../libxarchiver/archive-support-zip.c:153
+msgid "View time"
+msgstr ""
+
 #: ../libxarchiver/archive-support-zip.c:111
-#: ../libxarchiver/archive-support-zip.c:112
+msgid "Test"
+msgstr ""
+
+#. TRANSATORS: first line is short comment, after newline is long comment
+#: ../libxarchiver/archive-support-zip.c:113
+msgid ""
+"Test archive integrity\n"
+"Test the integrity of the archive"
+msgstr ""
+
+#: ../libxarchiver/archive-support-zip.c:131
+#: ../libxarchiver/archive-support-zip.c:132
 msgid "Password"
 msgstr ""
 
-#: ../libxarchiver/archive-support-zip.c:297
-msgid "Length"
+#: ../libxarchiver/archive-support-zip.c:145
+#: ../libxarchiver/archive-support-zip.c:326
+msgid "Compressed Size"
 msgstr ""
 
-#: ../libxarchiver/archive-support-zip.c:301
-msgid "Method"
+#: ../libxarchiver/archive-support-zip.c:146
+msgid "View compressed filesize"
 msgstr ""
 
-#: ../libxarchiver/archive-support-zip.c:305
-msgid "Size"
-msgstr ""
-
-#: ../libxarchiver/archive-support-zip.c:309
+#: ../libxarchiver/archive-support-zip.c:166
+#: ../libxarchiver/archive-support-zip.c:330
 msgid "Ratio"
 msgstr ""
 
-#: ../libxarchiver/archive-support-zip.c:321
-msgid "CRC-32"
+#: ../libxarchiver/archive-support-zip.c:167
+msgid "View ratio"
 msgstr ""
 
-#: ../src/main.c:51
+#: ../libxarchiver/archive-support-zip.c:173
+#: ../libxarchiver/archive-support-zip.c:318
+msgid "Size"
+msgstr ""
+
+#: ../libxarchiver/archive-support-zip.c:180
+#: ../libxarchiver/archive-support-zip.c:322
+msgid "Method"
+msgstr ""
+
+#: ../libxarchiver/archive-support-zip.c:181
+msgid "View method"
+msgstr ""
+
+#: ../libxarchiver/archive-support-zip.c:187
+#: ../libxarchiver/archive-support-zip.c:342
+msgid "Checksum"
+msgstr ""
+
+#: ../libxarchiver/archive-support-zip.c:188
+msgid "View Checksum"
+msgstr ""
+
+#: ../src/main.c:53
 msgid "[destination path]"
 msgstr ""
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr ""
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
 msgstr ""
 
-#: ../src/main.c:66
+#: ../src/main.c:68
 msgid "Version information"
 msgstr ""
 
-#: ../src/main.c:117
+#: ../src/main.c:120
 msgid "[archive name]"
 msgstr ""
 
-#: ../src/main.c:121
+#: ../src/main.c:124
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -138,70 +194,54 @@ msgid ""
 msgstr ""
 
 #. File menu
-#: ../src/main_window.c:188
+#: ../src/main_window.c:247
 msgid "_File"
 msgstr ""
 
-#. Action menu
-#: ../src/main_window.c:219
+#. Action menu: ref all the childs
+#: ../src/main_window.c:278
 msgid "_Action"
 msgstr ""
 
-#: ../src/main_window.c:224
+#: ../src/main_window.c:283
 msgid "_Add"
 msgstr ""
 
-#: ../src/main_window.c:230
+#: ../src/main_window.c:289
 msgid "_Extract"
 msgstr ""
 
 #. View menu
-#: ../src/main_window.c:244
+#: ../src/main_window.c:303
 msgid "_View"
 msgstr ""
 
-#: ../src/main_window.c:248
-msgid "_Location Selector"
-msgstr ""
-
-#: ../src/main_window.c:253
-msgid "Internal style"
-msgstr ""
-
-#: ../src/main_window.c:257
-msgid "Toolbar style"
-msgstr ""
-
-#: ../src/main_window.c:261
-msgid "Pathbar style"
-msgstr ""
-
-#: ../src/main_window.c:287
+#: ../src/main_window.c:338
 msgid "Add"
 msgstr ""
 
-#: ../src/main_window.c:291 ../src/main_window.c:672
+#: ../src/main_window.c:342 ../src/main_window.c:779
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr ""
 
-#: ../src/main_window.c:489
+#: ../src/main_window.c:585
 msgid "Open archive"
 msgstr ""
 
-#: ../src/main_window.c:671
+#: ../src/main_window.c:778
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr ""
 
-#: ../src/main_window.c:672
+#: ../src/main_window.c:779
 msgid "View"
 msgstr ""
 
-#: ../src/main_window.c:735
+#: ../src/main_window.c:842
 msgid "Failed to open file"
 msgstr ""
 
-#: ../src/main_window.c:736
+#: ../src/main_window.c:843
 #, c-format
 msgid ""
 "'%s'\n"
@@ -212,15 +252,23 @@ msgstr ""
 msgid "Create new archive"
 msgstr ""
 
-#: ../src/add_dialog.c:67
+#: ../src/add_dialog.c:69
 msgid "Files and directories to add"
 msgstr ""
 
-#: ../src/add_dialog.c:68
+#: ../src/add_dialog.c:70
 msgid "Options:"
 msgstr ""
 
-#: ../src/add_dialog.c:97
+#: ../src/add_dialog.c:101
+msgid "Files"
+msgstr ""
+
+#: ../src/add_dialog.c:105
+msgid "Directories"
+msgstr ""
+
+#: ../src/add_dialog.c:138
 msgid "Add file(s) to archive"
 msgstr ""
 
@@ -242,4 +290,12 @@ msgstr ""
 
 #: ../src/extract_dialog.c:115
 msgid "Extract archive"
+msgstr ""
+
+#: ../xarchiver.desktop.in.h:1
+msgid "A GTK+2 archive manager"
+msgstr ""
+
+#: ../xarchiver.desktop.in.h:2
+msgid "Archive manager"
 msgstr ""

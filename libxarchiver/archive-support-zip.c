@@ -142,7 +142,7 @@ lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_EXTRACT_OVERWRITE, pspec);
 
 	pspec = g_param_spec_boolean("view-compressed-size",
-		_("Compressed Filesize"),
+		_("Compressed Size"),
 		_("View compressed filesize"),
 		FALSE,
 		G_PARAM_READWRITE);
@@ -169,8 +169,8 @@ lxa_archive_support_zip_class_init(LXAArchiveSupportZipClass *supportclass)
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LXA_ARCHIVE_SUPPORT_ZIP_VIEW_RATIO, pspec);
 
-	pspec = g_param_spec_boolean("view-compressed-size",
-		_("Filesize"),
+	pspec = g_param_spec_boolean("view-uncompressed-size",
+		_("Size"),
 		_("View filesize"),
 		FALSE,
 		G_PARAM_READWRITE);
@@ -315,7 +315,7 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 	{
 		i = LXA_ARCHIVE_PROP_USER;
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
-			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Filesize"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) {
@@ -323,7 +323,7 @@ lxa_archive_support_zip_refresh(LXAArchive *archive)
 			i++;
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) {
-			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Compressed Filesize"));
+			lxa_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Compressed Size"));
 			i++;
 		}
 		if(LXA_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
