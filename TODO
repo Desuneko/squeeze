@@ -61,7 +61,7 @@ Long Version:
 
 	An Archive can only be opened once
 
-
+	Check to see if the [<] and [>] of the pathbar needs point in the other direction when TEXT_DIR_RTL is set
 
   ... Complete TODO-file
 

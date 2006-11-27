@@ -317,12 +317,14 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	GSList *first_display = NULL;
 	GtkRequisition child_requisition;
 	GtkAllocation child_allocation;
+  GtkTextDirection direction;
 
 	widget->allocation = *allocation;
 
 	if(!path_bar->path_button)
 		return;
 	
+  direction = gtk_widget_get_direction (widget);
 	gtk_widget_style_get(widget, "spacing", &spacing, NULL);
 
 	border_width = GTK_CONTAINER(path_bar)->border_width;
@@ -386,19 +388,37 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	}
 
 	child_allocation.y = allocation->y + border_width;
-	child_allocation.x = allocation->x + border_width;
 	child_allocation.height = allocation->height - (border_width * 2);
+	if(direction == GTK_TEXT_DIR_RTL)
+	{
+		child_allocation.x = allocation->x + allocation->width - border_width;
+	}
+	else
+	{
+		child_allocation.x = allocation->x + border_width;
+	}
 
 	/* set visible and sensitive scroll buttons */
 	if(left_width)
 	{
 		/* set visible */
 		gtk_widget_set_child_visible(GTK_WIDGET(path_bar->left_button), TRUE);
-		child_allocation.width = left_width;
-		gtk_widget_size_allocate(GTK_WIDGET(path_bar->left_button), &child_allocation);
 
-		child_allocation.x += left_width + spacing;
+		child_allocation.width = left_width;
+		if(direction == GTK_TEXT_DIR_RTL)
+		{
+			child_allocation.x -= left_width;
+			gtk_widget_size_allocate(GTK_WIDGET(path_bar->left_button), &child_allocation);
+			child_allocation.x -= spacing;
+		}
+		else
+		{
+			gtk_widget_size_allocate(GTK_WIDGET(path_bar->left_button), &child_allocation);
+			child_allocation.x += left_width + spacing;
+		}
+
 		gtk_widget_set_sensitive(GTK_WIDGET(path_bar->left_button), (first_display->data == (gpointer)path_bar->path_button)?FALSE:TRUE);
+
 		if(path_bar->scroll_dir == XA_SCROLL_LEFT && first_display->data == (gpointer)path_bar->path_button)
 		{
 			g_source_remove(path_bar->scroll_timeout);
@@ -412,22 +432,36 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	}
 
 	/* set visible for buttons */
+	width = border_width * 2 - spacing;
+	if(left_width)
+		width += left_width + spacing;
+	if(right_width)
+		width += spacing + right_width;
 	iter = (GSList*)first_display->data;
 	while(iter)
 	{
 		gtk_widget_get_child_requisition(GTK_WIDGET(iter->data), &child_requisition);
-		width = child_allocation.x + child_requisition.width;
-		if(right_width)
-			width += spacing + right_width + border_width;
+		width += spacing + child_requisition.width;
 		/* check to see if there is enough space */
 		if(width > allocation->width)
 			break;
 		/* set visible */
 		gtk_widget_set_child_visible(GTK_WIDGET(iter->data), TRUE);
 		child_allocation.width = child_requisition.width;
+		if(direction == GTK_TEXT_DIR_RTL)
+		{
+			child_allocation.x -= child_requisition.width;
+		}
 		gtk_widget_size_allocate(GTK_WIDGET(iter->data), &child_allocation);
 
-		child_allocation.x += child_requisition.width + spacing;
+		if(direction == GTK_TEXT_DIR_RTL)
+		{
+			child_allocation.x -= spacing;
+		}
+		else
+		{
+			child_allocation.x += child_requisition.width + spacing;
+		}
 		iter = iter->next;
 	}
 
@@ -436,11 +470,20 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	{
 		/* set visible */
 		gtk_widget_set_child_visible(GTK_WIDGET(path_bar->right_button), TRUE);
-		child_allocation.x = allocation->width - right_width - border_width;
+
 		child_allocation.width = right_width;
+		if(direction == GTK_TEXT_DIR_RTL)
+		{
+			child_allocation.x = border_width + allocation->x;
+		}
+		else
+		{
+			child_allocation.x = allocation->width - right_width - border_width;
+		}
 		gtk_widget_size_allocate(GTK_WIDGET(path_bar->right_button), &child_allocation);
 
 		gtk_widget_set_sensitive(GTK_WIDGET(path_bar->right_button), iter?TRUE:FALSE);
+
 		if(path_bar->scroll_dir == XA_SCROLL_RIGHT && !iter)
 		{
 			g_source_remove(path_bar->scroll_timeout);
