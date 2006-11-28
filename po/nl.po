@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.3.9psybsd\n"
 "Report-Msgid-Bugs-To: psybsd@gmail.com\n"
-"POT-Creation-Date: 2006-11-23 08:47+0100\n"
+"POT-Creation-Date: 2006-11-27 17:19+0100\n"
 "PO-Revision-Date: 2006-07-20 16:36+0200\n"
 "Last-Translator: Stephan Arts <psybsd@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -198,6 +198,28 @@ msgstr ""
 "%s: %s\n"
 "Probeer xarchiver --help om een volledige lijst te zien met beschikbare "
 "opties.\n"
+
+#: ../src/main_window.c:108
+msgid "Internal Style"
+msgstr "Interne Stijl"
+
+#: ../src/main_window.c:110
+msgid "Tool Bar Style"
+msgstr "Werkbalk Stijl"
+
+#: ../src/main_window.c:113
+msgid "Path Bar Style"
+msgstr "Padbalk Stijl"
+
+#: ../src/main_window.c:161
+msgid "Navigation Style"
+msgstr "Navigatie Stijl"
+
+#: ../src/main_window.c:162
+msgid ""
+"Style of navigation\n"
+"The style to navigate trough the archive"
+msgstr ""
 
 #. File menu
 #: ../src/main_window.c:247

@@ -394,7 +394,6 @@ lxa_archive_support_gnu_tar_extract(LXAArchive *archive, gchar *dest_path, GSLis
 		if(command)
 		{
 			lxa_execute(command, archive, NULL, NULL, NULL, NULL);
-			g_debug("Extracting archive '%s' to '%s'\nUsing command '%s'", archive->path, dest_path, command);
 			LXA_FREE(command_options);
 			LXA_FREE(command);
 		}
@@ -625,9 +624,6 @@ lxa_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
-#ifdef DEBUG
-		g_debug("shutting down ioc");
-#endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
@@ -664,9 +660,6 @@ lxa_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 	LXA_FREE(buf);
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
-#ifdef DEBUG
-		g_debug("shutting down ioc");
-#endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
 
@@ -723,9 +716,6 @@ lxa_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition 
 	LXA_FREE(buf);
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
-#ifdef DEBUG
-		g_debug("shutting down ioc");
-#endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
 		if(archive->tmp_file)

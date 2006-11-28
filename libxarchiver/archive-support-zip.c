@@ -259,9 +259,6 @@ lxa_archive_support_zip_extract(LXAArchive *archive, gchar *dest_path, GSList *f
 		     !g_strcasecmp((gchar *)lxa_mime_info_get_name(archive->mime_info), "application/zip"))
 			{
 				command = g_strconcat("unzip -o ", archive->path, " ", files, " -d ", dest_path, NULL);
-#ifdef DEBUG
-				g_debug("Extracting archive '%s' to '%s'", archive->path, dest_path);
-#endif /* DEBUG */
 				lxa_execute(command, archive, NULL, NULL, NULL, NULL);
 			}	
 		} else
@@ -476,9 +473,6 @@ lxa_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
 	{
-#ifdef DEBUG
-		g_debug("shutting down ioc");
-#endif
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
 		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);

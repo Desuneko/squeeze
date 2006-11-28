@@ -303,6 +303,7 @@ static void
 cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 {
 	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
+	g_debug("%s", __FUNCTION__);
 	gchar *path= xa_archive_store_get_pwd(store);
 	if(!path)
 		path = g_strdup("");
@@ -314,9 +315,20 @@ cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 static void
 cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 {
+	g_debug("%s", __FUNCTION__);
 	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
 
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
+	LXAArchive *lp_archive = xa_archive_store_get_archive(store);
+
+	if(!lp_archive)
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
+	else
+	{
+		if(lxa_archive_get_status(lp_archive) != LXA_ARCHIVESTATUS_IDLE)
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
+		else
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
+	}
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), FALSE);
@@ -375,7 +387,10 @@ cb_xa_tool_bar_store_set(XANavigationBar *bar)
 		if(!path)
 			path = g_strdup("");
 		xa_tool_bar_refresh(tool_bar, path);
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
+		if(bar->store->archive->status == LXA_ARCHIVESTATUS_IDLE)
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
+		else
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
 		g_free(path);
 	}
 	else

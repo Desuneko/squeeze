@@ -1187,9 +1187,11 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 
 	if(!archive)
 	{
+		if(store->archive)
+			g_object_unref(store->archive);
 		store->archive = NULL;
 
-		g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
+		g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0, NULL);
 		return;
 	}
 
@@ -1225,9 +1227,8 @@ xa_archive_store_set_archive(XAArchiveStore *store, LXAArchive *archive)
 		}
 	}
 
+	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0, NULL);
 	g_signal_connect(store->archive, "lxa_refreshed", G_CALLBACK(cb_xa_archive_store_archive_refreshed), store);
-
-	g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0,NULL);
 }
 
 gchar *
@@ -1661,6 +1662,7 @@ cb_xa_archive_store_archive_refreshed(LXAArchive *archive, gpointer user_data)
 	{
 		if(!store->navigation.present)
 			xa_archive_store_append_history(store, g_slist_prepend(NULL, lxa_archive_get_iter(archive, NULL)));
+		g_signal_emit(store, xa_archive_store_signals[XA_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 	}
 }
 

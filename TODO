@@ -59,7 +59,7 @@ Long Version:
 
 	Support CustomActionProperties (custom-actions which require additional arguments and configuration) Make them class actions insteadof instance actions structs
 
-	An Archive can only be opened once
+	An Archive should only be opened once
 
 	Check to see if the [<] and [>] of the pathbar needs point in the other direction when TEXT_DIR_RTL is set
 

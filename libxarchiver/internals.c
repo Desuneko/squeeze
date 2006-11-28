@@ -107,23 +107,14 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 		return 1;
 	if(function)
 	{
-#ifdef DEBUG
-		g_debug("Adding watch to child");
-#endif
 		g_child_watch_add(archive->child_pid, function, archive);
 	}
 	else
 	{
-#ifdef DEBUG
-		g_debug("Adding default watch to child");
-#endif
 		g_child_watch_add(archive->child_pid, lxa_default_child_watch_func, archive);
 	}
 	if(f_in)
 	{
-#ifdef DEBUG
-		g_debug("Adding watch to stdin");
-#endif
 		archive->ioc_in = g_io_channel_unix_new(fd_in);
 		g_io_channel_set_encoding (archive->ioc_in, "ISO8859-1" , NULL);
 		g_io_channel_set_flags ( archive->ioc_in, G_IO_FLAG_NONBLOCK , NULL );
@@ -131,9 +122,6 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	if(f_out)
 	{
-#ifdef DEBUG
-		g_debug("Adding watch to stdout");
-#endif
 		archive->ioc_out = g_io_channel_unix_new(fd_out);
 		g_io_channel_set_encoding (archive->ioc_out, NULL, NULL);
 		g_io_channel_set_flags (archive->ioc_out , G_IO_FLAG_NONBLOCK , NULL );
@@ -141,9 +129,6 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	if(f_err)
 	{
-#ifdef DEBUG
-		g_debug("Adding watch to stderr");
-#endif
 		archive->ioc_err = g_io_channel_unix_new(fd_out);
 //  g_io_channel_set_encoding (ioc_err, "ISO8859-1" , NULL);
 		g_io_channel_set_flags (archive->ioc_err , G_IO_FLAG_NONBLOCK , NULL );

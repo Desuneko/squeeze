@@ -347,6 +347,7 @@ cb_notebook_archive_refreshed(LXAArchive *archive, GtkTreeView *treeview)
 	g_object_ref(archive_store);
 	gtk_tree_view_set_model(treeview, NULL);
 	xa_archive_store_set_archive(XA_ARCHIVE_STORE(archive_store), archive);
+	g_object_unref(archive_store);
 	gtk_tree_view_set_model(treeview, archive_store);
 }
 

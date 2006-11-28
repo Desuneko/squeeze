@@ -105,12 +105,12 @@ xa_main_window_navigation_style_get_type()
 	if(!nav_style_type)
 	{
 		static GEnumValue style_types[] = {
-			{XA_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", "Internal Style"},
+			{XA_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", N_("Internal Style")},
 #ifdef ENABLE_TOOLBAR
-			{XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", "Tool Bar Style"},
+			{XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", N_("Tool Bar Style")},
 #endif
 #ifdef ENABLE_PATHBAR
-			{XA_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", "Path Bar Style"},
+			{XA_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", N_("Path Bar Style")},
 #endif
 			{0, NULL, NULL}
 		};
@@ -158,8 +158,8 @@ xa_main_window_class_init(XAMainWindowClass *window_class)
 	object_class->finalize     = xa_main_window_finalize;
 
 	pspec = g_param_spec_enum("navigation-style",
-		"Navigation Style",
-		"Style of navigation\nThe style to navigate trough the archive",
+		_("Navigation Style"),
+		_("Style of navigation\nThe style to navigate trough the archive"),
 		XA_TYPE_MAIN_WINDOW_NAVIGATION_STYLE,
 		XA_MAIN_WINDOW_NAVIGATION_INTERNAL,
 		G_PARAM_READWRITE);
@@ -600,10 +600,13 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 		_open_archive_paths = open_archive_paths;
 		while(_open_archive_paths)
 		{
+			xa_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
+			/*
 			if(xa_notebook_get_multi_tab(XA_NOTEBOOK(window->notebook)))
 				xa_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
 			else
 				xa_application_open_archive(window->app, NULL, _open_archive_paths->data);
+			*/
 			_open_archive_paths = _open_archive_paths->next;
 		}
 		g_slist_foreach(open_archive_paths, (GFunc)g_free, NULL);
