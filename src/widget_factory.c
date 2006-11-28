@@ -753,14 +753,14 @@ cb_xa_widget_factory_property_changed(GtkWidget *widget, gpointer user_data)
 				if(GTK_IS_CHECK_BUTTON(widget))
 				{
 					g_object_get_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-					// TODO: sync?
+					/* TODO: sync? */
 					g_value_set_flags(&value, g_value_get_flags(&value) ^ GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
 					g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
 				}
 				if(GTK_IS_CHECK_MENU_ITEM(widget))
 				{
 					g_object_get_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
-					// TODO: sync?
+					/* TODO: sync? */
 					g_value_set_flags(&value, g_value_get_flags(&value) ^ GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), XA_PROPERTY_VALUE_DATA)));
 					g_object_set_property(G_OBJECT(user_data), g_param_spec_get_name(pspec), &value);
 				}

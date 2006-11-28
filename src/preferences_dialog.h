@@ -54,6 +54,9 @@ struct _XAPreferencesDialog
 			} sorting;
 		} viewer;
 	} general;
+	struct {
+		GtkWidget *notebook;
+	} support;
 };
 
 typedef struct _XAPreferencesDialogClass XAPreferencesDialogClass;
