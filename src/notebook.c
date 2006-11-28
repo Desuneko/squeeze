@@ -356,7 +356,6 @@ xa_notebook_treeview_reset_columns(LXAArchive *archive, GtkTreeView *treeview)
 {
 	GtkCellRenderer *renderer = NULL;
 	GtkTreeViewColumn *column = NULL;
-	GtkTreeModel *archive_store = gtk_tree_view_get_model(treeview);
 	gint x = 0;
 
 	GValue *value = g_new0(GValue, 1);
@@ -375,20 +374,17 @@ xa_notebook_treeview_reset_columns(LXAArchive *archive, GtkTreeView *treeview)
 
 	column = gtk_tree_view_column_new();
 
-	if(XA_ARCHIVE_STORE(archive_store)->props._show_icons)
-	{
-		renderer = gtk_cell_renderer_pixbuf_new();
-		g_object_set_property(G_OBJECT(renderer), "stock-size", value);
-		gtk_tree_view_column_pack_start(column, renderer, FALSE);
-		gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
-	}
+	renderer = gtk_cell_renderer_pixbuf_new();
+	g_object_set_property(G_OBJECT(renderer), "stock-size", value);
+	gtk_tree_view_column_pack_start(column, renderer, FALSE);
+	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes(column, renderer, "text", LXA_ARCHIVE_PROP_FILENAME + 1, NULL);
 
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	gtk_tree_view_column_set_sort_column_id(column, LXA_ARCHIVE_PROP_FILENAME);
+	gtk_tree_view_column_set_sort_column_id(column, LXA_ARCHIVE_PROP_FILENAME + 1);
 	gtk_tree_view_column_set_title(column, lxa_archive_get_property_name(archive, LXA_ARCHIVE_PROP_FILENAME));
 	gtk_tree_view_append_column(treeview, column);
 

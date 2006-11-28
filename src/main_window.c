@@ -87,6 +87,8 @@ static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
 static void cb_xa_main_close_window(GtkWidget *widget, gpointer userdata);
 
+static void cb_xa_main_preferences(GtkWidget *widget, gpointer userdata);
+
 static void
 cb_xa_main_window_notebook_page_switched(XANotebook *, GtkNotebookPage *, guint, gpointer);
 static void
@@ -312,6 +314,13 @@ xa_main_window_init(XAMainWindow *window)
 			gtk_widget_show(iter->data);
 		}
 #endif
+
+		window->menubar.menu_item_settings = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, window->accel_group);
+
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_settings), "activate", G_CALLBACK(cb_xa_main_preferences), window);
+
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), window->menubar.menu_item_settings);
+
 		gtk_widget_show_all(window->menubar.menu_view);
 
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_file);
@@ -712,6 +721,14 @@ cb_xa_main_close_window(GtkWidget *widget, gpointer userdata)
 static void
 cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
+}
+
+static void
+cb_xa_main_preferences(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget *dialog = xa_preferences_dialog_new();
+
+	gtk_widget_show_all(dialog);
 }
 
 static void

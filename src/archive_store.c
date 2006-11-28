@@ -960,8 +960,9 @@ xa_archive_store_refresh(XAArchiveStore *store)
 	guint prev_size = store->list_size;
 	LXAArchive *archive = store->archive;
 
+	if(!store->navigation.present)
+		return;
 #ifdef DEBUG
-	g_return_if_fail(store->navigation.present);
 	g_return_if_fail(store->navigation.present->data);
 #endif
 
