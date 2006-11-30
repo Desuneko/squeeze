@@ -565,7 +565,7 @@ lsq_entry_new(LSQArchive *archive, const gchar *filename)
 static void
 lsq_archive_entry_free(LSQArchive *archive, LSQEntry *entry)
 {
-	gint i = 0; 
+	guint i = 0; 
 	gpointer props_iter = entry->props;
 	LSQSList *buffer_iter = entry->buffer;
 
@@ -579,7 +579,7 @@ lsq_archive_entry_free(LSQArchive *archive, LSQEntry *entry)
 	if(entry->children)
 	{
 		/* first element of the array (*entry->children) contains the size of the array */
-		for(i = 1; i <= GPOINTER_TO_INT(*entry->children); ++i)
+		for(i = 1; i <= GPOINTER_TO_UINT(*entry->children); ++i)
 			lsq_archive_entry_free(archive, entry->children[i]);
 
 		g_free(entry->children);
@@ -623,7 +623,7 @@ lsq_entry_get_child(const LSQEntry *entry, const gchar *filename)
 {
 	LSQSList *buffer_iter = NULL;
 	/* the first element of the array (*entry->children) contains the size of the array */
-	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
+	guint size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
 	guint pos = 0;
 	guint begin = 1;
 	gint cmp = 0;
@@ -699,8 +699,8 @@ lsq_archive_entry_flush_buffer(LSQArchive *archive, LSQEntry *entry)
 	guint old_i = 1;
 	guint new_i = 1;
 	/* the first element of the array (*entry->children) contains the size of the array */
-	guint size = entry->children?GPOINTER_TO_INT(*entry->children):0;
-	gint n_children = size;
+	guint size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
+	guint n_children = size;
 	LSQSList *buffer_iter = NULL;
 	LSQEntry **children_old = (LSQEntry **)entry->children;
 
@@ -748,7 +748,7 @@ lsq_archive_entry_flush_buffer(LSQArchive *archive, LSQEntry *entry)
 	}
 	n_children = new_i - 1;
 	/* the first element of the array (*entry->children) contains the size of the array */
-	*entry->children = GINT_TO_POINTER(n_children);
+	*entry->children = GUINT_TO_POINTER(n_children);
 	
 	lsq_slist_free(entry->buffer);
 	entry->buffer = NULL;
@@ -818,7 +818,7 @@ lsq_archive_iter_n_children(const LSQArchive *archive, const LSQArchiveIter *ite
 #endif
 	/* g_debug("%d: %d", iter->children?GPOINTER_TO_INT(*iter->children):0, lsq_slist_length(iter->buffer)); */
 	/* the first element of the array (*iter->children) contains the size of the array */
-	return (iter->children?GPOINTER_TO_INT(*iter->children):0 + lsq_slist_length(iter->buffer));
+	return (iter->children?GPOINTER_TO_UINT(*iter->children):0 + lsq_slist_length(iter->buffer));
 }
 
 /** 

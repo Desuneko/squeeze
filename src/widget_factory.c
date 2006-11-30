@@ -966,6 +966,6 @@ cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data)
 {
 	LSQArchive *archive = LSQ_ARCHIVE(user_data);
 
-	lsq_custom_action_execute(g_object_get_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA), archive);
+	lsq_custom_action_execute(g_object_get_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA), archive, NULL, NULL);
 }
 

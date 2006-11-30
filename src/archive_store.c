@@ -862,8 +862,6 @@ sq_archive_store_sort(SQArchiveStore *store)
 	if(psize <= 1)
 		return;
 
-	g_debug("PSIZE = %d", psize);
-
 	store->sort_list = g_new(LSQArchiveIter*, psize);
 
 	for(i = 0; i < psize; ++i)

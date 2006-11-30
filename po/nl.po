@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2006-11-29 00:27+0100\n"
+"POT-Creation-Date: 2006-11-30 16:35+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:424
+#: ../libsqueeze/archive.c:423
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: ../libsqueeze/archive.c:427
+#: ../libsqueeze/archive.c:426
 msgid "Mime type"
 msgstr "Mime type"
 
@@ -250,7 +250,7 @@ msgstr "Archief openen"
 
 #: ../src/main_window.c:798
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr ""
+msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
 #: ../src/main_window.c:799
 msgid "View"
@@ -258,7 +258,7 @@ msgstr "Weergeven"
 
 #: ../src/main_window.c:862
 msgid "Failed to open file"
-msgstr ""
+msgstr "Kan bestand niet openen"
 
 #: ../src/main_window.c:863
 #, c-format
@@ -266,6 +266,23 @@ msgid ""
 "'%s'\n"
 "Could not be opened"
 msgstr ""
+"'%s'\n"
+"Kan niet worden geopend"
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:223
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "Kan archief niet maken, MIME-type niet ondersteund"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:240
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr "Kan archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
 
 #: ../src/new_dialog.c:87
 msgid "Create new archive"
@@ -317,11 +334,39 @@ msgstr "Locatie:"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
-msgstr ""
+msgstr "Spatiering"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
-msgstr ""
+msgstr "De ruimte tussen de pad knoppen"
+
+#: ../src/archive_store.c:242
+msgid "Show mime icons"
+msgstr "Mime iconen weergeven"
+
+#: ../src/archive_store.c:243
+msgid "Show the mime type icons for each entry"
+msgstr "Mime type iconen weergeven voor elk item"
+
+#: ../src/archive_store.c:249
+msgid "Show up dir entry"
+msgstr "Toon map-omhoog item"
+
+#: ../src/archive_store.c:250
+msgid "Show '..' to go to the parent directory"
+msgstr "Toon '..' om naar de bovenliggende map te gaan"
+
+#: ../src/archive_store.c:256
+msgid "Sort folders before files"
+msgstr "Mappen voor bestanden sorteren"
+
+#: ../src/archive_store.c:257
+msgid "The folders will be put at the top of the list"
+msgstr "De mappen zullen boven aan de lijst geplaatst worden"
+
+#: ../src/archive_store.c:263 ../src/archive_store.c:264
+msgid "Sort text case sensitive"
+msgstr "Tekst hoofdlettergevoelig sorteren"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive manager"

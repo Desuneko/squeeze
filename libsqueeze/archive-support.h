@@ -44,7 +44,9 @@ G_BEGIN_DECLS
 typedef struct _LSQCustomAction LSQCustomAction;
 typedef struct _LSQArchiveSupport LSQArchiveSupport;
 
-typedef void (*LSQCustomActionFunc) (LSQArchiveSupport *support, LSQArchive *, gpointer user_data);
+typedef gboolean (*LSQCustomActionPreFunc) (LSQCustomAction *);
+typedef gboolean (*LSQCustomActionFunc) (LSQArchiveSupport *support, LSQArchive *, gpointer user_data);
+typedef gboolean (*LSQCustomActionPostFunc) (LSQCustomAction *, gboolean);
 
 struct _LSQCustomAction
 {
@@ -53,6 +55,7 @@ struct _LSQCustomAction
 	gchar *blurb;
 	gchar *icon;
 	LSQCustomActionFunc func;
+	LSQCustomActionPostFunc post_func;
 	LSQArchiveSupport *support;
 	gpointer user_data;
 };
@@ -120,7 +123,7 @@ const gchar*         lsq_custom_action_get_name(LSQCustomAction*);
 const gchar*         lsq_custom_action_get_nick(LSQCustomAction*);
 const gchar*         lsq_custom_action_get_blurb(LSQCustomAction*);
 const gchar*         lsq_custom_action_get_icon_name(LSQCustomAction*);
-void                 lsq_custom_action_execute(LSQCustomAction*, LSQArchive *);
+void                 lsq_custom_action_execute(LSQCustomAction*, LSQArchive *, LSQCustomActionPreFunc, LSQCustomActionPostFunc);
 
 G_END_DECLS
 

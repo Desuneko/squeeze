@@ -323,7 +323,14 @@ lsq_custom_action_get_blurb(LSQCustomAction *action)
 }
 
 void
-lsq_custom_action_execute(LSQCustomAction *action, LSQArchive *archive)
+lsq_custom_action_execute(LSQCustomAction *action, LSQArchive *archive, LSQCustomActionPreFunc pre_func, LSQCustomActionPostFunc post_func)
 {
+	if(pre_func)
+	{
+		if(pre_func(action) == FALSE)
+			return;
+	}
+	/* set post-condition-callback */
+	action->post_func = post_func; 	
 	action->func(action->support, archive, action->user_data);
 }

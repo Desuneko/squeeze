@@ -1,4 +1,4 @@
-libsqueeze/libxarchiver.c
+libsqueeze/libsqueeze.c
 libsqueeze/archive.c
 libsqueeze/archive-support.c
 libsqueeze/archive-support-gnu-tar.c
