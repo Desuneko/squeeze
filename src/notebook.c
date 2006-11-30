@@ -20,7 +20,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
@@ -320,7 +320,8 @@ cb_notebook_close_archive(GtkButton *button, GtkWidget *child)
 
 	LSQArchive *archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
 
-	g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
+	//if(archive)
+	//g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
 	g_object_unref(archive_store);
 
 	lsq_close_archive(archive);

@@ -24,7 +24,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gettext.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "path_bar.h"

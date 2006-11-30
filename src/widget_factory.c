@@ -24,7 +24,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <gettext.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 
 #include "widget_factory.h"
 

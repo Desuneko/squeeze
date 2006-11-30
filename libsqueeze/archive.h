@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
-#ifndef __LIBXARCHIVER_ARCHIVE_H__
-#define __LIBXARCHIVER_ARCHIVE_H__ 
+#ifndef __LIBSQUEEZE_ARCHIVE_H__
+#define __LIBSQUEEZE_ARCHIVE_H__ 
 G_BEGIN_DECLS
 
 typedef enum
@@ -134,4 +134,4 @@ guint               lsq_archive_n_property(LSQArchive *);
 
 G_END_DECLS
 
-#endif /* __LIBXARCHIVER_ARCHIVE_H__ */
+#endif /* __LIBSQUEEZE_ARCHIVE_H__ */

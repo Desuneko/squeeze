@@ -21,7 +21,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 #include <libsqueeze/mime.h>
 #include <gettext.h>
 
@@ -42,6 +42,9 @@ sq_archive_tree_model_init(GtkTreeModelIface *tm_interface);
 
 static void
 sq_archive_tree_sortable_init(GtkTreeSortableIface *ts_interface);
+
+static void
+sq_archive_store_finalize(GObject *object);
 
 /* properties */
 enum {
@@ -233,6 +236,7 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 
 	object_class->set_property = sq_archive_store_set_property;
 	object_class->get_property = sq_archive_store_get_property;
+	object_class->finalize = sq_archive_store_finalize;
 
 	pspec = g_param_spec_boolean("show_icons",
 		_("Show mime icons"),
@@ -1697,4 +1701,13 @@ void
 sq_archive_store_set_support(SQArchiveStore *archive_store, LSQArchiveSupport *support)
 {
 	archive_store->support = support;
+}
+
+static void
+sq_archive_store_finalize(GObject *object)
+{
+	g_debug("%s", __FUNCTION__);
+	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
+	if(store->archive)
+		g_object_unref(store->archive);
 }

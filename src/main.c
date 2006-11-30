@@ -20,7 +20,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 
 #include <gettext.h>
 

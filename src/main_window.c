@@ -31,7 +31,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 #include <libsqueeze/mime.h>
 #include <gettext.h>
 

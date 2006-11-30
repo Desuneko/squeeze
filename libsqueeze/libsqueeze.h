@@ -15,8 +15,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#ifndef __LIBXARCHIVER_H__
-#define __LIBXARCHIVER_H__
+#ifndef __LIBSQUEEZE_H__
+#define __LIBSQUEEZE_H__
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
@@ -83,4 +83,4 @@ lsq_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
 
 G_END_DECLS
 
-#endif /* __LIBXARCHIVER_H__ */
+#endif /* __LIBSQUEEZE_H__ */

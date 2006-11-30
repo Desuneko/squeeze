@@ -23,7 +23,7 @@
 #include <glib-object.h>
 #include <gettext.h>
 
-#include "libxarchiver.h"
+#include "libsqueeze.h"
 #include "libsqueeze/archive-support-zip.h"
 #include "libsqueeze/archive-support-gnu-tar.h"
 

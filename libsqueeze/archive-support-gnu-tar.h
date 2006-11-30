@@ -15,8 +15,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#ifndef __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__
-#define __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__
+#ifndef __LIBSQUEEZE_ARCHIVE_SUPPORT_GNU_TAR_H__
+#define __LIBSQUEEZE_ARCHIVE_SUPPORT_GNU_TAR_H__
 
 G_BEGIN_DECLS
 
@@ -79,4 +79,4 @@ gint                 lsq_archive_support_gnu_tar_refresh(LSQArchive *);
 
 G_END_DECLS
 
-#endif /* __LIBXARCHIVER_ARCHIVE_SUPPORT_GNU_TAR_H__ */
+#endif /* __LIBSQUEEZE_ARCHIVE_SUPPORT_GNU_TAR_H__ */

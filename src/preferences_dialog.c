@@ -19,7 +19,7 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/libsqueeze.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #ifdef HAVE_THUNAR_VFS
