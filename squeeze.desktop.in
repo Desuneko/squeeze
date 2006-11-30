@@ -1,11 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
 Version=1.0
-Name=Xarchiver
-_Comment=A GTK+2 archive manager
+Name=Squeeze
+_Comment=Xfce archive manager
 _GenericName=Archive manager
-Exec=xarchiver
-Icon=xarchiver
+Exec=squeeze
+Icon=squeeze
 Terminal=false
 Type=Application
 X-MultipleArgs=false

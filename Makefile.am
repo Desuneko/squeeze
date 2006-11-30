@@ -4,22 +4,22 @@ AUTOMAKE_OPTIONS =							\
 	1.8								\
 	dist-bzip2
 
-SUBDIRS = icons pixmaps libxarchiver src po
+SUBDIRS = pixmaps libsqueeze src po
 
 wrapperdir = $(libexecdir)/thunar-archive-plugin/
-wrapper_SCRIPTS = xarchiver.tap
+wrapper_SCRIPTS = squeeze.tap
 
 desktopdir = $(datadir)/applications
-desktop_in_files = xarchiver.desktop.in
+desktop_in_files = squeeze.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = \
+EXTRA_DIST = config.rpath m4/ChangeLog  \
 	autogen.sh \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
-	xarchiver.tap \
+	squeeze.tap \
 	gettext.h \
 	$(desktop_in_files) \
 	$(wrapper_DATA)
@@ -29,3 +29,5 @@ DISTCLEANFILES = \
 	intltool-merge \
 	intltool-update \
 	$(desktop_DATA)
+
+ACLOCAL_AMFLAGS = -I m4

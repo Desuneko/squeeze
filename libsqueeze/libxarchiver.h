@@ -20,66 +20,66 @@
 
 #define EXO_API_SUBJECT_TO_CHANGE
 
-#include <libxarchiver/mime.h>
-#include <libxarchiver/archive.h>
-#include <libxarchiver/archive-support.h>
+#include <libsqueeze/mime.h>
+#include <libsqueeze/archive.h>
+#include <libsqueeze/archive-support.h>
 
 
 G_BEGIN_DECLS
 
 /*
  * void
- * lxa_init()
+ * lsq_init()
  */
-void lxa_init();
+void lsq_init();
 
 /*
  * void
- * lxa_destroy()
+ * lsq_destroy()
  */
-void lxa_destroy();
+void lsq_destroy();
 
 /*
  * gint
- * lxa_new_archive(gchar *path,
- *                 LXAArchiveType type,
+ * lsq_new_archive(gchar *path,
+ *                 LSQArchiveType type,
  *                 gboolean overwrite,
- *                 LXAArchive &&lp_archive)
+ *                 LSQArchive &&lp_archive)
  *
  * returns:
  * 0 -- success
  */
 gint
-lxa_new_archive( gchar *path,
+lsq_new_archive( gchar *path,
                  gboolean overwrite,
                  gchar *mime,
-                 LXAArchive **lp_archive);
+                 LSQArchive **lp_archive);
 
 /*
  * gint 
- * lxa_open_archive(gchar *path,
- *                  LXAArchive **lp_archive)
+ * lsq_open_archive(gchar *path,
+ *                  LSQArchive **lp_archive)
  *
  * returns:
  * 0 -- success
  */
 gint
-lxa_open_archive( gchar *path, 
-                  LXAArchive **lp_archive);
+lsq_open_archive( gchar *path, 
+                  LSQArchive **lp_archive);
 
 /*
  * void 
- * lxa_close_archive( LXAArchive **lp_archive )
+ * lsq_close_archive( LSQArchive **lp_archive )
  *
  */
 void 
-lxa_close_archive( LXAArchive *archive );
+lsq_close_archive( LSQArchive *archive );
 
 gint
-lxa_stop_archive_child( LXAArchive *archive );
+lsq_stop_archive_child( LSQArchive *archive );
 
 void
-lxa_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
+lsq_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
 
 G_END_DECLS
 

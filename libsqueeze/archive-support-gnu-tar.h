@@ -20,31 +20,31 @@
 
 G_BEGIN_DECLS
 
-#define LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR lxa_archive_support_gnu_tar_get_type()
+#define LSQ_TYPE_ARCHIVE_SUPPORT_GNU_TAR lsq_archive_support_gnu_tar_get_type()
 
-#define LXA_ARCHIVE_SUPPORT_GNU_TAR(obj)         ( \
+#define LSQ_ARCHIVE_SUPPORT_GNU_TAR(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR,      \
-			LXAArchiveSupportGnuTar))
+			LSQ_TYPE_ARCHIVE_SUPPORT_GNU_TAR,      \
+			LSQArchiveSupportGnuTar))
 
-#define LXA_IS_ARCHIVE_SUPPORT_GNU_TAR(obj)      ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_GNU_TAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR))
+			LSQ_TYPE_ARCHIVE_SUPPORT_GNU_TAR))
 
-#define LXA_ARCHIVE_SUPPORT_GNU_TAR_CLASS(klass) ( \
+#define LSQ_ARCHIVE_SUPPORT_GNU_TAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR,      \
-			LXAArchiveSupportGnuTarClass))
+			LSQ_TYPE_ARCHIVE_SUPPORT_GNU_TAR,      \
+			LSQArchiveSupportGnuTarClass))
 
-#define LXA_IS_ARCHIVE_SUPPORT_GNU_TAR_CLASS(klass) ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_GNU_TAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LXA_TYPE_ARCHIVE_SUPPORT_GNU_TAR))
+			LSQ_TYPE_ARCHIVE_SUPPORT_GNU_TAR))
 
-typedef struct _LXAArchiveSupportGnuTar LXAArchiveSupportGnuTar;
+typedef struct _LSQArchiveSupportGnuTar LSQArchiveSupportGnuTar;
 
-struct _LXAArchiveSupportGnuTar
+struct _LSQArchiveSupportGnuTar
 {
-	LXAArchiveSupport parent;
+	LSQArchiveSupport parent;
 	gchar *app_name;
 	gboolean _extr_overwrite;
 	gboolean _extr_touch;
@@ -62,20 +62,20 @@ struct _LXAArchiveSupportGnuTar
 	gboolean _view_rights;
 };
 
-typedef struct _LXAArchiveSupportGnuTarClass LXAArchiveSupportGnuTarClass;
+typedef struct _LSQArchiveSupportGnuTarClass LSQArchiveSupportGnuTarClass;
 
-struct _LXAArchiveSupportGnuTarClass
+struct _LSQArchiveSupportGnuTarClass
 {
-	LXAArchiveSupportClass parent;
+	LSQArchiveSupportClass parent;
 }; 
 
-GType                lxa_archive_support_gnu_tar_get_type(void);
-LXAArchiveSupport *  lxa_archive_support_gnu_tar_new();
+GType                lsq_archive_support_gnu_tar_get_type(void);
+LSQArchiveSupport *  lsq_archive_support_gnu_tar_new();
 
-gint                 lxa_archive_support_gnu_tar_add(LXAArchive *, GSList *);
-gint                 lxa_archive_support_gnu_tar_extract(LXAArchive *, gchar *, GSList *);
-gint                 lxa_archive_support_gnu_tar_remove(LXAArchive *, GSList *);
-gint                 lxa_archive_support_gnu_tar_refresh(LXAArchive *);
+gint                 lsq_archive_support_gnu_tar_add(LSQArchive *, GSList *);
+gint                 lsq_archive_support_gnu_tar_extract(LSQArchive *, gchar *, GSList *);
+gint                 lsq_archive_support_gnu_tar_remove(LSQArchive *, GSList *);
+gint                 lsq_archive_support_gnu_tar_refresh(LSQArchive *);
 
 G_END_DECLS
 

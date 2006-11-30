@@ -23,56 +23,56 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 #include <gettext.h>
 
 #include "extract_dialog.h"
 #include "widget_factory.h"
 
 static void
-xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *archive_class);
+sq_extract_archive_dialog_class_init(SQExtractArchiveDialogClass *archive_class);
 
 static void
-xa_extract_archive_dialog_init(XAExtractArchiveDialog *archive);
+sq_extract_archive_dialog_init(SQExtractArchiveDialog *archive);
 
 void
-xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data);
+sq_extract_dialog_option_toggled (GtkWidget *widget, gpointer data);
 void
-xa_extract_dialog_option_child_notify(GtkWidget *widget, GParamSpec *, gpointer data);
+sq_extract_dialog_option_child_notify(GtkWidget *widget, GParamSpec *, gpointer data);
 
 GType
-xa_extract_archive_dialog_get_type ()
+sq_extract_archive_dialog_get_type ()
 {
-	static GType xa_extract_archive_dialog_type = 0;
+	static GType sq_extract_archive_dialog_type = 0;
 
- 	if (!xa_extract_archive_dialog_type)
+ 	if (!sq_extract_archive_dialog_type)
 	{
- 		static const GTypeInfo xa_extract_archive_dialog_info = 
+ 		static const GTypeInfo sq_extract_archive_dialog_info = 
 		{
-			sizeof (XAExtractArchiveDialogClass),
+			sizeof (SQExtractArchiveDialogClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_extract_archive_dialog_class_init,
+			(GClassInitFunc) sq_extract_archive_dialog_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAExtractArchiveDialog),
+			sizeof (SQExtractArchiveDialog),
 			0,
-			(GInstanceInitFunc) xa_extract_archive_dialog_init,
+			(GInstanceInitFunc) sq_extract_archive_dialog_init,
 			NULL
 		};
 
-		xa_extract_archive_dialog_type = g_type_register_static (GTK_TYPE_FILE_CHOOSER_DIALOG, "XAExtractArchiveDialog", &xa_extract_archive_dialog_info, 0);
+		sq_extract_archive_dialog_type = g_type_register_static (GTK_TYPE_FILE_CHOOSER_DIALOG, "SQExtractArchiveDialog", &sq_extract_archive_dialog_info, 0);
 	}
-	return xa_extract_archive_dialog_type;
+	return sq_extract_archive_dialog_type;
 }
 
 static void
-xa_extract_archive_dialog_class_init(XAExtractArchiveDialogClass *dialog_class)
+sq_extract_archive_dialog_class_init(SQExtractArchiveDialogClass *dialog_class)
 {
 }
 
 static void
-xa_extract_archive_dialog_init(XAExtractArchiveDialog *dialog)
+sq_extract_archive_dialog_init(SQExtractArchiveDialog *dialog)
 {
 	GtkWidget *hbox = gtk_hbox_new(TRUE, 5);
 	GtkWidget *l_label = gtk_label_new(_("<b>Extract files:</b>"));
@@ -105,14 +105,14 @@ xa_extract_archive_dialog_init(XAExtractArchiveDialog *dialog)
 }
 
 GtkWidget *
-xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, gboolean sel_option)
+sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, gboolean sel_option)
 {
 	GSList *extract_options;
 	GtkWidget *test;
-	XAExtractArchiveDialog *dialog;
-	XAWidgetFactory *factory = xa_widget_factory_new();
+	SQExtractArchiveDialog *dialog;
+	SQWidgetFactory *factory = sq_widget_factory_new();
 
-	dialog = g_object_new(xa_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
+	dialog = g_object_new(sq_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 /* Handle 'extract selected files' option */
 	gtk_widget_set_sensitive(dialog->sel_files_radio, sel_option);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dialog->sel_files_radio), sel_option);
@@ -123,10 +123,10 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 	dialog->support = support;
 	if(dialog->support)
 	{
-		extract_options = lxa_archive_support_list_properties(support, "extract");
+		extract_options = lsq_archive_support_list_properties(support, "extract");
 		while(extract_options)
 		{
-			test = xa_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
+			test = sq_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
 			gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
 			extract_options = extract_options->next;
 		}
@@ -136,7 +136,7 @@ xa_extract_archive_dialog_new(LXAArchiveSupport *support, LXAArchive *archive, g
 }
 
 void
-xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
+sq_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
 {
 	GValue *val = g_new0(GValue, 1);
 
@@ -144,20 +144,20 @@ xa_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
 
 	g_value_set_boolean(val, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
 
-	g_object_set_property(G_OBJECT(XA_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
+	g_object_set_property(G_OBJECT(SQ_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
 
 	g_free(val);
 }
 
 void
-xa_extract_dialog_option_child_notify (GtkWidget *widget, GParamSpec *pspec, gpointer data)
+sq_extract_dialog_option_child_notify (GtkWidget *widget, GParamSpec *pspec, gpointer data)
 {
 	GValue *val = g_new0(GValue, 1);
 	if(strcmp(g_param_spec_get_name(pspec), "text"))
 	{
 		val = g_value_init(val, G_TYPE_STRING);
 		g_object_get_property(G_OBJECT(widget), "text", val);
-		g_object_set_property(G_OBJECT(XA_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
+		g_object_set_property(G_OBJECT(SQ_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
 	}
 	g_free(val);
 }

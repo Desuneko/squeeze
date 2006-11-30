@@ -28,43 +28,43 @@
 #include "internals.h"
 
 void
-lxa_archive_support_init(LXAArchiveSupport *support);
+lsq_archive_support_init(LSQArchiveSupport *support);
 void
-lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass);
+lsq_archive_support_class_init(LSQArchiveSupportClass *supportclass);
 
 /*
  *
  */
 GType
-lxa_archive_support_get_type ()
+lsq_archive_support_get_type ()
 {
-	static GType lxa_archive_support_type = 0;
+	static GType lsq_archive_support_type = 0;
 
- 	if (!lxa_archive_support_type)
+ 	if (!lsq_archive_support_type)
 	{
- 		static const GTypeInfo lxa_archive_support_info = 
+ 		static const GTypeInfo lsq_archive_support_info = 
 		{
-			sizeof (LXAArchiveSupportClass),
+			sizeof (LSQArchiveSupportClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) lxa_archive_support_class_init,
+			(GClassInitFunc) lsq_archive_support_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (LXAArchiveSupport),
+			sizeof (LSQArchiveSupport),
 			0,
-			(GInstanceInitFunc) lxa_archive_support_init,
+			(GInstanceInitFunc) lsq_archive_support_init,
 		};
 
-		lxa_archive_support_type = g_type_register_static (G_TYPE_OBJECT, "LXAArchiveSupport", &lxa_archive_support_info, 0);
+		lsq_archive_support_type = g_type_register_static (G_TYPE_OBJECT, "LSQArchiveSupport", &lsq_archive_support_info, 0);
 	}
-	return lxa_archive_support_type;
+	return lsq_archive_support_type;
 }
 
 /*
  *
  */
 void
-lxa_archive_support_init(LXAArchiveSupport *support)
+lsq_archive_support_init(LSQArchiveSupport *support)
 {
 	support->add = NULL;
 	support->extract = NULL;
@@ -77,23 +77,23 @@ lxa_archive_support_init(LXAArchiveSupport *support)
  *
  */
 void
-lxa_archive_support_class_init(LXAArchiveSupportClass *supportclass)
+lsq_archive_support_class_init(LSQArchiveSupportClass *supportclass)
 {
 	/*
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
-	LXAArchiveSupportClass *klass = LXA_ARCHIVE_SUPPORT_CLASS (supportclass);
+	LSQArchiveSupportClass *klass = LSQ_ARCHIVE_SUPPORT_CLASS (supportclass);
 	*/
 }
 
 /*
  *
  */
-LXAArchiveSupport*
-lxa_archive_support_new()
+LSQArchiveSupport*
+lsq_archive_support_new()
 {
-	LXAArchiveSupport*support;
+	LSQArchiveSupport*support;
 
-	support = g_object_new(LXA_TYPE_ARCHIVE_SUPPORT, NULL);
+	support = g_object_new(LSQ_TYPE_ARCHIVE_SUPPORT, NULL);
 	
 	return support;
 }
@@ -102,7 +102,7 @@ lxa_archive_support_new()
  *
  */
 void
-lxa_archive_support_add_mime(LXAArchiveSupport *support, gchar *mime)
+lsq_archive_support_add_mime(LSQArchiveSupport *support, gchar *mime)
 {
 	support->mime = g_slist_prepend(support->mime, mime);	
 }
@@ -111,9 +111,9 @@ lxa_archive_support_add_mime(LXAArchiveSupport *support, gchar *mime)
  *
  */
 gboolean
-lxa_archive_support_mime_supported(LXAArchiveSupport *support, const gchar *mime)
+lsq_archive_support_mime_supported(LSQArchiveSupport *support, const gchar *mime)
 {
-	GSList *result = g_slist_find_custom(support->mime, mime, lxa_archive_support_lookup_mime);
+	GSList *result = g_slist_find_custom(support->mime, mime, lsq_archive_support_lookup_mime);
 	if(!result)
 		return FALSE;
 	if(!result->data)
@@ -125,12 +125,12 @@ lxa_archive_support_mime_supported(LXAArchiveSupport *support, const gchar *mime
  *
  */
 gboolean
-lxa_register_support(LXAArchiveSupport *support)
+lsq_register_support(LSQArchiveSupport *support)
 { 
-	if(!LXA_IS_ARCHIVE_SUPPORT(support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT(support))
 		return FALSE;
 
-	lxa_archive_support_list = g_slist_prepend(lxa_archive_support_list, support);	
+	lsq_archive_support_list = g_slist_prepend(lsq_archive_support_list, support);	
 	g_object_ref(support);
 
 	return TRUE;
@@ -139,19 +139,19 @@ lxa_register_support(LXAArchiveSupport *support)
 /*
  *
  */
-LXAArchiveSupport *
-lxa_get_support_for_mime(const gchar *mime)
+LSQArchiveSupport *
+lsq_get_support_for_mime(const gchar *mime)
 {
-	return lxa_get_support_for_mime_from_slist(lxa_archive_support_list, mime);
+	return lsq_get_support_for_mime_from_slist(lsq_archive_support_list, mime);
 }
 
 /*
  *
  */
-LXAArchiveSupport *
-lxa_get_support_for_mime_from_slist(GSList *list, const gchar *mime)
+LSQArchiveSupport *
+lsq_get_support_for_mime_from_slist(GSList *list, const gchar *mime)
 {
-	GSList *result = g_slist_find_custom(list, mime, lxa_archive_support_lookup_support);
+	GSList *result = g_slist_find_custom(list, mime, lsq_archive_support_lookup_support);
 	if(result)
 		return result->data;
 	return NULL;
@@ -161,7 +161,7 @@ lxa_get_support_for_mime_from_slist(GSList *list, const gchar *mime)
  *
  */
 gint
-lxa_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime)
+lsq_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime)
 {
 	return strcmp((gchar *)support_mime, (gchar *)mime);
 }
@@ -170,20 +170,20 @@ lxa_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime)
  *
  */
 gint
-lxa_archive_support_lookup_support(gconstpointer support, gconstpointer mime)
+lsq_archive_support_lookup_support(gconstpointer support, gconstpointer mime)
 {
-	if(lxa_archive_support_mime_supported(LXA_ARCHIVE_SUPPORT(support), (gchar *)mime))
+	if(lsq_archive_support_mime_supported(LSQ_ARCHIVE_SUPPORT(support), (gchar *)mime))
 		return 0;
 	else
 		return 1;
 }		
 
 gint
-lxa_archive_support_add(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
+lsq_archive_support_add(LSQArchiveSupport *support, LSQArchive *archive, GSList *files)
 {
 	if(support->add)
 	{
-		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_ADD);
+		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ADD);
 		archive->support = support;
 		return support->add(archive, files);
 	}
@@ -193,11 +193,11 @@ lxa_archive_support_add(LXAArchiveSupport *support, LXAArchive *archive, GSList 
 }
 
 gint
-lxa_archive_support_extract(LXAArchiveSupport *support, LXAArchive *archive, gchar *dest_path, GSList *files)
+lsq_archive_support_extract(LSQArchiveSupport *support, LSQArchive *archive, gchar *dest_path, GSList *files)
 {
 	if(support->extract)
 	{
-		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_EXTRACT);
+		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_EXTRACT);
 		archive->support = support;
 		return support->extract(archive, dest_path, files);
 	}
@@ -207,11 +207,11 @@ lxa_archive_support_extract(LXAArchiveSupport *support, LXAArchive *archive, gch
 }
 
 gint
-lxa_archive_support_remove(LXAArchiveSupport *support, LXAArchive *archive, GSList *files)
+lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSList *files)
 {
 	if(support->remove)
 	{
-		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REMOVE);
+		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REMOVE);
 		archive->support = support;
 		return support->remove(archive, files);
 	}
@@ -221,11 +221,11 @@ lxa_archive_support_remove(LXAArchiveSupport *support, LXAArchive *archive, GSLi
 }
 
 gint
-lxa_archive_support_refresh(LXAArchiveSupport *support, LXAArchive *archive)
+lsq_archive_support_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 {
 	if(support->refresh)
 	{
-		lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_REFRESH);
+		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REFRESH);
 		archive->support = support;
 		return support->refresh(archive);
 	}
@@ -235,7 +235,7 @@ lxa_archive_support_refresh(LXAArchiveSupport *support, LXAArchive *archive)
 }
 
 GSList *
-lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
+lsq_archive_support_list_properties(LSQArchiveSupport *support, gchar *prefix)
 {
 	guint _nprops, i;
 	GObjectClass *support_class = G_OBJECT_GET_CLASS(support);
@@ -256,44 +256,44 @@ lxa_archive_support_list_properties(LXAArchiveSupport *support, gchar *prefix)
 }
 
 void
-lxa_archive_support_install_action(LXAArchiveSupport *support, LXACustomAction *action)
+lsq_archive_support_install_action(LSQArchiveSupport *support, LSQCustomAction *action)
 {
 	support->custom_action = g_slist_append(support->custom_action, action);
 }
 
-LXACustomAction*
-lxa_archive_support_find_action(LXAArchiveSupport *support, const gchar *name)
+LSQCustomAction*
+lsq_archive_support_find_action(LSQArchiveSupport *support, const gchar *name)
 {
 	GSList *actions = support->custom_action;
 	while(actions)
 	{
-		if(strcmp(((LXACustomAction*)actions->data)->name, name) == 0)
-			return (LXACustomAction*)actions->data;
+		if(strcmp(((LSQCustomAction*)actions->data)->name, name) == 0)
+			return (LSQCustomAction*)actions->data;
 		actions = actions->next;
 	}
 	return NULL;
 }
 
-LXACustomAction**
-lxa_archive_support_list_actions(LXAArchiveSupport *support, guint *n_actions)
+LSQCustomAction**
+lsq_archive_support_list_actions(LSQArchiveSupport *support, guint *n_actions)
 {
-	LXACustomAction** list;
+	LSQCustomAction** list;
 	guint i = 0;
 	GSList *actions = support->custom_action;
 	(*n_actions) = g_slist_length(actions);
-	list = g_new(LXACustomAction*, *n_actions);
+	list = g_new(LSQCustomAction*, *n_actions);
 	while(actions)
 	{
-		list[i++] = (LXACustomAction*)actions->data;
+		list[i++] = (LSQCustomAction*)actions->data;
 		actions = actions->next;
 	}
 	return list;
 }
 
-LXACustomAction*
-lxa_custom_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LXACustomActionFunc func, LXAArchiveSupport *support, gpointer user_data)
+LSQCustomAction*
+lsq_custom_action_new(const gchar *name, const gchar *nick, const gchar *blurb, const gchar *icon, LSQCustomActionFunc func, LSQArchiveSupport *support, gpointer user_data)
 {
-	LXACustomAction *action = g_new(LXACustomAction, 1);
+	LSQCustomAction *action = g_new(LSQCustomAction, 1);
 	action->name = g_strdup(name);
 	action->nick = g_strdup(nick);
 	action->blurb = g_strdup(blurb);
@@ -305,25 +305,25 @@ lxa_custom_action_new(const gchar *name, const gchar *nick, const gchar *blurb, 
 }
 
 const gchar*
-lxa_custom_action_get_name(LXACustomAction *action)
+lsq_custom_action_get_name(LSQCustomAction *action)
 {
 	return action->name;
 }
 
 const gchar*
-lxa_custom_action_get_nick(LXACustomAction *action)
+lsq_custom_action_get_nick(LSQCustomAction *action)
 {
 	return action->nick;
 }
 
 const gchar*
-lxa_custom_action_get_blurb(LXACustomAction *action)
+lsq_custom_action_get_blurb(LSQCustomAction *action)
 {
 	return action->blurb;
 }
 
 void
-lxa_custom_action_execute(LXACustomAction *action, LXAArchive *archive)
+lsq_custom_action_execute(LSQCustomAction *action, LSQArchive *archive)
 {
 	action->func(action->support, archive, action->user_data);
 }

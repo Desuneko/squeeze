@@ -18,21 +18,21 @@
 
 #include <config.h>
 
-#undef XA_MAIN_ANY_BAR
+#undef SQ_MAIN_ANY_BAR
 
 #ifdef ENABLE_PATHBAR
-#define XA_MAIN_ANY_BAR 1
+#define SQ_MAIN_ANY_BAR 1
 #else
 #ifdef ENABLE_TOOLBAR
-#define XA_MAIN_ANY_BAR 1
+#define SQ_MAIN_ANY_BAR 1
 #endif
 #endif
 
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
-#include <libxarchiver/mime.h>
+#include <libsqueeze/libxarchiver.h>
+#include <libsqueeze/mime.h>
 #include <gettext.h>
 
 #include "settings.h"
@@ -62,149 +62,149 @@
 
 enum
 {
-	XA_MAIN_WINDOW_NAVIGATION_STYLE = 1
+	SQ_MAIN_WINDOW_NAVIGATION_STYLE = 1
 };
 
 static void
-xa_main_window_init(XAMainWindow *);
+sq_main_window_init(SQMainWindow *);
 static void
-xa_main_window_class_init(XAMainWindowClass *);
+sq_main_window_class_init(SQMainWindowClass *);
 static void
-xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
+sq_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
-xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
+sq_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void
-xa_main_window_finalize(GObject *object);
+sq_main_window_finalize(GObject *object);
 
 
-static void cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata);
-static void cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata);
-static void cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata);
-static void cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata);
-static void cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata);
-static void cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata);
-static void cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_close_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
-static void cb_xa_main_close_window(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
-static void cb_xa_main_preferences(GtkWidget *widget, gpointer userdata);
-
-static void
-cb_xa_main_window_notebook_page_switched(XANotebook *, GtkNotebookPage *, guint, gpointer);
-static void
-cb_xa_main_window_notebook_page_removed(XANotebook *, gpointer);
-static void
-cb_xa_main_window_notebook_file_activated(XANotebook *, gchar *, gpointer);
+static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);
 
 static void
-xa_main_window_set_navigation(XAMainWindow *window);
+cb_sq_main_window_notebook_page_switched(SQNotebook *, GtkNotebookPage *, guint, gpointer);
+static void
+cb_sq_main_window_notebook_page_removed(SQNotebook *, gpointer);
+static void
+cb_sq_main_window_notebook_file_activated(SQNotebook *, gchar *, gpointer);
+
+static void
+sq_main_window_set_navigation(SQMainWindow *window);
 
 GType
-xa_main_window_navigation_style_get_type()
+sq_main_window_navigation_style_get_type()
 {
 	static GType nav_style_type = 0;
 
 	if(!nav_style_type)
 	{
 		static GEnumValue style_types[] = {
-			{XA_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", N_("Internal Style")},
+			{SQ_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", N_("Internal Style")},
 #ifdef ENABLE_TOOLBAR
-			{XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", N_("Tool Bar Style")},
+			{SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", N_("Tool Bar Style")},
 #endif
 #ifdef ENABLE_PATHBAR
-			{XA_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", N_("Path Bar Style")},
+			{SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", N_("Path Bar Style")},
 #endif
 			{0, NULL, NULL}
 		};
 
-		nav_style_type = g_enum_register_static("XAMainWindowNavigationStyle", style_types);
+		nav_style_type = g_enum_register_static("SQMainWindowNavigationStyle", style_types);
 	}
 
 	return nav_style_type;
 }
 
 GType
-xa_main_window_get_type ()
+sq_main_window_get_type ()
 {
-	static GType xa_main_window_type = 0;
+	static GType sq_main_window_type = 0;
 
-	if (!xa_main_window_type)
+	if (!sq_main_window_type)
 	{
-		static const GTypeInfo xa_main_window_info = 
+		static const GTypeInfo sq_main_window_info = 
 		{
-			sizeof (XAMainWindowClass),
+			sizeof (SQMainWindowClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_main_window_class_init,
+			(GClassInitFunc) sq_main_window_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAMainWindow),
+			sizeof (SQMainWindow),
 			0,
-			(GInstanceInitFunc) xa_main_window_init,
+			(GInstanceInitFunc) sq_main_window_init,
 			NULL
 		};
 
-		xa_main_window_type = g_type_register_static (GTK_TYPE_WINDOW, "XAMainWindow", &xa_main_window_info, 0);
+		sq_main_window_type = g_type_register_static (GTK_TYPE_WINDOW, "SQMainWindow", &sq_main_window_info, 0);
 	}
-	return xa_main_window_type;
+	return sq_main_window_type;
 }
 
 static void
-xa_main_window_class_init(XAMainWindowClass *window_class)
+sq_main_window_class_init(SQMainWindowClass *window_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (window_class);
 	GParamSpec *pspec = NULL;
 
-	object_class->set_property = xa_main_window_set_property;
-	object_class->get_property = xa_main_window_get_property;
-	object_class->finalize     = xa_main_window_finalize;
+	object_class->set_property = sq_main_window_set_property;
+	object_class->get_property = sq_main_window_get_property;
+	object_class->finalize     = sq_main_window_finalize;
 
 	pspec = g_param_spec_enum("navigation-style",
 		_("Navigation Style"),
 		_("Style of navigation\nThe style to navigate trough the archive"),
-		XA_TYPE_MAIN_WINDOW_NAVIGATION_STYLE,
-		XA_MAIN_WINDOW_NAVIGATION_INTERNAL,
+		SQ_TYPE_MAIN_WINDOW_NAVIGATION_STYLE,
+		SQ_MAIN_WINDOW_NAVIGATION_INTERNAL,
 		G_PARAM_READWRITE);
-	g_object_class_install_property(object_class, XA_MAIN_WINDOW_NAVIGATION_STYLE, pspec);
+	g_object_class_install_property(object_class, SQ_MAIN_WINDOW_NAVIGATION_STYLE, pspec);
 
 
 
 }
 
 static void
-xa_main_window_finalize(GObject *object)
+sq_main_window_finalize(GObject *object)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(object);
+	SQMainWindow *window = SQ_MAIN_WINDOW(object);
 
 
-	xa_settings_set_group(window->settings, "Global");
+	sq_settings_set_group(window->settings, "Global");
 	if(window->menu_bar)
-		xa_settings_write_bool_entry(window->settings, "MenuBar", TRUE);
+		sq_settings_write_bool_entry(window->settings, "MenuBar", TRUE);
 	else
-		xa_settings_write_bool_entry(window->settings, "MenuBar", FALSE);
+		sq_settings_write_bool_entry(window->settings, "MenuBar", FALSE);
 
 	if(!window->navigationbar)
 	{
-		xa_settings_write_entry(window->settings, "NavigationBar", "None");
+		sq_settings_write_entry(window->settings, "NavigationBar", "None");
 	}
 #ifdef ENABLE_TOOLBAR
-	else if(XA_IS_TOOL_BAR(window->navigationbar))
+	else if(SQ_IS_TOOL_BAR(window->navigationbar))
 	{
-		xa_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
+		sq_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
 	}	
 #endif
 #ifdef ENABLE_PATHBAR
-	else if(XA_IS_PATH_BAR(window->navigationbar))
+	else if(SQ_IS_PATH_BAR(window->navigationbar))
 	{
-		xa_settings_write_entry(window->settings, "NavigationBar", "PathBar");
+		sq_settings_write_entry(window->settings, "NavigationBar", "PathBar");
 	}
 #endif
 	else
 	{
-		xa_settings_write_entry(window->settings, "NavigationBar", "None");
+		sq_settings_write_entry(window->settings, "NavigationBar", "None");
 	}
 
-	xa_settings_save(window->settings);
+	sq_settings_save(window->settings);
 
 	if(window->navigationbar)
 		gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
@@ -213,7 +213,7 @@ xa_main_window_finalize(GObject *object)
 }
 
 static void
-xa_main_window_init(XAMainWindow *window)
+sq_main_window_init(SQMainWindow *window)
 {
 	GtkWidget     *toolbar;
 	GtkToolItem   *tool_separator;
@@ -231,15 +231,15 @@ xa_main_window_init(XAMainWindow *window)
 	window->accel_group = gtk_accel_group_new();
 	gtk_window_add_accel_group(GTK_WINDOW(window), window->accel_group);
 
-	window->settings = xa_settings_new();
+	window->settings = sq_settings_new();
 
-	xa_settings_set_group(window->settings, "Global");
+	sq_settings_set_group(window->settings, "Global");
 
 	window->main_vbox = gtk_vbox_new(FALSE, 0);
 
-	window->widget_factory = xa_widget_factory_new();
+	window->widget_factory = sq_widget_factory_new();
 
-	show_menubar = xa_settings_read_bool_entry(window->settings, "MenuBar", TRUE);
+	show_menubar = sq_settings_read_bool_entry(window->settings, "MenuBar", TRUE);
 
 	if(show_menubar)
 	{
@@ -272,22 +272,22 @@ xa_main_window_init(XAMainWindow *window)
 		window->menubar.menu_item_quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, window->accel_group);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_quit);
 
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_new), "activate", G_CALLBACK(cb_xa_main_new_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_open), "activate", G_CALLBACK(cb_xa_main_open_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_close), "activate", G_CALLBACK(cb_xa_main_close_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_quit), "activate", G_CALLBACK(cb_xa_main_close_window), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_new), "activate", G_CALLBACK(cb_sq_main_new_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_open), "activate", G_CALLBACK(cb_sq_main_open_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_close), "activate", G_CALLBACK(cb_sq_main_close_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_quit), "activate", G_CALLBACK(cb_sq_main_close_window), window);
 		/* Action menu: ref all the childs*/
 		window->menubar.menu_item_action = gtk_menu_item_new_with_mnemonic(_("_Action"));
 		window->menubar.menu_action = gtk_menu_new();
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_action), window->menubar.menu_action);
 
-		tmp_image = xa_main_window_find_image("xarchiver-add.png", GTK_ICON_SIZE_MENU);
+		tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_MENU);
 		window->menubar.menu_item_add = g_object_ref(gtk_image_menu_item_new_with_mnemonic(_("_Add")));
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_add), tmp_image);
 		gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
 
-		tmp_image = xa_main_window_find_image("xarchiver-extract.png", GTK_ICON_SIZE_MENU);
+		tmp_image = sq_main_window_find_image("archive-extract.png", GTK_ICON_SIZE_MENU);
 		window->menubar.menu_item_extract = g_object_ref(gtk_image_menu_item_new_with_mnemonic(_("_Extract")));
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_extract), tmp_image);
 		gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
@@ -297,17 +297,17 @@ xa_main_window_init(XAMainWindow *window)
 		gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_remove);
 
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_xa_main_add_to_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_xa_main_extract_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "activate", G_CALLBACK(cb_xa_main_remove_from_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_sq_main_add_to_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_sq_main_extract_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "activate", G_CALLBACK(cb_sq_main_remove_from_archive), window);
 
 		/* View menu */
 		window->menubar.menu_item_view = gtk_menu_item_new_with_mnemonic(_("_View"));
 		window->menubar.menu_view = gtk_menu_new();
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_view), window->menubar.menu_view);
 
-#ifdef XA_MAIN_ANY_BAR
-		list = xa_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window), "navigation-style");
+#ifdef SQ_MAIN_ANY_BAR
+		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window), "navigation-style");
 		for(iter = list; iter; iter = iter->next)
 		{
 			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
@@ -317,7 +317,7 @@ xa_main_window_init(XAMainWindow *window)
 
 		window->menubar.menu_item_settings = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, window->accel_group);
 
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_settings), "activate", G_CALLBACK(cb_xa_main_preferences), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_settings), "activate", G_CALLBACK(cb_sq_main_preferences), window);
 
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), window->menubar.menu_item_settings);
 
@@ -339,15 +339,15 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_open));
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(tool_separator));
 
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_new), "clicked", G_CALLBACK(cb_xa_main_new_archive), window);
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_xa_main_open_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_new), "clicked", G_CALLBACK(cb_sq_main_new_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_sq_main_open_archive), window);
 
 /* Action pane */
-	tmp_image = xa_main_window_find_image("xarchiver-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+	tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
 	window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
 
-	tmp_image = xa_main_window_find_image("xarchiver-extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+	tmp_image = sq_main_window_find_image("archive-extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
 	window->toolbar.tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
 	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 
@@ -361,9 +361,9 @@ xa_main_window_init(XAMainWindow *window)
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_remove));
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(tool_separator));
 
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_add), "clicked", G_CALLBACK(cb_xa_main_add_to_archive), window);
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_extract), "clicked", G_CALLBACK(cb_xa_main_extract_archive), window);
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_remove), "clicked", G_CALLBACK(cb_xa_main_remove_from_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_add), "clicked", G_CALLBACK(cb_sq_main_add_to_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_extract), "clicked", G_CALLBACK(cb_sq_main_extract_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_remove), "clicked", G_CALLBACK(cb_sq_main_remove_from_archive), window);
 
 /* control pane */
 
@@ -372,26 +372,26 @@ xa_main_window_init(XAMainWindow *window)
 
 	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_stop));
 
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_xa_main_stop_archive), window);
+	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_sq_main_stop_archive), window);
 
-	nav_bar = xa_settings_read_entry(window->settings, "NavigationBar", "None");
-	window->nav_style = XA_MAIN_WINDOW_NAVIGATION_INTERNAL;
+	nav_bar = sq_settings_read_entry(window->settings, "NavigationBar", "None");
+	window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_INTERNAL;
 	window->navigationbar = NULL;
 	up_dir = TRUE;
 
 #ifdef ENABLE_TOOLBAR
 	if(!strcmp(nav_bar, "ToolBar"))
 	{
-		window->nav_style = XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR;
-		window->navigationbar = xa_tool_bar_new(NULL); 
+		window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR;
+		window->navigationbar = sq_tool_bar_new(NULL); 
 		up_dir = FALSE;
 	}
 #endif
 #ifdef ENABLE_PATHBAR
 	if(!strcmp(nav_bar, "PathBar"))
 	{
-		window->nav_style = XA_MAIN_WINDOW_NAVIGATION_PATH_BAR;
-		window->navigationbar = xa_path_bar_new(NULL);
+		window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR;
+		window->navigationbar = sq_path_bar_new(NULL);
 		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
 		up_dir = FALSE;
 	}
@@ -399,16 +399,16 @@ xa_main_window_init(XAMainWindow *window)
 
 	g_object_notify(G_OBJECT(window), "navigation-style");
 
-	show_icons = xa_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
-	sort_case = xa_settings_read_bool_entry(window->settings, "SortCaseSensitive", TRUE);
-	sort_folders = xa_settings_read_bool_entry(window->settings, "SortFoldersFirst", TRUE);
-	use_tabs = xa_settings_read_bool_entry(window->settings, "UseTabs", TRUE);
+	show_icons = sq_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
+	sort_case = sq_settings_read_bool_entry(window->settings, "SortCaseSensitive", TRUE);
+	sort_folders = sq_settings_read_bool_entry(window->settings, "SortFoldersFirst", TRUE);
+	use_tabs = sq_settings_read_bool_entry(window->settings, "UseTabs", TRUE);
 
 /* main view */
-	window->notebook = xa_notebook_new(window->navigationbar, use_tabs, window->accel_group);
-	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_xa_main_window_notebook_page_switched), window);
-	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_xa_main_window_notebook_page_removed), window);
-	g_signal_connect(G_OBJECT(window->notebook), "xa_file_activated", G_CALLBACK(cb_xa_main_window_notebook_file_activated), window);
+	window->notebook = sq_notebook_new(window->navigationbar, use_tabs, window->accel_group);
+	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_sq_main_window_notebook_page_switched), window);
+	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_sq_main_window_notebook_page_removed), window);
+	g_signal_connect(G_OBJECT(window->notebook), "sq_file_activated", G_CALLBACK(cb_sq_main_window_notebook_file_activated), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -437,20 +437,20 @@ xa_main_window_init(XAMainWindow *window)
 }
 
 GtkWidget *
-xa_main_window_new(XAApplication *app, GtkIconTheme *icon_theme)
+sq_main_window_new(SQApplication *app, GtkIconTheme *icon_theme)
 {
-	XAMainWindow *window;
+	SQMainWindow *window;
 	GdkPixbuf *icon;
 
-	window = g_object_new(xa_main_window_get_type(),
-			"title", "Xarchiver " PACKAGE_VERSION,
+	window = g_object_new(sq_main_window_get_type(),
+			"title", "Squeeze " PACKAGE_VERSION,
 			NULL);
 
 	window->icon_theme = icon_theme;
 
-	xa_notebook_set_icon_theme(XA_NOTEBOOK(window->notebook), icon_theme);
+	sq_notebook_set_icon_theme(SQ_NOTEBOOK(window->notebook), icon_theme);
 
-	icon = gtk_icon_theme_load_icon(icon_theme, "xarchiver", 24, 0, NULL);
+	icon = gtk_icon_theme_load_icon(icon_theme, "squeeze", 24, 0, NULL);
 
 	g_object_ref(app);
 	window->app = app;
@@ -461,39 +461,39 @@ xa_main_window_new(XAApplication *app, GtkIconTheme *icon_theme)
 }
 
 static void
-xa_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+sq_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(object);
+	SQMainWindow *window = SQ_MAIN_WINDOW(object);
 	switch(prop_id)
 	{
-		case XA_MAIN_WINDOW_NAVIGATION_STYLE:
+		case SQ_MAIN_WINDOW_NAVIGATION_STYLE:
 			g_value_set_enum(value, window->nav_style);
 		break;
 	}
 }
 
 static void
-xa_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+sq_main_window_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(object);
+	SQMainWindow *window = SQ_MAIN_WINDOW(object);
 	switch(prop_id)
 	{
-		case XA_MAIN_WINDOW_NAVIGATION_STYLE:
+		case SQ_MAIN_WINDOW_NAVIGATION_STYLE:
 			window->nav_style = g_value_get_enum(value);
-			xa_main_window_set_navigation(window);
+			sq_main_window_set_navigation(window);
 		break;
 	}
 }
 
 GtkWidget *
-xa_main_window_find_image(gchar *filename, GtkIconSize size)
+sq_main_window_find_image(gchar *filename, GtkIconSize size)
 {
 	GError *error = NULL;
 	gint width  = 0;
 	gint height = 0;
 	GtkWidget *file_image;
 	gchar *path;
-	path = g_strconcat(DATADIR, "/pixmaps/xarchiver/", filename, NULL);
+	path = g_strconcat(DATADIR, "/pixmaps/squeeze/", filename, NULL);
 
 	gtk_icon_size_lookup(size, &width, &height);
 
@@ -513,7 +513,7 @@ xa_main_window_find_image(gchar *filename, GtkIconSize size)
 }
 
 static void
-xa_main_window_new_action_menu(XAMainWindow *window, LXAArchiveSupport *support, LXAArchive *archive)
+sq_main_window_new_action_menu(SQMainWindow *window, LSQArchiveSupport *support, LSQArchive *archive)
 {
 	GSList *iter, *list;
 
@@ -530,7 +530,7 @@ xa_main_window_new_action_menu(XAMainWindow *window, LXAArchiveSupport *support,
 
 	if(support)
 	{
-		iter = list = xa_widget_factory_create_action_menu(window->widget_factory, support, archive);
+		iter = list = sq_widget_factory_create_action_menu(window->widget_factory, support, archive);
 		if(list)
 		{
 			gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), gtk_separator_menu_item_new());
@@ -549,13 +549,13 @@ xa_main_window_new_action_menu(XAMainWindow *window, LXAArchiveSupport *support,
 }
 
 static void
-cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 {
-	GtkWidget *dialog = xa_new_archive_dialog_new();
+	GtkWidget *dialog = sq_new_archive_dialog_new();
 	gchar *new_archive_path = NULL;
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	LXAArchive *archive = NULL;
-	LXAArchiveSupport *support = NULL;
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	LSQArchive *archive = NULL;
+	LSQArchiveSupport *support = NULL;
 	gint result = 0;
 
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
@@ -568,10 +568,10 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 	{
 		new_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		
-		if(!lxa_new_archive(new_archive_path, TRUE, NULL, &archive))
+		if(!lsq_new_archive(new_archive_path, TRUE, NULL, &archive))
 		{
-			support = lxa_get_support_for_mime(lxa_mime_info_get_name(archive->mime_info));
-			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
+			support = lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info));
+			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support);
 		}
 		else
 		{
@@ -583,13 +583,13 @@ cb_xa_main_new_archive(GtkWidget *widget, gpointer userdata)
 }
 
 static void
-cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = NULL;
 	GSList *open_archive_paths = NULL;
 	GSList *_open_archive_paths = NULL;
 	gint result = 0;
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	
 	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
 																			 GTK_WINDOW(window),
@@ -609,12 +609,12 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 		_open_archive_paths = open_archive_paths;
 		while(_open_archive_paths)
 		{
-			xa_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
+			sq_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
 			/*
-			if(xa_notebook_get_multi_tab(XA_NOTEBOOK(window->notebook)))
-				xa_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
+			if(sq_notebook_get_multi_tab(SQ_NOTEBOOK(window->notebook)))
+				sq_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
 			else
-				xa_application_open_archive(window->app, NULL, _open_archive_paths->data);
+				sq_application_open_archive(window->app, NULL, _open_archive_paths->data);
 			*/
 			_open_archive_paths = _open_archive_paths->next;
 		}
@@ -626,32 +626,32 @@ cb_xa_main_open_archive(GtkWidget *widget, gpointer userdata)
 
 
 static void
-cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = NULL;
 	gchar *extract_archive_path = NULL;
 	gint result = 0;
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LXAArchive        *lp_archive = NULL;
-	LXAArchiveSupport *lp_support = NULL;
+	LSQArchive        *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
 
-	GSList *filenames = xa_notebook_get_selected_items(XA_NOTEBOOK(window->notebook));
+	GSList *filenames = sq_notebook_get_selected_items(SQ_NOTEBOOK(window->notebook));
 
-	xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
 
-	dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, g_slist_length(filenames));
+	dialog = sq_extract_archive_dialog_new(lp_support, lp_archive, g_slist_length(filenames));
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
 	if(result == GTK_RESPONSE_OK)
 	{
 		gtk_widget_hide(dialog);
 		extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(dialog)->all_files_radio)))
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(SQ_EXTRACT_ARCHIVE_DIALOG(dialog)->all_files_radio)))
 		{
 			g_slist_free(filenames);
 			filenames = NULL;
 		}
-		lxa_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
+		lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
 	}
@@ -660,17 +660,17 @@ cb_xa_main_extract_archive(GtkWidget *widget, gpointer userdata)
 }
 
 static void
-cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LXAArchive        *lp_archive = NULL;
-	LXAArchiveSupport *lp_support = NULL;
+	LSQArchive        *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
 	GtkWidget         *dialog = NULL;
 	gint result;
-	xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
 
-	dialog = xa_add_dialog_new(lp_support);
+	dialog = sq_add_dialog_new(lp_support);
 
 	result = gtk_dialog_run (GTK_DIALOG(dialog));
 	if(result == GTK_RESPONSE_OK)
@@ -681,14 +681,14 @@ cb_xa_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 }
 
 static void
-cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	LXAArchive        *lp_archive = NULL;
-	LXAArchiveSupport *lp_support = NULL;
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	LSQArchive        *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
 	GtkWidget *dialog = NULL;
 	gint result = 0;
-	GSList *filenames = xa_notebook_get_selected_items(XA_NOTEBOOK(window->notebook));
+	GSList *filenames = sq_notebook_get_selected_items(SQ_NOTEBOOK(window->notebook));
 
 	if(filenames)
 	{
@@ -697,49 +697,49 @@ cb_xa_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 		if(result == GTK_RESPONSE_YES)
 		{
 			gtk_widget_hide(dialog);
-			xa_notebook_get_active_archive(XA_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
-			lxa_archive_support_remove(lp_support, lp_archive, filenames);
+			sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+			lsq_archive_support_remove(lp_support, lp_archive, filenames);
 		}
 		gtk_widget_destroy (dialog);
 	}
 }
 
 static void
-cb_xa_main_close_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_close_archive(GtkWidget *widget, gpointer userdata)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
-	xa_notebook_close_active_archive(XA_NOTEBOOK(window->notebook));
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	sq_notebook_close_active_archive(SQ_NOTEBOOK(window->notebook));
 }
 
 static void
-cb_xa_main_close_window(GtkWidget *widget, gpointer userdata)
+cb_sq_main_close_window(GtkWidget *widget, gpointer userdata)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(userdata);
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	gtk_widget_destroy(GTK_WIDGET(window));
 }
 
 static void
-cb_xa_main_stop_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
 }
 
 static void
-cb_xa_main_preferences(GtkWidget *widget, gpointer userdata)
+cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 {
-	GtkWidget *dialog = xa_preferences_dialog_new();
+	GtkWidget *dialog = sq_preferences_dialog_new();
 
 	gtk_widget_show_all(dialog);
 }
 
 static void
-cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
+cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
-	LXAArchive *lp_archive;
-	LXAArchiveSupport *lp_support;
-	xa_notebook_page_get_archive(notebook, &lp_archive, &lp_support, page_nr);
-	XAMainWindow *window = XA_MAIN_WINDOW(data);
+	LSQArchive *lp_archive;
+	LSQArchiveSupport *lp_support;
+	sq_notebook_page_get_archive(notebook, &lp_archive, &lp_support, page_nr);
+	SQMainWindow *window = SQ_MAIN_WINDOW(data);
 
-	if(lp_archive || lxa_archive_get_status(lp_archive) == LXA_ARCHIVESTATUS_IDLE)
+	if(lp_archive || lsq_archive_get_status(lp_archive) == LSQ_ARCHIVESTATUS_IDLE)
 	{
 		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
@@ -762,15 +762,15 @@ cb_xa_main_window_notebook_page_switched(XANotebook *notebook, GtkNotebookPage *
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
 	}
 
-	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lxa_archive_get_filename(lp_archive), NULL));
+	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lsq_archive_get_filename(lp_archive), NULL));
 
-	xa_main_window_new_action_menu(window, lp_support, lp_archive);
+	sq_main_window_new_action_menu(window, lp_support, lp_archive);
 }
 
 static void
-cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data)
+cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 {
-	XAMainWindow *window = XA_MAIN_WINDOW(data);
+	SQMainWindow *window = SQ_MAIN_WINDOW(data);
 
 	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
@@ -789,11 +789,11 @@ cb_xa_main_window_notebook_page_removed(XANotebook *notebook, gpointer data)
 }
 
 static void
-cb_xa_main_window_notebook_file_activated(XANotebook *notebook, gchar *path, gpointer data)
+cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpointer data)
 {
 	GtkWindow *window = GTK_WINDOW(data);
-	LXAArchive *lp_archive = NULL;
-	LXAArchiveSupport *lp_support = NULL;
+	LSQArchive *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
 	gchar *extract_archive_path = NULL;
 	GtkWidget *label = gtk_label_new(_("Which action do you want to perform on the selected file(s)?"));
 	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, _("View"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
@@ -810,19 +810,19 @@ cb_xa_main_window_notebook_file_activated(XANotebook *notebook, gchar *path, gpo
 			/* extract to tmp and view */
 			break;
 		case GTK_RESPONSE_ACCEPT: /* EXTRACT */
-			xa_notebook_get_active_archive(XA_NOTEBOOK(notebook), &lp_archive, &lp_support);
-			extr_dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, 1);
+			sq_notebook_get_active_archive(SQ_NOTEBOOK(notebook), &lp_archive, &lp_support);
+			extr_dialog = sq_extract_archive_dialog_new(lp_support, lp_archive, 1);
 			result = gtk_dialog_run (GTK_DIALOG (extr_dialog) );
 			if(result == GTK_RESPONSE_OK)
 			{
 				gtk_widget_hide(extr_dialog);
 				extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(extr_dialog));
-				if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(XA_EXTRACT_ARCHIVE_DIALOG(extr_dialog)->all_files_radio)))
+				if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(SQ_EXTRACT_ARCHIVE_DIALOG(extr_dialog)->all_files_radio)))
 				{
 					g_slist_free(filenames);
 					filenames = NULL;
 				}
-				lxa_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
+				lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
 				g_free(extract_archive_path);
 				extract_archive_path = NULL;
 			}
@@ -837,18 +837,18 @@ cb_xa_main_window_notebook_file_activated(XANotebook *notebook, gchar *path, gpo
 }
 
 gint
-xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
+sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 {
-	LXAArchive *archive = NULL;
-	LXAArchiveSupport *support = NULL;
+	LSQArchive *archive = NULL;
+	LSQArchiveSupport *support = NULL;
 
-	if(!lxa_open_archive(path, &archive))
+	if(!lsq_open_archive(path, &archive))
 	{
-		support = lxa_get_support_for_mime(lxa_mime_info_get_name(archive->mime_info));
+		support = lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info));
 		if(replace < 0)
-			xa_notebook_add_archive(XA_NOTEBOOK(window->notebook), archive, support);
+			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support);
 		else
-			xa_notebook_page_set_archive(XA_NOTEBOOK(window->notebook), archive, support, replace);
+			sq_notebook_page_set_archive(SQ_NOTEBOOK(window->notebook), archive, support, replace);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
 		gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
 		return 0;
@@ -868,24 +868,24 @@ xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace)
 }
 
 static void
-xa_main_window_set_navigation(XAMainWindow *window)
+sq_main_window_set_navigation(SQMainWindow *window)
 {
-	XANavigationBar *nav_bar = NULL; 
+	SQNavigationBar *nav_bar = NULL; 
 	gboolean up_dir = TRUE;
 
 	switch(window->nav_style)
 	{
-		case XA_MAIN_WINDOW_NAVIGATION_INTERNAL:
+		case SQ_MAIN_WINDOW_NAVIGATION_INTERNAL:
 			break;
 #ifdef ENABLE_TOOLBAR
-		case XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR:
-			nav_bar = xa_tool_bar_new(NULL);
+		case SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR:
+			nav_bar = sq_tool_bar_new(NULL);
 			up_dir = FALSE;
 			break;
 #endif
 #ifdef ENABLE_PATHBAR
-		case XA_MAIN_WINDOW_NAVIGATION_PATH_BAR:
-			nav_bar = xa_path_bar_new(NULL);
+		case SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR:
+			nav_bar = sq_path_bar_new(NULL);
 			up_dir = FALSE;
 			break;
 #endif
@@ -893,7 +893,7 @@ xa_main_window_set_navigation(XAMainWindow *window)
 			return;
 	}
 
-	xa_notebook_set_navigation_bar(XA_NOTEBOOK(window->notebook), nav_bar);
+	sq_notebook_set_navigation_bar(SQ_NOTEBOOK(window->notebook), nav_bar);
 
 	if(window->navigationbar)
 		gtk_widget_destroy(GTK_WIDGET(window->navigationbar));

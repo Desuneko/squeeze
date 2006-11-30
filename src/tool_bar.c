@@ -20,7 +20,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 #include <gettext.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
@@ -28,73 +28,73 @@
 
 
 static void
-xa_tool_bar_class_init(XAToolBarClass *archive_class);
+sq_tool_bar_class_init(SQToolBarClass *archive_class);
 
 static void
-xa_tool_bar_init(XAToolBar *archive);
+sq_tool_bar_init(SQToolBar *archive);
 
 static void
-xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition);
+sq_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition);
 static void
-xa_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation);
+sq_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation);
 
 static GType
-xa_tool_bar_child_type(GtkContainer *container);
+sq_tool_bar_child_type(GtkContainer *container);
 static void
-xa_tool_bar_add(GtkContainer *container, GtkWidget *child);
+sq_tool_bar_add(GtkContainer *container, GtkWidget *child);
 static void
-xa_tool_bar_remove(GtkContainer *container, GtkWidget *child);
+sq_tool_bar_remove(GtkContainer *container, GtkWidget *child);
 static void
-xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
+sq_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
+cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
 static void
-cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar);
+cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 static void
-cb_xa_tool_bar_store_set(XANavigationBar *bar);
+cb_sq_tool_bar_store_set(SQNavigationBar *bar);
 
 static void
-cb_xa_tool_bar_history_back(GtkWidget *button, XAToolBar *nav_bar);
+cb_sq_tool_bar_history_back(GtkWidget *button, SQToolBar *nav_bar);
 static void
-cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *nav_bar);
+cb_sq_tool_bar_history_forward(GtkWidget *forward_button, SQToolBar *nav_bar);
 
 static void
-cb_xa_tool_bar_up(GtkWidget *, XAToolBar *tool_bar);
+cb_sq_tool_bar_up(GtkWidget *, SQToolBar *tool_bar);
 static void
-cb_xa_tool_bar_home(GtkWidget *, XAToolBar *tool_bar);
+cb_sq_tool_bar_home(GtkWidget *, SQToolBar *tool_bar);
 
 static void
-cb_xa_tool_bar_path_field_activated(GtkWidget *entry, XAToolBar *tool_bar);
+cb_sq_tool_bar_path_field_activated(GtkWidget *entry, SQToolBar *tool_bar);
 
 GType
-xa_tool_bar_get_type ()
+sq_tool_bar_get_type ()
 {
-	static GType xa_tool_bar_type = 0;
+	static GType sq_tool_bar_type = 0;
 
- 	if (!xa_tool_bar_type)
+ 	if (!sq_tool_bar_type)
 	{
- 		static const GTypeInfo xa_tool_bar_info = 
+ 		static const GTypeInfo sq_tool_bar_info = 
 		{
-			sizeof (XAToolBarClass),
+			sizeof (SQToolBarClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_tool_bar_class_init,
+			(GClassInitFunc) sq_tool_bar_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAToolBar),
+			sizeof (SQToolBar),
 			0,
-			(GInstanceInitFunc) xa_tool_bar_init,
+			(GInstanceInitFunc) sq_tool_bar_init,
 			NULL
 		};
 
-		xa_tool_bar_type = g_type_register_static (XA_TYPE_NAVIGATION_BAR, "XAToolBar", &xa_tool_bar_info, 0);
+		sq_tool_bar_type = g_type_register_static (SQ_TYPE_NAVIGATION_BAR, "SQToolBar", &sq_tool_bar_info, 0);
 	}
-	return xa_tool_bar_type;
+	return sq_tool_bar_type;
 }
 
 static void
-xa_tool_bar_class_init(XAToolBarClass *tool_bar_class)
+sq_tool_bar_class_init(SQToolBarClass *tool_bar_class)
 {
 	GtkWidgetClass *widget_class;
 	GtkContainerClass *container_class;
@@ -102,22 +102,22 @@ xa_tool_bar_class_init(XAToolBarClass *tool_bar_class)
 	widget_class = (GtkWidgetClass*)tool_bar_class;
 	container_class = (GtkContainerClass*)tool_bar_class;
 
-	widget_class->size_request = xa_tool_bar_size_request;
-	widget_class->size_allocate = xa_tool_bar_size_allocate;
+	widget_class->size_request = sq_tool_bar_size_request;
+	widget_class->size_allocate = sq_tool_bar_size_allocate;
 
-	container_class->add = xa_tool_bar_add;
-	container_class->remove = xa_tool_bar_remove;
-	container_class->forall = xa_tool_bar_forall;
-	container_class->child_type = xa_tool_bar_child_type;
+	container_class->add = sq_tool_bar_add;
+	container_class->remove = sq_tool_bar_remove;
+	container_class->forall = sq_tool_bar_forall;
+	container_class->child_type = sq_tool_bar_child_type;
 }
 
 static void
-xa_tool_bar_init(XAToolBar *tool_bar)
+sq_tool_bar_init(SQToolBar *tool_bar)
 {
 	GtkToolItem *button = NULL;
-	XA_NAVIGATION_BAR(tool_bar)->_cb_pwd_changed = cb_xa_tool_bar_pwd_changed;
-	XA_NAVIGATION_BAR(tool_bar)->_cb_new_archive = cb_xa_tool_bar_new_archive;
-	XA_NAVIGATION_BAR(tool_bar)->_cb_store_set   = cb_xa_tool_bar_store_set;
+	SQ_NAVIGATION_BAR(tool_bar)->_cb_pwd_changed = cb_sq_tool_bar_pwd_changed;
+	SQ_NAVIGATION_BAR(tool_bar)->_cb_new_archive = cb_sq_tool_bar_new_archive;
+	SQ_NAVIGATION_BAR(tool_bar)->_cb_store_set   = cb_sq_tool_bar_store_set;
 
 	GTK_WIDGET_SET_FLAGS(tool_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(tool_bar), FALSE);
@@ -129,22 +129,22 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 
 	tool_bar->back_button = gtk_tool_button_new_from_stock(GTK_STOCK_GO_BACK);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->back_button, 0);
-	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_xa_tool_bar_history_back, tool_bar);
+	g_signal_connect(G_OBJECT(tool_bar->back_button), "clicked", (GCallback)cb_sq_tool_bar_history_back, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 
 	tool_bar->forward_button = gtk_tool_button_new_from_stock(GTK_STOCK_GO_FORWARD);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->forward_button, 1);
-	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_xa_tool_bar_history_forward, tool_bar);
+	g_signal_connect(G_OBJECT(tool_bar->forward_button), "clicked", (GCallback)cb_sq_tool_bar_history_forward, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
 	tool_bar->up_button = gtk_tool_button_new_from_stock(GTK_STOCK_GO_UP);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->up_button, 2);
-	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_xa_tool_bar_up, tool_bar);
+	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_sq_tool_bar_up, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 
 	tool_bar->home_button = gtk_tool_button_new_from_stock(GTK_STOCK_HOME);
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->home_button, 3);
-	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_xa_tool_bar_home, tool_bar);
+	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_sq_tool_bar_home, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
 
 	button = gtk_separator_tool_item_new();
@@ -156,7 +156,7 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	tool_bar->hbox = gtk_hbox_new(FALSE, 0);
 
 	GtkEntryCompletion *compl = gtk_entry_completion_new();
-	GtkListStore *store = gtk_list_store_new(1, G_TYPE_STRING);
+	//GtkListStore *store = gtk_list_store_new(1, G_TYPE_STRING);
 
 	gtk_entry_completion_set_popup_completion(compl, FALSE);
 
@@ -166,14 +166,14 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 
 	/* TODO: auto complete model */
 
-	gtk_entry_completion_set_model(compl, GTK_TREE_MODEL(store));
+	//gtk_entry_completion_set_model(compl, GTK_TREE_MODEL(store));
 
 	gtk_entry_completion_set_text_column(compl, 0);
 
 	gtk_container_add(GTK_CONTAINER(button), tool_bar->hbox);
 	gtk_box_pack_start(GTK_BOX(tool_bar->hbox), gtk_label_new(_("Location:")), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(tool_bar->hbox), tool_bar->path_field, TRUE, TRUE, 5);
-	g_signal_connect(G_OBJECT(tool_bar->path_field), "activate", (GCallback)cb_xa_tool_bar_path_field_activated, tool_bar);
+	g_signal_connect(G_OBJECT(tool_bar->path_field), "activate", (GCallback)cb_sq_tool_bar_path_field_activated, tool_bar);
 	gtk_tool_item_set_visible_horizontal(button, TRUE);
 	gtk_tool_item_set_homogeneous(button, FALSE);
 
@@ -186,21 +186,21 @@ xa_tool_bar_init(XAToolBar *tool_bar)
 	gtk_widget_ref((GtkWidget *)tool_bar);
 }
 
-XANavigationBar *
-xa_tool_bar_new(XAArchiveStore *store)
+SQNavigationBar *
+sq_tool_bar_new(SQArchiveStore *store)
 {
-	XANavigationBar *bar;
+	SQNavigationBar *bar;
 
-	bar = g_object_new(XA_TYPE_TOOL_BAR, NULL);
+	bar = g_object_new(SQ_TYPE_TOOL_BAR, NULL);
 
 	if(store)
-		xa_navigation_bar_set_store(XA_NAVIGATION_BAR(bar), store);
+		sq_navigation_bar_set_store(SQ_NAVIGATION_BAR(bar), store);
 
 	return bar;
 }
 
 static void
-xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
+sq_tool_bar_refresh(SQToolBar *tool_bar, gchar *path)
 {
 	gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), path);
 	gtk_editable_set_position(GTK_EDITABLE(tool_bar->path_field), -1);
@@ -216,14 +216,14 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 1);
 	}
-	if(XA_NAVIGATION_BAR(tool_bar)->store)
+	if(SQ_NAVIGATION_BAR(tool_bar)->store)
 	{
-		if(xa_archive_store_has_future(XA_NAVIGATION_BAR(tool_bar)->store))
+		if(sq_archive_store_has_future(SQ_NAVIGATION_BAR(tool_bar)->store))
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
 		else
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
 
-		if(xa_archive_store_has_history(XA_NAVIGATION_BAR(tool_bar)->store))
+		if(sq_archive_store_has_history(SQ_NAVIGATION_BAR(tool_bar)->store))
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
 		else
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
@@ -236,9 +236,9 @@ xa_tool_bar_refresh(XAToolBar *tool_bar, gchar *path)
 }
 
 static void
-xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
+sq_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(widget);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(widget);
 
 	if(tool_bar->bar && GTK_WIDGET_VISIBLE(tool_bar->bar))
 		gtk_widget_size_request(GTK_WIDGET(tool_bar->bar), requisition);
@@ -250,9 +250,9 @@ xa_tool_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 }
 
 static void
-xa_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
+sq_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(widget);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(widget);
 
 	widget->allocation = *allocation;
 
@@ -261,18 +261,18 @@ xa_tool_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 }
 
 static GType
-xa_tool_bar_child_type(GtkContainer *container)
+sq_tool_bar_child_type(GtkContainer *container)
 {
-	if(!XA_TOOL_BAR(container)->bar)
+	if(!SQ_TOOL_BAR(container)->bar)
 		return GTK_TYPE_WIDGET;
 	else
 		return G_TYPE_NONE;
 }
 
 static void
-xa_tool_bar_add(GtkContainer *container, GtkWidget *child)
+sq_tool_bar_add(GtkContainer *container, GtkWidget *child)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(container);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(container);
 
 	g_return_if_fail(GTK_IS_WIDGET(child));
 
@@ -286,9 +286,9 @@ xa_tool_bar_add(GtkContainer *container, GtkWidget *child)
 }
 
 static void
-xa_tool_bar_remove(GtkContainer *container, GtkWidget *child)
+sq_tool_bar_remove(GtkContainer *container, GtkWidget *child)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(container);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(container);
 	gboolean widget_was_visible;
 
 	g_return_if_fail(GTK_IS_WIDGET(child));
@@ -304,9 +304,9 @@ xa_tool_bar_remove(GtkContainer *container, GtkWidget *child)
 }
 
 static void
-xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data)
+sq_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(container);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(container);
 
 	g_return_if_fail(callback != NULL);
 
@@ -315,31 +315,31 @@ xa_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallb
 }
 
 static void
-cb_xa_tool_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
+cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
 	g_debug("%s", __FUNCTION__);
-	gchar *path= xa_archive_store_get_pwd(store);
+	gchar *path= sq_archive_store_get_pwd(store);
 	if(!path)
 		path = g_strdup("");
-	xa_tool_bar_refresh(tool_bar, path);
+	sq_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
 }
 
 static void
-cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
+cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 {
 	g_debug("%s", __FUNCTION__);
-	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
 
-	LXAArchive *lp_archive = xa_archive_store_get_archive(store);
+	LSQArchive *lp_archive = sq_archive_store_get_archive(store);
 
 	if(!lp_archive)
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
 	else
 	{
-		if(lxa_archive_get_status(lp_archive) != LXA_ARCHIVESTATUS_IDLE)
+		if(lsq_archive_get_status(lp_archive) != LSQ_ARCHIVESTATUS_IDLE)
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
 		else
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
@@ -351,58 +351,58 @@ cb_xa_tool_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 }
 
 static void
-cb_xa_tool_bar_history_back(GtkWidget *back_button, XAToolBar *tool_bar)
+cb_sq_tool_bar_history_back(GtkWidget *back_button, SQToolBar *tool_bar)
 {
-	xa_archive_store_go_back(XA_NAVIGATION_BAR(tool_bar)->store);
-	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
+	sq_archive_store_go_back(SQ_NAVIGATION_BAR(tool_bar)->store);
+	gchar *path= sq_archive_store_get_pwd(SQ_NAVIGATION_BAR(tool_bar)->store);
 	if(!path)
 		path = g_strdup("");
-	xa_tool_bar_refresh(tool_bar, path);
+	sq_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 }
 
 static void
-cb_xa_tool_bar_history_forward(GtkWidget *forward_button, XAToolBar *tool_bar)
+cb_sq_tool_bar_history_forward(GtkWidget *forward_button, SQToolBar *tool_bar)
 {
-	xa_archive_store_go_forward(XA_NAVIGATION_BAR(tool_bar)->store);
-	gchar *path= xa_archive_store_get_pwd(XA_NAVIGATION_BAR(tool_bar)->store);
+	sq_archive_store_go_forward(SQ_NAVIGATION_BAR(tool_bar)->store);
+	gchar *path= sq_archive_store_get_pwd(SQ_NAVIGATION_BAR(tool_bar)->store);
 	if(!path)
 		path = g_strdup("");
-	xa_tool_bar_refresh(tool_bar, path);
+	sq_tool_bar_refresh(tool_bar, path);
 	g_free(path);
 }
 
 static void
-cb_xa_tool_bar_up(GtkWidget *forward_button, XAToolBar *tool_bar)
+cb_sq_tool_bar_up(GtkWidget *forward_button, SQToolBar *tool_bar)
 {
-	xa_archive_store_go_up(XA_NAVIGATION_BAR(tool_bar)->store);
+	sq_archive_store_go_up(SQ_NAVIGATION_BAR(tool_bar)->store);
 }
 
 static void
-cb_xa_tool_bar_home(GtkWidget *forward_button, XAToolBar *tool_bar)
+cb_sq_tool_bar_home(GtkWidget *forward_button, SQToolBar *tool_bar)
 {
 	/* FIXME: the part about "/" could be bugged */
-	xa_archive_store_set_pwd(XA_NAVIGATION_BAR(tool_bar)->store, "/");
+	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, "/");
 }
 
 static void
-cb_xa_tool_bar_path_field_activated(GtkWidget *entry, XAToolBar *tool_bar)
+cb_sq_tool_bar_path_field_activated(GtkWidget *entry, SQToolBar *tool_bar)
 {
 	const gchar *path = gtk_entry_get_text(GTK_ENTRY(entry));
-	xa_archive_store_set_pwd(XA_ARCHIVE_STORE(XA_NAVIGATION_BAR(tool_bar)->store), path);
+	sq_archive_store_set_pwd(SQ_ARCHIVE_STORE(SQ_NAVIGATION_BAR(tool_bar)->store), path);
 }
 
 static void
-cb_xa_tool_bar_store_set(XANavigationBar *bar)
+cb_sq_tool_bar_store_set(SQNavigationBar *bar)
 {
-	XAToolBar *tool_bar = XA_TOOL_BAR(bar);
+	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
 	if(bar->store)
 	{
-		gchar *path= xa_archive_store_get_pwd(bar->store);
+		gchar *path= sq_archive_store_get_pwd(bar->store);
 		if(!path)
 			path = g_strdup("");
-		xa_tool_bar_refresh(tool_bar, path);
-		if(bar->store->archive->status == LXA_ARCHIVESTATUS_IDLE)
+		sq_tool_bar_refresh(tool_bar, path);
+		if(bar->store->archive->status == LSQ_ARCHIVESTATUS_IDLE)
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
 		else
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
@@ -411,6 +411,6 @@ cb_xa_tool_bar_store_set(XANavigationBar *bar)
 	else
 	{
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
-		xa_tool_bar_refresh(tool_bar, "");
+		sq_tool_bar_refresh(tool_bar, "");
 	}
 }

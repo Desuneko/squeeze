@@ -16,61 +16,61 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_MAIN_WINDOW_H__
-#define __XARCHIVER_MAIN_WINDOW_H__
+#ifndef __SQRCHIVER_MAIN_WINDOW_H__
+#define __SQRCHIVER_MAIN_WINDOW_H__
 G_BEGIN_DECLS
 
 typedef enum {
-	XA_MAIN_WINDOW_STATUS_NONE,
-	XA_MAIN_WINDOW_STATUS_IDLE,
-	XA_MAIN_WINDOW_STATUS_BUSY
-}XAMainWindowStatus;
+	SQ_MAIN_WINDOW_STATUS_NONE,
+	SQ_MAIN_WINDOW_STATUS_IDLE,
+	SQ_MAIN_WINDOW_STATUS_BUSY
+}SQMainWindowStatus;
 
 typedef enum
 {
-	XA_MAIN_WINDOW_NAVIGATION_INTERNAL,
+	SQ_MAIN_WINDOW_NAVIGATION_INTERNAL,
 #ifdef ENABLE_TOOLBAR
-	XA_MAIN_WINDOW_NAVIGATION_TOOL_BAR,
+	SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR,
 #endif
 #ifdef ENABLE_PATHBAR
-	XA_MAIN_WINDOW_NAVIGATION_PATH_BAR
+	SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR
 #endif
-} XAMainWindowNavigationStyle;
+} SQMainWindowNavigationStyle;
 
-#define XA_TYPE_MAIN_WINDOW_NAVIGATION_STYLE (xa_main_window_navigation_style_get_type())
+#define SQ_TYPE_MAIN_WINDOW_NAVIGATION_STYLE (sq_main_window_navigation_style_get_type())
 
 
-#define XA_TYPE_MAIN_WINDOW xa_main_window_get_type()
+#define SQ_TYPE_MAIN_WINDOW sq_main_window_get_type()
 
-#define XA_MAIN_WINDOW(obj)         ( \
+#define SQ_MAIN_WINDOW(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_main_window_get_type(),      \
-			XAMainWindow))
+			sq_main_window_get_type(),      \
+			SQMainWindow))
 
-#define XA_IS_MAIN_WINDOW(obj)      ( \
+#define SQ_IS_MAIN_WINDOW(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_main_window_get_type()))
+			sq_main_window_get_type()))
 
-#define XA_MAIN_WINDOW_CLASS(class) ( \
+#define SQ_MAIN_WINDOW_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_main_window_get_type(),      \
-			XAMainWindowClass))
+			sq_main_window_get_type(),      \
+			SQMainWindowClass))
 
-#define XA_IS_MAIN_WINDOW_CLASS(class) ( \
+#define SQ_IS_MAIN_WINDOW_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_main_window_get_type()))
+			sq_main_window_get_type()))
 
-typedef struct _XAMainWindow XAMainWindow;
+typedef struct _SQMainWindow SQMainWindow;
 
-struct _XAMainWindow
+struct _SQMainWindow
 {
 	GtkWindow parent;
-	XASettings *settings;
+	SQSettings *settings;
 	GtkIconTheme *icon_theme;
-	XAApplication *app;
+	SQApplication *app;
 	GtkWidget *menu_bar;
 	GtkWidget *main_vbox;
-	XAWidgetFactory *widget_factory;
+	SQWidgetFactory *widget_factory;
 	struct {
 		/* 'file' menu */
 		GtkWidget *menu_item_file;
@@ -118,29 +118,29 @@ struct _XAMainWindow
 		GtkToolItem *tool_item_remove;
 		GtkToolItem *tool_item_stop;
 	} toolbar;
-	XAMainWindowNavigationStyle nav_style;
-	XANavigationBar *navigationbar;
+	SQMainWindowNavigationStyle nav_style;
+	SQNavigationBar *navigationbar;
 	GtkAccelGroup *accel_group;
 	GtkWidget *notebook;
 	GtkWidget *statusbar;
 	GtkWidget *about_dlg;
 };
 
-typedef struct _XAMainWindowClass XAMainWindowClass;
+typedef struct _SQMainWindowClass SQMainWindowClass;
 
-struct _XAMainWindowClass
+struct _SQMainWindowClass
 {
 	GtkWindowClass parent;
 };
 
-GType      xa_main_window_navigation_style_get_type();
+GType      sq_main_window_navigation_style_get_type();
 
-GtkWidget *xa_main_window_new(XAApplication *, GtkIconTheme *icon_theme);
-GtkWidget *xa_main_window_find_image(gchar *, GtkIconSize);
-GType      xa_main_window_get_type ();
+GtkWidget *sq_main_window_new(SQApplication *, GtkIconTheme *icon_theme);
+GtkWidget *sq_main_window_find_image(gchar *, GtkIconSize);
+GType      sq_main_window_get_type ();
 
-gint xa_main_window_open_archive(XAMainWindow *window, gchar *path, gint replace);
+gint sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace);
 
 
 G_END_DECLS
-#endif /* __XARCHIVER_MAIN_WINDOW_H__ */
+#endif /* __SQRCHIVER_MAIN_WINDOW_H__ */

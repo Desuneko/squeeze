@@ -1,8 +1,8 @@
 #!/bin/sh
 #
-# xarchiver.tap - Wrapper script to create and extract archive files
-#                 in Thunar, via the thunar-archive-plugin, using the
-#                 xarchiver archive manager.
+# squeeze.tap - Wrapper script to create and extract archive files
+#               in Thunar, via the thunar-archive-plugin, using the
+#               squeeze archive manager.
 #
 # $Id$
 #
@@ -30,15 +30,15 @@ folder=$1; shift;
 # check the action
 case $action in
 create)
-	exec xarchiver --new "$@"
+	exec squeeze --new "$@"
 	;;
 
 extract-here)
-	exec xarchiver "--extract-to=$folder" "$@"
+	exec squeeze "--extract-to=$folder" "$@"
 	;;
 
 extract-to)
-	exec xarchiver --extract "$@"
+	exec squeeze --extract "$@"
 	;;
 
 *)

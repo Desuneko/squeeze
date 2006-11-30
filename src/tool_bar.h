@@ -16,35 +16,35 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_TOOL_BAR_H__
-#define __XARCHIVER_TOOL_BAR_H__
+#ifndef __SQRCHIVER_TOOL_BAR_H__
+#define __SQRCHIVER_TOOL_BAR_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_TOOL_BAR xa_tool_bar_get_type()
+#define SQ_TYPE_TOOL_BAR sq_tool_bar_get_type()
 
-#define XA_TOOL_BAR(obj)(                \
+#define SQ_TOOL_BAR(obj)(                \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			XA_TYPE_TOOL_BAR,                  \
-			XAToolBar))
+			SQ_TYPE_TOOL_BAR,                  \
+			SQToolBar))
 
-#define XA_IS_TOOL_BAR(obj)      ( \
+#define SQ_IS_TOOL_BAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_TOOL_BAR))
+			SQ_TYPE_TOOL_BAR))
 
-#define XA_TOOL_BAR_CLASS(klass) ( \
+#define SQ_TOOL_BAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			XA_TYPE_TOOL_BAR,      \
-			XAToolBarClass))
+			SQ_TYPE_TOOL_BAR,      \
+			SQToolBarClass))
 
-#define XA_IS_TOOL_BAR_CLASS(class) ( \
+#define SQ_IS_TOOL_BAR_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_TOOL_BAR()))	
+			SQ_TYPE_TOOL_BAR()))	
 
-typedef struct _XAToolBar XAToolBar;
+typedef struct _SQToolBar SQToolBar;
 
-struct _XAToolBar
+struct _SQToolBar
 {
-	XANavigationBar parent;
+	SQNavigationBar parent;
 	GtkToolbar *bar;
 	GtkToolItem *back_button;
 	GtkToolItem *forward_button;
@@ -54,15 +54,15 @@ struct _XAToolBar
 	GtkWidget *hbox;
 };
 
-typedef struct _XAToolBarClass XAToolBarClass;
+typedef struct _SQToolBarClass SQToolBarClass;
 
-struct _XAToolBarClass
+struct _SQToolBarClass
 {
-	XANavigationBarClass parent_class;
+	SQNavigationBarClass parent_class;
 };
 
-GType            xa_tool_bar_get_type();
-XANavigationBar *xa_tool_bar_new();
+GType            sq_tool_bar_get_type();
+SQNavigationBar *sq_tool_bar_new();
 
 G_END_DECLS
-#endif /* __XARCHIVER_TOOL_BAR_H__*/
+#endif /* __SQRCHIVER_TOOL_BAR_H__*/

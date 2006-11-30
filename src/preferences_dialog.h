@@ -16,31 +16,31 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_PREFERENCES_DIALOG_H__
-#define __XARCHIVER_PREFERENCES_DIALOG_H__
+#ifndef __SQRCHIVER_PREFERENCES_DIALOG_H__
+#define __SQRCHIVER_PREFERENCES_DIALOG_H__
 G_BEGIN_DECLS
 
-#define XA_PREFERENCES_DIALOG(obj)         ( \
+#define SQ_PREFERENCES_DIALOG(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_preferences_dialog_get_type(),      \
-			XAPreferencesDialog))
+			sq_preferences_dialog_get_type(),      \
+			SQPreferencesDialog))
 
-#define XA_IS_PREFERENCES_DIALOG(obj)      ( \
+#define SQ_IS_PREFERENCES_DIALOG(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_preferences_dialog_get_type()))
+			sq_preferences_dialog_get_type()))
 
-#define XA_PREFERENCES_DIALOG_CLASS(class) ( \
+#define SQ_PREFERENCES_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_preferences_dialog_get_type(),      \
-			XAPreferencesDialogClass))
+			sq_preferences_dialog_get_type(),      \
+			SQPreferencesDialogClass))
 
-#define XA_IS_PREFERENCES_DIALOG_CLASS(class) ( \
+#define SQ_IS_PREFERENCES_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_preferences_dialog_get_type()))
+			sq_preferences_dialog_get_type()))
 
-typedef struct _XAPreferencesDialog XAPreferencesDialog;
+typedef struct _SQPreferencesDialog SQPreferencesDialog;
 
-struct _XAPreferencesDialog
+struct _SQPreferencesDialog
 {
 	GtkDialog parent;
 	GtkWidget *notebook;
@@ -59,14 +59,14 @@ struct _XAPreferencesDialog
 	} support;
 };
 
-typedef struct _XAPreferencesDialogClass XAPreferencesDialogClass;
+typedef struct _SQPreferencesDialogClass SQPreferencesDialogClass;
 
-struct _XAPreferencesDialogClass
+struct _SQPreferencesDialogClass
 {
 	GtkDialogClass parent;
 };
 
-GtkWidget *xa_preferences_dialog_new();
+GtkWidget *sq_preferences_dialog_new();
 
 G_END_DECLS
-#endif /* __XARCHIVER_PREFERENCES_DIALOG_H__ */
+#endif /* __SQRCHIVER_PREFERENCES_DIALOG_H__ */

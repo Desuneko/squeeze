@@ -19,8 +19,8 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <libsqueeze/libxarchiver.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <libxarchiver/libxarchiver.h>
 
 #ifdef HAVE_THUNAR_VFS
 #define EXO_API_SUBJECT_TO_CHANGE
@@ -32,16 +32,16 @@
 #include "preferences_dialog.h"
 
 static void
-xa_preferences_dialog_class_init(XAPreferencesDialogClass *archive_class);
+sq_preferences_dialog_class_init(SQPreferencesDialogClass *archive_class);
 
 static void
-xa_preferences_dialog_init(XAPreferencesDialog *archive);
+sq_preferences_dialog_init(SQPreferencesDialog *archive);
 
 static void
-cb_xa_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gpointer user_data);
+cb_sq_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gpointer user_data);
 
 static GtkWidget *
-xa_preferences_dialog_create_page(LXAArchiveSupport *support);
+sq_preferences_dialog_create_page(LSQArchiveSupport *support);
 
 static GdkPixbuf *
 create_icon_from_widget(GtkWidget *widget);
@@ -70,38 +70,38 @@ signal_blocker(GtkWidget *widget, gpointer user_data)
 }
 
 GType
-xa_preferences_dialog_get_type ()
+sq_preferences_dialog_get_type ()
 {
-	static GType xa_preferences_dialog_type = 0;
+	static GType sq_preferences_dialog_type = 0;
 
- 	if (!xa_preferences_dialog_type)
+ 	if (!sq_preferences_dialog_type)
 	{
- 		static const GTypeInfo xa_preferences_dialog_info = 
+ 		static const GTypeInfo sq_preferences_dialog_info = 
 		{
-			sizeof (XAPreferencesDialogClass),
+			sizeof (SQPreferencesDialogClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_preferences_dialog_class_init,
+			(GClassInitFunc) sq_preferences_dialog_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAPreferencesDialog),
+			sizeof (SQPreferencesDialog),
 			0,
-			(GInstanceInitFunc) xa_preferences_dialog_init,
+			(GInstanceInitFunc) sq_preferences_dialog_init,
 			NULL
 		};
 
-		xa_preferences_dialog_type = g_type_register_static (GTK_TYPE_DIALOG, "XAPreferencesDialog", &xa_preferences_dialog_info, 0);
+		sq_preferences_dialog_type = g_type_register_static (GTK_TYPE_DIALOG, "SQPreferencesDialog", &sq_preferences_dialog_info, 0);
 	}
-	return xa_preferences_dialog_type;
+	return sq_preferences_dialog_type;
 }
 
 static void
-xa_preferences_dialog_class_init(XAPreferencesDialogClass *dialog_class)
+sq_preferences_dialog_class_init(SQPreferencesDialogClass *dialog_class)
 {
 }
 
 static void
-xa_preferences_dialog_init(XAPreferencesDialog *dialog)
+sq_preferences_dialog_init(SQPreferencesDialog *dialog)
 {
 	GtkWidget *box;
 	GtkWidget *label;
@@ -160,7 +160,7 @@ xa_preferences_dialog_init(XAPreferencesDialog *dialog)
 	GtkCellRenderer *render = gtk_cell_renderer_pixbuf_new();
 
 	iconview = gtk_icon_view_new_with_model(store);
-	g_signal_connect(G_OBJECT(iconview), "item-activated", (GCallback)cb_xa_preferences_dialog_item_activated, dialog);
+	g_signal_connect(G_OBJECT(iconview), "item-activated", (GCallback)cb_sq_preferences_dialog_item_activated, dialog);
 
 	GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
 	gtk_widget_set_size_request(scroll, 84, 84);
@@ -193,7 +193,7 @@ xa_preferences_dialog_init(XAPreferencesDialog *dialog)
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
 	gtk_notebook_set_show_border(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
 
-	gtk_notebook_append_page(GTK_NOTEBOOK(dialog->support.notebook), xa_preferences_dialog_create_page(NULL), NULL);
+	gtk_notebook_append_page(GTK_NOTEBOOK(dialog->support.notebook), sq_preferences_dialog_create_page(NULL), NULL);
 
 	gtk_box_pack_start(GTK_BOX(box), scroll, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(box), dialog->support.notebook, TRUE, TRUE, 0);
@@ -212,11 +212,11 @@ xa_preferences_dialog_init(XAPreferencesDialog *dialog)
 }
 
 GtkWidget *
-xa_preferences_dialog_new()
+sq_preferences_dialog_new()
 {
 	GtkWidget *dialog;
 
-	dialog = g_object_new(xa_preferences_dialog_get_type(),
+	dialog = g_object_new(sq_preferences_dialog_get_type(),
 			"title", _("Preferences"),
 			NULL);
 
@@ -224,7 +224,7 @@ xa_preferences_dialog_new()
 }
 
 static GtkWidget *
-xa_preferences_dialog_create_page(LXAArchiveSupport *support)
+sq_preferences_dialog_create_page(LSQArchiveSupport *support)
 {
 	GtkTargetEntry entry;
 
@@ -239,7 +239,7 @@ xa_preferences_dialog_create_page(LXAArchiveSupport *support)
 
 	GtkWidget *button = gtk_button_new_with_label(_("Filename"));
 
-	entry.target = "_XA_PREF_DIALOG_BUTTON";
+	entry.target = "_SQ_PREF_DIALOG_BUTTON";
 	entry.flags = GTK_TARGET_SAME_APP;
 	entry.info = 2;
 
@@ -291,9 +291,9 @@ xa_preferences_dialog_create_page(LXAArchiveSupport *support)
 }
 
 static void
-cb_xa_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gpointer user_data)
+cb_sq_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gpointer user_data)
 {
-	XAPreferencesDialog *dialog = XA_PREFERENCES_DIALOG(user_data);
+	SQPreferencesDialog *dialog = SQ_PREFERENCES_DIALOG(user_data);
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(dialog->support.notebook), gtk_tree_path_get_indices(path)[0]);
 }
 
@@ -317,7 +317,7 @@ static void
 data_get(GtkWidget * widget, GdkDragContext *context, GtkSelectionData *data, guint info, guint time, gpointer user_data)
 {
 	gtk_widget_hide(widget);
-	gtk_selection_data_set(data, gdk_atom_intern("_XA_PREF_DIALOG_BUTTON", FALSE), 8, (const guchar*)"", 0);
+	gtk_selection_data_set(data, gdk_atom_intern("_SQ_PREF_DIALOG_BUTTON", FALSE), 8, (const guchar*)"", 0);
 }
 
 static void

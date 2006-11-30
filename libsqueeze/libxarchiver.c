@@ -24,44 +24,42 @@
 #include <gettext.h>
 
 #include "libxarchiver.h"
-#include "libxarchiver/archive-support-zip.h"
-#include "libxarchiver/archive-support-gnu-tar.h"
+#include "libsqueeze/archive-support-zip.h"
+#include "libsqueeze/archive-support-gnu-tar.h"
 
 #include "internals.h"
 
 void
-lxa_init()
+lsq_init()
 {
-	LXA_TRACE_INIT;
+	lsq_tmp_dir = g_get_tmp_dir();
 
-	lxa_tmp_dir = g_get_tmp_dir();
+	lsq_mime_init();
 
-	lxa_mime_init();
-
-	lxa_register_support(lxa_archive_support_gnu_tar_new());
-	lxa_register_support(lxa_archive_support_zip_new());
+	lsq_register_support(lsq_archive_support_gnu_tar_new());
+	lsq_register_support(lsq_archive_support_zip_new());
 
 /*
 	TODO: Implement right commands in unrar
-	lxa_register_support(lxa_archive_support_rar_new());
-	lxa_register_support(lxa_archive_support_unrar_new());
+	lsq_register_support(lsq_archive_support_rar_new());
+	lsq_register_support(lsq_archive_support_unrar_new());
 	*/
 }
 
 void
-lxa_destroy()
+lsq_destroy()
 {
-	g_slist_foreach(lxa_archive_support_list, (GFunc)g_object_unref, NULL);
+	g_slist_foreach(lsq_archive_support_list, (GFunc)g_object_unref, NULL);
 
-	lxa_mime_destroy();
+	lsq_mime_destroy();
 }
 
 /*
- * XAArchive* lxa_new_archive(gchar *path, LXAArchiveType type, gboolean overwrite)
+ * XAArchive* lsq_new_archive(gchar *path, LSQArchiveType type, gboolean overwrite)
  *
  */
 gint
-lxa_new_archive(gchar *path, gboolean overwrite, gchar *mime, LXAArchive **lp_archive)
+lsq_new_archive(gchar *path, gboolean overwrite, gchar *mime, LSQArchive **lp_archive)
 {
 	if(overwrite)
 		g_unlink(path);
@@ -72,7 +70,7 @@ lxa_new_archive(gchar *path, gboolean overwrite, gchar *mime, LXAArchive **lp_ar
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, mime);
+	LSQArchive *archive = lsq_archive_new(path, mime);
 	(*lp_archive) = archive;
 	if(!archive)
 		return 1;
@@ -81,11 +79,11 @@ lxa_new_archive(gchar *path, gboolean overwrite, gchar *mime, LXAArchive **lp_ar
 
 /*
  *
- * XAArchive* lxa_open_archive(gchar *path)
+ * XAArchive* lsq_open_archive(gchar *path)
  *
  */
 gint
-lxa_open_archive(gchar *path, LXAArchive **lp_archive)
+lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 {
 	if(!g_file_test(path, G_FILE_TEST_EXISTS))
 	{
@@ -93,7 +91,7 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 		return 1;
 	}
 
-	LXAArchive *archive = lxa_archive_new(path, NULL);
+	LSQArchive *archive = lsq_archive_new(path, NULL);
 	(*lp_archive) = archive;
 	if(!archive)
 		return 1;
@@ -101,7 +99,7 @@ lxa_open_archive(gchar *path, LXAArchive **lp_archive)
 }
 
 void
-lxa_close_archive(LXAArchive *archive)
+lsq_close_archive(LSQArchive *archive)
 {
 	g_object_unref(archive);
 }

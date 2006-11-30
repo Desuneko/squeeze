@@ -16,50 +16,50 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_EXTRACT_ARCHIVE_DIALOG_H__
-#define __XARCHIVER_EXTRACT_ARCHIVE_DIALOG_H__
+#ifndef __SQRCHIVER_EXTRACT_ARCHIVE_DIALOG_H__
+#define __SQRCHIVER_EXTRACT_ARCHIVE_DIALOG_H__
 G_BEGIN_DECLS
 
-#define XA_EXTRACT_ARCHIVE_DIALOG(obj)         ( \
+#define SQ_EXTRACT_ARCHIVE_DIALOG(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_extract_archive_dialog_get_type(),      \
-			XAExtractArchiveDialog))
+			sq_extract_archive_dialog_get_type(),      \
+			SQExtractArchiveDialog))
 
-#define XA_IS_EXTRACT_ARCHIVE_DIALOG(obj)      ( \
+#define SQ_IS_EXTRACT_ARCHIVE_DIALOG(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_extract_archive_dialog_get_type()))
+			sq_extract_archive_dialog_get_type()))
 
-#define XA_EXTRACT_ARCHIVE_DIALOG_CLASS(class) ( \
+#define SQ_EXTRACT_ARCHIVE_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_extract_archive_dialog_get_type(),      \
-			XAExtractArchiveDialogClass))
+			sq_extract_archive_dialog_get_type(),      \
+			SQExtractArchiveDialogClass))
 
-#define XA_IS_EXTRACT_ARCHIVE_DIALOG_CLASS(class) ( \
+#define SQ_IS_EXTRACT_ARCHIVE_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_extract_archive_dialog_get_type()))
+			sq_extract_archive_dialog_get_type()))
 
-typedef struct _XAExtractArchiveDialog XAExtractArchiveDialog;
+typedef struct _SQExtractArchiveDialog SQExtractArchiveDialog;
 
-struct _XAExtractArchiveDialog
+struct _SQExtractArchiveDialog
 {
 	GtkFileChooserDialog parent;
 	GtkWidget *l_frame;
 	GtkWidget *r_frame;
 	GtkWidget *all_files_radio;
 	GtkWidget *sel_files_radio;
-	LXAArchive *archive;
-	LXAArchiveSupport *support;
+	LSQArchive *archive;
+	LSQArchiveSupport *support;
 };
 
-typedef struct _XAExtractArchiveDialogClass XAExtractArchiveDialogClass;
+typedef struct _SQExtractArchiveDialogClass SQExtractArchiveDialogClass;
 
-struct _XAExtractArchiveDialogClass
+struct _SQExtractArchiveDialogClass
 {
 	GtkFileChooserDialogClass parent_class;
 };
 
-GType      xa_extract_archive_dialog_get_type();
-GtkWidget *xa_extract_archive_dialog_new(LXAArchiveSupport *, LXAArchive *, gboolean);
+GType      sq_extract_archive_dialog_get_type();
+GtkWidget *sq_extract_archive_dialog_new(LSQArchiveSupport *, LSQArchive *, gboolean);
 
 G_END_DECLS
-#endif /* __XARCHIVER_EXTRACT_ARCHIVE_DIALOG_H__ */
+#endif /* __SQRCHIVER_EXTRACT_ARCHIVE_DIALOG_H__ */

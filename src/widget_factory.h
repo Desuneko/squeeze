@@ -15,49 +15,49 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
-#ifndef __XA_WIDGET_FACTORY_H__
-#define __XA_WIDGET_FACTORY_H__
+#ifndef __SQ_WIDGET_FACTORY_H__
+#define __SQ_WIDGET_FACTORY_H__
 
 G_BEGIN_DECLS
 
-#define XA_WIDGET_FACTORY(obj)         ( \
+#define SQ_WIDGET_FACTORY(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_widget_factory_get_type(),      \
-			LXAArchive))
+			sq_widget_factory_get_type(),      \
+			LSQArchive))
 
-#define LXA_IS_WIDGET_FACTORY(obj)      ( \
+#define LSQ_IS_WIDGET_FACTORY(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_widget_factory_get_type()))
+			sq_widget_factory_get_type()))
 
-#define XA_WIDGET_FACTORY_CLASS(klass) ( \
+#define SQ_WIDGET_FACTORY_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			xa_widget_factory_get_type(),      \
-			LXAArchiveClass))
+			sq_widget_factory_get_type(),      \
+			LSQArchiveClass))
 
-#define LXA_IS_WIDGET_FACTORY_CLASS(klass) ( \
+#define LSQ_IS_WIDGET_FACTORY_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			xa_widget_factory_get_type()))
+			sq_widget_factory_get_type()))
 
 typedef struct
 {
 	GObject parent;
 	GtkTooltips *tips;
-} XAWidgetFactory;
+} SQWidgetFactory;
 
 typedef struct
 {
 	GObjectClass parent;
-} XAWidgetFactoryClass;
+} SQWidgetFactoryClass;
 
-GType               xa_widget_factory_get_type(void);
-XAWidgetFactory    *xa_widget_factory_new();
+GType               sq_widget_factory_get_type(void);
+SQWidgetFactory    *sq_widget_factory_new();
 
-GtkWidget          *xa_widget_factory_create_property_widget(XAWidgetFactory *, GObject *, const gchar *);
-GSList             *xa_widget_factory_create_property_menu(XAWidgetFactory *, GObject *, const gchar *);
-GtkWidget          *xa_widget_factory_create_action_widget(XAWidgetFactory *, LXAArchiveSupport *, LXAArchive *, const gchar *);
-GtkWidget          *xa_widget_factory_create_action_menu_item(XAWidgetFactory *, LXAArchiveSupport *, LXAArchive *, const gchar *);
-GtkToolItem        *xa_widget_factory_create_action_bar(XAWidgetFactory *, LXAArchiveSupport *, LXAArchive *, const gchar *);
-GSList             *xa_widget_factory_create_action_menu(XAWidgetFactory *, LXAArchiveSupport *, LXAArchive *);
+GtkWidget          *sq_widget_factory_create_property_widget(SQWidgetFactory *, GObject *, const gchar *);
+GSList             *sq_widget_factory_create_property_menu(SQWidgetFactory *, GObject *, const gchar *);
+GtkWidget          *sq_widget_factory_create_action_widget(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+GtkWidget          *sq_widget_factory_create_action_menu_item(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+GtkToolItem        *sq_widget_factory_create_action_bar(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+GSList             *sq_widget_factory_create_action_menu(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *);
 
-#endif /*__XA_WIDGET_FACTORY_H__*/
+#endif /*__SQ_WIDGET_FACTORY_H__*/
 

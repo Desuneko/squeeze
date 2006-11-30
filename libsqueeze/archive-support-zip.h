@@ -21,31 +21,31 @@
 G_BEGIN_DECLS
 
 
-#define LXA_TYPE_ARCHIVE_SUPPORT_ZIP lxa_archive_support_zip_get_type()
+#define LSQ_TYPE_ARCHIVE_SUPPORT_ZIP lsq_archive_support_zip_get_type()
 
-#define LXA_ARCHIVE_SUPPORT_ZIP(obj)         ( \
+#define LSQ_ARCHIVE_SUPPORT_ZIP(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_ZIP,      \
-			LXAArchiveSupportZip))
+			LSQ_TYPE_ARCHIVE_SUPPORT_ZIP,      \
+			LSQArchiveSupportZip))
 
-#define LXA_IS_ARCHIVE_SUPPORT_ZIP(obj)      ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_ZIP(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_ZIP))
+			LSQ_TYPE_ARCHIVE_SUPPORT_ZIP))
 
-#define LXA_ARCHIVE_SUPPORT_ZIP_CLASS(klass) ( \
+#define LSQ_ARCHIVE_SUPPORT_ZIP_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LXA_TYPE_ARCHIVE_SUPPORT_ZIP,      \
-			LXAArchiveSupportZipClass))
+			LSQ_TYPE_ARCHIVE_SUPPORT_ZIP,      \
+			LSQArchiveSupportZipClass))
 
-#define LXA_IS_ARCHIVE_SUPPORT_ZIP_CLASS(klass) ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_ZIP_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LXA_TYPE_ARCHIVE_SUPPORT_ZIP))
+			LSQ_TYPE_ARCHIVE_SUPPORT_ZIP))
 
-typedef struct _LXAArchiveSupportZip LXAArchiveSupportZip;
+typedef struct _LSQArchiveSupportZip LSQArchiveSupportZip;
 
-struct _LXAArchiveSupportZip
+struct _LSQArchiveSupportZip
 {
-	LXAArchiveSupport parent;
+	LSQArchiveSupport parent;
 	gboolean  _extr_overwrite;
 	gchar    *_extr_password;
 
@@ -58,15 +58,15 @@ struct _LXAArchiveSupportZip
 	gboolean  _view_crc_32;
 };
 
-typedef struct _LXAArchiveSupportZipClass LXAArchiveSupportZipClass;
+typedef struct _LSQArchiveSupportZipClass LSQArchiveSupportZipClass;
 
-struct _LXAArchiveSupportZipClass
+struct _LSQArchiveSupportZipClass
 {
-	LXAArchiveSupportClass parent;
+	LSQArchiveSupportClass parent;
 }; 
 
-GType                lxa_archive_support_zip_get_type(void);
-LXAArchiveSupport *  lxa_archive_support_zip_new();
+GType                lsq_archive_support_zip_get_type(void);
+LSQArchiveSupport *  lsq_archive_support_zip_new();
 
 G_END_DECLS
 

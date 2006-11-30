@@ -1,14 +1,24 @@
-libxarchiver/libxarchiver.c
-libxarchiver/archive.c
-libxarchiver/archive-support.c
-libxarchiver/archive-support-gnu-tar.c
-libxarchiver/archive-support-zip.c
-libxarchiver/internals.c
+libsqueeze/libxarchiver.c
+libsqueeze/archive.c
+libsqueeze/archive-support.c
+libsqueeze/archive-support-gnu-tar.c
+libsqueeze/archive-support-zip.c
+libsqueeze/internals.c
+libsqueeze/mime.c
 
 src/main.c
 src/main_window.c
+src/application.c
+
 src/new_dialog.c
 src/add_dialog.c
 src/extract_dialog.c
 
-xarchiver.desktop.in
+src/tool_bar.c
+src/path_bar.c
+src/navigation_bar.c
+
+src/notebook.c
+src/archive_store.c
+
+squeeze.desktop.in

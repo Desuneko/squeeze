@@ -19,50 +19,50 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 #include <gettext.h>
 
 #include "new_dialog.h"
 
 static void
-xa_new_archive_dialog_class_init(XANewArchiveDialogClass *archive_class);
+sq_new_archive_dialog_class_init(SQNewArchiveDialogClass *archive_class);
 
 static void
-xa_new_archive_dialog_init(XANewArchiveDialog *archive);
+sq_new_archive_dialog_init(SQNewArchiveDialog *archive);
 
 GType
-xa_new_archive_dialog_get_type ()
+sq_new_archive_dialog_get_type ()
 {
-	static GType xa_new_archive_dialog_type = 0;
+	static GType sq_new_archive_dialog_type = 0;
 
- 	if (!xa_new_archive_dialog_type)
+ 	if (!sq_new_archive_dialog_type)
 	{
- 		static const GTypeInfo xa_new_archive_dialog_info = 
+ 		static const GTypeInfo sq_new_archive_dialog_info = 
 		{
-			sizeof (XANewArchiveDialogClass),
+			sizeof (SQNewArchiveDialogClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_new_archive_dialog_class_init,
+			(GClassInitFunc) sq_new_archive_dialog_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XANewArchiveDialog),
+			sizeof (SQNewArchiveDialog),
 			0,
-			(GInstanceInitFunc) xa_new_archive_dialog_init,
+			(GInstanceInitFunc) sq_new_archive_dialog_init,
 			NULL
 		};
 
-		xa_new_archive_dialog_type = g_type_register_static (GTK_TYPE_FILE_CHOOSER_DIALOG, "XANewArchiveDialog", &xa_new_archive_dialog_info, 0);
+		sq_new_archive_dialog_type = g_type_register_static (GTK_TYPE_FILE_CHOOSER_DIALOG, "SQNewArchiveDialog", &sq_new_archive_dialog_info, 0);
 	}
-	return xa_new_archive_dialog_type;
+	return sq_new_archive_dialog_type;
 }
 
 static void
-xa_new_archive_dialog_class_init(XANewArchiveDialogClass *dialog_class)
+sq_new_archive_dialog_class_init(SQNewArchiveDialogClass *dialog_class)
 {
 }
 
 static void
-xa_new_archive_dialog_init(XANewArchiveDialog *dialog)
+sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 {
 /*
 	GtkWidget *hbox = gtk_hbox_new(FALSE, 10);
@@ -79,11 +79,11 @@ xa_new_archive_dialog_init(XANewArchiveDialog *dialog)
 }
 
 GtkWidget *
-xa_new_archive_dialog_new()
+sq_new_archive_dialog_new()
 {
 	GtkWidget *dialog;
 
-	dialog = g_object_new(xa_new_archive_dialog_get_type(),
+	dialog = g_object_new(sq_new_archive_dialog_get_type(),
 			"title", _("Create new archive"),
 			"action", GTK_FILE_CHOOSER_ACTION_SAVE,
 			"do-overwrite-confirmation", TRUE,

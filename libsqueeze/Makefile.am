@@ -1,6 +1,6 @@
-lib_LTLIBRARIES = libxarchiver-1.la
+lib_LTLIBRARIES = libsqueeze-1.la
 
-libxarchiver_1_la_SOURCES =  \
+libsqueeze_1_la_SOURCES =  \
 	internals.c internals.h \
 	libxarchiver.c libxarchiver.h \
 	mime.c mime.h \
@@ -10,10 +10,14 @@ libxarchiver_1_la_SOURCES =  \
 	archive-support-zip.c archive-support-zip.h \
 	archive-support-gnu-tar.c archive-support-gnu-tar.h
 
-libxarchiver_1_la_CFLAGS = \
+libsqueeze_1_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \
 	$(THUNAR_VFS_CFLAGS)
-libxarchiver_1_la_LIBADD =
 
-libxarchiver_includedir= \
-	$(includedir)/libxarchiver
+libsqueeze_1_la_LIBADD =
+
+libsqueeze_1_la_LDFLAGS = \
+  -version-info $(SQUEEZE_VERINFO)
+
+libsqueeze_includedir= \
+	$(includedir)/libsqueeze

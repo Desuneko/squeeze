@@ -1,4 +1,4 @@
-bin_PROGRAMS = xarchiver
+bin_PROGRAMS = squeeze
 
 if ENABLE_PATHBAR
 PATHBAR_FILES = path_bar.c path_bar.h
@@ -13,7 +13,7 @@ TOOLBAR_FILES =
 endif
 
 
-xarchiver_SOURCES = \
+squeeze_SOURCES = \
 	main.c main.h \
 	application.c application.h \
 	main_window.c main_window.h \
@@ -29,7 +29,7 @@ xarchiver_SOURCES = \
 	extract_dialog.c extract_dialog.h \
 	widget_factory.c widget_factory.h
 
-xarchiver_CFLAGS = \
+squeeze_CFLAGS = \
 	@GTK_CFLAGS@ \
 	@GLIB_CFLAGS@ \
 	$(THUNAR_VFS_CFLAGS) \
@@ -38,8 +38,8 @@ xarchiver_CFLAGS = \
 	-DSRCDIR=\"$(top_srcdir)\" \
 	-DLOCALEDIR=\"$(localedir)\"
  
-xarchiver_LDADD = \
-	$(top_srcdir)/libxarchiver/libxarchiver-1.la \
+squeeze_LDADD = \
+	$(top_srcdir)/libsqueeze/libsqueeze-1.la \
 	@GTK_LIBS@ \
 	@GLIB_LIBS@ \
 	@THUNAR_VFS_LIBS@

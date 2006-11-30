@@ -15,40 +15,40 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-#ifndef __XARCHIVER_ARCHIVE_STORE_H__
-#define __XARCHIVER_ARCHIVE_STORE_H__
+#ifndef __SQRCHIVER_ARCHIVE_STORE_H__
+#define __SQRCHIVER_ARCHIVE_STORE_H__
 
-#define XA_TYPE_ARCHIVE_STORE xa_archive_store_get_type()
+#define SQ_TYPE_ARCHIVE_STORE sq_archive_store_get_type()
 
-#define XA_ARCHIVE_STORE(obj)         ( \
+#define SQ_ARCHIVE_STORE(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			XA_TYPE_ARCHIVE_STORE,      \
-			XAArchiveStore))
+			SQ_TYPE_ARCHIVE_STORE,      \
+			SQArchiveStore))
 
-#define XA_IS_ARCHIVE_STORE(obj)      ( \
+#define SQ_IS_ARCHIVE_STORE(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_ARCHIVE_STORE))
+			SQ_TYPE_ARCHIVE_STORE))
 
-#define XA_ARCHIVE_STORE_CLASS(class) ( \
+#define SQ_ARCHIVE_STORE_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			XA_TYPE_ARCHIVE_STORE,      \
-			XAArchiveStoreClass))
+			SQ_TYPE_ARCHIVE_STORE,      \
+			SQArchiveStoreClass))
 
-#define XA_IS_ARCHIVE_STORE_CLASS(class) ( \
+#define SQ_IS_ARCHIVE_STORE_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_ARCHIVE_STORE))
+			SQ_TYPE_ARCHIVE_STORE))
 
-typedef struct _XAArchiveStore XAArchiveStore;
+typedef struct _SQArchiveStore SQArchiveStore;
 
-struct _XAArchiveStore
+struct _SQArchiveStore
 {
 	GObject parent;
 	gint stamp;
-	LXAArchive *archive;
-	LXAArchiveSupport *support;
+	LSQArchive *archive;
+	LSQArchiveSupport *support;
 	gint sort_column;
 	GtkSortType sort_order;
-	LXAEntry **sort_list;
+	LSQEntry **sort_list;
 	guint list_size;
 	GtkIconTheme *icon_theme;
 	struct {
@@ -65,60 +65,60 @@ struct _XAArchiveStore
 	} navigation;
 };
 
-typedef struct _XAArchiveStoreClass XAArchiveStoreClass;
+typedef struct _SQArchiveStoreClass SQArchiveStoreClass;
 
-struct _XAArchiveStoreClass
+struct _SQArchiveStoreClass
 {
 	GObjectClass parent_class;
 };
 
 
-GType xa_archive_store_get_type();
-GtkTreeModel * xa_archive_store_new(LXAArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);
-void xa_archive_store_connect_treeview(XAArchiveStore *store, GtkTreeView *treeview);
-void xa_archive_store_connect_iconview(XAArchiveStore *store, GtkIconView *iconview);
-void xa_archive_store_go_up(XAArchiveStore *store);
-gchar * xa_archive_store_get_pwd(XAArchiveStore *store);
-GSList * xa_archive_store_get_pwd_list(XAArchiveStore *store);
-gchar * xa_archive_store_get_basename(XAArchiveStore *store);
-gboolean xa_archive_store_set_pwd(XAArchiveStore *store, const gchar *path);
-void xa_archive_store_set_icon_theme(XAArchiveStore *store, GtkIconTheme *icon_theme);
+GType sq_archive_store_get_type();
+GtkTreeModel * sq_archive_store_new(LSQArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);
+void sq_archive_store_connect_treeview(SQArchiveStore *store, GtkTreeView *treeview);
+void sq_archive_store_connect_iconview(SQArchiveStore *store, GtkIconView *iconview);
+void sq_archive_store_go_up(SQArchiveStore *store);
+gchar * sq_archive_store_get_pwd(SQArchiveStore *store);
+GSList * sq_archive_store_get_pwd_list(SQArchiveStore *store);
+gchar * sq_archive_store_get_basename(SQArchiveStore *store);
+gboolean sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path);
+void sq_archive_store_set_icon_theme(SQArchiveStore *store, GtkIconTheme *icon_theme);
 
-gboolean xa_archive_store_get_show_icons(XAArchiveStore *store);
-gboolean xa_archive_store_get_sort_case_sensitive(XAArchiveStore *store);
-gboolean xa_archive_store_get_sort_folders_first(XAArchiveStore *store);
+gboolean sq_archive_store_get_show_icons(SQArchiveStore *store);
+gboolean sq_archive_store_get_sort_case_sensitive(SQArchiveStore *store);
+gboolean sq_archive_store_get_sort_folders_first(SQArchiveStore *store);
 
-void xa_archive_store_set_show_icons(XAArchiveStore *, gboolean);
-void xa_archive_store_set_sort_case_sensitive(XAArchiveStore *, gboolean);
-void xa_archive_store_set_sort_folders_first(XAArchiveStore *, gboolean);
+void sq_archive_store_set_show_icons(SQArchiveStore *, gboolean);
+void sq_archive_store_set_sort_case_sensitive(SQArchiveStore *, gboolean);
+void sq_archive_store_set_sort_folders_first(SQArchiveStore *, gboolean);
 
 gchar *
-xa_archive_store_get_filename(XAArchiveStore *store, GtkTreeIter *iter);
+sq_archive_store_get_filename(SQArchiveStore *store, GtkTreeIter *iter);
 
 /* want to depricate these */
 /*void
-xa_archive_store_set_history(XAArchiveStore *store, GList *history, GList *pwd);
+sq_archive_store_set_history(SQArchiveStore *store, GList *history, GList *pwd);
 void
-xa_archive_store_get_history(XAArchiveStore *store, GList **history, GList **pwd);
+sq_archive_store_get_history(SQArchiveStore *store, GList **history, GList **pwd);
 */
 /* these replace them */
 gboolean
-xa_archive_store_has_history(XAArchiveStore *store);
+sq_archive_store_has_history(SQArchiveStore *store);
 gboolean
-xa_archive_store_has_future(XAArchiveStore *store);
+sq_archive_store_has_future(SQArchiveStore *store);
 void
-xa_archive_store_go_back(XAArchiveStore *store);
+sq_archive_store_go_back(SQArchiveStore *store);
 void
-xa_archive_store_go_forward(XAArchiveStore *store);
+sq_archive_store_go_forward(SQArchiveStore *store);
 GSList *
-xa_archive_store_get_trailing(XAArchiveStore *store);
+sq_archive_store_get_trailing(SQArchiveStore *store);
 
-LXAArchive *
-xa_archive_store_get_archive(XAArchiveStore *archive_store);
-LXAArchiveSupport *
-xa_archive_store_get_support(XAArchiveStore *archive_store);
+LSQArchive *
+sq_archive_store_get_archive(SQArchiveStore *archive_store);
+LSQArchiveSupport *
+sq_archive_store_get_support(SQArchiveStore *archive_store);
 
-void xa_archive_store_set_archive(XAArchiveStore *archive_store, LXAArchive *archive);
-void xa_archive_store_set_support(XAArchiveStore *archive_store, LXAArchiveSupport *support);
+void sq_archive_store_set_archive(SQArchiveStore *archive_store, LSQArchive *archive);
+void sq_archive_store_set_support(SQArchiveStore *archive_store, LSQArchiveSupport *support);
 
-#endif /* __XARCHIVER_ARCHIVE_STORE_H__ */
+#endif /* __SQRCHIVER_ARCHIVE_STORE_H__ */

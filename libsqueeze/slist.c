@@ -8,18 +8,18 @@
 #include "internals.h"
 #include "slist.h"
 
-LXASList *
-lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry, GCompareFunc cmp_func)
+LSQSList *
+lsq_slist_insert_sorted_single(LSQSList *list, LSQEntry *entry, GCompareFunc cmp_func)
 {
 	gint cmp = 1;
-	LXASList *iter = list;
-	LXASList *prev_entry = NULL;
-	LXASList *new_entry = NULL;
+	LSQSList *iter = list;
+	LSQSList *prev_entry = NULL;
+	LSQSList *new_entry = NULL;
 
 	for(; iter; iter = iter->next)
 	{
 		/* archive can be NULL */
-		cmp = cmp_func(entry, (LXAEntry*)iter->entry);
+		cmp = cmp_func(entry, (LSQEntry*)iter->entry);
 
 		if(!cmp)
 		{
@@ -32,7 +32,7 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry, GCompareFunc cmp
 		prev_entry = iter;
 	}
 
-	new_entry = LXA_SLICE_NEW(LXASList);
+	new_entry = g_new0(LSQSList, 1);
 	new_entry->next = iter;
 	new_entry->entry = entry;
 
@@ -44,7 +44,7 @@ lxa_slist_insert_sorted_single(LXASList *list, LXAEntry *entry, GCompareFunc cmp
 }
 
 guint
-lxa_slist_length(LXASList *list)
+lsq_slist_length(LSQSList *list)
 {
 	guint size = 0;
 	for(; list; list = list->next)
@@ -53,13 +53,13 @@ lxa_slist_length(LXASList *list)
 }
 
 void
-lxa_slist_free(LXASList *list)
+lsq_slist_free(LSQSList *list)
 {
-	LXASList *next;
+	LSQSList *next;
 	for(; list; list = next)
 	{
 		next = list->next;
-		LXA_SLICE_FREE(LXASList, list);
+		g_free(list);
 	}
 }
 

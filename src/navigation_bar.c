@@ -20,78 +20,78 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 
 
 static void
-xa_navigation_bar_class_init(XANavigationBarClass *archive_class);
+sq_navigation_bar_class_init(SQNavigationBarClass *archive_class);
 
 static void
-xa_navigation_bar_init(XANavigationBar *archive);
+sq_navigation_bar_init(SQNavigationBar *archive);
 static void
-xa_navigation_bar_finalize(GObject *object);
+sq_navigation_bar_finalize(GObject *object);
 
 static void
-cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
+cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
 
 static void
-cb_xa_navigation_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar);
+cb_sq_navigation_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 
 /* properties */
 enum {
-	XA_NAVIGATION_BAR_NAV_HISTORY = 1
+	SQ_NAVIGATION_BAR_NAV_HISTORY = 1
 };
 
 GType
-xa_navigation_bar_get_type ()
+sq_navigation_bar_get_type ()
 {
-	static GType xa_navigation_bar_type = 0;
+	static GType sq_navigation_bar_type = 0;
 
- 	if (!xa_navigation_bar_type)
+ 	if (!sq_navigation_bar_type)
 	{
- 		static const GTypeInfo xa_navigation_bar_info = 
+ 		static const GTypeInfo sq_navigation_bar_info = 
 		{
-			sizeof (XANavigationBarClass),
+			sizeof (SQNavigationBarClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_navigation_bar_class_init,
+			(GClassInitFunc) sq_navigation_bar_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XANavigationBar),
+			sizeof (SQNavigationBar),
 			0,
-			(GInstanceInitFunc) xa_navigation_bar_init,
+			(GInstanceInitFunc) sq_navigation_bar_init,
 			NULL
 		};
 
-		xa_navigation_bar_type = g_type_register_static (GTK_TYPE_CONTAINER, "XANavigationBar", &xa_navigation_bar_info, 0);
+		sq_navigation_bar_type = g_type_register_static (GTK_TYPE_CONTAINER, "SQNavigationBar", &sq_navigation_bar_info, 0);
 	}
-	return xa_navigation_bar_type;
+	return sq_navigation_bar_type;
 }
 
 static void
-xa_navigation_bar_class_init(XANavigationBarClass *navigation_bar_class)
+sq_navigation_bar_class_init(SQNavigationBarClass *navigation_bar_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (navigation_bar_class);
 
-	object_class->finalize     = xa_navigation_bar_finalize;
+	object_class->finalize     = sq_navigation_bar_finalize;
 }
 
 static void
-xa_navigation_bar_init(XANavigationBar *navigation_bar)
+sq_navigation_bar_init(SQNavigationBar *navigation_bar)
 {
 	GTK_WIDGET_SET_FLAGS(navigation_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(navigation_bar), FALSE);
 
-	navigation_bar->_cb_pwd_changed = cb_xa_navigation_bar_pwd_changed;
-	navigation_bar->_cb_new_archive = cb_xa_navigation_bar_new_archive;
+	navigation_bar->_cb_pwd_changed = cb_sq_navigation_bar_pwd_changed;
+	navigation_bar->_cb_new_archive = cb_sq_navigation_bar_new_archive;
 }
 
 static void
-xa_navigation_bar_finalize(GObject *object)
+sq_navigation_bar_finalize(GObject *object)
 {
-	XANavigationBar *navigation_bar = XA_NAVIGATION_BAR(object);
+	SQNavigationBar *navigation_bar = SQ_NAVIGATION_BAR(object);
 	if(navigation_bar->store)
 	{
 		if(navigation_bar->_cb_pwd_changed)
@@ -102,7 +102,7 @@ xa_navigation_bar_finalize(GObject *object)
 }
 
 void
-xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *store)
+sq_navigation_bar_set_store(SQNavigationBar *navigation_bar, SQArchiveStore *store)
 {
 	if(navigation_bar->store)
 	{
@@ -115,35 +115,35 @@ xa_navigation_bar_set_store(XANavigationBar *navigation_bar, XAArchiveStore *sto
 	navigation_bar->store = store;
 	if(store)
 	{
-		g_return_if_fail(XA_IS_ARCHIVE_STORE(store));
-		g_return_if_fail(XA_IS_NAVIGATION_BAR(navigation_bar));
-		g_signal_connect(G_OBJECT(store), "xa-pwd-changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
-		g_signal_connect(G_OBJECT(store), "xa-new-archive", (GCallback)navigation_bar->_cb_new_archive, navigation_bar);
+		g_return_if_fail(SQ_IS_ARCHIVE_STORE(store));
+		g_return_if_fail(SQ_IS_NAVIGATION_BAR(navigation_bar));
+		g_signal_connect(G_OBJECT(store), "sq-pwd-changed", (GCallback)navigation_bar->_cb_pwd_changed, navigation_bar);
+		g_signal_connect(G_OBJECT(store), "sq-new-archive", (GCallback)navigation_bar->_cb_new_archive, navigation_bar);
 	}
 
 	navigation_bar->_cb_store_set(navigation_bar);
 }
 
-XANavigationBar *
-xa_navigation_bar_new(XAArchiveStore *store)
+SQNavigationBar *
+sq_navigation_bar_new(SQArchiveStore *store)
 {
-	XANavigationBar *bar;
+	SQNavigationBar *bar;
 
-	bar = g_object_new(XA_TYPE_NAVIGATION_BAR, NULL);
+	bar = g_object_new(SQ_TYPE_NAVIGATION_BAR, NULL);
 
 	if(store)
-		xa_navigation_bar_set_store(bar, store);
+		sq_navigation_bar_set_store(bar, store);
 
 	return bar;
 }
 
 static void
-cb_xa_navigation_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
+cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
 {
 }
 
 static void
-cb_xa_navigation_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
+cb_sq_navigation_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 {
 }
 

@@ -31,9 +31,9 @@
 #include "internals.h"
 
 #ifdef HAVE_THUNAR_VFS
-ThunarVfsMimeDatabase  *lxa_mime_database;
+ThunarVfsMimeDatabase  *lsq_mime_database;
 #else
-struct _LXAMimeInfo
+struct _LSQMimeInfo
 {
 
 };
@@ -41,63 +41,63 @@ struct _LXAMimeInfo
 
 
 void
-lxa_mime_init()
+lsq_mime_init()
 {
 #ifdef HAVE_THUNAR_VFS
 	thunar_vfs_init();
-	lxa_mime_database = thunar_vfs_mime_database_get_default();
+	lsq_mime_database = thunar_vfs_mime_database_get_default();
 #endif /* HAVE_THUNAR_VFS */
 }
 
 void
-lxa_mime_destroy()
+lsq_mime_destroy()
 {
 #ifdef HAVE_THUNAR_VFS
-	g_object_unref(lxa_mime_database);
+	g_object_unref(lsq_mime_database);
 #endif /* HAVE_THUNAR_VFS */
 }
 
-LXAMimeInfo *
-lxa_mime_get_mime_info_for_file(const gchar *path)
+LSQMimeInfo *
+lsq_mime_get_mime_info_for_file(const gchar *path)
 {
-	LXAMimeInfo *result = NULL;
+	LSQMimeInfo *result = NULL;
 	gchar *base = g_path_get_basename(path);
 
 #ifdef HAVE_THUNAR_VFS
-	result = (LXAMimeInfo *)thunar_vfs_mime_database_get_info_for_file(lxa_mime_database, path, base);
+	result = (LSQMimeInfo *)thunar_vfs_mime_database_get_info_for_file(lsq_mime_database, path, base);
 #else
 
 #endif /* HAVE_THUNAR_VFS */
-	LXA_FREE(base);
+	g_free(base);
 	return result;
 }
 
-LXAMimeInfo *
-lxa_mime_get_mime_info_for_filename(const gchar *filename)
+LSQMimeInfo *
+lsq_mime_get_mime_info_for_filename(const gchar *filename)
 {
-	LXAMimeInfo *result = NULL;
+	LSQMimeInfo *result = NULL;
 
 #ifdef HAVE_THUNAR_VFS
-	result = (LXAMimeInfo *)thunar_vfs_mime_database_get_info_for_name(lxa_mime_database, filename);
+	result = (LSQMimeInfo *)thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, filename);
 #else
 #endif /* HAVE_THUNAR_VFS */
 	return result;
 }
 
-LXAMimeInfo *
-lxa_mime_get_mime_info(const gchar *mime_type)
+LSQMimeInfo *
+lsq_mime_get_mime_info(const gchar *mime_type)
 {
-	LXAMimeInfo *result = NULL;
+	LSQMimeInfo *result = NULL;
 
 #ifdef HAVE_THUNAR_VFS
-	result = (LXAMimeInfo *)thunar_vfs_mime_database_get_info(lxa_mime_database, mime_type);
+	result = (LSQMimeInfo *)thunar_vfs_mime_database_get_info(lsq_mime_database, mime_type);
 #else
 #endif /* HAVE_THUNAR_VFS */
 	return result;
 
 }
 const gchar *
-lxa_mime_info_get_name(const LXAMimeInfo *mime_info)
+lsq_mime_info_get_name(const LSQMimeInfo *mime_info)
 {
 	const gchar *result = NULL;
 #ifdef HAVE_THUNAR_VFS
@@ -109,7 +109,7 @@ lxa_mime_info_get_name(const LXAMimeInfo *mime_info)
 }
 
 const gchar *
-lxa_mime_info_get_icon_name(const LXAMimeInfo *mime_info, GtkIconTheme *icon_theme)
+lsq_mime_info_get_icon_name(const LSQMimeInfo *mime_info, GtkIconTheme *icon_theme)
 {
 	const gchar *result = NULL;
 #ifdef HAVE_THUNAR_VFS
@@ -121,22 +121,22 @@ lxa_mime_info_get_icon_name(const LXAMimeInfo *mime_info, GtkIconTheme *icon_the
 }
 
 void
-lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
+lsq_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value)
 {
 	const gchar *mime_type = g_value_get_string(value);
 #ifdef HAVE_THUNAR_VFS
-	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(lxa_mime_database, mime_type);
+	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime_type);
 	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, icon_theme);
 	if(gtk_icon_theme_has_icon(icon_theme, icon_name))
 		g_value_set_string(value, icon_name);
 	else
 		g_value_set_string(value, NULL);
 #endif
-	/* LXA_FREE((gchar *)mime_type); */
+	/* g_free((gchar *)mime_type); */
 }
 
 void
-lxa_mime_info_unref(LXAMimeInfo *mime_info)
+lsq_mime_info_unref(LSQMimeInfo *mime_info)
 {
 #ifdef HAVE_THUNAR_VFS
 	thunar_vfs_mime_info_unref((ThunarVfsMimeInfo *)mime_info);

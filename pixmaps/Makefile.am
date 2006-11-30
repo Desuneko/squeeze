@@ -1,8 +1,8 @@
 
 # Inspired by Makefile.am from the Thunar file-manager
 
-pixmapsdir = $(datadir)/pixmaps/xarchiver
+pixmapsdir = $(datadir)/pixmaps/squeeze
 
-pixmaps_DATA = xarchiver-add.png xarchiver-extract.png
+pixmaps_DATA = archive-add.png archive-extract.png
 
 EXTRA_DIST = $(pixmaps_DATA)

@@ -15,39 +15,39 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
-#ifndef __LXA_MIME_H__
-#define __LXA_MIME_H__
+#ifndef __LSQ_MIME_H__
+#define __LSQ_MIME_H__
 
 #include <gtk/gtkicontheme.h>
 
 #ifdef HAVE_THUNAR_VFS
-typedef struct _ThunarVfsMimeInfo LXAMimeInfo;
+typedef struct _ThunarVfsMimeInfo LSQMimeInfo;
 #else
-typedef struct _LXAMimeInfo LXAMimeInfo;
+typedef struct _LSQMimeInfo LSQMimeInfo;
 #endif
 
 void
-lxa_mime_init();
+lsq_mime_init();
 
 void
-lxa_mime_destroy();
+lsq_mime_destroy();
 
 void
-lxa_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
+lsq_mime_convert_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
 
-LXAMimeInfo *
-lxa_mime_get_mime_info_for_file(const gchar *path);
-LXAMimeInfo *
-lxa_mime_get_mime_info_for_filename(const gchar *filename);
-LXAMimeInfo *
-lxa_mime_get_mime_info(const gchar *mime_type);
+LSQMimeInfo *
+lsq_mime_get_mime_info_for_file(const gchar *path);
+LSQMimeInfo *
+lsq_mime_get_mime_info_for_filename(const gchar *filename);
+LSQMimeInfo *
+lsq_mime_get_mime_info(const gchar *mime_type);
 
 const gchar *
-lxa_mime_info_get_name(const LXAMimeInfo *mime_info);
+lsq_mime_info_get_name(const LSQMimeInfo *mime_info);
 const gchar *
-lxa_mime_info_get_icon_name(const LXAMimeInfo *mime_info, GtkIconTheme *icon_theme);
+lsq_mime_info_get_icon_name(const LSQMimeInfo *mime_info, GtkIconTheme *icon_theme);
 
 void
-lxa_mime_info_unref(LXAMimeInfo *mime_info);
+lsq_mime_info_unref(LSQMimeInfo *mime_info);
 
-#endif /* __LXA_MIME_H__ */
+#endif /* __LSQ_MIME_H__ */

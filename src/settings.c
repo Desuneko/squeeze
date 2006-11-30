@@ -25,41 +25,41 @@
 
 #include "settings.h"
 
-static XASettings *xa_global_settings = NULL;
+static SQSettings *sq_global_settings = NULL;
 
 static void
-xa_settings_init(XASettings *);
+sq_settings_init(SQSettings *);
 static void
-xa_settings_class_init(XASettingsClass *);
+sq_settings_class_init(SQSettingsClass *);
 
 GType
-xa_settings_get_type ()
+sq_settings_get_type ()
 {
-	static GType xa_settings_type = 0;
+	static GType sq_settings_type = 0;
 
-	if (!xa_settings_type)
+	if (!sq_settings_type)
 	{
-		static const GTypeInfo xa_settings_info = 
+		static const GTypeInfo sq_settings_info = 
 		{
-			sizeof (XASettingsClass),
+			sizeof (SQSettingsClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_settings_class_init,
+			(GClassInitFunc) sq_settings_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XASettings),
+			sizeof (SQSettings),
 			0,
-			(GInstanceInitFunc) xa_settings_init,
+			(GInstanceInitFunc) sq_settings_init,
 			NULL
 		};
 
-		xa_settings_type = g_type_register_static (G_TYPE_OBJECT, "XASettings", &xa_settings_info, 0);
+		sq_settings_type = g_type_register_static (G_TYPE_OBJECT, "SQSettings", &sq_settings_info, 0);
 	}
-	return xa_settings_type;
+	return sq_settings_type;
 }
 
 static void
-xa_settings_init(XASettings *object)
+sq_settings_init(SQSettings *object)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	object->xfce_rc = (GObject *)xfce_rc_config_open(XFCE_RESOURCE_CONFIG, "xarchiver/xarchiverrc", FALSE);
@@ -69,22 +69,22 @@ xa_settings_init(XASettings *object)
 }
 
 static void
-xa_settings_class_init(XASettingsClass *object_class)
+sq_settings_class_init(SQSettingsClass *object_class)
 {
 
 }
 
-XASettings *
-xa_settings_new()
+SQSettings *
+sq_settings_new()
 {
-	if(!xa_global_settings)
-		xa_global_settings = g_object_new(XA_TYPE_SETTINGS, NULL);
+	if(!sq_global_settings)
+		sq_global_settings = g_object_new(SQ_TYPE_SETTINGS, NULL);
 
-	return xa_global_settings;
+	return sq_global_settings;
 }
 
 gboolean
-xa_settings_load(XASettings *settings)
+sq_settings_load(SQSettings *settings)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 
@@ -95,7 +95,7 @@ xa_settings_load(XASettings *settings)
 }
 
 gboolean
-xa_settings_save(XASettings *settings)
+sq_settings_save(SQSettings *settings)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	xfce_rc_flush(XFCE_RC(settings->xfce_rc));
@@ -106,7 +106,7 @@ xa_settings_save(XASettings *settings)
 }
 
 void
-xa_settings_set_group(XASettings *settings, const gchar *group)
+sq_settings_set_group(SQSettings *settings, const gchar *group)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	xfce_rc_set_group(XFCE_RC(settings->xfce_rc), group);
@@ -116,7 +116,7 @@ xa_settings_set_group(XASettings *settings, const gchar *group)
 }
 
 void
-xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *value)
+sq_settings_write_entry(SQSettings *settings, const gchar *key, const gchar *value)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	xfce_rc_write_entry(XFCE_RC(settings->xfce_rc), key, value);
@@ -126,7 +126,7 @@ xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *val
 }
 
 void
-xa_settings_write_bool_entry(XASettings *settings, const gchar *key, const gboolean value)
+sq_settings_write_bool_entry(SQSettings *settings, const gchar *key, const gboolean value)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	xfce_rc_write_bool_entry(XFCE_RC(settings->xfce_rc), key, value);
@@ -136,7 +136,7 @@ xa_settings_write_bool_entry(XASettings *settings, const gchar *key, const gbool
 }
 
 const gchar *
-xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fallback)
+sq_settings_read_entry(SQSettings *settings, const gchar *key, const gchar *fallback)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	return xfce_rc_read_entry(XFCE_RC(settings->xfce_rc), key, fallback);
@@ -146,7 +146,7 @@ xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fall
 }
 
 gboolean
-xa_settings_read_bool_entry(XASettings *settings, const gchar *key, const gboolean fallback)
+sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboolean fallback)
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	return xfce_rc_read_bool_entry(XFCE_RC(settings->xfce_rc), key, fallback);

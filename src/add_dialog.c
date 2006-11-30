@@ -18,51 +18,51 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 #include <gettext.h>
 
 #include "add_dialog.h"
 #include "widget_factory.h"
 
 static void
-xa_add_dialog_class_init(XAAddDialogClass *archive_class);
+sq_add_dialog_class_init(SQAddDialogClass *archive_class);
 
 static void
-xa_add_dialog_init(XAAddDialog *archive);
+sq_add_dialog_init(SQAddDialog *archive);
 
 GType
-xa_add_dialog_get_type ()
+sq_add_dialog_get_type ()
 {
-	static GType xa_add_dialog_type = 0;
+	static GType sq_add_dialog_type = 0;
 
- 	if (!xa_add_dialog_type)
+ 	if (!sq_add_dialog_type)
 	{
- 		static const GTypeInfo xa_add_dialog_info = 
+ 		static const GTypeInfo sq_add_dialog_info = 
 		{
-			sizeof (XAAddDialogClass),
+			sizeof (SQAddDialogClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_add_dialog_class_init,
+			(GClassInitFunc) sq_add_dialog_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAAddDialog),
+			sizeof (SQAddDialog),
 			0,
-			(GInstanceInitFunc) xa_add_dialog_init,
+			(GInstanceInitFunc) sq_add_dialog_init,
 			NULL
 		};
 
-		xa_add_dialog_type = g_type_register_static (GTK_TYPE_DIALOG, "XAAddDialog", &xa_add_dialog_info, 0);
+		sq_add_dialog_type = g_type_register_static (GTK_TYPE_DIALOG, "SQAddDialog", &sq_add_dialog_info, 0);
 	}
-	return xa_add_dialog_type;
+	return sq_add_dialog_type;
 }
 
 static void
-xa_add_dialog_class_init(XAAddDialogClass *dialog_class)
+sq_add_dialog_class_init(SQAddDialogClass *dialog_class)
 {
 }
 
 static void
-xa_add_dialog_init(XAAddDialog *dialog)
+sq_add_dialog_init(SQAddDialog *dialog)
 {
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
@@ -127,14 +127,14 @@ xa_add_dialog_init(XAAddDialog *dialog)
 }
 
 GtkWidget *
-xa_add_dialog_new(LXAArchiveSupport *support)
+sq_add_dialog_new(LSQArchiveSupport *support)
 {
 	GSList *add_options;
-	XAAddDialog *dialog;
+	SQAddDialog *dialog;
 	GtkWidget *optionbox, *test;
-	XAWidgetFactory *factory = xa_widget_factory_new();
+	SQWidgetFactory *factory = sq_widget_factory_new();
 
-	dialog = g_object_new(xa_add_dialog_get_type(),
+	dialog = g_object_new(sq_add_dialog_get_type(),
 			"title", _("Add file(s) to archive"),
 			NULL);
 
@@ -144,10 +144,10 @@ xa_add_dialog_new(LXAArchiveSupport *support)
 	dialog->support = support;
 	if(support)
 	{
-		add_options = lxa_archive_support_list_properties(support, "add");
+		add_options = lsq_archive_support_list_properties(support, "add");
 		while(add_options)
 		{
-			test = xa_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(add_options->data)));
+			test = sq_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(add_options->data)));
 			gtk_box_pack_start(GTK_BOX(optionbox), test, FALSE, FALSE, 0);
 			add_options = add_options->next;
 		}

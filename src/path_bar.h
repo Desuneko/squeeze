@@ -16,35 +16,35 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_PATH_BAR_H__
-#define __XARCHIVER_PATH_BAR_H__
+#ifndef __SQRCHIVER_PATH_BAR_H__
+#define __SQRCHIVER_PATH_BAR_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_PATH_BAR xa_path_bar_get_type()
+#define SQ_TYPE_PATH_BAR sq_path_bar_get_type()
 
-#define XA_PATH_BAR(obj)(                \
+#define SQ_PATH_BAR(obj)(                \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			XA_TYPE_PATH_BAR,                  \
-			XAPathBar))
+			SQ_TYPE_PATH_BAR,                  \
+			SQPathBar))
 
-#define XA_IS_PATH_BAR(obj)      ( \
+#define SQ_IS_PATH_BAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_PATH_BAR))
+			SQ_TYPE_PATH_BAR))
 
-#define XA_PATH_BAR_CLASS(klass) ( \
+#define SQ_PATH_BAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			XA_TYPE_PATH_BAR,      \
-			XAPathBarClass))
+			SQ_TYPE_PATH_BAR,      \
+			SQPathBarClass))
 
-#define XA_IS_PATH_BAR_CLASS(class) ( \
+#define SQ_IS_PATH_BAR_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_PATH_BAR()))	
+			SQ_TYPE_PATH_BAR()))	
 
-typedef struct _XAPathBar XAPathBar;
+typedef struct _SQPathBar SQPathBar;
 
-struct _XAPathBar
+struct _SQPathBar
 {
-	XANavigationBar parent;
+	SQNavigationBar parent;
 	GtkButton *left_button;
 	GtkButton *right_button;
 	GtkButton *home_button;
@@ -56,15 +56,15 @@ struct _XAPathBar
 	gboolean updating;
 };
 
-typedef struct _XAPathBarClass XAPathBarClass;
+typedef struct _SQPathBarClass SQPathBarClass;
 
-struct _XAPathBarClass
+struct _SQPathBarClass
 {
-	XANavigationBarClass parent_class;
+	SQNavigationBarClass parent_class;
 };
 
-GType      xa_path_bar_get_type();
-XANavigationBar *xa_path_bar_new(XAArchiveStore *);
+GType      sq_path_bar_get_type();
+SQNavigationBar *sq_path_bar_new(SQArchiveStore *);
 
 G_END_DECLS
-#endif /* __XARCHIVER_PATH_BAR_H__*/
+#endif /* __SQRCHIVER_PATH_BAR_H__*/

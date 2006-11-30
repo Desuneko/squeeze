@@ -21,45 +21,45 @@
 G_BEGIN_DECLS
 
 
-#define LXA_TYPE_ARCHIVE_SUPPORT_UNRAR lxa_archive_support_unrar_get_type()
+#define LSQ_TYPE_ARCHIVE_SUPPORT_UNRAR lsq_archive_support_unrar_get_type()
 
-#define LXA_ARCHIVE_SUPPORT_UNRAR(obj)         ( \
+#define LSQ_ARCHIVE_SUPPORT_UNRAR(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_UNRAR,      \
-			LXAArchiveSupportUnrar))
+			LSQ_TYPE_ARCHIVE_SUPPORT_UNRAR,      \
+			LSQArchiveSupportUnrar))
 
-#define LXA_IS_ARCHIVE_SUPPORT_UNRAR(obj)      ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_UNRAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_UNRAR))
+			LSQ_TYPE_ARCHIVE_SUPPORT_UNRAR))
 
-#define LXA_ARCHIVE_SUPPORT_UNRAR_CLASS(klass) ( \
+#define LSQ_ARCHIVE_SUPPORT_UNRAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LXA_TYPE_ARCHIVE_SUPPORT_UNRAR,      \
-			LXAArchiveSupportUnrarClass))
+			LSQ_TYPE_ARCHIVE_SUPPORT_UNRAR,      \
+			LSQArchiveSupportUnrarClass))
 
-#define LXA_IS_ARCHIVE_SUPPORT_UNRAR_CLASS(klass) ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_UNRAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LXA_TYPE_ARCHIVE_SUPPORT_UNRAR))
+			LSQ_TYPE_ARCHIVE_SUPPORT_UNRAR))
 
-typedef struct _LXAArchiveSupportUnrar LXAArchiveSupportUnrar;
+typedef struct _LSQArchiveSupportUnrar LSQArchiveSupportUnrar;
 
-struct _LXAArchiveSupportUnrar
+struct _LSQArchiveSupportUnrar
 {
-	LXAArchiveSupport parent;
+	LSQArchiveSupport parent;
 };
 
-typedef struct _LXAArchiveSupportUnrarClass LXAArchiveSupportUnrarClass;
+typedef struct _LSQArchiveSupportUnrarClass LSQArchiveSupportUnrarClass;
 
-struct _LXAArchiveSupportUnrarClass
+struct _LSQArchiveSupportUnrarClass
 {
-	LXAArchiveSupportClass parent;
+	LSQArchiveSupportClass parent;
 }; 
 
-GType                lxa_archive_support_unrar_get_type(void);
-LXAArchiveSupport *  lxa_archive_support_unrar_new();
+GType                lsq_archive_support_unrar_get_type(void);
+LSQArchiveSupport *  lsq_archive_support_unrar_new();
 
-gint                 lxa_archive_support_unrar_extract(LXAArchive *, gchar *, GSList *);
-gint                 lxa_archive_support_unrar_remove(LXAArchive *, GSList *);
+gint                 lsq_archive_support_unrar_extract(LSQArchive *, gchar *, GSList *);
+gint                 lsq_archive_support_unrar_remove(LSQArchive *, GSList *);
 
 G_END_DECLS
 

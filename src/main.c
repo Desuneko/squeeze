@@ -20,7 +20,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 
 #include <gettext.h>
 
@@ -72,9 +72,9 @@ static GOptionEntry entries[] =
 };
 
 void
-xa_archive_status_changed(LXAArchive *archive, gpointer data)
+sq_archive_status_changed(LSQArchive *archive, gpointer data)
 {
-	if(archive->status == LXA_ARCHIVESTATUS_IDLE)
+	if(archive->status == LSQ_ARCHIVESTATUS_IDLE)
 	{
 		opened_archives--;
 	}
@@ -83,17 +83,17 @@ xa_archive_status_changed(LXAArchive *archive, gpointer data)
 }
 
 void
-archive_operation_failed(LXAArchive *archive, gpointer data)
+archive_operation_failed(LSQArchive *archive, gpointer data)
 {
 }
 
 void
-archive_initialized(LXAArchive *archive, gpointer data)
+archive_initialized(LSQArchive *archive, gpointer data)
 {
 }
 
 void
-cb_main_window_destroy(XAMainWindow *window, gpointer data)
+cb_main_window_destroy(SQMainWindow *window, gpointer data)
 {
 	gtk_main_quit();
 }
@@ -101,8 +101,8 @@ cb_main_window_destroy(XAMainWindow *window, gpointer data)
 int main(int argc, char **argv)
 {
 	GtkWidget *main_window = NULL;
-	GtkIconTheme *xa_icon_theme;
-	XAApplication *xa_app = NULL;
+	GtkIconTheme *sq_icon_theme;
+	SQApplication *sq_app = NULL;
 	GError *cli_error = NULL;
 	gint i = 0;
 
@@ -121,18 +121,18 @@ int main(int argc, char **argv)
 	{
 		if ( cli_error != NULL )
 		{
-			g_print (_("%s: %s\nTry xarchiver --help to see a full list of available command line options.\n"), PACKAGE, cli_error->message);
+			g_print (_("%s: %s\nTry %s --help to see a full list of available command line options.\n"), PACKAGE, cli_error->message, PACKAGE_NAME);
 			g_error_free (cli_error);
 			return 1;
 		}
 	}
 
-	lxa_init();
+	lsq_init();
 
-	xa_icon_theme = gtk_icon_theme_get_default();
-	xa_app = xa_application_new(xa_icon_theme);
+	sq_icon_theme = gtk_icon_theme_get_default();
+	sq_app = sq_application_new(sq_icon_theme);
 
-	g_signal_connect(G_OBJECT(xa_app), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(G_OBJECT(sq_app), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 	if(version)
 	{
@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 		}
 		for(i = 1; i < argc; i++)
 		{
-			xa_application_extract_archive(xa_app, argv[i], extract_archive_path);
+			sq_application_extract_archive(sq_app, argv[i], extract_archive_path);
 		}
 	}
 	if(new_archive || add_archive_path)
@@ -159,32 +159,32 @@ int main(int argc, char **argv)
 		{
 			files = g_slist_prepend(files, argv[i]);
 		}
-		xa_application_new_archive(xa_app, add_archive_path, files);
+		sq_application_new_archive(sq_app, add_archive_path, files);
 	}
 
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
 	{
 		if(argc > 1)
 		{
-			if(xa_app->props._tabs)
-				main_window = xa_application_new_window(xa_app);
+			if(sq_app->props._tabs)
+				main_window = sq_application_new_window(sq_app);
 			for(i = 1; i < argc; i++)
 			{
-				xa_application_open_archive(xa_app, main_window, argv[i]);
+				sq_application_open_archive(sq_app, main_window, argv[i]);
 			}
 		} else
 		{
-			main_window = xa_application_new_window(xa_app);
+			main_window = sq_application_new_window(sq_app);
 			gtk_widget_show(GTK_WIDGET(main_window));
 		}
 	}
 
 
-	g_object_unref(xa_app);
+	g_object_unref(sq_app);
 	gdk_threads_enter();
 	gtk_main();
 	gdk_threads_leave();
-	lxa_destroy();
+	lsq_destroy();
 
 	return 0;
 }

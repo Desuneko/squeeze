@@ -27,7 +27,7 @@
 
 #include "internals.h"
 
-#ifdef LXA_TRACE_ALLOCATION
+#ifdef LSQ_TRACE_ALLOCATION
 
 #define __USE_GNU
 
@@ -35,17 +35,17 @@
 #include <stdio.h>
 #include <string.h>
 
-static gchar lxa_allocation_file[128];
+static gchar lsq_allocation_file[128];
 
-void lxa_trace_init()
+void lsq_trace_init()
 {
-	snprintf(lxa_allocation_file, 127, "lxa_trace.%d", getpid());
-	fclose( fopen(lxa_allocation_file, "w") );
+	snprintf(lsq_allocation_file, 127, "lsq_trace.%d", getpid());
+	fclose( fopen(lsq_allocation_file, "w") );
 }
 
-gpointer lxa_trace_add(const gchar *methode, guint size, gpointer pointer, const gchar *function, const gchar *file, guint line)
+gpointer lsq_trace_add(const gchar *methode, guint size, gpointer pointer, const gchar *function, const gchar *file, guint line)
 {
-	FILE *fp = fopen(lxa_allocation_file, "a");
+	FILE *fp = fopen(lsq_allocation_file, "a");
 
 	fprintf(fp, "%s:%d %s{ %s(%d) = %p }\n", file, line, function, methode, size, pointer);
 
@@ -54,33 +54,33 @@ gpointer lxa_trace_add(const gchar *methode, guint size, gpointer pointer, const
 	return pointer;
 }
 
-void lxa_trace_del(const gchar *methode, gpointer pointer, const gchar *function, const gchar *file, guint line)
+void lsq_trace_del(const gchar *methode, gpointer pointer, const gchar *function, const gchar *file, guint line)
 {
-	FILE *fp = fopen(lxa_allocation_file, "a");
+	FILE *fp = fopen(lsq_allocation_file, "a");
 
 	fprintf(fp, "%s:%d %s{ %s(%p) }\n", file, line, function, methode, pointer);
 
 	fclose(fp);
 }
 
-#endif /* LXA_TRACE_ALLOCATION */
+#endif /* LSQ_TRACE_ALLOCATION */
 
 void
-lxa_default_child_watch_func(GPid pid, gint status, gpointer data)
+lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
 {
-	LXAArchive *archive = data;
+	LSQArchive *archive = data;
 	archive->child_pid = 0;
-	if(archive->old_status == LXA_ARCHIVESTATUS_REFRESH && archive->status == LXA_ARCHIVESTATUS_USERBREAK)
+	if(archive->old_status == LSQ_ARCHIVESTATUS_REFRESH && archive->status == LSQ_ARCHIVESTATUS_USERBREAK)
 		g_object_unref(archive);
 	else
 	{
-		if(archive->status != LXA_ARCHIVESTATUS_REFRESH)
-			lxa_archive_set_status(archive, LXA_ARCHIVESTATUS_IDLE);
+		if(archive->status != LSQ_ARCHIVESTATUS_REFRESH)
+			lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 	}
 }
 
 gint
-lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFunc f_in, GIOFunc f_out, GIOFunc f_err)
+lsq_execute(gchar *command, LSQArchive *archive, GChildWatchFunc function, GIOFunc f_in, GIOFunc f_out, GIOFunc f_err)
 {
 	gchar **argvp;
 	gint argcp;
@@ -111,7 +111,7 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	else
 	{
-		g_child_watch_add(archive->child_pid, lxa_default_child_watch_func, archive);
+		g_child_watch_add(archive->child_pid, lsq_default_child_watch_func, archive);
 	}
 	if(f_in)
 	{
@@ -138,7 +138,7 @@ lxa_execute(gchar *command, LXAArchive *archive, GChildWatchFunc function, GIOFu
 }
 
 gchar *
-lxa_concat_filenames(GSList *filenames)
+lsq_concat_filenames(GSList *filenames)
 {
 	GSList *_filenames = filenames;
 	gchar *concat_str = g_strdup(" "), *_concat_str;
@@ -148,7 +148,7 @@ lxa_concat_filenames(GSList *filenames)
 		_concat_str = concat_str;
 		concat_str = g_strconcat(concat_str, g_shell_quote(_filenames->data) , NULL);
 		_filenames = _filenames->next;
-		LXA_FREE(_concat_str);
+		g_free(_concat_str);
 	}
 	return concat_str;
 }

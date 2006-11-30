@@ -1,8 +1,8 @@
 
 # Inspired by Makefile.am from the Thunar file-manager
 
-iconsdir = $(datadir)/icons/hicolor/48x48/apps
-icons_DATA = squeeze.png
+iconsdir = $(datadir)/icons/hicolor/scalable/apps
+icons_DATA = squeeze.svg
 	
 
 EXTRA_DIST = $(icons_DATA)

@@ -16,31 +16,31 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_ADD_DIALOG_H__
-#define __XARCHIVER_ADD_DIALOG_H__
+#ifndef __SQRCHIVER_ADD_DIALOG_H__
+#define __SQRCHIVER_ADD_DIALOG_H__
 G_BEGIN_DECLS
 
-#define XA_ADD_DIALOG(obj)         ( \
+#define SQ_ADD_DIALOG(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_add_dialog_get_type(),      \
-			XAAddDialog))
+			sq_add_dialog_get_type(),      \
+			SQAddDialog))
 
-#define XA_IS_ADD_DIALOG(obj)      ( \
+#define SQ_IS_ADD_DIALOG(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_add_dialog_get_type()))
+			sq_add_dialog_get_type()))
 
-#define XA_ADD_DIALOG_CLASS(class) ( \
+#define SQ_ADD_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_add_dialog_get_type(),      \
-			XAAddDialogClass))
+			sq_add_dialog_get_type(),      \
+			SQAddDialogClass))
 
-#define XA_IS_ADD_DIALOG_CLASS(class) ( \
+#define SQ_IS_ADD_DIALOG_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_add_dialog_get_type()))
+			sq_add_dialog_get_type()))
 
-typedef struct _XAAddDialog XAAddDialog;
+typedef struct _SQAddDialog SQAddDialog;
 
-struct _XAAddDialog
+struct _SQAddDialog
 {
 	GtkDialog parent;
 	GtkWidget *scrolled_window;
@@ -49,19 +49,19 @@ struct _XAAddDialog
 	GtkWidget *file_treeview;
 	GtkWidget *files_radio;
 	GtkWidget *dirs_radio;
-	LXAArchiveSupport *support;
+	LSQArchiveSupport *support;
 	GtkWidget *add;
 	GtkWidget *remove;
 };
 
-typedef struct _XAAddDialogClass XAAddDialogClass;
+typedef struct _SQAddDialogClass SQAddDialogClass;
 
-struct _XAAddDialogClass
+struct _SQAddDialogClass
 {
 	GtkDialogClass parent;
 };
 
-GtkWidget *xa_add_dialog_new(LXAArchiveSupport *support);
+GtkWidget *sq_add_dialog_new(LSQArchiveSupport *support);
 
 G_END_DECLS
-#endif /* __XARCHIVER_ADD_DIALOG_H__ */
+#endif /* __SQRCHIVER_ADD_DIALOG_H__ */

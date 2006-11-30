@@ -24,103 +24,103 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gettext.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "path_bar.h"
 
-#ifndef XA_PATH_BAR_SCROLL_INIT_TIMEOUT
-#define XA_PATH_BAR_SCROLL_INIT_TIMEOUT 1000
+#ifndef SQ_PATH_BAR_SCROLL_INIT_TIMEOUT
+#define SQ_PATH_BAR_SCROLL_INIT_TIMEOUT 1000
 #endif
 
-#ifndef XA_PATH_BAR_SCROLL_TIMEOUT
-#define XA_PATH_BAR_SCROLL_TIMEOUT 500
+#ifndef SQ_PATH_BAR_SCROLL_TIMEOUT
+#define SQ_PATH_BAR_SCROLL_TIMEOUT 500
 #endif
 
-#define XA_SCROLL_NONE 0
-#define XA_SCROLL_LEFT 1
-#define XA_SCROLL_RIGHT 2
+#define SQ_SCROLL_NONE 0
+#define SQ_SCROLL_LEFT 1
+#define SQ_SCROLL_RIGHT 2
 
 static void
-xa_path_bar_class_init(XAPathBarClass *archive_class);
+sq_path_bar_class_init(SQPathBarClass *archive_class);
 
 static void
-xa_path_bar_init(XAPathBar *archive);
+sq_path_bar_init(SQPathBar *archive);
 
 static void
-xa_path_bar_size_request(GtkWidget *widget, GtkRequisition *requisition);
+sq_path_bar_size_request(GtkWidget *widget, GtkRequisition *requisition);
 static void
-xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation);
+sq_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation);
 
 static GType
-xa_path_bar_child_type(GtkContainer *container);
+sq_path_bar_child_type(GtkContainer *container);
 static void
-xa_path_bar_add(GtkContainer *container, GtkWidget *child);
+sq_path_bar_add(GtkContainer *container, GtkWidget *child);
 static void
-xa_path_bar_remove(GtkContainer *container, GtkWidget *child);
+sq_path_bar_remove(GtkContainer *container, GtkWidget *child);
 static void
-xa_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
+sq_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar);
+cb_sq_path_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
 static void
-cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar);
+cb_sq_path_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 static void
-cb_xa_path_bar_store_set(XANavigationBar *bar);
+cb_sq_path_bar_store_set(SQNavigationBar *bar);
 
 static void
-cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar);
+cb_sq_path_bar_path_button_clicked(GtkRadioButton *button, SQPathBar *path_bar);
 
 static void
-xa_path_bar_scroll_left(XAPathBar *path_bar);
+sq_path_bar_scroll_left(SQPathBar *path_bar);
 static void
-xa_path_bar_scroll_right(XAPathBar *path_bar);
-
-static gboolean
-cb_xa_path_bar_init_timeout(gpointer user_data);
-static gboolean
-cb_xa_path_bar_timeout(gpointer user_data);
+sq_path_bar_scroll_right(SQPathBar *path_bar);
 
 static gboolean
-cb_xa_path_bar_left_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+cb_sq_path_bar_init_timeout(gpointer user_data);
 static gboolean
-cb_xa_path_bar_right_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+cb_sq_path_bar_timeout(gpointer user_data);
+
 static gboolean
-cb_xa_path_bar_scroll_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+cb_sq_path_bar_left_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static gboolean
+cb_sq_path_bar_right_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static gboolean
+cb_sq_path_bar_scroll_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 
 static void
-cb_xa_path_bar_left_clicked(GtkWidget *widget, gpointer user_data);
+cb_sq_path_bar_left_clicked(GtkWidget *widget, gpointer user_data);
 static void
-cb_xa_path_bar_right_clicked(GtkWidget *widget, gpointer user_data);
+cb_sq_path_bar_right_clicked(GtkWidget *widget, gpointer user_data);
 
 GType
-xa_path_bar_get_type ()
+sq_path_bar_get_type ()
 {
-	static GType xa_path_bar_type = 0;
+	static GType sq_path_bar_type = 0;
 
- 	if (!xa_path_bar_type)
+ 	if (!sq_path_bar_type)
 	{
- 		static const GTypeInfo xa_path_bar_info = 
+ 		static const GTypeInfo sq_path_bar_info = 
 		{
-			sizeof (XAPathBarClass),
+			sizeof (SQPathBarClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_path_bar_class_init,
+			(GClassInitFunc) sq_path_bar_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAPathBar),
+			sizeof (SQPathBar),
 			0,
-			(GInstanceInitFunc) xa_path_bar_init,
+			(GInstanceInitFunc) sq_path_bar_init,
 			NULL
 		};
 
-		xa_path_bar_type = g_type_register_static (XA_TYPE_NAVIGATION_BAR, "XAPathBar", &xa_path_bar_info, 0);
+		sq_path_bar_type = g_type_register_static (SQ_TYPE_NAVIGATION_BAR, "SQPathBar", &sq_path_bar_info, 0);
 	}
-	return xa_path_bar_type;
+	return sq_path_bar_type;
 }
 
 static void
-xa_path_bar_class_init(XAPathBarClass *path_bar_class)
+sq_path_bar_class_init(SQPathBarClass *path_bar_class)
 {
 	GtkWidgetClass *widget_class;
 	GtkContainerClass *container_class;
@@ -128,13 +128,13 @@ xa_path_bar_class_init(XAPathBarClass *path_bar_class)
 	widget_class = (GtkWidgetClass*)path_bar_class;
 	container_class = (GtkContainerClass*)path_bar_class;
 
-	widget_class->size_request = xa_path_bar_size_request;
-	widget_class->size_allocate = xa_path_bar_size_allocate;
+	widget_class->size_request = sq_path_bar_size_request;
+	widget_class->size_allocate = sq_path_bar_size_allocate;
 
-	container_class->add = xa_path_bar_add;
-	container_class->remove = xa_path_bar_remove;
-	container_class->forall = xa_path_bar_forall;
-	container_class->child_type = xa_path_bar_child_type;
+	container_class->add = sq_path_bar_add;
+	container_class->remove = sq_path_bar_remove;
+	container_class->forall = sq_path_bar_forall;
+	container_class->child_type = sq_path_bar_child_type;
 
 	gtk_widget_class_install_style_property (widget_class,
 		g_param_spec_int ("spacing",
@@ -145,20 +145,20 @@ xa_path_bar_class_init(XAPathBarClass *path_bar_class)
 }
 
 static void
-xa_path_bar_init(XAPathBar *path_bar)
+sq_path_bar_init(SQPathBar *path_bar)
 {
 	GtkWidget *arrow;
-	XA_NAVIGATION_BAR(path_bar)->_cb_pwd_changed = cb_xa_path_bar_pwd_changed;
-	XA_NAVIGATION_BAR(path_bar)->_cb_new_archive = cb_xa_path_bar_new_archive;
-	XA_NAVIGATION_BAR(path_bar)->_cb_store_set   = cb_xa_path_bar_store_set;
+	SQ_NAVIGATION_BAR(path_bar)->_cb_pwd_changed = cb_sq_path_bar_pwd_changed;
+	SQ_NAVIGATION_BAR(path_bar)->_cb_new_archive = cb_sq_path_bar_new_archive;
+	SQ_NAVIGATION_BAR(path_bar)->_cb_store_set   = cb_sq_path_bar_store_set;
 
 	GTK_WIDGET_SET_FLAGS(path_bar, GTK_NO_WINDOW);
 	gtk_widget_set_redraw_on_allocate(GTK_WIDGET(path_bar), FALSE);
 
 	path_bar->left_button = GTK_BUTTON(gtk_button_new());
-	g_signal_connect(G_OBJECT(path_bar->left_button), "button-press-event", G_CALLBACK(cb_xa_path_bar_left_button_pressed), path_bar);
-	g_signal_connect(G_OBJECT(path_bar->left_button), "button-release-event", G_CALLBACK(cb_xa_path_bar_scroll_button_released), path_bar);
-	g_signal_connect(G_OBJECT(path_bar->left_button), "clicked", G_CALLBACK(cb_xa_path_bar_left_clicked), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->left_button), "button-press-event", G_CALLBACK(cb_sq_path_bar_left_button_pressed), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->left_button), "button-release-event", G_CALLBACK(cb_sq_path_bar_scroll_button_released), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->left_button), "clicked", G_CALLBACK(cb_sq_path_bar_left_clicked), path_bar);
 	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->left_button));
 	gtk_widget_show(GTK_WIDGET(path_bar->left_button));
 	gtk_widget_ref(GTK_WIDGET(path_bar->left_button));
@@ -168,9 +168,9 @@ xa_path_bar_init(XAPathBar *path_bar)
 	gtk_widget_show (arrow);
 
 	path_bar->right_button = GTK_BUTTON(gtk_button_new());
-	g_signal_connect(G_OBJECT(path_bar->right_button), "button-press-event", G_CALLBACK(cb_xa_path_bar_right_button_pressed), path_bar);
-	g_signal_connect(G_OBJECT(path_bar->right_button), "button-release-event", G_CALLBACK(cb_xa_path_bar_scroll_button_released), path_bar);
-	g_signal_connect(G_OBJECT(path_bar->right_button), "clicked", G_CALLBACK(cb_xa_path_bar_right_clicked), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->right_button), "button-press-event", G_CALLBACK(cb_sq_path_bar_right_button_pressed), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->right_button), "button-release-event", G_CALLBACK(cb_sq_path_bar_scroll_button_released), path_bar);
+	g_signal_connect(G_OBJECT(path_bar->right_button), "clicked", G_CALLBACK(cb_sq_path_bar_right_clicked), path_bar);
 	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->right_button));
 	gtk_widget_show(GTK_WIDGET(path_bar->right_button));
 	gtk_widget_ref(GTK_WIDGET(path_bar->right_button));
@@ -181,7 +181,7 @@ xa_path_bar_init(XAPathBar *path_bar)
 
 	path_bar->home_button = GTK_BUTTON(gtk_radio_button_new(NULL));
 	gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(path_bar->home_button));
-	g_signal_connect(G_OBJECT(path_bar->home_button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
+	g_signal_connect(G_OBJECT(path_bar->home_button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
 	gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(path_bar->home_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), FALSE);
 	gtk_widget_show(GTK_WIDGET(path_bar->home_button));
@@ -194,39 +194,39 @@ xa_path_bar_init(XAPathBar *path_bar)
 	path_bar->path_button = g_slist_prepend(NULL, path_bar->home_button);
 	path_bar->first_button = NULL;
 	path_bar->scroll_timeout = 0;
-	path_bar->scroll_dir = XA_SCROLL_NONE;
+	path_bar->scroll_dir = SQ_SCROLL_NONE;
 	path_bar->scroll_click = TRUE;
 	path_bar->updating = FALSE;
 
 	gtk_widget_ref(GTK_WIDGET(path_bar));
 }
 
-XANavigationBar *
-xa_path_bar_new(XAArchiveStore *store)
+SQNavigationBar *
+sq_path_bar_new(SQArchiveStore *store)
 {
-	XANavigationBar *bar;
+	SQNavigationBar *bar;
 
-	bar = g_object_new(XA_TYPE_PATH_BAR, NULL);
+	bar = g_object_new(SQ_TYPE_PATH_BAR, NULL);
 
 	if(store)
-		xa_navigation_bar_set_store(XA_NAVIGATION_BAR(bar), store);
+		sq_navigation_bar_set_store(SQ_NAVIGATION_BAR(bar), store);
 
 	return bar;
 }
 
 static GType
-xa_path_bar_child_type(GtkContainer *container)
+sq_path_bar_child_type(GtkContainer *container)
 {
-	if(!XA_PATH_BAR(container)->path_button)
+	if(!SQ_PATH_BAR(container)->path_button)
 		return GTK_TYPE_WIDGET;
 	else
 		return G_TYPE_NONE;
 }
 
 static void
-xa_path_bar_add(GtkContainer *container, GtkWidget *child)
+sq_path_bar_add(GtkContainer *container, GtkWidget *child)
 {
-	XAPathBar *path_bar = XA_PATH_BAR(container);
+	SQPathBar *path_bar = SQ_PATH_BAR(container);
 
 	g_return_if_fail(GTK_IS_WIDGET(child));
 
@@ -235,7 +235,7 @@ xa_path_bar_add(GtkContainer *container, GtkWidget *child)
 }
 
 static void
-xa_path_bar_remove(GtkContainer *container, GtkWidget *child)
+sq_path_bar_remove(GtkContainer *container, GtkWidget *child)
 {
 	gboolean widget_was_visible;
 
@@ -251,9 +251,9 @@ xa_path_bar_remove(GtkContainer *container, GtkWidget *child)
 }
 
 static void
-xa_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data)
+sq_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data)
 {
-	XAPathBar *path_bar = XA_PATH_BAR(container);
+	SQPathBar *path_bar = SQ_PATH_BAR(container);
 
 	g_return_if_fail(callback != NULL);
 
@@ -266,9 +266,9 @@ xa_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallb
 }
 
 static void
-xa_path_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
+sq_path_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 {
-	XAPathBar *path_bar = XA_PATH_BAR(widget);
+	SQPathBar *path_bar = SQ_PATH_BAR(widget);
 	GSList *iter = NULL;
 	GtkRequisition child_requisition;
 	gint spacing = 0;
@@ -305,9 +305,9 @@ xa_path_bar_size_request(GtkWidget *widget, GtkRequisition *requisition)
 }
 
 static void
-xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
+sq_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 {
-	XAPathBar *path_bar = XA_PATH_BAR(widget);
+	SQPathBar *path_bar = SQ_PATH_BAR(widget);
 	gint spacing = 0;
 	gint width = 0;
 	gint left_width = 0;
@@ -419,10 +419,10 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 
 		gtk_widget_set_sensitive(GTK_WIDGET(path_bar->left_button), (first_display->data == (gpointer)path_bar->path_button)?FALSE:TRUE);
 
-		if(path_bar->scroll_dir == XA_SCROLL_LEFT && first_display->data == (gpointer)path_bar->path_button)
+		if(path_bar->scroll_dir == SQ_SCROLL_LEFT && first_display->data == (gpointer)path_bar->path_button)
 		{
 			g_source_remove(path_bar->scroll_timeout);
-			path_bar->scroll_dir = XA_SCROLL_NONE;
+			path_bar->scroll_dir = SQ_SCROLL_NONE;
 		}
 	}
 	else
@@ -484,10 +484,10 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 
 		gtk_widget_set_sensitive(GTK_WIDGET(path_bar->right_button), iter?TRUE:FALSE);
 
-		if(path_bar->scroll_dir == XA_SCROLL_RIGHT && !iter)
+		if(path_bar->scroll_dir == SQ_SCROLL_RIGHT && !iter)
 		{
 			g_source_remove(path_bar->scroll_timeout);
-			path_bar->scroll_dir = XA_SCROLL_NONE;
+			path_bar->scroll_dir = SQ_SCROLL_NONE;
 		}
 	}
 	else
@@ -515,14 +515,14 @@ xa_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 }
 
 static void
-cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
+cb_sq_path_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 {
-	XAPathBar *path_bar = XA_PATH_BAR(bar);
+	SQPathBar *path_bar = SQ_PATH_BAR(bar);
 	GSList *buttons = path_bar->path_button->next;
 	GSList *path, *iter;
 	GtkRadioButton *button;
 
-	XA_PATH_BAR(bar)->updating = TRUE;
+	SQ_PATH_BAR(bar)->updating = TRUE;
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(path_bar->path_button->data), TRUE);
 
@@ -539,7 +539,7 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 
 	if(store)
 	{
-		iter = path = xa_archive_store_get_trailing(store);
+		iter = path = sq_archive_store_get_trailing(store);
 		while(iter)
 		{
 			button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, (const gchar*)iter->data));
@@ -547,7 +547,7 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 			gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
 			path_bar->path_button = g_slist_append(path_bar->path_button, button);
 
-			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
+			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
 
 			gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
 			gtk_widget_show(GTK_WIDGET(button));
@@ -558,14 +558,14 @@ cb_xa_path_bar_new_archive(XAArchiveStore *store, XANavigationBar *bar)
 		g_slist_free(path);
 	}
 
-	XA_PATH_BAR(bar)->updating = FALSE;
+	SQ_PATH_BAR(bar)->updating = FALSE;
 }
 
 static void
-cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
+cb_sq_path_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
 {
-	XAPathBar *path_bar = XA_PATH_BAR(bar);
-	GSList *path = xa_archive_store_get_pwd_list(store);
+	SQPathBar *path_bar = SQ_PATH_BAR(bar);
+	GSList *path = sq_archive_store_get_pwd_list(store);
 	GSList *iter = path;
 	GSList *buttons = path_bar->path_button->next;
 	GSList *lastbutton = path_bar->path_button;
@@ -616,7 +616,7 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 		gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
 		path_bar->path_button = g_slist_append(path_bar->path_button, button);
 
-		g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_xa_path_bar_path_button_clicked, path_bar);
+		g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
 
 		gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
 		gtk_widget_show(GTK_WIDGET(button));
@@ -635,7 +635,7 @@ cb_xa_path_bar_pwd_changed(XAArchiveStore *store, XANavigationBar *bar)
 }
 
 static void
-cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
+cb_sq_path_bar_path_button_clicked(GtkRadioButton *button, SQPathBar *path_bar)
 {
 	if(path_bar->updating)
 		return;
@@ -656,13 +656,13 @@ cb_xa_path_bar_path_button_clicked(GtkRadioButton *button, XAPathBar *path_bar)
 		g_free(prev);
 	}
 
-	xa_archive_store_set_pwd(XA_NAVIGATION_BAR(path_bar)->store, path);
+	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(path_bar)->store, path);
 
 	g_free(path);
 }
 
 static void
-xa_path_bar_scroll_left(XAPathBar *path_bar)
+sq_path_bar_scroll_left(SQPathBar *path_bar)
 {
 	GSList *iter = path_bar->path_button;
 
@@ -676,34 +676,34 @@ xa_path_bar_scroll_left(XAPathBar *path_bar)
 }
 
 static void
-xa_path_bar_scroll_right(XAPathBar *path_bar)
+sq_path_bar_scroll_right(SQPathBar *path_bar)
 {
 	if(path_bar->first_button->next)
 		path_bar->first_button = path_bar->first_button->next;
 }
 
 static gboolean
-cb_xa_path_bar_init_timeout(gpointer user_data)
+cb_sq_path_bar_init_timeout(gpointer user_data)
 {
-	if(cb_xa_path_bar_timeout(user_data))
+	if(cb_sq_path_bar_timeout(user_data))
 	{
-		XA_PATH_BAR(user_data)->scroll_click = FALSE;
-		XA_PATH_BAR(user_data)->scroll_timeout = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, XA_PATH_BAR_SCROLL_TIMEOUT, cb_xa_path_bar_timeout, user_data, NULL);
+		SQ_PATH_BAR(user_data)->scroll_click = FALSE;
+		SQ_PATH_BAR(user_data)->scroll_timeout = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, SQ_PATH_BAR_SCROLL_TIMEOUT, cb_sq_path_bar_timeout, user_data, NULL);
 	}
 
 	return FALSE;
 }
 
 static gboolean
-cb_xa_path_bar_timeout(gpointer user_data)
+cb_sq_path_bar_timeout(gpointer user_data)
 {
-	switch(XA_PATH_BAR(user_data)->scroll_dir)
+	switch(SQ_PATH_BAR(user_data)->scroll_dir)
 	{
-		case XA_SCROLL_LEFT:
-			xa_path_bar_scroll_left(XA_PATH_BAR(user_data));
+		case SQ_SCROLL_LEFT:
+			sq_path_bar_scroll_left(SQ_PATH_BAR(user_data));
 		break;
-		case XA_SCROLL_RIGHT:
-			xa_path_bar_scroll_right(XA_PATH_BAR(user_data));
+		case SQ_SCROLL_RIGHT:
+			sq_path_bar_scroll_right(SQ_PATH_BAR(user_data));
 		break;
 		default:
 			return FALSE;
@@ -715,64 +715,64 @@ cb_xa_path_bar_timeout(gpointer user_data)
 }
 
 static gboolean
-cb_xa_path_bar_left_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+cb_sq_path_bar_left_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	if(event->type == GDK_BUTTON_PRESS && event->button == 1)
 	{
-		XA_PATH_BAR(user_data)->scroll_click = TRUE;
-		XA_PATH_BAR(user_data)->scroll_dir = XA_SCROLL_LEFT;
+		SQ_PATH_BAR(user_data)->scroll_click = TRUE;
+		SQ_PATH_BAR(user_data)->scroll_dir = SQ_SCROLL_LEFT;
 
-		XA_PATH_BAR(user_data)->scroll_timeout = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, XA_PATH_BAR_SCROLL_INIT_TIMEOUT, cb_xa_path_bar_init_timeout, user_data, NULL);
+		SQ_PATH_BAR(user_data)->scroll_timeout = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, SQ_PATH_BAR_SCROLL_INIT_TIMEOUT, cb_sq_path_bar_init_timeout, user_data, NULL);
 	}
 	return FALSE;
 }
 
 static gboolean
-cb_xa_path_bar_right_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+cb_sq_path_bar_right_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	if(event->type == GDK_BUTTON_PRESS && event->button == 1)
 	{
-		XA_PATH_BAR(user_data)->scroll_click = TRUE;
-		XA_PATH_BAR(user_data)->scroll_dir = XA_SCROLL_RIGHT;
+		SQ_PATH_BAR(user_data)->scroll_click = TRUE;
+		SQ_PATH_BAR(user_data)->scroll_dir = SQ_SCROLL_RIGHT;
 		
-		XA_PATH_BAR(user_data)->scroll_timeout = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, XA_PATH_BAR_SCROLL_INIT_TIMEOUT, cb_xa_path_bar_init_timeout, user_data, NULL);
+		SQ_PATH_BAR(user_data)->scroll_timeout = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, SQ_PATH_BAR_SCROLL_INIT_TIMEOUT, cb_sq_path_bar_init_timeout, user_data, NULL);
 	}
 	return FALSE;
 }
 
 static gboolean
-cb_xa_path_bar_scroll_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+cb_sq_path_bar_scroll_button_released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
 	if(event->type == GDK_BUTTON_RELEASE && event->button == 1)
 	{
-		if(XA_PATH_BAR(user_data)->scroll_dir)
-			g_source_remove(XA_PATH_BAR(user_data)->scroll_timeout);
+		if(SQ_PATH_BAR(user_data)->scroll_dir)
+			g_source_remove(SQ_PATH_BAR(user_data)->scroll_timeout);
 
-		XA_PATH_BAR(user_data)->scroll_dir = XA_SCROLL_NONE;
+		SQ_PATH_BAR(user_data)->scroll_dir = SQ_SCROLL_NONE;
 	}
 	return FALSE;
 }
 
 static void
-cb_xa_path_bar_left_clicked(GtkWidget *widget, gpointer user_data)
+cb_sq_path_bar_left_clicked(GtkWidget *widget, gpointer user_data)
 {
-	if(XA_PATH_BAR(user_data)->scroll_click)
-		xa_path_bar_scroll_left(XA_PATH_BAR(user_data));
+	if(SQ_PATH_BAR(user_data)->scroll_click)
+		sq_path_bar_scroll_left(SQ_PATH_BAR(user_data));
 }
 
 static void
-cb_xa_path_bar_right_clicked(GtkWidget *widget, gpointer user_data)
+cb_sq_path_bar_right_clicked(GtkWidget *widget, gpointer user_data)
 {
-	if(XA_PATH_BAR(user_data)->scroll_click)
-		xa_path_bar_scroll_right(XA_PATH_BAR(user_data));
+	if(SQ_PATH_BAR(user_data)->scroll_click)
+		sq_path_bar_scroll_right(SQ_PATH_BAR(user_data));
 }
 
 static void
-cb_xa_path_bar_store_set(XANavigationBar *bar)
+cb_sq_path_bar_store_set(SQNavigationBar *bar)
 {
-	cb_xa_path_bar_new_archive(bar->store, bar);
+	cb_sq_path_bar_new_archive(bar->store, bar);
 
 	if(bar->store)
-		cb_xa_path_bar_pwd_changed(bar->store, bar);
+		cb_sq_path_bar_pwd_changed(bar->store, bar);
 }
 

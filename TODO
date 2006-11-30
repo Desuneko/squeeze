@@ -8,15 +8,8 @@ Long Version:
 | IMPORTANT                                         IMPORTANT |
 ---------------------------------------------------------------
 
-  Fix navigation-bars to work with notebook - DONE
-
-  Close Buttons - DONE
-
-	Fix Command-line options - DONE
-
-	Toggle navigationbar at runtime - DONE
-	
-	Save trailing folders for path_bar - DONE
+  Make thunar-vfs dependency optional.
+  Make libxfce4-util dependency optional.
 
 	Add Accelerators to Notebook
 
@@ -33,9 +26,6 @@ Long Version:
 	DnD
 
 	Non-default actions
-
-  Make thunar-vfs dependency optional.
-  Make libxfce4-util dependency optional.
 
   Comment library functions
     (explain their purpose)
@@ -67,6 +57,21 @@ Long Version:
 
 BUGS:
 
-	ArchiveStore gets deleted when close button is pressed, archive remains and sends signal when refreshed .
-
 	Archive does not get freed properly. (mem usage keeps growing when opening and closing same archive)
+
+	History inside the archive-store is bugged. This shows in archive_store_get_pwd.
+
+	archive-store out-of-sync is buffer-flush... breaks on index 499800: 499800.0 / 300.0 (buffer-size) == 1666.0 remaining 199 items are not flushed
+
+DONE:
+
+  Fix navigation-bars to work with notebook - DONE
+
+  Close Buttons - DONE
+
+	Fix Command-line options - DONE
+
+	Toggle navigationbar at runtime - DONE
+	
+	Save trailing folders for path_bar - DONE
+

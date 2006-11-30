@@ -16,58 +16,58 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_APPLICATION_H__
-#define __XARCHIVER_APPLICATION_H__
+#ifndef __SQRCHIVER_APPLICATION_H__
+#define __SQRCHIVER_APPLICATION_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_APPLICATION xa_application_get_type()
+#define SQ_TYPE_APPLICATION sq_application_get_type()
 
-#define XA_APPLICATION(obj)(                \
+#define SQ_APPLICATION(obj)(                \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			XA_TYPE_APPLICATION,                  \
-			XAApplication))
+			SQ_TYPE_APPLICATION,                  \
+			SQApplication))
 
-#define XA_IS_APPLICATION(obj)      ( \
+#define SQ_IS_APPLICATION(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			XA_TYPE_APPLICATION))
+			SQ_TYPE_APPLICATION))
 
-#define XA_APPLICATION_CLASS(klass) ( \
+#define SQ_APPLICATION_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			XA_TYPE_APPLICATION,      \
-			XAApplicationClass))
+			SQ_TYPE_APPLICATION,      \
+			SQApplicationClass))
 
-#define XA_IS_APPLICATION_CLASS(class) ( \
+#define SQ_IS_APPLICATION_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			XA_TYPE_APPLICATION()))	
+			SQ_TYPE_APPLICATION()))	
 
-typedef struct _XAApplication XAApplication;
+typedef struct _SQApplication SQApplication;
 
-struct _XAApplication
+struct _SQApplication
 {
 	GObject parent;
 	GtkIconTheme *icon_theme;
-	XASettings *settings;
+	SQSettings *settings;
 	struct {
 		gboolean _tabs;
 	} props;
 };
 
-typedef struct _XAApplicationClass XAApplicationClass;
+typedef struct _SQApplicationClass SQApplicationClass;
 
-struct _XAApplicationClass
+struct _SQApplicationClass
 {
 	GObjectClass parent_class;
 };
 
-GType      xa_application_get_type();
-XAApplication *xa_application_new(GtkIconTheme *icon_theme);
+GType      sq_application_get_type();
+SQApplication *sq_application_new(GtkIconTheme *icon_theme);
 
-GtkWidget *xa_application_new_window(XAApplication *);
+GtkWidget *sq_application_new_window(SQApplication *);
 
-gint xa_application_extract_archive(XAApplication *, gchar *, gchar *);
-gint xa_application_new_archive(XAApplication *, gchar *, GSList *);
+gint sq_application_extract_archive(SQApplication *, gchar *, gchar *);
+gint sq_application_new_archive(SQApplication *, gchar *, GSList *);
 
-gint xa_application_open_archive(XAApplication *, GtkWidget *, gchar *);
+gint sq_application_open_archive(SQApplication *, GtkWidget *, gchar *);
 
 G_END_DECLS
-#endif /* __XARCHIVER_APPLICATION_H__*/
+#endif /* __SQRCHIVER_APPLICATION_H__*/

@@ -15,60 +15,60 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XA_SETTINGS_H__
-#define __XA_SETTINGS_H__
+#ifndef __SQ_SETTINGS_H__
+#define __SQ_SETTINGS_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_SETTINGS xa_settings_get_type()
+#define SQ_TYPE_SETTINGS sq_settings_get_type()
 
-#define XA_SETTINGS(obj)         ( \
+#define SQ_SETTINGS(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_settings_get_type(),      \
-			XASettings))
+			sq_settings_get_type(),      \
+			SQSettings))
 
-#define XA_IS_SETTINGS(obj)      ( \
+#define SQ_IS_SETTINGS(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_settings_get_type()))
+			sq_settings_get_type()))
 
-#define XA_SETTINGS_CLASS(class) ( \
+#define SQ_SETTINGS_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_settings_get_type(),      \
-			XASettingsClass))
+			sq_settings_get_type(),      \
+			SQSettingsClass))
 
-#define XA_IS_SETTINGS_CLASS(class) ( \
+#define SQ_IS_SETTINGS_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_settings_get_type()))
+			sq_settings_get_type()))
 
-typedef struct _XASettings XASettings;
+typedef struct _SQSettings SQSettings;
 
-struct _XASettings
+struct _SQSettings
 {
 	GObject parent;
 	gchar *config_file;
 	GObject *xfce_rc;
 };
 
-typedef struct _XASettingsClass XASettingsClass;
+typedef struct _SQSettingsClass SQSettingsClass;
 
-struct _XASettingsClass
+struct _SQSettingsClass
 {
 	GObjectClass parent;
 };
 
-XASettings   *xa_settings_new();
-GType         xa_settings_get_type ();
+SQSettings   *sq_settings_new();
+GType         sq_settings_get_type ();
 
-gboolean      xa_settings_load(XASettings *);
-gboolean      xa_settings_save(XASettings *);
+gboolean      sq_settings_load(SQSettings *);
+gboolean      sq_settings_save(SQSettings *);
 
-const gchar  *xa_settings_read_entry(XASettings *settings, const gchar *key, const gchar *fallback);
-gboolean      xa_settings_read_bool_entry(XASettings *settings, const gchar *key, const gboolean fallback);
+const gchar  *sq_settings_read_entry(SQSettings *settings, const gchar *key, const gchar *fallback);
+gboolean      sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboolean fallback);
 
-void          xa_settings_write_entry(XASettings *settings, const gchar *key, const gchar *value);
-void          xa_settings_write_bool_entry(XASettings *settings, const gchar *key, const gboolean value);
+void          sq_settings_write_entry(SQSettings *settings, const gchar *key, const gchar *value);
+void          sq_settings_write_bool_entry(SQSettings *settings, const gchar *key, const gboolean value);
 
-void          xa_settings_set_group(XASettings *settings, const gchar *group);
+void          sq_settings_set_group(SQSettings *settings, const gchar *group);
 
 G_END_DECLS
 
-#endif /* __XA_SETTINGS_H__ */
+#endif /* __SQ_SETTINGS_H__ */

@@ -21,46 +21,46 @@
 G_BEGIN_DECLS
 
 
-#define LXA_TYPE_ARCHIVE_SUPPORT_RAR lxa_archive_support_rar_get_type()
+#define LSQ_TYPE_ARCHIVE_SUPPORT_RAR lsq_archive_support_rar_get_type()
 
-#define LXA_ARCHIVE_SUPPORT_RAR(obj)         ( \
+#define LSQ_ARCHIVE_SUPPORT_RAR(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_RAR,      \
-			LXAArchiveSupportRar))
+			LSQ_TYPE_ARCHIVE_SUPPORT_RAR,      \
+			LSQArchiveSupportRar))
 
-#define LXA_IS_ARCHIVE_SUPPORT_RAR(obj)      ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_RAR(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LXA_TYPE_ARCHIVE_SUPPORT_RAR))
+			LSQ_TYPE_ARCHIVE_SUPPORT_RAR))
 
-#define LXA_ARCHIVE_SUPPORT_RAR_CLASS(klass) ( \
+#define LSQ_ARCHIVE_SUPPORT_RAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LXA_TYPE_ARCHIVE_SUPPORT_RAR,      \
-			LXAArchiveSupportRarClass))
+			LSQ_TYPE_ARCHIVE_SUPPORT_RAR,      \
+			LSQArchiveSupportRarClass))
 
-#define LXA_IS_ARCHIVE_SUPPORT_RAR_CLASS(klass) ( \
+#define LSQ_IS_ARCHIVE_SUPPORT_RAR_CLASS(klass) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LXA_TYPE_ARCHIVE_SUPPORT_RAR))
+			LSQ_TYPE_ARCHIVE_SUPPORT_RAR))
 
-typedef struct _LXAArchiveSupportRar LXAArchiveSupportRar;
+typedef struct _LSQArchiveSupportRar LSQArchiveSupportRar;
 
-struct _LXAArchiveSupportRar
+struct _LSQArchiveSupportRar
 {
-	LXAArchiveSupport parent;
+	LSQArchiveSupport parent;
 };
 
-typedef struct _LXAArchiveSupportRarClass LXAArchiveSupportRarClass;
+typedef struct _LSQArchiveSupportRarClass LSQArchiveSupportRarClass;
 
-struct _LXAArchiveSupportRarClass
+struct _LSQArchiveSupportRarClass
 {
-	LXAArchiveSupportClass parent;
+	LSQArchiveSupportClass parent;
 }; 
 
-GType                lxa_archive_support_rar_get_type(void);
-LXAArchiveSupport *  lxa_archive_support_rar_new();
+GType                lsq_archive_support_rar_get_type(void);
+LSQArchiveSupport *  lsq_archive_support_rar_new();
 
-gint                 lxa_archive_support_rar_add(LXAArchive *, GSList *);
-gint                 lxa_archive_support_rar_extract(LXAArchive *, gchar *, GSList *);
-gint                 lxa_archive_support_rar_remove(LXAArchive *, GSList *);
+gint                 lsq_archive_support_rar_add(LSQArchive *, GSList *);
+gint                 lsq_archive_support_rar_extract(LSQArchive *, gchar *, GSList *);
+gint                 lsq_archive_support_rar_remove(LSQArchive *, GSList *);
 
 G_END_DECLS
 

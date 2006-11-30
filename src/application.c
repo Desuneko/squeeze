@@ -20,7 +20,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <libxarchiver/libxarchiver.h>
+#include <libsqueeze/libxarchiver.h>
 
 #include <gettext.h>
 
@@ -36,51 +36,51 @@
 #include "main_window.h"
 
 static void
-xa_application_class_init(XAApplicationClass *archive_class);
+sq_application_class_init(SQApplicationClass *archive_class);
 
 static void
-xa_application_init(XAApplication *);
+sq_application_init(SQApplication *);
 static void
-xa_application_finalize(GObject *);
+sq_application_finalize(GObject *);
 static void
-xa_application_dispose(GObject *object);
+sq_application_dispose(GObject *object);
 
-static gint xa_application_signals[1];
+static gint sq_application_signals[1];
 
 GType
-xa_application_get_type ()
+sq_application_get_type ()
 {
-	static GType xa_application_type = 0;
+	static GType sq_application_type = 0;
 
- 	if (!xa_application_type)
+ 	if (!sq_application_type)
 	{
- 		static const GTypeInfo xa_application_info = 
+ 		static const GTypeInfo sq_application_info = 
 		{
-			sizeof (XAApplicationClass),
+			sizeof (SQApplicationClass),
 			(GBaseInitFunc) NULL,
 			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) xa_application_class_init,
+			(GClassInitFunc) sq_application_class_init,
 			(GClassFinalizeFunc) NULL,
 			NULL,
-			sizeof (XAApplication),
+			sizeof (SQApplication),
 			0,
-			(GInstanceInitFunc) xa_application_init,
+			(GInstanceInitFunc) sq_application_init,
 			NULL
 		};
 
-		xa_application_type = g_type_register_static (G_TYPE_OBJECT, "XAApplication", &xa_application_info, 0);
+		sq_application_type = g_type_register_static (G_TYPE_OBJECT, "SQApplication", &sq_application_info, 0);
 	}
-	return xa_application_type;
+	return sq_application_type;
 }
 
 static void
-xa_application_class_init(XAApplicationClass *application_class)
+sq_application_class_init(SQApplicationClass *application_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (application_class);
-	object_class->finalize     = xa_application_finalize;
-	object_class->dispose      = xa_application_dispose;
+	object_class->finalize     = sq_application_finalize;
+	object_class->dispose      = sq_application_dispose;
 
-	xa_application_signals[0] = g_signal_new("destroy",
+	sq_application_signals[0] = g_signal_new("destroy",
 			G_TYPE_FROM_CLASS(application_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -92,39 +92,39 @@ xa_application_class_init(XAApplicationClass *application_class)
 }
 
 static void
-xa_application_init(XAApplication *application)
+sq_application_init(SQApplication *application)
 {
-	application->settings = xa_settings_new();
-	xa_settings_set_group(application->settings, "Global");
+	application->settings = sq_settings_new();
+	sq_settings_set_group(application->settings, "Global");
 
-	application->props._tabs = xa_settings_read_bool_entry(application->settings, "UseTabs", TRUE);
+	application->props._tabs = sq_settings_read_bool_entry(application->settings, "UseTabs", TRUE);
 
 }
 
 static void
-xa_application_dispose(GObject *object)
+sq_application_dispose(GObject *object)
 {
-	g_signal_emit(object, xa_application_signals[0], 0, object);
+	g_signal_emit(object, sq_application_signals[0], 0, object);
 }
 
 static void
-xa_application_finalize(GObject *object )
+sq_application_finalize(GObject *object )
 {
-	XAApplication *application = XA_APPLICATION(object);
+	SQApplication *application = SQ_APPLICATION(object);
 
-	xa_settings_set_group(application->settings, "Global");
+	sq_settings_set_group(application->settings, "Global");
 
-	xa_settings_write_bool_entry(application->settings, "UseTabs", application->props._tabs);
+	sq_settings_write_bool_entry(application->settings, "UseTabs", application->props._tabs);
 
-	xa_settings_save(application->settings);
+	sq_settings_save(application->settings);
 }
 
-XAApplication *
-xa_application_new(GtkIconTheme *icon_theme)
+SQApplication *
+sq_application_new(GtkIconTheme *icon_theme)
 {
-	XAApplication *app;
+	SQApplication *app;
 
-	app = g_object_new(XA_TYPE_APPLICATION, NULL);
+	app = g_object_new(SQ_TYPE_APPLICATION, NULL);
 
 	app->icon_theme = icon_theme;
 
@@ -132,24 +132,24 @@ xa_application_new(GtkIconTheme *icon_theme)
 }
 
 GtkWidget *
-xa_application_new_window(XAApplication *app)
+sq_application_new_window(SQApplication *app)
 {
-	GtkWidget *window = xa_main_window_new(app, app->icon_theme);
+	GtkWidget *window = sq_main_window_new(app, app->icon_theme);
 	gtk_widget_set_size_request(window, 500, 300);
 	return window;
 }
 
 void
-cb_xa_application_archive_status_changed(LXAArchive *archive, gpointer data)
+cb_sq_application_archive_status_changed(LSQArchive *archive, gpointer data)
 {
-	XAApplication *app = XA_APPLICATION(data);
+	SQApplication *app = SQ_APPLICATION(data);
 
 	switch(archive->status)
 	{
-		case LXA_ARCHIVESTATUS_IDLE:
-			lxa_close_archive(archive);
-		case LXA_ARCHIVESTATUS_ERROR:
-		case LXA_ARCHIVESTATUS_USERBREAK:
+		case LSQ_ARCHIVESTATUS_IDLE:
+			lsq_close_archive(archive);
+		case LSQ_ARCHIVESTATUS_ERROR:
+		case LSQ_ARCHIVESTATUS_USERBREAK:
 			g_object_unref(app);
 			break;
 		default:
@@ -158,52 +158,52 @@ cb_xa_application_archive_status_changed(LXAArchive *archive, gpointer data)
 }
 
 gint
-xa_application_extract_archive(XAApplication *app, gchar *archive_path, gchar *dest_path)
+sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *dest_path)
 {
 	GtkWidget *dialog = NULL;
 	gint result = 0;
-	LXAArchive *lp_archive = NULL;
-	LXAArchiveSupport *lp_support = NULL;
+	LSQArchive *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
 
-	if(!lxa_open_archive(archive_path, &lp_archive))
+	if(!lsq_open_archive(archive_path, &lp_archive))
 	{
-		g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(cb_xa_application_archive_status_changed), app);
-		lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(lp_archive->mime_info));
+		g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
+		lp_support = lsq_get_support_for_mime(lsq_mime_info_get_name(lp_archive->mime_info));
 		if(!dest_path)
 		{
-			dialog = xa_extract_archive_dialog_new(lp_support, lp_archive, FALSE);
+			dialog = sq_extract_archive_dialog_new(lp_support, lp_archive, FALSE);
 			result = gtk_dialog_run (GTK_DIALOG (dialog) );
 			if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
 			{
 				gtk_widget_destroy (GTK_WIDGET (dialog) );
-				lxa_close_archive(lp_archive);
+				lsq_close_archive(lp_archive);
 			}
 			if(result == GTK_RESPONSE_OK)
 			{
 				dest_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-				lxa_archive_support_extract(lp_support, lp_archive, dest_path, NULL);
+				lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL);
 				g_free(dest_path);
 				dest_path = NULL;
 			}
 		}
 		else
-			lxa_archive_support_extract(lp_support, lp_archive, dest_path, NULL);
+			lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL);
 	}
 	g_object_ref(app);
 	return 0;
 }
 
 gint
-xa_application_new_archive(XAApplication *app, gchar *archive_path, GSList *files)
+sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *files)
 {
 	GtkWidget *dialog = NULL;
 	gint result = 0;
-	LXAArchive *lp_archive = NULL;
-	LXAArchiveSupport *lp_support = NULL;
+	LSQArchive *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
 
 	if(!archive_path)
 	{
-		dialog = xa_new_archive_dialog_new();
+		dialog = sq_new_archive_dialog_new();
 		result = gtk_dialog_run (GTK_DIALOG (dialog) );
 		if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
 		{
@@ -215,7 +215,7 @@ xa_application_new_archive(XAApplication *app, gchar *archive_path, GSList *file
 			archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
 		}
-		if(lxa_new_archive(archive_path, TRUE, NULL, &lp_archive))
+		if(lsq_new_archive(archive_path, TRUE, NULL, &lp_archive))
 		{
 			/* 
 			 * Could not create archive (mime type unsupported) 
@@ -231,7 +231,7 @@ xa_application_new_archive(XAApplication *app, gchar *archive_path, GSList *file
 	}
 	else
 	{
-		if(lxa_open_archive(archive_path, &lp_archive))
+		if(lsq_open_archive(archive_path, &lp_archive))
 		{
 			/*
 			 * Could not open archive (mime type not supported or file did not exist)
@@ -244,29 +244,29 @@ xa_application_new_archive(XAApplication *app, gchar *archive_path, GSList *file
 			return 1;
 		}
 	}
-	g_signal_connect(G_OBJECT(lp_archive), "lxa_status_changed", G_CALLBACK(cb_xa_application_archive_status_changed), NULL);
-	lp_support = lxa_get_support_for_mime(lxa_mime_info_get_name(lp_archive->mime_info));
-	lxa_archive_support_add(lp_support, lp_archive, files);
+	g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), NULL);
+	lp_support = lsq_get_support_for_mime(lsq_mime_info_get_name(lp_archive->mime_info));
+	lsq_archive_support_add(lp_support, lp_archive, files);
 	g_object_ref(app);
 	return 0;
 }
 
 gint
-xa_application_open_archive(XAApplication *app, GtkWidget *window, gchar *path)
+sq_application_open_archive(SQApplication *app, GtkWidget *window, gchar *path)
 {
 	gint retval = 0;
 
 	if(!window)
 	{
-		window = xa_application_new_window(app);
+		window = sq_application_new_window(app);
 	}
 	if(app->props._tabs)
 	{
-		retval = xa_main_window_open_archive(XA_MAIN_WINDOW(window), path, -1);
+		retval = sq_main_window_open_archive(SQ_MAIN_WINDOW(window), path, -1);
 	}
 	else
 	{
-		retval = xa_main_window_open_archive(XA_MAIN_WINDOW(window), path, 0);
+		retval = sq_main_window_open_archive(SQ_MAIN_WINDOW(window), path, 0);
 	}
 	gtk_widget_show(window);
 	return retval;

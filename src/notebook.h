@@ -16,36 +16,36 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XARCHIVER_NOTEBOOK_H__
-#define __XARCHIVER_NOTEBOOK_H__
+#ifndef __SQRCHIVER_NOTEBOOK_H__
+#define __SQRCHIVER_NOTEBOOK_H__
 G_BEGIN_DECLS
 
-#define XA_TYPE_NOTEBOOK xa_notebook_get_type()
+#define SQ_TYPE_NOTEBOOK sq_notebook_get_type()
 
-#define XA_NOTEBOOK(obj)         ( \
+#define SQ_NOTEBOOK(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			xa_notebook_get_type(),      \
-			XANotebook))
+			sq_notebook_get_type(),      \
+			SQNotebook))
 
-#define XA_IS_NOTEBOOK(obj)      ( \
+#define SQ_IS_NOTEBOOK(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			xa_notebook_get_type()))
+			sq_notebook_get_type()))
 
-#define XA_NOTEBOOK_CLASS(class) ( \
+#define SQ_NOTEBOOK_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			xa_notebook_get_type(),      \
-			XANotebookClass))
+			sq_notebook_get_type(),      \
+			SQNotebookClass))
 
-#define XA_IS_NOTEBOOK_CLASS(class) ( \
+#define SQ_IS_NOTEBOOK_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			xa_notebook_get_type()))
+			sq_notebook_get_type()))
 
-typedef struct _XANotebook XANotebook;
+typedef struct _SQNotebook SQNotebook;
 
-struct _XANotebook
+struct _SQNotebook
 {
 	GtkNotebook parent;
-	XANavigationBar *navigation_bar;
+	SQNavigationBar *navigation_bar;
 	gboolean multi_tab;
 	struct
 	{
@@ -57,27 +57,27 @@ struct _XANotebook
 	GtkTooltips *tool_tips;
 };
 
-typedef struct _XANotebookClass XANotebookClass;
+typedef struct _SQNotebookClass SQNotebookClass;
 
-struct _XANotebookClass
+struct _SQNotebookClass
 {
 	GtkNotebookClass parent;
 };
 
-GtkWidget  *xa_notebook_new (XANavigationBar *, gboolean , GtkAccelGroup *);
-GType       xa_notebook_get_type ();
+GtkWidget  *sq_notebook_new (SQNavigationBar *, gboolean , GtkAccelGroup *);
+GType       sq_notebook_get_type ();
 
-void        xa_notebook_set_navigation_bar(XANotebook *, XANavigationBar *);
-void        xa_notebook_add_archive(XANotebook *, LXAArchive *, LXAArchiveSupport *);
-void        xa_notebook_page_set_archive(XANotebook *, LXAArchive *, LXAArchiveSupport *, gint n);
-void        xa_notebook_page_get_archive(XANotebook *, LXAArchive **, LXAArchiveSupport **, gint n);
-void        xa_notebook_set_icon_theme(XANotebook *, GtkIconTheme *);
-void        xa_notebook_get_active_archive(XANotebook *, LXAArchive **, LXAArchiveSupport **);
-GtkWidget  *xa_notebook_get_active_child(XANotebook *notebook);
-gboolean    xa_notebook_get_multi_tab(XANotebook *notebook);
-void        xa_notebook_close_active_archive(XANotebook *);
+void        sq_notebook_set_navigation_bar(SQNotebook *, SQNavigationBar *);
+void        sq_notebook_add_archive(SQNotebook *, LSQArchive *, LSQArchiveSupport *);
+void        sq_notebook_page_set_archive(SQNotebook *, LSQArchive *, LSQArchiveSupport *, gint n);
+void        sq_notebook_page_get_archive(SQNotebook *, LSQArchive **, LSQArchiveSupport **, gint n);
+void        sq_notebook_set_icon_theme(SQNotebook *, GtkIconTheme *);
+void        sq_notebook_get_active_archive(SQNotebook *, LSQArchive **, LSQArchiveSupport **);
+GtkWidget  *sq_notebook_get_active_child(SQNotebook *notebook);
+gboolean    sq_notebook_get_multi_tab(SQNotebook *notebook);
+void        sq_notebook_close_active_archive(SQNotebook *);
 
-GSList     *xa_notebook_get_selected_items(XANotebook *notebook);
+GSList     *sq_notebook_get_selected_items(SQNotebook *notebook);
 
 G_END_DECLS
-#endif /* __XARCHIVER_NOTEBOOK_H__ */
+#endif /* __SQRCHIVER_NOTEBOOK_H__ */
