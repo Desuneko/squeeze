@@ -239,9 +239,7 @@ lsq_archive_new(gchar *path, const gchar *mime)
 		archive->mime_info = lsq_mime_get_mime_info_for_file(archive->path);
 	else
 		archive->mime_info = lsq_mime_get_mime_info(mime);
-#ifdef DEBUG	
-	g_debug("Mime-type: %s", lsq_mime_info_get_name(archive->mime_info));
-#endif
+
 	if(!lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info)))
 	{
 		g_object_unref(archive);
