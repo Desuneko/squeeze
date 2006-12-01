@@ -51,6 +51,7 @@ struct _SQArchiveStore
 	LSQEntry **sort_list;
 	guint list_size;
 	GtkIconTheme *icon_theme;
+	GtkTreeView *treeview;
 	struct {
 		guint _show_icons : 1;
 		guint _show_up_dir : 1;

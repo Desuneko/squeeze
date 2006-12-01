@@ -46,6 +46,11 @@ sq_archive_tree_sortable_init(GtkTreeSortableIface *ts_interface);
 static void
 sq_archive_store_finalize(GObject *object);
 
+static gpointer
+sq_archive_store_sort_thread_func(SQArchiveStore *store);
+static gpointer
+sq_archive_store_sort_order_thread_func(SQArchiveStore *store);
+
 /* properties */
 enum {
 	SQ_ARCHIVE_STORE_SHOW_ICONS = 1, 
@@ -749,7 +754,8 @@ sq_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id,
 	store->sort_column = sort_col_id;
 	store->sort_order = order;
 
-	sq_archive_store_sort(store);
+	/* sq_archive_store_sort(store); */
+	g_thread_create((GThreadFunc)sq_archive_store_sort_order_thread_func, store, FALSE, NULL);
 
 	gtk_tree_sortable_sort_column_changed(sortable);
 }
@@ -957,6 +963,7 @@ sq_archive_store_new(LSQArchive *archive, gboolean show_icons, gboolean show_up_
 void
 sq_archive_store_connect_treeview(SQArchiveStore *store, GtkTreeView *treeview)
 {
+	store->treeview = treeview;
 	g_signal_connect(G_OBJECT(treeview), "row-activated", G_CALLBACK(cb_sq_archive_store_row_activated), store);
 }
 
@@ -1103,10 +1110,6 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 		sq_archive_store_append_history(store, current_entry);
 	}
 
-	sq_archive_store_sort(store);
-
-	sq_archive_store_refresh(store);
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
 void
@@ -1131,10 +1134,9 @@ sq_archive_store_go_up(SQArchiveStore *store)
 	current_entry = g_slist_copy(current_entry->next);
 	sq_archive_store_append_history(store, current_entry);
 
-	sq_archive_store_sort(store);
+	/* sq_archive_store_sort(store); */
+	g_thread_create((GThreadFunc)sq_archive_store_sort_thread_func, store, FALSE, NULL);
 
-	sq_archive_store_refresh(store);
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 }
 
 void
@@ -1388,11 +1390,9 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 
 	sq_archive_store_append_history(store, stack);
 
-	sq_archive_store_sort(store);
+	/* sq_archive_store_sort(store); */
+	g_thread_create((GThreadFunc)sq_archive_store_sort_thread_func, store, FALSE, NULL);
 
-	sq_archive_store_refresh(store);
-
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 	return TRUE;
 }
 
@@ -1524,9 +1524,8 @@ sq_archive_store_go_back(SQArchiveStore *store)
 	if(sq_archive_store_has_history(store))
 		store->navigation.present = store->navigation.present->prev;
 
-	sq_archive_store_sort(store);
-
-	sq_archive_store_refresh(store);
+	/* sq_archive_store_sort(store); */
+	g_thread_create((GThreadFunc)sq_archive_store_sort_thread_func, store, FALSE, NULL);
 
 	sq_archive_store_check_trailing(store);
 
@@ -1551,9 +1550,8 @@ sq_archive_store_go_forward(SQArchiveStore *store)
 	if(sq_archive_store_has_future(store))
 		store->navigation.present = store->navigation.present->next;
 
-	sq_archive_store_sort(store);
-
-	sq_archive_store_refresh(store);
+	/* sq_archive_store_sort(store); */
+	g_thread_create((GThreadFunc)sq_archive_store_sort_thread_func, store, FALSE, NULL);
 
 	sq_archive_store_check_trailing(store);
 
@@ -1708,4 +1706,36 @@ sq_archive_store_finalize(GObject *object)
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
 	if(store->archive)
 		g_object_unref(store->archive);
+}
+
+static gpointer
+sq_archive_store_sort_thread_func(SQArchiveStore *store)
+{
+	sq_archive_store_sort(store);
+
+	gdk_threads_enter();
+
+	sq_archive_store_refresh(store);
+	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+
+	gdk_threads_leave();
+	return NULL;
+}
+
+static gpointer
+sq_archive_store_sort_order_thread_func(SQArchiveStore *store)
+{
+	sq_archive_store_sort(store);
+
+	gdk_threads_enter();
+	if(store->treeview)
+		gtk_tree_view_set_model(store->treeview, NULL);
+	sq_archive_store_refresh(store);
+	if(store->treeview)
+		gtk_tree_view_set_model(store->treeview, (GtkTreeModel *)store);
+
+	/* TODO: should do stuff i think */
+
+	gdk_threads_leave();
+	return NULL;
 }

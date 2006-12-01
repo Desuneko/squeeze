@@ -112,10 +112,9 @@ int main(int argc, char **argv)
  	textdomain (GETTEXT_PACKAGE);
 	#endif
 
-#ifdef G_THREADS_ENABLED
 	g_thread_init(NULL);
   gdk_threads_init();
-#endif /* G_THREADS_ENABLED */
+	gdk_threads_enter();
 
 	if(!gtk_init_with_args(&argc, &argv, _("[archive name]"), entries, PACKAGE, &cli_error))
 	{
@@ -181,7 +180,6 @@ int main(int argc, char **argv)
 
 
 	g_object_unref(sq_app);
-	gdk_threads_enter();
 	gtk_main();
 	gdk_threads_leave();
 	lsq_destroy();
