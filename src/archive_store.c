@@ -1244,11 +1244,9 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	g_signal_connect(store->archive, "lsq_refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store);
 }
 
-/* FIXME: STUK!!! */
 gchar *
 sq_archive_store_get_pwd(SQArchiveStore *store)
 {
-/*
 #ifdef DEBUG
 	g_return_val_if_fail(store, NULL);
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(store), NULL);
@@ -1288,9 +1286,9 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 	i--;
 	buf[i] = lastfile;
 
-	iter = iter->next;
-	if(iter)
+	if(iter && iter->next)
 	{
+		iter = iter->next;
 		while(iter->next)
 		{
 			--i;
@@ -1309,12 +1307,10 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 		buf[0] = g_strdup("");
 	}
 
-	g_debug("%d", i);
 	// why does glib want buf to be gchar** instead of const gchar** ?
 	path = g_strjoinv("/", (gchar**)buf);
 
-*/
-	return NULL;
+	return path;
 }
 
 GSList *
