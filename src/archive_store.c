@@ -868,7 +868,7 @@ sq_archive_store_sort(SQArchiveStore *store)
 	if(psize <= 1)
 		return;
 
-	store->sort_list = g_new(LSQArchiveIter*, psize);
+	store->sort_list = g_new(LSQArchiveIter*, psize+1);
 
 	for(i = 0; i < psize; ++i)
 	{
@@ -876,6 +876,7 @@ sq_archive_store_sort(SQArchiveStore *store)
 	}
 	sq_archive_quicksort(store, 0, psize-1);
 	sq_archive_insertionsort(store, 0, psize-1);
+	store->sort_list[psize] = NULL;
 }
 
 inline void

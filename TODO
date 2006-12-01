@@ -63,7 +63,7 @@ BUGS:
 
 	archive-store out-of-sync is buffer-flush... breaks on index 499800: 499800.0 / 300.0 (buffer-size) == 1666.0 remaining 199 items are not flushed
 	  - entire buffer is emptied into array 
-		- seems fixed, is a signed/unsigned conversion error
+		- seems fixed, is a signed/unsigned conversion error. (is only a part of the problem)
 
 DONE:
 
