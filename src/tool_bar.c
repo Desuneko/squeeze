@@ -155,21 +155,6 @@ sq_tool_bar_init(SQToolBar *tool_bar)
 	gtk_tool_item_set_expand(button, TRUE);
 	tool_bar->hbox = gtk_hbox_new(FALSE, 0);
 
-	GtkEntryCompletion *compl = gtk_entry_completion_new();
-	//GtkListStore *store = gtk_list_store_new(1, G_TYPE_STRING);
-
-	gtk_entry_completion_set_popup_completion(compl, FALSE);
-
-	gtk_entry_completion_set_inline_completion(compl, TRUE);
-
-	gtk_entry_set_completion(GTK_ENTRY(tool_bar->path_field), compl);
-
-	/* TODO: auto complete model */
-
-	//gtk_entry_completion_set_model(compl, GTK_TREE_MODEL(store));
-
-	gtk_entry_completion_set_text_column(compl, 0);
-
 	gtk_container_add(GTK_CONTAINER(button), tool_bar->hbox);
 	gtk_box_pack_start(GTK_BOX(tool_bar->hbox), gtk_label_new(_("Location:")), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(tool_bar->hbox), tool_bar->path_field, TRUE, TRUE, 5);
@@ -398,7 +383,7 @@ cb_sq_tool_bar_store_set(SQNavigationBar *bar)
 	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
 	if(bar->store)
 	{
-		gchar *path= sq_archive_store_get_pwd(bar->store);
+		gchar *path = sq_archive_store_get_pwd(bar->store);
 		if(!path)
 			path = g_strdup("");
 		sq_tool_bar_refresh(tool_bar, path);
