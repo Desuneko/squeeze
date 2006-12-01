@@ -1712,13 +1712,17 @@ sq_archive_store_finalize(GObject *object)
 static gpointer
 sq_archive_store_sort_thread_func(SQArchiveStore *store)
 {
+	gdk_threads_enter();
+	if(store->treeview)
+		gtk_tree_view_set_model(store->treeview, NULL);
+	gdk_threads_leave();
+
 	sq_archive_store_sort(store);
 
 	gdk_threads_enter();
-
-	sq_archive_store_refresh(store);
+	if(store->treeview)
+		gtk_tree_view_set_model(store->treeview, (GtkTreeModel *)store);
 	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
-
 	gdk_threads_leave();
 	return NULL;
 }
@@ -1726,17 +1730,17 @@ sq_archive_store_sort_thread_func(SQArchiveStore *store)
 static gpointer
 sq_archive_store_sort_order_thread_func(SQArchiveStore *store)
 {
-	sq_archive_store_sort(store);
-
 	gdk_threads_enter();
 	if(store->treeview)
 		gtk_tree_view_set_model(store->treeview, NULL);
+	gdk_threads_leave();
+
+	sq_archive_store_sort(store);
+
+	gdk_threads_enter();
 	sq_archive_store_refresh(store);
 	if(store->treeview)
 		gtk_tree_view_set_model(store->treeview, (GtkTreeModel *)store);
-
-	/* TODO: should do stuff i think */
-
 	gdk_threads_leave();
 	return NULL;
 }
