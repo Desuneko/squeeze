@@ -1110,6 +1110,7 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 		sq_archive_store_append_history(store, current_entry);
 	}
 
+	g_thread_create((GThreadFunc)sq_archive_store_sort_thread_func, store, FALSE, NULL);
 }
 
 void
