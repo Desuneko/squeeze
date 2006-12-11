@@ -1,4 +1,4 @@
-/*  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
+/*  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ static void
 sq_settings_init(SQSettings *object)
 {
 #ifdef HAVE_LIBXFCE4UTIL
-	object->xfce_rc = (GObject *)xfce_rc_config_open(XFCE_RESOURCE_CONFIG, "xarchiver/xarchiverrc", FALSE);
+	object->xfce_rc = (GObject *)xfce_rc_config_open(XFCE_RESOURCE_CONFIG, "squeeze/squeezerc", FALSE);
 #else
 
 #endif /* HAVE_LIBXFCE4UTIL */

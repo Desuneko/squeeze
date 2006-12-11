@@ -18,6 +18,7 @@
  */
 
 #include <config.h>
+#include <stdlib.h>
 #include <glib.h>
 #include <glib-object.h>
 
@@ -27,43 +28,13 @@
 
 #include "internals.h"
 
-#ifdef LSQ_TRACE_ALLOCATION
-
 #define __USE_GNU
 
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-
-static gchar lsq_allocation_file[128];
-
-void lsq_trace_init()
-{
-	snprintf(lsq_allocation_file, 127, "lsq_trace.%d", getpid());
-	fclose( fopen(lsq_allocation_file, "w") );
-}
-
-gpointer lsq_trace_add(const gchar *methode, guint size, gpointer pointer, const gchar *function, const gchar *file, guint line)
-{
-	FILE *fp = fopen(lsq_allocation_file, "a");
-
-	fprintf(fp, "%s:%d %s{ %s(%d) = %p }\n", file, line, function, methode, size, pointer);
-
-	fclose(fp);
-
-	return pointer;
-}
-
-void lsq_trace_del(const gchar *methode, gpointer pointer, const gchar *function, const gchar *file, guint line)
-{
-	FILE *fp = fopen(lsq_allocation_file, "a");
-
-	fprintf(fp, "%s:%d %s{ %s(%p) }\n", file, line, function, methode, pointer);
-
-	fclose(fp);
-}
-
-#endif /* LSQ_TRACE_ALLOCATION */
+#include <sys/types.h>
+#include <sys/wait.h>
 
 void
 lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
@@ -74,7 +45,15 @@ lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
 		g_object_unref(archive);
 	else
 	{
-		if(archive->status != LSQ_ARCHIVESTATUS_REFRESH)
+		g_spawn_close_pid(pid);
+		if(WIFEXITED(status))
+		{
+			if(WEXITSTATUS(status))
+			{
+				lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ERROR);
+			}
+		}
+		else
 			lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 	}
 }

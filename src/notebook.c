@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
+ *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -308,6 +308,12 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 #ifdef DEBUG
 	g_debug("NOTEBOOK: Archive status changed");
 #endif /* DEBUG */
+	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_ERROR)
+	{
+		GtkWidget *dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Failed to open archive '%s'.", archive->path);
+		gtk_dialog_run((GtkDialog *)dialog);
+		gtk_widget_destroy(dialog);
+	}
 }
 
 static void

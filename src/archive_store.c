@@ -1,5 +1,5 @@
 	/*
-	 *  Copyright (c) 2006 Stephan Arts <psybsd@gmail.com>
+	 *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
 	 *
 	 *  This program is free software; you can redistribute it and/or modify
 	 *  it under the terms of the GNU General Public License as published by
@@ -1704,7 +1704,9 @@ sq_archive_store_set_support(SQArchiveStore *archive_store, LSQArchiveSupport *s
 static void
 sq_archive_store_finalize(GObject *object)
 {
+#ifdef DEBUG
 	g_debug("%s", __FUNCTION__);
+#endif
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
 	if(store->archive)
 		g_object_unref(store->archive);

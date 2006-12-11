@@ -306,7 +306,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 				g_free(command);
 				return 0;
 			}
-			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/xarchiver-XXXXXX" , NULL);
+			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			g_unlink(archive->tmp_file);
 			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
@@ -428,7 +428,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 				g_free(command);
 				return 0;
 			}
-			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/xarchiver-XXXXXX" , NULL);
+			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			g_unlink(archive->tmp_file);
 			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
