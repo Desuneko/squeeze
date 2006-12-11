@@ -328,7 +328,8 @@ cb_notebook_close_archive(GtkButton *button, GtkWidget *child)
 
 	if(archive)
 		g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
-	sq_navigation_bar_set_store(SQ_NOTEBOOK(notebook)->navigation_bar, NULL);
+	if(SQ_NOTEBOOK(notebook)->navigation_bar)
+		sq_navigation_bar_set_store(((SQNotebook *)notebook)->navigation_bar, NULL);
 	g_object_unref(archive_store);
 
 	lsq_close_archive(archive);
