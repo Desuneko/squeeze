@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <libsqueeze/libsqueeze.h>
+#include <gettext.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
@@ -310,8 +311,10 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 #endif /* DEBUG */
 	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_ERROR)
 	{
-		GtkWidget *dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "Failed to open archive '%s'.", archive->path);
+		GtkWidget *dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("Failed to open archive '%s'."), archive->path);
+		gdk_threads_enter();
 		gtk_dialog_run((GtkDialog *)dialog);
+		gdk_threads_leave();
 		gtk_widget_destroy(dialog);
 	}
 }
