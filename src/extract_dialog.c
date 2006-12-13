@@ -112,7 +112,7 @@ sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, g
 	SQExtractArchiveDialog *dialog;
 	SQWidgetFactory *factory = sq_widget_factory_new();
 
-	dialog = g_object_new(sq_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
+	dialog = g_object_new(sq_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 /* Handle 'extract selected files' option */
 	gtk_widget_set_sensitive(dialog->sel_files_radio, sel_option);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dialog->sel_files_radio), sel_option);
@@ -131,6 +131,8 @@ sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, g
 			extract_options = extract_options->next;
 		}
 	}
+	/* TODO: drop file extention */
+	// gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), lsq_archive_get_filename(archive));
 	gtk_widget_show_all(r_vbox);
 	return GTK_WIDGET(dialog);
 }

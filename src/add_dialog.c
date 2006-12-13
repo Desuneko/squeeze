@@ -2,7 +2,8 @@
  *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by *  the Free Software Foundation; either version 2 of the License, or
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -29,6 +30,11 @@ sq_add_dialog_class_init(SQAddDialogClass *archive_class);
 
 static void
 sq_add_dialog_init(SQAddDialog *archive);
+
+static void
+cb_add_dialog_add_button_clicked(GtkButton *, gpointer );
+static void
+cb_add_dialog_remove_button_clicked(GtkButton *, gpointer );
 
 GType
 sq_add_dialog_get_type ()
@@ -110,6 +116,9 @@ sq_add_dialog_init(SQAddDialog *dialog)
 	dialog->remove = gtk_button_new_from_stock(GTK_STOCK_REMOVE);
 	dialog->add    = gtk_button_new_from_stock(GTK_STOCK_ADD);
 
+	g_signal_connect(dialog->add, "clicked", (GCallback)cb_add_dialog_add_button_clicked, dialog);
+	g_signal_connect(dialog->remove, "clicked", (GCallback)cb_add_dialog_remove_button_clicked, dialog);
+
 	gtk_box_pack_end(GTK_BOX(hbox), dialog->add, FALSE, FALSE, 0);
 	gtk_box_pack_end(GTK_BOX(hbox), dialog->remove, FALSE, FALSE, 0);
 
@@ -157,4 +166,45 @@ sq_add_dialog_new(LSQArchiveSupport *support)
 
 	gtk_widget_show_all(optionbox);
 	return (GtkWidget*)dialog;
+}
+
+static void
+cb_add_dialog_add_button_clicked(GtkButton *button, gpointer user_data)
+{
+	SQAddDialog *dialog = SQ_ADD_DIALOG(user_data);
+	GtkWidget *add_dialog = NULL;
+	gint result = 0;
+
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dialog->files_radio)))
+	{ /* Select Files Dialog */
+		add_dialog = gtk_file_chooser_dialog_new(_("Select files"), (GtkWindow *)dialog, GTK_FILE_CHOOSER_ACTION_OPEN, 
+		                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+																						 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+	}
+	else
+	{ /* Select Folder Dialog */
+		add_dialog = gtk_file_chooser_dialog_new(_("Select folders"), (GtkWindow *)dialog, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+		                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,GTK_STOCK_OPEN,GTK_RESPONSE_OK, NULL);
+	}
+
+	gtk_file_chooser_set_select_multiple((GtkFileChooser *)add_dialog, TRUE);
+	result = gtk_dialog_run((GtkDialog *)add_dialog);
+	gtk_widget_hide(add_dialog);
+
+	switch(result)
+	{
+		case GTK_RESPONSE_OK:
+			/* TODO: add filenames to list in sq_add_dialog */
+			break;
+		case GTK_RESPONSE_CANCEL:
+			/* Probably do nothing */
+			break;
+	}
+	gtk_widget_destroy(add_dialog);
+}
+
+static void
+cb_add_dialog_remove_button_clicked(GtkButton *button, gpointer user_data)
+{
+
 }
