@@ -667,6 +667,7 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 	LSQArchive        *lp_archive = NULL;
 	LSQArchiveSupport *lp_support = NULL;
 	GtkWidget         *dialog = NULL;
+	GSList            *filenames = NULL;
 	gint result;
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
 
@@ -676,6 +677,8 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 	if(result == GTK_RESPONSE_OK)
 	{
 		gtk_widget_hide(dialog);
+		filenames = sq_add_dialog_get_filenames(SQ_ADD_DIALOG(dialog));
+		lsq_archive_support_add(lp_support, lp_archive, filenames);
 	}
 	gtk_widget_destroy (dialog);
 }

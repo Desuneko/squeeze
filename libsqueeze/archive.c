@@ -2,7 +2,8 @@
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or *  (at your option) any later version.
+ *  the Free Software Foundation; either version 2 of the License, or 
+ *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1311,4 +1312,11 @@ lsq_archive_get_status(LSQArchive *archive)
 {
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), LSQ_ARCHIVESTATUS_ERROR);
 	return archive->status;
+}
+
+LSQArchiveStatus
+lsq_archive_get_old_status(LSQArchive *archive)
+{
+	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), LSQ_ARCHIVESTATUS_ERROR);
+	return archive->old_status;
 }

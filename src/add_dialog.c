@@ -91,7 +91,7 @@ sq_add_dialog_init(SQAddDialog *dialog)
 
 	renderer = gtk_cell_renderer_pixbuf_new();
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
-	gtk_tree_view_column_add_attribute (column, renderer, "stock-id", 0);
+	gtk_tree_view_column_add_attribute (column, renderer, "icon-name", 0);
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);
@@ -173,7 +173,10 @@ cb_add_dialog_add_button_clicked(GtkButton *button, gpointer user_data)
 {
 	SQAddDialog *dialog = SQ_ADD_DIALOG(user_data);
 	GtkWidget *add_dialog = NULL;
+	GtkTreeIter iter;
 	gint result = 0;
+
+	GSList *filenames, *_filenames;
 
 	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dialog->files_radio)))
 	{ /* Select Files Dialog */
@@ -194,7 +197,17 @@ cb_add_dialog_add_button_clicked(GtkButton *button, gpointer user_data)
 	switch(result)
 	{
 		case GTK_RESPONSE_OK:
-			/* TODO: add filenames to list in sq_add_dialog */
+			filenames = gtk_file_chooser_get_filenames((GtkFileChooser *)add_dialog);
+			_filenames = filenames;
+			while(_filenames)
+			{
+				gtk_list_store_append(dialog->file_liststore, &iter);
+				if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dialog->files_radio)))
+					gtk_list_store_set(dialog->file_liststore, &iter, 0, "unknown", 1, _filenames->data, -1);
+				else
+					gtk_list_store_set(dialog->file_liststore, &iter, 0, "folder", 1, _filenames->data, -1);
+				_filenames = _filenames->next;
+			}
 			break;
 		case GTK_RESPONSE_CANCEL:
 			/* Probably do nothing */
@@ -206,5 +219,26 @@ cb_add_dialog_add_button_clicked(GtkButton *button, gpointer user_data)
 static void
 cb_add_dialog_remove_button_clicked(GtkButton *button, gpointer user_data)
 {
+//	SQAddDialog *dialog = SQ_ADD_DIALOG(user_data);
+	
+}
 
+GSList *
+sq_add_dialog_get_filenames(SQAddDialog *dialog)
+{
+	GtkTreeIter iter;
+	GSList *filenames = NULL;
+	GValue *value = g_new0(GValue, 1);
+	gtk_tree_model_get_iter_first(GTK_TREE_MODEL(dialog->file_liststore), &iter);
+	while(TRUE)
+	{
+		gtk_tree_model_get_value(GTK_TREE_MODEL(dialog->file_liststore), &iter, 1, value);
+		filenames = g_slist_prepend(filenames, g_value_dup_string(value)); 
+		g_value_unset(value);
+		if(!gtk_tree_model_iter_next(GTK_TREE_MODEL(dialog->file_liststore), &iter))
+			break;
+	}
+	
+	g_free(value);
+	return filenames;
 }

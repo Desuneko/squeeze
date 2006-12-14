@@ -61,7 +61,9 @@ struct _SQAddDialogClass
 	GtkDialogClass parent;
 };
 
+GType      sq_add_dialog_get_type();
 GtkWidget *sq_add_dialog_new(LSQArchiveSupport *support);
+GSList    *sq_add_dialog_get_filenames(SQAddDialog *dialog);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_ADD_DIALOG_H__ */

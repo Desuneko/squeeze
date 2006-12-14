@@ -306,12 +306,24 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 void
 cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 {
+	GtkWidget *dialog = NULL;
+
 #ifdef DEBUG
 	g_debug("NOTEBOOK: Archive status changed");
 #endif /* DEBUG */
 	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_ERROR)
 	{
-		GtkWidget *dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("Failed to open archive '%s'."), archive->path);
+		switch(lsq_archive_get_old_status(archive))
+		{
+			case LSQ_ARCHIVESTATUS_REFRESH:
+				dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("Failed to open archive '%s'."), archive->path);
+				break;
+			case LSQ_ARCHIVESTATUS_EXTRACT:
+				dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("Failed to extract contents of archive '%s'."), archive->path);
+				break;
+			default:
+				break;
+		}
 		gdk_threads_enter();
 		gtk_dialog_run((GtkDialog *)dialog);
 		gdk_threads_leave();

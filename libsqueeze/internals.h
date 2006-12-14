@@ -16,10 +16,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifdef DEBUG
-//#define LSQ_TRACE_ALLOCATION 1
-#endif /* DEBUG */
-
 const gchar            *lsq_tmp_dir;
 GSList                 *lsq_archive_support_list;
 
