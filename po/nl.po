@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2006-12-13 17:19+0100\n"
+"POT-Creation-Date: 2006-12-18 17:32+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -245,7 +245,7 @@ msgstr "B_eeld"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:351 ../src/main_window.c:799
+#: ../src/main_window.c:351 ../src/main_window.c:802
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
@@ -254,19 +254,19 @@ msgstr "Uitpakken"
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:798
+#: ../src/main_window.c:801
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:799
+#: ../src/main_window.c:802
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:865
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:863
+#: ../src/main_window.c:866
 #, c-format
 msgid ""
 "'%s'\n"
@@ -316,12 +316,12 @@ msgid "Add file(s) to archive"
 msgstr "Bestand(en) toevoegen aan archief"
 
 #. Select Files Dialog
-#: ../src/add_dialog.c:180
+#: ../src/add_dialog.c:183
 msgid "Select files"
 msgstr "Selecteer bestanden"
 
 #. Select Folder Dialog
-#: ../src/add_dialog.c:186
+#: ../src/add_dialog.c:189
 msgid "Select folders"
 msgstr "Selecteer mappen"
 

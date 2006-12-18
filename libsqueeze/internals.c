@@ -52,6 +52,11 @@ lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
 			{
 				lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ERROR);
 			}
+			else
+			{
+				if(archive->status != LSQ_ARCHIVESTATUS_REFRESH)
+					lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
+			}
 		}
 		else
 			lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
