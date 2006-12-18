@@ -329,6 +329,17 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 		gdk_threads_leave();
 		gtk_widget_destroy(dialog);
 	}
+	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_IDLE)
+	{
+		switch(lsq_archive_get_old_status(archive))
+		{
+			case LSQ_ARCHIVESTATUS_ADD:
+				lsq_archive_support_refresh(archive->support, archive);
+				break;
+			default:break;
+		}
+
+	}
 }
 
 static void

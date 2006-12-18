@@ -87,6 +87,8 @@ sq_add_dialog_init(SQAddDialog *dialog)
 	dialog->file_liststore = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
 
 	dialog->file_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(dialog->file_liststore));
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dialog->file_treeview));
+	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
 	column = gtk_tree_view_column_new();
 
 	renderer = gtk_cell_renderer_pixbuf_new();
@@ -219,8 +221,21 @@ cb_add_dialog_add_button_clicked(GtkButton *button, gpointer user_data)
 static void
 cb_add_dialog_remove_button_clicked(GtkButton *button, gpointer user_data)
 {
-//	SQAddDialog *dialog = SQ_ADD_DIALOG(user_data);
-	
+	SQAddDialog *dialog = SQ_ADD_DIALOG(user_data);
+	GtkTreeIter iter;
+	GtkTreeModel *tree_model = GTK_TREE_MODEL(dialog->file_liststore);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(dialog->file_treeview));
+	GList *rows = gtk_tree_selection_get_selected_rows(selection, &tree_model);
+
+	GList *_rows = g_list_last(rows);
+
+	while(_rows)
+	{
+		gtk_tree_model_get_iter(tree_model, &iter, (GtkTreePath *)_rows->data);
+		gtk_list_store_remove(GTK_LIST_STORE(tree_model), &iter);
+		//g_memset(&iter, 0, sizeof(GtkTreeIter));
+		_rows = _rows->prev;
+	}
 }
 
 GSList *
