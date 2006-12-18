@@ -104,7 +104,7 @@ struct _SQMainWindow
 		GtkWidget *menu_item_help;
 		GtkWidget *menu_help;
 		/* contents of 'help' menu */
-			GtkWidget *menu_item_about;
+		GtkWidget *menu_item_about;
 
 	} menubar;
 	struct {

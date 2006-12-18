@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2006-12-18 17:32+0100\n"
+"POT-Creation-Date: 2006-12-18 22:06+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -194,23 +194,23 @@ msgstr ""
 "%s: %s\n"
 "Probeer %s --help voor een volledige lijst van mogelijke opties.\n"
 
-#: ../src/main_window.c:110
+#: ../src/main_window.c:117
 msgid "Internal Style"
 msgstr "Interne Stijl"
 
-#: ../src/main_window.c:112
+#: ../src/main_window.c:119
 msgid "Tool Bar Style"
 msgstr "Werkbalk Stijl"
 
-#: ../src/main_window.c:115
+#: ../src/main_window.c:122
 msgid "Path Bar Style"
 msgstr "Padbalk Stijl"
 
-#: ../src/main_window.c:163
+#: ../src/main_window.c:170
 msgid "Navigation Style"
 msgstr "Navigatie Stijl"
 
-#: ../src/main_window.c:164
+#: ../src/main_window.c:171
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -219,54 +219,71 @@ msgstr ""
 "De stijl om te navigeren door het archief"
 
 #. File menu
-#: ../src/main_window.c:249
+#: ../src/main_window.c:256
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:280
+#: ../src/main_window.c:287
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:285
+#: ../src/main_window.c:292
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:291
+#: ../src/main_window.c:298
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:305
+#: ../src/main_window.c:312
 msgid "_View"
 msgstr "B_eeld"
 
-#: ../src/main_window.c:347
+#. Help menu
+#: ../src/main_window.c:334
+msgid "_Help"
+msgstr "_Help"
+
+#: ../src/main_window.c:365
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:351 ../src/main_window.c:802
+#: ../src/main_window.c:369 ../src/main_window.c:844
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:594
+#: ../src/main_window.c:612
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:801
+#: ../src/main_window.c:763
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+"Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
+"Bureaublad omgeving"
+
+#: ../src/main_window.c:769
+msgid "translator-credits"
+msgstr "Stephan Arts <stephan@xfce.org>"
+
+#: ../src/main_window.c:843
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:802
+#: ../src/main_window.c:844
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:865
+#: ../src/main_window.c:907
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:866
+#: ../src/main_window.c:908
 #, c-format
 msgid ""
 "'%s'\n"
@@ -303,25 +320,25 @@ msgstr "Bestanden en mappen om toe te voegen"
 msgid "Options:"
 msgstr "Opties:"
 
-#: ../src/add_dialog.c:107
+#: ../src/add_dialog.c:109
 msgid "Files"
 msgstr "Bestanden"
 
-#: ../src/add_dialog.c:111
+#: ../src/add_dialog.c:113
 msgid "Directories"
 msgstr "Mappen"
 
-#: ../src/add_dialog.c:147
+#: ../src/add_dialog.c:149
 msgid "Add file(s) to archive"
 msgstr "Bestand(en) toevoegen aan archief"
 
 #. Select Files Dialog
-#: ../src/add_dialog.c:183
+#: ../src/add_dialog.c:185
 msgid "Select files"
 msgstr "Selecteer bestanden"
 
 #. Select Folder Dialog
-#: ../src/add_dialog.c:189
+#: ../src/add_dialog.c:191
 msgid "Select folders"
 msgstr "Selecteer mappen"
 

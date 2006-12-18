@@ -33,7 +33,12 @@
 #include <gtk/gtk.h>
 #include <libsqueeze/libsqueeze.h>
 #include <libsqueeze/mime.h>
+
+#ifdef HAVE_LIBXFCE4UTIL
+#include <libxfce4util/libxfce4util.h>
+#else
 #include <gettext.h>
+#endif
 
 #include "settings.h"
 #include "archive_store.h"
@@ -88,6 +93,8 @@ static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);
+
+static void cb_sq_main_about(GtkWidget *widget, gpointer userdata);
 
 static void
 cb_sq_main_window_notebook_page_switched(SQNotebook *, GtkNotebookPage *, guint, gpointer);
@@ -323,9 +330,20 @@ sq_main_window_init(SQMainWindow *window)
 
 		gtk_widget_show_all(window->menubar.menu_view);
 
+		/* Help menu */
+		window->menubar.menu_item_help = gtk_menu_item_new_with_mnemonic(_("_Help"));
+		window->menubar.menu_help = gtk_menu_new();
+		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_help), window->menubar.menu_help);
+
+		window->menubar.menu_item_about = g_object_ref(gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, window->accel_group));
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_help), window->menubar.menu_item_about);
+
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_about), "activate", G_CALLBACK(cb_sq_main_about), window);
+
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_file);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_action);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_view);
+		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_help);
 	}
 
 	toolbar = gtk_toolbar_new();
@@ -732,6 +750,30 @@ cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = sq_preferences_dialog_new();
 
 	gtk_widget_show_all(dialog);
+}
+
+static void
+cb_sq_main_about(GtkWidget *widget, gpointer userdata)
+{
+	const gchar *authors[] = {"Stephan Arts <stephan@xfce.org>","Peter de Ridder <peter@xfce.org>", NULL};
+	GtkWidget *about_dialog = gtk_about_dialog_new();
+
+	gtk_about_dialog_set_name((GtkAboutDialog *)about_dialog, PACKAGE_NAME);
+	gtk_about_dialog_set_version((GtkAboutDialog *)about_dialog, PACKAGE_VERSION);
+	gtk_about_dialog_set_comments((GtkAboutDialog *)about_dialog, _("Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"));
+
+	gtk_about_dialog_set_logo_icon_name((GtkAboutDialog *)about_dialog, "squeeze");
+
+	gtk_about_dialog_set_authors((GtkAboutDialog *)about_dialog, authors);
+
+	gtk_about_dialog_set_translator_credits((GtkAboutDialog *)about_dialog, _("translator-credits"));
+
+	gtk_about_dialog_set_license((GtkAboutDialog *)about_dialog, xfce_get_license_text(XFCE_LICENSE_TEXT_GPL));
+
+	gtk_dialog_run(GTK_DIALOG(about_dialog));
+
+	gtk_widget_destroy(about_dialog);
+
 }
 
 static void

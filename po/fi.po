@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.4.2rc2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2006-12-13 12:05+0200\n"
+"POT-Creation-Date: 2006-12-18 22:06+0100\n"
 "PO-Revision-Date: 2006-12-13 12:43+0200\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:421
+#: ../libsqueeze/archive.c:422
 msgid "Filename"
 msgstr "Tiedostonimi"
 
-#: ../libsqueeze/archive.c:424
+#: ../libsqueeze/archive.c:425
 msgid "Mime type"
 msgstr "MIME-tyyppi"
 
@@ -193,23 +193,23 @@ msgstr ""
 "%s: %s\n"
 "Kirjoittamalla %s --help saat täyden listan komentorivivalitsimista.\n"
 
-#: ../src/main_window.c:110
+#: ../src/main_window.c:117
 msgid "Internal Style"
 msgstr "Sisäinen tyyli"
 
-#: ../src/main_window.c:112
+#: ../src/main_window.c:119
 msgid "Tool Bar Style"
 msgstr "Työkalupalkkityyli"
 
-#: ../src/main_window.c:115
+#: ../src/main_window.c:122
 msgid "Path Bar Style"
 msgstr "Polkupalkkityyli"
 
-#: ../src/main_window.c:163
+#: ../src/main_window.c:170
 msgid "Navigation Style"
 msgstr "Navigointitapa"
 
-#: ../src/main_window.c:164
+#: ../src/main_window.c:171
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -218,54 +218,69 @@ msgstr ""
 "Tapa, jolla navigoit arkistossa"
 
 #. File menu
-#: ../src/main_window.c:249
+#: ../src/main_window.c:256
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:280
+#: ../src/main_window.c:287
 msgid "_Action"
 msgstr "Toi_minto"
 
-#: ../src/main_window.c:285
+#: ../src/main_window.c:292
 msgid "_Add"
 msgstr "_Lisää"
 
-#: ../src/main_window.c:291
+#: ../src/main_window.c:298
 msgid "_Extract"
 msgstr "P_ura"
 
 #. View menu
-#: ../src/main_window.c:305
+#: ../src/main_window.c:312
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/main_window.c:347
+#. Help menu
+#: ../src/main_window.c:334
+msgid "_Help"
+msgstr ""
+
+#: ../src/main_window.c:365
 msgid "Add"
 msgstr "Lisää"
 
-#: ../src/main_window.c:351 ../src/main_window.c:799
+#: ../src/main_window.c:369 ../src/main_window.c:844
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Pura"
 
-#: ../src/main_window.c:594
+#: ../src/main_window.c:612
 msgid "Open archive"
 msgstr "Avaa arkisto"
 
-#: ../src/main_window.c:798
+#: ../src/main_window.c:763
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+
+#: ../src/main_window.c:769
+msgid "translator-credits"
+msgstr "Jari Rahkonen <jari.rahkonen@pp1.inet.fi>"
+
+#: ../src/main_window.c:843
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:799
+#: ../src/main_window.c:844
 msgid "View"
 msgstr "Näytä"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:907
 msgid "Failed to open file"
 msgstr "Linkin avaaminen epäonnistui"
 
-#: ../src/main_window.c:863
+#: ../src/main_window.c:908
 #, c-format
 msgid ""
 "'%s'\n"
@@ -287,7 +302,8 @@ msgstr "Arkistoa ei voi luoda, MIME-tyyppiä ei tueta"
 #.
 #: ../src/application.c:240
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Arkistoa ei voi avata, MIME-tyyppiä ei tueta tai tiedostoa ei ole olemassa"
+msgstr ""
+"Arkistoa ei voi avata, MIME-tyyppiä ei tueta tai tiedostoa ei ole olemassa"
 
 #: ../src/new_dialog.c:87
 msgid "Create new archive"
@@ -301,25 +317,25 @@ msgstr "Lisättävät tiedostot ja hakemistot"
 msgid "Options:"
 msgstr "Valinnat:"
 
-#: ../src/add_dialog.c:107
+#: ../src/add_dialog.c:109
 msgid "Files"
 msgstr "Tiedostoja"
 
-#: ../src/add_dialog.c:111
+#: ../src/add_dialog.c:113
 msgid "Directories"
 msgstr "Hakemistoja"
 
-#: ../src/add_dialog.c:147
+#: ../src/add_dialog.c:149
 msgid "Add file(s) to archive"
 msgstr "Lisää tiedosto(ja) arkistoon"
 
 #. Select Files Dialog
-#: ../src/add_dialog.c:180
+#: ../src/add_dialog.c:185
 msgid "Select files"
 msgstr "Valitse tiedostot"
 
 #. Select Folder Dialog
-#: ../src/add_dialog.c:186
+#: ../src/add_dialog.c:191
 msgid "Select folders"
 msgstr "Valitse hakemistot"
 
@@ -355,9 +371,14 @@ msgstr "Välit"
 msgid "The amount of space between the path buttons"
 msgstr "Polkupainikkeiden välinen tyhjä tila"
 
-#: ../src/notebook.c:314
+#: ../src/notebook.c:319
 #, c-format
 msgid "Failed to open archive '%s'."
+msgstr "Arkiston \"%s\" avaaminen epäonnistui."
+
+#: ../src/notebook.c:322
+#, fuzzy, c-format
+msgid "Failed to extract contents of archive '%s'."
 msgstr "Arkiston \"%s\" avaaminen epäonnistui."
 
 #: ../src/archive_store.c:242
