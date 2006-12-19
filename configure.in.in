@@ -119,7 +119,6 @@ XDT_I18N([@LINGUAS@])
 XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.4.0])
 XDT_CHECK_PACKAGE([GLIB], [glib-2.0], [2.4.0])
 XDT_CHECK_PACKAGE([GOBJECT], [gobject-2.0], [2.4.0])
-XDT_CHECK_PACKAGE([GTHREAD], [gthread-2.0], [2.4.0])
 XDT_CHECK_PACKAGE([THUNAR_VFS], [thunar-vfs-1], [0.4.0])
 XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.3.99])
 

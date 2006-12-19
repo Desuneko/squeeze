@@ -41,18 +41,6 @@
 #define LSQ_MIME_DIRECTORY "inode/directory"
 #endif
 
-#ifdef LSQ_THREADSAFE
-#define LSQ_ARCHIVE_READ_LOCK(lock)      g_static_rw_lock_reader_lock(lock)
-#define LSQ_ARCHIVE_READ_UNLOCK(lock)    g_static_rw_lock_reader_unlock(lock)
-#define LSQ_ARCHIVE_WRITE_LOCK(lock)     g_static_rw_lock_writer_lock(lock)
-#define LSQ_ARCHIVE_WRITE_UNLOCK(lock)   g_static_rw_lock_writer_unlock(lock)
-#else
-#define LSQ_ARCHIVE_READ_LOCK(lock)
-#define LSQ_ARCHIVE_READ_UNLOCK(lock)
-#define LSQ_ARCHIVE_WRITE_LOCK(lock)
-#define LSQ_ARCHIVE_WRITE_UNLOCK(lock)
-#endif
-
 struct _LSQEntry
 {
 	gchar *filename;
@@ -252,7 +240,6 @@ lsq_archive_new(gchar *path, const gchar *mime)
 void 
 lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	gchar **path = NULL;
 	gchar *_path = NULL;
 
@@ -262,20 +249,19 @@ lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 		{
 			archive->old_status = archive->status;
 			archive->status = status;
-			g_signal_emit(G_OBJECT(archive), lsq_archive_signals[0], 0, archive);
+			g_signal_emit(G_OBJECT(archive), lsq_archive_signals[0], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REFRESH) && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[1], 0, archive);
+				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[1], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REMOVE) && (archive->files))
 			{
 				path = g_strsplit(archive->files, " ", 2);
 				_path = g_path_get_dirname(path[0]);
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[2], 0, archive, _path);
+				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[2], 0, archive, _path, NULL);
 				g_strfreev(path);
 				g_free(_path);
 			}
 		} 
 	}
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 gint
@@ -292,7 +278,6 @@ lsq_stop_archive_child( LSQArchive *archive )
 LSQArchiveIter *
 lsq_archive_add_file(LSQArchive *archive, const gchar *path)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	guint i = 0;
 	gchar **path_items = g_strsplit_set(path, "/\n", -1);
 	LSQArchiveIter *parent = (LSQArchiveIter*)archive->root_entry;
@@ -316,7 +301,6 @@ lsq_archive_add_file(LSQArchive *archive, const gchar *path)
 		parent = child;
 		i++;
 	}
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 	return child;
 }
 
@@ -378,7 +362,6 @@ lsq_archive_get_property_names(LSQArchive *archive, guint size)
 GType
 lsq_archive_get_property_type(LSQArchive *archive, guint i)
 {
-	LSQ_ARCHIVE_READ_LOCK(&archive->rw_lock);
 #ifdef DEBUG /* n_property + 2, filename and MIME */
 	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), G_TYPE_INVALID);
 #endif
@@ -396,7 +379,6 @@ lsq_archive_get_property_type(LSQArchive *archive, guint i)
 			retval = archive->property_types[i - LSQ_ARCHIVE_PROP_USER];
 			break;
 	}
-	LSQ_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
 	return retval;
 }
 
@@ -408,7 +390,6 @@ lsq_archive_get_property_type(LSQArchive *archive, guint i)
 const gchar *
 lsq_archive_get_property_name(LSQArchive *archive, guint i)
 {
-	LSQ_ARCHIVE_READ_LOCK(&archive->rw_lock);
 
 #ifdef DEBUG /* n_property + 2, filename and MIME */
 	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), NULL);
@@ -429,7 +410,6 @@ lsq_archive_get_property_name(LSQArchive *archive, guint i)
 			break;
 	}
 
-	LSQ_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
 	return retval;
 }
 
@@ -441,7 +421,6 @@ lsq_archive_get_property_name(LSQArchive *archive, guint i)
 void
 lsq_archive_set_property_type(LSQArchive *archive, guint i, GType type, const gchar *name)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 
 #ifdef DEBUG
 	g_return_if_fail(i >= LSQ_ARCHIVE_PROP_USER);
@@ -454,7 +433,6 @@ lsq_archive_set_property_type(LSQArchive *archive, guint i, GType type, const gc
 	g_free(names_iter[i-LSQ_ARCHIVE_PROP_USER]);
 	names_iter[i-LSQ_ARCHIVE_PROP_USER] = g_strdup(name);
 
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /*
@@ -465,7 +443,6 @@ lsq_archive_set_property_type(LSQArchive *archive, guint i, GType type, const gc
 void
 lsq_archive_set_property_typesv(LSQArchive *archive, GType *types, const gchar **names)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	guint size = 0;
 	GType *type_iter = types;
 	const gchar **name_iter = names;
@@ -489,7 +466,6 @@ lsq_archive_set_property_typesv(LSQArchive *archive, GType *types, const gchar *
 		names_iter++;
 		name_iter++;
 	}
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 guint
@@ -501,7 +477,6 @@ lsq_archive_n_property(LSQArchive *archive)
 LSQArchiveIter *
 lsq_archive_get_iter(LSQArchive *archive, const gchar *path)
 {
-	LSQ_ARCHIVE_READ_LOCK(&archive->rw_lock);
 
 	if(!path)
 		return (LSQArchiveIter *)archive->root_entry;
@@ -531,7 +506,6 @@ lsq_archive_get_iter(LSQArchive *archive, const gchar *path)
 
 	g_strfreev(buf);
 
-	LSQ_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
 	return entry;
 }
 
@@ -925,7 +899,6 @@ lsq_archive_iter_set_mime(LSQArchive *archive, LSQArchiveIter *iter, LSQMimeInfo
 void
 lsq_archive_iter_set_prop_str(LSQArchive *archive, LSQArchiveIter *iter, guint i, const gchar *str_val)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 
 	gpointer props_iter = NULL;
 	guint n;
@@ -969,7 +942,6 @@ lsq_archive_iter_set_prop_str(LSQArchive *archive, LSQArchiveIter *iter, guint i
 			break;
 	}
 
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -981,7 +953,6 @@ void
 lsq_archive_iter_set_prop_uint(LSQArchive *archive, LSQArchiveIter *iter, guint i, guint int_val)
 {
 
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 #ifdef DEBUG
 	g_return_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER));
 	g_return_if_fail(i >= LSQ_ARCHIVE_PROP_USER);
@@ -1007,7 +978,6 @@ lsq_archive_iter_set_prop_uint(LSQArchive *archive, LSQArchiveIter *iter, guint 
 	}
 	(*((guint *)props_iter)) = int_val;
 
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -1018,7 +988,6 @@ lsq_archive_iter_set_prop_uint(LSQArchive *archive, LSQArchiveIter *iter, guint 
 void
 lsq_archive_iter_set_prop_uint64(LSQArchive *archive, LSQArchiveIter *iter, guint i, guint64 int64_val)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 
 #ifdef DEBUG
 	g_return_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER));
@@ -1045,7 +1014,6 @@ lsq_archive_iter_set_prop_uint64(LSQArchive *archive, LSQArchiveIter *iter, guin
 	}
 	(*((guint64 *)props_iter)) = int64_val;
 
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -1056,7 +1024,6 @@ lsq_archive_iter_set_prop_uint64(LSQArchive *archive, LSQArchiveIter *iter, guin
 void
 lsq_archive_iter_set_prop_value(LSQArchive *archive, LSQArchiveIter *iter, guint i, const GValue *value)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	switch(G_VALUE_TYPE(value))
 	{
 		case G_TYPE_STRING:
@@ -1069,7 +1036,6 @@ lsq_archive_iter_set_prop_value(LSQArchive *archive, LSQArchiveIter *iter, guint
 			lsq_archive_iter_set_prop_uint64(archive, iter, i, g_value_get_uint64(value));
 			break;
 	}
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 }
 
 /**
@@ -1081,7 +1047,6 @@ void
 lsq_archive_iter_set_props(LSQArchive *archive, LSQArchiveIter *iter, ...)
 {
 
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 
 	gpointer props_iter = lsq_archive_entry_get_props(archive, (LSQEntry *)iter);
 	guint i;
@@ -1107,7 +1072,6 @@ lsq_archive_iter_set_props(LSQArchive *archive, LSQArchiveIter *iter, ...)
 				break;
 		}
 	}
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 
 	va_end(ap);
 
@@ -1121,7 +1085,6 @@ lsq_archive_iter_set_props(LSQArchive *archive, LSQArchiveIter *iter, ...)
 void
 lsq_archive_iter_set_propsv(LSQArchive *archive, LSQArchiveIter *iter, gconstpointer *props)
 {
-	LSQ_ARCHIVE_WRITE_LOCK(&archive->rw_lock);
 	gpointer props_iter = lsq_archive_entry_get_props(archive, (LSQEntry *)iter);
 	guint i;
 
@@ -1143,7 +1106,6 @@ lsq_archive_iter_set_propsv(LSQArchive *archive, LSQArchiveIter *iter, gconstpoi
 				break;
 		}
 	}
-	LSQ_ARCHIVE_WRITE_UNLOCK(&archive->rw_lock);
 
 }
 
@@ -1155,7 +1117,6 @@ lsq_archive_iter_set_propsv(LSQArchive *archive, LSQArchiveIter *iter, gconstpoi
 gboolean
 lsq_archive_iter_get_prop_value(const LSQArchive *archive, const LSQArchiveIter *iter, guint i, GValue *value)
 {
-	LSQ_ARCHIVE_READ_LOCK(&archive->rw_lock);
 
 	if(i>=LSQ_ARCHIVE_PROP_USER)
 		g_value_init(value, archive->property_types[i-LSQ_ARCHIVE_PROP_USER]);
@@ -1175,7 +1136,6 @@ lsq_archive_iter_get_prop_value(const LSQArchive *archive, const LSQArchiveIter 
 			break;
 	}
 
-	LSQ_ARCHIVE_READ_UNLOCK(&archive->rw_lock);
 	return TRUE;
 }
 
@@ -1350,7 +1310,7 @@ lsq_archive_get_status_msg(LSQArchive *archive)
 			msg = N_("Performing an extended action");
 			break;
 		case LSQ_ARCHIVESTATUS_USERBREAK:
-			msg = "USer did stuff";
+			msg = "User did stuff";
 			break;
 		case LSQ_ARCHIVESTATUS_ERROR:
 			msg = "error";

@@ -273,8 +273,8 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " -cf ", archive->path,
-															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
-															" ", archive->files, NULL);
+															" --mode='", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
+															"' ", archive->files, NULL);
 			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " -Zcf ", archive->path,

@@ -594,7 +594,7 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		if(!lsq_new_archive(new_archive_path, TRUE, NULL, &archive))
 		{
 			support = lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info));
-			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support);
+			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, TRUE);
 		}
 		else
 		{
@@ -908,7 +908,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 	{
 		support = lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info));
 		if(replace < 0)
-			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support);
+			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, FALSE);
 		else
 			sq_notebook_page_set_archive(SQ_NOTEBOOK(window->notebook), archive, support, replace);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);

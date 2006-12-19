@@ -68,7 +68,7 @@ GtkWidget  *sq_notebook_new (SQNavigationBar *, gboolean , GtkAccelGroup *);
 GType       sq_notebook_get_type ();
 
 void        sq_notebook_set_navigation_bar(SQNotebook *, SQNavigationBar *);
-void        sq_notebook_add_archive(SQNotebook *, LSQArchive *, LSQArchiveSupport *);
+void        sq_notebook_add_archive(SQNotebook *, LSQArchive *, LSQArchiveSupport *, gboolean);
 void        sq_notebook_page_set_archive(SQNotebook *, LSQArchive *, LSQArchiveSupport *, gint n);
 void        sq_notebook_page_get_archive(SQNotebook *, LSQArchive **, LSQArchiveSupport **, gint n);
 void        sq_notebook_set_icon_theme(SQNotebook *, GtkIconTheme *);
