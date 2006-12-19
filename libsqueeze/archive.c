@@ -1320,3 +1320,45 @@ lsq_archive_get_old_status(LSQArchive *archive)
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), LSQ_ARCHIVESTATUS_ERROR);
 	return archive->old_status;
 }
+
+const gchar *
+lsq_archive_get_status_msg(LSQArchive *archive)
+{
+	const gchar *msg;
+	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "");
+	switch(archive->status)
+	{
+		case LSQ_ARCHIVESTATUS_INIT:
+			msg = N_("Initializing archive");
+			break;
+		case LSQ_ARCHIVESTATUS_REFRESH:
+			msg = N_("Refreshing archive contents");
+			break;
+		case LSQ_ARCHIVESTATUS_ADD:
+			msg = N_("Adding file(s) to archive");
+			break;
+		case LSQ_ARCHIVESTATUS_EXTRACT:
+			msg = N_("Extracting file(s) from archive");
+			break;
+		case LSQ_ARCHIVESTATUS_REMOVE:
+			msg = N_("Removing file(s) from archive");
+			break;
+		case LSQ_ARCHIVESTATUS_IDLE:
+			msg = "";
+			break;
+		case LSQ_ARCHIVESTATUS_CUSTOM:
+			msg = N_("Performing an extended action");
+			break;
+		case LSQ_ARCHIVESTATUS_USERBREAK:
+			msg = "USer did stuff";
+			break;
+		case LSQ_ARCHIVESTATUS_ERROR:
+			msg = "error";
+			break;
+		default: /* Why ?! */
+			g_debug("%u\n", archive->status);
+			msg = N_("Done");
+			break;
+	}
+	return msg;
+}

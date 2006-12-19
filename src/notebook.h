@@ -73,6 +73,7 @@ void        sq_notebook_page_set_archive(SQNotebook *, LSQArchive *, LSQArchiveS
 void        sq_notebook_page_get_archive(SQNotebook *, LSQArchive **, LSQArchiveSupport **, gint n);
 void        sq_notebook_set_icon_theme(SQNotebook *, GtkIconTheme *);
 void        sq_notebook_get_active_archive(SQNotebook *, LSQArchive **, LSQArchiveSupport **);
+gboolean    sq_notebook_is_active_archive(SQNotebook *, LSQArchive *);
 GtkWidget  *sq_notebook_get_active_child(SQNotebook *notebook);
 gboolean    sq_notebook_get_multi_tab(SQNotebook *notebook);
 void        sq_notebook_close_active_archive(SQNotebook *);

@@ -63,7 +63,7 @@ enum {
 	SQ_NOTEBOOK_MULTI_TAB = 1
 };
 
-static gint sq_notebook_signals[4];
+static gint sq_notebook_signals[5];
 
 GType
 sq_notebook_get_type ()
@@ -126,7 +126,14 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE, 0, NULL);
 
-	sq_notebook_signals[3] = g_signal_new("sq_file_activated",
+	sq_notebook_signals[3] = g_signal_new("file-activated",
+			G_TYPE_FROM_CLASS(notebook_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
+			NULL, NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
+
+	sq_notebook_signals[4] = g_signal_new("active-archive-status-changed",
 			G_TYPE_FROM_CLASS(notebook_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
@@ -137,9 +144,7 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 		"",
 		"",
 		TRUE,
-		G_PARAM_READWRITE);
-	g_object_class_install_property(object_class, SQ_NOTEBOOK_MULTI_TAB, pspec);
-
+		G_PARAM_READWRITE); g_object_class_install_property(object_class, SQ_NOTEBOOK_MULTI_TAB, pspec); 
 }
 
 static void
@@ -338,8 +343,9 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 				break;
 			default:break;
 		}
-
 	}
+	if(sq_notebook_is_active_archive(notebook, archive))
+		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[4], 0, archive, NULL);
 }
 
 static void
@@ -477,20 +483,29 @@ cb_notebook_file_activated(SQArchiveStore *store, gchar *filename, SQNotebook *n
 	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[3], 0, path, NULL);
 }
 
+gboolean
+sq_notebook_is_active_archive(SQNotebook *notebook, LSQArchive *archive)
+{
+	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+
+	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
+	if(!scrolledwindow)
+		return FALSE;
+	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
+	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+
+	LSQArchive * lp_archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
+	if(lp_archive == archive)
+		return TRUE;
+	return FALSE;
+}
 
 void
 sq_notebook_get_active_archive(SQNotebook *notebook, LSQArchive **lp_archive, LSQArchiveSupport **lp_support)
 {
 	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-
-	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
-	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
-	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
-
-	if(lp_archive)
-		(*lp_archive) = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
-	if(lp_support)
-		(*lp_support) = sq_archive_store_get_support(SQ_ARCHIVE_STORE(archive_store));
+		
+	sq_notebook_page_get_archive(notebook, lp_archive, lp_support, n);
 }
 
 GtkWidget *

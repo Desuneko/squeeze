@@ -92,6 +92,7 @@ static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
+static void cb_sq_main_properties(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_about(GtkWidget *widget, gpointer userdata);
@@ -102,6 +103,8 @@ static void
 cb_sq_main_window_notebook_page_removed(SQNotebook *, gpointer);
 static void
 cb_sq_main_window_notebook_file_activated(SQNotebook *, gchar *, gpointer);
+static void
+cb_sq_main_window_notebook_status_changed(SQNotebook *, LSQArchive *, gpointer);
 
 static void
 sq_main_window_set_navigation(SQMainWindow *window);
@@ -281,6 +284,7 @@ sq_main_window_init(SQMainWindow *window)
 
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_new), "activate", G_CALLBACK(cb_sq_main_new_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_open), "activate", G_CALLBACK(cb_sq_main_open_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_properties), "activate", G_CALLBACK(cb_sq_main_properties), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_close), "activate", G_CALLBACK(cb_sq_main_close_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_quit), "activate", G_CALLBACK(cb_sq_main_close_window), window);
 		/* Action menu: ref all the childs*/
@@ -426,7 +430,8 @@ sq_main_window_init(SQMainWindow *window)
 	window->notebook = sq_notebook_new(window->navigationbar, use_tabs, window->accel_group);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_sq_main_window_notebook_page_switched), window);
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_sq_main_window_notebook_page_removed), window);
-	g_signal_connect(G_OBJECT(window->notebook), "sq_file_activated", G_CALLBACK(cb_sq_main_window_notebook_file_activated), window);
+	g_signal_connect(G_OBJECT(window->notebook), "file-activated", G_CALLBACK(cb_sq_main_window_notebook_file_activated), window);
+	g_signal_connect(G_OBJECT(window->notebook), "active-archive-status-changed", G_CALLBACK(cb_sq_main_window_notebook_status_changed), window);
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
@@ -742,7 +747,16 @@ cb_sq_main_close_window(GtkWidget *widget, gpointer userdata)
 static void
 cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
+
 }
+
+static void 
+cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
+{
+
+}
+
+
 
 static void
 cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
@@ -755,7 +769,7 @@ cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 static void
 cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 {
-	const gchar *authors[] = {"Stephan Arts <stephan@xfce.org>","Peter de Ridder <peter@xfce.org>", NULL};
+	const gchar *authors[] = {"Stephan Arts <stephan@xfce.org>","Peter de Ridder <peter@xfce.org>", "Based on Xarchiver, written by Giuseppe Torelli", NULL};
 	GtkWidget *about_dialog = gtk_about_dialog_new();
 
 	gtk_about_dialog_set_name((GtkAboutDialog *)about_dialog, PACKAGE_NAME);
@@ -810,6 +824,9 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lsq_archive_get_filename(lp_archive), NULL));
 
 	sq_main_window_new_action_menu(window, lp_support, lp_archive);
+
+	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
+	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status_msg(lp_archive));
 }
 
 static void
@@ -950,4 +967,13 @@ sq_main_window_set_navigation(SQMainWindow *window)
 		gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, 2);
 		gtk_widget_show_all((GtkWidget *)nav_bar);
 	}	
+}
+
+static void
+cb_sq_main_window_notebook_status_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
+{
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+
+	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
+	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status_msg(archive));
 }

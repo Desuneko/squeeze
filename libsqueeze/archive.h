@@ -103,6 +103,7 @@ LSQArchive         *lsq_archive_new(gchar *, const gchar *);
 
 void                lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status);
 LSQArchiveStatus    lsq_archive_get_status(LSQArchive *archive);
+const gchar *       lsq_archive_get_status_msg(LSQArchive *archive);
 LSQArchiveStatus    lsq_archive_get_old_status(LSQArchive *archive);
 const gchar *       lsq_archive_get_filename(LSQArchive *archive);
 
