@@ -1284,7 +1284,7 @@ lsq_archive_get_old_status(LSQArchive *archive)
 const gchar *
 lsq_archive_get_status_msg(LSQArchive *archive)
 {
-	const gchar *msg;
+	const gchar *msg = NULL;
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "");
 	switch(archive->status)
 	{
@@ -1304,20 +1304,16 @@ lsq_archive_get_status_msg(LSQArchive *archive)
 			msg = N_("Removing file(s) from archive");
 			break;
 		case LSQ_ARCHIVESTATUS_IDLE:
-			msg = "";
+			msg = N_("Done");
 			break;
 		case LSQ_ARCHIVESTATUS_CUSTOM:
 			msg = N_("Performing an extended action");
 			break;
 		case LSQ_ARCHIVESTATUS_USERBREAK:
-			msg = "User did stuff";
+			msg = N_("Cancelled");
 			break;
 		case LSQ_ARCHIVESTATUS_ERROR:
-			msg = "error";
-			break;
-		default: /* Why ?! */
-			g_debug("%u\n", archive->status);
-			msg = N_("Done");
+			msg = N_("Error");
 			break;
 	}
 	return msg;
