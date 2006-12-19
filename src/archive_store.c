@@ -59,9 +59,9 @@ enum {
 	SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED = 0,
 	SQ_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE,
 	SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED,
-	SQ_ARCHIVE_STORE_SIGNAL_NUMBER
+	SQ_ARCHIVE_STORE_SIGNAL_COUNT
 };
-static gint sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_NUMBER];
+static gint sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_COUNT];
 
 static void
 sq_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);

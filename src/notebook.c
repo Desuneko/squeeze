@@ -63,7 +63,17 @@ enum {
 	SQ_NOTEBOOK_MULTI_TAB = 1
 };
 
-static gint sq_notebook_signals[5];
+enum
+{
+	SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED = 0,
+	SQ_NOTEBOOK_SIGNAL_PAGE_UP,
+	SQ_NOTEBOOK_SIGNAL_PAGE_DOWN,
+	SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED,
+	SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED,
+	SQ_NOTEBOOK_SIGNAL_COUNT
+};
+
+static gint sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_COUNT];
 
 GType
 sq_notebook_get_type ()
@@ -101,7 +111,7 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 	object_class->get_property = sq_notebook_get_property;
 	object_class->finalize     = sq_notebook_finalize;
 
-	sq_notebook_signals[0] = g_signal_new("archive-removed",
+	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED] = g_signal_new("archive-removed",
 			G_TYPE_FROM_CLASS(notebook_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -112,28 +122,28 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 			0,
 			NULL);
 
-	sq_notebook_signals[1] = g_signal_new("page-up",
+	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_PAGE_UP] = g_signal_new("page-up",
 			G_TYPE_FROM_CLASS(notebook_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
 			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE, 0, NULL);
 
-	sq_notebook_signals[2] = g_signal_new("page-down",
+	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_PAGE_DOWN] = g_signal_new("page-down",
 			G_TYPE_FROM_CLASS(notebook_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
 			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE, 0, NULL);
 
-	sq_notebook_signals[3] = g_signal_new("file-activated",
+	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED] = g_signal_new("file-activated",
 			G_TYPE_FROM_CLASS(notebook_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
 			g_cclosure_marshal_VOID__POINTER,
 			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
 
-	sq_notebook_signals[4] = g_signal_new("active-archive-status-changed",
+	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED] = g_signal_new("active-archive-status-changed",
 			G_TYPE_FROM_CLASS(notebook_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
@@ -344,7 +354,7 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 		}
 	}
 	if(sq_notebook_is_active_archive(notebook, archive))
-		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[4], 0, archive, NULL);
+		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED], 0, archive, NULL);
 }
 
 static void
@@ -367,7 +377,7 @@ cb_notebook_close_archive(GtkButton *button, GtkWidget *child)
 
 	gint n = gtk_notebook_page_num(notebook, child);
 	gtk_notebook_remove_page(notebook, n);
-	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[0], 0, NULL);
+	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED], 0, NULL);
 }
 
 void
@@ -376,7 +386,7 @@ sq_notebook_close_active_archive(SQNotebook *notebook)
 	GtkNotebook *_notebook = GTK_NOTEBOOK(notebook);
 	gint n = gtk_notebook_get_current_page(_notebook);
 	gtk_notebook_remove_page(_notebook, n);
-	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[0], 0, NULL);
+	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED], 0, NULL);
 }
 
 void
@@ -479,7 +489,7 @@ cb_notebook_file_activated(SQArchiveStore *store, gchar *filename, SQNotebook *n
 {
 	gchar *pwd = sq_archive_store_get_pwd(store);
 	gchar *path = g_strconcat(pwd, filename, NULL);
-	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[3], 0, path, NULL);
+	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, path, NULL);
 }
 
 gboolean

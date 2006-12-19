@@ -105,7 +105,15 @@ lsq_archive_sort_entry_buffer(LSQEntry *entry1, LSQEntry *entry2)
 	return strcmp(entry1->filename, entry2->filename);
 }
 
-static gint lsq_archive_signals[3];
+enum
+{
+	LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED = 0,
+	LSQ_ARCHIVE_SIGNAL_REFRESHED,
+	LSQ_ARCHIVE_SIGNAL_PATH_CHANGED,
+	LSQ_ARCHIVE_SIGNAL_COUNT
+};
+
+static gint lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COUNT];
 
 GType
 lsq_archive_get_type ()
@@ -140,7 +148,7 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 
 	object_class->finalize = lsq_archive_finalize;
 	
-	lsq_archive_signals[0] = g_signal_new("lsq_status_changed",
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED] = g_signal_new("lsq_status_changed",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -151,7 +159,7 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			0,
 			NULL);
 
-	lsq_archive_signals[1] = g_signal_new("lsq_refreshed",
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED] = g_signal_new("lsq_refreshed",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -162,7 +170,7 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			0,
 			NULL);
 
-	lsq_archive_signals[2] = g_signal_new("lsq_path_changed",
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED] = g_signal_new("lsq_path_changed",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -249,14 +257,14 @@ lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 		{
 			archive->old_status = archive->status;
 			archive->status = status;
-			g_signal_emit(G_OBJECT(archive), lsq_archive_signals[0], 0, NULL);
+			g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REFRESH) && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[1], 0, NULL);
+				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REMOVE) && (archive->files))
 			{
 				path = g_strsplit(archive->files, " ", 2);
 				_path = g_path_get_dirname(path[0]);
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[2], 0, archive, _path, NULL);
+				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED], 0, _path, NULL);
 				g_strfreev(path);
 				g_free(_path);
 			}
