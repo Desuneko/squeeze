@@ -1292,8 +1292,9 @@ lsq_archive_get_old_status(LSQArchive *archive)
 const gchar *
 lsq_archive_get_status_msg(LSQArchive *archive)
 {
-	const gchar *msg = NULL;
+	const gchar *msg = "";
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "");
+
 	switch(archive->status)
 	{
 		case LSQ_ARCHIVESTATUS_INIT:

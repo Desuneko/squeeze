@@ -148,7 +148,7 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
 			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
+			G_TYPE_NONE, 1, G_TYPE_OBJECT, NULL);
 
 	pspec = g_param_spec_boolean("multi_tab",
 		"",
