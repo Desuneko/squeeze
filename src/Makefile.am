@@ -24,6 +24,7 @@ squeeze_SOURCES = \
 	settings.c settings.h \
 	archive_store.c archive_store.h \
 	preferences_dialog.c preferences_dialog.h \
+	properties_dialog.c properties_dialog.h \
 	new_dialog.c new_dialog.h \
 	add_dialog.c add_dialog.h \
 	extract_dialog.c extract_dialog.h \

@@ -62,6 +62,7 @@
 #include "extract_dialog.h"
 #include "add_dialog.h"
 #include "preferences_dialog.h"
+#include "properties_dialog.h"
 
 #include "main.h"
 
@@ -216,8 +217,8 @@ sq_main_window_finalize(GObject *object)
 
 	sq_settings_save(window->settings);
 
-	if(window->navigationbar)
-		gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
+	//if(window->navigationbar)
+	//	gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
 
 	g_object_unref(G_OBJECT(window->app));
 }
@@ -753,7 +754,14 @@ cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 static void 
 cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
 {
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	LSQArchive *lp_archive = NULL;
 
+	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, NULL);
+
+	GtkWidget *dialog = sq_properties_dialog_new(lp_archive);
+
+	gtk_dialog_run(GTK_DIALOG(dialog));
 }
 
 
@@ -763,13 +771,13 @@ cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = sq_preferences_dialog_new();
 
-	gtk_widget_show_all(dialog);
+	gtk_dialog_run(GTK_DIALOG(dialog));
 }
 
 static void
 cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 {
-	const gchar *authors[] = {"Stephan Arts <stephan@xfce.org>","Peter de Ridder <peter@xfce.org>", "Based on Xarchiver, written by Giuseppe Torelli", NULL};
+	const gchar *authors[] = {"Lead developer:", "Stephan Arts <stephan@xfce.org>","Contributor:","Peter de Ridder <peter@xfce.org>", "", "Based on Xarchiver, written by Giuseppe Torelli", NULL};
 	GtkWidget *about_dialog = gtk_about_dialog_new();
 
 	gtk_about_dialog_set_name((GtkAboutDialog *)about_dialog, PACKAGE_NAME);
