@@ -53,6 +53,8 @@ Long Version:
 
 	Check to see if the [<] and [>] of the pathbar needs point in the other direction when TEXT_DIR_RTL is set
 
+    temporary files abstract
+    
   ... Complete TODO-file
 
 BUGS:
@@ -76,4 +78,3 @@ DONE:
 	Toggle navigationbar at runtime - DONE
 	
 	Save trailing folders for path_bar - DONE
-
