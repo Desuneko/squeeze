@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2006-12-19 13:41+0100\n"
+"POT-Creation-Date: 2006-12-26 00:53+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,47 +16,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:403
+#: ../libsqueeze/archive.c:411
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: ../libsqueeze/archive.c:406
+#: ../libsqueeze/archive.c:414
 msgid "Mime type"
 msgstr "Mime type"
 
-#: ../libsqueeze/archive.c:1292
+#: ../libsqueeze/archive.c:1301
 msgid "Initializing archive"
 msgstr "Archief initialiseren"
 
-#: ../libsqueeze/archive.c:1295
+#: ../libsqueeze/archive.c:1304
 msgid "Refreshing archive contents"
 msgstr "Inhoud van archief vernieuwen"
 
-#: ../libsqueeze/archive.c:1298
+#: ../libsqueeze/archive.c:1307
 msgid "Adding file(s) to archive"
 msgstr "Bestand(en) aan het toevoegen aan archief"
 
-#: ../libsqueeze/archive.c:1301
+#: ../libsqueeze/archive.c:1310
 msgid "Extracting file(s) from archive"
 msgstr "Bestand(en) uitpakken uit archief"
 
-#: ../libsqueeze/archive.c:1304
+#: ../libsqueeze/archive.c:1313
 msgid "Removing file(s) from archive"
 msgstr "Bestand(en) verwijderen uit archief"
 
-#: ../libsqueeze/archive.c:1307
+#: ../libsqueeze/archive.c:1316
 msgid "Done"
 msgstr "Klaar"
 
-#: ../libsqueeze/archive.c:1310
+#: ../libsqueeze/archive.c:1319
 msgid "Performing an extended action"
 msgstr "Uitgebreide actie uitvoeren"
 
-#: ../libsqueeze/archive.c:1313
+#: ../libsqueeze/archive.c:1322
 msgid "Cancelled"
 msgstr "Geannulleerd"
 
-#: ../libsqueeze/archive.c:1316
+#: ../libsqueeze/archive.c:1325
 msgid "Error"
 msgstr "Fout"
 
@@ -230,23 +230,23 @@ msgstr ""
 "%s: %s\n"
 "Probeer %s --help voor een volledige lijst van mogelijke opties.\n"
 
-#: ../src/main_window.c:120
+#: ../src/main_window.c:121
 msgid "Internal Style"
 msgstr "Interne Stijl"
 
-#: ../src/main_window.c:122
+#: ../src/main_window.c:123
 msgid "Tool Bar Style"
 msgstr "Werkbalk Stijl"
 
-#: ../src/main_window.c:125
+#: ../src/main_window.c:126
 msgid "Path Bar Style"
 msgstr "Padbalk Stijl"
 
-#: ../src/main_window.c:173
+#: ../src/main_window.c:174
 msgid "Navigation Style"
 msgstr "Navigatie Stijl"
 
-#: ../src/main_window.c:174
+#: ../src/main_window.c:175
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -255,47 +255,47 @@ msgstr ""
 "De stijl om te navigeren door het archief"
 
 #. File menu
-#: ../src/main_window.c:259
+#: ../src/main_window.c:260
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:291
+#: ../src/main_window.c:292
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:296
+#: ../src/main_window.c:297
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:302
+#: ../src/main_window.c:303
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:316
+#: ../src/main_window.c:317
 msgid "_View"
 msgstr "B_eeld"
 
 #. Help menu
-#: ../src/main_window.c:338
+#: ../src/main_window.c:339
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window.c:369
+#: ../src/main_window.c:370
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:373 ../src/main_window.c:861
+#: ../src/main_window.c:374 ../src/main_window.c:869
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:617
+#: ../src/main_window.c:618
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:777
+#: ../src/main_window.c:785
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -303,23 +303,23 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:783
+#: ../src/main_window.c:791
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:860
+#: ../src/main_window.c:868
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:861
+#: ../src/main_window.c:869
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:924
+#: ../src/main_window.c:932
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:925
+#: ../src/main_window.c:933
 #, c-format
 msgid ""
 "'%s'\n"
@@ -410,12 +410,12 @@ msgstr "Spatiering"
 msgid "The amount of space between the path buttons"
 msgstr "De ruimte tussen de pad knoppen"
 
-#: ../src/notebook.c:325
+#: ../src/notebook.c:335
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr "Kan archief '%s' niet openen."
 
-#: ../src/notebook.c:328
+#: ../src/notebook.c:338
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Het uitpakken van de inhoud van archief '%s' is mislukt."

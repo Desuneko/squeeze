@@ -61,10 +61,10 @@ static void
 lsq_archive_finalize(GObject *object);
 
 static GType *
-lsq_archive_get_property_types(LSQArchive *archive, guint size);
+lsq_archive_get_entry_property_types(LSQArchive *archive, guint size);
 
 static gchar **
-lsq_archive_get_property_names(LSQArchive *archive, guint size);
+lsq_archive_get_entry_property_names(LSQArchive *archive, guint size);
 
 static LSQEntry *
 lsq_entry_new(LSQArchive *, const gchar *);
@@ -313,65 +313,65 @@ lsq_archive_add_file(LSQArchive *archive, const gchar *path)
 }
 
 static GType *
-lsq_archive_get_property_types(LSQArchive *archive, guint size)
+lsq_archive_get_entry_property_types(LSQArchive *archive, guint size)
 {
 	GType *new_props;
 	gchar **new_names;
 	guint i;
 
-	if(archive->n_property < size)
+	if(archive->entry_n_property < size)
 	{
 		new_props = g_new0(GType, size);
 		new_names = g_new0(gchar*, size);
-		for(i = 0; i < archive->n_property; ++i)
+		for(i = 0; i < archive->entry_n_property; ++i)
 		{
-			new_props[i] = archive->property_types[i];
-			new_names[i] = archive->property_names[i];
+			new_props[i] = archive->entry_property_types[i];
+			new_names[i] = archive->entry_property_names[i];
 		}
-		g_free(archive->property_types);
-		g_free(archive->property_names);
-		archive->property_types = new_props;
-		archive->property_names = new_names;
-		archive->n_property = size;
+		g_free(archive->entry_property_types);
+		g_free(archive->entry_property_names);
+		archive->entry_property_types = new_props;
+		archive->entry_property_names = new_names;
+		archive->entry_n_property = size;
 	}
-	return archive->property_types;
+	return archive->entry_property_types;
 }
 
 static gchar **
-lsq_archive_get_property_names(LSQArchive *archive, guint size)
+lsq_archive_get_entry_property_names(LSQArchive *archive, guint size)
 {
 	GType *new_types;
 	gchar **new_names;
 	guint i;
 
-	if(archive->n_property < size)
+	if(archive->entry_n_property < size)
 	{
 		new_types = g_new0(GType, size);
 		new_names = g_new0(gchar*, size);
-		for(i = 0; i < archive->n_property; ++i)
+		for(i = 0; i < archive->entry_n_property; ++i)
 		{
-			new_types[i] = archive->property_types[i];
-			new_names[i] = archive->property_names[i];
+			new_types[i] = archive->entry_property_types[i];
+			new_names[i] = archive->entry_property_names[i];
 		}
-		g_free(archive->property_types);
-		g_free(archive->property_names);
-		archive->property_types = new_types;
-		archive->property_names = new_names;
-		archive->n_property = size;
+		g_free(archive->entry_property_types);
+		g_free(archive->entry_property_names);
+		archive->entry_property_types = new_types;
+		archive->entry_property_names = new_names;
+		archive->entry_n_property = size;
 	}
-	return archive->property_names;
+	return archive->entry_property_names;
 }
 
 /*
  * GType
- * lsq_archive_get_property_type(LSQArchive *archive, guint i)
+ * lsq_archive_get_entry_property_type(LSQArchive *archive, guint i)
  *
  */
 GType
-lsq_archive_get_property_type(LSQArchive *archive, guint i)
+lsq_archive_get_entry_property_type(LSQArchive *archive, guint i)
 {
 #ifdef DEBUG /* n_property + 2, filename and MIME */
-	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), G_TYPE_INVALID);
+	g_return_val_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER), G_TYPE_INVALID);
 #endif
 
 	GType retval = G_TYPE_INVALID;
@@ -384,7 +384,7 @@ lsq_archive_get_property_type(LSQArchive *archive, guint i)
 			retval = G_TYPE_STRING;
 			break;
 		default:
-			retval = archive->property_types[i - LSQ_ARCHIVE_PROP_USER];
+			retval = archive->entry_property_types[i - LSQ_ARCHIVE_PROP_USER];
 			break;
 	}
 	return retval;
@@ -392,15 +392,15 @@ lsq_archive_get_property_type(LSQArchive *archive, guint i)
 
 /*
  * const gchar *
- * lsq_archive_get_property_name(LSQArchive *, guint)
+ * lsq_archive_get_entry_property_name(LSQArchive *, guint)
  *
  */
 const gchar *
-lsq_archive_get_property_name(LSQArchive *archive, guint i)
+lsq_archive_get_entry_property_name(LSQArchive *archive, guint i)
 {
 
 #ifdef DEBUG /* n_property + 2, filename and MIME */
-	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), NULL);
+	g_return_val_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER), NULL);
 #endif
 	
 	const gchar *retval = NULL;
@@ -414,7 +414,7 @@ lsq_archive_get_property_name(LSQArchive *archive, guint i)
 			retval = _("Mime type");
 			break;
 		default:
-			retval = archive->property_names[i - LSQ_ARCHIVE_PROP_USER];
+			retval = archive->entry_property_names[i - LSQ_ARCHIVE_PROP_USER];
 			break;
 	}
 
@@ -434,8 +434,8 @@ lsq_archive_set_property_type(LSQArchive *archive, guint i, GType type, const gc
 	g_return_if_fail(i >= LSQ_ARCHIVE_PROP_USER);
 #endif
 
-	GType *types_iter = lsq_archive_get_property_types(archive, i+1-LSQ_ARCHIVE_PROP_USER);
-	gchar **names_iter = lsq_archive_get_property_names(archive, i+1-LSQ_ARCHIVE_PROP_USER);
+	GType *types_iter = lsq_archive_get_entry_property_types(archive, i+1-LSQ_ARCHIVE_PROP_USER);
+	gchar **names_iter = lsq_archive_get_entry_property_names(archive, i+1-LSQ_ARCHIVE_PROP_USER);
 
 	types_iter[i-LSQ_ARCHIVE_PROP_USER] = type;
 	g_free(names_iter[i-LSQ_ARCHIVE_PROP_USER]);
@@ -460,8 +460,8 @@ lsq_archive_set_property_typesv(LSQArchive *archive, GType *types, const gchar *
 		type_iter++;
 		name_iter++;
 	}
-	GType *types_iter = lsq_archive_get_property_types(archive, size);
-	gchar **names_iter = lsq_archive_get_property_names(archive, size);
+	GType *types_iter = lsq_archive_get_entry_property_types(archive, size);
+	gchar **names_iter = lsq_archive_get_entry_property_names(archive, size);
 	type_iter = types;
 	name_iter = names;
 	while(type_iter && name_iter)
@@ -479,7 +479,7 @@ lsq_archive_set_property_typesv(LSQArchive *archive, GType *types, const gchar *
 guint
 lsq_archive_n_property(LSQArchive *archive)
 {
-	return archive->n_property + LSQ_ARCHIVE_PROP_USER;
+	return archive->entry_n_property + LSQ_ARCHIVE_PROP_USER;
 }
 
 LSQArchiveIter *
@@ -569,9 +569,9 @@ lsq_archive_entry_free(LSQArchive *archive, LSQEntry *entry)
 
 	if(props_iter)
 	{
-		for(i=0; i<archive->n_property; ++i)
+		for(i=0; i<archive->entry_n_property; ++i)
 		{
-			switch(archive->property_types[i])
+			switch(archive->entry_property_types[i])
 			{
 				case(G_TYPE_STRING):
 					g_free(*(gchar **)props_iter);
@@ -745,9 +745,9 @@ lsq_archive_entry_get_props(LSQArchive *archive, LSQEntry *entry)
 
 	if(!entry->props)
 	{
-		for(i = 0; i < archive->n_property; ++i)
+		for(i = 0; i < archive->entry_n_property; ++i)
 		{
-			switch(archive->property_types[i])
+			switch(archive->entry_property_types[i])
 			{
 				case G_TYPE_STRING:
 					size += sizeof(gchar *);
@@ -911,9 +911,9 @@ lsq_archive_iter_set_prop_str(LSQArchive *archive, LSQArchiveIter *iter, guint i
 	gpointer props_iter = NULL;
 	guint n;
 #ifdef DEBUG
-	g_return_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER));
+	g_return_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER));
 	if(i >= LSQ_ARCHIVE_PROP_USER)
-		g_return_if_fail(archive->property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_STRING);
+		g_return_if_fail(archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_STRING);
 #endif
 
 	switch(i)
@@ -932,7 +932,7 @@ lsq_archive_iter_set_prop_str(LSQArchive *archive, LSQArchiveIter *iter, guint i
 			props_iter = lsq_archive_entry_get_props(archive, (LSQEntry *)iter);
 			for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
 			{
-				switch(archive->property_types[n])
+				switch(archive->entry_property_types[n])
 				{
 					case G_TYPE_STRING:
 						props_iter += sizeof(gchar *);
@@ -962,16 +962,16 @@ lsq_archive_iter_set_prop_uint(LSQArchive *archive, LSQArchiveIter *iter, guint 
 {
 
 #ifdef DEBUG
-	g_return_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER));
+	g_return_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER));
 	g_return_if_fail(i >= LSQ_ARCHIVE_PROP_USER);
-	g_return_if_fail(archive->property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT);
+	g_return_if_fail(archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT);
 #endif /* DEBUG */
 	gpointer props_iter = lsq_archive_entry_get_props(archive, (LSQEntry *)iter);
 	guint n;
 
 	for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
 	{
-		switch(archive->property_types[n])
+		switch(archive->entry_property_types[n])
 		{
 			case G_TYPE_STRING:
 				props_iter += sizeof(gchar *);
@@ -998,16 +998,16 @@ lsq_archive_iter_set_prop_uint64(LSQArchive *archive, LSQArchiveIter *iter, guin
 {
 
 #ifdef DEBUG
-	g_return_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER));
+	g_return_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER));
 	g_return_if_fail(i >= LSQ_ARCHIVE_PROP_USER);
-	g_return_if_fail(archive->property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT64);
+	g_return_if_fail(archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT64);
 #endif /* DEBUG */
 	gpointer props_iter = lsq_archive_entry_get_props(archive, (LSQEntry *)iter);
 	guint n;
 
 	for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
 	{
-		switch(archive->property_types[n])
+		switch(archive->entry_property_types[n])
 		{
 			case G_TYPE_STRING:
 				props_iter += sizeof(gchar *);
@@ -1062,9 +1062,9 @@ lsq_archive_iter_set_props(LSQArchive *archive, LSQArchiveIter *iter, ...)
 
 	va_start(ap, iter);
 
-	for(i = 0; i < archive->n_property; ++i)
+	for(i = 0; i < archive->entry_n_property; ++i)
 	{
-		switch(archive->property_types[i])
+		switch(archive->entry_property_types[i])
 		{
 			case G_TYPE_STRING:
 				(*((gchar **)props_iter)) = g_strdup(va_arg(ap, gchar*));
@@ -1096,9 +1096,9 @@ lsq_archive_iter_set_propsv(LSQArchive *archive, LSQArchiveIter *iter, gconstpoi
 	gpointer props_iter = lsq_archive_entry_get_props(archive, (LSQEntry *)iter);
 	guint i;
 
-	for(i = 0; i < archive->n_property; ++i)
+	for(i = 0; i < archive->entry_n_property; ++i)
 	{
-		switch(archive->property_types[i])
+		switch(archive->entry_property_types[i])
 		{
 			case G_TYPE_STRING:
 				(*((gchar **)props_iter)) = g_strdup((const gchar*)props[i]);
@@ -1127,7 +1127,7 @@ lsq_archive_iter_get_prop_value(const LSQArchive *archive, const LSQArchiveIter 
 {
 
 	if(i>=LSQ_ARCHIVE_PROP_USER)
-		g_value_init(value, archive->property_types[i-LSQ_ARCHIVE_PROP_USER]);
+		g_value_init(value, archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER]);
 	else
 		g_value_init(value, G_TYPE_STRING);
 
@@ -1159,9 +1159,9 @@ lsq_archive_iter_get_prop_str(const LSQArchive *archive, const LSQArchiveIter *i
 	gpointer props_iter = NULL;
 	guint n;
 #ifdef DEBUG
-	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), NULL);
+	g_return_val_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER), NULL);
 	if(i >= LSQ_ARCHIVE_PROP_USER)
-		g_return_val_if_fail(archive->property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_STRING, NULL);
+		g_return_val_if_fail(archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_STRING, NULL);
 #endif
 
 	switch(i)
@@ -1178,7 +1178,7 @@ lsq_archive_iter_get_prop_str(const LSQArchive *archive, const LSQArchiveIter *i
 			{
 				for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
 				{
-					switch(archive->property_types[n])
+					switch(archive->entry_property_types[n])
 					{
 						case G_TYPE_STRING:
 							props_iter += sizeof(gchar *);
@@ -1209,15 +1209,15 @@ lsq_archive_iter_get_prop_uint(const LSQArchive *archive, const LSQArchiveIter *
 	gpointer props_iter = ((LSQEntry *)iter)->props;
 	guint n;
 #ifdef DEBUG
-	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), 0);
+	g_return_val_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER), 0);
 	g_return_val_if_fail(i >= LSQ_ARCHIVE_PROP_USER, 0);
-	g_return_val_if_fail(archive->property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT, 0);
+	g_return_val_if_fail(archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT, 0);
 #endif
 	if(!props_iter)
 		return 0;
 	for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
 	{
-		switch(archive->property_types[n])
+		switch(archive->entry_property_types[n])
 		{
 			case G_TYPE_STRING:
 				props_iter += sizeof(gchar *);
@@ -1244,15 +1244,15 @@ lsq_archive_iter_get_prop_uint64(const LSQArchive *archive, const LSQArchiveIter
 	gpointer props_iter = ((LSQEntry *)iter)->props;
 	guint n;
 #ifdef DEBUG
-	g_return_val_if_fail(i < (archive->n_property+LSQ_ARCHIVE_PROP_USER), 0);
+	g_return_val_if_fail(i < (archive->entry_n_property+LSQ_ARCHIVE_PROP_USER), 0);
 	g_return_val_if_fail(i >= LSQ_ARCHIVE_PROP_USER, 0);
-	g_return_val_if_fail(archive->property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT64, 0);
+	g_return_val_if_fail(archive->entry_property_types[i-LSQ_ARCHIVE_PROP_USER] == G_TYPE_UINT64, 0);
 #endif
 	if(!props_iter)
 		return 0;
 	for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
 	{
-		switch(archive->property_types[n])
+		switch(archive->entry_property_types[n])
 		{
 			case G_TYPE_STRING:
 				props_iter += sizeof(gchar *);

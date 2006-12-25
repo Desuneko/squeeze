@@ -436,19 +436,19 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	gtk_tree_view_column_set_sort_column_id(column, LSQ_ARCHIVE_PROP_FILENAME + 1);
-	gtk_tree_view_column_set_title(column, lsq_archive_get_property_name(archive, LSQ_ARCHIVE_PROP_FILENAME));
+	gtk_tree_view_column_set_title(column, lsq_archive_get_entry_property_name(archive, LSQ_ARCHIVE_PROP_FILENAME));
 	gtk_tree_view_append_column(treeview, column);
 
 	if(!show_only_filenames)
 	{
 		for(x = LSQ_ARCHIVE_PROP_USER; x < lsq_archive_n_property(archive); ++x)
 		{
-			switch(lsq_archive_get_property_type(archive, x))
+			switch(lsq_archive_get_entry_property_type(archive, x))
 			{
 				case(G_TYPE_STRING):
 				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(lsq_archive_get_property_name(archive, x), renderer, "text", x+1, NULL);
+					column = gtk_tree_view_column_new_with_attributes(lsq_archive_get_entry_property_name(archive, x), renderer, "text", x+1, NULL);
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);

@@ -410,7 +410,7 @@ sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 			return G_TYPE_STRING;
 	}
 
-	return lsq_archive_get_property_type(archive, index);
+	return lsq_archive_get_entry_property_type(archive, index);
 }
 
 static gboolean
@@ -535,7 +535,7 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 				g_value_set_string(value, "..");
 				break;
 			default:
-				g_value_init(value, lsq_archive_get_property_type(archive, column));
+				g_value_init(value, lsq_archive_get_entry_property_type(archive, column));
 				break;
 		}
 	}
@@ -815,7 +815,7 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 	lsq_archive_iter_get_prop_value(archive, a, column, &prop_a);
 	lsq_archive_iter_get_prop_value(archive, b, column, &prop_b);
 
-	switch(lsq_archive_get_property_type(archive, column))
+	switch(lsq_archive_get_entry_property_type(archive, column))
 	{
 		case G_TYPE_STRING:
 			switch(store->props._sort_case_sensitive)

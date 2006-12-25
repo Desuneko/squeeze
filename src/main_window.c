@@ -762,6 +762,7 @@ cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = sq_properties_dialog_new(lp_archive);
 
 	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy(dialog);
 }
 
 

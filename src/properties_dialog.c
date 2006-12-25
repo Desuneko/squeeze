@@ -22,12 +22,7 @@
 #include <libsqueeze/libsqueeze.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#ifdef HAVE_THUNAR_VFS
-#define EXO_API_SUBJECT_TO_CHANGE
-#include <thunar-vfs/thunar-vfs.h>
-#else
 #include <gettext.h>
-#endif
 
 #include "properties_dialog.h"
 
@@ -71,6 +66,12 @@ sq_properties_dialog_class_init(SQPropertiesDialogClass *dialog_class)
 static void
 sq_properties_dialog_init(SQPropertiesDialog *dialog)
 {
+	GtkWidget *tree_view = gtk_tree_view_new();
+
+	gtk_container_add(GTK_CONTAINER(((GtkDialog *)dialog)->vbox), tree_view);
+	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
+	    GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
+			NULL);
 }
 
 GtkWidget *
@@ -81,6 +82,8 @@ sq_properties_dialog_new(LSQArchive *archive)
 	dialog = g_object_new(sq_properties_dialog_get_type(),
 			"title", _("Properties"),
 			NULL);
+
+	gtk_widget_set_size_request(GTK_WIDGET(dialog), 100, 200);
 
 	return dialog;
 }
