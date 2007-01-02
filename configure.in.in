@@ -122,8 +122,9 @@ XDT_CHECK_PACKAGE([GOBJECT], [gobject-2.0], [2.4.0])
 XDT_CHECK_PACKAGE([THUNAR_VFS], [thunar-vfs-1], [0.4.0])
 XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.3.99])
 
-AC_DEFINE([HAVE_THUNAR_VFS], [1], [Define if we have thunar-vfs])
-AC_DEFINE([HAVE_LIBXFCE4UTIL], [1], [Define if we have thunar-vfs])
+AC_DEFINE([HAVE_LIBXFCE4UTIL], [1], [Define if we have libxfce4util (will become optional eventually)])
+AC_DEFINE([EXO_API_SUBJECT_TO_CHANGE], [1], [Define we understand libexo is subject to api churn])
+
 
 dnl XDT_CHECK_OPTIONAL_PACKAGE([THUNAR_VFS], [thunar-vfs-1], [0.4.0], [thunar-vfs],
 dnl    AC_HELP_STRING([--disable-thunar-vfs],

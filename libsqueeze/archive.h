@@ -69,7 +69,9 @@ struct _LSQArchive
 {
 	GObject parent;
 	gchar              *path;
-	LSQMimeInfo        *mime_info;
+	ThunarVfsPath      *path_info;
+	ThunarVfsInfo      *file_info;
+	ThunarVfsMimeInfo  *mime_info;
 	guint               entry_n_property;
 	GType              *entry_property_types;
 	gchar             **entry_property_names;
@@ -120,7 +122,7 @@ LSQArchiveIter     *lsq_archive_iter_get_child(const LSQArchive *, const LSQArch
 gboolean            lsq_archive_iter_del_child(LSQArchive *, LSQArchiveIter *, LSQArchiveIter *);
 
 /* void            lsq_archive_iter_set_filename(LSQArchive *, LSQArchiveIter *, const gchar *); */
-void                lsq_archive_iter_set_mime(LSQArchive *, LSQArchiveIter *, LSQMimeInfo *);
+void                lsq_archive_iter_set_mime(LSQArchive *, LSQArchiveIter *, ThunarVfsMimeInfo *);
 void                lsq_archive_iter_set_prop_str(LSQArchive *, LSQArchiveIter *, guint, const gchar *);
 void                lsq_archive_iter_set_prop_uint(LSQArchive *, LSQArchiveIter *, guint, guint);
 void                lsq_archive_iter_set_prop_uint64(LSQArchive *, LSQArchiveIter *, guint, guint64);
@@ -129,6 +131,7 @@ void                lsq_archive_iter_set_props(LSQArchive *, LSQArchiveIter *, .
 void                lsq_archive_iter_set_propsv(LSQArchive *, LSQArchiveIter *, gconstpointer *);
 
 gboolean            lsq_archive_iter_get_prop_value(const LSQArchive *, const LSQArchiveIter *, guint, GValue *);
+void                lsq_archive_iter_get_icon_name(const LSQArchive *, const LSQArchiveIter *, GValue *, GtkIconTheme *icon_theme);
 
 LSQArchiveIter     *lsq_archive_add_file(LSQArchive *, const gchar *);
 LSQArchiveIter     *lsq_archive_get_iter(LSQArchive *, const gchar *);

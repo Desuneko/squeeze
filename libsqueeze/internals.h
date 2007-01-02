@@ -32,7 +32,9 @@ lsq_execute(
             GChildWatchFunc function, 
             GIOFunc f_in, 
             GIOFunc f_out, 
-            GIOFunc f_err);
+            GIOFunc f_err) G_GNUC_INTERNAL; 
 
 gchar *
-lsq_concat_filenames(GSList *filenames);
+lsq_concat_filenames(GSList *filenames) G_GNUC_INTERNAL;
+
+ThunarVfsMimeDatabase  *lsq_mime_database;

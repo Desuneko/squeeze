@@ -23,7 +23,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <gettext.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
 
 #include "widget_factory.h"

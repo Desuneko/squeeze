@@ -3,7 +3,6 @@ lib_LTLIBRARIES = libsqueeze-1.la
 libsqueeze_1_la_SOURCES =  \
 	internals.c internals.h \
 	libsqueeze.c libsqueeze.h \
-	mime.c mime.h \
 	slist.c slist.h \
 	archive.c archive.h \
 	archive-support.c archive-support.h \

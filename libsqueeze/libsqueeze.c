@@ -21,7 +21,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-#include <gettext.h>
+#include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
 #include "libsqueeze/archive-support-zip.h"
@@ -34,8 +34,7 @@ lsq_init()
 {
 	lsq_tmp_dir = g_get_tmp_dir();
 
-	lsq_mime_init();
-
+	lsq_mime_database = thunar_vfs_mime_database_get_default();
 	lsq_register_support(lsq_archive_support_gnu_tar_new());
 	lsq_register_support(lsq_archive_support_zip_new());
 
@@ -51,7 +50,7 @@ lsq_destroy()
 {
 	g_slist_foreach(lsq_archive_support_list, (GFunc)g_object_unref, NULL);
 
-	lsq_mime_destroy();
+	g_object_unref(lsq_mime_database);
 }
 
 /*

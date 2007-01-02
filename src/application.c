@@ -20,9 +20,8 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
-
-#include <gettext.h>
 
 #include "new_dialog.h"
 #include "add_dialog.h"
@@ -168,7 +167,7 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 	if(!lsq_open_archive(archive_path, &lp_archive))
 	{
 		g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
-		lp_support = lsq_get_support_for_mime(lsq_mime_info_get_name(lp_archive->mime_info));
+		lp_support = lsq_get_support_for_mime(lp_archive->mime_info);
 		if(!dest_path)
 		{
 			dialog = sq_extract_archive_dialog_new(lp_support, lp_archive, FALSE);
@@ -245,7 +244,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 		}
 	}
 	g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), NULL);
-	lp_support = lsq_get_support_for_mime(lsq_mime_info_get_name(lp_archive->mime_info));
+	lp_support = lsq_get_support_for_mime(lp_archive->mime_info);
 	lsq_archive_support_add(lp_support, lp_archive, files);
 	g_object_ref(app);
 	return 0;

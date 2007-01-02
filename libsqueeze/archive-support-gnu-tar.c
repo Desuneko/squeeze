@@ -22,9 +22,8 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-#include <gettext.h>
+#include <thunar-vfs/thunar-vfs.h>
 
-#include "mime.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-gnu-tar.h"
@@ -259,7 +258,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -268,29 +267,29 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 		gchar *command = NULL;
 		archive->files = lsq_concat_filenames(filenames);
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ADD);
-		if(!g_file_test(archive->path, G_FILE_TEST_EXISTS))
+		if(!archive->file_info) /* FIXME */
 		{
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " -cf ", archive->path,
 															" --mode='", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
 															"' ", archive->files, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " -Zcf ", archive->path,
 															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
 															" ", archive->files, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " -zcf ", archive->path,
 															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
 															" ", archive->files, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " -jcf ", archive->path,
 															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
 															" ", archive->files, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tzo"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
 				                      " --use-compress-program=lzop -cf ", archive->path,
 															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
@@ -299,7 +298,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 		} else
 		{
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tar"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf ", archive->path, " ", archive->files, NULL);
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -309,13 +308,13 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			g_unlink(archive->tmp_file);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat("uncompress -c ", archive->path, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tzo"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lsq_execute(command, archive, lsq_archive_support_gnu_tar_decompress_watch, NULL, lsq_archive_support_gnu_tar_decompress_parse_output, NULL);
 			g_free(command);
@@ -327,13 +326,6 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 gint
 lsq_archive_support_gnu_tar_extract(LSQArchive *archive, gchar *dest_path, GSList *filenames)
 {
-	gchar *command = NULL;
-	gchar *command_options = g_strconcat(
-			LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_keep_newer?" --keep-newer-files ":" ",
-			LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
-			LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
-			NULL
-	    );
 
 	if(!LSQ_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
@@ -341,45 +333,52 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, gchar *dest_path, GSLis
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
 	else
 	{
+		gchar *command = NULL;
+		gchar *command_options = g_strconcat(
+				LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_keep_newer?" --keep-newer-files ":" ",
+				LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_overwrite?" --overwrite ":" ",
+				LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_extr_touch?" --touch ":" ",
+				NULL
+				);
 		archive->files = lsq_concat_filenames(filenames);
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_EXTRACT);
-		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+		if(archive->file_info) /* FIXME */
 		{
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tar"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf ", archive->path,
 						" -C \"", dest_path, "\"", 
 						command_options,
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -Zxf ", archive->path,
 						" -C \"", dest_path, "\"", 
 						command_options,
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -zxf ", archive->path,
 						" -C \"", dest_path, "\"", 
 						command_options,
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -jxf ", archive->path,
 						" -C \"", dest_path, "\"", 
 						command_options,
 						archive->files, NULL);
 			}
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tzo"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf --use-compress-program=lzop ", archive->path,
 						" -C \"", dest_path, "\"", 
@@ -410,7 +409,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -419,9 +418,9 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 		gchar *command = NULL;
 		archive->files = lsq_concat_filenames(filenames);
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REMOVE);
-		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+		if(archive->file_info)
 		{
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tar"))
 			{
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f ", archive->path, " --delete ", archive->files, NULL);
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -431,13 +430,13 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX" , NULL);
 			g_mkstemp(archive->tmp_file);
 			g_unlink(archive->tmp_file);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat("uncompress -c ", archive->path, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat("gunzip -c ", archive->path, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat("bunzip2 -c ", archive->path, NULL);
-			if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tzo"))
+			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat("lzop -dc ", archive->path, NULL);
 			lsq_execute(command, archive, lsq_archive_support_gnu_tar_decompress_watch, NULL, lsq_archive_support_gnu_tar_decompress_parse_output, NULL);
 			g_free(command);
@@ -458,7 +457,7 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -485,7 +484,7 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
 		}
-		if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tzo"))
+		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -tvf " , archive->path, NULL);
 		else
 			command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -tvf " , archive->path, NULL);
@@ -509,14 +508,14 @@ lsq_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 	archive->child_pid = 0;
 	gchar *command = NULL;
 
-	if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tarz"))
+	if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 		command = g_strconcat("compress -c ", archive->tmp_file, NULL);
-	if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
+	if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 		command = g_strconcat("gzip -c ", archive->tmp_file, NULL);
-	if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
+	if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 		command = g_strconcat("bzip2 -c ", archive->tmp_file, NULL);
-	if(!g_strcasecmp(lsq_mime_info_get_name(archive->mime_info), "application/x-tzo"))
-		command = g_strconcat("lzop -c ", archive->path, NULL);
+	if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
+		command = g_strconcat("lzop -c ", archive->tmp_file, NULL);
 	lsq_execute(command, archive, NULL, NULL, lsq_archive_support_gnu_tar_compress_parse_output, NULL);
 }
 
@@ -748,7 +747,7 @@ lsq_archive_support_gnu_tar_set_property(GObject *object, guint prop_id, const G
 			LSQ_ARCHIVE_SUPPORT_GNU_TAR(object)->_add_mode = g_value_dup_string(value);
 			break;
 
-/* */
+/* VIEW */
 		case LSQ_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE:
 			LSQ_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_size = g_value_get_boolean(value);
 			break;
@@ -793,7 +792,7 @@ lsq_archive_support_gnu_tar_get_property(GObject *object, guint prop_id, GValue 
 			g_value_set_string(value, LSQ_ARCHIVE_SUPPORT_GNU_TAR(object)->_add_mode);
 			break;
 
-/* */
+/* VIEW */
 		case LSQ_ARCHIVE_SUPPORT_GNU_TAR_VIEW_SIZE:
 			g_value_set_boolean(value, LSQ_ARCHIVE_SUPPORT_GNU_TAR(object)->_view_size);
 			break;

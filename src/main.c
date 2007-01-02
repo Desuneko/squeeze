@@ -20,9 +20,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
-
-#include <gettext.h>
 
 #include "settings.h"
 #include "archive_store.h"
@@ -122,6 +121,7 @@ int main(int argc, char **argv)
 		}
 	}
 
+	thunar_vfs_init();
 	lsq_init();
 
 	sq_icon_theme = gtk_icon_theme_get_default();
@@ -178,6 +178,7 @@ int main(int argc, char **argv)
 	g_object_unref(sq_app);
 	gtk_main();
 	lsq_destroy();
+	thunar_vfs_shutdown();
 
 	return 0;
 }

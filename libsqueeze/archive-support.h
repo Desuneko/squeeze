@@ -95,7 +95,7 @@ void                 lsq_archive_support_add_mime(LSQArchiveSupport *support, gc
 gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,const gchar *mime);
 
 gboolean             lsq_register_support(LSQArchiveSupport *);
-LSQArchiveSupport *  lsq_get_support_for_mime(const gchar *mime);
+LSQArchiveSupport *  lsq_get_support_for_mime(ThunarVfsMimeInfo *mime_info);
 LSQArchiveSupport *  lsq_get_support_for_mime_from_slist(GSList *list, const gchar *mime);
 
 gint                 lsq_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime);

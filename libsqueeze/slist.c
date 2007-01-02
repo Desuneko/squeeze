@@ -1,9 +1,10 @@
 
+#include <config.h>
 #include <string.h>
 #include <glib.h>
 #include <glib-object.h>
+#include <thunar-vfs/thunar-vfs.h>
 
-#include "mime.h"
 #include "archive.h"
 #include "internals.h"
 #include "slist.h"

@@ -19,10 +19,10 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include <gettext.h>
 
 #include "properties_dialog.h"
 

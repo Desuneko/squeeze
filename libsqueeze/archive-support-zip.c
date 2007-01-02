@@ -20,9 +20,8 @@
 #include <string.h>
 #include <glib.h>
 #include <glib-object.h>
-#include <gettext.h>
+#include <thunar-vfs/thunar-vfs.h>
 
-#include "mime.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-zip.h"
@@ -218,7 +217,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -226,8 +225,8 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 	{
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
-		if(!g_strcasecmp((gchar *)lsq_mime_info_get_name(archive->mime_info), "application/x-zip") || 
-		   !g_strcasecmp((gchar *)lsq_mime_info_get_name(archive->mime_info), "application/zip"))
+		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
 			command = g_strconcat("zip -r ", archive->path, " ", files, NULL);
 			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -245,7 +244,7 @@ lsq_archive_support_zip_extract(LSQArchive *archive, gchar *dest_path, GSList *f
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -253,10 +252,10 @@ lsq_archive_support_zip_extract(LSQArchive *archive, gchar *dest_path, GSList *f
 	{
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
-		if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+		if(archive->file_info) /* FIXME */
 		{
-			if(!g_strcasecmp((gchar *)lsq_mime_info_get_name(archive->mime_info), "application/x-zip") || 
-		     !g_strcasecmp((gchar *)lsq_mime_info_get_name(archive->mime_info), "application/zip"))
+			if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+		     !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 			{
 				command = g_strconcat("unzip -o ", archive->path, " ", files, " -d ", dest_path, NULL);
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -276,7 +275,7 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}
@@ -284,8 +283,8 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 	{
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
-		if(!g_strcasecmp((gchar *)lsq_mime_info_get_name(archive->mime_info), "application/x-zip") || 
-		   !g_strcasecmp((gchar *)lsq_mime_info_get_name(archive->mime_info), "application/zip"))
+		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
 			command = g_strconcat("zip -d ", archive->path, " ", files, NULL);
 			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
@@ -304,7 +303,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		return 1;
 	}

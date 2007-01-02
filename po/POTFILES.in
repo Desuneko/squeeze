@@ -4,7 +4,6 @@ libsqueeze/archive-support.c
 libsqueeze/archive-support-gnu-tar.c
 libsqueeze/archive-support-zip.c
 libsqueeze/internals.c
-libsqueeze/mime.c
 
 src/main.c
 src/main_window.c
@@ -13,6 +12,8 @@ src/application.c
 src/new_dialog.c
 src/add_dialog.c
 src/extract_dialog.c
+src/preferences_dialog.c
+src/properties_dialog.c
 
 src/tool_bar.c
 src/path_bar.c

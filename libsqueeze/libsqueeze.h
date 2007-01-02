@@ -18,9 +18,6 @@
 #ifndef __LIBSQUEEZE_H__
 #define __LIBSQUEEZE_H__
 
-#define EXO_API_SUBJECT_TO_CHANGE
-
-#include <libsqueeze/mime.h>
 #include <libsqueeze/archive.h>
 #include <libsqueeze/archive-support.h>
 

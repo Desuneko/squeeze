@@ -23,8 +23,8 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
-#include <gettext.h>
 
 #include "extract_dialog.h"
 #include "widget_factory.h"

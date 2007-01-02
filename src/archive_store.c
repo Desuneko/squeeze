@@ -21,9 +21,8 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
-#include <libsqueeze/mime.h>
-#include <gettext.h>
 
 #include "archive_store.h"
 
@@ -514,8 +513,7 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 	{
 		if(column == -1)
 		{
-			lsq_archive_iter_get_prop_value(archive, entry, LSQ_ARCHIVE_PROP_MIME_TYPE, value);
-			lsq_mime_convert_to_icon_name(store->icon_theme, value);
+			lsq_archive_iter_get_icon_name(archive, entry, value, store->icon_theme);
 		}
 		else
 		{

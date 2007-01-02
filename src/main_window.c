@@ -31,13 +31,11 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
-#include <libsqueeze/mime.h>
 
 #ifdef HAVE_LIBXFCE4UTIL
 #include <libxfce4util/libxfce4util.h>
-#else
-#include <gettext.h>
 #endif
 
 #include "settings.h"
@@ -594,7 +592,7 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		
 		if(!lsq_new_archive(new_archive_path, TRUE, NULL, &archive))
 		{
-			support = lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info));
+			support = lsq_get_support_for_mime(archive->mime_info);
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, TRUE);
 		}
 		else
@@ -915,7 +913,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 
 	if(!lsq_open_archive(path, &archive))
 	{
-		support = lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info));
+		support = lsq_get_support_for_mime(archive->mime_info);
 		if(replace < 0)
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, FALSE);
 		else

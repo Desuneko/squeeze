@@ -20,8 +20,8 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
-#include <gettext.h>
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
@@ -267,7 +267,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 {
 	GtkWidget *lbl_hbox = gtk_hbox_new(FALSE, 0);
 	GtkWidget *label = gtk_label_new(lsq_archive_get_filename(archive));
-	GtkWidget *archive_image = gtk_image_new_from_icon_name(lsq_mime_info_get_icon_name(archive->mime_info, notebook->icon_theme), GTK_ICON_SIZE_MENU);
+	GtkWidget *archive_image = gtk_image_new_from_icon_name(thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, notebook->icon_theme), GTK_ICON_SIZE_MENU);
 	GtkWidget *close_button = gtk_button_new();
 	GtkWidget *close_image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
 	GtkWidget *scroll_window = gtk_scrolled_window_new(NULL, NULL);
@@ -332,10 +332,20 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 		switch(lsq_archive_get_old_status(archive))
 		{
 			case LSQ_ARCHIVESTATUS_REFRESH:
-				dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("Failed to open archive '%s'."), archive->path);
+				dialog = gtk_message_dialog_new(NULL, 
+				                                0, 
+																				GTK_MESSAGE_ERROR, 
+																				GTK_BUTTONS_OK, 
+																				_("Failed to open archive '%s'."), 
+																				lsq_archive_get_filename(archive));
 				break;
 			case LSQ_ARCHIVESTATUS_EXTRACT:
-				dialog = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, _("Failed to extract contents of archive '%s'."), archive->path);
+				dialog = gtk_message_dialog_new(NULL, 
+				                                0, 
+																				GTK_MESSAGE_ERROR, 
+																				GTK_BUTTONS_OK, 
+																				_("Failed to extract contents of archive '%s'."), 
+																				lsq_archive_get_filename(archive));
 				break;
 			default:
 				break;

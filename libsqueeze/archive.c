@@ -23,9 +23,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <gettext.h>
-
-#include "mime.h"
+#include <thunar-vfs/thunar-vfs.h>
 
 #include "archive.h"
 #include "archive-support.h"
@@ -44,7 +42,7 @@
 struct _LSQEntry
 {
 	gchar *filename;
-	LSQMimeInfo *mime_info;
+	ThunarVfsMimeInfo *mime_info;
 	gpointer props;
 	LSQEntry **children;
 	LSQSList *buffer;
@@ -206,6 +204,13 @@ lsq_archive_finalize(GObject *object)
 	LSQArchive *archive = (LSQArchive *)(object);
 	if(archive->path)
 		g_free(archive->path);
+	if(archive->path_info)
+		thunar_vfs_path_unref(archive->path_info);
+	if(archive->file_info)
+		thunar_vfs_info_unref(archive->file_info);
+	if(archive->mime_info)
+		thunar_vfs_mime_info_unref(archive->mime_info);
+
 	lsq_archive_entry_free(archive, archive->root_entry);
 	switch(archive->status)
 	{
@@ -228,16 +233,26 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
 	if(path)
-		archive->path = g_strdup(path);
+	{
+		archive->path_info = thunar_vfs_path_new(path, NULL);
+		archive->path = thunar_vfs_path_dup_string(archive->path_info);
+	}
 	else
-		archive->path = NULL;
+		archive->path_info = NULL;
 
-	if(!mime)
-		archive->mime_info = lsq_mime_get_mime_info_for_file(archive->path);
+
+	archive->file_info = thunar_vfs_info_new_for_path(archive->path_info, NULL);
+	if(archive->file_info)
+	{
+		archive->mime_info = archive->file_info->mime_info;
+		thunar_vfs_mime_info_ref(archive->mime_info);
+	}
 	else
-		archive->mime_info = lsq_mime_get_mime_info(mime);
+	{
+		archive->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
+	}
 
-	if(!lsq_get_support_for_mime(lsq_mime_info_get_name(archive->mime_info)))
+	if(!lsq_get_support_for_mime(archive->mime_info))
 	{
 		g_object_unref(archive);
 		archive = NULL;
@@ -532,12 +547,12 @@ lsq_entry_new(LSQArchive *archive, const gchar *filename)
 	if(pos)
 	{
 		entry->filename = g_strndup(filename, (gsize)(pos - filename));
-		lsq_archive_iter_set_mime(archive, entry, lsq_mime_get_mime_info(LSQ_MIME_DIRECTORY));
+		lsq_archive_iter_set_mime(archive, entry, thunar_vfs_mime_database_get_info(lsq_mime_database, LSQ_MIME_DIRECTORY));
 	}
 	else
 	{
 		entry->filename = g_strdup(filename);
-		lsq_archive_iter_set_mime(archive, entry, lsq_mime_get_mime_info_for_filename(entry->filename));
+		lsq_archive_iter_set_mime(archive, entry, thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, entry->filename));
 	}
 
 	return entry;
@@ -588,7 +603,7 @@ lsq_archive_entry_free(LSQArchive *archive, LSQEntry *entry)
 		g_free(entry->props);
 	}
 	if(entry->mime_info)
-		lsq_mime_info_unref(entry->mime_info);
+		thunar_vfs_mime_info_unref(entry->mime_info);
 	g_free(entry->filename);
 	g_free(entry);
 }
@@ -884,7 +899,7 @@ lsq_archive_iter_get_filename(const LSQArchive *archive, const LSQArchiveIter *i
 static const gchar *
 lsq_archive_iter_get_mimetype(const LSQArchive *archive, const LSQArchiveIter *iter)
 {
-	return lsq_mime_info_get_name(((LSQEntry *)iter)->mime_info);
+	return thunar_vfs_mime_info_get_name(((LSQEntry *)iter)->mime_info);
 }
 
 /**
@@ -894,9 +909,11 @@ lsq_archive_iter_get_mimetype(const LSQArchive *archive, const LSQArchiveIter *i
  * set mime type to entry
  */
 void
-lsq_archive_iter_set_mime(LSQArchive *archive, LSQArchiveIter *iter, LSQMimeInfo *mime)
+lsq_archive_iter_set_mime(LSQArchive *archive, LSQArchiveIter *iter, ThunarVfsMimeInfo *mime_info)
 {
-	((LSQEntry *)iter)->mime_info = mime;
+	if(((LSQEntry *)iter)->mime_info)
+		thunar_vfs_mime_info_unref(((LSQEntry *)iter)->mime_info);
+	((LSQEntry *)iter)->mime_info = mime_info;
 }
 
 /**
@@ -1272,7 +1289,7 @@ const gchar *
 lsq_archive_get_filename(LSQArchive *archive)
 {
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "<unknown>");
-	return g_basename(archive->path);
+	return thunar_vfs_path_get_name(archive->path_info);
 }
 
 LSQArchiveStatus
@@ -1326,4 +1343,15 @@ lsq_archive_get_status_msg(LSQArchive *archive)
 			break;
 	}
 	return msg;
+}
+
+void
+lsq_archive_iter_get_icon_name(const LSQArchive *archive, const LSQArchiveIter *iter, GValue *value, GtkIconTheme *icon_theme)
+{
+	g_value_init(value, G_TYPE_STRING);
+	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(iter->mime_info, icon_theme);
+	if(gtk_icon_theme_has_icon(icon_theme, icon_name))
+		g_value_set_string(value, icon_name);
+	else
+		g_value_set_string(value, NULL);
 }

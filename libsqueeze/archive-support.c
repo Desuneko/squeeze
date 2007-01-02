@@ -16,12 +16,13 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include <config.h>
 #include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
+#include <thunar-vfs/thunar-vfs.h>
 
-#include "mime.h"
 #include "archive.h"
 #include "archive-support.h"
 
@@ -140,9 +141,9 @@ lsq_register_support(LSQArchiveSupport *support)
  *
  */
 LSQArchiveSupport *
-lsq_get_support_for_mime(const gchar *mime)
+lsq_get_support_for_mime(ThunarVfsMimeInfo *mime_info)
 {
-	return lsq_get_support_for_mime_from_slist(lsq_archive_support_list, mime);
+	return lsq_get_support_for_mime_from_slist(lsq_archive_support_list, thunar_vfs_mime_info_get_name(mime_info));
 }
 
 /*
