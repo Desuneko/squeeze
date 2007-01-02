@@ -236,7 +236,10 @@ lsq_archive_new(gchar *path, const gchar *mime)
 
 	if(path)
 	{
-		archive->path_info = thunar_vfs_path_new(path, NULL);
+		if(g_path_is_absolute(path))
+			archive->path_info = thunar_vfs_path_new(path, NULL);
+		else
+			archive->path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
 		archive->path = thunar_vfs_path_dup_string(archive->path_info);
 	}
 	else

@@ -32,6 +32,7 @@
 void
 lsq_init()
 {
+	gchar *current_dir = g_get_current_dir();
 	lsq_tmp_dir = g_get_tmp_dir();
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
@@ -43,6 +44,9 @@ lsq_init()
 	lsq_register_support(lsq_archive_support_rar_new());
 	lsq_register_support(lsq_archive_support_unrar_new());
 	*/
+
+	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
+	g_free(current_dir);
 }
 
 void

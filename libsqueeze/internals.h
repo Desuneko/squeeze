@@ -19,6 +19,7 @@
 const gchar            *lsq_tmp_dir;
 GSList                 *lsq_archive_support_list;
 GSList                 *lsq_opened_archive_list;
+ThunarVfsPath          *lsq_relative_base_path;
 
 /*
  * gint
