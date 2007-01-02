@@ -105,6 +105,8 @@ lsq_archive_support_gnu_tar_init(LSQArchiveSupportGnuTar *support)
 	else
 		support->app_name = "tar";
 
+	support->_add_mode = g_strdup("");
+
 	lsq_archive_support_add_mime(archive_support, "application/x-tar");
 	/* Check for existence of compress -- required for x-tarz */
 	program_path = g_find_program_in_path("compress");
