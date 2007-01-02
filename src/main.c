@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 
 	g_object_unref(sq_app);
 	gtk_main();
-	lsq_destroy();
+	lsq_shutdown();
 	thunar_vfs_shutdown();
 
 	return 0;

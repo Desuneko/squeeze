@@ -32,9 +32,9 @@ void lsq_init();
 
 /*
  * void
- * lsq_destroy()
+ * lsq_shutdown()
  */
-void lsq_destroy();
+void lsq_shutdown();
 
 /*
  * gint

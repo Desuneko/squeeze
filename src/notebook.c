@@ -176,6 +176,7 @@ sq_notebook_init(SQNotebook *notebook)
 static void
 sq_notebook_finalize(GObject *object)
 {
+	/* TODO: unref archive_stores */
 }
 
 GtkWidget *
@@ -395,6 +396,22 @@ sq_notebook_close_active_archive(SQNotebook *notebook)
 {
 	GtkNotebook *_notebook = GTK_NOTEBOOK(notebook);
 	gint n = gtk_notebook_get_current_page(_notebook);
+
+	GtkWidget *child = gtk_notebook_get_nth_page(_notebook, n);
+
+	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(child));
+	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+
+	LSQArchive *archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
+
+	if(archive)
+		g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
+	if(SQ_NOTEBOOK(notebook)->navigation_bar)
+		sq_navigation_bar_set_store(((SQNotebook *)notebook)->navigation_bar, NULL);
+	g_object_unref(archive_store);
+
+	lsq_close_archive(archive);
+
 	gtk_notebook_remove_page(_notebook, n);
 	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED], 0, NULL);
 }
@@ -491,7 +508,10 @@ static void
 cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data)
 {
 	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
-		sq_navigation_bar_set_store(notebook->navigation_bar, NULL);
+	{
+		if(notebook->navigation_bar)
+			sq_navigation_bar_set_store(notebook->navigation_bar, NULL);
+	}
 }
 
 static void

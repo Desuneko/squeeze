@@ -18,6 +18,7 @@
 
 const gchar            *lsq_tmp_dir;
 GSList                 *lsq_archive_support_list;
+GSList                 *lsq_opened_archive_list;
 
 /*
  * gint
@@ -36,5 +37,8 @@ lsq_execute(
 
 gchar *
 lsq_concat_filenames(GSList *filenames) G_GNUC_INTERNAL;
+
+LSQArchive *
+lsq_opened_archive_get_archive(gchar *path) G_GNUC_INTERNAL;
 
 ThunarVfsMimeDatabase  *lsq_mime_database;

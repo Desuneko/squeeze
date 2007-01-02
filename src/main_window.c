@@ -700,7 +700,8 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 	{
 		gtk_widget_hide(dialog);
 		filenames = sq_add_dialog_get_filenames(SQ_ADD_DIALOG(dialog));
-		lsq_archive_support_add(lp_support, lp_archive, filenames);
+		if(filenames)
+			lsq_archive_support_add(lp_support, lp_archive, filenames);
 	}
 	gtk_widget_destroy (dialog);
 }

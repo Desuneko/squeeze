@@ -46,9 +46,10 @@ lsq_init()
 }
 
 void
-lsq_destroy()
+lsq_shutdown()
 {
 	g_slist_foreach(lsq_archive_support_list, (GFunc)g_object_unref, NULL);
+	g_slist_foreach(lsq_opened_archive_list,  (GFunc)g_object_unref, NULL);
 
 	g_object_unref(lsq_mime_database);
 }
@@ -90,7 +91,12 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 		return 1;
 	}
 
-	LSQArchive *archive = lsq_archive_new(path, NULL);
+	LSQArchive *archive = lsq_opened_archive_get_archive(path);
+	if(!archive)
+	{
+		archive = lsq_archive_new(path, NULL);
+		lsq_opened_archive_list = g_slist_prepend(lsq_opened_archive_list, archive);
+	}
 	(*lp_archive) = archive;
 	if(!archive)
 		return 1;

@@ -223,12 +223,14 @@ lsq_archive_finalize(GObject *object)
 				kill ( archive->child_pid , SIGHUP);
 			break;
 	}
+	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, object);
 }
 
 LSQArchive *
 lsq_archive_new(gchar *path, const gchar *mime)
 {
 	LSQArchive *archive;
+	gchar *base = NULL;
 
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
@@ -249,7 +251,14 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	}
 	else
 	{
-		archive->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
+		if(mime)
+			archive->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
+		else
+		{
+			base = g_path_get_basename(path);
+			archive->mime_info = thunar_vfs_mime_database_get_info_for_file(lsq_mime_database, path, base);
+			g_free(base);
+		}
 	}
 
 	if(!lsq_get_support_for_mime(archive->mime_info))

@@ -36,6 +36,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+static gint
+lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer path);
+
+
 void
 lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
 {
@@ -54,6 +58,19 @@ lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
 			}
 			else
 			{
+				if(archive->status == LSQ_ARCHIVESTATUS_ADD)
+				{
+					if(!archive->file_info)
+					{
+						archive->file_info = thunar_vfs_info_new_for_path(archive->path_info, NULL);
+						if(archive->file_info)
+						{
+							thunar_vfs_mime_info_unref(archive->mime_info);
+							archive->mime_info = archive->file_info->mime_info;
+							thunar_vfs_mime_info_ref(archive->mime_info);
+						}
+					}
+				}
 				if(archive->status != LSQ_ARCHIVESTATUS_REFRESH)
 					lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 			}
@@ -135,4 +152,33 @@ lsq_concat_filenames(GSList *filenames)
 		g_free(_concat_str);
 	}
 	return concat_str;
+}
+
+LSQArchive *
+lsq_opened_archive_get_archive(gchar *path)
+{
+	GSList *result = g_slist_find_custom(lsq_opened_archive_list, path, lsq_opened_archives_lookup_archive);
+	if(result)
+	{
+		g_object_ref(result->data);
+		return result->data;
+	}
+	return NULL;
+}
+
+
+static gint
+lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer path)
+{
+	ThunarVfsPath *path_info = thunar_vfs_path_new(path, NULL);
+	if(thunar_vfs_path_equal(((LSQArchive *)open_archive)->path_info, path_info))
+	{
+		thunar_vfs_path_unref(path_info);
+		return 0;
+	}
+	else
+	{
+		thunar_vfs_path_unref(path_info);
+		return 1;
+	}
 }
