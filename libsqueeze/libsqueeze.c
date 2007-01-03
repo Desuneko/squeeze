@@ -56,6 +56,7 @@ lsq_shutdown()
 	g_slist_foreach(lsq_opened_archive_list,  (GFunc)g_object_unref, NULL);
 
 	g_object_unref(lsq_mime_database);
+	thunar_vfs_path_unref(lsq_relative_base_path);
 }
 
 /*

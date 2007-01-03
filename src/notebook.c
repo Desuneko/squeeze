@@ -34,7 +34,7 @@ sq_notebook_class_init(SQNotebookClass *archive_class);
 static void
 sq_notebook_init(SQNotebook *archive);
 static void
-sq_notebook_finalize(GObject *object);
+sq_notebook_dispose(GObject *object);
 
 static void
 sq_notebook_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
@@ -75,6 +75,8 @@ enum
 
 static gint sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_COUNT];
 
+static GObjectClass *parent_class;
+
 GType
 sq_notebook_get_type ()
 {
@@ -107,9 +109,11 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (notebook_class);
 	GParamSpec *pspec = NULL;
 
+	parent_class = gtk_type_class (GTK_TYPE_NOTEBOOK);
+
 	object_class->set_property = sq_notebook_set_property;
 	object_class->get_property = sq_notebook_get_property;
-	object_class->finalize     = sq_notebook_finalize;
+	object_class->dispose      = sq_notebook_dispose;
 
 	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED] = g_signal_new("archive-removed",
 			G_TYPE_FROM_CLASS(notebook_class),
@@ -174,9 +178,30 @@ sq_notebook_init(SQNotebook *notebook)
 }
 
 static void
-sq_notebook_finalize(GObject *object)
+sq_notebook_dispose(GObject *object)
 {
 	/* TODO: unref archive_stores */
+	GtkWidget *child = NULL;
+	GtkNotebook *notebook = GTK_NOTEBOOK(object);
+	gint n = gtk_notebook_get_n_pages(notebook);
+	gint i = 0;
+	for(i = 0; i < n; i++)
+	{
+		child = gtk_notebook_get_nth_page(notebook, i);
+		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(child));
+		GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+
+		LSQArchive *archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
+
+		if(archive)
+			g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
+		if(SQ_NOTEBOOK(notebook)->navigation_bar)
+			sq_navigation_bar_set_store(((SQNotebook *)notebook)->navigation_bar, NULL);
+		g_object_unref(archive_store);
+
+		lsq_close_archive(archive);
+	}
+	parent_class->dispose(object);
 }
 
 GtkWidget *
@@ -425,8 +450,8 @@ cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *treeview)
 	g_object_ref(archive_store);
 	gtk_tree_view_set_model(treeview, NULL);
 	sq_archive_store_set_archive(SQ_ARCHIVE_STORE(archive_store), archive);
-	g_object_unref(archive_store);
 	gtk_tree_view_set_model(treeview, archive_store);
+	g_object_unref(archive_store);
 }
 
 static void

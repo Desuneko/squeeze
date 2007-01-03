@@ -146,8 +146,8 @@ cb_sq_application_archive_status_changed(LSQArchive *archive, gpointer data)
 	switch(archive->status)
 	{
 		case LSQ_ARCHIVESTATUS_IDLE:
-			lsq_close_archive(archive);
 		case LSQ_ARCHIVESTATUS_ERROR:
+			lsq_close_archive(archive);
 		case LSQ_ARCHIVESTATUS_USERBREAK:
 			g_object_unref(app);
 			break;
@@ -243,7 +243,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			return 1;
 		}
 	}
-	g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), NULL);
+	g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
 	lp_support = lsq_get_support_for_mime(lp_archive->mime_info);
 	lsq_archive_support_add(lp_support, lp_archive, files);
 	g_object_ref(app);
