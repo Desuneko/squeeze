@@ -28,7 +28,8 @@ squeeze_SOURCES = \
 	new_dialog.c new_dialog.h \
 	add_dialog.c add_dialog.h \
 	extract_dialog.c extract_dialog.h \
-	widget_factory.c widget_factory.h
+	widget_factory.c widget_factory.h \
+	button_drag_box.c button_drag_box.h
 
 squeeze_CFLAGS = \
 	@GTK_CFLAGS@ \

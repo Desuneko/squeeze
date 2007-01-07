@@ -24,6 +24,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "preferences_dialog.h"
+#include "button_drag_box.h"
 
 static void
 sq_preferences_dialog_class_init(SQPreferencesDialogClass *archive_class);
@@ -36,32 +37,6 @@ cb_sq_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gp
 
 static GtkWidget *
 sq_preferences_dialog_create_page(LSQArchiveSupport *support);
-
-static GdkPixbuf *
-create_icon_from_widget(GtkWidget *widget);
-
-static void
-vis_data_received(GtkWidget * widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data);
-static void
-vis_drag_leave(GtkWidget * widget, GdkDragContext *context, GtkSelectionData *data, guint info, guint time, gpointer user_data);
-static void
-vis_drag_motion(GtkWidget * widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data);
-
-static void
-hid_data_received(GtkWidget * widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data);
-
-static void
-button_drag_begin(GtkWidget *widget, GdkDragContext *context, gpointer user_data);
-static void
-button_drag_end(GtkWidget *widget, GdkDragContext *context, gpointer user_data);
-static void
-data_get(GtkWidget * widget, GdkDragContext *context, GtkSelectionData *data, guint info, guint time, gpointer user_data);
-
-static gboolean
-signal_blocker(GtkWidget *widget, gpointer user_data)
-{
-	return TRUE;
-}
 
 GType
 sq_preferences_dialog_get_type ()
@@ -220,68 +195,13 @@ sq_preferences_dialog_new()
 static GtkWidget *
 sq_preferences_dialog_create_page(LSQArchiveSupport *support)
 {
-	GtkTargetEntry entry;
+	GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
 
-	GtkWidget *_vbox = gtk_vbox_new(FALSE, 0);
+	GtkWidget *button_box = sq_button_drag_box_new();
 
-	GtkWidget *vbox = gtk_vbox_new(TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 0);
 
-	GtkWidget *visbox = gtk_hbox_new(FALSE, 0);
-	GtkWidget *hidbox = gtk_hbox_new(FALSE, 0);
-
-	GtkWidget *frame = gtk_frame_new(_("Visible:"));
-
-	GtkWidget *button = gtk_button_new_with_label(_("Filename"));
-
-	entry.target = "_SQ_PREF_DIALOG_BUTTON";
-	entry.flags = GTK_TARGET_SAME_APP;
-	entry.info = 2;
-
-	gtk_drag_dest_set(frame, GTK_DEST_DEFAULT_ALL, &entry, 1, GDK_ACTION_MOVE);
-
-	g_signal_connect(frame, "drag_data_received", G_CALLBACK(vis_data_received), visbox);
-	g_signal_connect(frame, "drag_motion", G_CALLBACK(vis_drag_motion), visbox);
-	g_signal_connect(frame, "drag_leave", G_CALLBACK(vis_drag_leave), visbox);
-
-	gtk_container_add(GTK_CONTAINER(frame), visbox);
-
-	gtk_box_pack_start(GTK_BOX(visbox), button, FALSE, FALSE, 0);
-	g_signal_connect(G_OBJECT(button), "button_press_event", G_CALLBACK(signal_blocker), NULL);
-	g_signal_connect(G_OBJECT(button), "enter_notify_event", G_CALLBACK(signal_blocker), NULL);
-	g_signal_connect(G_OBJECT(button), "focus", G_CALLBACK(signal_blocker), NULL);
-
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
-
-	frame = gtk_frame_new(_("Availble:"));
-
-	gtk_drag_dest_set(frame, GTK_DEST_DEFAULT_ALL, &entry, 1, GDK_ACTION_MOVE);
-
-	g_signal_connect(frame, "drag_data_received", G_CALLBACK(hid_data_received), hidbox);
-
-	gtk_container_add(GTK_CONTAINER(frame), hidbox);
-
-/*for cols*/
-
-	button = gtk_button_new_with_label("size");
-
-	gtk_box_pack_start(GTK_BOX(visbox), button, FALSE, FALSE, 0);
-	
-	gtk_drag_source_set(button, GDK_BUTTON1_MASK, &entry, 1, GDK_ACTION_MOVE);
-
-	g_signal_connect(G_OBJECT(button), "drag-data-get", G_CALLBACK(data_get), NULL);
-	g_signal_connect(G_OBJECT(button), "drag_begin", G_CALLBACK(button_drag_begin), NULL);
-	g_signal_connect(G_OBJECT(button), "drag_end", G_CALLBACK(button_drag_end), NULL);
-	g_signal_connect(G_OBJECT(button), "button_press_event", G_CALLBACK(signal_blocker), NULL);
-	g_signal_connect(G_OBJECT(button), "enter_notify_event", G_CALLBACK(signal_blocker), NULL);
-	g_signal_connect(G_OBJECT(button), "focus", G_CALLBACK(signal_blocker), NULL);
-
-/*endfor*/
-
-	gtk_box_pack_start(GTK_BOX(vbox), frame, FALSE, TRUE, 0);
-
-	gtk_box_pack_start(GTK_BOX(_vbox), vbox, FALSE, FALSE, 0);
-
-	return _vbox;
+	return vbox;
 }
 
 static void
@@ -289,84 +209,5 @@ cb_sq_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gp
 {
 	SQPreferencesDialog *dialog = SQ_PREFERENCES_DIALOG(user_data);
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(dialog->support.notebook), gtk_tree_path_get_indices(path)[0]);
-}
-
-static void
-button_drag_begin(GtkWidget *widget, GdkDragContext *context, gpointer user_data)
-{
-	GdkPixbuf *pixbuf = create_icon_from_widget(widget);
-
-	gtk_drag_source_set_icon_pixbuf(widget, pixbuf);
-	g_object_unref(G_OBJECT(pixbuf));
-	gtk_widget_hide(widget);
-}
-
-static void
-button_drag_end(GtkWidget *widget, GdkDragContext *context, gpointer user_data)
-{
-	gtk_widget_show(widget);
-}
-
-static void
-data_get(GtkWidget * widget, GdkDragContext *context, GtkSelectionData *data, guint info, guint time, gpointer user_data)
-{
-	gtk_widget_hide(widget);
-	gtk_selection_data_set(data, gdk_atom_intern("_SQ_PREF_DIALOG_BUTTON", FALSE), 8, (const guchar*)"", 0);
-}
-
-static void
-hid_data_received(GtkWidget * widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data)
-{
-	GtkWidget *source = gtk_drag_get_source_widget(context);
-	GtkWidget *parent = gtk_widget_get_parent(source);
-
-	if(parent == GTK_WIDGET(user_data))
-	{
-		return;
-	}
-
-	gtk_widget_ref(source);
-	gtk_container_remove(GTK_CONTAINER(parent), source);
-	gtk_box_pack_start(GTK_BOX(user_data), source, FALSE, FALSE, 0);
-	gtk_widget_unref(source);
-}
-
-static void
-vis_data_received(GtkWidget * widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data)
-{
-	GtkWidget *source = gtk_drag_get_source_widget(context);
-	GtkWidget *parent = gtk_widget_get_parent(source);
-
-	gtk_widget_ref(source);
-	gtk_container_remove(GTK_CONTAINER(parent), source);
-	gtk_box_pack_start(GTK_BOX(user_data), source, FALSE, FALSE, 0);
-	gtk_widget_unref(source);
-	/* vis_reorder_buttons(user_data, source, x); */
-}
-
-static void
-vis_drag_leave(GtkWidget * widget, GdkDragContext *context, GtkSelectionData *data, guint info, guint time, gpointer user_data)
-{
-}
-
-static void
-vis_drag_motion(GtkWidget * widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time, gpointer user_data)
-{
-}
-
-static GdkPixbuf *
-create_icon_from_widget(GtkWidget *widget)
-{
-	GdkPixbuf *src, *dest;
-
-	dest = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, widget->allocation.width, widget->allocation.height);
-
-	src = gdk_pixbuf_get_from_drawable(NULL, GDK_DRAWABLE(widget->window), NULL, widget->allocation.x, widget->allocation.y, 0, 0, widget->allocation.width, widget->allocation.height);
-
-	gdk_pixbuf_copy_area(src, 0, 0, widget->allocation.width, widget->allocation.height, dest, 0, 0);
-
-	g_object_unref(G_OBJECT(src));
-
-	return dest;
 }
 
