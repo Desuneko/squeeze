@@ -46,6 +46,7 @@ lsq_init()
 	*/
 
 	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
+	lsq_opened_archive_list = NULL;
 	g_free(current_dir);
 }
 

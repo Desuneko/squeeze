@@ -170,15 +170,22 @@ lsq_opened_archive_get_archive(gchar *path)
 static gint
 lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer path)
 {
-	ThunarVfsPath *path_info = thunar_vfs_path_new(path, NULL);
+	ThunarVfsPath *path_info = NULL;
+	if(g_path_is_absolute(path))
+		path_info = thunar_vfs_path_new(path, NULL);
+	else
+		path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
+
 	if(thunar_vfs_path_equal(((LSQArchive *)open_archive)->path_info, path_info))
 	{
-		thunar_vfs_path_unref(path_info);
+		if(path_info)
+			thunar_vfs_path_unref(path_info);
 		return 0;
 	}
 	else
 	{
-		thunar_vfs_path_unref(path_info);
+		if(path_info)
+			thunar_vfs_path_unref(path_info);
 		return 1;
 	}
 }
