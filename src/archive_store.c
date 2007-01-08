@@ -218,7 +218,7 @@ sq_archive_store_init(SQArchiveStore *as)
 	as->icon_theme = NULL;
 	as->props._show_icons = 0;
 	as->props._show_up_dir = 1;
-	as->props._sort_folders_first = 0;
+	as->props._sort_folders_first = 1;
 	as->props._sort_case_sensitive = 1;
 	as->navigation.history = NULL;
 	as->navigation.present = NULL;
@@ -860,7 +860,6 @@ sq_archive_store_sort(SQArchiveStore *store)
 
 	for(i = 0; i < psize; ++i)
 	{
-		g_debug("sorting %i", i);
 		store->sort_list[i] = lsq_archive_iter_nth_child(store->archive, pentry, i);
 	}
 	sq_archive_quicksort(store, 0, psize-1);
@@ -973,8 +972,12 @@ sq_archive_store_refresh(SQArchiveStore *store)
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
+	g_object_ref(G_OBJECT(store));
+
 	gtk_tree_view_set_model(store->treeview, NULL);
 	gtk_tree_view_set_model(store->treeview, GTK_TREE_MODEL(store));
+
+	g_object_unref(G_OBJECT(store));
 }
 
 static void
@@ -1078,6 +1081,9 @@ void
 sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 {
 	g_return_if_fail(store);
+
+	if(store->archive == archive)
+		return;
 
 	GList *list_iter;
 	GSList *current_entry;
@@ -1409,7 +1415,6 @@ sq_archive_store_go_back(SQArchiveStore *store)
 	if(sq_archive_store_has_history(store))
 		store->navigation.present = store->navigation.present->prev;
 
-	/* sq_archive_store_sort(store); */
 	sq_archive_store_sort(store);
 	sq_archive_store_refresh(store);
 
@@ -1436,7 +1441,6 @@ sq_archive_store_go_forward(SQArchiveStore *store)
 	if(sq_archive_store_has_future(store))
 		store->navigation.present = store->navigation.present->next;
 
-	/* sq_archive_store_sort(store); */
 	sq_archive_store_sort(store);
 	sq_archive_store_refresh(store);
 
