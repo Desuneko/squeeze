@@ -28,6 +28,9 @@
 #define SQ_INDICATOR_SIZE 9
 
 static void
+sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons);
+
+static void
 sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label);
 
 static void
@@ -72,6 +75,8 @@ sq_button_drag_box_init(SQButtonDragBox *box)
 {
 	GtkWidget *frame;
 
+	box->locked_buttons = 0;
+
 	box->visible_box = gtk_hbox_new(FALSE, 0);
 	box->hidden_box = gtk_hbox_new(FALSE, 0);
 
@@ -114,6 +119,8 @@ sq_button_drag_box_new()
 	sq_button_drag_box_add_button(SQ_BUTTON_DRAG_BOX(box), "Size", TRUE);
 	sq_button_drag_box_add_button(SQ_BUTTON_DRAG_BOX(box), "Time", TRUE);
 
+	sq_button_drag_box_lock_buttons(SQ_BUTTON_DRAG_BOX(box), 1);
+
 	return box;
 }
 
@@ -143,6 +150,12 @@ sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean
 	g_signal_connect(G_OBJECT(button), "button_press_event", G_CALLBACK(cb_signal_blocker), NULL);
 	g_signal_connect(G_OBJECT(button), "enter_notify_event", G_CALLBACK(cb_signal_blocker), NULL);
 	g_signal_connect(G_OBJECT(button), "focus", G_CALLBACK(cb_signal_blocker), NULL);
+}
+
+static void
+sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons)
+{
+	box->locked_buttons = buttons;
 }
 
 static GdkPixbuf*
@@ -250,6 +263,7 @@ cb_sq_visible_data_received(GtkWidget *widget, GdkDragContext *context, gint x, 
 	gtk_box_pack_start(GTK_BOX(box->visible_box), source, FALSE, FALSE, 0);
 	gtk_widget_unref(source);
 
+	guint button = 0;
 	gint xoffset = box->visible_box->allocation.x;
 	GtkWidget *item;
 
@@ -263,7 +277,8 @@ cb_sq_visible_data_received(GtkWidget *widget, GdkDragContext *context, gint x, 
 
 		if(GTK_WIDGET_VISIBLE(item))
 		{
-			if(x < (item->allocation.width/2 + item->allocation.x - xoffset))
+			button++;
+			if((box->locked_buttons < button) && (x < (item->allocation.width/2 + item->allocation.x - xoffset)))
 			{
 				break;
 			}
@@ -282,6 +297,7 @@ cb_sq_visible_drag_motion(GtkWidget *widget, GdkDragContext *context, gint x, gi
 {
 	SQButtonDragBox *box = SQ_BUTTON_DRAG_BOX(user_data);
 
+	guint button = 0;
 	gint ix, iy;
 	gint xoffset = box->visible_box->allocation.x;
 	GtkWidget *item;
@@ -296,7 +312,8 @@ cb_sq_visible_drag_motion(GtkWidget *widget, GdkDragContext *context, gint x, gi
 
 		if(GTK_WIDGET_VISIBLE(item))
 		{
-			if(x < (item->allocation.width/2 + item->allocation.x - xoffset))
+			button++;
+			if((box->locked_buttons < button) && (x < (item->allocation.width/2 + item->allocation.x - xoffset)))
 			{
 				ix = item->allocation.x;
 				break;

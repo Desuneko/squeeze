@@ -49,6 +49,7 @@ struct _SQButtonDragBox
 	GtkWidget *hidden_box;
 	GtkTargetEntry entry;
 	GdkWindow *indicator;
+	guint locked_buttons;
 };
 
 typedef struct _SQButtonDragBoxClass SQButtonDragBoxClass;
