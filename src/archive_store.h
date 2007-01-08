@@ -49,7 +49,6 @@ struct _SQArchiveStore
 	gint sort_column;
 	GtkSortType sort_order;
 	LSQEntry **sort_list;
-	guint list_size;
 	GtkIconTheme *icon_theme;
 	GtkTreeView *treeview;
 	struct {
