@@ -297,7 +297,7 @@ msgstr "Archief openen"
 
 #: ../src/main_window.c:781
 msgid "Lead developer:"
-msgstr "Hoofs ontwikkelaar:"
+msgstr "Hoofd ontwikkelaar:"
 
 #: ../src/main_window.c:784
 msgid "Contributors:"

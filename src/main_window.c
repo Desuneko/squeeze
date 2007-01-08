@@ -778,13 +778,13 @@ static void
 cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 {
 	const gchar *authors[] = {
-	  N_("Lead developer:"),
+	  _("Lead developer:"),
 		"Stephan Arts <stephan@xfce.org>",
 		"",
-		N_("Contributors:"),
+		_("Contributors:"),
 		"Peter de Ridder <peter@xfce.org>",
 		"",
-		N_("Inspired by Xarchiver, written by Giuseppe Torelli"), NULL};
+		_("Inspired by Xarchiver, written by Giuseppe Torelli"), NULL};
 	GtkWidget *about_dialog = gtk_about_dialog_new();
 
 	gtk_about_dialog_set_name((GtkAboutDialog *)about_dialog, PACKAGE_NAME);
