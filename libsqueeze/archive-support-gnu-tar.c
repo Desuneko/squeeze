@@ -273,29 +273,35 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 		{
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
-				                      " -cf ", archive->path,
-															" --mode='", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
-															"' ", archive->files, NULL);
+				                      " -cf ", archive->path, NULL);
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
-				                      " -Zcf ", archive->path,
-															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
-															" ", archive->files, NULL);
+				                      " -Zcf ", archive->path, NULL);
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
-				                      " -zcf ", archive->path,
-															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
-															" ", archive->files, NULL);
+				                      " -zcf ", archive->path, NULL);
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip-compressed-tar"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
-				                      " -jcf ", archive->path,
-															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
-															" ", archive->files, NULL);
+				                      " -jcf ", archive->path, NULL);
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name,
-				                      " --use-compress-program=lzop -cf ", archive->path,
-															" --mode=", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode,
-															" ", archive->files, NULL);
+				                      " --use-compress-program=lzop -cf ", archive->path, NULL);
+			if(command)
+			{
+				if(strlen(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode))
+				{
+					gchar *_command = g_strconcat(command, " --mode='", LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_add_mode, "' ", archive->files, NULL);
+					g_free(command);
+					command = _command;
+				}
+				else
+				{
+					gchar *_command = g_strconcat(command, archive->files, NULL);
+					g_free(command);
+					command = _command;
+
+				}
+			}
 			if(command)
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 		} else
