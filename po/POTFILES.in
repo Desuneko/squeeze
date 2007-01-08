@@ -13,6 +13,7 @@ src/new_dialog.c
 src/add_dialog.c
 src/extract_dialog.c
 src/preferences_dialog.c
+src/button_drag_box.c
 src/properties_dialog.c
 
 src/tool_bar.c
