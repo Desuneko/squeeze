@@ -62,5 +62,9 @@ struct _SQButtonDragBoxClass
 GType      sq_button_drag_box_get_type();
 GtkWidget *sq_button_drag_box_new();
 
+void       sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons);
+void       sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label);
+void       sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible);
+
 G_END_DECLS
 #endif /* __SQRCHIVER_BUTTON_DRAG_BOX_H__*/

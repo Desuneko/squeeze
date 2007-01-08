@@ -27,15 +27,6 @@
 
 #define SQ_INDICATOR_SIZE 9
 
-static void
-sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons);
-
-static void
-sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label);
-
-static void
-sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible);
-
 static GdkPixbuf*
 sq_create_icon_from_widget(GtkWidget *widget);
 
@@ -114,17 +105,10 @@ sq_button_drag_box_new()
 
 	box = g_object_new(SQ_TYPE_BUTTON_DRAG_BOX, NULL);
 
-	sq_button_drag_box_add_fixed_button(SQ_BUTTON_DRAG_BOX(box), _("Filename"));
-
-	sq_button_drag_box_add_button(SQ_BUTTON_DRAG_BOX(box), "Size", TRUE);
-	sq_button_drag_box_add_button(SQ_BUTTON_DRAG_BOX(box), "Time", TRUE);
-
-	sq_button_drag_box_lock_buttons(SQ_BUTTON_DRAG_BOX(box), 1);
-
 	return box;
 }
 
-static void
+void
 sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label)
 {
 	GtkWidget *button = gtk_button_new_with_label(label);
@@ -136,7 +120,7 @@ sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label)
 	g_signal_connect(G_OBJECT(button), "focus", G_CALLBACK(cb_signal_blocker), NULL);
 }
 
-static void
+void
 sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible)
 {
 	GtkWidget *button = gtk_button_new_with_label(label);
@@ -152,7 +136,7 @@ sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean
 	g_signal_connect(G_OBJECT(button), "focus", G_CALLBACK(cb_signal_blocker), NULL);
 }
 
-static void
+void
 sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons)
 {
 	box->locked_buttons = buttons;

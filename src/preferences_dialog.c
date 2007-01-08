@@ -33,10 +33,13 @@ static void
 sq_preferences_dialog_init(SQPreferencesDialog *archive);
 
 static void
-cb_sq_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gpointer user_data);
+cb_sq_preferences_dialog_item_changed(GtkWidget *widget, gpointer user_data);
+
+inline static void
+sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog);
 
 static GtkWidget *
-sq_preferences_dialog_create_page(LSQArchiveSupport *support);
+sq_preferences_dialog_create_support_object_page(LSQArchiveSupport *support);
 
 GType
 sq_preferences_dialog_get_type ()
@@ -75,7 +78,6 @@ sq_preferences_dialog_init(SQPreferencesDialog *dialog)
 	GtkWidget *box;
 	GtkWidget *label;
 	GtkWidget *frame;
-	GtkWidget *iconview;
 	dialog->notebook = gtk_notebook_new();
 
 	box = gtk_vbox_new(FALSE, 0);
@@ -121,52 +123,7 @@ sq_preferences_dialog_init(SQPreferencesDialog *dialog)
 	gtk_container_add(GTK_CONTAINER(frame), nav_vbox);
 	gtk_container_set_border_width(GTK_CONTAINER(nav_vbox), 0);
 
-	box = gtk_hbox_new(FALSE, 0);
-	label = gtk_label_new_with_mnemonic(_("_Archivers"));
-	gtk_notebook_append_page(GTK_NOTEBOOK(dialog->notebook), box, label);
-
-	GtkTreeModel *store = GTK_TREE_MODEL(gtk_list_store_new(2, GDK_TYPE_PIXBUF, G_TYPE_STRING));
-	GtkCellRenderer *render = gtk_cell_renderer_pixbuf_new();
-
-	iconview = gtk_icon_view_new_with_model(store);
-	g_signal_connect(G_OBJECT(iconview), "item-activated", (GCallback)cb_sq_preferences_dialog_item_activated, dialog);
-
-	GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_size_request(scroll, 84, 84);
-
-	gtk_container_add(GTK_CONTAINER(scroll), iconview);
-	/* gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), iconview); */
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
-	gtk_scrolled_window_set_placement(GTK_SCROLLED_WINDOW(scroll), GTK_CORNER_TOP_RIGHT);
-	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll), GTK_SHADOW_IN);
-
-	render = gtk_cell_renderer_text_new();
-	gtk_icon_view_set_item_width(GTK_ICON_VIEW(iconview), 48);
-	gtk_icon_view_set_orientation(GTK_ICON_VIEW(iconview), GTK_ORIENTATION_VERTICAL);
-	gtk_icon_view_set_pixbuf_column(GTK_ICON_VIEW(iconview), 0);
-	gtk_icon_view_set_text_column(GTK_ICON_VIEW(iconview), 1);
-
-	/* TODO: auto gen this here */
-
-	GtkTreeIter iter;
-	gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-	gtk_list_store_set(GTK_LIST_STORE(store), &iter, 1, "zip", -1);
-	gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-	gtk_list_store_set(GTK_LIST_STORE(store), &iter, 1, "tar", -1);
-	gtk_list_store_append(GTK_LIST_STORE(store), &iter);
-	gtk_list_store_set(GTK_LIST_STORE(store), &iter, 1, "ehmm", -1);
-
-	gtk_widget_show(iconview);
-
-	dialog->support.notebook = gtk_notebook_new();
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
-	gtk_notebook_set_show_border(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
-
-	gtk_notebook_append_page(GTK_NOTEBOOK(dialog->support.notebook), sq_preferences_dialog_create_page(NULL), NULL);
-
-	gtk_box_pack_start(GTK_BOX(box), scroll, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(box), dialog->support.notebook, TRUE, TRUE, 0);
-	gtk_widget_show_all(box);
+	sq_preferences_dialog_create_support_page(dialog);
 
 	box = gtk_hbox_new(FALSE, 0);
 	label = gtk_label_new_with_mnemonic(_("_Behaviour"));
@@ -192,8 +149,75 @@ sq_preferences_dialog_new()
 	return dialog;
 }
 
+inline static void
+sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog)
+{
+	GtkWidget *iconview;
+	GtkWidget *label;
+	GtkWidget *box = gtk_hbox_new(FALSE, 0);
+	label = gtk_label_new_with_mnemonic(_("_Archivers"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(dialog->notebook), box, label);
+
+	GtkTreeModel *store = GTK_TREE_MODEL(gtk_list_store_new(2, GDK_TYPE_PIXBUF, G_TYPE_STRING));
+	GtkCellRenderer *render = gtk_cell_renderer_pixbuf_new();
+
+	iconview = gtk_icon_view_new_with_model(store);
+	g_signal_connect(G_OBJECT(iconview), "selection-changed", (GCallback)cb_sq_preferences_dialog_item_changed, dialog);
+
+	GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_set_size_request(scroll, 84, 84);
+
+	gtk_container_add(GTK_CONTAINER(scroll), iconview);
+	/* gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), iconview); */
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_set_placement(GTK_SCROLLED_WINDOW(scroll), GTK_CORNER_TOP_RIGHT);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll), GTK_SHADOW_IN);
+
+	render = gtk_cell_renderer_text_new();
+	g_object_set(G_OBJECT(render), "ellipsize", PANGO_ELLIPSIZE_END, "ellipsize-set", TRUE, NULL);
+	gtk_icon_view_set_item_width(GTK_ICON_VIEW(iconview), 48);
+	/* gtk_icon_view_set_orientation(GTK_ICON_VIEW(iconview), GTK_ORIENTATION_HORIZONTAL); */
+	gtk_icon_view_set_columns(GTK_ICON_VIEW(iconview), 1);
+	gtk_icon_view_set_pixbuf_column(GTK_ICON_VIEW(iconview), 0);
+	gtk_icon_view_set_text_column(GTK_ICON_VIEW(iconview), 1);
+
+	dialog->support.notebook = gtk_notebook_new();
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
+
+	GSList *sup_iter, *support_list = sup_iter = lsq_get_registered_support_list();
+
+	GtkTreeIter iter;
+	LSQArchiveSupport *support;
+
+	while(sup_iter)
+	{
+		support = LSQ_ARCHIVE_SUPPORT(sup_iter->data);
+		gtk_list_store_append(GTK_LIST_STORE(store), &iter);
+		gtk_list_store_set(GTK_LIST_STORE(store), &iter, 1, lsq_archive_support_get_id(support), -1);
+		sup_iter = g_slist_next(sup_iter);
+
+		gtk_notebook_append_page(GTK_NOTEBOOK(dialog->support.notebook), sq_preferences_dialog_create_support_object_page(support), NULL);
+	}
+
+	g_slist_free(support_list);
+
+	GtkTreePath *path = gtk_tree_path_new_from_indices(0, -1);
+
+	gtk_icon_view_set_cursor(GTK_ICON_VIEW(iconview), path, NULL, FALSE);
+	gtk_icon_view_select_path(GTK_ICON_VIEW(iconview), path);
+
+	gtk_tree_path_free(path);
+
+	gtk_widget_show(iconview);
+
+	gtk_box_pack_start(GTK_BOX(box), scroll, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(box), dialog->support.notebook, TRUE, TRUE, 0);
+	gtk_widget_show_all(box);
+}
+
 static GtkWidget *
-sq_preferences_dialog_create_page(LSQArchiveSupport *support)
+sq_preferences_dialog_create_support_object_page(LSQArchiveSupport *support)
 {
 	GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
 
@@ -201,13 +225,33 @@ sq_preferences_dialog_create_page(LSQArchiveSupport *support)
 
 	gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 0);
 
+	sq_button_drag_box_add_fixed_button(SQ_BUTTON_DRAG_BOX(button_box), _("Filename"));
+	sq_button_drag_box_lock_buttons(SQ_BUTTON_DRAG_BOX(button_box), 1);
+
+	GSList *iter, *view_props = iter = lsq_archive_support_list_properties(support, "view");
+	GParamSpec *spec;
+	gboolean visible;
+
+	while(iter)
+	{
+		spec = G_PARAM_SPEC(iter->data);
+		g_object_get(G_OBJECT(support), g_param_spec_get_name(spec), &visible, NULL);
+		sq_button_drag_box_add_button(SQ_BUTTON_DRAG_BOX(button_box), g_param_spec_get_nick(spec), visible);
+		iter = g_slist_next(iter);
+	}
+
+	g_slist_free(view_props);
+
 	return vbox;
 }
 
 static void
-cb_sq_preferences_dialog_item_activated(GtkWidget *widget, GtkTreePath *path, gpointer user_data)
+cb_sq_preferences_dialog_item_changed(GtkWidget *widget, gpointer user_data)
 {
 	SQPreferencesDialog *dialog = SQ_PREFERENCES_DIALOG(user_data);
+	GtkTreePath *path;
+	gtk_icon_view_get_cursor(GTK_ICON_VIEW(widget), &path, NULL);
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(dialog->support.notebook), gtk_tree_path_get_indices(path)[0]);
+	gtk_tree_path_free(path);
 }
 

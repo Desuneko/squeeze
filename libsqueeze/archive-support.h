@@ -94,10 +94,12 @@ LSQArchiveSupport *  lsq_archive_support_new();
 void                 lsq_archive_support_add_mime(LSQArchiveSupport *support, gchar *mime);
 gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,const gchar *mime);
 
+GSList *             lsq_get_registered_support_list();
 gboolean             lsq_register_support(LSQArchiveSupport *);
 LSQArchiveSupport *  lsq_get_support_for_mime(ThunarVfsMimeInfo *mime_info);
 LSQArchiveSupport *  lsq_get_support_for_mime_from_slist(GSList *list, const gchar *mime);
 
+const gchar *        lsq_archive_support_get_id(LSQArchiveSupport *support);
 gint                 lsq_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime);
 gint                 lsq_archive_support_lookup_support(gconstpointer support, gconstpointer mime);
 

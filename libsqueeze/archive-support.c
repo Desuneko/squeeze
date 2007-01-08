@@ -102,6 +102,15 @@ lsq_archive_support_new()
 /*
  *
  */
+const gchar *
+lsq_archive_support_get_id(LSQArchiveSupport *support)
+{
+	return support->id;
+}
+
+/*
+ *
+ */
 void
 lsq_archive_support_add_mime(LSQArchiveSupport *support, gchar *mime)
 {
@@ -120,6 +129,15 @@ lsq_archive_support_mime_supported(LSQArchiveSupport *support, const gchar *mime
 	if(!result->data)
 		return FALSE;
 	return TRUE;
+}
+
+/*
+ *
+ */
+GSList *
+lsq_get_registered_support_list()
+{
+	return g_slist_copy(lsq_archive_support_list);
 }
 
 /*
