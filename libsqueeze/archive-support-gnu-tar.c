@@ -473,23 +473,23 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 	{
 		i = LSQ_ARCHIVE_PROP_USER;
 		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Permissions"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Permissions"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING,_("Owner/Group"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING,_("Owner/Group"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Size"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Date"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Date"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Time"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
 		}
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))

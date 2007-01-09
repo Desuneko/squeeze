@@ -311,31 +311,31 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 	{
 		i = LSQ_ARCHIVE_PROP_USER;
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Size"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING,_("Method"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING,_("Method"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_UINT64, _("Compressed Size"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Compressed Size"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Ratio"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Ratio"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Date"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Date"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Time"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
 		}
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32) {
-			lsq_archive_set_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
 		gchar *command = g_strconcat("unzip -lv -qq " , archive->path, NULL);

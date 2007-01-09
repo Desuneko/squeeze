@@ -450,11 +450,11 @@ lsq_archive_get_entry_property_name(LSQArchive *archive, guint i)
 
 /*
  * void
- * lsq_archive_set_property_type(LSQArchive *archive, guint i, GType *, const gchar *)
+ * lsq_archive_set_entry_property_type(LSQArchive *archive, guint i, GType *, const gchar *)
  *
  */
 void
-lsq_archive_set_property_type(LSQArchive *archive, guint i, GType type, const gchar *name)
+lsq_archive_set_entry_property_type(LSQArchive *archive, guint i, GType type, const gchar *name)
 {
 
 #ifdef DEBUG
@@ -472,11 +472,11 @@ lsq_archive_set_property_type(LSQArchive *archive, guint i, GType type, const gc
 
 /*
  * void
- * lsq_archive_set_property_typesv(LSQArchive *archive, GType *)
+ * lsq_archive_set_entry_property_typesv(LSQArchive *archive, GType *)
  *
  */
 void
-lsq_archive_set_property_typesv(LSQArchive *archive, GType *types, const gchar **names)
+lsq_archive_set_entry_property_typesv(LSQArchive *archive, GType *types, const gchar **names)
 {
 	guint size = 0;
 	GType *type_iter = types;
@@ -501,6 +501,16 @@ lsq_archive_set_property_typesv(LSQArchive *archive, GType *types, const gchar *
 		names_iter++;
 		name_iter++;
 	}
+}
+
+void
+lsq_archive_clear_entry_property_types(LSQArchive *archive)
+{
+	g_free(archive->entry_property_types);
+	g_free(archive->entry_property_names);
+	archive->entry_property_types = NULL;
+	archive->entry_property_names = NULL;
+	archive->entry_n_property = 0;
 }
 
 guint

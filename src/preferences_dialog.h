@@ -38,6 +38,12 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
 			sq_preferences_dialog_get_type()))
 
+typedef struct
+{
+	LSQArchiveSupport *support;
+	GtkWidget *box;
+} SQSupportTuple;
+
 typedef struct _SQPreferencesDialog SQPreferencesDialog;
 
 struct _SQPreferencesDialog
@@ -56,6 +62,7 @@ struct _SQPreferencesDialog
 	} general;
 	struct {
 		GtkWidget *notebook;
+		GSList *support_list;
 	} support;
 };
 
@@ -66,6 +73,7 @@ struct _SQPreferencesDialogClass
 	GtkDialogClass parent;
 };
 
+GType      sq_preferences_dialog_get_type ();
 GtkWidget *sq_preferences_dialog_new();
 
 G_END_DECLS

@@ -136,8 +136,9 @@ LSQArchiveIter     *lsq_archive_add_file(LSQArchive *, const gchar *);
 LSQArchiveIter     *lsq_archive_get_iter(LSQArchive *, const gchar *);
 GType               lsq_archive_get_entry_property_type(LSQArchive *, guint);
 const gchar        *lsq_archive_get_entry_property_name(LSQArchive *, guint);
-void                lsq_archive_set_property_type(LSQArchive *, guint, GType, const gchar *);
-void                lsq_archive_set_property_typesv(LSQArchive *, GType *, const gchar **);
+void                lsq_archive_clear_entry_property_types(LSQArchive *);
+void                lsq_archive_set_entry_property_type(LSQArchive *, guint, GType, const gchar *);
+void                lsq_archive_set_entry_property_typesv(LSQArchive *, GType *, const gchar **);
 guint               lsq_archive_n_property(LSQArchive *);
 
 G_END_DECLS

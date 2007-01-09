@@ -26,9 +26,16 @@
 #include "button_drag_box.h"
 
 #define SQ_INDICATOR_SIZE 9
+#define SQ_BUTTON_USER_DATA "sq-user-data"
+#define SQ_DRAG_TARGET_ID "_SQ_BUTTON_DRAG_BOX"
 
 static GdkPixbuf*
 sq_create_icon_from_widget(GtkWidget *widget);
+
+static void
+sq_create_indicator(SQButtonDragBox *box, gint x, gint y, gint width, gint height);
+static void
+sq_delete_indicator(SQButtonDragBox *box);
 
 static gboolean
 cb_signal_blocker(GtkWidget *widget, gpointer user_data);
@@ -71,7 +78,7 @@ sq_button_drag_box_init(SQButtonDragBox *box)
 	box->visible_box = gtk_hbox_new(FALSE, 0);
 	box->hidden_box = gtk_hbox_new(FALSE, 0);
 
-	box->entry.target = "_SQ_BUTTON_DRAG_BOX";
+	box->entry.target = SQ_DRAG_TARGET_ID;
 	box->entry.flags = GTK_TARGET_SAME_APP;
 	box->entry.info = 2;
 
@@ -109,9 +116,11 @@ sq_button_drag_box_new()
 }
 
 void
-sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label)
+sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label, gpointer user_data)
 {
 	GtkWidget *button = gtk_button_new_with_label(label);
+
+	g_object_set_data(G_OBJECT(button), SQ_BUTTON_USER_DATA, user_data);
 
 	gtk_box_pack_start(GTK_BOX(box->visible_box), button, FALSE, FALSE, 0);
 
@@ -121,9 +130,11 @@ sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label)
 }
 
 void
-sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible)
+sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible, gpointer user_data)
 {
 	GtkWidget *button = gtk_button_new_with_label(label);
+
+	g_object_set_data(G_OBJECT(button), SQ_BUTTON_USER_DATA, user_data);
 
 	gtk_box_pack_start(visible?GTK_BOX(box->visible_box):GTK_BOX(box->hidden_box), button, FALSE, FALSE, 0);
 
@@ -140,6 +151,48 @@ void
 sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons)
 {
 	box->locked_buttons = buttons;
+}
+
+GSList *
+sq_button_drag_box_get_visible(SQButtonDragBox *box)
+{
+	GList *iter, *children = iter = gtk_container_get_children(GTK_CONTAINER(box->visible_box));
+	GSList *list = NULL;
+
+	while(iter)
+	{
+		if(GTK_WIDGET_VISIBLE(iter->data))
+		{
+			list = g_slist_append(list, g_object_get_data(G_OBJECT(iter->data), SQ_BUTTON_USER_DATA));
+		}
+
+		iter = g_list_next(iter);
+	}
+
+	g_list_free(children);
+
+	return list;
+}
+
+GSList *
+sq_button_drag_box_get_hidden(SQButtonDragBox *box)
+{
+	GList *iter, *children = iter = gtk_container_get_children(GTK_CONTAINER(box->hidden_box));
+	GSList *list = NULL;
+
+	while(iter)
+	{
+		if(GTK_WIDGET_VISIBLE(iter->data))
+		{
+			list = g_slist_append(list, g_object_get_data(G_OBJECT(iter->data), SQ_BUTTON_USER_DATA));
+		}
+
+		iter = g_list_next(iter);
+	}
+
+	g_list_free(children);
+
+	return list;
 }
 
 static GdkPixbuf*
@@ -164,6 +217,8 @@ sq_create_indicator(SQButtonDragBox *box, gint x, gint y, gint width, gint heigh
 		GDK_WINDOW_CHILD, 
 		NULL, NULL, NULL, FALSE
 	};
+
+	sq_delete_indicator(box);
 
 	box->indicator = gdk_window_new(gtk_widget_get_parent_window(box->visible_box), &attributes, attr_mask);
 	gdk_window_set_user_data(box->indicator, box->visible_box);
@@ -215,7 +270,7 @@ static void
 cb_sq_button_data_get(GtkWidget *widget, GdkDragContext *context, GtkSelectionData *data, guint info, guint time, gpointer user_data)
 {
 	gtk_widget_hide(widget);
-	gtk_selection_data_set(data, gdk_atom_intern("_SQ_BUTTON_DRAG_BOX", FALSE), 8, NULL, 0);
+	gtk_selection_data_set(data, gdk_atom_intern(SQ_DRAG_TARGET_ID, FALSE), 8, NULL, 0);
 }
 
 static void

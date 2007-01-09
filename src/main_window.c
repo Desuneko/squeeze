@@ -41,6 +41,7 @@
 #include "settings.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
+#include "button_drag_box.h"
 
 #ifdef ENABLE_PATHBAR
 #include "path_bar.h"
@@ -772,6 +773,44 @@ cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = sq_preferences_dialog_new();
 
 	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	GSList *iter = SQ_PREFERENCES_DIALOG(dialog)->support.support_list;
+	SQButtonDragBox *box;
+	LSQArchiveSupport *support;
+	GSList *buttons, *button_iter;
+	
+	while(iter)
+	{
+		support = ((SQSupportTuple*)iter->data)->support;
+		box = SQ_BUTTON_DRAG_BOX(((SQSupportTuple*)iter->data)->box);
+
+		buttons = button_iter = sq_button_drag_box_get_visible(box);
+
+		while(button_iter)
+		{
+			g_object_set(G_OBJECT(support), (const gchar*)button_iter->data, TRUE, NULL);
+
+			button_iter = g_slist_next(button_iter);
+		}
+		g_slist_free(buttons);
+
+		buttons = button_iter = sq_button_drag_box_get_hidden(box);
+
+		while(button_iter)
+		{
+			g_object_set(G_OBJECT(support), (const gchar*)button_iter->data, FALSE, NULL);
+
+			button_iter = g_slist_next(button_iter);
+		}
+		g_slist_free(buttons);
+
+		g_free(iter->data);
+
+		iter = g_slist_next(iter);
+	}
+	
+	g_slist_free(SQ_PREFERENCES_DIALOG(dialog)->support.support_list);
+	SQ_PREFERENCES_DIALOG(dialog)->support.support_list = NULL;
 
 	gtk_widget_destroy(dialog);
 }

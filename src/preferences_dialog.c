@@ -23,8 +23,8 @@
 #include <libsqueeze/libsqueeze.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "preferences_dialog.h"
 #include "button_drag_box.h"
+#include "preferences_dialog.h"
 
 static void
 sq_preferences_dialog_class_init(SQPreferencesDialogClass *archive_class);
@@ -39,7 +39,7 @@ inline static void
 sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog);
 
 static GtkWidget *
-sq_preferences_dialog_create_support_object_page(LSQArchiveSupport *support);
+sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple);
 
 GType
 sq_preferences_dialog_get_type ()
@@ -185,19 +185,25 @@ sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog)
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
 	gtk_notebook_set_show_border(GTK_NOTEBOOK(dialog->support.notebook), FALSE);
 
+	dialog->support.support_list = NULL;
+
 	GSList *sup_iter, *support_list = sup_iter = lsq_get_registered_support_list();
 
 	GtkTreeIter iter;
 	LSQArchiveSupport *support;
+	SQSupportTuple *tuple;
 
 	while(sup_iter)
 	{
-		support = LSQ_ARCHIVE_SUPPORT(sup_iter->data);
+		tuple = g_new(SQSupportTuple, 1);
+		tuple->support = support = LSQ_ARCHIVE_SUPPORT(sup_iter->data);
 		gtk_list_store_append(GTK_LIST_STORE(store), &iter);
 		gtk_list_store_set(GTK_LIST_STORE(store), &iter, 1, lsq_archive_support_get_id(support), -1);
 		sup_iter = g_slist_next(sup_iter);
 
-		gtk_notebook_append_page(GTK_NOTEBOOK(dialog->support.notebook), sq_preferences_dialog_create_support_object_page(support), NULL);
+		gtk_notebook_append_page(GTK_NOTEBOOK(dialog->support.notebook), sq_preferences_dialog_create_support_object_page(tuple), NULL);
+
+		dialog->support.support_list = g_slist_prepend(dialog->support.support_list, tuple);
 	}
 
 	g_slist_free(support_list);
@@ -217,26 +223,27 @@ sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog)
 }
 
 static GtkWidget *
-sq_preferences_dialog_create_support_object_page(LSQArchiveSupport *support)
+sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple)
 {
 	GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
 
-	GtkWidget *button_box = sq_button_drag_box_new();
+	tuple->box = sq_button_drag_box_new();
+	SQButtonDragBox *button_box = SQ_BUTTON_DRAG_BOX(tuple->box);
 
-	gtk_box_pack_start(GTK_BOX(vbox), button_box, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(vbox), tuple->box, FALSE, FALSE, 0);
 
-	sq_button_drag_box_add_fixed_button(SQ_BUTTON_DRAG_BOX(button_box), _("Filename"));
-	sq_button_drag_box_lock_buttons(SQ_BUTTON_DRAG_BOX(button_box), 1);
+	sq_button_drag_box_add_fixed_button(button_box, _("Filename"), NULL);
+	sq_button_drag_box_lock_buttons(button_box, 1);
 
-	GSList *iter, *view_props = iter = lsq_archive_support_list_properties(support, "view");
+	GSList *iter, *view_props = iter = lsq_archive_support_list_properties(tuple->support, "view");
 	GParamSpec *spec;
 	gboolean visible;
 
 	while(iter)
 	{
 		spec = G_PARAM_SPEC(iter->data);
-		g_object_get(G_OBJECT(support), g_param_spec_get_name(spec), &visible, NULL);
-		sq_button_drag_box_add_button(SQ_BUTTON_DRAG_BOX(button_box), g_param_spec_get_nick(spec), visible);
+		g_object_get(G_OBJECT(tuple->support), g_param_spec_get_name(spec), &visible, NULL);
+		sq_button_drag_box_add_button(button_box, g_param_spec_get_nick(spec), visible, (gpointer)g_param_spec_get_name(spec));
 		iter = g_slist_next(iter);
 	}
 
