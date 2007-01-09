@@ -88,8 +88,9 @@ sq_properties_dialog_init(SQPropertiesDialog *dialog)
 	gtk_box_pack_start (GTK_BOX (box), label, FALSE, TRUE, 0);
 	gtk_widget_show (label);
 
-
-
+	dialog->filename_label = gtk_label_new("");
+	gtk_table_attach (dialog->table, dialog->filename_label, 1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 3);
+	gtk_widget_show(dialog->filename_label);
 
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
 	    GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
@@ -109,6 +110,8 @@ sq_properties_dialog_new(LSQArchive *archive, GtkIconTheme *icon_theme)
 
 	GdkPixbuf *icon = gtk_icon_theme_load_icon(icon_theme, thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, icon_theme), 48, 0, NULL);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(((SQPropertiesDialog *)dialog)->icon_image), icon);
+
+	gtk_label_set_text(GTK_LABEL(((SQPropertiesDialog *)dialog)->filename_label), lsq_archive_get_filename(archive));
 
 	return dialog;
 }

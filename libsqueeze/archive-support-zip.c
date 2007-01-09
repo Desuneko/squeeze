@@ -309,6 +309,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 	}
 	else
 	{
+		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));

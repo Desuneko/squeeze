@@ -454,8 +454,12 @@ sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 			entry = lsq_archive_iter_nth_child(archive, entry, index);
 
 		if(!entry)
+		{
+#ifdef DEBUG
 			g_debug("iter %d not found", index);
-		g_return_val_if_fail(entry, FALSE);
+#endif
+			return FALSE;
+		}
 	}
 
 	iter->stamp = store->stamp;

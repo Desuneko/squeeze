@@ -50,6 +50,7 @@ struct _SQPropertiesDialog
 	GtkDialog parent;
 	GtkTable  *table;
 	GtkWidget *icon_image;
+	GtkWidget *filename_label;
 };
 
 typedef struct _SQPropertiesDialogClass SQPropertiesDialogClass;

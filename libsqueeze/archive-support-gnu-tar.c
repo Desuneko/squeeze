@@ -471,6 +471,7 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 	}
 	else
 	{
+		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
 		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Permissions"));
