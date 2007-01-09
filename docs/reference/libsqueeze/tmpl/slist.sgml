@@ -1,0 +1,57 @@
+<!-- ##### SECTION Title ##### -->
+slist
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT LSQSList ##### -->
+<para>
+
+</para>
+
+@entry: 
+@next: 
+
+<!-- ##### FUNCTION lsq_slist_insert_sorted_single ##### -->
+<para>
+
+</para>
+
+@list: 
+@entry: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_slist_length ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_slist_free ##### -->
+<para>
+
+</para>
+
+@list: 
+
+

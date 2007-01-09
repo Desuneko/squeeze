@@ -113,7 +113,6 @@ const gchar *       lsq_archive_get_status_msg(LSQArchive *archive);
 LSQArchiveStatus    lsq_archive_get_old_status(LSQArchive *archive);
 const gchar *       lsq_archive_get_filename(LSQArchive *archive);
 
-/* new */
 gboolean            lsq_archive_iter_is_directory(const LSQArchive *, const LSQArchiveIter *);
 guint               lsq_archive_iter_n_children(const LSQArchive *, const LSQArchiveIter *);
 LSQArchiveIter     *lsq_archive_iter_nth_child(LSQArchive *, LSQArchiveIter *, guint);

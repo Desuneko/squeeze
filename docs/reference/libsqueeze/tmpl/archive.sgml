@@ -1,0 +1,360 @@
+<!-- ##### SECTION Title ##### -->
+LSQArchive
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM LSQArchiveStatus ##### -->
+<para>
+
+</para>
+
+@LSQ_ARCHIVESTATUS_INIT: 
+@LSQ_ARCHIVESTATUS_IDLE: 
+@LSQ_ARCHIVESTATUS_ADD: 
+@LSQ_ARCHIVESTATUS_EXTRACT: 
+@LSQ_ARCHIVESTATUS_REMOVE: 
+@LSQ_ARCHIVESTATUS_REFRESH: 
+@LSQ_ARCHIVESTATUS_ERROR: 
+@LSQ_ARCHIVESTATUS_CUSTOM: 
+@LSQ_ARCHIVESTATUS_USERBREAK: 
+
+<!-- ##### STRUCT LSQEntry ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF LSQArchiveIter ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT LSQArchive ##### -->
+<para>
+
+</para>
+
+@parent: 
+@path: 
+@path_info: 
+@file_info: 
+@mime_info: 
+@entry_n_property: 
+@entry_property_types: 
+@entry_property_names: 
+@root_entry: 
+@old_status: 
+@status_msg: 
+@progress: 
+@child_pid: 
+@ioc_in: 
+@ioc_out: 
+@ioc_err: 
+@support: 
+@tmp_file: 
+@files: 
+@has_passwd: 
+
+<!-- ##### FUNCTION lsq_archive_new ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_set_status ##### -->
+<para>
+
+</para>
+
+@archive: 
+@status: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_status ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_status_msg ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_old_status ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_filename ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_is_directory ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_n_children ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_nth_child ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_add_child ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_get_child ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_del_child ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_mime ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_prop_str ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_prop_uint ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_prop_uint64 ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_prop_value ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_props ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_set_propsv ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_get_prop_value ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_iter_get_icon_name ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@icon_theme: 
+
+
+<!-- ##### FUNCTION lsq_archive_add_file ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_iter ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_entry_property_type ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_entry_property_name ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_set_property_type ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+@Param4: 
+
+
+<!-- ##### FUNCTION lsq_archive_set_property_typesv ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Param3: 
+
+
+<!-- ##### FUNCTION lsq_archive_n_property ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Returns: 
+
+

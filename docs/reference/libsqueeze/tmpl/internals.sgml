@@ -1,0 +1,53 @@
+<!-- ##### SECTION Title ##### -->
+internals
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION lsq_execute ##### -->
+<para>
+
+</para>
+
+@command: 
+@archive: 
+@function: 
+@f_in: 
+@f_out: 
+@f_err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_concat_filenames ##### -->
+<para>
+
+</para>
+
+@filenames: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_opened_archive_get_archive ##### -->
+<para>
+
+</para>
+
+@path: 
+@Returns: 
+
+

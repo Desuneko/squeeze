@@ -53,6 +53,7 @@ struct _SQPropertiesDialogClass
 };
 
 GtkWidget *sq_properties_dialog_new(LSQArchive *);
+void sq_properties_dialog_add_archive_property_str(SQPropertiesDialog *, const gchar *prop_name, const gchar *prop_value);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_PROPERTIES_DIALOG_H__ */

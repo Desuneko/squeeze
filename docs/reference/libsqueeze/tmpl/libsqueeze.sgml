@@ -1,0 +1,83 @@
+<!-- ##### SECTION Title ##### -->
+libsqueeze
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION lsq_init ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION lsq_shutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION lsq_new_archive ##### -->
+<para>
+
+</para>
+
+@path: 
+@overwrite: 
+@mime: 
+@lp_archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_open_archive ##### -->
+<para>
+
+</para>
+
+@path: 
+@lp_archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_close_archive ##### -->
+<para>
+
+</para>
+
+@archive: 
+
+
+<!-- ##### FUNCTION lsq_stop_archive_child ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_convert_mime_to_icon_name ##### -->
+<para>
+
+</para>
+
+@icon_theme: 
+@value: 
+
+

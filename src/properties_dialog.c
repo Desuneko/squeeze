@@ -83,7 +83,15 @@ sq_properties_dialog_new(LSQArchive *archive)
 			"title", _("Properties"),
 			NULL);
 
-	gtk_widget_set_size_request(GTK_WIDGET(dialog), 100, 200);
+	gtk_widget_set_size_request(GTK_WIDGET(dialog), 150, 200);
+
+	sq_properties_dialog_add_archive_property_str((SQPropertiesDialog *)dialog, _("Filename"), lsq_archive_get_filename(archive));
 
 	return dialog;
+}
+
+void
+sq_properties_dialog_add_archive_property_str(SQPropertiesDialog *dialog, const gchar *prop_name, const gchar *prop_value)
+{
+
 }

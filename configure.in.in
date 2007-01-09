@@ -46,6 +46,8 @@ AC_ISC_POSIX
 AC_MINIX
 AM_CONDITIONAL([HAVE_CYGWIN], [test "`uname | grep \"CYGWIN\"`" != ""])
 
+GTK_DOC_CHECK([1.0])
+
 
 dnl check for standard header files
 AC_PROG_CC
@@ -166,6 +168,10 @@ icons/Makefile
 icons/48x48/Makefile
 icons/scalable/Makefile
 pixmaps/Makefile
+docs/Makefile
+docs/reference/Makefile
+docs/reference/libsqueeze/Makefile
+docs/reference/libsqueeze/version.xml
 ])
 
 echo "----------------------------------------"
