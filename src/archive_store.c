@@ -396,6 +396,7 @@ sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
 	LSQArchive *archive = store->archive;
+	g_return_val_if_fail(index < lsq_archive_n_property(archive), G_TYPE_STRING);
 
 	if(!archive)
 		return G_TYPE_INVALID;
@@ -520,7 +521,13 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		}
 		else
 		{
-			lsq_archive_iter_get_prop_value(archive, entry, column, value);
+			if(column < (gint)lsq_archive_n_property(archive))
+				lsq_archive_iter_get_prop_value(archive, entry, column, value);
+			else
+			{
+				g_value_init(value, G_TYPE_STRING);
+				g_value_set_string(value, "..");
+			}
 		}
 	}
 	else
