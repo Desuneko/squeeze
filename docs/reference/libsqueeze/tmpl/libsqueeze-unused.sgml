@@ -1,0 +1,62 @@
+<!-- ##### STRUCT LSQSList ##### -->
+<para>
+
+</para>
+
+@entry: 
+@next: 
+
+<!-- ##### FUNCTION lsq_concat_filenames ##### -->
+<para>
+
+</para>
+
+@filenames: 
+@Returns: 
+
+<!-- ##### FUNCTION lsq_execute ##### -->
+<para>
+
+</para>
+
+@command: 
+@archive: 
+@function: 
+@f_in: 
+@f_out: 
+@f_err: 
+@Returns: 
+
+<!-- ##### FUNCTION lsq_opened_archive_get_archive ##### -->
+<para>
+
+</para>
+
+@path: 
+@Returns: 
+
+<!-- ##### FUNCTION lsq_slist_free ##### -->
+<para>
+
+</para>
+
+@list: 
+
+<!-- ##### FUNCTION lsq_slist_insert_sorted_single ##### -->
+<para>
+
+</para>
+
+@list: 
+@entry: 
+@Param3: 
+@Returns: 
+
+<!-- ##### FUNCTION lsq_slist_length ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+

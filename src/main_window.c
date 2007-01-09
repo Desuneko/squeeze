@@ -758,7 +758,7 @@ cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
 
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, NULL);
 
-	GtkWidget *dialog = sq_properties_dialog_new(lp_archive);
+	GtkWidget *dialog = sq_properties_dialog_new(lp_archive, window->icon_theme);
 
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
@@ -772,6 +772,8 @@ cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 	GtkWidget *dialog = sq_preferences_dialog_new();
 
 	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
 }
 
 static void

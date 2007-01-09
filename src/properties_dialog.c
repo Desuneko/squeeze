@@ -66,16 +66,38 @@ sq_properties_dialog_class_init(SQPropertiesDialogClass *dialog_class)
 static void
 sq_properties_dialog_init(SQPropertiesDialog *dialog)
 {
-	GtkWidget *tree_view = gtk_tree_view_new();
+	GtkWidget *box;
+	GtkWidget *label;
 
-	gtk_container_add(GTK_CONTAINER(((GtkDialog *)dialog)->vbox), tree_view);
+	dialog->table = (GtkTable *)gtk_table_new(2, 2, FALSE);
+
+	gtk_table_set_col_spacings (dialog->table, 12);
+	gtk_container_set_border_width(GTK_CONTAINER(dialog->table), 6);
+	gtk_container_add(GTK_CONTAINER(((GtkDialog *)dialog)->vbox), GTK_WIDGET(dialog->table));
+	gtk_widget_show (GTK_WIDGET(dialog->table));
+
+	box = gtk_hbox_new(6, FALSE);
+	gtk_table_attach (dialog->table, box, 0, 1, 0, 1, GTK_FILL, GTK_FILL, 0, 3);
+	gtk_widget_show (box);
+
+	dialog->icon_image = gtk_image_new();
+	gtk_box_pack_start (GTK_BOX (box), dialog->icon_image, FALSE, TRUE, 0);
+	gtk_widget_show (dialog->icon_image);
+
+	label = gtk_label_new(_("Name:"));
+	gtk_box_pack_start (GTK_BOX (box), label, FALSE, TRUE, 0);
+	gtk_widget_show (label);
+
+
+
+
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
 	    GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
 			NULL);
 }
 
 GtkWidget *
-sq_properties_dialog_new(LSQArchive *archive)
+sq_properties_dialog_new(LSQArchive *archive, GtkIconTheme *icon_theme)
 {
 	GtkWidget *dialog;
 
@@ -85,13 +107,8 @@ sq_properties_dialog_new(LSQArchive *archive)
 
 	gtk_widget_set_size_request(GTK_WIDGET(dialog), 150, 200);
 
-	sq_properties_dialog_add_archive_property_str((SQPropertiesDialog *)dialog, _("Filename"), lsq_archive_get_filename(archive));
+	GdkPixbuf *icon = gtk_icon_theme_load_icon(icon_theme, thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, icon_theme), 48, 0, NULL);
+	gtk_image_set_from_pixbuf(GTK_IMAGE(((SQPropertiesDialog *)dialog)->icon_image), icon);
 
 	return dialog;
-}
-
-void
-sq_properties_dialog_add_archive_property_str(SQPropertiesDialog *dialog, const gchar *prop_name, const gchar *prop_value)
-{
-
 }

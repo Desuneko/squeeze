@@ -1276,13 +1276,15 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 
 	g_strfreev(buf);
 
-	sq_archive_store_append_history(store, stack);
+	if(lsq_archive_iter_is_directory(store->archive, (LSQArchiveIter *)stack->data))
+	{
+		sq_archive_store_append_history(store, stack);
 
-	/* sq_archive_store_sort(store); */
-	sq_archive_store_sort(store);
-	sq_archive_store_refresh(store);
+		sq_archive_store_sort(store);
+		sq_archive_store_refresh(store);
 
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+		g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+	}
 
 	return TRUE;
 }

@@ -16,8 +16,13 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SQRCHIVER_PROPERTIES_DIALOG_H__
-#define __SQRCHIVER_PROPERTIES_DIALOG_H__
+/*
+ * The archive properties dialog is written to resemble the thunar file-
+ * properties dialog  written by Benedict Meurer for the Thunar file manager.
+ */
+
+#ifndef __SQ_PROPERTIES_DIALOG_H__
+#define __SQ_PROPERTIES_DIALOG_H__
 G_BEGIN_DECLS
 
 #define SQ_PROPERTIES_DIALOG(obj)         ( \
@@ -43,6 +48,8 @@ typedef struct _SQPropertiesDialog SQPropertiesDialog;
 struct _SQPropertiesDialog
 {
 	GtkDialog parent;
+	GtkTable  *table;
+	GtkWidget *icon_image;
 };
 
 typedef struct _SQPropertiesDialogClass SQPropertiesDialogClass;
@@ -52,7 +59,7 @@ struct _SQPropertiesDialogClass
 	GtkDialogClass parent;
 };
 
-GtkWidget *sq_properties_dialog_new(LSQArchive *);
+GtkWidget *sq_properties_dialog_new(LSQArchive *, GtkIconTheme *);
 void sq_properties_dialog_add_archive_property_str(SQPropertiesDialog *, const gchar *prop_name, const gchar *prop_value);
 
 G_END_DECLS
