@@ -37,7 +37,10 @@ cb_sq_preferences_dialog_item_changed(GtkWidget *widget, gpointer user_data);
 
 inline static void
 sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog);
-
+/*
+inline static void
+sq_preferences_dialog_create_general_page(SQPreferencesDialog *dialog);
+*/
 static GtkWidget *
 sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple);
 
@@ -148,6 +151,51 @@ sq_preferences_dialog_new()
 
 	return dialog;
 }
+
+/*
+inline static void
+sq_preferences_dialog_create_general_page(SQPreferencesDialog *dialog)
+{
+	box = gtk_vbox_new(FALSE, 0);
+	label = gtk_label_new_with_mnemonic(_("_General"));
+	gtk_notebook_append_page(GTK_NOTEBOOK(dialog->notebook), box, label);
+
+	frame  = gtk_frame_new(_("Archive viewer:"));
+	gtk_box_pack_start(GTK_BOX(box), frame,FALSE, FALSE, 0);
+	gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_NONE);
+	gtk_container_set_border_width(GTK_CONTAINER(frame), 0);
+
+	GtkWidget *_vbox = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(frame), _vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(_vbox), 0);
+
+	dialog->general.viewer.show_icons = gtk_check_button_new_with_mnemonic(_("_Show Icons"));
+	gtk_box_pack_start(GTK_BOX(_vbox), dialog->general.viewer.show_icons, FALSE, FALSE, 0);
+
+	dialog->general.viewer.rules_hint = gtk_check_button_new_with_mnemonic(_("_Rules Hint"));
+	gtk_box_pack_start(GTK_BOX(_vbox), dialog->general.viewer.rules_hint, FALSE, FALSE, 0);
+
+	frame  = gtk_frame_new(_("Sorting:"));
+	gtk_box_pack_start(GTK_BOX(_vbox), frame,FALSE, FALSE, 0);
+	gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_NONE);
+	gtk_container_set_border_width(GTK_CONTAINER(frame), 0);
+
+	GtkWidget *sort_vbox = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(frame), sort_vbox);
+	gtk_container_set_border_width(GTK_CONTAINER(sort_vbox), 0);
+
+	dialog->general.viewer.sorting.sort_case = gtk_check_button_new_with_mnemonic(_("Sort _Case Sensitive "));
+	gtk_box_pack_start(GTK_BOX(sort_vbox), dialog->general.viewer.sorting.sort_case, FALSE, FALSE, 0);
+
+	dialog->general.viewer.sorting.sort_folders = gtk_check_button_new_with_mnemonic(_("Sort _Folders First"));
+	gtk_box_pack_start(GTK_BOX(sort_vbox), dialog->general.viewer.sorting.sort_folders, FALSE, FALSE, 0);
+
+#ifdef SQ_MAIN_ANY_BAR
+  frame = sq_widget_factory_create_property_widget(window->widget_factory, G_OBJECT(window), "navigation-style");
+	gtk_box_pack_start(GTK_BOX(box), frame,FALSE, FALSE, 0);
+#endif
+}
+*/
 
 inline static void
 sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog)
