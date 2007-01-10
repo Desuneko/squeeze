@@ -75,6 +75,7 @@ void        sq_notebook_set_icon_theme(SQNotebook *, GtkIconTheme *);
 void        sq_notebook_get_active_archive(SQNotebook *, LSQArchive **, LSQArchiveSupport **);
 gboolean    sq_notebook_is_active_archive(SQNotebook *, LSQArchive *);
 GtkWidget  *sq_notebook_get_active_child(SQNotebook *notebook);
+SQArchiveStore *sq_notebook_get_active_store(SQNotebook *notebook);
 gboolean    sq_notebook_get_multi_tab(SQNotebook *notebook);
 void        sq_notebook_close_active_archive(SQNotebook *);
 

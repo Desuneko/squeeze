@@ -478,8 +478,6 @@ sq_widget_factory_create_property_widget(SQWidgetFactory *factory, GObject *obj,
 
 	g_value_unset(&value);
 
-	g_debug("created %p", widget);
-
 	return widget;
 }
 
@@ -791,8 +789,6 @@ cb_sq_widget_factory_property_notify(GObject *obj, GParamSpec *pspec, gpointer u
 {
 	GValue value, other_value;
 
-	g_debug("notify %p", user_data);
-
 	if(strcmp(g_param_spec_get_name(pspec), g_param_spec_get_name(g_object_get_data(G_OBJECT(user_data), SQ_PROPERTY_SPEC_DATA))))
 		return;
 
@@ -990,6 +986,5 @@ static void
 cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
 {
 	g_signal_handlers_disconnect_by_func(user_data, cb_sq_widget_factory_property_notify, obj);
-	g_debug("destroyed %p", obj);
 }
 

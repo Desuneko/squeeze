@@ -44,6 +44,9 @@ sq_notebook_get_property(GObject *object, guint prop_id, GValue *value, GParamSp
 static void
 sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview);
 
+static SQArchiveStore *
+sq_notebook_get_store(SQNotebook *notebook, gint page_nr);
+
 static void
 cb_notebook_close_archive(GtkButton *button, GtkWidget *child);
 
@@ -59,8 +62,12 @@ cb_sq_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *, guint page
 static void
 cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data);
 
+static void
+cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data);
+
 enum {
-	SQ_NOTEBOOK_MULTI_TAB = 1
+	SQ_NOTEBOOK_MULTI_TAB = 1,
+	SQ_NOTEBOOK_STORE_SHOW_ICONS
 };
 
 enum
@@ -159,6 +166,28 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 		"",
 		TRUE,
 		G_PARAM_READWRITE); g_object_class_install_property(object_class, SQ_NOTEBOOK_MULTI_TAB, pspec); 
+
+	pspec = g_param_spec_boolean("show_icons",
+		_("Show mime icons"),
+		_("Show the mime type icons for each entry"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, SQ_NOTEBOOK_STORE_SHOW_ICONS, pspec);
+/*
+	pspec = g_param_spec_boolean("sort_folders_first",
+		_("Sort folders before files"),
+		_("The folders will be put at the top of the list"),
+		TRUE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SORT_FOLDERS_FIRST, pspec);
+
+	pspec = g_param_spec_boolean("sort_case_sensitive",
+		_("Sort text case sensitive"),
+		_("Sort text case sensitive"),
+		TRUE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SORT_CASE_SENSITIVE, pspec);
+*/
 }
 
 static void
@@ -181,16 +210,15 @@ static void
 sq_notebook_dispose(GObject *object)
 {
 	/* TODO: unref archive_stores */
-	GtkWidget *child = NULL;
 	GtkNotebook *notebook = GTK_NOTEBOOK(object);
 	gint n = gtk_notebook_get_n_pages(notebook);
 	gint i = 0;
 	for(i = 0; i < n; i++)
 	{
-		child = gtk_notebook_get_nth_page(notebook, i);
-		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(child));
+		GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), i);
+		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 		GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
-
+		
 		LSQArchive *archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
 
 		if(archive)
@@ -231,6 +259,15 @@ sq_notebook_set_property(GObject *object, guint prop_id, const GValue *value, GP
 		case SQ_NOTEBOOK_MULTI_TAB:
 			SQ_NOTEBOOK(object)->multi_tab = g_value_get_boolean(value);		
 			break;
+		case SQ_NOTEBOOK_STORE_SHOW_ICONS:
+		{
+			SQArchiveStore *store = sq_notebook_get_active_store(SQ_NOTEBOOK(object));
+			if(store)
+				sq_archive_store_set_show_icons(store, g_value_get_boolean(value));
+			else
+				SQ_NOTEBOOK(object)->props._show_icons = g_value_get_boolean(value);
+			break;
+		}
 	}
 }
 
@@ -242,6 +279,15 @@ sq_notebook_get_property(GObject *object, guint prop_id, GValue *value, GParamSp
 		case SQ_NOTEBOOK_MULTI_TAB:
 			g_value_set_boolean(value, SQ_NOTEBOOK(object)->multi_tab);
 			break;
+		case SQ_NOTEBOOK_STORE_SHOW_ICONS:
+		{
+			SQArchiveStore *store = sq_notebook_get_active_store(SQ_NOTEBOOK(object));
+			if(store)
+				g_value_set_boolean(value, sq_archive_store_get_show_icons(store));
+			else
+				g_value_set_boolean(value, SQ_NOTEBOOK(object)->props._show_icons);
+			break;
+		}
 	}
 }
 
@@ -249,6 +295,25 @@ gboolean
 sq_notebook_get_multi_tab(SQNotebook *notebook)
 {
 	return notebook->multi_tab;
+}
+
+SQArchiveStore *
+sq_notebook_get_active_store(SQNotebook *notebook)
+{
+	gint page_nr = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+
+	return sq_notebook_get_store(notebook, page_nr);
+}
+
+static SQArchiveStore *
+sq_notebook_get_store(SQNotebook *notebook, gint page_nr)
+{
+	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
+	if(!scrolledwindow)
+		return NULL;
+	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
+	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+	return SQ_ARCHIVE_STORE(archive_store);
 }
 
 void
@@ -273,13 +338,10 @@ sq_notebook_set_navigation_bar(SQNotebook *notebook, SQNavigationBar *bar)
 
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
-		gint page_nr = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-		GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
-		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
-		GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+		SQArchiveStore *archive_store = sq_notebook_get_active_store(notebook);
 		notebook->navigation_bar = bar;
 		if(bar)
-			sq_navigation_bar_set_store(notebook->navigation_bar, SQ_ARCHIVE_STORE(archive_store));
+			sq_navigation_bar_set_store(notebook->navigation_bar, archive_store);
 		if(archive_store)
 			g_object_set(G_OBJECT(archive_store), "show_up_dir", notebook->props._up_dir, NULL);
 	}
@@ -314,6 +376,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
 
 	GtkTreeModel *tree_model = sq_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
+	g_signal_connect(G_OBJECT(tree_model), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, TRUE, TRUE, 0);
@@ -419,12 +482,9 @@ cb_notebook_close_archive(GtkButton *button, GtkWidget *child)
 void
 sq_notebook_close_active_archive(SQNotebook *notebook)
 {
-	GtkNotebook *_notebook = GTK_NOTEBOOK(notebook);
-	gint n = gtk_notebook_get_current_page(_notebook);
-
-	GtkWidget *child = gtk_notebook_get_nth_page(_notebook, n);
-
-	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(child));
+	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
+	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 
 	LSQArchive *archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
@@ -432,12 +492,12 @@ sq_notebook_close_active_archive(SQNotebook *notebook)
 	if(archive)
 		g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
 	if(SQ_NOTEBOOK(notebook)->navigation_bar)
-		sq_navigation_bar_set_store(((SQNotebook *)notebook)->navigation_bar, NULL);
+		sq_navigation_bar_set_store(notebook->navigation_bar, NULL);
 	g_object_unref(archive_store);
 
 	lsq_close_archive(archive);
 
-	gtk_notebook_remove_page(_notebook, n);
+	gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), n);
 	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED], 0, NULL);
 }
 
@@ -520,13 +580,14 @@ sq_notebook_set_icon_theme(SQNotebook *notebook, GtkIconTheme *icon_theme)
 static void
 cb_sq_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
-	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), page_nr);
-	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
-	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+	SQArchiveStore *archive_store = sq_notebook_get_store(notebook, page_nr);
 	if(notebook->navigation_bar)
-		sq_navigation_bar_set_store(notebook->navigation_bar, SQ_ARCHIVE_STORE(archive_store));
+		sq_navigation_bar_set_store(notebook->navigation_bar, archive_store);
 	if(archive_store)
+	{
 		g_object_set(G_OBJECT(archive_store), "show_up_dir", notebook->props._up_dir, NULL);
+		g_object_notify(G_OBJECT(notebook), "show-icons");
+	}
 }
 
 static void
@@ -550,15 +611,10 @@ cb_notebook_file_activated(SQArchiveStore *store, gchar *filename, SQNotebook *n
 gboolean
 sq_notebook_is_active_archive(SQNotebook *notebook, LSQArchive *archive)
 {
-	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-
-	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
-	if(!scrolledwindow)
+	SQArchiveStore *archive_store = sq_notebook_get_active_store(notebook);
+	if(!archive_store)
 		return FALSE;
-	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
-	GtkTreeModel *archive_store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
-
-	LSQArchive * lp_archive = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(archive_store));
+	LSQArchive * lp_archive = sq_archive_store_get_archive(archive_store);
 	if(lp_archive == archive)
 		return TRUE;
 	return FALSE;
@@ -640,12 +696,17 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 void
 sq_notebook_page_get_archive(SQNotebook *notebook, LSQArchive **lp_archive, LSQArchiveSupport **lp_support, gint n)
 {
-	GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), n);
-	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
-	GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+	SQArchiveStore *store = sq_notebook_get_store(notebook, n);
 		
 	if(lp_archive)
-		(*lp_archive) = sq_archive_store_get_archive(SQ_ARCHIVE_STORE(store));
+		(*lp_archive) = sq_archive_store_get_archive(store);
 	if(lp_support)
-		(*lp_support) = sq_archive_store_get_support(SQ_ARCHIVE_STORE(store));
+		(*lp_support) = sq_archive_store_get_support(store);
 }
+
+static void
+cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
+{
+	g_object_notify(user_data, g_param_spec_get_name(pspec));
+}
+

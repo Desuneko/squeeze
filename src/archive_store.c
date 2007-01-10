@@ -383,10 +383,7 @@ sq_archive_store_get_n_columns(GtkTreeModel *tree_model)
 	if(!archive)
 		return 0;
 	
-	if(store->props._show_icons)
-		return lsq_archive_n_property(archive) + 1;
-	else
-		return lsq_archive_n_property(archive);
+	return lsq_archive_n_property(archive) + 1;
 }
 
 static GType
@@ -396,18 +393,15 @@ sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
 	LSQArchive *archive = store->archive;
-	g_return_val_if_fail(index < lsq_archive_n_property(archive), G_TYPE_STRING);
+	g_return_val_if_fail(index < lsq_archive_n_property(archive), G_TYPE_INVALID);
 
 	if(!archive)
 		return G_TYPE_INVALID;
 
-	if(store->props._show_icons)
-	{
-		index--;
+	index--;
 
-		if(index < 0)
-			return G_TYPE_STRING;
-	}
+	if(index == -1) /* icon */
+		return G_TYPE_STRING; 
 
 	return lsq_archive_get_entry_property_type(archive, index);
 }
@@ -507,17 +501,16 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 
 	g_return_if_fail(archive);
 
-/*
-	if(store->props._show_icons)
-		column--;
-		*/
 	column--;
 
 	if(entry)
 	{
 		if(column == -1)
 		{
-			lsq_archive_iter_get_icon_name(archive, entry, value, store->icon_theme);
+			if(store->props._show_icons)
+				lsq_archive_iter_get_icon_name(archive, entry, value, store->icon_theme);
+			else
+				g_value_init(value, G_TYPE_STRING);
 		}
 		else
 		{
@@ -536,7 +529,8 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		{
 			case -1:
 				g_value_init(value, G_TYPE_STRING);
-				g_value_set_string(value, GTK_STOCK_GO_UP);
+				if(store->props._show_icons)
+					g_value_set_string(value, GTK_STOCK_GO_UP);
 				break;
 			case LSQ_ARCHIVE_PROP_FILENAME:
 				g_value_init(value, G_TYPE_STRING);
@@ -742,12 +736,8 @@ sq_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id,
 	if(store->sort_column == sort_col_id && store->sort_order == order)
 		return;
 
-	
-	if(store->props._show_icons)
-	{
-		if(sort_col_id == 0)
-			return;
-	}
+	if(sort_col_id == 0)
+		return;
 
 	store->sort_column = sort_col_id;
 	store->sort_order = order;
@@ -808,12 +798,7 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 	}
 
 	LSQArchive *archive = store->archive;
-	if(store->props._show_icons)
-		column = store->sort_column - 1;
-	else
-	{
-		column = store->sort_column;
-	}
+	column = store->sort_column - 1;
 
 	lsq_archive_iter_get_prop_value(archive, a, column, &prop_a);
 	lsq_archive_iter_get_prop_value(archive, b, column, &prop_b);
@@ -1335,19 +1320,26 @@ sq_archive_store_set_show_icons(SQArchiveStore *store, gboolean show)
 
 	GtkSortType sort_order;
 	gint sort_col = 0;
-	store->props._show_icons = show?1:0;
-	if(show)
+
+	show = show?1:0;
+
+	if(store->props._show_icons != show)
 	{
-		sq_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
-		sq_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col+1, sort_order);
+		store->props._show_icons = show;
+		if(show)
+		{
+			sq_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
+			sq_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col+1, sort_order);
+		}
+		else
+		{
+			sq_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
+			sq_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col-1, sort_order);
+		}
+		if(store->archive)
+			sq_archive_store_refresh(store);
+		g_object_notify(G_OBJECT(store), "show-icons");
 	}
-	else
-	{
-		sq_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
-		sq_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col-1, sort_order);
-	}
-	if(store->archive)
-		sq_archive_store_refresh(store);
 }
 
 void

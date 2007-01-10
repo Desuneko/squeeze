@@ -44,7 +44,13 @@ sq_application_finalize(GObject *);
 static void
 sq_application_dispose(GObject *object);
 
-static gint sq_application_signals[1];
+enum
+{
+	SQ_APPLICATION_SIGNAL_DESTROY = 0,
+	SQ_APPLICATION_SIGNAL_COUNT
+};
+
+static gint sq_application_signals[SQ_APPLICATION_SIGNAL_COUNT];
 
 GType
 sq_application_get_type ()
@@ -79,7 +85,7 @@ sq_application_class_init(SQApplicationClass *application_class)
 	object_class->finalize     = sq_application_finalize;
 	object_class->dispose      = sq_application_dispose;
 
-	sq_application_signals[0] = g_signal_new("destroy",
+	sq_application_signals[SQ_APPLICATION_SIGNAL_DESTROY] = g_signal_new("destroy",
 			G_TYPE_FROM_CLASS(application_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -103,7 +109,7 @@ sq_application_init(SQApplication *application)
 static void
 sq_application_dispose(GObject *object)
 {
-	g_signal_emit(object, sq_application_signals[0], 0, object);
+	g_signal_emit(object, sq_application_signals[SQ_APPLICATION_SIGNAL_DESTROY], 0, object);
 }
 
 static void

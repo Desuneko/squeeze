@@ -432,6 +432,15 @@ sq_main_window_init(SQMainWindow *window)
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_sq_main_window_notebook_page_removed), window);
 	g_signal_connect(G_OBJECT(window->notebook), "file-activated", G_CALLBACK(cb_sq_main_window_notebook_file_activated), window);
 	g_signal_connect(G_OBJECT(window->notebook), "active-archive-status-changed", G_CALLBACK(cb_sq_main_window_notebook_status_changed), window);
+
+/* menu item */
+	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "show_icons");
+	for(iter = list; iter; iter = iter->next)
+	{
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+		gtk_widget_show(iter->data);
+	}
+
 /* Statusbar */
 
 	window->statusbar = gtk_statusbar_new();
