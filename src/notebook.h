@@ -51,10 +51,12 @@ struct _SQNotebook
 	{
 		gboolean _show_icons;
 		gboolean _up_dir;
+		gboolean _rules_hint;
 	} props;
 	GtkIconTheme *icon_theme;
 	GtkAccelGroup *accel_group;
 	GtkTooltips *tool_tips;
+	gint current_page_fix;
 };
 
 typedef struct _SQNotebookClass SQNotebookClass;
@@ -76,6 +78,7 @@ void        sq_notebook_get_active_archive(SQNotebook *, LSQArchive **, LSQArchi
 gboolean    sq_notebook_is_active_archive(SQNotebook *, LSQArchive *);
 GtkWidget  *sq_notebook_get_active_child(SQNotebook *notebook);
 SQArchiveStore *sq_notebook_get_active_store(SQNotebook *notebook);
+GtkTreeView *sq_notebook_get_active_tree_view(SQNotebook *notebook);
 gboolean    sq_notebook_get_multi_tab(SQNotebook *notebook);
 void        sq_notebook_close_active_archive(SQNotebook *);
 

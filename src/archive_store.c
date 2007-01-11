@@ -236,28 +236,28 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 	object_class->get_property = sq_archive_store_get_property;
 	object_class->finalize = sq_archive_store_finalize;
 
-	pspec = g_param_spec_boolean("show_icons",
+	pspec = g_param_spec_boolean("show-icons",
 		_("Show mime icons"),
 		_("Show the mime type icons for each entry"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SHOW_ICONS, pspec);
 
-	pspec = g_param_spec_boolean("show_up_dir",
+	pspec = g_param_spec_boolean("show-up-dir",
 		_("Show up dir entry"),
 		_("Show \'..\' to go to the parent directory"),
 		TRUE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SHOW_UP_DIR, pspec);
 
-	pspec = g_param_spec_boolean("sort_folders_first",
+	pspec = g_param_spec_boolean("sort-folders-first",
 		_("Sort folders before files"),
 		_("The folders will be put at the top of the list"),
 		TRUE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SORT_FOLDERS_FIRST, pspec);
 
-	pspec = g_param_spec_boolean("sort_case_sensitive",
+	pspec = g_param_spec_boolean("sort-case-sensitive",
 		_("Sort text case sensitive"),
 		_("Sort text case sensitive"),
 		TRUE,
@@ -1318,24 +1318,11 @@ sq_archive_store_set_show_icons(SQArchiveStore *store, gboolean show)
 	g_return_if_fail(store->navigation.present->data);
 #endif
 
-	GtkSortType sort_order;
-	gint sort_col = 0;
-
 	show = show?1:0;
 
 	if(store->props._show_icons != show)
 	{
 		store->props._show_icons = show;
-		if(show)
-		{
-			sq_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
-			sq_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col+1, sort_order);
-		}
-		else
-		{
-			sq_archive_store_get_sort_column_id(GTK_TREE_SORTABLE(store), &sort_col, &sort_order);
-			sq_archive_store_set_sort_column_id(GTK_TREE_SORTABLE(store), sort_col-1, sort_order);
-		}
 		if(store->archive)
 			sq_archive_store_refresh(store);
 		g_object_notify(G_OBJECT(store), "show-icons");
