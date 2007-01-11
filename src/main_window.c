@@ -31,6 +31,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
 
@@ -264,6 +265,7 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_new);
 		window->menubar.menu_item_open = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN, window->accel_group);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_open);
+		gtk_widget_add_accelerator (window->menubar.menu_item_open, "activate", window->accel_group, GDK_o, GDK_SHIFT_MASK| GDK_CONTROL_MASK, GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
 
 		menu_separator = gtk_separator_menu_item_new();
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), menu_separator);
@@ -475,7 +477,7 @@ sq_main_window_new(SQApplication *app, GtkIconTheme *icon_theme)
 	GdkPixbuf *icon;
 
 	window = g_object_new(sq_main_window_get_type(),
-			"title", "Squeeze " PACKAGE_VERSION,
+			"title", PACKAGE_STRING,
 			NULL);
 
 	window->icon_theme = icon_theme;
@@ -622,12 +624,24 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 	GSList *_open_archive_paths = NULL;
 	gint result = 0;
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	gint x, y;
+	GdkModifierType mod_type;
+
+	gdk_window_get_pointer(GTK_WIDGET(window)->window, &x, &y, &mod_type);
 	
-	dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
+	if(mod_type & GDK_SHIFT_MASK)
+		dialog = gtk_file_chooser_dialog_new(_("Open archive in new window"), 
 																			 GTK_WINDOW(window),
 																			 GTK_FILE_CHOOSER_ACTION_OPEN,
 																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+	else
+		dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
+																			 GTK_WINDOW(window),
+																			 GTK_FILE_CHOOSER_ACTION_OPEN,
+																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
 	if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
@@ -641,7 +655,10 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 		_open_archive_paths = open_archive_paths;
 		while(_open_archive_paths)
 		{
-			sq_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
+			if(mod_type & GDK_SHIFT_MASK)
+				sq_application_open_archive(window->app, NULL, _open_archive_paths->data);
+			else
+				sq_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
 			/*
 			if(sq_notebook_get_multi_tab(SQ_NOTEBOOK(window->notebook)))
 				sq_application_open_archive(window->app, (GtkWidget *)window, _open_archive_paths->data);
@@ -912,6 +929,8 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+
+		gtk_window_set_title(GTK_WINDOW(window), PACKAGE_STRING);
 	}
 }
 

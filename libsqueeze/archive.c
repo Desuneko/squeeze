@@ -1,4 +1,4 @@
-/*  Copyright (c) 2006 Stephan Arts <psyBSD@gmail.com>
+/*  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1312,6 +1312,13 @@ lsq_archive_get_filename(LSQArchive *archive)
 {
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "<unknown>");
 	return thunar_vfs_path_get_name(archive->path_info);
+}
+
+const gchar *
+lsq_archive_get_mimetype(LSQArchive *archive)
+{
+	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "");
+	return thunar_vfs_mime_info_get_name(archive->mime_info);
 }
 
 LSQArchiveStatus

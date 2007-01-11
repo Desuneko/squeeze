@@ -89,8 +89,23 @@ sq_properties_dialog_init(SQPropertiesDialog *dialog)
 	gtk_widget_show (label);
 
 	dialog->filename_label = gtk_label_new("");
-	gtk_table_attach (dialog->table, dialog->filename_label, 1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 3);
+	gtk_table_attach (dialog->table, dialog->filename_label, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 3);
 	gtk_widget_show(dialog->filename_label);
+
+	dialog->prop_table = (GtkTable *)gtk_table_new(2, 1, FALSE);
+	gtk_table_set_col_spacings (dialog->prop_table, 12);
+	gtk_table_attach (dialog->table, GTK_WIDGET(dialog->prop_table), 0, 2, 1, 2, GTK_FILL, GTK_FILL, 0, 3);
+	gtk_widget_show(GTK_WIDGET(dialog->prop_table));
+
+	label = gtk_label_new(_("Kind:"));
+	gtk_misc_set_alignment(GTK_MISC(label), 1.0f, 0.5f);
+	gtk_table_attach (dialog->prop_table, label, 0, 1, 0, 1, GTK_FILL, GTK_FILL, 0, 3);
+	gtk_widget_show (label);
+
+	dialog->mimetype_label = gtk_label_new("");
+	gtk_table_attach (dialog->prop_table, dialog->mimetype_label, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 3);
+	gtk_widget_show(dialog->mimetype_label);
+
 
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
 	    GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
@@ -106,12 +121,13 @@ sq_properties_dialog_new(LSQArchive *archive, GtkIconTheme *icon_theme)
 			"title", _("Properties"),
 			NULL);
 
-	gtk_widget_set_size_request(GTK_WIDGET(dialog), 150, 200);
+	gtk_widget_set_size_request(GTK_WIDGET(dialog), 220, 200);
 
 	GdkPixbuf *icon = gtk_icon_theme_load_icon(icon_theme, thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, icon_theme), 48, 0, NULL);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(((SQPropertiesDialog *)dialog)->icon_image), icon);
 
 	gtk_label_set_text(GTK_LABEL(((SQPropertiesDialog *)dialog)->filename_label), lsq_archive_get_filename(archive));
+	gtk_label_set_text(GTK_LABEL(((SQPropertiesDialog *)dialog)->mimetype_label), lsq_archive_get_mimetype(archive));
 
 	return dialog;
 }

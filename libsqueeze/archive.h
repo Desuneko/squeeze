@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <psyBSD@gmail.com>
+ *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -112,6 +112,7 @@ LSQArchiveStatus    lsq_archive_get_status(LSQArchive *archive);
 const gchar *       lsq_archive_get_status_msg(LSQArchive *archive);
 LSQArchiveStatus    lsq_archive_get_old_status(LSQArchive *archive);
 const gchar *       lsq_archive_get_filename(LSQArchive *archive);
+const gchar *       lsq_archive_get_mimetype(LSQArchive *archive);
 
 gboolean            lsq_archive_iter_is_directory(const LSQArchive *, const LSQArchiveIter *);
 guint               lsq_archive_iter_n_children(const LSQArchive *, const LSQArchiveIter *);

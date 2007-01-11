@@ -197,6 +197,7 @@ sq_path_bar_init(SQPathBar *path_bar)
 	path_bar->scroll_dir = SQ_SCROLL_NONE;
 	path_bar->scroll_click = TRUE;
 	path_bar->updating = FALSE;
+	gtk_container_set_border_width(GTK_CONTAINER(path_bar), 2);
 
 	gtk_widget_ref(GTK_WIDGET(path_bar));
 }
