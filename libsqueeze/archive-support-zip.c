@@ -225,18 +225,20 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 	{
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
+		gchar *archive_path = g_shell_quote(archive->path);
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			command = g_strconcat("zip -r \"", archive->path, "\" ", files, NULL);
+			command = g_strconcat("zip -r ", archive_path, " ", files, NULL);
 			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 		}
+		g_free(archive_path);
 	}
 	return 0;
 }
 
 static gint
-lsq_archive_support_zip_extract(LSQArchive *archive, gchar *dest_path, GSList *filenames)
+lsq_archive_support_zip_extract(LSQArchive *archive, gchar *extract_path, GSList *filenames)
 {
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
@@ -252,16 +254,24 @@ lsq_archive_support_zip_extract(LSQArchive *archive, gchar *dest_path, GSList *f
 	{
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
+		gchar *archive_path = g_shell_quote(archive->path);
+		gchar *dest_path = g_shell_quote(extract_path);
 		if(archive->file_info) /* FIXME */
 		{
 			if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		     !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 			{
-				command = g_strconcat("unzip -o \"", archive->path, "\" ", files, " -d ", dest_path, NULL);
+				command = g_strconcat("unzip -o ", archive_path, " ", files, " -d ", dest_path, NULL);
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 			}	
 		} else
+		{
+			g_free(extract_path);
+			g_free(archive_path);
 			return 1;
+		}
+		g_free(extract_path);
+		g_free(archive_path);
 	}
 	return 0;
 }
@@ -283,12 +293,14 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 	{
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
+		gchar *archive_path = g_shell_quote(archive->path);
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			command = g_strconcat("zip -d \"", archive->path, "\" ", files, NULL);
+			command = g_strconcat("zip -d ", archive_path, " ", files, NULL);
 			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 		}
+		g_free(archive_path);
 	}
 	return 0;
 }
@@ -311,6 +323,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 	{
 		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
+		gchar *archive_path = g_shell_quote(archive->path);
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
@@ -339,9 +352,10 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
-		gchar *command = g_strconcat("unzip -lv -qq \"" , archive->path, "\"", NULL);
+		gchar *command = g_strconcat("unzip -lv -qq ", archive_path, NULL);
 		lsq_execute(command, archive, NULL, NULL, lsq_archive_support_zip_refresh_parse_output, NULL);
 		g_free(command);
+		g_free(archive_path);
 	}
 	return 0;
 }

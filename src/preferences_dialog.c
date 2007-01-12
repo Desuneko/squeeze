@@ -269,7 +269,7 @@ sq_preferences_dialog_create_support_page(SQPreferencesDialog *dialog)
 	gtk_box_pack_start(GTK_BOX(box), dialog->support.notebook, TRUE, TRUE, 0);
 	gtk_widget_show_all(box);
 }
-
+#if 1
 static GtkWidget *
 sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple)
 {
@@ -299,7 +299,56 @@ sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple)
 
 	return vbox;
 }
+#else
+static GtkWidget *
+sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple)
+{
+	GtkWidget *vbox = gtk_vbox_new(FALSE, 0);
 
+	GtkTreeModel *store = GTK_TREE_MODEL(gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING));
+
+	tuple->box = gtk_tree_view_new_with_model(store);
+	GtkTreeView *tree_view = GTK_TREE_VIEW(tuple->box);
+	gtk_tree_view_set_reorderable(tree_view, TRUE);
+
+	GtkCellRenderer *render = gtk_cell_renderer_text_new();
+	GtkTreeViewColumn *column = gtk_tree_view_column_new_with_attributes("Column", render, "text", 0, NULL);
+	gtk_tree_view_append_column(tree_view, column);
+
+	GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_set_size_request(scroll, 100, 100);
+
+	gtk_container_add(GTK_CONTAINER(scroll), tuple->box);
+	/* gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), iconview); */
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll), GTK_SHADOW_IN);
+
+	render = gtk_cell_renderer_text_new();
+	column = gtk_tree_view_column_new_with_attributes("Discription", render, "text", 1, NULL);
+	gtk_tree_view_append_column(tree_view, column);
+
+	gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 0);
+
+	GSList *iter, *view_props = iter = lsq_archive_support_list_properties(tuple->support, "view");
+	GParamSpec *spec;
+	gboolean visible;
+	GtkTreeIter titer;
+
+	while(iter)
+	{
+		spec = G_PARAM_SPEC(iter->data);
+		g_object_get(G_OBJECT(tuple->support), g_param_spec_get_name(spec), &visible, NULL);
+
+		gtk_list_store_append(GTK_LIST_STORE(store), &titer);
+		gtk_list_store_set(GTK_LIST_STORE(store), &titer, 0, g_param_spec_get_nick(spec), 1, g_param_spec_get_blurb(spec), -1);
+
+		iter = g_slist_next(iter);
+	}
+
+	g_slist_free(view_props);
+
+	return vbox;
+}
+#endif
 static void
 cb_sq_preferences_dialog_item_changed(GtkWidget *widget, gpointer user_data)
 {
