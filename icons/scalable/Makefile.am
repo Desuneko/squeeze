@@ -6,4 +6,3 @@ icons_DATA = squeeze.svg
 	
 
 EXTRA_DIST = $(icons_DATA)
-

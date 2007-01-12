@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-11 08:57+0100\n"
+"POT-Creation-Date: 2007-01-12 18:08+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -286,32 +286,32 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:375 ../src/main_window.c:943
+#: ../src/main_window.c:375 ../src/main_window.c:951
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
-
-#: ../src/main_window.c:633
-msgid "Open archive"
-msgstr "Archief openen"
 
 #: ../src/main_window.c:639
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:848
+#: ../src/main_window.c:645
+msgid "Open archive"
+msgstr "Archief openen"
+
+#: ../src/main_window.c:854
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:851
+#: ../src/main_window.c:857
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:854
+#: ../src/main_window.c:860
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:859
+#: ../src/main_window.c:865
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -319,23 +319,23 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:865
+#: ../src/main_window.c:871
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:942
+#: ../src/main_window.c:950
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:943
+#: ../src/main_window.c:951
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:1006
+#: ../src/main_window.c:1014
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1007
+#: ../src/main_window.c:1015
 #, c-format
 msgid ""
 "'%s'\n"
@@ -360,7 +360,7 @@ msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
 
-#: ../src/new_dialog.c:87
+#: ../src/new_dialog.c:134
 msgid "Create new archive"
 msgstr "Nieuw archief maken"
 
@@ -490,20 +490,28 @@ msgstr "Spatiering"
 msgid "The amount of space between the path buttons"
 msgstr "De ruimte tussen de pad knoppen"
 
-#: ../src/notebook.c:171 ../src/archive_store.c:240
+#: ../src/notebook.c:174 ../src/archive_store.c:240
 msgid "Show mime icons"
 msgstr "Mime iconen weergeven"
 
-#: ../src/notebook.c:172 ../src/archive_store.c:241
+#: ../src/notebook.c:175 ../src/archive_store.c:241
 msgid "Show the mime type icons for each entry"
 msgstr "Mime type iconen weergeven voor elk item"
 
-#: ../src/notebook.c:428
+#: ../src/notebook.c:195
+msgid "Rules hint"
+msgstr "Regel Hints"
+
+#: ../src/notebook.c:196
+msgid "Make the row background colors alternate"
+msgstr "Laat de achtergrond kleur van de rijen verspringen"
+
+#: ../src/notebook.c:479
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr "Kan archief '%s' niet openen."
 
-#: ../src/notebook.c:436
+#: ../src/notebook.c:487
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Het uitpakken van de inhoud van archief '%s' is mislukt."
@@ -535,3 +543,7 @@ msgstr "Archief beheerder"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce archief beheerder"
+
+#, fuzzy
+#~ msgid "Archive type:"
+#~ msgstr "Archieveerder:"

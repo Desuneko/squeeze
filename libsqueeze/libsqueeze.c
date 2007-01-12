@@ -115,3 +115,29 @@ lsq_close_archive(LSQArchive *archive)
 	g_object_unref(archive);
 }
 
+/**
+ * Some nice support functions should come for this
+ *
+ */
+GSList *
+lsq_get_supported_mime_types()
+{
+	GSList *mime_types_list = NULL;
+	LSQArchiveSupport *archive_support = NULL;
+	GSList *supported_mime_types_list = NULL;
+	GSList *archive_support_list = lsq_archive_support_list;
+
+	while(archive_support_list)
+	{
+		archive_support = archive_support_list->data;
+		supported_mime_types_list = archive_support->mime;
+		while(supported_mime_types_list)
+		{
+			mime_types_list = g_slist_prepend(mime_types_list, supported_mime_types_list->data);
+
+			supported_mime_types_list	= g_slist_next(supported_mime_types_list);
+		}
+		archive_support_list = g_slist_next(archive_support_list);
+	}
+	return mime_types_list;
+}

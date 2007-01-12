@@ -78,6 +78,9 @@ lsq_stop_archive_child( LSQArchive *archive );
 void
 lsq_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
 
+GSList *
+lsq_get_supported_mime_types();
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_H__ */

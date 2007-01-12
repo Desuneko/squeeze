@@ -43,6 +43,8 @@ typedef struct _SQNewArchiveDialog SQNewArchiveDialog;
 struct _SQNewArchiveDialog
 {
 	GtkFileChooserDialog parent;
+	GtkWidget *archive_types_combo;
+	GtkWidget *append_extention_check;
 };
 
 typedef struct _SQNewArchiveDialogClass SQNewArchiveDialogClass;

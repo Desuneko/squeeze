@@ -17,6 +17,7 @@
  */
 
 #include <config.h>
+#include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <thunar-vfs/thunar-vfs.h>
@@ -64,13 +65,59 @@ sq_new_archive_dialog_class_init(SQNewArchiveDialogClass *dialog_class)
 static void
 sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 {
-/*
 	GtkWidget *hbox = gtk_hbox_new(FALSE, 10);
-	gtk_box_pack_start (GTK_BOX (hbox),gtk_label_new (_("Archive type:")),FALSE, FALSE, 0);
-	
+	gtk_box_pack_start (GTK_BOX (hbox),gtk_label_new (("Archive type:")),FALSE, FALSE, 0);
+
+	dialog->archive_types_combo = gtk_combo_box_new_text();
+	gtk_box_pack_start (GTK_BOX (hbox),dialog->archive_types_combo,FALSE, FALSE, 0);
+	dialog->append_extention_check = gtk_check_button_new_with_label(("Append extension to filename"));
+	gtk_box_pack_start (GTK_BOX (hbox),dialog->append_extention_check,FALSE, FALSE, 0);
 	gtk_widget_show_all(hbox);
+
+
+	GSList *supported_mime_types = lsq_get_supported_mime_types();
+	GSList *_supported_mime_types = supported_mime_types;
+
+	GtkFileFilter *file_filter = gtk_file_filter_new();
+	while(_supported_mime_types)
+	{
+		if(!strcmp(_supported_mime_types->data, "application/x-tar"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar");
+		}
+		if(!strcmp(_supported_mime_types->data, "application/x-tarz"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.Z");
+		}
+		if(!strcmp(_supported_mime_types->data, "application/x-compressed-tar"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tgz");
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.gz");
+		}
+		if(!strcmp(_supported_mime_types->data, "application/x-bzip-compressed-tar"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tbz");
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tbz2");
+		}
+		if(!strcmp(_supported_mime_types->data, "application/x-tzo"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tzo");
+		}
+		if(!strcmp(_supported_mime_types->data, "application/x-zip"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".zip");
+		}
+		gtk_file_filter_add_mime_type(file_filter, _supported_mime_types->data);
+		_supported_mime_types = g_slist_next(_supported_mime_types);
+	}
+	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 0);
+
+	g_slist_free(supported_mime_types);
+
+/* WHY DOESN'T THIS WORK?!*/
+/*	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(GTK_FILE_CHOOSER_DIALOG(dialog)), file_filter); */
+
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
-*/
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			GTK_STOCK_NEW, GTK_RESPONSE_OK,
