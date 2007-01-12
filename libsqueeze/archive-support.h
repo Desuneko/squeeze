@@ -45,8 +45,9 @@ typedef struct _LSQCustomAction LSQCustomAction;
 typedef struct _LSQArchiveSupport LSQArchiveSupport;
 
 typedef gboolean (*LSQCustomActionPreFunc) (LSQCustomAction *);
-typedef gboolean (*LSQCustomActionFunc) (LSQArchiveSupport *support, LSQArchive *, gpointer user_data);
+typedef gboolean (*LSQCustomActionFunc) (LSQArchiveSupport *support, LSQArchive *, LSQCustomAction*, gpointer user_data);
 typedef gboolean (*LSQCustomActionPostFunc) (LSQCustomAction *, gboolean);
+typedef gboolean (*LSQCustomActionNotifyFunc) (const gchar*, const gchar*, gpointer);
 
 struct _LSQCustomAction
 {
@@ -56,6 +57,8 @@ struct _LSQCustomAction
 	gchar *icon;
 	LSQCustomActionFunc func;
 	LSQCustomActionPostFunc post_func;
+	LSQCustomActionNotifyFunc notify_func;
+	gpointer notify_user_data;
 	LSQArchiveSupport *support;
 	gpointer user_data;
 };
@@ -126,6 +129,8 @@ const gchar*         lsq_custom_action_get_nick(LSQCustomAction*);
 const gchar*         lsq_custom_action_get_blurb(LSQCustomAction*);
 const gchar*         lsq_custom_action_get_icon_name(LSQCustomAction*);
 void                 lsq_custom_action_execute(LSQCustomAction*, LSQArchive *, LSQCustomActionPreFunc, LSQCustomActionPostFunc);
+void                 lsq_custom_action_notify(LSQCustomAction*, const gchar*);
+void                 lsq_custom_action_set_notify_function(LSQCustomAction*, LSQCustomActionNotifyFunc, gpointer);
 
 G_END_DECLS
 

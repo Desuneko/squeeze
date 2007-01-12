@@ -71,6 +71,9 @@ cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data);
 static void
 cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data);
 
+static void
+sq_widget_factory_notify(const gchar *name, const gchar *message, gpointer user_data);
+
 GType
 sq_widget_factory_get_type()
 {
@@ -961,6 +964,7 @@ sq_widget_factory_create_action_menu(SQWidgetFactory *factory, LSQArchiveSupport
 	{
 		if(strncmp("menu", lsq_custom_action_get_name(action[i]), 4) == 0)
 		{
+			lsq_custom_action_set_notify_function(action[i], (LSQCustomActionNotifyFunc)sq_widget_factory_notify, NULL);
 			item = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action[i]));
 			g_object_set_data(G_OBJECT(item), SQ_ACTION_CUSTOM_DATA, action[i]);
 			g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);
@@ -988,3 +992,10 @@ cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
 	g_signal_handlers_disconnect_by_func(user_data, cb_sq_widget_factory_property_notify, obj);
 }
 
+static void
+sq_widget_factory_notify(const gchar *name, const gchar *message, gpointer user_data)
+{
+	GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(user_data), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s: %s", name, message);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy(dialog);
+}

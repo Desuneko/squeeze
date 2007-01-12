@@ -63,7 +63,7 @@ static gint lsq_archive_support_zip_extract(LSQArchive *, gchar *, GSList *);
 static gint lsq_archive_support_zip_remove(LSQArchive *, GSList *);
 static gint lsq_archive_support_zip_refresh(LSQArchive *);
 
-static gboolean lsq_archive_support_zip_integrity_test(LSQArchiveSupport *, LSQArchive *, gpointer);
+static gboolean lsq_archive_support_zip_integrity_test(LSQArchiveSupport *, LSQArchive *, LSQCustomAction*, gpointer);
 
 GType
 lsq_archive_support_zip_get_type ()
@@ -496,13 +496,15 @@ lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 }
 
 static gboolean
-lsq_archive_support_zip_integrity_test(LSQArchiveSupport *support, LSQArchive *archive, gpointer user_data)
+lsq_archive_support_zip_integrity_test(LSQArchiveSupport *support, LSQArchive *archive, LSQCustomAction *action, gpointer user_data)
 {
 #ifdef DEBUG
 	g_debug("Custom action %s called", __FUNCTION__);
 #endif /* DEBUG */
 
-	return FALSE;
+	lsq_custom_action_notify(action, "Integrity test completed");
+
+	return TRUE;
 }
 
 static void
