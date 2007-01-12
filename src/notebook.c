@@ -456,7 +456,12 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 
 	gtk_container_add(GTK_CONTAINER(scroll_window), tree_view);
 	
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), scroll_window, lbl_hbox);
+	gint page_nr = gtk_notebook_append_page(GTK_NOTEBOOK(notebook), scroll_window, lbl_hbox);
+	if(page_nr >= 0)
+	{
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), page_nr);
+		gtk_widget_grab_focus(tree_view);
+	}
 }
 
 void
@@ -555,14 +560,14 @@ sq_notebook_close_active_archive(SQNotebook *notebook)
 void
 cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *treeview)
 {
-	sq_notebook_treeview_reset_columns(archive, treeview);
-
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(treeview);
 	g_object_ref(archive_store);
 	gtk_tree_view_set_model(treeview, NULL);
 	sq_archive_store_set_archive(SQ_ARCHIVE_STORE(archive_store), archive);
 	gtk_tree_view_set_model(treeview, archive_store);
 	g_object_unref(archive_store);
+
+	sq_notebook_treeview_reset_columns(archive, treeview);
 }
 
 static void
@@ -571,10 +576,6 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 	GtkCellRenderer *renderer = NULL;
 	GtkTreeViewColumn *column = NULL;
 	gint x = 0;
-
-	GValue *value = g_new0(GValue, 1);
-	value = g_value_init(value, G_TYPE_UINT);
-	g_value_set_uint(value, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 	GList *columns = gtk_tree_view_get_columns(treeview);
 	gboolean show_only_filenames = FALSE;
@@ -589,7 +590,7 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 	column = gtk_tree_view_column_new();
 
 	renderer = gtk_cell_renderer_pixbuf_new();
-	g_object_set_property(G_OBJECT(renderer), "stock-size", value);
+	g_object_set(G_OBJECT(renderer), "stock-size", GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
 
@@ -651,6 +652,10 @@ cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data)
 		if(notebook->navigation_bar)
 			sq_navigation_bar_set_store(notebook->navigation_bar, NULL);
 	}
+	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) > 1)
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), TRUE);
+	else
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
 }
 
 static void
@@ -717,7 +722,8 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 {
 	GtkWidget *scrolledwindow = sq_notebook_get_active_child(notebook);
 	GtkTreeIter iter;
-	GValue *value = g_new0(GValue, 1);
+	GValue value;
+	memset(&value, 0, sizeof(GValue));
 	GSList *filenames = NULL;
 
 	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
@@ -729,14 +735,11 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 	while(_rows)
 	{
 		gtk_tree_model_get_iter(store, &iter, _rows->data);
-		if(sq_archive_store_get_show_icons(SQ_ARCHIVE_STORE(store)))
-			gtk_tree_model_get_value(store, &iter, 1, value);
-		else
-			gtk_tree_model_get_value(store, &iter, 0, value);
+		gtk_tree_model_get_value(store, &iter, 1, &value);
 
-		filenames = g_slist_prepend(filenames, g_strconcat(pwd, g_value_get_string(value), NULL));
+		filenames = g_slist_prepend(filenames, g_strconcat(pwd, g_value_get_string(&value), NULL));
 
-		g_value_unset(value);
+		g_value_unset((GValue*)&value);
 		_rows = _rows->next;
 	}
 	g_list_free(rows);

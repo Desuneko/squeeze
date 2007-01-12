@@ -970,8 +970,10 @@ sq_archive_store_refresh(SQArchiveStore *store)
 
 	g_object_ref(G_OBJECT(store));
 
+	gint column = gtk_tree_view_get_search_column(store->treeview);
 	gtk_tree_view_set_model(store->treeview, NULL);
 	gtk_tree_view_set_model(store->treeview, GTK_TREE_MODEL(store));
+	gtk_tree_view_set_search_column(store->treeview, column);
 
 	g_object_unref(G_OBJECT(store));
 }
