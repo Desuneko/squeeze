@@ -598,6 +598,7 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes(column, renderer, "text", LSQ_ARCHIVE_PROP_FILENAME + 1, NULL);
 
+	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	gtk_tree_view_column_set_sort_column_id(column, LSQ_ARCHIVE_PROP_FILENAME + 1);
 	gtk_tree_view_column_set_title(column, lsq_archive_get_entry_property_name(archive, LSQ_ARCHIVE_PROP_FILENAME));
@@ -617,7 +618,6 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
 			gtk_tree_view_column_set_sort_column_id(column, x+1);
-			gtk_tree_view_column_set_reorderable(column, TRUE);
 			gtk_tree_view_append_column(treeview, column);
 		}
 	}

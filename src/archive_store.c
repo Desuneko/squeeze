@@ -806,6 +806,16 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 	switch(lsq_archive_get_entry_property_type(archive, column))
 	{
 		case G_TYPE_STRING:
+			if(g_value_get_string(&prop_a) == NULL)
+			{
+				retval = -1;
+				break;
+			}
+			if(g_value_get_string(&prop_b) == NULL)
+			{
+				retval = 1;
+				break;
+			}
 			switch(store->props._sort_case_sensitive)
 			{
 				case 0: /* case insensitive */
