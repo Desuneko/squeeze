@@ -617,6 +617,7 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
 			gtk_tree_view_column_set_sort_column_id(column, x+1);
+			gtk_tree_view_column_set_reorderable(column, TRUE);
 			gtk_tree_view_append_column(treeview, column);
 		}
 	}
