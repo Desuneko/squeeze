@@ -228,7 +228,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			command = g_strconcat("zip -r ", archive->path, " ", files, NULL);
+			command = g_strconcat("zip -r \"", archive->path, "\" ", files, NULL);
 			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 		}
 	}
@@ -257,7 +257,7 @@ lsq_archive_support_zip_extract(LSQArchive *archive, gchar *dest_path, GSList *f
 			if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		     !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 			{
-				command = g_strconcat("unzip -o ", archive->path, " ", files, " -d ", dest_path, NULL);
+				command = g_strconcat("unzip -o \"", archive->path, "\" ", files, " -d ", dest_path, NULL);
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 			}	
 		} else
@@ -286,7 +286,7 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			command = g_strconcat("zip -d ", archive->path, " ", files, NULL);
+			command = g_strconcat("zip -d \"", archive->path, "\" ", files, NULL);
 			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 		}
 	}
@@ -339,7 +339,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
-		gchar *command = g_strconcat("unzip -lv -qq " , archive->path, NULL);
+		gchar *command = g_strconcat("unzip -lv -qq \"" , archive->path, "\"", NULL);
 		lsq_execute(command, archive, NULL, NULL, lsq_archive_support_zip_refresh_parse_output, NULL);
 		g_free(command);
 	}
