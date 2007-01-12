@@ -30,7 +30,7 @@ folder=$1; shift;
 # check the action
 case $action in
 create)
-	exec squeeze --new "$@"
+	exec squeeze --new="$@"
 	;;
 
 extract-here)
