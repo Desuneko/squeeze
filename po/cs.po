@@ -1,14 +1,14 @@
 # Czech translations for Squeeze package.
 # Copyright (C) 2006 THE Squeeze'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Squeeze package.
-#  <miko.vaji@gmail.com>, 2006.
+# Michal Várady <miko.vaji@gmail.com>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24156\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-01-12 18:08+0100\n"
-"PO-Revision-Date: 2006-12-21 20:30+0100\n"
+"PO-Revision-Date: 2007-01-14 19:10+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../libsqueeze/archive.c:438 ../src/preferences_dialog.c:283
+#: ../libsqueeze/archive.c:438
+#: ../src/preferences_dialog.c:283
 msgid "Filename"
 msgstr "Název souboru"
 
@@ -228,8 +229,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové "
-"řádky.\n"
+"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové řádky.\n"
 
 #: ../src/main_window.c:121
 msgid "Internal Style"
@@ -287,15 +287,15 @@ msgstr "_Nápověda"
 msgid "Add"
 msgstr "Přidat"
 
-#: ../src/main_window.c:375 ../src/main_window.c:951
+#: ../src/main_window.c:375
+#: ../src/main_window.c:951
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Rozbalit"
 
 #: ../src/main_window.c:639
-#, fuzzy
 msgid "Open archive in new window"
-msgstr "Otevřít archiv"
+msgstr "Otevřít archiv v novém okně"
 
 #: ../src/main_window.c:645
 msgid "Open archive"
@@ -303,20 +303,18 @@ msgstr "Otevřít archiv"
 
 #: ../src/main_window.c:854
 msgid "Lead developer:"
-msgstr ""
+msgstr "Vedoucí vývojář:"
 
 #: ../src/main_window.c:857
 msgid "Contributors:"
-msgstr ""
+msgstr "Přispěvatelé:"
 
 #: ../src/main_window.c:860
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr ""
+msgstr "Inspirováno aplikací Xarchiver od Giuseppe Torelliho"
 
 #: ../src/main_window.c:865
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr "Squeeze je odlehčený a pružný správce archivů pro prostředí Xfce."
 
 #: ../src/main_window.c:871
@@ -415,73 +413,67 @@ msgstr "Rozbalit archiv"
 
 #: ../src/preferences_dialog.c:87
 msgid "_General"
-msgstr ""
+msgstr "_Obecné"
 
 #: ../src/preferences_dialog.c:90
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Správce archivů"
+msgstr "Prohlížeč archivů"
 
 #: ../src/preferences_dialog.c:99
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Zobrazit ikony typu MIME"
+msgstr "_Zobrazit ikony"
 
 #: ../src/preferences_dialog.c:102
 msgid "_Rules Hint"
-msgstr ""
+msgstr "_Rada o pravidlech"
 
 #: ../src/preferences_dialog.c:105
 msgid "Sorting:"
-msgstr ""
+msgstr "Řazení:"
 
 #: ../src/preferences_dialog.c:114
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Rozlišovat velikost písmen při řazení"
+msgstr "Rozlišovat _velikost písmen při řazení"
 
 #: ../src/preferences_dialog.c:117
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Zařadit adresáře před soubory"
+msgstr "Zařadit a_dresáře před soubory"
 
 #: ../src/preferences_dialog.c:120
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Styl navigace"
+msgstr "Navigační panel:"
 
 #: ../src/preferences_dialog.c:132
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Chování"
 
 #: ../src/preferences_dialog.c:149
 msgid "Preferences"
-msgstr ""
+msgstr "Předvolby"
 
 #: ../src/preferences_dialog.c:206
-#, fuzzy
 msgid "_Archivers"
-msgstr "Správce archivů"
+msgstr "_Archivátory"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Viditelné:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Dostupné:"
 
 #: ../src/properties_dialog.c:87
 msgid "Name:"
-msgstr ""
+msgstr "Název:"
 
 #: ../src/properties_dialog.c:100
 msgid "Kind:"
-msgstr ""
+msgstr "Druh:"
 
 #: ../src/properties_dialog.c:121
 msgid "Properties"
-msgstr ""
+msgstr "Vlastnosti"
 
 #: ../src/tool_bar.c:159
 msgid "Location:"
@@ -495,21 +487,23 @@ msgstr "Rozestupy"
 msgid "The amount of space between the path buttons"
 msgstr "Prostor mezi tlačítky cesty"
 
-#: ../src/notebook.c:174 ../src/archive_store.c:240
+#: ../src/notebook.c:174
+#: ../src/archive_store.c:240
 msgid "Show mime icons"
 msgstr "Zobrazit ikony typu MIME"
 
-#: ../src/notebook.c:175 ../src/archive_store.c:241
+#: ../src/notebook.c:175
+#: ../src/archive_store.c:241
 msgid "Show the mime type icons for each entry"
 msgstr "Zobrazit ikony typu MIME pro každou položku"
 
 #: ../src/notebook.c:195
 msgid "Rules hint"
-msgstr ""
+msgstr "Rada o pravidlech"
 
 #: ../src/notebook.c:196
 msgid "Make the row background colors alternate"
-msgstr ""
+msgstr "Změní barvu pozadí řádku"
 
 #: ../src/notebook.c:479
 #, c-format
@@ -537,7 +531,8 @@ msgstr "Zařadit adresáře před soubory"
 msgid "The folders will be put at the top of the list"
 msgstr "Adresáře budou umístěny na začátku seznamu"
 
-#: ../src/archive_store.c:261 ../src/archive_store.c:262
+#: ../src/archive_store.c:261
+#: ../src/archive_store.c:262
 msgid "Sort text case sensitive"
 msgstr "Rozlišovat velikost písmen při řazení"
 
@@ -552,3 +547,4 @@ msgstr "Správce archivů Xfce"
 #, fuzzy
 #~ msgid "Archive type:"
 #~ msgstr "Správce archivů"
+
