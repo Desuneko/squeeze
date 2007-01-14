@@ -97,7 +97,12 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 		if(!strcmp(_supported_mime_types->data, "application/x-bzip-compressed-tar"))
 		{
 			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tbz");
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.bz");
+		}
+		if(!strcmp(_supported_mime_types->data, "application/x-bzip2-compressed-tar"))
+		{
 			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tbz2");
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.bz2");
 		}
 		if(!strcmp(_supported_mime_types->data, "application/x-tzo"))
 		{
@@ -110,12 +115,12 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 		gtk_file_filter_add_mime_type(file_filter, _supported_mime_types->data);
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
-	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 0);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 1);
 
 	g_slist_free(supported_mime_types);
 
 /* WHY DOESN'T THIS WORK?!*/
-/*	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(GTK_FILE_CHOOSER_DIALOG(dialog)), file_filter); */
+	//gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(GTK_FILE_CHOOSER_DIALOG(dialog)), file_filter);
 
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 

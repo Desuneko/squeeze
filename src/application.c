@@ -209,6 +209,9 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 	if(!archive_path)
 	{
 		dialog = sq_new_archive_dialog_new();
+		gchar **filename_components = g_strsplit(files->data, ".", 2);
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
+		g_strfreev(filename_components);
 		result = gtk_dialog_run (GTK_DIALOG (dialog) );
 		if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
 		{

@@ -38,7 +38,7 @@ gboolean version = FALSE;
 gboolean extract_archive  = FALSE;
 gchar *extract_archive_path = NULL;
 
-gboolean new_archive  = FALSE;
+gchar *new_archive  = NULL;
 gchar *add_archive_path = NULL;
 
 gpointer command;
@@ -59,7 +59,7 @@ static GOptionEntry entries[] =
 		NULL,
 		N_("[archive path] [file1] [file2] ... [fileN]")
 	},
-	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &new_archive,
+	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &new_archive,
 		NULL,
 		N_("[file1] [file2] ... [fileN]")
 	},
@@ -150,10 +150,15 @@ int main(int argc, char **argv)
 	if(new_archive || add_archive_path)
 	{
 		GSList *files = NULL;
+
 		for(i = 1; i < argc; i++)
 		{
 			files = g_slist_prepend(files, argv[i]);
 		}
+
+		if(new_archive)
+			files = g_slist_prepend(files, new_archive);
+
 		sq_application_new_archive(sq_app, add_archive_path, files);
 	}
 
