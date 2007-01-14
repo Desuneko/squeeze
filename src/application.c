@@ -122,6 +122,8 @@ sq_application_finalize(GObject *object )
 	sq_settings_write_bool_entry(application->settings, "UseTabs", application->props._tabs);
 
 	sq_settings_save(application->settings);
+
+	g_object_unref(G_OBJECT(application->settings));
 }
 
 SQApplication *

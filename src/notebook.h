@@ -47,10 +47,13 @@ struct _SQNotebook
 	GtkNotebook parent;
 	SQNavigationBar *navigation_bar;
 	gboolean multi_tab;
+	SQSettings *settings;
 	struct
 	{
 		gboolean _show_icons;
 		gboolean _up_dir;
+		gboolean _sort_folders_first;
+		gboolean _sort_case_sensitive;
 		gboolean _rules_hint;
 	} props;
 	GtkIconTheme *icon_theme;

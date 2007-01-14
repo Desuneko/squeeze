@@ -342,27 +342,14 @@ lsq_custom_action_get_blurb(LSQCustomAction *action)
 }
 
 void
-lsq_custom_action_execute(LSQCustomAction *action, LSQArchive *archive, LSQCustomActionPreFunc pre_func, LSQCustomActionPostFunc post_func)
+lsq_custom_action_execute(LSQCustomAction *action, LSQArchive *archive, LSQCustomActionCallback *callback)
 {
-	if(pre_func)
-	{
-		if(pre_func(action) == FALSE)
-			return;
-	}
-	/* set post-condition-callback */
-	action->post_func = post_func; 	
+	action->callback = callback; 	
 	action->func(action->support, archive, action, action->user_data);
 }
 
 void
 lsq_custom_action_notify(LSQCustomAction *action, const gchar *message)
 {
-	action->notify_func(action->support->id, message, action->user_data);
-}
-
-void
-lsq_custom_action_set_notify_function(LSQCustomAction *action, LSQCustomActionNotifyFunc func, gpointer user_data)
-{
-	action->notify_func = func;
-	action->notify_user_data = user_data;
+	action->callback->notify_func(action, message);
 }

@@ -42,6 +42,7 @@ typedef struct
 {
 	GObject parent;
 	GtkTooltips *tips;
+	LSQCustomActionCallback *custom_callback;
 } SQWidgetFactory;
 
 typedef struct

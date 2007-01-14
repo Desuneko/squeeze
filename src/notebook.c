@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 #include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
+#include "settings.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
 #include "tool_bar.h"
@@ -70,6 +71,8 @@ cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 enum {
 	SQ_NOTEBOOK_MULTI_TAB = 1,
 	SQ_NOTEBOOK_STORE_SHOW_ICONS,
+	SQ_NOTEBOOK_STORE_SORT_FOLDERS_FIRST,
+	SQ_NOTEBOOK_STORE_SORT_CASE_SENSITIVE,
 	SQ_NOTEBOOK_TREE_RULES_HINT
 };
 
@@ -176,21 +179,21 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, SQ_NOTEBOOK_STORE_SHOW_ICONS, pspec);
-/*
+
 	pspec = g_param_spec_boolean("sort_folders_first",
 		_("Sort folders before files"),
 		_("The folders will be put at the top of the list"),
 		TRUE,
 		G_PARAM_READWRITE);
-	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SORT_FOLDERS_FIRST, pspec);
+	g_object_class_install_property(object_class, SQ_NOTEBOOK_STORE_SORT_FOLDERS_FIRST, pspec);
 
 	pspec = g_param_spec_boolean("sort_case_sensitive",
 		_("Sort text case sensitive"),
 		_("Sort text case sensitive"),
 		TRUE,
 		G_PARAM_READWRITE);
-	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SORT_CASE_SENSITIVE, pspec);
-*/
+	g_object_class_install_property(object_class, SQ_NOTEBOOK_STORE_SORT_CASE_SENSITIVE, pspec);
+
 	pspec = g_param_spec_boolean("rules-hint",
 		_("Rules hint"),
 		_("Make the row background colors alternate"),
@@ -208,9 +211,13 @@ sq_notebook_init(SQNotebook *notebook)
 	g_signal_connect(G_OBJECT(notebook), "page-up", G_CALLBACK(gtk_notebook_next_page),  NULL);
 	g_signal_connect(G_OBJECT(notebook), "page-down", G_CALLBACK(gtk_notebook_prev_page), NULL);
 
+	notebook->settings = sq_settings_new();
+
 	notebook->current_page_fix = 0;
-	notebook->props._rules_hint = FALSE;
-	notebook->props._show_icons = TRUE;
+	notebook->props._rules_hint = sq_settings_read_bool_entry(notebook->settings, "RulesHint", FALSE);
+	notebook->props._show_icons = sq_settings_read_bool_entry(notebook->settings, "ShowIcons", TRUE);
+	notebook->props._sort_folders_first = sq_settings_read_bool_entry(notebook->settings, "SortFoldersFirst", TRUE);
+	notebook->props._sort_case_sensitive = sq_settings_read_bool_entry(notebook->settings, "SortCaseSensitive", TRUE);
 	notebook->multi_tab = TRUE;
 	notebook->accel_group = NULL;
 
@@ -226,6 +233,21 @@ sq_notebook_dispose(GObject *object)
 {
 	/* TODO: unref archive_stores */
 	GtkNotebook *notebook = GTK_NOTEBOOK(object);
+	SQNotebook *sq_notebook = SQ_NOTEBOOK(object);
+
+	if(sq_notebook->settings)
+	{
+		sq_settings_write_bool_entry(sq_notebook->settings, "RulesHint", sq_notebook->props._rules_hint);
+		sq_settings_write_bool_entry(sq_notebook->settings, "ShowIcons", sq_notebook->props._show_icons);
+		sq_settings_write_bool_entry(sq_notebook->settings, "SortFoldersFirst", sq_notebook->props._sort_folders_first);
+		sq_settings_write_bool_entry(sq_notebook->settings, "SortCaseSensitive", sq_notebook->props._sort_case_sensitive);
+
+		sq_settings_save(sq_notebook->settings);
+
+		g_object_unref(G_OBJECT(sq_notebook->settings));
+		sq_notebook->settings = NULL;
+	}
+
 	gint n = gtk_notebook_get_n_pages(notebook);
 	gint i = 0;
 	for(i = 0; i < n; i++)
@@ -244,6 +266,7 @@ sq_notebook_dispose(GObject *object)
 
 		lsq_close_archive(archive);
 	}
+
 	parent_class->dispose(object);
 }
 
@@ -278,8 +301,23 @@ sq_notebook_set_property(GObject *object, guint prop_id, const GValue *value, GP
 			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
 			if(store)
 				sq_archive_store_set_show_icons(store, g_value_get_boolean(value));
-			else
-				SQ_NOTEBOOK(object)->props._show_icons = g_value_get_boolean(value);
+			SQ_NOTEBOOK(object)->props._show_icons = g_value_get_boolean(value);
+			break;
+		}
+		case SQ_NOTEBOOK_STORE_SORT_FOLDERS_FIRST:
+		{
+			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
+			if(store)
+				sq_archive_store_set_sort_folders_first(store, g_value_get_boolean(value));
+			SQ_NOTEBOOK(object)->props._sort_folders_first = g_value_get_boolean(value);
+			break;
+		}
+		case SQ_NOTEBOOK_STORE_SORT_CASE_SENSITIVE:
+		{
+			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
+			if(store)
+				sq_archive_store_set_sort_case_sensitive(store, g_value_get_boolean(value));
+			SQ_NOTEBOOK(object)->props._sort_case_sensitive = g_value_get_boolean(value);
 			break;
 		}
 		case SQ_NOTEBOOK_TREE_RULES_HINT:
@@ -287,8 +325,7 @@ sq_notebook_set_property(GObject *object, guint prop_id, const GValue *value, GP
 			GtkTreeView *tree = sq_notebook_get_tree_view(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
 			if(tree)
 				gtk_tree_view_set_rules_hint(tree, g_value_get_boolean(value));
-			else
-				SQ_NOTEBOOK(object)->props._rules_hint = g_value_get_boolean(value);
+			SQ_NOTEBOOK(object)->props._rules_hint = g_value_get_boolean(value);
 			break;
 		}
 	}
@@ -309,6 +346,24 @@ sq_notebook_get_property(GObject *object, guint prop_id, GValue *value, GParamSp
 				g_value_set_boolean(value, sq_archive_store_get_show_icons(store));
 			else
 				g_value_set_boolean(value, SQ_NOTEBOOK(object)->props._show_icons);
+			break;
+		}
+		case SQ_NOTEBOOK_STORE_SORT_FOLDERS_FIRST:
+		{
+			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
+			if(store)
+				g_value_set_boolean(value, sq_archive_store_get_sort_folders_first(store));
+			else
+				g_value_set_boolean(value, SQ_NOTEBOOK(object)->props._sort_folders_first);
+			break;
+		}
+		case SQ_NOTEBOOK_STORE_SORT_CASE_SENSITIVE:
+		{
+			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
+			if(store)
+				g_value_set_boolean(value, sq_archive_store_get_sort_case_sensitive(store));
+			else
+				g_value_set_boolean(value, SQ_NOTEBOOK(object)->props._sort_case_sensitive);
 			break;
 		}
 		case SQ_NOTEBOOK_TREE_RULES_HINT:
@@ -427,6 +482,8 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
 
 	GtkTreeModel *tree_model = sq_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
+	sq_archive_store_set_sort_folders_first(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_folders_first);
+	sq_archive_store_set_sort_case_sensitive(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_case_sensitive);
 	g_signal_connect(G_OBJECT(tree_model), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
@@ -764,7 +821,7 @@ sq_notebook_page_get_archive(SQNotebook *notebook, LSQArchive **lp_archive, LSQA
 static void
 cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 {
-	if(strcmp(g_param_spec_get_name(pspec), "show-icons") == 0)
+	if(strcmp(g_param_spec_get_name(pspec), "show-icons") == 0 || strcmp(g_param_spec_get_name(pspec), "rules-hint") == 0)
 	{
 		g_object_notify(user_data, g_param_spec_get_name(pspec));
 
@@ -773,14 +830,9 @@ cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 
 		sq_notebook_treeview_reset_columns(sq_archive_store_get_archive(store), treeview);
 	}
-	if(strcmp(g_param_spec_get_name(pspec), "show-icons") == 0)
+	if(strcmp(g_param_spec_get_name(pspec), "sort-folders-first") == 0 || strcmp(g_param_spec_get_name(pspec), "sort-case-sensitive") == 0)
 	{
 		g_object_notify(user_data, g_param_spec_get_name(pspec));
-
-		GtkTreeView *treeview = sq_notebook_get_active_tree_view(SQ_NOTEBOOK(user_data));
-		SQArchiveStore *store = SQ_ARCHIVE_STORE(gtk_tree_view_get_model(treeview));
-
-		sq_notebook_treeview_reset_columns(sq_archive_store_get_archive(store), treeview);
 	}
 }
 

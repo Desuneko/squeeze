@@ -31,6 +31,7 @@
 #define SQ_PROPERTY_SPEC_DATA "sq-property-spec"
 #define SQ_PROPERTY_VALUE_DATA "sq-property-value"
 #define SQ_ACTION_CUSTOM_DATA "sq-action-custom"
+#define SQ_ACTION_CALLBACK_DATA "sq-action-callback"
 
 static void
 sq_widget_factory_class_init(SQWidgetFactoryClass *factory_class);
@@ -72,7 +73,7 @@ static void
 cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data);
 
 static void
-sq_widget_factory_notify(const gchar *name, const gchar *message, gpointer user_data);
+sq_widget_factory_notify(LSQCustomAction *action, const gchar *message);
 
 GType
 sq_widget_factory_get_type()
@@ -110,6 +111,8 @@ static void
 sq_widget_factory_init(SQWidgetFactory *factory)
 {
 	factory->tips = gtk_tooltips_new();
+	factory->custom_callback = g_new(LSQCustomActionCallback, 1);
+	factory->custom_callback->notify_func = (LSQCustomActionNotifyFunc)sq_widget_factory_notify;
 }
 
 SQWidgetFactory*
@@ -886,6 +889,7 @@ sq_widget_factory_create_action_widget(SQWidgetFactory *factory, LSQArchiveSuppo
 
 	widget = gtk_button_new_with_label(lsq_custom_action_get_nick(action));
 	g_object_set_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA, action);
+	g_object_set_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);
 	g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);
 
 	const gchar *large_tip = lsq_custom_action_get_blurb(action);
@@ -916,6 +920,7 @@ sq_widget_factory_create_action_menu_item(SQWidgetFactory *factory, LSQArchiveSu
 
 	menu = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action));
 	g_object_set_data(G_OBJECT(menu), SQ_ACTION_CUSTOM_DATA, action);
+	g_object_set_data(G_OBJECT(menu), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);
 	g_signal_connect(G_OBJECT(menu), "activate", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);
 	gtk_widget_show(menu);
 
@@ -933,6 +938,7 @@ sq_widget_factory_create_action_bar(SQWidgetFactory *factory, LSQArchiveSupport 
 
 	widget = gtk_tool_button_new(NULL, lsq_custom_action_get_nick(action));
 	g_object_set_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA, action);
+	g_object_set_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);
 	g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);
 
 	const gchar *large_tip = lsq_custom_action_get_blurb(action);
@@ -964,9 +970,9 @@ sq_widget_factory_create_action_menu(SQWidgetFactory *factory, LSQArchiveSupport
 	{
 		if(strncmp("menu", lsq_custom_action_get_name(action[i]), 4) == 0)
 		{
-			lsq_custom_action_set_notify_function(action[i], (LSQCustomActionNotifyFunc)sq_widget_factory_notify, NULL);
 			item = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action[i]));
 			g_object_set_data(G_OBJECT(item), SQ_ACTION_CUSTOM_DATA, action[i]);
+			g_object_set_data(G_OBJECT(item), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);
 			g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);
 			menu = g_slist_append(menu, item);
 			gtk_widget_show(item);
@@ -983,7 +989,7 @@ cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data)
 {
 	LSQArchive *archive = LSQ_ARCHIVE(user_data);
 
-	lsq_custom_action_execute(g_object_get_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA), archive, NULL, NULL);
+	lsq_custom_action_execute(g_object_get_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA), archive, g_object_get_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA));
 }
 
 static void
@@ -993,9 +999,9 @@ cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
 }
 
 static void
-sq_widget_factory_notify(const gchar *name, const gchar *message, gpointer user_data)
+sq_widget_factory_notify(LSQCustomAction *action, const gchar *message)
 {
-	GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(user_data), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s: %s", name, message);
+	GtkWidget *dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s: %s", action->support->id, message);
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }

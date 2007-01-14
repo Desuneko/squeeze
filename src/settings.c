@@ -26,11 +26,14 @@
 #include "settings.h"
 
 static SQSettings *sq_global_settings = NULL;
+static GObjectClass *parent_class = NULL;
 
 static void
 sq_settings_init(SQSettings *);
 static void
 sq_settings_class_init(SQSettingsClass *);
+static GObject *
+sq_settings_singleton_constuctor(GType, guint, GObjectConstructParam *);
 
 GType
 sq_settings_get_type ()
@@ -71,14 +74,14 @@ sq_settings_init(SQSettings *object)
 static void
 sq_settings_class_init(SQSettingsClass *object_class)
 {
-
+	parent_class = g_type_class_peek_parent(object_class);
+	G_OBJECT_CLASS(object_class)->constructor = sq_settings_singleton_constuctor;
 }
 
 SQSettings *
 sq_settings_new()
 {
-	if(!sq_global_settings)
-		sq_global_settings = g_object_new(SQ_TYPE_SETTINGS, NULL);
+	sq_global_settings = g_object_new(SQ_TYPE_SETTINGS, NULL);
 
 	return sq_global_settings;
 }
@@ -153,4 +156,18 @@ sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboole
 #else
 	return fallback;
 #endif /* HAVE_LIBXFCE4UTIL */
+}
+
+static GObject *
+sq_settings_singleton_constuctor(GType type, guint n_construct_params, GObjectConstructParam *construct_params)
+{
+	GObject *object;
+	if(!sq_global_settings)
+	{
+		object = parent_class->constructor(type, n_construct_params, construct_params);
+		sq_global_settings = SQ_SETTINGS(object);
+	}
+	else
+		object = g_object_ref(SQ_SETTINGS(sq_global_settings));
+	return object;
 }

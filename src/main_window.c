@@ -94,7 +94,7 @@ static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_properties(GtkWidget *widget, gpointer userdata);
-static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);
+/*static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);*/
 
 static void cb_sq_main_about(GtkWidget *widget, gpointer userdata);
 
@@ -217,6 +217,8 @@ sq_main_window_finalize(GObject *object)
 
 	sq_settings_save(window->settings);
 
+	g_object_unref(G_OBJECT(window->settings));
+
 	//if(window->navigationbar)
 	//	gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
 
@@ -328,11 +330,13 @@ sq_main_window_init(SQMainWindow *window)
 		}
 #endif
 
+/*
 		window->menubar.menu_item_settings = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, window->accel_group);
 
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_settings), "activate", G_CALLBACK(cb_sq_main_preferences), window);
 
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), window->menubar.menu_item_settings);
+*/
 
 		gtk_widget_show_all(window->menubar.menu_view);
 
@@ -437,6 +441,18 @@ sq_main_window_init(SQMainWindow *window)
 
 /* menu item */
 	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "show-icons");
+	for(iter = list; iter; iter = iter->next)
+	{
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+		gtk_widget_show(iter->data);
+	}
+	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "sort-folders-first");
+	for(iter = list; iter; iter = iter->next)
+	{
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+		gtk_widget_show(iter->data);
+	}
+	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "sort-case-sensitive");
 	for(iter = list; iter; iter = iter->next)
 	{
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
@@ -798,7 +814,7 @@ cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
 }
 
 
-
+/*
 static void
 cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 {
@@ -846,6 +862,7 @@ cb_sq_main_preferences(GtkWidget *widget, gpointer userdata)
 
 	gtk_widget_destroy(dialog);
 }
+*/
 
 static void
 cb_sq_main_about(GtkWidget *widget, gpointer userdata)
