@@ -118,15 +118,18 @@ sq_main_window_navigation_style_get_type()
 	if(!nav_style_type)
 	{
 		static GEnumValue style_types[] = {
-			{SQ_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", N_("Internal Style")},
+			{SQ_MAIN_WINDOW_NAVIGATION_INTERNAL, "internal", NULL},
 #ifdef ENABLE_TOOLBAR
-			{SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", N_("Tool Bar Style")},
+			{SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR, "tool_bar", NULL},
 #endif
 #ifdef ENABLE_PATHBAR
-			{SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", N_("Path Bar Style")},
+			{SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR, "path_bar", NULL},
 #endif
 			{0, NULL, NULL}
 		};
+		style_types[0].value_nick = _("Internal Style");
+		style_types[1].value_nick = _("Tool Bar Style");
+		style_types[2].value_nick = _("Path Bar Style");
 
 		nav_style_type = g_enum_register_static("SQMainWindowNavigationStyle", style_types);
 	}

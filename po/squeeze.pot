@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-12 18:08+0100\n"
+"POT-Creation-Date: 2007-01-15 12:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:438 ../src/preferences_dialog.c:283
+#: ../libsqueeze/archive.c:438
 msgid "Filename"
 msgstr ""
 
@@ -60,89 +60,89 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:156
+#: ../libsqueeze/archive-support-gnu-tar.c:158
 #: ../libsqueeze/archive-support-zip.c:137
 msgid "Overwrite existing files"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:157
+#: ../libsqueeze/archive-support-gnu-tar.c:159
 #: ../libsqueeze/archive-support-zip.c:138
 msgid "Overwrite existing files on extraction"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:163
-#: ../libsqueeze/archive-support-gnu-tar.c:164
+#: ../libsqueeze/archive-support-gnu-tar.c:165
+#: ../libsqueeze/archive-support-gnu-tar.c:166
 msgid "Touch files"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:170
-#: ../libsqueeze/archive-support-gnu-tar.c:171
+#: ../libsqueeze/archive-support-gnu-tar.c:172
+#: ../libsqueeze/archive-support-gnu-tar.c:173
 msgid "Strip directories"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:179
+#: ../libsqueeze/archive-support-gnu-tar.c:181
 msgid "Keep newer files"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:180
+#: ../libsqueeze/archive-support-gnu-tar.c:182
 msgid "Do not overwrite files newer then those in the archive"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:186
-#: ../libsqueeze/archive-support-gnu-tar.c:187
+#: ../libsqueeze/archive-support-gnu-tar.c:188
+#: ../libsqueeze/archive-support-gnu-tar.c:189
 msgid "Override permissions"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:193
-#: ../libsqueeze/archive-support-gnu-tar.c:485
+#: ../libsqueeze/archive-support-gnu-tar.c:195
+#: ../libsqueeze/archive-support-gnu-tar.c:501
 #: ../libsqueeze/archive-support-zip.c:172
-#: ../libsqueeze/archive-support-zip.c:315
+#: ../libsqueeze/archive-support-zip.c:328
 msgid "Size"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:194
+#: ../libsqueeze/archive-support-gnu-tar.c:196
 #: ../libsqueeze/archive-support-zip.c:173
 msgid "View filesize"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:200
-#: ../libsqueeze/archive-support-gnu-tar.c:477
+#: ../libsqueeze/archive-support-gnu-tar.c:202
+#: ../libsqueeze/archive-support-gnu-tar.c:493
 msgid "Permissions"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:201
+#: ../libsqueeze/archive-support-gnu-tar.c:203
 msgid "View permissions"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:207
-#: ../libsqueeze/archive-support-gnu-tar.c:481
+#: ../libsqueeze/archive-support-gnu-tar.c:209
+#: ../libsqueeze/archive-support-gnu-tar.c:497
 msgid "Owner/Group"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:208
+#: ../libsqueeze/archive-support-gnu-tar.c:210
 msgid "View owner/group"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:214
-#: ../libsqueeze/archive-support-gnu-tar.c:489
+#: ../libsqueeze/archive-support-gnu-tar.c:216
+#: ../libsqueeze/archive-support-gnu-tar.c:505
 #: ../libsqueeze/archive-support-zip.c:158
-#: ../libsqueeze/archive-support-zip.c:331
+#: ../libsqueeze/archive-support-zip.c:344
 msgid "Date"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:215
+#: ../libsqueeze/archive-support-gnu-tar.c:217
 #: ../libsqueeze/archive-support-zip.c:159
 msgid "View date"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:221
-#: ../libsqueeze/archive-support-gnu-tar.c:493
+#: ../libsqueeze/archive-support-gnu-tar.c:223
+#: ../libsqueeze/archive-support-gnu-tar.c:509
 #: ../libsqueeze/archive-support-zip.c:151
-#: ../libsqueeze/archive-support-zip.c:335
+#: ../libsqueeze/archive-support-zip.c:348
 msgid "Time"
 msgstr ""
 
-#: ../libsqueeze/archive-support-gnu-tar.c:222
+#: ../libsqueeze/archive-support-gnu-tar.c:224
 #: ../libsqueeze/archive-support-zip.c:152
 msgid "View time"
 msgstr ""
@@ -164,7 +164,7 @@ msgid "Password"
 msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:144
-#: ../libsqueeze/archive-support-zip.c:323
+#: ../libsqueeze/archive-support-zip.c:336
 msgid "Compressed Size"
 msgstr ""
 
@@ -173,7 +173,7 @@ msgid "View compressed filesize"
 msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:165
-#: ../libsqueeze/archive-support-zip.c:327
+#: ../libsqueeze/archive-support-zip.c:340
 msgid "Ratio"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgid "View ratio"
 msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:179
-#: ../libsqueeze/archive-support-zip.c:319
+#: ../libsqueeze/archive-support-zip.c:332
 msgid "Method"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgid "View method"
 msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:186
-#: ../libsqueeze/archive-support-zip.c:339
+#: ../libsqueeze/archive-support-zip.c:352
 msgid "Checksum"
 msgstr ""
 
@@ -226,108 +226,108 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 
-#: ../src/main_window.c:121
+#: ../src/main_window.c:130
 msgid "Internal Style"
 msgstr ""
 
-#: ../src/main_window.c:123
+#: ../src/main_window.c:131
 msgid "Tool Bar Style"
 msgstr ""
 
-#: ../src/main_window.c:126
+#: ../src/main_window.c:132
 msgid "Path Bar Style"
 msgstr ""
 
-#: ../src/main_window.c:174
+#: ../src/main_window.c:177
 msgid "Navigation Style"
 msgstr ""
 
-#: ../src/main_window.c:175
+#: ../src/main_window.c:178
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
 msgstr ""
 
 #. File menu
-#: ../src/main_window.c:260
+#: ../src/main_window.c:265
 msgid "_File"
 msgstr ""
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:293
+#: ../src/main_window.c:298
 msgid "_Action"
 msgstr ""
 
-#: ../src/main_window.c:298
+#: ../src/main_window.c:303
 msgid "_Add"
 msgstr ""
 
-#: ../src/main_window.c:304
+#: ../src/main_window.c:309
 msgid "_Extract"
 msgstr ""
 
 #. View menu
-#: ../src/main_window.c:318
+#: ../src/main_window.c:323
 msgid "_View"
 msgstr ""
 
 #. Help menu
-#: ../src/main_window.c:340
+#: ../src/main_window.c:347
 msgid "_Help"
 msgstr ""
 
-#: ../src/main_window.c:371
+#: ../src/main_window.c:378
 msgid "Add"
 msgstr ""
 
-#: ../src/main_window.c:375 ../src/main_window.c:951
+#: ../src/main_window.c:382 ../src/main_window.c:971
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr ""
 
-#: ../src/main_window.c:639
+#: ../src/main_window.c:658
 msgid "Open archive in new window"
 msgstr ""
 
-#: ../src/main_window.c:645
+#: ../src/main_window.c:664
 msgid "Open archive"
 msgstr ""
 
-#: ../src/main_window.c:854
+#: ../src/main_window.c:874
 msgid "Lead developer:"
 msgstr ""
 
-#: ../src/main_window.c:857
+#: ../src/main_window.c:877
 msgid "Contributors:"
 msgstr ""
 
-#: ../src/main_window.c:860
+#: ../src/main_window.c:880
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr ""
 
-#: ../src/main_window.c:865
+#: ../src/main_window.c:885
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
 
-#: ../src/main_window.c:871
+#: ../src/main_window.c:891
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:970
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr ""
 
-#: ../src/main_window.c:951
+#: ../src/main_window.c:971
 msgid "View"
 msgstr ""
 
-#: ../src/main_window.c:1014
+#: ../src/main_window.c:1034
 msgid "Failed to open file"
 msgstr ""
 
-#: ../src/main_window.c:1015
+#: ../src/main_window.c:1035
 #, c-format
 msgid ""
 "'%s'\n"
@@ -337,7 +337,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:228
+#: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr ""
 
@@ -345,11 +345,11 @@ msgstr ""
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:245
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 
-#: ../src/new_dialog.c:134
+#: ../src/new_dialog.c:139
 msgid "Create new archive"
 msgstr ""
 
@@ -403,58 +403,6 @@ msgstr ""
 msgid "Extract archive"
 msgstr ""
 
-#: ../src/preferences_dialog.c:87
-msgid "_General"
-msgstr ""
-
-#: ../src/preferences_dialog.c:90
-msgid "Archive viewer:"
-msgstr ""
-
-#: ../src/preferences_dialog.c:99
-msgid "_Show Icons"
-msgstr ""
-
-#: ../src/preferences_dialog.c:102
-msgid "_Rules Hint"
-msgstr ""
-
-#: ../src/preferences_dialog.c:105
-msgid "Sorting:"
-msgstr ""
-
-#: ../src/preferences_dialog.c:114
-msgid "Sort _Case Sensitive "
-msgstr ""
-
-#: ../src/preferences_dialog.c:117
-msgid "Sort _Folders First"
-msgstr ""
-
-#: ../src/preferences_dialog.c:120
-msgid "Navigation bar:"
-msgstr ""
-
-#: ../src/preferences_dialog.c:132
-msgid "_Behaviour"
-msgstr ""
-
-#: ../src/preferences_dialog.c:149
-msgid "Preferences"
-msgstr ""
-
-#: ../src/preferences_dialog.c:206
-msgid "_Archivers"
-msgstr ""
-
-#: ../src/button_drag_box.c:85
-msgid "Visible:"
-msgstr ""
-
-#: ../src/button_drag_box.c:96
-msgid "Available:"
-msgstr ""
-
 #: ../src/properties_dialog.c:87
 msgid "Name:"
 msgstr ""
@@ -479,28 +427,41 @@ msgstr ""
 msgid "The amount of space between the path buttons"
 msgstr ""
 
-#: ../src/notebook.c:174 ../src/archive_store.c:240
+#: ../src/notebook.c:177 ../src/archive_store.c:240
 msgid "Show mime icons"
 msgstr ""
 
-#: ../src/notebook.c:175 ../src/archive_store.c:241
+#: ../src/notebook.c:178 ../src/archive_store.c:241
 msgid "Show the mime type icons for each entry"
 msgstr ""
 
-#: ../src/notebook.c:195
+#: ../src/notebook.c:184 ../src/archive_store.c:254
+msgid "Sort folders before files"
+msgstr ""
+
+#: ../src/notebook.c:185 ../src/archive_store.c:255
+msgid "The folders will be put at the top of the list"
+msgstr ""
+
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:261
+#: ../src/archive_store.c:262
+msgid "Sort text case sensitive"
+msgstr ""
+
+#: ../src/notebook.c:198
 msgid "Rules hint"
 msgstr ""
 
-#: ../src/notebook.c:196
+#: ../src/notebook.c:199
 msgid "Make the row background colors alternate"
 msgstr ""
 
-#: ../src/notebook.c:479
+#: ../src/notebook.c:541
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr ""
 
-#: ../src/notebook.c:487
+#: ../src/notebook.c:549
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr ""
@@ -511,18 +472,6 @@ msgstr ""
 
 #: ../src/archive_store.c:248
 msgid "Show '..' to go to the parent directory"
-msgstr ""
-
-#: ../src/archive_store.c:254
-msgid "Sort folders before files"
-msgstr ""
-
-#: ../src/archive_store.c:255
-msgid "The folders will be put at the top of the list"
-msgstr ""
-
-#: ../src/archive_store.c:261 ../src/archive_store.c:262
-msgid "Sort text case sensitive"
 msgstr ""
 
 #: ../squeeze.desktop.in.h:1

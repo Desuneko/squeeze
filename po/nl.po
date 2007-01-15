@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-12 18:08+0100\n"
+"POT-Creation-Date: 2007-01-15 12:12+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:438 ../src/preferences_dialog.c:283
+#: ../libsqueeze/archive.c:438
 msgid "Filename"
 msgstr "Bestandsnaam"
 
@@ -60,89 +60,89 @@ msgstr "Geannulleerd"
 msgid "Error"
 msgstr "Fout"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:156
+#: ../libsqueeze/archive-support-gnu-tar.c:158
 #: ../libsqueeze/archive-support-zip.c:137
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:157
+#: ../libsqueeze/archive-support-gnu-tar.c:159
 #: ../libsqueeze/archive-support-zip.c:138
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:163
-#: ../libsqueeze/archive-support-gnu-tar.c:164
+#: ../libsqueeze/archive-support-gnu-tar.c:165
+#: ../libsqueeze/archive-support-gnu-tar.c:166
 msgid "Touch files"
 msgstr "Bestanden aanraken"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:170
-#: ../libsqueeze/archive-support-gnu-tar.c:171
+#: ../libsqueeze/archive-support-gnu-tar.c:172
+#: ../libsqueeze/archive-support-gnu-tar.c:173
 msgid "Strip directories"
 msgstr "Mappen strippen"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:179
+#: ../libsqueeze/archive-support-gnu-tar.c:181
 msgid "Keep newer files"
 msgstr "Nieuwere bestanden behouden"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:180
+#: ../libsqueeze/archive-support-gnu-tar.c:182
 msgid "Do not overwrite files newer then those in the archive"
 msgstr "Bestanden die nieuwer zijn dan die in het archief niet overschrijven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:186
-#: ../libsqueeze/archive-support-gnu-tar.c:187
+#: ../libsqueeze/archive-support-gnu-tar.c:188
+#: ../libsqueeze/archive-support-gnu-tar.c:189
 msgid "Override permissions"
 msgstr "Rechten overschrijven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:193
-#: ../libsqueeze/archive-support-gnu-tar.c:485
+#: ../libsqueeze/archive-support-gnu-tar.c:195
+#: ../libsqueeze/archive-support-gnu-tar.c:501
 #: ../libsqueeze/archive-support-zip.c:172
-#: ../libsqueeze/archive-support-zip.c:315
+#: ../libsqueeze/archive-support-zip.c:328
 msgid "Size"
 msgstr "Grootte"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:194
+#: ../libsqueeze/archive-support-gnu-tar.c:196
 #: ../libsqueeze/archive-support-zip.c:173
 msgid "View filesize"
 msgstr "Grootte weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:200
-#: ../libsqueeze/archive-support-gnu-tar.c:477
+#: ../libsqueeze/archive-support-gnu-tar.c:202
+#: ../libsqueeze/archive-support-gnu-tar.c:493
 msgid "Permissions"
 msgstr "Rechten"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:201
+#: ../libsqueeze/archive-support-gnu-tar.c:203
 msgid "View permissions"
 msgstr "Rechten weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:207
-#: ../libsqueeze/archive-support-gnu-tar.c:481
+#: ../libsqueeze/archive-support-gnu-tar.c:209
+#: ../libsqueeze/archive-support-gnu-tar.c:497
 msgid "Owner/Group"
 msgstr "Eigenaar/Groep"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:208
+#: ../libsqueeze/archive-support-gnu-tar.c:210
 msgid "View owner/group"
 msgstr "Eigenaar / groep weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:214
-#: ../libsqueeze/archive-support-gnu-tar.c:489
+#: ../libsqueeze/archive-support-gnu-tar.c:216
+#: ../libsqueeze/archive-support-gnu-tar.c:505
 #: ../libsqueeze/archive-support-zip.c:158
-#: ../libsqueeze/archive-support-zip.c:331
+#: ../libsqueeze/archive-support-zip.c:344
 msgid "Date"
 msgstr "Datum"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:215
+#: ../libsqueeze/archive-support-gnu-tar.c:217
 #: ../libsqueeze/archive-support-zip.c:159
 msgid "View date"
 msgstr "Datum weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:221
-#: ../libsqueeze/archive-support-gnu-tar.c:493
+#: ../libsqueeze/archive-support-gnu-tar.c:223
+#: ../libsqueeze/archive-support-gnu-tar.c:509
 #: ../libsqueeze/archive-support-zip.c:151
-#: ../libsqueeze/archive-support-zip.c:335
+#: ../libsqueeze/archive-support-zip.c:348
 msgid "Time"
 msgstr "Tijd"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:222
+#: ../libsqueeze/archive-support-gnu-tar.c:224
 #: ../libsqueeze/archive-support-zip.c:152
 msgid "View time"
 msgstr "Tijd weergeven"
@@ -166,7 +166,7 @@ msgid "Password"
 msgstr "Wachtwoord"
 
 #: ../libsqueeze/archive-support-zip.c:144
-#: ../libsqueeze/archive-support-zip.c:323
+#: ../libsqueeze/archive-support-zip.c:336
 msgid "Compressed Size"
 msgstr "Gecomprimeerde Grootte"
 
@@ -175,7 +175,7 @@ msgid "View compressed filesize"
 msgstr "Gecomprimeerde bestandsgrootte weergeven"
 
 #: ../libsqueeze/archive-support-zip.c:165
-#: ../libsqueeze/archive-support-zip.c:327
+#: ../libsqueeze/archive-support-zip.c:340
 msgid "Ratio"
 msgstr "Verhouding"
 
@@ -184,7 +184,7 @@ msgid "View ratio"
 msgstr "Verhouding weergeven"
 
 #: ../libsqueeze/archive-support-zip.c:179
-#: ../libsqueeze/archive-support-zip.c:319
+#: ../libsqueeze/archive-support-zip.c:332
 msgid "Method"
 msgstr "Methode"
 
@@ -193,7 +193,7 @@ msgid "View method"
 msgstr "methode weergeven"
 
 #: ../libsqueeze/archive-support-zip.c:186
-#: ../libsqueeze/archive-support-zip.c:339
+#: ../libsqueeze/archive-support-zip.c:352
 msgid "Checksum"
 msgstr "Checksom"
 
@@ -230,23 +230,23 @@ msgstr ""
 "%s: %s\n"
 "Probeer %s --help voor een volledige lijst van mogelijke opties.\n"
 
-#: ../src/main_window.c:121
+#: ../src/main_window.c:130
 msgid "Internal Style"
 msgstr "Interne Stijl"
 
-#: ../src/main_window.c:123
+#: ../src/main_window.c:131
 msgid "Tool Bar Style"
 msgstr "Werkbalk Stijl"
 
-#: ../src/main_window.c:126
+#: ../src/main_window.c:132
 msgid "Path Bar Style"
 msgstr "Padbalk Stijl"
 
-#: ../src/main_window.c:174
+#: ../src/main_window.c:177
 msgid "Navigation Style"
 msgstr "Navigatie Stijl"
 
-#: ../src/main_window.c:175
+#: ../src/main_window.c:178
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -255,63 +255,63 @@ msgstr ""
 "De stijl om te navigeren door het archief"
 
 #. File menu
-#: ../src/main_window.c:260
+#: ../src/main_window.c:265
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:293
+#: ../src/main_window.c:298
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:298
+#: ../src/main_window.c:303
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:304
+#: ../src/main_window.c:309
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:318
+#: ../src/main_window.c:323
 msgid "_View"
 msgstr "B_eeld"
 
 #. Help menu
-#: ../src/main_window.c:340
+#: ../src/main_window.c:347
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window.c:371
+#: ../src/main_window.c:378
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:375 ../src/main_window.c:951
+#: ../src/main_window.c:382 ../src/main_window.c:971
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:639
+#: ../src/main_window.c:658
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:645
+#: ../src/main_window.c:664
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:854
+#: ../src/main_window.c:874
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:857
+#: ../src/main_window.c:877
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:860
+#: ../src/main_window.c:880
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:865
+#: ../src/main_window.c:885
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -319,23 +319,23 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:871
+#: ../src/main_window.c:891
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:970
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:951
+#: ../src/main_window.c:971
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:1014
+#: ../src/main_window.c:1034
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1015
+#: ../src/main_window.c:1035
 #, c-format
 msgid ""
 "'%s'\n"
@@ -347,7 +347,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:228
+#: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type niet ondersteund"
 
@@ -355,12 +355,12 @@ msgstr "Kan archief niet maken, MIME-type niet ondersteund"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:245
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
 
-#: ../src/new_dialog.c:134
+#: ../src/new_dialog.c:139
 msgid "Create new archive"
 msgstr "Nieuw archief maken"
 
@@ -414,58 +414,6 @@ msgstr "Geselecteerde bestanden"
 msgid "Extract archive"
 msgstr "Archief uitpakken"
 
-#: ../src/preferences_dialog.c:87
-msgid "_General"
-msgstr "_Algemeen"
-
-#: ../src/preferences_dialog.c:90
-msgid "Archive viewer:"
-msgstr "Archieveerder:"
-
-#: ../src/preferences_dialog.c:99
-msgid "_Show Icons"
-msgstr "Pictogrammen _Tonen"
-
-#: ../src/preferences_dialog.c:102
-msgid "_Rules Hint"
-msgstr "_Regel Hints"
-
-#: ../src/preferences_dialog.c:105
-msgid "Sorting:"
-msgstr "Sorteren:"
-
-#: ../src/preferences_dialog.c:114
-msgid "Sort _Case Sensitive "
-msgstr "Tekst _hoofdlettergevoelig sorteren"
-
-#: ../src/preferences_dialog.c:117
-msgid "Sort _Folders First"
-msgstr "_Mappen voor bestanden sorteren"
-
-#: ../src/preferences_dialog.c:120
-msgid "Navigation bar:"
-msgstr "Navigatie balk:"
-
-#: ../src/preferences_dialog.c:132
-msgid "_Behaviour"
-msgstr "_Gedrag"
-
-#: ../src/preferences_dialog.c:149
-msgid "Preferences"
-msgstr "Voorkeuren"
-
-#: ../src/preferences_dialog.c:206
-msgid "_Archivers"
-msgstr "_Archiveerders"
-
-#: ../src/button_drag_box.c:85
-msgid "Visible:"
-msgstr "Zichtbaar:"
-
-#: ../src/button_drag_box.c:96
-msgid "Available:"
-msgstr "Beschikbaar:"
-
 #: ../src/properties_dialog.c:87
 msgid "Name:"
 msgstr "Naam:"
@@ -490,28 +438,41 @@ msgstr "Spatiering"
 msgid "The amount of space between the path buttons"
 msgstr "De ruimte tussen de pad knoppen"
 
-#: ../src/notebook.c:174 ../src/archive_store.c:240
+#: ../src/notebook.c:177 ../src/archive_store.c:240
 msgid "Show mime icons"
 msgstr "Mime iconen weergeven"
 
-#: ../src/notebook.c:175 ../src/archive_store.c:241
+#: ../src/notebook.c:178 ../src/archive_store.c:241
 msgid "Show the mime type icons for each entry"
 msgstr "Mime type iconen weergeven voor elk item"
 
-#: ../src/notebook.c:195
+#: ../src/notebook.c:184 ../src/archive_store.c:254
+msgid "Sort folders before files"
+msgstr "Mappen voor bestanden sorteren"
+
+#: ../src/notebook.c:185 ../src/archive_store.c:255
+msgid "The folders will be put at the top of the list"
+msgstr "De mappen zullen boven aan de lijst geplaatst worden"
+
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:261
+#: ../src/archive_store.c:262
+msgid "Sort text case sensitive"
+msgstr "Tekst hoofdlettergevoelig sorteren"
+
+#: ../src/notebook.c:198
 msgid "Rules hint"
 msgstr "Regel Hints"
 
-#: ../src/notebook.c:196
+#: ../src/notebook.c:199
 msgid "Make the row background colors alternate"
 msgstr "Laat de achtergrond kleur van de rijen verspringen"
 
-#: ../src/notebook.c:479
+#: ../src/notebook.c:541
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr "Kan archief '%s' niet openen."
 
-#: ../src/notebook.c:487
+#: ../src/notebook.c:549
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Het uitpakken van de inhoud van archief '%s' is mislukt."
@@ -524,18 +485,6 @@ msgstr "Toon map-omhoog item"
 msgid "Show '..' to go to the parent directory"
 msgstr "Toon '..' om naar de bovenliggende map te gaan"
 
-#: ../src/archive_store.c:254
-msgid "Sort folders before files"
-msgstr "Mappen voor bestanden sorteren"
-
-#: ../src/archive_store.c:255
-msgid "The folders will be put at the top of the list"
-msgstr "De mappen zullen boven aan de lijst geplaatst worden"
-
-#: ../src/archive_store.c:261 ../src/archive_store.c:262
-msgid "Sort text case sensitive"
-msgstr "Tekst hoofdlettergevoelig sorteren"
-
 #: ../squeeze.desktop.in.h:1
 msgid "Archive manager"
 msgstr "Archief beheerder"
@@ -543,6 +492,45 @@ msgstr "Archief beheerder"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce archief beheerder"
+
+#~ msgid "_General"
+#~ msgstr "_Algemeen"
+
+#~ msgid "Archive viewer:"
+#~ msgstr "Archieveerder:"
+
+#~ msgid "_Show Icons"
+#~ msgstr "Pictogrammen _Tonen"
+
+#~ msgid "_Rules Hint"
+#~ msgstr "_Regel Hints"
+
+#~ msgid "Sorting:"
+#~ msgstr "Sorteren:"
+
+#~ msgid "Sort _Case Sensitive "
+#~ msgstr "Tekst _hoofdlettergevoelig sorteren"
+
+#~ msgid "Sort _Folders First"
+#~ msgstr "_Mappen voor bestanden sorteren"
+
+#~ msgid "Navigation bar:"
+#~ msgstr "Navigatie balk:"
+
+#~ msgid "_Behaviour"
+#~ msgstr "_Gedrag"
+
+#~ msgid "Preferences"
+#~ msgstr "Voorkeuren"
+
+#~ msgid "_Archivers"
+#~ msgstr "_Archiveerders"
+
+#~ msgid "Visible:"
+#~ msgstr "Zichtbaar:"
+
+#~ msgid "Available:"
+#~ msgstr "Beschikbaar:"
 
 #, fuzzy
 #~ msgid "Archive type:"

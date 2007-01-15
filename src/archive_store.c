@@ -312,11 +312,7 @@ sq_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 	switch(prop_id)
 	{
 		case SQ_ARCHIVE_STORE_SHOW_ICONS:
-			if(store->props._show_icons != g_value_get_boolean(value)?1:0)
-			{
-				store->props._show_icons = g_value_get_boolean(value)?1:0;
-				sq_archive_store_refresh(store);
-			}
+			sq_archive_store_set_show_icons(store, g_value_get_boolean(value));
 			break;
 		case SQ_ARCHIVE_STORE_SHOW_UP_DIR:
 			if(store->props._show_up_dir != g_value_get_boolean(value)?1:0)
@@ -326,20 +322,10 @@ sq_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 			}
 			break;
 		case SQ_ARCHIVE_STORE_SORT_FOLDERS_FIRST:
-			if(store->props._sort_folders_first != g_value_get_boolean(value)?1:0)
-			{
-				store->props._sort_folders_first = g_value_get_boolean(value)?1:0;
-				if(store->sort_column < 0)
-					store->sort_column = 1;
-				sq_archive_store_sort(store);
-			}
+			sq_archive_store_set_sort_folders_first(store, g_value_get_boolean(value));
 			break;
 		case SQ_ARCHIVE_STORE_SORT_CASE_SENSITIVE:
-			if(store->props._sort_case_sensitive != g_value_get_boolean(value)?1:0)
-			{
-				store->props._sort_case_sensitive = g_value_get_boolean(value)?1:0;
-				sq_archive_store_sort(store);
-			}
+			sq_archive_store_set_sort_case_sensitive(store, g_value_get_boolean(value));
 			break;
 	}
 }
@@ -1325,11 +1311,6 @@ sq_archive_store_get_sort_folders_first(SQArchiveStore *store)
 void
 sq_archive_store_set_show_icons(SQArchiveStore *store, gboolean show)
 {
-#ifdef DEBUG
-	g_return_if_fail(store->navigation.present);
-	g_return_if_fail(store->navigation.present->data);
-#endif
-
 	show = show?1:0;
 
 	if(store->props._show_icons != show)
@@ -1344,29 +1325,39 @@ sq_archive_store_set_show_icons(SQArchiveStore *store, gboolean show)
 void
 sq_archive_store_set_sort_case_sensitive(SQArchiveStore *store, gboolean sort)
 {
-	store->props._sort_case_sensitive= sort?1:0;
+	sort = sort?1:0;
 
-#ifdef DEBUG
-	g_return_if_fail(store->navigation.present);
-	g_return_if_fail(store->navigation.present->data);
-#endif
+	if(store->props._sort_case_sensitive != sort)
+	{
+		store->props._sort_case_sensitive = sort;
+		if(store->sort_column < 0)
+			store->sort_column = 1;
 
-	if(store->archive)
-		sq_archive_store_refresh(store);
+		if(store->archive)
+		{
+			sq_archive_store_refresh(store);
+			sq_archive_store_sort(store);
+		}
+	}
 }
 
 void
 sq_archive_store_set_sort_folders_first(SQArchiveStore *store, gboolean sort)
 {
-	store->props._sort_folders_first = sort?1:0;
+	sort = sort?1:0;
 
-#ifdef DEBUG
-	g_return_if_fail(store->navigation.present);
-	g_return_if_fail(store->navigation.present->data);
-#endif
+	if(store->props._sort_folders_first != sort)
+	{
+		store->props._sort_folders_first = sort;
+		if(store->sort_column < 0)
+			store->sort_column = 1;
 
-	if(store->archive)
-		sq_archive_store_refresh(store);
+		if(store->archive)
+		{
+			sq_archive_store_refresh(store);
+			sq_archive_store_sort(store);
+		}
+	}
 }
 
 gchar *

@@ -276,7 +276,7 @@ sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *ob
 
 	for(i = 0; i < n; ++i)
 	{
-		radio = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio), gettext(values[i].value_nick));
+		radio = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(radio), values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
@@ -324,7 +324,7 @@ sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj
 
 	for(i = 0; i < n; ++i)
 	{
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), gettext(values[i].value_nick));
+		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), values[i].value_nick);
 
 		if(g_value_get_enum(value) == values[i].value)
 			select = i;
@@ -366,7 +366,7 @@ sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GP
 
 	for(i = 0; i < n; ++i)
 	{
-		check = gtk_check_button_new_with_label(gettext(values[i].value_nick));
+		check = gtk_check_button_new_with_label(values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
@@ -517,7 +517,7 @@ sq_widget_factory_create_enum_menu_group(SQWidgetFactory *factory, GObject *obj,
 
 	for(i = 0; i < n; ++i)
 	{
-		radio = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(radio), gettext(values[i].value_nick));
+		radio = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(radio), values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
@@ -549,9 +549,9 @@ sq_widget_factory_create_enum_menu_list(SQWidgetFactory *factory, GObject *obj, 
 	for(i = 0; i < n; ++i)
 	{
 		if(radio)
-			radio = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(radio), gettext(values[i].value_nick));
+			radio = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM(radio), values[i].value_nick);
 		else
-			radio = gtk_radio_menu_item_new_with_label(NULL, gettext(values[i].value_nick));
+			radio = gtk_radio_menu_item_new_with_label(NULL, values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
@@ -585,7 +585,7 @@ sq_widget_factory_create_flags_menu_group(SQWidgetFactory *factory, GObject *obj
 
 	for(i = 0; i < n; ++i)
 	{
-		check = gtk_check_menu_item_new_with_label(gettext(values[i].value_nick));
+		check = gtk_check_menu_item_new_with_label(values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
@@ -615,7 +615,7 @@ sq_widget_factory_create_flags_menu_list(SQWidgetFactory *factory, GObject *obj,
 
 	for(i = 0; i < n; ++i)
 	{
-		check = gtk_check_menu_item_new_with_label(gettext(values[i].value_nick));
+		check = gtk_check_menu_item_new_with_label(values[i].value_nick);
 
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_SPEC_DATA, pspec);
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
