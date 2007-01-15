@@ -73,6 +73,7 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 	dialog->append_extention_check = gtk_check_button_new_with_label(("Append extension to filename"));
 	gtk_box_pack_start (GTK_BOX (hbox),dialog->append_extention_check,FALSE, FALSE, 0);
 	gtk_widget_show_all(hbox);
+	gtk_widget_show_all(dialog->file_chooser);
 
 
 	GSList *supported_mime_types = lsq_get_supported_mime_types();
@@ -124,8 +125,10 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 	g_slist_free(supported_mime_types);
 
 /* WHY DOESN'T THIS WORK?!*/
-	//gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(GTK_FILE_CHOOSER_DIALOG(dialog)), file_filter);
+	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog->file_chooser), file_filter);
+	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog->file_chooser), TRUE);
 
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), dialog->file_chooser, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -141,8 +144,6 @@ sq_new_archive_dialog_new()
 
 	dialog = g_object_new(sq_new_archive_dialog_get_type(),
 			"title", _("Create new archive"),
-			"action", GTK_FILE_CHOOSER_ACTION_SAVE,
-			"do-overwrite-confirmation", TRUE,
 			NULL);
 
 	return dialog;

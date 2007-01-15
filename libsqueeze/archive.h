@@ -107,9 +107,9 @@ struct _LSQArchiveClass
 }; 
 
 GType               lsq_archive_get_type(void);
-LSQArchive         *lsq_archive_new(gchar *, const gchar *);
+LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
 
-void                lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status);
+void                lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status) G_GNUC_INTERNAL;
 LSQArchiveStatus    lsq_archive_get_status(LSQArchive *archive);
 const gchar *       lsq_archive_get_status_msg(LSQArchive *archive);
 LSQArchiveStatus    lsq_archive_get_old_status(LSQArchive *archive);
@@ -124,24 +124,24 @@ LSQArchiveIter     *lsq_archive_iter_get_child(const LSQArchive *, const LSQArch
 gboolean            lsq_archive_iter_del_child(LSQArchive *, LSQArchiveIter *, LSQArchiveIter *);
 
 /* void            lsq_archive_iter_set_filename(LSQArchive *, LSQArchiveIter *, const gchar *); */
-void                lsq_archive_iter_set_mime(LSQArchive *, LSQArchiveIter *, ThunarVfsMimeInfo *);
-void                lsq_archive_iter_set_prop_str(LSQArchive *, LSQArchiveIter *, guint, const gchar *);
-void                lsq_archive_iter_set_prop_uint(LSQArchive *, LSQArchiveIter *, guint, guint);
-void                lsq_archive_iter_set_prop_uint64(LSQArchive *, LSQArchiveIter *, guint, guint64);
-void                lsq_archive_iter_set_prop_value(LSQArchive *, LSQArchiveIter *, guint, const GValue *);
-void                lsq_archive_iter_set_props(LSQArchive *, LSQArchiveIter *, ...);
-void                lsq_archive_iter_set_propsv(LSQArchive *, LSQArchiveIter *, gconstpointer *);
+void                lsq_archive_iter_set_mime(LSQArchive *, LSQArchiveIter *, ThunarVfsMimeInfo *) G_GNUC_INTERNAL;
+void                lsq_archive_iter_set_prop_str(LSQArchive *, LSQArchiveIter *, guint, const gchar *) G_GNUC_INTERNAL;
+void                lsq_archive_iter_set_prop_uint(LSQArchive *, LSQArchiveIter *, guint, guint) G_GNUC_INTERNAL;
+void                lsq_archive_iter_set_prop_uint64(LSQArchive *, LSQArchiveIter *, guint, guint64) G_GNUC_INTERNAL;
+void                lsq_archive_iter_set_prop_value(LSQArchive *, LSQArchiveIter *, guint, const GValue *) G_GNUC_INTERNAL;
+void                lsq_archive_iter_set_props(LSQArchive *, LSQArchiveIter *, ...) G_GNUC_INTERNAL;
+void                lsq_archive_iter_set_propsv(LSQArchive *, LSQArchiveIter *, gconstpointer *) G_GNUC_INTERNAL;
 
 gboolean            lsq_archive_iter_get_prop_value(const LSQArchive *, const LSQArchiveIter *, guint, GValue *);
 void                lsq_archive_iter_get_icon_name(const LSQArchive *, const LSQArchiveIter *, GValue *, GtkIconTheme *icon_theme);
 
-LSQArchiveIter     *lsq_archive_add_file(LSQArchive *, const gchar *);
+LSQArchiveIter     *lsq_archive_add_file(LSQArchive *, const gchar *) G_GNUC_INTERNAL;
 LSQArchiveIter     *lsq_archive_get_iter(LSQArchive *, const gchar *);
 GType               lsq_archive_get_entry_property_type(LSQArchive *, guint);
 const gchar        *lsq_archive_get_entry_property_name(LSQArchive *, guint);
-void                lsq_archive_clear_entry_property_types(LSQArchive *);
-void                lsq_archive_set_entry_property_type(LSQArchive *, guint, GType, const gchar *);
-void                lsq_archive_set_entry_property_typesv(LSQArchive *, GType *, const gchar **);
+void                lsq_archive_clear_entry_property_types(LSQArchive *) G_GNUC_INTERNAL;
+void                lsq_archive_set_entry_property_type(LSQArchive *, guint, GType, const gchar *) G_GNUC_INTERNAL;
+void                lsq_archive_set_entry_property_typesv(LSQArchive *, GType *, const gchar **) G_GNUC_INTERNAL;
 guint               lsq_archive_n_property(LSQArchive *);
 guint64             lsq_archive_get_n_files(LSQArchive *);
 guint64             lsq_archive_get_n_directories(LSQArchive *);

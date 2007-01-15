@@ -102,7 +102,8 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 	if(!archive)
 	{
 		archive = lsq_archive_new(path, NULL);
-		lsq_opened_archive_list = g_slist_prepend(lsq_opened_archive_list, archive);
+		if(archive)
+			lsq_opened_archive_list = g_slist_prepend(lsq_opened_archive_list, archive);
 	}
 	(*lp_archive) = archive;
 	if(!archive)

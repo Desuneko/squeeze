@@ -65,8 +65,8 @@ struct _LSQArchiveSupportZipClass
 	LSQArchiveSupportClass parent;
 }; 
 
-GType                lsq_archive_support_zip_get_type(void);
-LSQArchiveSupport *  lsq_archive_support_zip_new();
+GType                lsq_archive_support_zip_get_type(void) G_GNUC_INTERNAL;
+LSQArchiveSupport *  lsq_archive_support_zip_new() G_GNUC_INTERNAL;
 
 G_END_DECLS
 
