@@ -159,7 +159,8 @@ int main(int argc, char **argv)
 		if(new_archive)
 			files = g_slist_prepend(files, new_archive);
 
-		sq_application_new_archive(sq_app, add_archive_path, files);
+		if(sq_application_new_archive(sq_app, add_archive_path, files))
+			return 1;
 	}
 
 	if(!new_archive && !add_archive_path && !extract_archive && !extract_archive_path)
