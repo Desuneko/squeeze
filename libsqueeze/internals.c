@@ -170,6 +170,9 @@ lsq_opened_archive_get_archive(gchar *path)
 static gint
 lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer path)
 {
+#ifdef DEBUG
+	g_return_val_if_fail(open_archive, 1);
+#endif
 	ThunarVfsPath *path_info = NULL;
 	if(g_path_is_absolute(path))
 		path_info = thunar_vfs_path_new(path, NULL);
