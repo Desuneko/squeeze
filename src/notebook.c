@@ -482,8 +482,8 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
 
 	GtkTreeModel *tree_model = sq_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
-	//sq_archive_store_set_sort_folders_first(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_folders_first);
-	//sq_archive_store_set_sort_case_sensitive(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_case_sensitive);
+	sq_archive_store_set_sort_folders_first(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_folders_first);
+	sq_archive_store_set_sort_case_sensitive(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_case_sensitive);
 	g_signal_connect(G_OBJECT(tree_model), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
