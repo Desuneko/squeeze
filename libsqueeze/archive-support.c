@@ -253,6 +253,12 @@ lsq_archive_support_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 	return -1;
 }
 
+guint64
+lsq_archive_support_get_max_n_files(LSQArchiveSupport *support)
+{
+	return support->max_n_files;
+}
+
 GSList *
 lsq_archive_support_list_properties(LSQArchiveSupport *support, gchar *prefix)
 {

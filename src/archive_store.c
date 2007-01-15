@@ -1563,7 +1563,9 @@ cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 	{
 		if(!store->navigation.present)
 		{
+#ifdef DEBUG
 			g_debug("added home");
+#endif
 			sq_archive_store_append_history(store, g_slist_prepend(NULL, lsq_archive_get_iter(archive, NULL)));
 			g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 		}

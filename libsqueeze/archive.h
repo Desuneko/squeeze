@@ -92,8 +92,10 @@ struct _LSQArchive
 	gchar              *files;
 	gboolean            has_passwd;
 	struct {
-		gint64 archive_size;
-		gint64 content_size;
+		guint64 archive_size;
+		guint64 content_size;
+		guint64 n_files;
+		guint64 n_directories;
 	} props;
 };
 
@@ -141,6 +143,8 @@ void                lsq_archive_clear_entry_property_types(LSQArchive *);
 void                lsq_archive_set_entry_property_type(LSQArchive *, guint, GType, const gchar *);
 void                lsq_archive_set_entry_property_typesv(LSQArchive *, GType *, const gchar **);
 guint               lsq_archive_n_property(LSQArchive *);
+guint64             lsq_archive_get_n_files(LSQArchive *);
+guint64             lsq_archive_get_n_directories(LSQArchive *);
 
 G_END_DECLS
 

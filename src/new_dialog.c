@@ -112,6 +112,10 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 		{
 			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".zip");
 		}
+		if(!strcmp(_supported_mime_types->data, "application/x-rar"))
+		{
+			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".rar");
+		}
 		gtk_file_filter_add_mime_type(file_filter, _supported_mime_types->data);
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}

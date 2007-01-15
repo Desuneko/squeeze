@@ -250,7 +250,7 @@ sq_notebook_dispose(GObject *object)
 
 	gint n = gtk_notebook_get_n_pages(notebook);
 	gint i = 0;
-	for(i = 0; i < n; i++)
+	for(i = n-1; i >= 0; --i)
 	{
 		GtkWidget *scrolledwindow = gtk_notebook_get_nth_page(GTK_NOTEBOOK(notebook), i);
 		GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
@@ -260,11 +260,14 @@ sq_notebook_dispose(GObject *object)
 
 		if(archive)
 			g_signal_handlers_disconnect_by_func(archive, cb_notebook_archive_refreshed, treeview);
+		/* FIXME
 		if(SQ_NOTEBOOK(notebook)->navigation_bar)
 			sq_navigation_bar_set_store(((SQNotebook *)notebook)->navigation_bar, NULL);
+		*/
 		g_object_unref(archive_store);
 
 		lsq_close_archive(archive);
+		gtk_notebook_remove_page(notebook, i);
 	}
 
 	parent_class->dispose(object);

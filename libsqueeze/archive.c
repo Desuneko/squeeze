@@ -836,7 +836,7 @@ lsq_archive_iter_n_children(const LSQArchive *archive, const LSQArchiveIter *ite
 #endif
 	/* g_debug("%d: %d", iter->children?GPOINTER_TO_INT(*iter->children):0, lsq_slist_length(iter->buffer)); */
 	/* the first element of the array (*iter->children) contains the size of the array */
-	return (iter->children?GPOINTER_TO_UINT(*iter->children):0 + lsq_slist_length(iter->buffer));
+	return ((iter->children?GPOINTER_TO_UINT(*iter->children):0) + lsq_slist_length(iter->buffer));
 }
 
 /** 

@@ -7,6 +7,7 @@ libsqueeze_1_la_SOURCES =  \
 	archive.c archive.h \
 	archive-support.c archive-support.h \
 	archive-support-zip.c archive-support-zip.h \
+	archive-support-rar.c archive-support-rar.h \
 	archive-support-gnu-tar.c archive-support-gnu-tar.h
 
 libsqueeze_1_la_CFLAGS = \

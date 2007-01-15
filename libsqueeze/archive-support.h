@@ -76,6 +76,7 @@ struct _LSQArchiveSupport
 	gchar        *id;
 	GSList       *mime;
 	GSList       *custom_action;
+	guint64       max_n_files;
 /*
  * The following functions should _NOT_ be called directly.
  *
@@ -117,6 +118,7 @@ gint                 lsq_archive_support_add(LSQArchiveSupport *, LSQArchive *, 
 gint                 lsq_archive_support_extract(LSQArchiveSupport *, LSQArchive *, gchar *, GSList *);
 gint                 lsq_archive_support_remove(LSQArchiveSupport *, LSQArchive *, GSList *);
 gint                 lsq_archive_support_refresh(LSQArchiveSupport *, LSQArchive *);
+guint64              lsq_archive_support_get_max_n_files(LSQArchiveSupport *);
 
 GSList *             lsq_archive_support_list_properties(LSQArchiveSupport *, gchar *);
 
