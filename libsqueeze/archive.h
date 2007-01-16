@@ -136,7 +136,7 @@ gboolean            lsq_archive_iter_get_prop_value(const LSQArchive *, const LS
 void                lsq_archive_iter_get_icon_name(const LSQArchive *, const LSQArchiveIter *, GValue *, GtkIconTheme *icon_theme);
 
 LSQArchiveIter     *lsq_archive_add_file(LSQArchive *, const gchar *) G_GNUC_INTERNAL;
-LSQArchiveIter     *lsq_archive_get_iter(LSQArchive *, const gchar *);
+LSQArchiveIter     *lsq_archive_get_iter(const LSQArchive *, const gchar *);
 GType               lsq_archive_get_entry_property_type(LSQArchive *, guint);
 const gchar        *lsq_archive_get_entry_property_name(LSQArchive *, guint);
 void                lsq_archive_clear_entry_property_types(LSQArchive *) G_GNUC_INTERNAL;
@@ -145,6 +145,8 @@ void                lsq_archive_set_entry_property_typesv(LSQArchive *, GType *,
 guint               lsq_archive_n_property(LSQArchive *);
 guint64             lsq_archive_get_n_files(LSQArchive *);
 guint64             lsq_archive_get_n_directories(LSQArchive *);
+
+void                lsq_archive_add_children(LSQArchive *, GSList *) G_GNUC_INTERNAL;
 
 G_END_DECLS
 

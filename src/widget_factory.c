@@ -1001,7 +1001,7 @@ cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
 static void
 sq_widget_factory_notify(LSQCustomAction *action, const gchar *message)
 {
-	GtkWidget *dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s: %s", action->support->id, message);
+	GtkWidget *dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s: %s", action->support->id, message);
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }

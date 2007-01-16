@@ -68,10 +68,13 @@ static LSQEntry *
 lsq_entry_new(LSQArchive *, const gchar *);
 
 static void
-lsq_archive_entry_free(LSQArchive *, LSQEntry *);
+lsq_archive_entry_free(const LSQArchive *, LSQEntry *);
 
 static LSQEntry *
 lsq_entry_get_child(const LSQEntry *entry, const gchar *filename);
+
+static gboolean
+lsq_archive_entry_del_child(const LSQArchive*, LSQEntry *entry, const gchar *filename);
 
 static void
 lsq_archive_entry_add_child(LSQArchive *, LSQEntry *, LSQEntry *);
@@ -93,6 +96,9 @@ static const gchar *
 lsq_archive_iter_get_filename(const LSQArchive *, const LSQArchiveIter *);
 static const gchar *
 lsq_archive_iter_get_mimetype(const LSQArchive *, const LSQArchiveIter *);
+
+static gchar *
+lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path);
 
 static gint
 lsq_entry_filename_compare(LSQEntry *, LSQEntry *);
@@ -174,7 +180,7 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			0,
 			NULL,
 			NULL,
-			g_cclosure_marshal_VOID__POINTER,
+			g_cclosure_marshal_VOID__STRING,
 			G_TYPE_NONE,
 			1,
 			G_TYPE_STRING,
@@ -277,6 +283,7 @@ lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 {
 	gchar **path = NULL;
 	gchar *_path = NULL;
+	gchar *_path_ = NULL;
 
 	if(LSQ_IS_ARCHIVE(archive))
 	{
@@ -289,11 +296,16 @@ lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REMOVE) && (archive->files))
 			{
-				path = g_strsplit(archive->files, " ", 2);
-				_path = g_path_get_dirname(path[0]);
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED], 0, _path, NULL);
-				g_strfreev(path);
+				/* FIXME: can not be space in path */
+				_path = archive->files;
+				while(*_path == ' ') _path++;
+				path = g_strsplit(_path, " ", 2);
+				_path = g_shell_unquote(path[0], NULL);
+				_path_ = lsq_archive_get_iter_part(archive, _path);
+				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED], 0, _path_, NULL);
+				g_free(_path_);
 				g_free(_path);
+				g_strfreev(path);
 			}
 		} 
 	}
@@ -520,7 +532,7 @@ lsq_archive_n_property(LSQArchive *archive)
 }
 
 LSQArchiveIter *
-lsq_archive_get_iter(LSQArchive *archive, const gchar *path)
+lsq_archive_get_iter(const LSQArchive *archive, const gchar *path)
 {
 
 	if(!path)
@@ -532,6 +544,7 @@ lsq_archive_get_iter(LSQArchive *archive, const gchar *path)
 
 	if(path[0] == '/' && lsq_archive_iter_get_child(archive, archive->root_entry, "/"))
 	{
+		g_free(iter[0]);
 		iter[0] = strdup("/");
 	}
 
@@ -554,6 +567,51 @@ lsq_archive_get_iter(LSQArchive *archive, const gchar *path)
 	return entry;
 }
 
+static gchar *
+lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path)
+{
+	if(!path)
+		return NULL;
+
+	gchar **buf = g_strsplit_set(path, "/\n", -1);
+	gchar **iter = buf;
+	gchar *result, *tmp = NULL;
+	LSQArchiveIter *entry = (LSQArchiveIter *)archive->root_entry;
+
+	if(path[0] == '/' && lsq_archive_iter_get_child(archive, archive->root_entry, "/"))
+	{
+		tmp = iter[0];
+		iter[0] = strdup("/");
+	}
+
+	while(iter[1]) /* next iter must exist */
+	{
+		g_debug(*iter);
+		if((*iter)[0])
+		{
+			entry = lsq_archive_iter_get_child(archive, entry, *iter);
+			if(!entry) /*&& lsq_archive_iter_is_directory(archive, entry))*/
+			{
+				break;
+			}
+		}
+		iter++;
+	}
+
+	if(tmp)
+	{
+		g_free(iter[0]);
+		iter[0] = tmp;
+	}
+	tmp = *iter;
+	*iter = NULL;
+	result = g_strjoinv("/", buf);
+	*iter = tmp;
+
+	g_strfreev(buf);
+
+	return result;
+}
 
 /******************
  * LSQEntry stuff *
@@ -581,7 +639,7 @@ lsq_entry_new(LSQArchive *archive, const gchar *filename)
 }
 
 static void
-lsq_archive_entry_free(LSQArchive *archive, LSQEntry *entry)
+lsq_archive_entry_free(const LSQArchive *archive, LSQEntry *entry)
 {
 	guint i = 0; 
 	gpointer props_iter = entry->props;
@@ -693,6 +751,79 @@ lsq_entry_get_child(const LSQEntry *entry, const gchar *filename)
 
 	g_free(_filename);
 	return NULL;
+}
+
+static gboolean
+lsq_archive_entry_del_child(const LSQArchive *archive, LSQEntry *entry, const gchar *filename)
+{
+	LSQSList *buffer_iter = NULL, *prev_iter = NULL;
+	/* the first element of the array (*entry->children) contains the size of the array */
+	guint total_size, size = total_size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
+	guint pos = 0;
+	guint begin = 1;
+	gint cmp = 0;
+	const gchar *_pos = strchr(filename, '/');
+	gchar *_filename;
+
+	if(_pos)
+		_filename = g_strndup(filename, (gsize)(_pos - filename));
+	else
+		_filename = g_strdup(filename);
+
+
+	/* binary search algoritme */
+	while(size)
+	{
+		pos = (size / 2);
+
+		cmp = strcmp(_filename, entry->children[begin+pos]->filename);
+		if(!cmp)
+		{
+			g_free(_filename);
+			lsq_archive_entry_free(archive, entry->children[begin+pos]);
+			total_size -= 1;
+			for(;pos < total_size; ++pos)
+			{
+				entry->children[begin+pos] = entry->children[begin+pos+1];
+			}
+			*entry->children = GUINT_TO_POINTER(total_size);
+			return TRUE;
+		}
+
+		if(cmp < 0)
+		{
+			size = pos;
+		}
+		else
+		{
+			size -= ++pos;
+			begin += pos;
+		}
+	}
+
+	/* search the buffer */
+	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
+	{
+		cmp = strcmp(_filename, buffer_iter->entry->filename);
+
+		if(!cmp)
+		{
+			g_free(_filename);
+			lsq_archive_entry_free(archive, buffer_iter->entry);
+			if(prev_iter)
+				prev_iter->next = buffer_iter->next;
+			else
+				entry->buffer = buffer_iter->next;
+			g_free(buffer_iter);
+			return TRUE;
+		}
+		if(cmp < 0)
+			break;
+		prev_iter = buffer_iter;
+	}
+
+	g_free(_filename);
+	return FALSE;
 }
 
 static void
@@ -896,8 +1027,7 @@ lsq_archive_iter_get_child(const LSQArchive *archive, const LSQArchiveIter *pare
 gboolean
 lsq_archive_iter_del_child(LSQArchive *archive, LSQArchiveIter *parent, LSQArchiveIter *child)
 {
-	g_warning("not implemented yet");
-	return FALSE;
+	return lsq_archive_entry_del_child(archive, parent, child->filename);
 }
 
 /**
@@ -1383,4 +1513,24 @@ lsq_archive_iter_get_icon_name(const LSQArchive *archive, const LSQArchiveIter *
 		g_value_set_string(value, icon_name);
 	else
 		g_value_set_string(value, NULL);
+}
+
+void
+lsq_archive_add_children(LSQArchive *archive, GSList *files)
+{
+	GSList *iter = files;
+	LSQArchiveIter *entry;
+	guint i;
+
+	/* TODO: could by cyclic? */
+	while(iter)
+	{
+		entry = lsq_archive_get_iter(archive, (const gchar*)iter->data);
+		for(i = 0; i < lsq_archive_iter_n_children(archive, entry); ++i)
+		{
+			files = g_slist_append(files, g_strconcat((const gchar*)iter->data, "/", lsq_archive_iter_nth_child(archive, entry, i)->filename, NULL));
+		}
+
+		iter = g_slist_next(iter);
+	}
 }

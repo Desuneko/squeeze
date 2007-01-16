@@ -424,8 +424,8 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 				break;
 			}
 
-			temp_filename = g_strchomp(line);
-			g_debug(temp_filename);
+			temp_filename = line+1;
+			line[strlen(temp_filename)] = '\0';
 			entry = lsq_archive_add_file(archive, temp_filename);
 
 			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);

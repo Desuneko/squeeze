@@ -131,6 +131,8 @@ sq_archive_store_check_trailing(SQArchiveStore *store);
 
 static void
 cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data);
+static void
+cb_sq_archive_store_archive_path_changed(LSQArchive *archive, const gchar *path, gpointer user_data);
 
 GType
 sq_archive_store_get_type()
@@ -1094,6 +1096,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	if(store->archive)
 	{
 		g_signal_handlers_disconnect_by_func(store->archive, cb_sq_archive_store_archive_refreshed, store);
+		g_signal_handlers_disconnect_by_func(store->archive, cb_sq_archive_store_archive_path_changed, store);
 		g_object_unref(store->archive);
 		store->archive = NULL;
 	}
@@ -1102,6 +1105,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 		g_slist_free(list_iter->data);
 
 	g_list_free(store->navigation.history);
+	g_slist_free(store->navigation.trailing);
 
 	store->navigation.history = NULL;
 	store->navigation.present = NULL;
@@ -1130,6 +1134,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 
 	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0, NULL);
 	g_signal_connect(store->archive, "lsq_refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store);
+	g_signal_connect(store->archive, "lsq_path_changed", G_CALLBACK(cb_sq_archive_store_archive_path_changed), store);
 }
 
 gchar *
@@ -1252,6 +1257,7 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 
 	if(path[0] == '/' && lsq_archive_iter_get_child(store->archive, entry, "/"))
 	{
+		g_free(iter[0]);
 		iter[0] = strdup("/");
 	}
 
@@ -1264,7 +1270,7 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 			{
 				g_strfreev(buf);
 				g_slist_free(stack);
-				return -1;
+				return FALSE;
 			}
 			stack = g_slist_prepend(stack, entry);
 		}
@@ -1450,9 +1456,9 @@ sq_archive_store_go_forward(SQArchiveStore *store)
 static void
 sq_archive_store_append_history(SQArchiveStore *store, GSList *entry)
 {
-	if(lsq_archive_get_status(store->archive) != LSQ_ARCHIVESTATUS_IDLE)
+/*	if(lsq_archive_get_status(store->archive) != LSQ_ARCHIVESTATUS_IDLE)
 		return;
-
+*/
 	GList *iter = store->navigation.present;
 
 	if(store->navigation.present)
@@ -1575,6 +1581,78 @@ cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 		sq_archive_store_sort(store);
 		sq_archive_store_refresh(store);
 	}
+}
+
+static void
+cb_sq_archive_store_archive_path_changed(LSQArchive *archive, const gchar *path, gpointer user_data)
+{
+	g_debug("%s %s", __FUNCTION__, path);
+	SQArchiveStore *store = SQ_ARCHIVE_STORE(user_data);
+
+	if(store->archive != archive)
+		return;
+
+#ifdef DEBUG
+	g_return_if_fail(store->navigation.present);
+	g_return_if_fail(store->navigation.present->data);
+#endif
+
+	GValue value;
+	gchar **buf = g_strsplit_set(path, "/\n", -1);
+	gchar **iter = buf;
+	GSList *entry, *back_list = NULL;
+	entry = (GSList*)store->navigation.present->data;
+
+	memset(&value, 0, sizeof(GValue));
+	
+	while(entry)
+	{
+		back_list = g_slist_prepend(back_list, entry->data);
+
+		entry = g_slist_next(entry);
+	}
+
+	if(path[0] == '/' && lsq_archive_iter_get_child(store->archive, lsq_archive_get_iter(archive, NULL), "/"))
+	{
+		g_free(iter[0]);
+		iter[0] = strdup("/");
+	}
+
+	entry = back_list;
+
+	while(*iter)
+	{
+		if((*iter)[0])
+		{
+			lsq_archive_iter_get_prop_value(archive, (LSQArchiveIter*)entry, LSQ_ARCHIVE_PROP_FILENAME, &value);
+			if(strcmp(*iter, g_value_get_string(&value)) == 0)
+			{
+				g_value_unset(&value);
+				g_slist_free(back_list);
+				g_strfreev(buf);
+				return;
+			}
+			g_value_unset(&value);
+			entry = g_slist_next(entry);
+		}
+		iter++;
+	}
+
+	g_slist_free(back_list);
+	g_strfreev(buf);
+
+	GList *list_iter;
+	for(list_iter = store->navigation.history; list_iter; list_iter = list_iter->next)
+		g_slist_free(list_iter->data);
+
+	g_list_free(store->navigation.history);
+
+	store->navigation.history = NULL;
+	store->navigation.present = NULL;
+	store->navigation.trailing = NULL;
+
+	sq_archive_store_append_history(store, g_slist_prepend(NULL, lsq_archive_get_iter(archive, NULL)));
+	sq_archive_store_set_pwd(store, path);
 }
 
 LSQArchive *
