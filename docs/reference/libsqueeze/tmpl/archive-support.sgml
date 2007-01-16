@@ -27,7 +27,7 @@ LSQArchiveSupport
 @blurb: 
 @icon: 
 @func: 
-@post_func: 
+@callback: 
 @support: 
 @user_data: 
 
@@ -47,6 +47,7 @@ LSQArchiveSupport
 
 @support: 
 @Param2: 
+@Param3: 
 @user_data: 
 @Returns: 
 
@@ -70,6 +71,7 @@ LSQArchiveSupport
 @id: 
 @mime: 
 @custom_action: 
+@max_n_files: 
 @add: 
 @extract: 
 @remove: 
@@ -292,6 +294,5 @@ LSQArchiveSupport
 @Param1: 
 @Param2: 
 @Param3: 
-@Param4: 
 
 

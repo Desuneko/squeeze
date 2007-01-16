@@ -238,7 +238,7 @@ lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSLi
 		while(iter)
 		{
 			path = g_strdup((const gchar*)iter->data);
-			*strrchr(path, '/') = '\0';
+		//	*strrchr(path, '/') = '\0';
 			entry = lsq_archive_get_iter(archive, path);
 			g_free(path);
 			child = lsq_archive_get_iter(archive, (const gchar*)iter->data);
