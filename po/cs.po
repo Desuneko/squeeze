@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24156\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-01-16 12:22+0100\n"
-"PO-Revision-Date: 2007-01-14 19:10+0100\n"
+"PO-Revision-Date: 2007-01-16 20:43+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -231,17 +231,15 @@ msgstr "Zobrazit kontrolní součet"
 
 #: ../libsqueeze/archive-support-rar.c:179
 msgid "Compression version"
-msgstr ""
+msgstr "Verze komprese"
 
 #: ../libsqueeze/archive-support-rar.c:180
-#, fuzzy
 msgid "View compression version"
-msgstr "Zobrazit komprimovanou velikost souboru"
+msgstr "Zobrazí verzi komprese"
 
 #: ../libsqueeze/archive-support-rar.c:359
-#, fuzzy
 msgid "Version"
-msgstr "Přístupová práva"
+msgstr "Verze"
 
 #: ../src/main.c:52
 msgid "[destination path]"
@@ -270,8 +268,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové "
-"řádky.\n"
+"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové řádky.\n"
 
 #: ../src/main_window.c:130
 msgid "Internal Style"
@@ -329,7 +326,8 @@ msgstr "_Nápověda"
 msgid "Add"
 msgstr "Přidat"
 
-#: ../src/main_window.c:382 ../src/main_window.c:972
+#: ../src/main_window.c:382
+#: ../src/main_window.c:972
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Rozbalit"
@@ -355,9 +353,7 @@ msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspirováno aplikací Xarchiver od Giuseppe Torelliho"
 
 #: ../src/main_window.c:886
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr "Squeeze je odlehčený a pružný správce archivů pro prostředí Xfce."
 
 #: ../src/main_window.c:892
@@ -401,18 +397,16 @@ msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Nelze otevřít archiv, typ MIME není podporován nebo soubor neexistuje"
 
 #: ../src/new_dialog.c:69
-#, fuzzy
 msgid "Archive type:"
-msgstr "Správce archivů"
+msgstr "Typ archivu:"
 
 #: ../src/new_dialog.c:73
 msgid "Append extension to filename"
-msgstr ""
+msgstr "Přidat za název souboru příponu"
 
 #: ../src/new_dialog.c:83
-#, fuzzy
 msgid "Archives"
-msgstr "_Archivátory"
+msgstr "Archivy"
 
 #: ../src/new_dialog.c:142
 msgid "Create new archive"
@@ -492,23 +486,29 @@ msgstr "Rozestupy"
 msgid "The amount of space between the path buttons"
 msgstr "Prostor mezi tlačítky cesty"
 
-#: ../src/notebook.c:177 ../src/archive_store.c:240
+#: ../src/notebook.c:177
+#: ../src/archive_store.c:240
 msgid "Show mime icons"
 msgstr "Zobrazit ikony typu MIME"
 
-#: ../src/notebook.c:178 ../src/archive_store.c:241
+#: ../src/notebook.c:178
+#: ../src/archive_store.c:241
 msgid "Show the mime type icons for each entry"
 msgstr "Zobrazit ikony typu MIME pro každou položku"
 
-#: ../src/notebook.c:184 ../src/archive_store.c:254
+#: ../src/notebook.c:184
+#: ../src/archive_store.c:254
 msgid "Sort folders before files"
 msgstr "Zařadit adresáře před soubory"
 
-#: ../src/notebook.c:185 ../src/archive_store.c:255
+#: ../src/notebook.c:185
+#: ../src/archive_store.c:255
 msgid "The folders will be put at the top of the list"
 msgstr "Adresáře budou umístěny na začátku seznamu"
 
-#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:261
+#: ../src/notebook.c:191
+#: ../src/notebook.c:192
+#: ../src/archive_store.c:261
 #: ../src/archive_store.c:262
 msgid "Sort text case sensitive"
 msgstr "Rozlišovat velikost písmen při řazení"
@@ -549,36 +549,26 @@ msgstr "Správce archivů Xfce"
 
 #~ msgid "_General"
 #~ msgstr "_Obecné"
-
 #~ msgid "Archive viewer:"
 #~ msgstr "Prohlížeč archivů"
-
 #~ msgid "_Show Icons"
 #~ msgstr "_Zobrazit ikony"
-
 #~ msgid "_Rules Hint"
 #~ msgstr "_Rada o pravidlech"
-
 #~ msgid "Sorting:"
 #~ msgstr "Řazení:"
-
 #~ msgid "Sort _Case Sensitive "
 #~ msgstr "Rozlišovat _velikost písmen při řazení"
-
 #~ msgid "Sort _Folders First"
 #~ msgstr "Zařadit a_dresáře před soubory"
-
 #~ msgid "Navigation bar:"
 #~ msgstr "Navigační panel:"
-
 #~ msgid "_Behaviour"
 #~ msgstr "_Chování"
-
 #~ msgid "Preferences"
 #~ msgstr "Předvolby"
-
 #~ msgid "Visible:"
 #~ msgstr "Viditelné:"
-
 #~ msgid "Available:"
 #~ msgstr "Dostupné:"
+
