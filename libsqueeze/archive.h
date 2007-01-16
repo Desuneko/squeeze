@@ -121,7 +121,6 @@ guint               lsq_archive_iter_n_children(const LSQArchive *, const LSQArc
 LSQArchiveIter     *lsq_archive_iter_nth_child(LSQArchive *, LSQArchiveIter *, guint);
 LSQArchiveIter     *lsq_archive_iter_add_child(LSQArchive *, LSQArchiveIter *, const gchar *);
 LSQArchiveIter     *lsq_archive_iter_get_child(const LSQArchive *, const LSQArchiveIter *, const gchar *);
-gboolean            lsq_archive_iter_del_child(LSQArchive *, LSQArchiveIter *, LSQArchiveIter *);
 
 /* void            lsq_archive_iter_set_filename(LSQArchive *, LSQArchiveIter *, const gchar *); */
 void                lsq_archive_iter_set_mime(LSQArchive *, LSQArchiveIter *, ThunarVfsMimeInfo *) G_GNUC_INTERNAL;
@@ -136,6 +135,7 @@ gboolean            lsq_archive_iter_get_prop_value(const LSQArchive *, const LS
 void                lsq_archive_iter_get_icon_name(const LSQArchive *, const LSQArchiveIter *, GValue *, GtkIconTheme *icon_theme);
 
 LSQArchiveIter     *lsq_archive_add_file(LSQArchive *, const gchar *) G_GNUC_INTERNAL;
+gboolean            lsq_archive_del_file(LSQArchive *, const gchar *);
 LSQArchiveIter     *lsq_archive_get_iter(const LSQArchive *, const gchar *);
 GType               lsq_archive_get_entry_property_type(LSQArchive *, guint);
 const gchar        *lsq_archive_get_entry_property_name(LSQArchive *, guint);

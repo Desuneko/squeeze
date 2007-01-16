@@ -230,23 +230,17 @@ lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSLi
 {
 	if(support->remove)
 	{
-		gchar *path;
-		LSQArchiveIter *entry, *child;
+		const gchar *path;
 		GSList *iter, *del = iter = g_slist_copy(files);
 		/* TODO: is add children really nesecery? */
 		lsq_archive_add_children(archive, files);
 		while(iter)
 		{
-			path = g_strdup((const gchar*)iter->data);
-		//	*strrchr(path, '/') = '\0';
-			entry = lsq_archive_get_iter(archive, path);
-			g_free(path);
-			child = lsq_archive_get_iter(archive, (const gchar*)iter->data);
-			lsq_archive_iter_del_child(archive, entry, child);
+			path = (const gchar*)iter->data;
+			lsq_archive_del_file(archive, path);
 			iter = g_slist_next(iter);
 		}
 		g_slist_free(del);
-		g_debug("removed");
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REMOVE);
 		archive->support = support;
 		return support->remove(archive, files);

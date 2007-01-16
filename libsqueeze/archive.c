@@ -534,7 +534,6 @@ lsq_archive_n_property(LSQArchive *archive)
 LSQArchiveIter *
 lsq_archive_get_iter(const LSQArchive *archive, const gchar *path)
 {
-
 	if(!path)
 		return (LSQArchiveIter *)archive->root_entry;
 
@@ -586,7 +585,6 @@ lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path)
 
 	while(iter[1]) /* next iter must exist */
 	{
-		g_debug(*iter);
 		if((*iter)[0])
 		{
 			entry = lsq_archive_iter_get_child(archive, entry, *iter);
@@ -1019,15 +1017,66 @@ lsq_archive_iter_get_child(const LSQArchive *archive, const LSQArchiveIter *pare
 }
 
 /** 
- * gboolean 
- * lsq_archive_iter_del_child(const LSQArchive *, LSQArchiveIter *, LSQArchiveIter *)
- *
- * delete a child (if it can be found)
  **/
 gboolean
-lsq_archive_iter_del_child(LSQArchive *archive, LSQArchiveIter *parent, LSQArchiveIter *child)
+lsq_archive_del_file(LSQArchive *archive, const gchar *path)
 {
-	return lsq_archive_entry_del_child(archive, parent, child->filename);
+	if(!path)
+		return FALSE;
+
+	gchar **buf = g_strsplit_set(path, "/\n", -1);
+	gchar **iter = buf;
+	LSQArchiveIter *entry = (LSQArchiveIter *)archive->root_entry;
+	GSList *prev_iter, *stack_iter, *stack = NULL;
+
+	if(path[0] == '/' && lsq_archive_iter_get_child(archive, archive->root_entry, "/"))
+	{
+		g_free(iter[0]);
+		iter[0] = strdup("/");
+	}
+
+	while(*iter)
+	{
+		if((*iter)[0])
+		{
+			entry = lsq_archive_iter_get_child(archive, entry, *iter);
+			if(!entry)
+			{
+				g_slist_free(stack);
+				g_strfreev(buf);
+				return FALSE;
+			}
+			stack = g_slist_prepend(stack, entry);
+		}
+		iter++;
+	}
+
+	g_strfreev(buf);
+
+	stack_iter = g_slist_next(stack);
+	prev_iter = stack;
+
+	while(stack_iter)
+	{
+		entry = (LSQEntry*)stack_iter->data;
+
+		if(entry->props || lsq_archive_iter_n_children(archive, entry) > 1)
+			break;
+
+		prev_iter = stack_iter;
+		stack_iter = g_slist_next(stack_iter);
+	}
+
+	if(!stack_iter)
+	{
+		entry = archive->root_entry;
+	}
+
+	gboolean result = lsq_archive_entry_del_child(archive, entry, ((LSQEntry*)prev_iter->data)->filename);
+
+	g_slist_free(stack);
+
+	return result;
 }
 
 /**
