@@ -211,6 +211,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 	if(!archive_path)
 	{
 		dialog = sq_new_archive_dialog_new();
+		/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
 		gchar **filename_components = g_strsplit(files->data, ".", 2);
 		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
 		g_strfreev(filename_components);
@@ -222,7 +223,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 		}
 		if(result == GTK_RESPONSE_OK)
 		{
-			archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+			archive_path = sq_new_archive_dialog_get_filename(SQ_NEW_ARCHIVE_DIALOG(dialog));
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
 		}
 		if(lsq_new_archive(archive_path, TRUE, NULL, &lp_archive))

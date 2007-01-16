@@ -131,8 +131,11 @@ sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, g
 			extract_options = extract_options->next;
 		}
 	}
-	/* TODO: drop file extention */
-	// gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), lsq_archive_get_filename(archive));
+	/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
+	gchar **filename_components = g_strsplit(lsq_archive_get_filename(archive), ".", 2);
+	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
+	g_strfreev(filename_components);
+
 	gtk_widget_show_all(r_vbox);
 	return GTK_WIDGET(dialog);
 }
@@ -146,8 +149,7 @@ sq_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
 
 	g_value_set_boolean(val, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
 
-	g_object_set_property(G_OBJECT(SQ_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
-
+	g_object_set_property(G_OBJECT(SQ_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val); 
 	g_free(val);
 }
 

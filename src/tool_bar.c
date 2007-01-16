@@ -303,7 +303,6 @@ static void
 cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
 {
 	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
-	g_debug("%s", __FUNCTION__);
 	gchar *path= sq_archive_store_get_pwd(store);
 	if(!path)
 		path = g_strdup("");
@@ -315,7 +314,6 @@ cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
 static void
 cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 {
-	g_debug("%s", __FUNCTION__);
 	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
 
 	LSQArchive *lp_archive = sq_archive_store_get_archive(store);

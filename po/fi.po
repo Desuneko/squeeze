@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.4.2rc2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-16 09:39+0200\n"
+"POT-Creation-Date: 2007-01-16 12:22+0100\n"
 "PO-Revision-Date: 2007-01-16 09:56+0200\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -61,11 +61,13 @@ msgstr "Virhe"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:158
 #: ../libsqueeze/archive-support-zip.c:137
+#: ../libsqueeze/archive-support-rar.c:123
 msgid "Overwrite existing files"
 msgstr "Korvaa olemassaolevat"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:159
 #: ../libsqueeze/archive-support-zip.c:138
+#: ../libsqueeze/archive-support-rar.c:124
 msgid "Overwrite existing files on extraction"
 msgstr "Korvaa olemassaolevat tiedostot purkaessa"
 
@@ -96,20 +98,26 @@ msgstr "Ohita oikeudet"
 #: ../libsqueeze/archive-support-gnu-tar.c:501
 #: ../libsqueeze/archive-support-zip.c:172
 #: ../libsqueeze/archive-support-zip.c:328
+#: ../libsqueeze/archive-support-rar.c:158
+#: ../libsqueeze/archive-support-rar.c:327
 msgid "Size"
 msgstr "Koko"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:196
 #: ../libsqueeze/archive-support-zip.c:173
+#: ../libsqueeze/archive-support-rar.c:159
 msgid "View filesize"
 msgstr "Näytä tiedostokoko"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:202
 #: ../libsqueeze/archive-support-gnu-tar.c:493
+#: ../libsqueeze/archive-support-rar.c:186
+#: ../libsqueeze/archive-support-rar.c:347
 msgid "Permissions"
 msgstr "Oikeudet"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:203
+#: ../libsqueeze/archive-support-rar.c:187
 msgid "View permissions"
 msgstr "Näytä oikeudet"
 
@@ -126,11 +134,14 @@ msgstr "Näytä omistaja/ryhmä"
 #: ../libsqueeze/archive-support-gnu-tar.c:505
 #: ../libsqueeze/archive-support-zip.c:158
 #: ../libsqueeze/archive-support-zip.c:344
+#: ../libsqueeze/archive-support-rar.c:144
+#: ../libsqueeze/archive-support-rar.c:339
 msgid "Date"
 msgstr "Pvm"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:217
 #: ../libsqueeze/archive-support-zip.c:159
+#: ../libsqueeze/archive-support-rar.c:145
 msgid "View date"
 msgstr "Näytä pvm"
 
@@ -138,11 +149,14 @@ msgstr "Näytä pvm"
 #: ../libsqueeze/archive-support-gnu-tar.c:509
 #: ../libsqueeze/archive-support-zip.c:151
 #: ../libsqueeze/archive-support-zip.c:348
+#: ../libsqueeze/archive-support-rar.c:137
+#: ../libsqueeze/archive-support-rar.c:343
 msgid "Time"
 msgstr "Aika"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:224
 #: ../libsqueeze/archive-support-zip.c:152
+#: ../libsqueeze/archive-support-rar.c:138
 msgid "View time"
 msgstr "Näytä aika"
 
@@ -161,44 +175,72 @@ msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:130
 #: ../libsqueeze/archive-support-zip.c:131
+#: ../libsqueeze/archive-support-rar.c:116
+#: ../libsqueeze/archive-support-rar.c:117
 msgid "Password"
 msgstr "Salasana"
 
 #: ../libsqueeze/archive-support-zip.c:144
 #: ../libsqueeze/archive-support-zip.c:336
+#: ../libsqueeze/archive-support-rar.c:130
+#: ../libsqueeze/archive-support-rar.c:331
 msgid "Compressed Size"
 msgstr "Koko pakattuna"
 
 #: ../libsqueeze/archive-support-zip.c:145
+#: ../libsqueeze/archive-support-rar.c:131
 msgid "View compressed filesize"
 msgstr "Näytä koko pakattuna"
 
 #: ../libsqueeze/archive-support-zip.c:165
 #: ../libsqueeze/archive-support-zip.c:340
+#: ../libsqueeze/archive-support-rar.c:151
+#: ../libsqueeze/archive-support-rar.c:335
 msgid "Ratio"
 msgstr "Suhde"
 
 #: ../libsqueeze/archive-support-zip.c:166
+#: ../libsqueeze/archive-support-rar.c:152
 msgid "View ratio"
 msgstr "Näytä suhde"
 
 #: ../libsqueeze/archive-support-zip.c:179
 #: ../libsqueeze/archive-support-zip.c:332
+#: ../libsqueeze/archive-support-rar.c:165
+#: ../libsqueeze/archive-support-rar.c:355
 msgid "Method"
 msgstr "Metodi"
 
 #: ../libsqueeze/archive-support-zip.c:180
+#: ../libsqueeze/archive-support-rar.c:166
 msgid "View method"
 msgstr "Näytä metodi"
 
 #: ../libsqueeze/archive-support-zip.c:186
 #: ../libsqueeze/archive-support-zip.c:352
+#: ../libsqueeze/archive-support-rar.c:172
+#: ../libsqueeze/archive-support-rar.c:351
 msgid "Checksum"
 msgstr "Tarkiste"
 
 #: ../libsqueeze/archive-support-zip.c:187
+#: ../libsqueeze/archive-support-rar.c:173
 msgid "View Checksum"
 msgstr "Näytä tarkiste"
+
+#: ../libsqueeze/archive-support-rar.c:179
+msgid "Compression version"
+msgstr ""
+
+#: ../libsqueeze/archive-support-rar.c:180
+#, fuzzy
+msgid "View compression version"
+msgstr "Näytä koko pakattuna"
+
+#: ../libsqueeze/archive-support-rar.c:359
+#, fuzzy
+msgid "Version"
+msgstr "Oikeudet"
 
 #: ../src/main.c:52
 msgid "[destination path]"
@@ -285,56 +327,56 @@ msgstr "_Ohje"
 msgid "Add"
 msgstr "Lisää"
 
-#: ../src/main_window.c:382 ../src/main_window.c:971
+#: ../src/main_window.c:382 ../src/main_window.c:972
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Pura"
 
-#: ../src/main_window.c:658
+#: ../src/main_window.c:659
 msgid "Open archive in new window"
 msgstr "Avaa arkisto uuteen ikkunaan"
 
-#: ../src/main_window.c:664
+#: ../src/main_window.c:665
 msgid "Open archive"
 msgstr "Avaa arkisto"
 
-#: ../src/main_window.c:874
+#: ../src/main_window.c:875
 msgid "Lead developer:"
 msgstr "Pääkehittäjä:"
 
-#: ../src/main_window.c:877
+#: ../src/main_window.c:878
 msgid "Contributors:"
 msgstr "Avustavat kehittäjät:"
 
-#: ../src/main_window.c:880
+#: ../src/main_window.c:881
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiraatio Giuseppe Torellin sovelluksesta Xarchiver"
 
-#: ../src/main_window.c:885
+#: ../src/main_window.c:886
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
-"Squeeze on kevyt ja joustava arkistonhallintasovellus "
-"Xfce-työpöytäympäristöön"
+"Squeeze on kevyt ja joustava arkistonhallintasovellus Xfce-"
+"työpöytäympäristöön"
 
-#: ../src/main_window.c:891
+#: ../src/main_window.c:892
 msgid "translator-credits"
 msgstr "Jari Rahkonen <jari.rahkonen@pp1.inet.fi>"
 
-#: ../src/main_window.c:970
+#: ../src/main_window.c:971
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:971
+#: ../src/main_window.c:972
 msgid "View"
 msgstr "Näytä"
 
-#: ../src/main_window.c:1034
+#: ../src/main_window.c:1035
 msgid "Failed to open file"
 msgstr "Linkin avaaminen epäonnistui"
 
-#: ../src/main_window.c:1035
+#: ../src/main_window.c:1036
 #, c-format
 msgid ""
 "'%s'\n"
@@ -346,7 +388,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Arkistoa ei voi luoda, MIME-tyyppiä ei tueta"
 
@@ -354,12 +396,26 @@ msgstr "Arkistoa ei voi luoda, MIME-tyyppiä ei tueta"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:250
+#: ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Arkistoa ei voi avata, MIME-tyyppiä ei tueta tai tiedostoa ei ole olemassa"
 
-#: ../src/new_dialog.c:146
+#: ../src/new_dialog.c:69
+#, fuzzy
+msgid "Archive type:"
+msgstr "Arkistonhallinta"
+
+#: ../src/new_dialog.c:73
+msgid "Append extension to filename"
+msgstr ""
+
+#: ../src/new_dialog.c:83
+#, fuzzy
+msgid "Archives"
+msgstr "Arkistonhallinta"
+
+#: ../src/new_dialog.c:142
 msgid "Create new archive"
 msgstr "Luo uusi arkisto"
 

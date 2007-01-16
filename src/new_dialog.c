@@ -66,20 +66,21 @@ static void
 sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 {
 	GtkWidget *hbox = gtk_hbox_new(FALSE, 10);
-	gtk_box_pack_start (GTK_BOX (hbox),gtk_label_new (("Archive type:")),FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox),gtk_label_new (_("Archive type:")),FALSE, FALSE, 0);
 
 	dialog->archive_types_combo = gtk_combo_box_new_text();
 	gtk_box_pack_start (GTK_BOX (hbox),dialog->archive_types_combo,FALSE, FALSE, 0);
-	dialog->append_extention_check = gtk_check_button_new_with_label(("Append extension to filename"));
+	dialog->append_extention_check = gtk_check_button_new_with_label(_("Append extension to filename"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dialog->append_extention_check), TRUE);
 	gtk_box_pack_start (GTK_BOX (hbox),dialog->append_extention_check,FALSE, FALSE, 0);
-	gtk_widget_show_all(hbox);
-	gtk_widget_show_all(dialog->file_chooser);
 
+	gtk_widget_show_all(hbox);
 
 	GSList *supported_mime_types = lsq_get_supported_mime_types();
 	GSList *_supported_mime_types = supported_mime_types;
 
-	GtkFileFilter *file_filter = gtk_file_filter_new();
+	dialog->file_filter = gtk_file_filter_new();
+	gtk_file_filter_set_name(dialog->file_filter, _("Archives"));
 	while(_supported_mime_types)
 	{
 		if(!strcmp(_supported_mime_types->data, "application/x-tar"))
@@ -117,18 +118,13 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 		{
 			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".rar");
 		}
-		gtk_file_filter_add_mime_type(file_filter, _supported_mime_types->data);
+		gtk_file_filter_add_mime_type(dialog->file_filter, _supported_mime_types->data);
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
-	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 1);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 0);
 
 	g_slist_free(supported_mime_types);
 
-/* WHY DOESN'T THIS WORK?!*/
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog->file_chooser), file_filter);
-	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog->file_chooser), TRUE);
-
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), dialog->file_chooser, TRUE, TRUE, 0);
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
 			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -144,7 +140,25 @@ sq_new_archive_dialog_new()
 
 	dialog = g_object_new(sq_new_archive_dialog_get_type(),
 			"title", _("Create new archive"),
+			"do-overwrite-confirmation", TRUE,
+			"action", GTK_FILE_CHOOSER_ACTION_SAVE,
 			NULL);
+	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), SQ_NEW_ARCHIVE_DIALOG(dialog)->file_filter);
 
 	return dialog;
+}
+
+gchar *
+sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
+{
+	gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dialog->append_extention_check)))
+	{
+		gchar *extension = gtk_combo_box_get_active_text(GTK_COMBO_BOX(dialog->archive_types_combo));
+		gchar *_filename = g_strconcat(filename, extension, NULL);
+		g_free(extension);
+		g_free(filename);
+		filename = _filename;
+	}
+	return filename;
 }

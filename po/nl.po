@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-15 12:12+0100\n"
+"POT-Creation-Date: 2007-01-16 12:22+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -62,11 +62,13 @@ msgstr "Fout"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:158
 #: ../libsqueeze/archive-support-zip.c:137
+#: ../libsqueeze/archive-support-rar.c:123
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:159
 #: ../libsqueeze/archive-support-zip.c:138
+#: ../libsqueeze/archive-support-rar.c:124
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
@@ -97,20 +99,26 @@ msgstr "Rechten overschrijven"
 #: ../libsqueeze/archive-support-gnu-tar.c:501
 #: ../libsqueeze/archive-support-zip.c:172
 #: ../libsqueeze/archive-support-zip.c:328
+#: ../libsqueeze/archive-support-rar.c:158
+#: ../libsqueeze/archive-support-rar.c:327
 msgid "Size"
 msgstr "Grootte"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:196
 #: ../libsqueeze/archive-support-zip.c:173
+#: ../libsqueeze/archive-support-rar.c:159
 msgid "View filesize"
 msgstr "Grootte weergeven"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:202
 #: ../libsqueeze/archive-support-gnu-tar.c:493
+#: ../libsqueeze/archive-support-rar.c:186
+#: ../libsqueeze/archive-support-rar.c:347
 msgid "Permissions"
 msgstr "Rechten"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:203
+#: ../libsqueeze/archive-support-rar.c:187
 msgid "View permissions"
 msgstr "Rechten weergeven"
 
@@ -127,11 +135,14 @@ msgstr "Eigenaar / groep weergeven"
 #: ../libsqueeze/archive-support-gnu-tar.c:505
 #: ../libsqueeze/archive-support-zip.c:158
 #: ../libsqueeze/archive-support-zip.c:344
+#: ../libsqueeze/archive-support-rar.c:144
+#: ../libsqueeze/archive-support-rar.c:339
 msgid "Date"
 msgstr "Datum"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:217
 #: ../libsqueeze/archive-support-zip.c:159
+#: ../libsqueeze/archive-support-rar.c:145
 msgid "View date"
 msgstr "Datum weergeven"
 
@@ -139,11 +150,14 @@ msgstr "Datum weergeven"
 #: ../libsqueeze/archive-support-gnu-tar.c:509
 #: ../libsqueeze/archive-support-zip.c:151
 #: ../libsqueeze/archive-support-zip.c:348
+#: ../libsqueeze/archive-support-rar.c:137
+#: ../libsqueeze/archive-support-rar.c:343
 msgid "Time"
 msgstr "Tijd"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:224
 #: ../libsqueeze/archive-support-zip.c:152
+#: ../libsqueeze/archive-support-rar.c:138
 msgid "View time"
 msgstr "Tijd weergeven"
 
@@ -162,44 +176,70 @@ msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:130
 #: ../libsqueeze/archive-support-zip.c:131
+#: ../libsqueeze/archive-support-rar.c:116
+#: ../libsqueeze/archive-support-rar.c:117
 msgid "Password"
 msgstr "Wachtwoord"
 
 #: ../libsqueeze/archive-support-zip.c:144
 #: ../libsqueeze/archive-support-zip.c:336
+#: ../libsqueeze/archive-support-rar.c:130
+#: ../libsqueeze/archive-support-rar.c:331
 msgid "Compressed Size"
 msgstr "Gecomprimeerde Grootte"
 
 #: ../libsqueeze/archive-support-zip.c:145
+#: ../libsqueeze/archive-support-rar.c:131
 msgid "View compressed filesize"
 msgstr "Gecomprimeerde bestandsgrootte weergeven"
 
 #: ../libsqueeze/archive-support-zip.c:165
 #: ../libsqueeze/archive-support-zip.c:340
+#: ../libsqueeze/archive-support-rar.c:151
+#: ../libsqueeze/archive-support-rar.c:335
 msgid "Ratio"
 msgstr "Verhouding"
 
 #: ../libsqueeze/archive-support-zip.c:166
+#: ../libsqueeze/archive-support-rar.c:152
 msgid "View ratio"
 msgstr "Verhouding weergeven"
 
 #: ../libsqueeze/archive-support-zip.c:179
 #: ../libsqueeze/archive-support-zip.c:332
+#: ../libsqueeze/archive-support-rar.c:165
+#: ../libsqueeze/archive-support-rar.c:355
 msgid "Method"
 msgstr "Methode"
 
 #: ../libsqueeze/archive-support-zip.c:180
+#: ../libsqueeze/archive-support-rar.c:166
 msgid "View method"
 msgstr "methode weergeven"
 
 #: ../libsqueeze/archive-support-zip.c:186
 #: ../libsqueeze/archive-support-zip.c:352
+#: ../libsqueeze/archive-support-rar.c:172
+#: ../libsqueeze/archive-support-rar.c:351
 msgid "Checksum"
 msgstr "Checksom"
 
 #: ../libsqueeze/archive-support-zip.c:187
+#: ../libsqueeze/archive-support-rar.c:173
 msgid "View Checksum"
 msgstr "Checksom weergeven"
+
+#: ../libsqueeze/archive-support-rar.c:179
+msgid "Compression version"
+msgstr "Compressie versie"
+
+#: ../libsqueeze/archive-support-rar.c:180
+msgid "View compression version"
+msgstr "Compressie versie weergeven"
+
+#: ../libsqueeze/archive-support-rar.c:359
+msgid "Version"
+msgstr "Versie"
 
 #: ../src/main.c:52
 msgid "[destination path]"
@@ -286,32 +326,32 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:382 ../src/main_window.c:971
+#: ../src/main_window.c:382 ../src/main_window.c:972
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:658
+#: ../src/main_window.c:659
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:664
+#: ../src/main_window.c:665
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:874
+#: ../src/main_window.c:875
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:877
+#: ../src/main_window.c:878
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:880
+#: ../src/main_window.c:881
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:885
+#: ../src/main_window.c:886
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -319,23 +359,23 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:891
+#: ../src/main_window.c:892
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:970
+#: ../src/main_window.c:971
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:971
+#: ../src/main_window.c:972
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:1034
+#: ../src/main_window.c:1035
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1035
+#: ../src/main_window.c:1036
 #, c-format
 msgid ""
 "'%s'\n"
@@ -347,7 +387,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type niet ondersteund"
 
@@ -355,12 +395,24 @@ msgstr "Kan archief niet maken, MIME-type niet ondersteund"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:250
+#: ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
 
-#: ../src/new_dialog.c:139
+#: ../src/new_dialog.c:69
+msgid "Archive type:"
+msgstr "Archief type:"
+
+#: ../src/new_dialog.c:73
+msgid "Append extension to filename"
+msgstr "Extensie toevoegen aan bestandsnaam"
+
+#: ../src/new_dialog.c:83
+msgid "Archives"
+msgstr "Archieven"
+
+#: ../src/new_dialog.c:142
 msgid "Create new archive"
 msgstr "Nieuw archief maken"
 
@@ -467,12 +519,12 @@ msgstr "Regel Hints"
 msgid "Make the row background colors alternate"
 msgstr "Laat de achtergrond kleur van de rijen verspringen"
 
-#: ../src/notebook.c:541
+#: ../src/notebook.c:544
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr "Kan archief '%s' niet openen."
 
-#: ../src/notebook.c:549
+#: ../src/notebook.c:552
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Het uitpakken van de inhoud van archief '%s' is mislukt."
@@ -523,15 +575,8 @@ msgstr "Xfce archief beheerder"
 #~ msgid "Preferences"
 #~ msgstr "Voorkeuren"
 
-#~ msgid "_Archivers"
-#~ msgstr "_Archiveerders"
-
 #~ msgid "Visible:"
 #~ msgstr "Zichtbaar:"
 
 #~ msgid "Available:"
 #~ msgstr "Beschikbaar:"
-
-#, fuzzy
-#~ msgid "Archive type:"
-#~ msgstr "Archieveerder:"

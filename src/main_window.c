@@ -611,7 +611,7 @@ static void
 cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = sq_new_archive_dialog_new();
-	gchar *new_archive_path = NULL;
+	gchar *archive_path = NULL;
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	LSQArchive *archive = NULL;
 	LSQArchiveSupport *support = NULL;
@@ -625,9 +625,9 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 	}
 	if(result == GTK_RESPONSE_OK)
 	{
-		new_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		archive_path = sq_new_archive_dialog_get_filename(SQ_NEW_ARCHIVE_DIALOG(dialog));
 		
-		if(!lsq_new_archive(new_archive_path, TRUE, NULL, &archive))
+		if(!lsq_new_archive(archive_path, TRUE, NULL, &archive))
 		{
 			support = lsq_get_support_for_mime(archive->mime_info);
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, TRUE);
@@ -636,6 +636,7 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		{
 
 		}
+		g_free(archive_path);
 		gtk_widget_destroy (dialog );
 	}
 

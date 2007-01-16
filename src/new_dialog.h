@@ -43,19 +43,21 @@ typedef struct _SQNewArchiveDialog SQNewArchiveDialog;
 struct _SQNewArchiveDialog
 {
 	GtkFileChooserDialog parent;
-	GtkWidget *file_chooser;
 	GtkWidget *archive_types_combo;
 	GtkWidget *append_extention_check;
+	GtkFileFilter *file_filter; /* HACK -- should just be set inside the constructor */
 };
 
 typedef struct _SQNewArchiveDialogClass SQNewArchiveDialogClass;
 
 struct _SQNewArchiveDialogClass
 {
-	GtkFileChooserDialogClass parent;
+	GtkFileChooserDialogClass parent_class;
 };
 
+GType sq_new_archive_dialog_get_type();
 GtkWidget *sq_new_archive_dialog_new();
+gchar *sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_NEW_ARCHIVE_DIALOG_H__ */

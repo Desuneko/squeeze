@@ -3,6 +3,7 @@ libsqueeze/archive.c
 libsqueeze/archive-support.c
 libsqueeze/archive-support-gnu-tar.c
 libsqueeze/archive-support-zip.c
+libsqueeze/archive-support-rar.c
 libsqueeze/internals.c
 
 src/main.c
