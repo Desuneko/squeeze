@@ -7,55 +7,55 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.4.2rc2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-16 12:22+0100\n"
-"PO-Revision-Date: 2007-01-16 09:56+0200\n"
+"POT-Creation-Date: 2007-01-18 17:15+0200\n"
+"PO-Revision-Date: 2007-01-18 17:17+0200\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:438
+#: ../libsqueeze/archive.c:450
 msgid "Filename"
 msgstr "Tiedostonimi"
 
-#: ../libsqueeze/archive.c:441
+#: ../libsqueeze/archive.c:453
 msgid "Mime type"
 msgstr "MIME-tyyppi"
 
-#: ../libsqueeze/archive.c:1347
+#: ../libsqueeze/archive.c:1526
 msgid "Initializing archive"
 msgstr "Alustetaan arkisto"
 
-#: ../libsqueeze/archive.c:1350
+#: ../libsqueeze/archive.c:1529
 msgid "Refreshing archive contents"
 msgstr "Virkistetään arkiston sisältö"
 
-#: ../libsqueeze/archive.c:1353
+#: ../libsqueeze/archive.c:1532
 msgid "Adding file(s) to archive"
 msgstr "Lisätään tiedosto(ja) arkistoon"
 
-#: ../libsqueeze/archive.c:1356
+#: ../libsqueeze/archive.c:1535
 msgid "Extracting file(s) from archive"
 msgstr "Puretaan tiedosto(ja) arkistosta"
 
-#: ../libsqueeze/archive.c:1359
+#: ../libsqueeze/archive.c:1538
 msgid "Removing file(s) from archive"
 msgstr "Poistetaan tiedosto(ja) arkistosta"
 
-#: ../libsqueeze/archive.c:1362
+#: ../libsqueeze/archive.c:1541
 msgid "Done"
 msgstr "Valmis"
 
-#: ../libsqueeze/archive.c:1365
+#: ../libsqueeze/archive.c:1544
 msgid "Performing an extended action"
 msgstr "Suoritetaan lisätoiminto"
 
-#: ../libsqueeze/archive.c:1368
+#: ../libsqueeze/archive.c:1547
 msgid "Cancelled"
 msgstr "Peruutettu"
 
-#: ../libsqueeze/archive.c:1371
+#: ../libsqueeze/archive.c:1550
 msgid "Error"
 msgstr "Virhe"
 
@@ -95,7 +95,7 @@ msgid "Override permissions"
 msgstr "Ohita oikeudet"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:195
-#: ../libsqueeze/archive-support-gnu-tar.c:501
+#: ../libsqueeze/archive-support-gnu-tar.c:499
 #: ../libsqueeze/archive-support-zip.c:172
 #: ../libsqueeze/archive-support-zip.c:328
 #: ../libsqueeze/archive-support-rar.c:158
@@ -110,7 +110,7 @@ msgid "View filesize"
 msgstr "Näytä tiedostokoko"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:202
-#: ../libsqueeze/archive-support-gnu-tar.c:493
+#: ../libsqueeze/archive-support-gnu-tar.c:491
 #: ../libsqueeze/archive-support-rar.c:186
 #: ../libsqueeze/archive-support-rar.c:347
 msgid "Permissions"
@@ -122,7 +122,7 @@ msgid "View permissions"
 msgstr "Näytä oikeudet"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:209
-#: ../libsqueeze/archive-support-gnu-tar.c:497
+#: ../libsqueeze/archive-support-gnu-tar.c:495
 msgid "Owner/Group"
 msgstr "Omistaja/ryhmä"
 
@@ -131,7 +131,7 @@ msgid "View owner/group"
 msgstr "Näytä omistaja/ryhmä"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:216
-#: ../libsqueeze/archive-support-gnu-tar.c:505
+#: ../libsqueeze/archive-support-gnu-tar.c:503
 #: ../libsqueeze/archive-support-zip.c:158
 #: ../libsqueeze/archive-support-zip.c:344
 #: ../libsqueeze/archive-support-rar.c:144
@@ -146,7 +146,7 @@ msgid "View date"
 msgstr "Näytä pvm"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:223
-#: ../libsqueeze/archive-support-gnu-tar.c:509
+#: ../libsqueeze/archive-support-gnu-tar.c:507
 #: ../libsqueeze/archive-support-zip.c:151
 #: ../libsqueeze/archive-support-zip.c:348
 #: ../libsqueeze/archive-support-rar.c:137
@@ -230,17 +230,15 @@ msgstr "Näytä tarkiste"
 
 #: ../libsqueeze/archive-support-rar.c:179
 msgid "Compression version"
-msgstr ""
+msgstr "Pakkaustyypin versio"
 
 #: ../libsqueeze/archive-support-rar.c:180
-#, fuzzy
 msgid "View compression version"
-msgstr "Näytä koko pakattuna"
+msgstr "Näytä pakkaustyypin versio"
 
 #: ../libsqueeze/archive-support-rar.c:359
-#, fuzzy
 msgid "Version"
-msgstr "Oikeudet"
+msgstr "Versio"
 
 #: ../src/main.c:52
 msgid "[destination path]"
@@ -402,16 +400,14 @@ msgstr ""
 "Arkistoa ei voi avata, MIME-tyyppiä ei tueta tai tiedostoa ei ole olemassa"
 
 #: ../src/new_dialog.c:69
-#, fuzzy
 msgid "Archive type:"
-msgstr "Arkistonhallinta"
+msgstr "Arkiston tyyppi:"
 
 #: ../src/new_dialog.c:73
 msgid "Append extension to filename"
-msgstr ""
+msgstr "Lisää tiedostonimeen pääte"
 
 #: ../src/new_dialog.c:83
-#, fuzzy
 msgid "Archives"
 msgstr "Arkistonhallinta"
 
@@ -493,24 +489,24 @@ msgstr "Välit"
 msgid "The amount of space between the path buttons"
 msgstr "Polkupainikkeiden välinen tyhjä tila"
 
-#: ../src/notebook.c:177 ../src/archive_store.c:240
+#: ../src/notebook.c:177 ../src/archive_store.c:242
 msgid "Show mime icons"
 msgstr "Näytä MIME-kuvakkeet"
 
-#: ../src/notebook.c:178 ../src/archive_store.c:241
+#: ../src/notebook.c:178 ../src/archive_store.c:243
 msgid "Show the mime type icons for each entry"
 msgstr "Näytä listan kohteiden MIME-tyyppikuvakkeet"
 
-#: ../src/notebook.c:184 ../src/archive_store.c:254
+#: ../src/notebook.c:184 ../src/archive_store.c:256
 msgid "Sort folders before files"
 msgstr "Hakemistot ennen tiedostoja"
 
-#: ../src/notebook.c:185 ../src/archive_store.c:255
+#: ../src/notebook.c:185 ../src/archive_store.c:257
 msgid "The folders will be put at the top of the list"
 msgstr "Näytä hakemistot listan alkupäässä"
 
-#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:261
-#: ../src/archive_store.c:262
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Sort text case sensitive"
 msgstr "Huomioi kirjainkoko järjestäessä"
 
@@ -532,11 +528,11 @@ msgstr "Arkiston \"%s\" avaaminen epäonnistui."
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Arkiston \"%s\" sisällön purkaminen epäonnistui."
 
-#: ../src/archive_store.c:247
+#: ../src/archive_store.c:249
 msgid "Show up dir entry"
 msgstr "Näytä ylähakemisto"
 
-#: ../src/archive_store.c:248
+#: ../src/archive_store.c:250
 msgid "Show '..' to go to the parent directory"
 msgstr "Näytä kohde \"..\" ylähakemistoon siirtymiseen"
 
