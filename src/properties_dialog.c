@@ -77,7 +77,7 @@ sq_properties_dialog_init(SQPropertiesDialog *dialog)
 	gtk_widget_show (GTK_WIDGET(dialog->table));
 
 	box = gtk_hbox_new(6, FALSE);
-	gtk_table_attach (dialog->table, box, 0, 1, 0, 1, GTK_FILL, GTK_FILL, 0, 3);
+	gtk_table_attach (dialog->table, box, 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 3);
 	gtk_widget_show (box);
 
 	dialog->icon_image = gtk_image_new();
@@ -92,7 +92,7 @@ sq_properties_dialog_init(SQPropertiesDialog *dialog)
 	gtk_table_attach (dialog->table, dialog->filename_label, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 3);
 	gtk_widget_show(dialog->filename_label);
 
-	dialog->prop_table = (GtkTable *)gtk_table_new(2, 1, FALSE);
+	dialog->prop_table = (GtkTable *)gtk_table_new(2, 1, TRUE);
 	gtk_table_set_col_spacings (dialog->prop_table, 12);
 	gtk_table_attach (dialog->table, GTK_WIDGET(dialog->prop_table), 0, 2, 1, 2, GTK_FILL, GTK_FILL, 0, 3);
 	gtk_widget_show(GTK_WIDGET(dialog->prop_table));
@@ -121,7 +121,8 @@ sq_properties_dialog_new(LSQArchive *archive, GtkIconTheme *icon_theme)
 			"title", _("Properties"),
 			NULL);
 
-	gtk_widget_set_size_request(GTK_WIDGET(dialog), 220, 200);
+	gtk_widget_set_size_request(dialog, 220, 400);
+	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
 
 	GdkPixbuf *icon = gtk_icon_theme_load_icon(icon_theme, thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, icon_theme), 48, 0, NULL);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(((SQPropertiesDialog *)dialog)->icon_image), icon);

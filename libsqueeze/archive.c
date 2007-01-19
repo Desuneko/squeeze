@@ -1583,3 +1583,11 @@ lsq_archive_add_children(LSQArchive *archive, GSList *files)
 		iter = g_slist_next(iter);
 	}
 }
+
+gboolean
+lsq_archive_stop(LSQArchive *archive)
+{
+	if(archive->child_pid)
+		kill ( archive->child_pid , SIGHUP);
+	return TRUE;
+}

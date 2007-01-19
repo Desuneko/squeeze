@@ -445,7 +445,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 				g_free(archive_path);
 				return 0;
 			}
-			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX" , NULL);
+			archive->tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX.tar" , NULL);
 			g_mkstemp(archive->tmp_file);
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command = g_strconcat("uncompress -c ", archive_path, NULL);
@@ -655,6 +655,7 @@ lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 	}
 	return TRUE;
 }
+
 gboolean
 lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {

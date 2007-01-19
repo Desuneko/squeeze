@@ -370,3 +370,19 @@ lsq_custom_action_notify(LSQCustomAction *action, const gchar *message)
 {
 	action->callback->notify_func(action, message);
 }
+
+/**
+ * gboolean
+ * lsq_archive_support_can_stop(LSQArchiveSupport *support)
+ * 
+ * Returns: TRUE if there is no risk of corrupting the archive when closing the support-app
+ *          FALSE otherwise, there should be a warning dialog to let the user proceed anyway.
+ *
+ */
+gboolean
+lsq_archive_support_can_stop(LSQArchiveSupport *support, LSQArchive *archive)
+{
+	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_REFRESH)
+		return TRUE;
+	return FALSE;
+}

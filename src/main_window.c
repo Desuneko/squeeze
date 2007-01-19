@@ -771,7 +771,7 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 
 	if(filenames)
 	{
-		dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, "Are you sure you want to remove the selected files?");
+		dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, _("Are you sure you want to remove the selected files?"));
 		result = gtk_dialog_run(GTK_DIALOG(dialog));
 		if(result == GTK_RESPONSE_YES)
 		{
@@ -800,7 +800,28 @@ cb_sq_main_close_window(GtkWidget *widget, gpointer userdata)
 static void
 cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
+	LSQArchive        *lp_archive = NULL;
+	LSQArchiveSupport *lp_support = NULL;
+	GtkWidget         *dialog = NULL;
+	gint result = 0;
+	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+	
+	if(lsq_archive_support_can_stop(lp_support, lp_archive))
+		lsq_archive_stop(lp_archive);
+	else
+	{
+		dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, 
+		                                _("Are you sure you want to cancel this operation?\nThis could damage the archive."));
+		result = gtk_dialog_run(GTK_DIALOG(dialog));
+		if(result == GTK_RESPONSE_YES)
+		{
+			gtk_widget_hide(dialog);
+			lsq_archive_stop(lp_archive);
+		}
+		gtk_widget_destroy(dialog);
+	}
 }
 
 static void 
@@ -906,8 +927,12 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	LSQArchiveSupport *lp_support;
 	sq_notebook_page_get_archive(notebook, &lp_archive, &lp_support, page_nr);
 	SQMainWindow *window = SQ_MAIN_WINDOW(data);
+	LSQArchiveStatus status = LSQ_ARCHIVESTATUS_IDLE;
 
-	if(lp_archive || lsq_archive_get_status(lp_archive) == LSQ_ARCHIVESTATUS_IDLE)
+	if(lp_archive)
+		 status = lsq_archive_get_status(lp_archive);
+
+	if(lp_archive && (status == LSQ_ARCHIVESTATUS_IDLE || status == LSQ_ARCHIVESTATUS_ERROR || status == LSQ_ARCHIVESTATUS_USERBREAK))
 	{
 		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
 		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
@@ -1084,6 +1109,23 @@ static void
 cb_sq_main_window_notebook_status_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+
+	LSQArchiveStatus status = lsq_archive_get_status(archive);
+
+	if((status == LSQ_ARCHIVESTATUS_IDLE) || (status == LSQ_ARCHIVESTATUS_USERBREAK) || (status == LSQ_ARCHIVESTATUS_ERROR))
+	{
+		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
+
+		gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+	}
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
 	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status_msg(archive));

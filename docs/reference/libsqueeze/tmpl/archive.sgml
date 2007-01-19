@@ -268,10 +268,10 @@ LSQArchive
 
 </para>
 
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
+@archive: 
+@iter: 
+@n: 
+@value: 
 @Returns: 
 
 
@@ -280,9 +280,9 @@ LSQArchive
 
 </para>
 
-@Param1: 
-@Param2: 
-@Param3: 
+@archive: 
+@iter: 
+@value: 
 @icon_theme: 
 
 
@@ -291,8 +291,8 @@ LSQArchive
 
 </para>
 
-@Param1: 
-@Param2: 
+@archive: 
+@path: 
 @Returns: 
 
 
@@ -301,8 +301,8 @@ LSQArchive
 
 </para>
 
-@Param1: 
-@Param2: 
+@archive: 
+@path: 
 @Returns: 
 
 
@@ -311,8 +311,8 @@ LSQArchive
 
 </para>
 
-@Param1: 
-@Param2: 
+@archive: 
+@n: 
 @Returns: 
 
 
@@ -321,8 +321,8 @@ LSQArchive
 
 </para>
 
-@Param1: 
-@Param2: 
+@archive: 
+@n: 
 @Returns: 
 
 
@@ -331,7 +331,7 @@ LSQArchive
 
 </para>
 
-@Param1: 
+@archive: 
 @Returns: 
 
 

@@ -106,7 +106,7 @@ void                 lsq_archive_support_add_mime(LSQArchiveSupport *support, gc
 gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,const gchar *mime);
 
 GSList *             lsq_get_registered_support_list();
-gboolean             lsq_register_support(LSQArchiveSupport *);
+gboolean             lsq_register_support(LSQArchiveSupport *support);
 LSQArchiveSupport *  lsq_get_support_for_mime(ThunarVfsMimeInfo *mime_info);
 LSQArchiveSupport *  lsq_get_support_for_mime_from_slist(GSList *list, const gchar *mime);
 
@@ -120,11 +120,13 @@ gint                 lsq_archive_support_remove(LSQArchiveSupport *, LSQArchive 
 gint                 lsq_archive_support_refresh(LSQArchiveSupport *, LSQArchive *);
 guint64              lsq_archive_support_get_max_n_files(LSQArchiveSupport *);
 
-GSList *             lsq_archive_support_list_properties(LSQArchiveSupport *, gchar *);
+gboolean             lsq_archive_support_can_stop(LSQArchiveSupport *support, LSQArchive *archive);
 
-void                 lsq_archive_support_install_action(LSQArchiveSupport *, LSQCustomAction *);
-LSQCustomAction*       lsq_archive_support_find_action(LSQArchiveSupport *, const gchar *name);
-LSQCustomAction**      lsq_archive_support_list_actions(LSQArchiveSupport *, guint *n_actions);
+GSList *             lsq_archive_support_list_properties(LSQArchiveSupport *support, gchar *);
+
+void                 lsq_archive_support_install_action(LSQArchiveSupport *support, LSQCustomAction *action);
+LSQCustomAction*       lsq_archive_support_find_action(LSQArchiveSupport *support, const gchar *name);
+LSQCustomAction**      lsq_archive_support_list_actions(LSQArchiveSupport *support, guint *n_actions);
 
 LSQCustomAction*       lsq_custom_action_new(const gchar *name, 
                                              const gchar *nick, 
@@ -133,12 +135,12 @@ LSQCustomAction*       lsq_custom_action_new(const gchar *name,
 																						 LSQCustomActionFunc func, 
 																						 LSQArchiveSupport *support, 
 																						 gpointer user_data);
-const gchar*         lsq_custom_action_get_name(LSQCustomAction*);
-const gchar*         lsq_custom_action_get_nick(LSQCustomAction*);
-const gchar*         lsq_custom_action_get_blurb(LSQCustomAction*);
-const gchar*         lsq_custom_action_get_icon_name(LSQCustomAction*);
-void                 lsq_custom_action_execute(LSQCustomAction*, LSQArchive *, LSQCustomActionCallback *);
-void                 lsq_custom_action_notify(LSQCustomAction*, const gchar*);
+const gchar*         lsq_custom_action_get_name(LSQCustomAction *action);
+const gchar*         lsq_custom_action_get_nick(LSQCustomAction *action);
+const gchar*         lsq_custom_action_get_blurb(LSQCustomAction *action);
+const gchar*         lsq_custom_action_get_icon_name(LSQCustomAction *action);
+void                 lsq_custom_action_execute(LSQCustomAction *action, LSQArchive *archive, LSQCustomActionCallback *callback);
+void                 lsq_custom_action_notify(LSQCustomAction *action, const gchar *);
 
 G_END_DECLS
 
