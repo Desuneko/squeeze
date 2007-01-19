@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.4.2rc2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-18 17:15+0200\n"
+"POT-Creation-Date: 2007-01-19 01:17+0100\n"
 "PO-Revision-Date: 2007-01-18 17:17+0200\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -325,7 +325,7 @@ msgstr "_Ohje"
 msgid "Add"
 msgstr "Lisää"
 
-#: ../src/main_window.c:382 ../src/main_window.c:972
+#: ../src/main_window.c:382 ../src/main_window.c:997
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Pura"
@@ -338,19 +338,30 @@ msgstr "Avaa arkisto uuteen ikkunaan"
 msgid "Open archive"
 msgstr "Avaa arkisto"
 
-#: ../src/main_window.c:875
+#: ../src/main_window.c:774
+#, fuzzy
+msgid "Are you sure you want to remove the selected files?"
+msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
+
+#: ../src/main_window.c:816
+msgid ""
+"Are you sure you want to cancel this operation?\n"
+"This could damage the archive."
+msgstr ""
+
+#: ../src/main_window.c:896
 msgid "Lead developer:"
 msgstr "Pääkehittäjä:"
 
-#: ../src/main_window.c:878
+#: ../src/main_window.c:899
 msgid "Contributors:"
 msgstr "Avustavat kehittäjät:"
 
-#: ../src/main_window.c:881
+#: ../src/main_window.c:902
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiraatio Giuseppe Torellin sovelluksesta Xarchiver"
 
-#: ../src/main_window.c:886
+#: ../src/main_window.c:907
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -358,23 +369,23 @@ msgstr ""
 "Squeeze on kevyt ja joustava arkistonhallintasovellus Xfce-"
 "työpöytäympäristöön"
 
-#: ../src/main_window.c:892
+#: ../src/main_window.c:913
 msgid "translator-credits"
 msgstr "Jari Rahkonen <jari.rahkonen@pp1.inet.fi>"
 
-#: ../src/main_window.c:971
+#: ../src/main_window.c:996
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:972
+#: ../src/main_window.c:997
 msgid "View"
 msgstr "Näytä"
 
-#: ../src/main_window.c:1035
+#: ../src/main_window.c:1060
 msgid "Failed to open file"
 msgstr "Linkin avaaminen epäonnistui"
 
-#: ../src/main_window.c:1036
+#: ../src/main_window.c:1061
 #, c-format
 msgid ""
 "'%s'\n"
