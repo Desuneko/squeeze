@@ -680,7 +680,13 @@ sq_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, Gt
 		else
 			entry = lsq_archive_iter_nth_child(archive, entry, n);
 	
-		g_return_val_if_fail(entry, FALSE);
+		if(!entry)
+		{
+#ifdef DEBUG
+			g_debug("iter %d not found", n);
+#endif
+			return FALSE;
+		}
 	}
 
 	iter->stamp = store->stamp;
@@ -1279,7 +1285,7 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 
 	g_strfreev(buf);
 
-	if(lsq_archive_iter_is_directory(store->archive, (LSQArchiveIter *)stack->data))
+	if(!stack->next || lsq_archive_iter_is_directory(store->archive, (LSQArchiveIter *)stack->data))
 	{
 		sq_archive_store_append_history(store, stack);
 
@@ -1287,9 +1293,10 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 		sq_archive_store_refresh(store);
 
 		g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+		return TRUE;
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 void

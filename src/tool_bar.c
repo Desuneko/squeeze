@@ -365,7 +365,7 @@ static void
 cb_sq_tool_bar_home(GtkWidget *forward_button, SQToolBar *tool_bar)
 {
 	/* FIXME: the part about "/" could be bugged */
-	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, "/");
+	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, "");
 }
 
 static void

@@ -668,6 +668,7 @@ lsq_archive_entry_free(const LSQArchive *archive, LSQEntry *entry)
 			{
 				case(G_TYPE_STRING):
 					g_free(*(gchar **)props_iter);
+					*(gchar **)props_iter = (gchar *)0x1;
 					props_iter += sizeof(gchar *);
 					break;
 				case(G_TYPE_UINT):
@@ -779,11 +780,11 @@ lsq_archive_entry_del_child(const LSQArchive *archive, LSQEntry *entry, const gc
 		{
 			g_free(_filename);
 			lsq_archive_entry_free(archive, entry->children[begin+pos]);
-			total_size -= 1;
-			for(;pos < total_size; ++pos)
+			for(;(begin + pos) < total_size; ++pos)
 			{
 				entry->children[begin+pos] = entry->children[begin+pos+1];
 			}
+			total_size -= 1;
 			*entry->children = GUINT_TO_POINTER(total_size);
 			return TRUE;
 		}
@@ -946,7 +947,10 @@ lsq_archive_entry_get_props(LSQArchive *archive, LSQEntry *entry)
 gboolean
 lsq_archive_iter_is_directory(const LSQArchive *archive, const LSQArchiveIter *iter)
 {
-	if(!strcmp(lsq_archive_iter_get_mimetype(archive, iter), LSQ_MIME_DIRECTORY))
+	const gchar *mime = lsq_archive_iter_get_mimetype(archive, iter);
+	if(!mime)
+		return FALSE;
+	if(!strcmp(mime, LSQ_MIME_DIRECTORY))
 		return TRUE;
 	return FALSE;
 }
