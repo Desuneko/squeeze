@@ -97,6 +97,8 @@ struct _LSQArchive
 		guint64 n_files;
 		guint64 n_directories;
 	} props;
+	gchar *temp_dir;
+	GSList *monitor_list;
 };
 
 typedef struct _LSQArchiveClass LSQArchiveClass;

@@ -399,7 +399,7 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, gchar *extract_path, GS
 						command_options,
 						archive->files, NULL);
 			}
-			g_free(extract_path);
+			g_free(dest_path);
 			g_free(archive_path);
 		} else
 		{
@@ -637,9 +637,13 @@ lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			if (temp ) 
 			{ 
 				temp[0] = '\0';
-			} 
+			}
+			else
+			{
+				line[linesize-1] = '\0';
+			}
 
-			temp_filename = g_strchomp(line + n); 
+			temp_filename = line + n; 
  
 			entry = lsq_archive_add_file(archive, temp_filename);
 			lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);

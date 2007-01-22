@@ -266,7 +266,7 @@ lsq_archive_support_rar_extract(LSQArchive *archive, gchar *extract_path, GSList
 			}	
 		} else
 		{
-			g_free(extract_path);
+			g_free(dest_path);
 			g_free(archive_path);
 			return 1;
 		}

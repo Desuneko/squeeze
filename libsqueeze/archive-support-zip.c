@@ -266,11 +266,11 @@ lsq_archive_support_zip_extract(LSQArchive *archive, gchar *extract_path, GSList
 			}	
 		} else
 		{
-			g_free(extract_path);
+			g_free(dest_path);
 			g_free(archive_path);
 			return 1;
 		}
-		g_free(extract_path);
+		g_free(dest_path);
 		g_free(archive_path);
 	}
 	return 0;
@@ -475,10 +475,10 @@ lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 				props[i] = line + a;
 				i++;
 			}
-			n++;
+			n+=2;
 
-			for(; n < linesize && line[n] == ' '; n++);
-			temp_filename = g_strchomp(line+n); 
+			line[linesize-1] = '\0';
+			temp_filename = line+n; 
 
 			entry = lsq_archive_add_file(archive, temp_filename);
 			lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);

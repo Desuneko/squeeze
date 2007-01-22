@@ -1,0 +1,175 @@
+/*
+ *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+#include <config.h>
+#include <string.h>
+#include <glib.h>
+#include <glib/gstdio.h>
+#include <glib-object.h> 
+#include <signal.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <thunar-vfs/thunar-vfs.h>
+
+#include "archive.h"
+#include "archive-tempfs.h"
+
+#include "internals.h"
+
+static guint suffix = 0;
+
+typedef struct
+{
+	gchar *filename;
+	struct timespec mod_time;
+} SQTempFileMonitor;
+
+static void lsq_tempfs_clean_dir(const gchar *path)
+{
+	const gchar *file;
+
+	if(!path)
+		return;
+
+	GDir *dir = g_dir_open(path, 0, NULL);
+
+	if(dir)
+	{
+		file = g_dir_read_name(dir);
+
+		while(file)
+		{
+			lsq_tempfs_clean_dir(path);
+			file = g_dir_read_name(dir);
+		}
+
+		g_dir_close(dir);
+	}
+
+	g_remove(path);
+}
+
+void lsq_tempfs_clean_root_dir(LSQArchive *archive)
+{
+	if(!archive->temp_dir)
+		return;
+
+	lsq_tempfs_clean_dir(archive->temp_dir);
+}
+
+gboolean lsq_tempfs_make_root_dir(LSQArchive *archive)
+{
+	if(archive->temp_dir)
+		return TRUE;
+
+	gboolean error = FALSE;
+	gchar dirname[256];
+
+	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s", g_get_tmp_dir(), g_get_user_name());
+	if(g_mkdir_with_parents(dirname, 0700))
+		return FALSE;
+
+	do
+	{
+		g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/cache-%d", g_get_tmp_dir(), g_get_user_name(), suffix++);
+		error = g_mkdir(dirname, 0700);
+	}
+	while(error && errno == EEXIST);
+
+	if(!error)
+	{
+		archive->temp_dir = g_strdup(dirname);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode)
+{
+	if(!archive->temp_dir)
+		if(!lsq_tempfs_make_root_dir(archive))
+			return FALSE;
+
+	gchar *full_path = g_strconcat(archive->temp_dir, path, NULL);
+
+	gboolean error = g_mkdir_with_parents(full_path, mode);
+
+	g_free(full_path);
+
+	return !error;
+}
+
+gboolean
+lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path)
+{
+	if(!archive->temp_dir)
+		if(!lsq_tempfs_make_root_dir(archive))
+			return FALSE;
+	
+	struct stat status;
+
+	if(g_stat(path, &status))
+		return FALSE;
+	
+	SQTempFileMonitor *monitor = g_new(SQTempFileMonitor, 1);
+	monitor->filename = g_strdup(path);
+	monitor->mod_time = status.st_mtim;
+
+	archive->monitor_list = g_slist_prepend(archive->monitor_list, monitor);
+
+	return TRUE;
+}
+
+gboolean
+lsq_tempfs_changed_file(LSQArchive *archive, const gchar *path)
+{
+	if(!archive->temp_dir)
+		if(!lsq_tempfs_make_root_dir(archive))
+			return FALSE;
+	
+	struct stat status;
+
+	if(g_stat(path, &status))
+		return FALSE;
+
+	GSList *iter = archive->monitor_list;
+	gboolean changed = FALSE;
+
+	while(iter)
+	{
+		if(strcmp(path, ((SQTempFileMonitor*)iter->data)->filename) == 0)
+		{
+			if((((SQTempFileMonitor*)iter->data)->mod_time.tv_sec > status.st_mtim.tv_sec) ||
+				(((SQTempFileMonitor*)iter->data)->mod_time.tv_nsec > status.st_mtim.tv_nsec &&
+				((SQTempFileMonitor*)iter->data)->mod_time.tv_sec >= status.st_mtim.tv_sec))
+			{
+				changed = TRUE;
+			}
+
+			archive->monitor_list = g_slist_remove(archive->monitor_list, iter);
+			break;
+		}
+		
+		iter = g_slist_next(iter);
+	}
+	return changed;
+}
+

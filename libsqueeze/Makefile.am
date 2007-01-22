@@ -5,6 +5,7 @@ libsqueeze_1_la_SOURCES =  \
 	libsqueeze.c libsqueeze.h \
 	slist.c slist.h \
 	archive.c archive.h \
+	archive-tempfs.c archive-tempfs.h \
 	archive-support.c archive-support.h \
 	archive-support-zip.c archive-support-zip.h \
 	archive-support-rar.c archive-support-rar.h \
