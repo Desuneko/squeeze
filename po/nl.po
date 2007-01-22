@@ -49,9 +49,8 @@ msgid "Done"
 msgstr "Klaar"
 
 #: ../libsqueeze/archive.c:1579
-#, fuzzy
 msgid "Extracting file(s) to temporary directory"
-msgstr "Bestand(en) uitpakken uit archief"
+msgstr "Bestand(en) uitpakken naar tijdelijke map"
 
 #: ../libsqueeze/archive.c:1581
 msgid "Performing an extended action"
@@ -350,12 +349,16 @@ msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze kan dit archief type niet uitpakken,\n"
+"het programma om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:773 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze kan aan dit archief type geen bestanden toevoegen,\n"
+"het programma om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:794
 msgid "Are you sure you want to remove the selected files?"
@@ -366,6 +369,8 @@ msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze kan van dit archief type geen bestanden verwijderen,\n"
+"het programma om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:846
 msgid ""
@@ -412,6 +417,8 @@ msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze kan dit bestand niet weergeven.\n"
+"het programma om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:1106
 msgid "Failed to open file"

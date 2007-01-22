@@ -29,6 +29,7 @@ LSQArchive
 @LSQ_ARCHIVESTATUS_REMOVE: 
 @LSQ_ARCHIVESTATUS_REFRESH: 
 @LSQ_ARCHIVESTATUS_ERROR: 
+@LSQ_ARCHIVESTATUS_PREPARE_VIEW: 
 @LSQ_ARCHIVESTATUS_CUSTOM: 
 @LSQ_ARCHIVESTATUS_USERBREAK: 
 
@@ -66,7 +67,6 @@ LSQArchive
 @ioc_out: 
 @ioc_err: 
 @support: 
-@tmp_file: 
 @files: 
 @has_passwd: 
 @temp_dir: 
