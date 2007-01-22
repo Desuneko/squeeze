@@ -428,7 +428,10 @@ void
 sq_notebook_set_navigation_bar(SQNotebook *notebook, SQNavigationBar *bar)
 {
 	if(notebook->navigation_bar)
+	{
 		sq_navigation_bar_set_store(notebook->navigation_bar, NULL);
+		gtk_widget_unref(GTK_WIDGET(notebook->navigation_bar));
+	}
 
 	notebook->props._up_dir = TRUE;
 
@@ -443,6 +446,9 @@ sq_notebook_set_navigation_bar(SQNotebook *notebook, SQNavigationBar *bar)
 			notebook->props._up_dir = FALSE;
 #endif
 	}
+	
+	if(bar)
+		gtk_widget_ref(GTK_WIDGET(bar));
 
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{

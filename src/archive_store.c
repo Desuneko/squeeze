@@ -43,7 +43,7 @@ static void
 sq_archive_tree_sortable_init(GtkTreeSortableIface *ts_interface);
 
 static void
-sq_archive_store_finalize(GObject *object);
+sq_archive_store_dispose(GObject *object);
 
 /* properties */
 enum {
@@ -236,7 +236,7 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 
 	object_class->set_property = sq_archive_store_set_property;
 	object_class->get_property = sq_archive_store_get_property;
-	object_class->finalize = sq_archive_store_finalize;
+	object_class->dispose = sq_archive_store_dispose;
 
 	pspec = g_param_spec_boolean("show-icons",
 		_("Show mime icons"),
@@ -537,6 +537,8 @@ sq_archive_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), FALSE);
 	
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
+	if(iter->stamp != store->stamp)
+		return FALSE;
 
 	LSQArchiveIter *entry = (LSQArchiveIter*)iter->user_data2;
 	gint pos = GPOINTER_TO_INT(iter->user_data3);
@@ -1678,9 +1680,12 @@ sq_archive_store_set_support(SQArchiveStore *archive_store, LSQArchiveSupport *s
 }
 
 static void
-sq_archive_store_finalize(GObject *object)
+sq_archive_store_dispose(GObject *object)
 {
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
 	if(store->archive)
+	{
 		g_object_unref(store->archive);
+		store->archive = NULL;
+	}
 }

@@ -32,7 +32,7 @@ sq_navigation_bar_class_init(SQNavigationBarClass *archive_class);
 static void
 sq_navigation_bar_init(SQNavigationBar *archive);
 static void
-sq_navigation_bar_finalize(GObject *object);
+sq_navigation_bar_dispose(GObject *object);
 
 static void
 cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
@@ -44,6 +44,8 @@ cb_sq_navigation_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 enum {
 	SQ_NAVIGATION_BAR_NAV_HISTORY = 1
 };
+
+static GObjectClass *parent_class;
 
 GType
 sq_navigation_bar_get_type ()
@@ -76,7 +78,9 @@ sq_navigation_bar_class_init(SQNavigationBarClass *navigation_bar_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (navigation_bar_class);
 
-	object_class->finalize     = sq_navigation_bar_finalize;
+	parent_class = gtk_type_class (GTK_TYPE_CONTAINER);
+
+	object_class->dispose     = sq_navigation_bar_dispose;
 }
 
 static void
@@ -90,7 +94,7 @@ sq_navigation_bar_init(SQNavigationBar *navigation_bar)
 }
 
 static void
-sq_navigation_bar_finalize(GObject *object)
+sq_navigation_bar_dispose(GObject *object)
 {
 	SQNavigationBar *navigation_bar = SQ_NAVIGATION_BAR(object);
 	if(navigation_bar->store)
@@ -99,7 +103,9 @@ sq_navigation_bar_finalize(GObject *object)
 			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_pwd_changed, navigation_bar);
 		if(navigation_bar->_cb_new_archive)
 			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_new_archive, navigation_bar);
+		navigation_bar->store = NULL;
 	}
+	parent_class->dispose(object);
 }
 
 void

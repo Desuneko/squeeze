@@ -995,7 +995,10 @@ cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data)
 static void
 cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
 {
-	g_signal_handlers_disconnect_by_func(user_data, cb_sq_widget_factory_property_notify, obj);
+	if(user_data)
+	{
+		g_signal_handlers_disconnect_by_func(user_data, cb_sq_widget_factory_property_notify, obj);
+	}
 }
 
 static void

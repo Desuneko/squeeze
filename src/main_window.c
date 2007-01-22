@@ -81,6 +81,8 @@ static void
 sq_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void
 sq_main_window_finalize(GObject *object);
+static void
+sq_main_window_dispose(GObject *object);
 
 
 static void cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata);
@@ -109,6 +111,8 @@ cb_sq_main_window_notebook_status_changed(SQNotebook *, LSQArchive *, gpointer);
 
 static void
 sq_main_window_set_navigation(SQMainWindow *window);
+
+static GObjectClass *parent_class;
 
 GType
 sq_main_window_navigation_style_get_type()
@@ -169,9 +173,12 @@ sq_main_window_class_init(SQMainWindowClass *window_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (window_class);
 	GParamSpec *pspec = NULL;
 
+	parent_class = gtk_type_class (GTK_TYPE_WINDOW);
+
 	object_class->set_property = sq_main_window_set_property;
 	object_class->get_property = sq_main_window_get_property;
 	object_class->finalize     = sq_main_window_finalize;
+	object_class->dispose     = sq_main_window_dispose;
 
 	pspec = g_param_spec_enum("navigation-style",
 		_("Navigation Style"),
@@ -186,46 +193,69 @@ sq_main_window_class_init(SQMainWindowClass *window_class)
 }
 
 static void
-sq_main_window_finalize(GObject *object)
+sq_main_window_dispose(GObject *object)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(object);
 
-
-	sq_settings_set_group(window->settings, "Global");
-	if(window->menu_bar)
-		sq_settings_write_bool_entry(window->settings, "MenuBar", TRUE);
-	else
-		sq_settings_write_bool_entry(window->settings, "MenuBar", FALSE);
-
-	if(!window->navigationbar)
+	if(window->main_vbox && window->notebook)
 	{
-		sq_settings_write_entry(window->settings, "NavigationBar", "None");
-	}
-#ifdef ENABLE_TOOLBAR
-	else if(SQ_IS_TOOL_BAR(window->navigationbar))
-	{
-		sq_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
-	}	
-#endif
-#ifdef ENABLE_PATHBAR
-	else if(SQ_IS_PATH_BAR(window->navigationbar))
-	{
-		sq_settings_write_entry(window->settings, "NavigationBar", "PathBar");
-	}
-#endif
-	else
-	{
-		sq_settings_write_entry(window->settings, "NavigationBar", "None");
+		gtk_container_remove(GTK_CONTAINER(window->main_vbox), GTK_WIDGET(window->notebook));
+		window->notebook = NULL;
 	}
 
-	sq_settings_save(window->settings);
+	if(window->settings)
+	{
+		sq_settings_set_group(window->settings, "Global");
+		if(window->menu_bar)
+			sq_settings_write_bool_entry(window->settings, "MenuBar", TRUE);
+		else
+			sq_settings_write_bool_entry(window->settings, "MenuBar", FALSE);
 
-	g_object_unref(G_OBJECT(window->settings));
+		if(!window->navigationbar)
+		{
+			sq_settings_write_entry(window->settings, "NavigationBar", "None");
+		}
+	#ifdef ENABLE_TOOLBAR
+		else if(SQ_IS_TOOL_BAR(window->navigationbar))
+		{
+			sq_settings_write_entry(window->settings, "NavigationBar", "ToolBar");
+		}	
+	#endif
+	#ifdef ENABLE_PATHBAR
+		else if(SQ_IS_PATH_BAR(window->navigationbar))
+		{
+			sq_settings_write_entry(window->settings, "NavigationBar", "PathBar");
+		}
+	#endif
+		else
+		{
+			sq_settings_write_entry(window->settings, "NavigationBar", "None");
+		}
 
-	//if(window->navigationbar)
-	//	gtk_widget_destroy(GTK_WIDGET(window->navigationbar));
+		sq_settings_save(window->settings);
 
-	g_object_unref(G_OBJECT(window->app));
+		g_object_unref(G_OBJECT(window->settings));
+		window->settings = NULL;
+	}
+
+	if(window->main_vbox && window->navigationbar)
+	{
+		gtk_container_remove(GTK_CONTAINER(window->main_vbox), GTK_WIDGET(window->navigationbar));
+		window->navigationbar = NULL;
+	}
+	if(window->app)
+	{
+		g_object_unref(G_OBJECT(window->app));
+		window->app = NULL;
+	}
+	
+	parent_class->dispose(object);
+}
+
+static void
+sq_main_window_finalize(GObject *object)
+{
+	parent_class->finalize(object);
 }
 
 static void
