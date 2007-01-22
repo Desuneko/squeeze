@@ -238,11 +238,6 @@ sq_main_window_dispose(GObject *object)
 		window->settings = NULL;
 	}
 
-	if(window->main_vbox && window->navigationbar)
-	{
-		gtk_container_remove(GTK_CONTAINER(window->main_vbox), GTK_WIDGET(window->navigationbar));
-		window->navigationbar = NULL;
-	}
 	if(window->app)
 	{
 		g_object_unref(G_OBJECT(window->app));
