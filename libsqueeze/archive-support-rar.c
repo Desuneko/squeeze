@@ -59,7 +59,7 @@ static void
 lsq_archive_support_rar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 static gint lsq_archive_support_rar_add(LSQArchive *, GSList *);
-static gint lsq_archive_support_rar_extract(LSQArchive *, gchar *, GSList *);
+static gint lsq_archive_support_rar_extract(LSQArchive *, const gchar *, GSList *);
 static gint lsq_archive_support_rar_remove(LSQArchive *, GSList *);
 static gint lsq_archive_support_rar_refresh(LSQArchive *);
 
@@ -257,7 +257,7 @@ lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 }
 
 static gint
-lsq_archive_support_rar_extract(LSQArchive *archive, gchar *extract_path, GSList *filenames)
+lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
 	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
 	{
@@ -288,7 +288,7 @@ lsq_archive_support_rar_extract(LSQArchive *archive, gchar *extract_path, GSList
 			g_free(archive_path);
 			return 1;
 		}
-		g_free(extract_path);
+		g_free(dest_path);
 		g_free(archive_path);
 	}
 	return 0;

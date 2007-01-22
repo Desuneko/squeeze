@@ -59,7 +59,7 @@ static void
 lsq_archive_support_zip_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
 static gint lsq_archive_support_zip_add(LSQArchive *, GSList *);
-static gint lsq_archive_support_zip_extract(LSQArchive *, gchar *, GSList *);
+static gint lsq_archive_support_zip_extract(LSQArchive *, const gchar *, GSList *);
 static gint lsq_archive_support_zip_remove(LSQArchive *, GSList *);
 static gint lsq_archive_support_zip_refresh(LSQArchive *);
 
@@ -238,7 +238,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 }
 
 static gint
-lsq_archive_support_zip_extract(LSQArchive *archive, gchar *extract_path, GSList *filenames)
+lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{

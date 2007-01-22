@@ -88,7 +88,7 @@ struct _LSQArchiveSupport
  * should be called instead.
  */
 	gint        (*add)(LSQArchive *archive, GSList *files);
-	gint        (*extract)(LSQArchive *archive, gchar *dest_path, GSList *files);
+	gint        (*extract)(LSQArchive *archive, const gchar *dest_path, GSList *files);
 	gint        (*remove)(LSQArchive *archive, GSList *files);
 	gint        (*refresh)(LSQArchive *archive);
 };
@@ -115,9 +115,10 @@ gint                 lsq_archive_support_lookup_mime(gconstpointer support_mime,
 gint                 lsq_archive_support_lookup_support(gconstpointer support, gconstpointer mime);
 
 gint                 lsq_archive_support_add(LSQArchiveSupport *, LSQArchive *, GSList *);
-gint                 lsq_archive_support_extract(LSQArchiveSupport *, LSQArchive *, gchar *, GSList *);
+gint                 lsq_archive_support_extract(LSQArchiveSupport *, LSQArchive *, const gchar *, GSList *);
 gint                 lsq_archive_support_remove(LSQArchiveSupport *, LSQArchive *, GSList *);
 gint                 lsq_archive_support_refresh(LSQArchiveSupport *, LSQArchive *);
+gint                 lsq_archive_support_view(LSQArchiveSupport *, LSQArchive *, GSList *);
 guint64              lsq_archive_support_get_max_n_files(LSQArchiveSupport *);
 
 gboolean             lsq_archive_support_can_stop(LSQArchiveSupport *support, LSQArchive *archive);

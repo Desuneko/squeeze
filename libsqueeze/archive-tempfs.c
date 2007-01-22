@@ -74,6 +74,15 @@ void lsq_tempfs_clean_root_dir(LSQArchive *archive)
 	lsq_tempfs_clean_dir(archive->temp_dir);
 }
 
+const gchar* lsq_tempfs_get_root_dir(LSQArchive *archive)
+{
+	if(!archive->temp_dir)
+		if(!lsq_tempfs_make_root_dir(archive))
+			return NULL;
+
+	return archive->temp_dir;
+}
+
 gboolean lsq_tempfs_make_root_dir(LSQArchive *archive)
 {
 	if(archive->temp_dir)
@@ -82,13 +91,13 @@ gboolean lsq_tempfs_make_root_dir(LSQArchive *archive)
 	gboolean error = FALSE;
 	gchar dirname[256];
 
-	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s", g_get_tmp_dir(), g_get_user_name());
+	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name());
 	if(g_mkdir_with_parents(dirname, 0700))
 		return FALSE;
 
 	do
 	{
-		g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/cache-%d", g_get_tmp_dir(), g_get_user_name(), suffix++);
+		g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/cache-%d/", g_get_tmp_dir(), g_get_user_name(), suffix++);
 		error = g_mkdir(dirname, 0700);
 	}
 	while(error && errno == EEXIST);

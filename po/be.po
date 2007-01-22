@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze trunk\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-16 12:22+0100\n"
+"POT-Creation-Date: 2007-01-22 18:19+0100\n"
 "PO-Revision-Date: 2007-01-20 04:24+0300\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -16,148 +16,153 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:438
+#: ../libsqueeze/archive.c:481
 msgid "Filename"
 msgstr "Назва файла"
 
-#: ../libsqueeze/archive.c:441
+#: ../libsqueeze/archive.c:484
 msgid "Mime type"
 msgstr "Тып MIME"
 
-#: ../libsqueeze/archive.c:1347
+#: ../libsqueeze/archive.c:1561
 msgid "Initializing archive"
 msgstr "Ініцыялізацыя архіва"
 
-#: ../libsqueeze/archive.c:1350
+#: ../libsqueeze/archive.c:1564
 msgid "Refreshing archive contents"
 msgstr "Абнаўленьне зьместу архіва"
 
-#: ../libsqueeze/archive.c:1353
+#: ../libsqueeze/archive.c:1567
 msgid "Adding file(s) to archive"
 msgstr "Дадаваньне файлаў да архіва"
 
-#: ../libsqueeze/archive.c:1356
+#: ../libsqueeze/archive.c:1570
 msgid "Extracting file(s) from archive"
 msgstr "Распакоўка файлаў з архіва"
 
-#: ../libsqueeze/archive.c:1359
+#: ../libsqueeze/archive.c:1573
 msgid "Removing file(s) from archive"
 msgstr "Выдаленьне файлаў з архіва"
 
-#: ../libsqueeze/archive.c:1362
+#: ../libsqueeze/archive.c:1576
 msgid "Done"
 msgstr "Зроблена"
 
-#: ../libsqueeze/archive.c:1365
+#: ../libsqueeze/archive.c:1579
+#, fuzzy
+msgid "Extracting file(s) to temporary directory"
+msgstr "Распакоўка файлаў з архіва"
+
+#: ../libsqueeze/archive.c:1581
 msgid "Performing an extended action"
 msgstr "Выкананьне пашыранага дзеяньня"
 
-#: ../libsqueeze/archive.c:1368
+#: ../libsqueeze/archive.c:1584
 msgid "Cancelled"
 msgstr "Скасаванае"
 
-#: ../libsqueeze/archive.c:1371
+#: ../libsqueeze/archive.c:1587
 msgid "Error"
 msgstr "Памылка"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:158
+#: ../libsqueeze/archive-support-gnu-tar.c:161
 #: ../libsqueeze/archive-support-zip.c:137
-#: ../libsqueeze/archive-support-rar.c:123
+#: ../libsqueeze/archive-support-rar.c:141
 msgid "Overwrite existing files"
 msgstr "Перазапісаць наяўны файл?"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:159
+#: ../libsqueeze/archive-support-gnu-tar.c:162
 #: ../libsqueeze/archive-support-zip.c:138
-#: ../libsqueeze/archive-support-rar.c:124
+#: ../libsqueeze/archive-support-rar.c:142
 msgid "Overwrite existing files on extraction"
 msgstr "Перазапісаць файлы, якія існуюць"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:165
-#: ../libsqueeze/archive-support-gnu-tar.c:166
+#: ../libsqueeze/archive-support-gnu-tar.c:168
+#: ../libsqueeze/archive-support-gnu-tar.c:169
 msgid "Touch files"
 msgstr "Дакрануцца да файлаў"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:172
-#: ../libsqueeze/archive-support-gnu-tar.c:173
+#: ../libsqueeze/archive-support-gnu-tar.c:175
+#: ../libsqueeze/archive-support-gnu-tar.c:176
 msgid "Strip directories"
 msgstr "Абрэзаць тэчкі"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:181
+#: ../libsqueeze/archive-support-gnu-tar.c:184
 msgid "Keep newer files"
 msgstr "Пакінуць навейшыя файлы"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:182
+#: ../libsqueeze/archive-support-gnu-tar.c:185
 msgid "Do not overwrite files newer then those in the archive"
 msgstr "Не перазапісваць файлы, навейшыя за файлы з архіву"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:188
-#: ../libsqueeze/archive-support-gnu-tar.c:189
+#: ../libsqueeze/archive-support-gnu-tar.c:191
+#: ../libsqueeze/archive-support-gnu-tar.c:192
 msgid "Override permissions"
 msgstr "Перазапісаць правы"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:195
-#: ../libsqueeze/archive-support-gnu-tar.c:501
+#: ../libsqueeze/archive-support-gnu-tar.c:198
+#: ../libsqueeze/archive-support-gnu-tar.c:506
 #: ../libsqueeze/archive-support-zip.c:172
 #: ../libsqueeze/archive-support-zip.c:328
-#: ../libsqueeze/archive-support-rar.c:158
-#: ../libsqueeze/archive-support-rar.c:327
+#: ../libsqueeze/archive-support-rar.c:176
+#: ../libsqueeze/archive-support-rar.c:345
 msgid "Size"
 msgstr "Памер"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:196
+#: ../libsqueeze/archive-support-gnu-tar.c:199
 #: ../libsqueeze/archive-support-zip.c:173
-#: ../libsqueeze/archive-support-rar.c:159
+#: ../libsqueeze/archive-support-rar.c:177
 msgid "View filesize"
 msgstr "Прагляд памеру файлаў"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:202
-#: ../libsqueeze/archive-support-gnu-tar.c:493
-#: ../libsqueeze/archive-support-rar.c:186
-#: ../libsqueeze/archive-support-rar.c:347
+#: ../libsqueeze/archive-support-gnu-tar.c:205
+#: ../libsqueeze/archive-support-gnu-tar.c:498
+#: ../libsqueeze/archive-support-rar.c:204
+#: ../libsqueeze/archive-support-rar.c:365
 msgid "Permissions"
 msgstr "Правы доступу"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:203
-#: ../libsqueeze/archive-support-rar.c:187
+#: ../libsqueeze/archive-support-gnu-tar.c:206
+#: ../libsqueeze/archive-support-rar.c:205
 msgid "View permissions"
 msgstr "Прагляд правоў"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:209
-#: ../libsqueeze/archive-support-gnu-tar.c:497
+#: ../libsqueeze/archive-support-gnu-tar.c:212
+#: ../libsqueeze/archive-support-gnu-tar.c:502
 msgid "Owner/Group"
 msgstr "Уладальнік/група"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:210
+#: ../libsqueeze/archive-support-gnu-tar.c:213
 msgid "View owner/group"
 msgstr "Прагляд уладальніка/групы"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:216
-#: ../libsqueeze/archive-support-gnu-tar.c:505
+#: ../libsqueeze/archive-support-gnu-tar.c:219
+#: ../libsqueeze/archive-support-gnu-tar.c:510
 #: ../libsqueeze/archive-support-zip.c:158
 #: ../libsqueeze/archive-support-zip.c:344
-#: ../libsqueeze/archive-support-rar.c:144
-#: ../libsqueeze/archive-support-rar.c:339
+#: ../libsqueeze/archive-support-rar.c:162
+#: ../libsqueeze/archive-support-rar.c:357
 msgid "Date"
 msgstr "Дата"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:217
+#: ../libsqueeze/archive-support-gnu-tar.c:220
 #: ../libsqueeze/archive-support-zip.c:159
-#: ../libsqueeze/archive-support-rar.c:145
+#: ../libsqueeze/archive-support-rar.c:163
 msgid "View date"
 msgstr "Прагляд даты"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:223
-#: ../libsqueeze/archive-support-gnu-tar.c:509
+#: ../libsqueeze/archive-support-gnu-tar.c:226
+#: ../libsqueeze/archive-support-gnu-tar.c:514
 #: ../libsqueeze/archive-support-zip.c:151
 #: ../libsqueeze/archive-support-zip.c:348
-#: ../libsqueeze/archive-support-rar.c:137
-#: ../libsqueeze/archive-support-rar.c:343
+#: ../libsqueeze/archive-support-rar.c:155
+#: ../libsqueeze/archive-support-rar.c:361
 msgid "Time"
 msgstr "Час"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:224
+#: ../libsqueeze/archive-support-gnu-tar.c:227
 #: ../libsqueeze/archive-support-zip.c:152
-#: ../libsqueeze/archive-support-rar.c:138
+#: ../libsqueeze/archive-support-rar.c:156
 msgid "View time"
 msgstr "Прагляд часу"
 
@@ -176,68 +181,68 @@ msgstr ""
 
 #: ../libsqueeze/archive-support-zip.c:130
 #: ../libsqueeze/archive-support-zip.c:131
-#: ../libsqueeze/archive-support-rar.c:116
-#: ../libsqueeze/archive-support-rar.c:117
+#: ../libsqueeze/archive-support-rar.c:134
+#: ../libsqueeze/archive-support-rar.c:135
 msgid "Password"
 msgstr "Пароль"
 
 #: ../libsqueeze/archive-support-zip.c:144
 #: ../libsqueeze/archive-support-zip.c:336
-#: ../libsqueeze/archive-support-rar.c:130
-#: ../libsqueeze/archive-support-rar.c:331
+#: ../libsqueeze/archive-support-rar.c:148
+#: ../libsqueeze/archive-support-rar.c:349
 msgid "Compressed Size"
 msgstr "Сьціснуты памер"
 
 #: ../libsqueeze/archive-support-zip.c:145
-#: ../libsqueeze/archive-support-rar.c:131
+#: ../libsqueeze/archive-support-rar.c:149
 msgid "View compressed filesize"
 msgstr "Прагляд памераў сьціснутых файлаў"
 
 #: ../libsqueeze/archive-support-zip.c:165
 #: ../libsqueeze/archive-support-zip.c:340
-#: ../libsqueeze/archive-support-rar.c:151
-#: ../libsqueeze/archive-support-rar.c:335
+#: ../libsqueeze/archive-support-rar.c:169
+#: ../libsqueeze/archive-support-rar.c:353
 msgid "Ratio"
 msgstr "Суадносіны"
 
 #: ../libsqueeze/archive-support-zip.c:166
-#: ../libsqueeze/archive-support-rar.c:152
+#: ../libsqueeze/archive-support-rar.c:170
 msgid "View ratio"
 msgstr "Узровень сьцісканьня"
 
 #: ../libsqueeze/archive-support-zip.c:179
 #: ../libsqueeze/archive-support-zip.c:332
-#: ../libsqueeze/archive-support-rar.c:165
-#: ../libsqueeze/archive-support-rar.c:355
+#: ../libsqueeze/archive-support-rar.c:183
+#: ../libsqueeze/archive-support-rar.c:373
 msgid "Method"
 msgstr "Мэтад"
 
 #: ../libsqueeze/archive-support-zip.c:180
-#: ../libsqueeze/archive-support-rar.c:166
+#: ../libsqueeze/archive-support-rar.c:184
 msgid "View method"
 msgstr "Прагляд мэтаду"
 
 #: ../libsqueeze/archive-support-zip.c:186
 #: ../libsqueeze/archive-support-zip.c:352
-#: ../libsqueeze/archive-support-rar.c:172
-#: ../libsqueeze/archive-support-rar.c:351
+#: ../libsqueeze/archive-support-rar.c:190
+#: ../libsqueeze/archive-support-rar.c:369
 msgid "Checksum"
 msgstr "Кантрольная сума"
 
 #: ../libsqueeze/archive-support-zip.c:187
-#: ../libsqueeze/archive-support-rar.c:173
+#: ../libsqueeze/archive-support-rar.c:191
 msgid "View Checksum"
 msgstr "Прагляд кантрольнае сумы"
 
-#: ../libsqueeze/archive-support-rar.c:179
+#: ../libsqueeze/archive-support-rar.c:197
 msgid "Compression version"
 msgstr "Вэрсія сьцісканьня"
 
-#: ../libsqueeze/archive-support-rar.c:180
+#: ../libsqueeze/archive-support-rar.c:198
 msgid "View compression version"
 msgstr "Прагляд вэрсіі сьцісканьня"
 
-#: ../libsqueeze/archive-support-rar.c:359
+#: ../libsqueeze/archive-support-rar.c:377
 msgid "Version"
 msgstr "Вэрсія"
 
@@ -326,8 +331,7 @@ msgstr "_Даведка"
 msgid "Add"
 msgstr "Дадаць"
 
-#: ../src/main_window.c:382
-#: ../src/main_window.c:972
+#: ../src/main_window.c:382 ../src/main_window.c:1027
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Распакаваць"
@@ -340,39 +344,77 @@ msgstr "Адкрыць архіў у новым акне"
 msgid "Open archive"
 msgstr "Адкрыць архіў"
 
-#: ../src/main_window.c:875
+#: ../src/main_window.c:735 ../src/main_window.c:1065 ../src/application.c:197
+#: ../src/application.c:213
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:773 ../src/application.c:287
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:794
+#, fuzzy
+msgid "Are you sure you want to remove the selected files?"
+msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
+
+#: ../src/main_window.c:807
+msgid ""
+"Squeeze cannot remove files from this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:846
+msgid ""
+"Are you sure you want to cancel this operation?\n"
+"This could damage the archive."
+msgstr ""
+
+#: ../src/main_window.c:926
 msgid "Lead developer:"
 msgstr "Асноўны распрацоўнік:"
 
-#: ../src/main_window.c:878
+#: ../src/main_window.c:929
 msgid "Contributors:"
 msgstr "Укладальнікі:"
 
-#: ../src/main_window.c:881
+#: ../src/main_window.c:932
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "У натхненьні ад Xarchiver, напісана Giuseppe Torelli"
 
-#: ../src/main_window.c:886
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+#: ../src/main_window.c:937
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
 msgstr "Squeeze - гэта лёгкі і гнуткі кіраўнік архіваў для асяродзьдзя Xfce"
 
-#: ../src/main_window.c:892
+#: ../src/main_window.c:943
 msgid "translator-credits"
 msgstr "Аляксандар Няхайчык"
 
-#: ../src/main_window.c:971
+#: ../src/main_window.c:1026
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:972
+#: ../src/main_window.c:1027
 msgid "View"
 msgstr "Выгляд"
 
-#: ../src/main_window.c:1035
+#: ../src/main_window.c:1041
+msgid ""
+"Squeeze cannot view this file.\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:1106
 msgid "Failed to open file"
 msgstr "Немагчыма адкрыць файл"
 
-#: ../src/main_window.c:1036
+#: ../src/main_window.c:1107
 #, c-format
 msgid ""
 "'%s'\n"
@@ -384,7 +426,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:234
+#: ../src/application.c:254
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Немагчыма стварыць архіў, MIME-тып не падтрымліваецца"
 
@@ -392,9 +434,10 @@ msgstr "Немагчыма стварыць архіў, MIME-тып не пад�
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:251
+#: ../src/application.c:271
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Немагчыма адкрыць архіў: MIME-тып не падтрымліваецца альбо файл не існуе"
+msgstr ""
+"Немагчыма адкрыць архіў: MIME-тып не падтрымліваецца альбо файл не існуе"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -486,30 +529,24 @@ msgstr "Прастора"
 msgid "The amount of space between the path buttons"
 msgstr "Памер прасторы паміж элемэнтамі кнопак шляху"
 
-#: ../src/notebook.c:177
-#: ../src/archive_store.c:240
+#: ../src/notebook.c:177 ../src/archive_store.c:242
 msgid "Show mime icons"
 msgstr "Паказваць значкі mime-тыпаў"
 
-#: ../src/notebook.c:178
-#: ../src/archive_store.c:241
+#: ../src/notebook.c:178 ../src/archive_store.c:243
 msgid "Show the mime type icons for each entry"
 msgstr "Паказваць значку MIME-тыпу для кожнага файла"
 
-#: ../src/notebook.c:184
-#: ../src/archive_store.c:254
+#: ../src/notebook.c:184 ../src/archive_store.c:256
 msgid "Sort folders before files"
 msgstr "Зьмяшчаць тэчкі перад файламі"
 
-#: ../src/notebook.c:185
-#: ../src/archive_store.c:255
+#: ../src/notebook.c:185 ../src/archive_store.c:257
 msgid "The folders will be put at the top of the list"
 msgstr "Тэчкі будуць зьмяшчацца перад файламі"
 
-#: ../src/notebook.c:191
-#: ../src/notebook.c:192
-#: ../src/archive_store.c:261
-#: ../src/archive_store.c:262
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Sort text case sensitive"
 msgstr "Упарадкаваць згодна з рэгістрам"
 
@@ -521,21 +558,21 @@ msgstr "Падказкі"
 msgid "Make the row background colors alternate"
 msgstr "Задаць альтэрнатыўныя колеры тла радка"
 
-#: ../src/notebook.c:544
+#: ../src/notebook.c:549
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr "Немагчыма адкрыць архіў \"%s\"."
 
-#: ../src/notebook.c:552
+#: ../src/notebook.c:557
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Немагчыма распакаваць зьмест архіва \"%s\"."
 
-#: ../src/archive_store.c:247
+#: ../src/archive_store.c:249
 msgid "Show up dir entry"
 msgstr "Паказваць бацькоўскую тэчку"
 
-#: ../src/archive_store.c:248
+#: ../src/archive_store.c:250
 msgid "Show '..' to go to the parent directory"
 msgstr "Паказваць \"..\" для пераходу ў бацькоўскую тэчку"
 
@@ -546,4 +583,3 @@ msgstr "Кіраўнік архіваў"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Кіраўнік архіваў Xfce"
-

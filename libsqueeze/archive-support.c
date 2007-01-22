@@ -25,6 +25,7 @@
 
 #include "archive.h"
 #include "archive-support.h"
+#include "archive-tempfs.h"
 
 #include "internals.h"
 
@@ -212,7 +213,7 @@ lsq_archive_support_add(LSQArchiveSupport *support, LSQArchive *archive, GSList 
 }
 
 gint
-lsq_archive_support_extract(LSQArchiveSupport *support, LSQArchive *archive, gchar *dest_path, GSList *files)
+lsq_archive_support_extract(LSQArchiveSupport *support, LSQArchive *archive, const gchar *dest_path, GSList *files)
 {
 	if(support->extract)
 	{
@@ -231,16 +232,23 @@ lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSLi
 	if(support->remove)
 	{
 		const gchar *path;
-		GSList *iter, *del = iter = g_slist_copy(files);
+		GSList *iter = archive->files;
+		while(iter)
+		{
+			g_free(iter->data);
+			iter = g_slist_next(iter);
+		}
+		g_slist_free(archive->files);
+		iter = archive->files = g_slist_copy(files);
 		/* TODO: is add children really nesecery? */
 		lsq_archive_add_children(archive, files);
 		while(iter)
 		{
 			path = (const gchar*)iter->data;
+			iter->data = g_strdup(path);
 			lsq_archive_del_file(archive, path);
 			iter = g_slist_next(iter);
 		}
-		g_slist_free(del);
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REMOVE);
 		archive->support = support;
 		return support->remove(archive, files);
@@ -262,6 +270,51 @@ lsq_archive_support_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 	else
 		g_critical("VIEW NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
+}
+
+gint
+lsq_archive_support_view(LSQArchiveSupport *support, LSQArchive *archive, GSList *files)
+{
+	if(support->extract)
+	{
+		archive->support = support;
+		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_PREPARE_VIEW);
+		GSList *iter = archive->files;
+		while(iter)
+		{
+			g_free(iter->data);
+			iter = g_slist_next(iter);
+		}
+		g_slist_free(archive->files);
+		iter = archive->files = g_slist_copy(files);
+		while(iter)
+		{
+			iter->data = g_strdup(iter->data);
+			iter = g_slist_next(iter);
+		}
+		if(support->extract(archive, lsq_tempfs_get_root_dir(archive), files))
+			return -1;
+		return 0;
+	}
+	else
+		g_critical("EXTRACT NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+	return -1;
+}
+
+void
+lsq_archive_support_view_prepared(LSQArchive *archive, GSList *files, gpointer user_data)
+{
+	gchar *full_file;
+	while(files)
+	{	
+		full_file = g_strconcat(lsq_tempfs_get_root_dir(archive), files->data, NULL);
+#ifdef DEBUG
+		g_debug("Open file: '%s'", full_file);
+#endif
+		exo_url_show(full_file, NULL, NULL);
+		g_free(full_file);
+		files = g_slist_next(files);
+	}
 }
 
 guint64

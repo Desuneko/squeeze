@@ -42,4 +42,7 @@ lsq_concat_filenames(GSList *filenames) G_GNUC_INTERNAL;
 LSQArchive *
 lsq_opened_archive_get_archive(gchar *path) G_GNUC_INTERNAL;
 
+void
+lsq_archive_support_view_prepared(LSQArchive *archive, GSList *, gpointer user_data) G_GNUC_INTERNAL;
+
 ThunarVfsMimeDatabase  *lsq_mime_database;

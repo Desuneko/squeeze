@@ -114,6 +114,7 @@ enum
 	LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED = 0,
 	LSQ_ARCHIVE_SIGNAL_REFRESHED,
 	LSQ_ARCHIVE_SIGNAL_PATH_CHANGED,
+	LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED,
 	LSQ_ARCHIVE_SIGNAL_COUNT
 };
 
@@ -185,6 +186,19 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			1,
 			G_TYPE_STRING,
 			NULL);
+
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED] = g_signal_new("lsq_view_prepared",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
+
 }
 
 static void
@@ -193,6 +207,7 @@ lsq_archive_init(LSQArchive *archive)
 	archive->root_entry = g_new0(LSQEntry, 1);
 	archive->status = LSQ_ARCHIVESTATUS_INIT;
 	archive->old_status = LSQ_ARCHIVESTATUS_INIT;
+	archive->files = NULL;
 #ifdef LSQ_THREADSAFE
 	g_static_rw_lock_init(&archive->rw_lock);
 #endif /* LSQ_THREADSAFE */
@@ -275,15 +290,18 @@ lsq_archive_new(gchar *path, const gchar *mime)
 		g_object_unref(archive);
 		archive = NULL;
 	}
+	
+	g_signal_connect(G_OBJECT(archive), "lsq_view_prepared", (GCallback)lsq_archive_support_view_prepared, NULL);
+
 	return archive;
 }
 
 void 
 lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 {
-	gchar **path = NULL;
 	gchar *_path = NULL;
 	gchar *_path_ = NULL;
+	GSList *iter;
 
 	if(LSQ_IS_ARCHIVE(archive))
 	{
@@ -294,18 +312,31 @@ lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 			g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REFRESH) && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
 				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
+			if((archive->old_status == LSQ_ARCHIVESTATUS_PREPARE_VIEW))// && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
+			{
+				g_debug("view");
+				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED], 0, archive->files, NULL);
+				iter = archive->files;
+				while(iter)
+				{
+					g_free(iter->data);
+					iter = g_slist_next(iter);
+				}
+				g_slist_free(archive->files);
+				archive->files = NULL;
+			}
+
 			if((archive->old_status == LSQ_ARCHIVESTATUS_REMOVE) && (archive->files))
 			{
 				/* FIXME: can not be space in path */
-				_path = archive->files;
-				while(*_path == ' ') _path++;
-				path = g_strsplit(_path, " ", 2);
-				_path = g_shell_unquote(path[0], NULL);
+				_path = archive->files->data;
+				_path = g_shell_unquote(_path, NULL);
 				_path_ = lsq_archive_get_iter_part(archive, _path);
 				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED], 0, _path_, NULL);
 				g_free(_path_);
 				g_free(_path);
-				g_strfreev(path);
+				g_slist_free(archive->files);
+				archive->files = NULL;
 			}
 		} 
 	}
@@ -1544,6 +1575,8 @@ lsq_archive_get_status_msg(LSQArchive *archive)
 		case LSQ_ARCHIVESTATUS_IDLE:
 			msg = N_("Done");
 			break;
+		case LSQ_ARCHIVESTATUS_PREPARE_VIEW:
+			msg = N_("Extracting file(s) to temporary directory");
 		case LSQ_ARCHIVESTATUS_CUSTOM:
 			msg = N_("Performing an extended action");
 			break;

@@ -28,6 +28,7 @@ typedef enum
 	LSQ_ARCHIVESTATUS_REMOVE,
 	LSQ_ARCHIVESTATUS_REFRESH,
 	LSQ_ARCHIVESTATUS_ERROR,
+	LSQ_ARCHIVESTATUS_PREPARE_VIEW,
 	LSQ_ARCHIVESTATUS_CUSTOM,
 	LSQ_ARCHIVESTATUS_USERBREAK
 } LSQArchiveStatus;
@@ -88,8 +89,7 @@ struct _LSQArchive
 	GIOChannel         *ioc_out;
 	GIOChannel         *ioc_err;
 	gpointer            support;
-	gchar              *tmp_file;
-	gchar              *files;
+	GSList             *files;
 	gboolean            has_passwd;
 	struct {
 		guint64 archive_size;

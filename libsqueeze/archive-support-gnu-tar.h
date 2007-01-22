@@ -73,7 +73,7 @@ GType                lsq_archive_support_gnu_tar_get_type(void) G_GNUC_INTERNAL;
 LSQArchiveSupport *  lsq_archive_support_gnu_tar_new() G_GNUC_INTERNAL;
 
 gint                 lsq_archive_support_gnu_tar_add(LSQArchive *, GSList *) G_GNUC_INTERNAL;
-gint                 lsq_archive_support_gnu_tar_extract(LSQArchive *, gchar *, GSList *) G_GNUC_INTERNAL;
+gint                 lsq_archive_support_gnu_tar_extract(LSQArchive *, const gchar *, GSList *) G_GNUC_INTERNAL;
 gint                 lsq_archive_support_gnu_tar_remove(LSQArchive *, GSList *) G_GNUC_INTERNAL;
 gint                 lsq_archive_support_gnu_tar_refresh(LSQArchive *) G_GNUC_INTERNAL;
 

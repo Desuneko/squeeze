@@ -26,6 +26,8 @@
 
 void lsq_tempfs_clean_root_dir(LSQArchive *archive);
 
+const gchar* lsq_tempfs_get_root_dir(LSQArchive *archive);
+
 gboolean lsq_tempfs_make_root_dir(LSQArchive *archive);
 
 gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode);

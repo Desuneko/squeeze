@@ -797,6 +797,7 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 		{
 			gtk_widget_hide(dialog);
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
+			gtk_tree_view_set_model(sq_notebook_get_active_tree_view(SQ_NOTEBOOK(window->notebook)), NULL);
 			if(lsq_archive_support_remove(lp_support, lp_archive, filenames))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
@@ -1034,7 +1035,13 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 	switch(result)
 	{
 		case GTK_RESPONSE_OK: /* VIEW */
-			/* extract to tmp and view */
+			sq_notebook_get_active_archive(SQ_NOTEBOOK(notebook), &lp_archive, &lp_support);
+			if(lsq_archive_support_view(lp_support, lp_archive, filenames))
+			{
+				GtkWidget *warnig_dialog = gtk_message_dialog_new(window, GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE, _("Squeeze cannot view this file.\nthe application to support this is missing."));
+				gtk_dialog_run(GTK_DIALOG(warnig_dialog));
+				gtk_widget_destroy(warnig_dialog);
+			}
 			break;
 		case GTK_RESPONSE_ACCEPT: /* EXTRACT */
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(notebook), &lp_archive, &lp_support);
