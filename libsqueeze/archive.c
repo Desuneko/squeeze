@@ -28,6 +28,7 @@
 #include "archive.h"
 #include "archive-support.h"
 #include "slist.h"
+#include "archive-tempfs.h"
 
 #include "internals.h"
 
@@ -244,6 +245,7 @@ lsq_archive_finalize(GObject *object)
 				kill ( archive->child_pid , SIGHUP);
 			break;
 	}
+	lsq_tempfs_clean_root_dir(archive);
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, object);
 }
 
@@ -314,7 +316,6 @@ lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
 				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
 			if((archive->old_status == LSQ_ARCHIVESTATUS_PREPARE_VIEW))// && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
 			{
-				g_debug("view");
 				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED], 0, archive->files, NULL);
 				iter = archive->files;
 				while(iter)

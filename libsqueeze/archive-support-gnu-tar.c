@@ -274,7 +274,6 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
 		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES, files);
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ADD);
 		gchar *archive_path = g_shell_quote(archive->path);
 		if(!archive->file_info) /* FIXME */
 		{
@@ -364,7 +363,6 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, const gchar *extract_pa
 				NULL
 				);
 		gchar *files = lsq_concat_filenames(filenames);
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_EXTRACT);
 		gchar *archive_path = g_shell_quote(archive->path);
 		gchar *dest_path = g_shell_quote(extract_path);
 		if(archive->file_info) /* FIXME */
@@ -439,7 +437,6 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 		gchar *command = NULL;
 		gchar *files = lsq_concat_filenames(filenames);
 		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES, files);
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REMOVE);
 		gchar *archive_path = g_shell_quote(archive->path);
 		if(archive->file_info)
 		{

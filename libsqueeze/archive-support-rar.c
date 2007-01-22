@@ -279,7 +279,7 @@ lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, 
 		{
 			if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
 			{
-				command = g_strconcat("unrar e ", archive_path, " ", files, " ", dest_path, NULL);
+				command = g_strconcat("unrar x ", archive_path, " ", files, " ", dest_path, NULL);
 				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
 			}	
 		} else

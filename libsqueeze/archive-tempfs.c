@@ -39,7 +39,7 @@ typedef struct
 {
 	gchar *filename;
 	struct timespec mod_time;
-} SQTempFileMonitor;
+} LSQTempFileMonitor;
 
 static void lsq_tempfs_clean_dir(const gchar *path)
 {
@@ -47,6 +47,8 @@ static void lsq_tempfs_clean_dir(const gchar *path)
 
 	if(!path)
 		return;
+
+	g_debug("clean %s", path);
 
 	GDir *dir = g_dir_open(path, 0, NULL);
 
@@ -56,7 +58,9 @@ static void lsq_tempfs_clean_dir(const gchar *path)
 
 		while(file)
 		{
-			lsq_tempfs_clean_dir(path);
+			file = g_strconcat(path, "/", file, NULL);
+			lsq_tempfs_clean_dir(file);
+			g_free((gchar*)file);
 			file = g_dir_read_name(dir);
 		}
 
@@ -72,6 +76,19 @@ void lsq_tempfs_clean_root_dir(LSQArchive *archive)
 		return;
 
 	lsq_tempfs_clean_dir(archive->temp_dir);
+
+	GSList *iter = archive->monitor_list;
+	while(iter)
+	{
+		g_free(((LSQTempFileMonitor*)iter->data)->filename);
+		g_free(iter->data);
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(archive->monitor_list);
+	archive->monitor_list = NULL;
+
+	g_free(archive->temp_dir);
+	archive->temp_dir = NULL;
 }
 
 const gchar* lsq_tempfs_get_root_dir(LSQArchive *archive)
@@ -117,9 +134,24 @@ gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode)
 		if(!lsq_tempfs_make_root_dir(archive))
 			return FALSE;
 
-	gchar *full_path = g_strconcat(archive->temp_dir, path, NULL);
+	gchar *full_path = g_strconcat(archive->temp_dir, "/", path, NULL);
 
 	gboolean error = g_mkdir_with_parents(full_path, mode);
+
+	g_free(full_path);
+
+	return !error;
+}
+
+gboolean lsq_tempfs_chmod(LSQArchive *archive, const gchar *path, gint mode)
+{
+	if(!archive->temp_dir)
+		if(!lsq_tempfs_make_root_dir(archive))
+			return FALSE;
+
+	gchar *full_path = g_strconcat(archive->temp_dir, "/", path, NULL);
+
+	gboolean error = g_chmod(full_path, mode);
 
 	g_free(full_path);
 
@@ -138,7 +170,7 @@ lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path)
 	if(g_stat(path, &status))
 		return FALSE;
 	
-	SQTempFileMonitor *monitor = g_new(SQTempFileMonitor, 1);
+	LSQTempFileMonitor *monitor = g_new(LSQTempFileMonitor, 1);
 	monitor->filename = g_strdup(path);
 	monitor->mod_time = status.st_mtim;
 
@@ -164,11 +196,11 @@ lsq_tempfs_changed_file(LSQArchive *archive, const gchar *path)
 
 	while(iter)
 	{
-		if(strcmp(path, ((SQTempFileMonitor*)iter->data)->filename) == 0)
+		if(strcmp(path, ((LSQTempFileMonitor*)iter->data)->filename) == 0)
 		{
-			if((((SQTempFileMonitor*)iter->data)->mod_time.tv_sec > status.st_mtim.tv_sec) ||
-				(((SQTempFileMonitor*)iter->data)->mod_time.tv_nsec > status.st_mtim.tv_nsec &&
-				((SQTempFileMonitor*)iter->data)->mod_time.tv_sec >= status.st_mtim.tv_sec))
+			if((((LSQTempFileMonitor*)iter->data)->mod_time.tv_sec > status.st_mtim.tv_sec) ||
+				(((LSQTempFileMonitor*)iter->data)->mod_time.tv_nsec > status.st_mtim.tv_nsec &&
+				((LSQTempFileMonitor*)iter->data)->mod_time.tv_sec >= status.st_mtim.tv_sec))
 			{
 				changed = TRUE;
 			}

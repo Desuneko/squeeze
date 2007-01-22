@@ -32,6 +32,8 @@ gboolean lsq_tempfs_make_root_dir(LSQArchive *archive);
 
 gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode);
 
+gboolean lsq_tempfs_chmod(LSQArchive *archive, const gchar *path, gint mode);
+
 gboolean
 lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path);
 
