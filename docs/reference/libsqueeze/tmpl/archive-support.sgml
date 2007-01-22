@@ -109,7 +109,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@support: 
 @Returns: 
 
 
@@ -201,7 +201,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@support: 
 @Param2: 
 @Returns: 
 
@@ -211,8 +211,8 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
-@Param2: 
+@support: 
+@action: 
 
 
 <!-- ##### FUNCTION lsq_archive_support_find_action ##### -->
@@ -220,7 +220,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@support: 
 @name: 
 @Returns: 
 
@@ -230,7 +230,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@support: 
 @n_actions: 
 @Returns: 
 
@@ -255,7 +255,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@action: 
 @Returns: 
 
 
@@ -264,7 +264,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@action: 
 @Returns: 
 
 
@@ -273,7 +273,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@action: 
 @Returns: 
 
 
@@ -282,7 +282,7 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
+@action: 
 @Returns: 
 
 
@@ -291,8 +291,8 @@ LSQArchiveSupport
 
 </para>
 
-@Param1: 
-@Param2: 
-@Param3: 
+@action: 
+@archive: 
+@callback: 
 
 

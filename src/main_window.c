@@ -726,7 +726,16 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 			g_slist_free(filenames);
 			filenames = NULL;
 		}
-		lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
+		if(lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames))
+		{
+			GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+			                                                   GTK_DIALOG_MODAL, 
+																												 GTK_MESSAGE_WARNING,
+																												 GTK_BUTTONS_CLOSE,
+																												 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+			gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+			gtk_widget_destroy(warning_dialog);
+		}
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
 	}
@@ -754,7 +763,18 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 		gtk_widget_hide(dialog);
 		filenames = sq_add_dialog_get_filenames(SQ_ADD_DIALOG(dialog));
 		if(filenames)
-			lsq_archive_support_add(lp_support, lp_archive, filenames);
+		{
+			if(lsq_archive_support_add(lp_support, lp_archive, filenames))
+			{
+				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+																													 GTK_DIALOG_MODAL, 
+																													 GTK_MESSAGE_WARNING,
+																													 GTK_BUTTONS_CLOSE,
+																													 _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
+				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+				gtk_widget_destroy(warning_dialog);
+			}
+		}
 	}
 	gtk_widget_destroy (dialog);
 }
@@ -777,7 +797,16 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 		{
 			gtk_widget_hide(dialog);
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
-			lsq_archive_support_remove(lp_support, lp_archive, filenames);
+			if(lsq_archive_support_remove(lp_support, lp_archive, filenames))
+			{
+				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+																													 GTK_DIALOG_MODAL, 
+																													 GTK_MESSAGE_WARNING,
+																													 GTK_BUTTONS_CLOSE,
+																													 _("Squeeze cannot remove files from this archive type,\nthe application to support this is missing."));
+				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+				gtk_widget_destroy(warning_dialog);
+			}
 		}
 		gtk_widget_destroy (dialog);
 	}
@@ -1020,7 +1049,17 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 					g_slist_free(filenames);
 					filenames = NULL;
 				}
-				lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames);
+				if(lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames))
+				{
+					GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+																														 GTK_DIALOG_MODAL, 
+																														 GTK_MESSAGE_WARNING,
+																														 GTK_BUTTONS_CLOSE,
+																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+					gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+					gtk_widget_destroy(warning_dialog);
+
+				}
 				g_free(extract_archive_path);
 				extract_archive_path = NULL;
 			}

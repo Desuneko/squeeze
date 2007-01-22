@@ -95,12 +95,30 @@ lsq_archive_support_rar_init(LSQArchiveSupportRar *support)
 
 	archive_support->id = "Rar";
 
+
 	lsq_archive_support_add_mime(archive_support, "application/x-rar");
 
-	archive_support->add = lsq_archive_support_rar_add;
-	archive_support->extract = lsq_archive_support_rar_extract;
-	archive_support->remove = lsq_archive_support_rar_remove;
-	archive_support->refresh = lsq_archive_support_rar_refresh;
+	if(g_find_program_in_path("rar"))
+	{
+		archive_support->add = lsq_archive_support_rar_add;
+		archive_support->remove = lsq_archive_support_rar_remove;
+	}
+	else
+	{
+		archive_support->add = NULL;
+		archive_support->remove = NULL;
+	}
+	if(g_find_program_in_path("unrar"))
+	{
+		archive_support->extract = lsq_archive_support_rar_extract;
+		archive_support->refresh = lsq_archive_support_rar_refresh;
+	}
+	else
+	{
+		archive_support->extract = NULL;
+		archive_support->refresh = NULL;
+	}
+
 }
 
 static void

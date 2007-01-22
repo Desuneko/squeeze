@@ -69,6 +69,8 @@ LSQArchive
 @tmp_file: 
 @files: 
 @has_passwd: 
+@temp_dir: 
+@monitor_list: 
 
 <!-- ##### FUNCTION lsq_archive_new ##### -->
 <para>
@@ -168,17 +170,6 @@ LSQArchive
 
 
 <!-- ##### FUNCTION lsq_archive_iter_get_child ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_del_child ##### -->
 <para>
 
 </para>

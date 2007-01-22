@@ -188,13 +188,33 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 			if(result == GTK_RESPONSE_OK)
 			{
 				dest_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-				lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL);
+				if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
+				{
+					GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
+																														 GTK_DIALOG_MODAL, 
+																														 GTK_MESSAGE_WARNING,
+																														 GTK_BUTTONS_CLOSE,
+																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+					gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+					gtk_widget_destroy(warning_dialog);
+				}
 				g_free(dest_path);
 				dest_path = NULL;
 			}
 		}
 		else
-			lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL);
+		{
+			if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
+			{
+					GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
+																														 GTK_DIALOG_MODAL, 
+																														 GTK_MESSAGE_WARNING,
+																														 GTK_BUTTONS_CLOSE,
+																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+					gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+					gtk_widget_destroy(warning_dialog);
+			}
+		}
 	}
 	g_object_ref(app);
 	return 0;
@@ -257,7 +277,17 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 	}
 	g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
 	lp_support = lsq_get_support_for_mime(lp_archive->mime_info);
-	lsq_archive_support_add(lp_support, lp_archive, files);
+	if(lsq_archive_support_add(lp_support, lp_archive, files))
+	{
+		/* FIXME: show warning dialog */
+		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
+																											 GTK_DIALOG_MODAL, 
+																											 GTK_MESSAGE_WARNING,
+																											 GTK_BUTTONS_CLOSE,
+																											 _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
+		gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+		gtk_widget_destroy(warning_dialog);
+	}
 	g_object_ref(app);
 	return 0;
 }

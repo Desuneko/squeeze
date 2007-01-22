@@ -505,7 +505,12 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 
 	sq_archive_store_set_support(SQ_ARCHIVE_STORE(tree_model), support);
 	if(new_archive == FALSE)
-		lsq_archive_support_refresh(support, archive);
+	{
+		if(lsq_archive_support_refresh(support, archive))
+		{
+			/* FIXME: show warning dialog */
+		}
+	}
 
 	sq_archive_store_connect_treeview(SQ_ARCHIVE_STORE(tree_model), GTK_TREE_VIEW(tree_view));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
@@ -563,7 +568,10 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 		switch(lsq_archive_get_old_status(archive))
 		{
 			case LSQ_ARCHIVESTATUS_ADD:
-				lsq_archive_support_refresh(archive->support, archive);
+				if(lsq_archive_support_refresh(archive->support, archive))
+				{
+					/* FIXME: show warning dialog */
+				}
 				break;
 			default:break;
 		}
@@ -770,7 +778,10 @@ sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchi
 		g_signal_connect(G_OBJECT(archive), "lsq_status_changed", G_CALLBACK(cb_notebook_archive_status_changed), notebook);
 		g_signal_connect(G_OBJECT(archive), "lsq_refreshed", G_CALLBACK(cb_notebook_archive_refreshed), treeview);
 
-		lsq_archive_support_refresh(support, archive);
+		if(lsq_archive_support_refresh(support, archive))
+		{
+			/* FIXME: show warning dialog */
+		}
 
 		gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), store);
 	}
