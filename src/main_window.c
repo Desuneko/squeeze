@@ -80,8 +80,6 @@ sq_main_window_set_property(GObject *object, guint prop_id, const GValue *value,
 static void
 sq_main_window_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 static void
-sq_main_window_finalize(GObject *object);
-static void
 sq_main_window_dispose(GObject *object);
 
 
@@ -177,8 +175,7 @@ sq_main_window_class_init(SQMainWindowClass *window_class)
 
 	object_class->set_property = sq_main_window_set_property;
 	object_class->get_property = sq_main_window_get_property;
-	object_class->finalize     = sq_main_window_finalize;
-	object_class->dispose     = sq_main_window_dispose;
+	object_class->dispose      = sq_main_window_dispose;
 
 	pspec = g_param_spec_enum("navigation-style",
 		_("Navigation Style"),
@@ -245,12 +242,6 @@ sq_main_window_dispose(GObject *object)
 	}
 	
 	parent_class->dispose(object);
-}
-
-static void
-sq_main_window_finalize(GObject *object)
-{
-	parent_class->finalize(object);
 }
 
 static void
