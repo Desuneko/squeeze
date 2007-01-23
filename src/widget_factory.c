@@ -133,7 +133,7 @@ sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, 
 	g_object_set_data(G_OBJECT(check), SQ_PROPERTY_SPEC_DATA, pspec);
 	g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 	g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), check);
-	g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+	g_signal_connect(GTK_OBJECT(check), "dispose", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
 
 	const gchar *large_tip = g_param_spec_get_blurb(pspec);
 	gchar *small_tip = NULL;

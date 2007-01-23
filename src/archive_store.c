@@ -62,6 +62,8 @@ enum {
 };
 static gint sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_COUNT];
 
+static GObjectClass *parent_class;
+
 static void
 sq_archive_store_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
@@ -237,6 +239,8 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 	object_class->set_property = sq_archive_store_set_property;
 	object_class->get_property = sq_archive_store_get_property;
 	object_class->dispose = sq_archive_store_dispose;
+
+	parent_class = gtk_type_class (G_TYPE_OBJECT);
 
 	pspec = g_param_spec_boolean("show-icons",
 		_("Show mime icons"),
@@ -1688,4 +1692,5 @@ sq_archive_store_dispose(GObject *object)
 		g_object_unref(store->archive);
 		store->archive = NULL;
 	}
+	parent_class->dispose(object);
 }
