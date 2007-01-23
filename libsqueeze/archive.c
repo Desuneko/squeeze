@@ -661,8 +661,17 @@ lsq_entry_new(LSQArchive *archive, const gchar *filename)
 	}
 	else
 	{
-		entry->filename = g_locale_to_utf8(filename, -1, NULL, NULL, NULL);
-		lsq_archive_iter_set_mime(archive, entry, thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, entry->filename));
+		entry->filename = g_strdup(filename);
+		if(g_utf8_validate (filename, -1, NULL))
+		{
+			lsq_archive_iter_set_mime(archive, entry, thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, entry->filename));
+		}
+		else
+		{
+			gchar *utf8_file = g_convert(filename, -1, "UTF-8", "WINDOWS-1252", NULL, NULL, NULL);
+			lsq_archive_iter_set_mime(archive, entry, thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, utf8_file));
+			g_free(utf8_file);
+		}
 	}
 
 	return entry;
@@ -1136,7 +1145,9 @@ lsq_archive_iter_get_filename(const LSQArchive *archive, const LSQArchiveIter *i
 static const gchar *
 lsq_archive_iter_get_mimetype(const LSQArchive *archive, const LSQArchiveIter *iter)
 {
-	return thunar_vfs_mime_info_get_name(((LSQEntry *)iter)->mime_info);
+	if(((LSQEntry *)iter)->mime_info)
+		return thunar_vfs_mime_info_get_name(((LSQEntry *)iter)->mime_info);
+	return NULL;
 }
 
 /**
@@ -1595,11 +1606,11 @@ void
 lsq_archive_iter_get_icon_name(const LSQArchive *archive, const LSQArchiveIter *iter, GValue *value, GtkIconTheme *icon_theme)
 {
 	g_value_init(value, G_TYPE_STRING);
+	if(!iter->mime_info)
+		return;
 	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(iter->mime_info, icon_theme);
-	if(gtk_icon_theme_has_icon(icon_theme, icon_name))
+	if(icon_name && gtk_icon_theme_has_icon(icon_theme, icon_name))
 		g_value_set_string(value, icon_name);
-	else
-		g_value_set_string(value, NULL);
 }
 
 void
