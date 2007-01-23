@@ -954,6 +954,9 @@ cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 		_("Contributors:"),
 		"Peter de Ridder <peter@xfce.org>",
 		"",
+		_("Artwork:"),
+		"The add and extract icons are based on the extract icon created by Andreas Nilsson",
+		"",
 		_("Inspired by Xarchiver, written by Giuseppe Torelli"), NULL};
 	GtkWidget *about_dialog = gtk_about_dialog_new();
 
