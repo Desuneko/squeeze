@@ -26,6 +26,7 @@
 #include "libsqueeze.h"
 #include "libsqueeze/archive-support-zip.h"
 #include "libsqueeze/archive-support-rar.h"
+#include "libsqueeze/archive-support-compr.h"
 #include "libsqueeze/archive-support-gnu-tar.h"
 
 #include "internals.h"
@@ -41,6 +42,7 @@ lsq_init()
 	lsq_register_support(lsq_archive_support_zip_new());
 
 	lsq_register_support(lsq_archive_support_rar_new());
+	lsq_register_support(lsq_archive_support_compr_new());
 /*
 	TODO: Implement right commands in unrar
 	lsq_register_support(lsq_archive_support_unrar_new());

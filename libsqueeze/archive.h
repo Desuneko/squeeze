@@ -135,7 +135,6 @@ void                lsq_archive_iter_set_propsv(LSQArchive *, LSQArchiveIter *, 
 
 gboolean            lsq_archive_iter_get_prop_value(const LSQArchive *archive, const LSQArchiveIter *iter, guint n, GValue *value);
 void                lsq_archive_iter_get_icon_name(const LSQArchive *archive, const LSQArchiveIter *iter, GValue *value, GtkIconTheme *icon_theme);
-
 LSQArchiveIter     *lsq_archive_add_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
 gboolean            lsq_archive_del_file(LSQArchive *archive, const gchar *path);
 LSQArchiveIter     *lsq_archive_get_iter(const LSQArchive *archive, const gchar *path);
