@@ -1066,9 +1066,12 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(notebook), &lp_archive, &lp_support);
 			if(lsq_archive_support_view(lp_support, lp_archive, filenames))
 			{
-				GtkWidget *warnig_dialog = gtk_message_dialog_new(window, GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE, _("Squeeze cannot view this file.\nthe application to support this is missing."));
-				gtk_dialog_run(GTK_DIALOG(warnig_dialog));
-				gtk_widget_destroy(warnig_dialog);
+				GtkWidget *warning_dialog = gtk_message_dialog_new(window, GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE, _("Squeeze cannot view this file.\nthe application to support this is missing."));
+				if(warning_dialog)
+				{
+					gtk_dialog_run(GTK_DIALOG(warning_dialog));
+					gtk_widget_destroy(warning_dialog);
+				}
 			}
 			break;
 		case GTK_RESPONSE_ACCEPT: /* EXTRACT */

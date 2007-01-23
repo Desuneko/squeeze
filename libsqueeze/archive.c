@@ -661,7 +661,7 @@ lsq_entry_new(LSQArchive *archive, const gchar *filename)
 	}
 	else
 	{
-		entry->filename = g_strdup(filename);
+		entry->filename = g_locale_to_utf8(filename, -1, NULL, NULL, NULL);
 		lsq_archive_iter_set_mime(archive, entry, thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, entry->filename));
 	}
 
