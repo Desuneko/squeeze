@@ -508,7 +508,7 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		{
 			if(column < (gint)lsq_archive_n_property(archive))
 				lsq_archive_iter_get_prop_value(archive, entry, column, value);
-			if(G_VALUE_HOLDS_STRING(value) && !g_utf8_validate(g_value_get_string(value), -1, NULL))
+			if(G_VALUE_HOLDS_STRING(value) && g_value_get_string(value) && !g_utf8_validate(g_value_get_string(value), -1, NULL))
 				g_value_take_string(value, g_convert(g_value_get_string(value), -1, "UTF-8", "WINDOWS-1252", NULL, NULL, NULL));
 		}
 	}
