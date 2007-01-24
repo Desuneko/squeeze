@@ -510,16 +510,10 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 
 
 	sq_archive_store_set_support(SQ_ARCHIVE_STORE(tree_model), support);
-	if(new_archive == FALSE)
-	{
-		if(lsq_archive_support_refresh(support, archive))
-		{
-			/* FIXME: show warning dialog */
-		}
-	}
-
 	sq_archive_store_connect_treeview(SQ_ARCHIVE_STORE(tree_model), GTK_TREE_VIEW(tree_view));
+
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
+
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), TRUE);
 	else
@@ -533,6 +527,12 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), page_nr);
 		gtk_widget_grab_focus(tree_view);
 	}
+
+	if(new_archive == FALSE)
+	{
+		lsq_archive_support_refresh(support, archive);
+	}
+
 }
 
 void
@@ -639,16 +639,12 @@ cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *treeview)
 	 * Some archives are done refreshing so fast there is not even an
 	 * archive store to accomodate them.
 	 */
-	if(archive_store)
-	{
-		g_object_ref(archive_store);
-		gtk_tree_view_set_model(treeview, NULL);
-		sq_archive_store_set_archive(SQ_ARCHIVE_STORE(archive_store), archive);
-		gtk_tree_view_set_model(treeview, archive_store);
-		g_object_unref(archive_store);
-		sq_notebook_treeview_reset_columns(archive, treeview);
-	}
-
+	g_object_ref(archive_store);
+	gtk_tree_view_set_model(treeview, NULL);
+	sq_archive_store_set_archive(SQ_ARCHIVE_STORE(archive_store), archive);
+	gtk_tree_view_set_model(treeview, archive_store);
+	g_object_unref(archive_store);
+	sq_notebook_treeview_reset_columns(archive, treeview);
 }
 
 static void
