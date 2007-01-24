@@ -635,13 +635,20 @@ void
 cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *treeview)
 {
 	GtkTreeModel *archive_store = gtk_tree_view_get_model(treeview);
-	g_object_ref(archive_store);
-	gtk_tree_view_set_model(treeview, NULL);
-	sq_archive_store_set_archive(SQ_ARCHIVE_STORE(archive_store), archive);
-	gtk_tree_view_set_model(treeview, archive_store);
-	g_object_unref(archive_store);
+	/* 
+	 * Some archives are done refreshing so fast there is not even an
+	 * archive store to accomodate them.
+	 */
+	if(archive_store)
+	{
+		g_object_ref(archive_store);
+		gtk_tree_view_set_model(treeview, NULL);
+		sq_archive_store_set_archive(SQ_ARCHIVE_STORE(archive_store), archive);
+		gtk_tree_view_set_model(treeview, archive_store);
+		g_object_unref(archive_store);
+		sq_notebook_treeview_reset_columns(archive, treeview);
+	}
 
-	sq_notebook_treeview_reset_columns(archive, treeview);
 }
 
 static void
