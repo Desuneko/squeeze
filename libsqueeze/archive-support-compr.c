@@ -164,7 +164,28 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 	else
 	{
 		gchar *archive_path = g_shell_quote(archive->path);
-		gchar *file_path = g_strconcat(extract_path, "/", filenames->data, NULL);
+		gchar *file_path;
+		if(filenames)
+			file_path = g_strconcat(extract_path, "/", filenames->data, NULL);
+		else
+		{
+			gchar *filename = g_strdup(lsq_archive_get_filename(archive));
+			gint len = strlen(filename);
+			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".gz"))
+			{
+				filename[len-3] = '\0';
+			}
+			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".bz"))
+			{
+				filename[len-3] = '\0';
+			}
+			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".bz2"))
+			{
+				filename[len-4] = '\0';
+			}
+			file_path = g_strconcat(extract_path, "/", filename, NULL);
+			g_free(filename);
+		}
 
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-gzip"))
 			command = g_strconcat("gunzip -c ", archive_path, NULL);
