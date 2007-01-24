@@ -257,6 +257,8 @@ lsq_archive_new(gchar *path, const gchar *mime)
 
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
+	g_signal_connect(G_OBJECT(archive), "lsq_view_prepared", (GCallback)lsq_archive_support_view_prepared, NULL);
+
 	if(path)
 	{
 		if(g_path_is_absolute(path))
@@ -293,8 +295,6 @@ lsq_archive_new(gchar *path, const gchar *mime)
 		archive = NULL;
 	}
 	
-	g_signal_connect(G_OBJECT(archive), "lsq_view_prepared", (GCallback)lsq_archive_support_view_prepared, NULL);
-
 	return archive;
 }
 
