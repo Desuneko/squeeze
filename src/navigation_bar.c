@@ -122,12 +122,10 @@ sq_navigation_bar_set_store(SQNavigationBar *navigation_bar, SQArchiveStore *sto
 		if(navigation_bar->_cb_pwd_changed)
 		{
 			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_pwd_changed, navigation_bar);
-			navigation_bar->_cb_pwd_changed = NULL;
 		}
 		if(navigation_bar->_cb_new_archive)
 		{
 			g_signal_handlers_disconnect_by_func(navigation_bar->store, navigation_bar->_cb_new_archive, navigation_bar);
-			navigation_bar->_cb_new_archive = NULL;
 		}
 		navigation_bar->store = NULL;
 	}
