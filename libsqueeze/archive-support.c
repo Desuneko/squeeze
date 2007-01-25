@@ -307,7 +307,7 @@ lsq_archive_support_view_prepared(LSQArchive *archive, GSList *files, gpointer u
 	gchar *full_file;
 	while(files)
 	{	
-		lsq_tempfs_chmod(archive, files->data, 0644);
+		lsq_tempfs_chmod(archive, files->data, 0400);
 		full_file = g_strconcat(lsq_tempfs_get_root_dir(archive), "/", files->data, NULL);
 #ifdef DEBUG
 		g_debug("Open file: '%s'", full_file);

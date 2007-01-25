@@ -34,12 +34,13 @@
 #include "internals.h"
 
 static guint suffix = 0;
-
+/*
 typedef struct
 {
 	gchar *filename;
 	struct timespec mod_time;
 } LSQTempFileMonitor;
+*/
 
 static void lsq_tempfs_clean_dir(const gchar *path)
 {
@@ -80,7 +81,7 @@ void lsq_tempfs_clean_root_dir(LSQArchive *archive)
 	GSList *iter = archive->monitor_list;
 	while(iter)
 	{
-		g_free(((LSQTempFileMonitor*)iter->data)->filename);
+	/*	g_free(((LSQTempFileMonitor*)iter->data)->filename); */
 		g_free(iter->data);
 		iter = g_slist_next(iter);
 	}
@@ -157,7 +158,7 @@ gboolean lsq_tempfs_chmod(LSQArchive *archive, const gchar *path, gint mode)
 
 	return !error;
 }
-
+/*
 gboolean
 lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path)
 {
@@ -213,4 +214,5 @@ lsq_tempfs_changed_file(LSQArchive *archive, const gchar *path)
 	}
 	return changed;
 }
+*/
 
