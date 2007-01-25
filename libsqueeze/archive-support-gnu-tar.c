@@ -111,36 +111,40 @@ lsq_archive_support_gnu_tar_init(LSQArchiveSupportGnuTar *support)
 
 	support->_add_mode = g_strdup("");
 
-	lsq_archive_support_add_mime(archive_support, "application/x-tar");
-	/* Check for existence of compress -- required for x-tarz */
-	program_path = g_find_program_in_path("compress");
+	program_path = g_find_program_in_path(support->app_name);
 	if(program_path)
 	{
-		lsq_archive_support_add_mime(archive_support, "application/x-tarz");
-		g_free(program_path);
-	}
-	/* Check for existence of gzip -- required for x-compressed-tar*/
-	program_path = g_find_program_in_path("gzip");
-	if(program_path)
-	{
-		lsq_archive_support_add_mime(archive_support, "application/x-compressed-tar");
-		g_free(program_path);
-	}
-	/* Check for existence of bzip2 -- required for x-bzip-compressed-tar */
-	/*                                          and x-bzip2-compressed-tar */
-	program_path = g_find_program_in_path("bzip2");
-	if(program_path)
-	{
-		lsq_archive_support_add_mime(archive_support, "application/x-bzip-compressed-tar");
-		lsq_archive_support_add_mime(archive_support, "application/x-bzip2-compressed-tar");
-		g_free(program_path);
-	}
-	/* Check for existence of lzop -- required for x-tzo */
-	program_path = g_find_program_in_path("lzop");
-	if(program_path)
-	{
-		lsq_archive_support_add_mime(archive_support, "application/x-tzo");
-		g_free(program_path);
+		lsq_archive_support_add_mime(archive_support, "application/x-tar");
+		/* Check for existence of compress -- required for x-tarz */
+		program_path = g_find_program_in_path("compress");
+		if(program_path)
+		{
+			lsq_archive_support_add_mime(archive_support, "application/x-tarz");
+			g_free(program_path);
+		}
+		/* Check for existence of gzip -- required for x-compressed-tar*/
+		program_path = g_find_program_in_path("gzip");
+		if(program_path)
+		{
+			lsq_archive_support_add_mime(archive_support, "application/x-compressed-tar");
+			g_free(program_path);
+		}
+		/* Check for existence of bzip2 -- required for x-bzip-compressed-tar */
+		/*                                          and x-bzip2-compressed-tar */
+		program_path = g_find_program_in_path("bzip2");
+		if(program_path)
+		{
+			lsq_archive_support_add_mime(archive_support, "application/x-bzip-compressed-tar");
+			lsq_archive_support_add_mime(archive_support, "application/x-bzip2-compressed-tar");
+			g_free(program_path);
+		}
+		/* Check for existence of lzop -- required for x-tzo */
+		program_path = g_find_program_in_path("lzop");
+		if(program_path)
+		{
+			lsq_archive_support_add_mime(archive_support, "application/x-tzo");
+			g_free(program_path);
+		}
 	}
 
 	archive_support->add = lsq_archive_support_gnu_tar_add;
