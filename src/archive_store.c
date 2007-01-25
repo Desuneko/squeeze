@@ -1112,7 +1112,8 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	}
 
 	/* FIXME */
-	gtk_tree_view_set_model(store->treeview, NULL);
+	if(store->treeview)
+		gtk_tree_view_set_model(store->treeview, NULL);
 
 	if(store->archive)
 	{

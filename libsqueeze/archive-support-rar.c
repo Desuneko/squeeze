@@ -30,6 +30,15 @@
 
 enum
 {
+	REFRESH_STATUS_INIT,
+	REFRESH_STATUS_FILES,
+	REFRESH_STATUS_FINISH
+};
+#define LSQ_ARCHIVE_RAR_STATUS "lsq_archive_rar_status"
+#define LSQ_ARCHIVE_RAR_LAST_ENTRY "lsq_archive_rar_last_entry"
+
+enum
+{
 	LSQ_ARCHIVE_SUPPORT_RAR_EXTRACT_OVERWRITE = 1,
 	LSQ_ARCHIVE_SUPPORT_RAR_ADD_COMPRESSION_LEVEL,
 	LSQ_ARCHIVE_SUPPORT_RAR_PASSWORD,
@@ -377,6 +386,7 @@ lsq_archive_support_rar_refresh(LSQArchive *archive)
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Version"));
 			i++;
 		}
+		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_RAR_STATUS, GINT_TO_POINTER(REFRESH_STATUS_INIT));
 		gchar *command = g_strconcat("unrar v ", archive_path, NULL);
 		lsq_execute(command, archive, NULL, NULL, lsq_archive_support_rar_refresh_parse_output, NULL);
 		g_free(command);
@@ -397,7 +407,7 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 	guint64 length;
 	gpointer props[10]; 
 	gint n = 0, a = 0, i = 0, o = 0;
-	gint linesize = 0;
+	gsize linesize = 0;
 	gchar *temp_filename;
 
 	if(!LSQ_IS_ARCHIVE(archive))
@@ -406,164 +416,181 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
-		for(o = 0; o < 500; o++)
+		if(GPOINTER_TO_INT(g_object_get_data(data, LSQ_ARCHIVE_RAR_STATUS)) == REFRESH_STATUS_INIT)
 		{
-			i = 0;
-			a = 0;
+			line = NULL;
 
-			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
-			if (line == NULL)
- 				break; 
-
-			if(line[0] != ' ' && line[0] != '-')
+			do
 			{
-				do
-				{
-					g_free(line);
-					status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
-					if (line == NULL)
-						break; 
-				}
-				while(line[0] != '-');
 				g_free(line);
 				status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
 				if (line == NULL)
 					break; 
 			}
-			if(line[0] == '-')
+			while(line[0] != '-');
+			if (line)
 			{
-				while(TRUE)
+				g_free(line);
+				g_object_set_data(data, LSQ_ARCHIVE_RAR_STATUS, GINT_TO_POINTER(REFRESH_STATUS_FILES));
+			}
+		}
+
+		if(GPOINTER_TO_INT(g_object_get_data(data, LSQ_ARCHIVE_RAR_STATUS)) == REFRESH_STATUS_FILES)
+		{
+			entry = g_object_get_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY);
+			g_object_set_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY, NULL);
+
+			for(o = 0; o < 500; o++)
+			{
+				i = 0;
+				a = 0;
+
+				status = g_io_channel_read_line(ioc, &line, &linesize,NULL,NULL);
+				if (line == NULL)
+					break; 
+
+				if(line[0] == '-')
 				{
+					g_object_set_data(data, LSQ_ARCHIVE_RAR_STATUS, GINT_TO_POINTER(REFRESH_STATUS_FINISH));
 					g_free(line);
-					status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
-					if (line == NULL)
-						break; 
+					break;
 				}
-				break;
+
+				if(!entry)
+				{
+					temp_filename = line+1;
+					line[linesize - 1] = '\0';
+					entry = lsq_archive_add_file(archive, temp_filename);
+					g_free(line);
+
+					status = g_io_channel_read_line(ioc, &line, &linesize,NULL,NULL);
+					if (line == NULL)
+					{
+						g_object_set_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY, entry);
+						break; 
+					}
+				}
+				/* filename, length, size, ratio, date, time, rights, crc-32, method , version*/
+
+				for(n=0; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_length)
+				{
+					line[n]='\0';
+					length = g_ascii_strtoull(line + a, NULL, 0);
+					props[i] = &length;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_size)
+				{
+					line[n]='\0';
+					size = g_ascii_strtoull(line + a, NULL, 0);
+					props[i] = &size;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_ratio)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_date)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_time)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_method)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_crc_32)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' '; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_method)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				for(; n < linesize && line[n] == ' '; n++);
+				a = n;
+				for(; n < linesize && line[n] != ' ' && line[n] != '\n'; n++);
+
+				if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_version)
+				{
+					line[n] = '\0';
+					props[i] = line + a;
+					i++;
+				}
+				n++;
+
+				lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
+				g_free(line);
+				entry = NULL;
 			}
+		}
 
-			temp_filename = line+1;
-			line[strlen(temp_filename)] = '\0';
-			entry = lsq_archive_add_file(archive, temp_filename);
-
-			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
-			if (line == NULL)
-				break; 
-			/* filename, length, size, ratio, date, time, rights, crc-32, method , version*/
-			linesize = strlen(line);
-
-			for(n=0; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_length)
-			{
-				line[n]='\0';
-				length = g_ascii_strtoull(line + a, NULL, 0);
-				props[i] = &length;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_size)
-			{
-				line[n]='\0';
-				size = g_ascii_strtoull(line + a, NULL, 0);
-				props[i] = &size;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_ratio)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_date)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_time)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_method)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_crc_32)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_method)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' ' && line[n] != '\n'; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_version)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
-			g_free(line);
+		if(GPOINTER_TO_INT(g_object_get_data(data, LSQ_ARCHIVE_RAR_STATUS)) == REFRESH_STATUS_FINISH)
+		{
+			status = g_io_channel_read_to_end(ioc, NULL, NULL,NULL);
 		}
 	}
 	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
