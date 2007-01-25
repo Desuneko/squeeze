@@ -42,7 +42,6 @@
 #include "settings.h"
 #include "archive_store.h"
 #include "navigation_bar.h"
-#include "button_drag_box.h"
 
 #ifdef ENABLE_PATHBAR
 #include "path_bar.h"
@@ -61,7 +60,6 @@
 #include "new_dialog.h"
 #include "extract_dialog.h"
 #include "add_dialog.h"
-#include "preferences_dialog.h"
 #include "properties_dialog.h"
 
 #include "main.h"
