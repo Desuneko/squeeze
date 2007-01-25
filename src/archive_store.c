@@ -1023,6 +1023,9 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 
 	if(index == -1)
 	{
+		/* FIXME */
+		gtk_tree_view_set_model(store->treeview, NULL);
+
 		current_entry = g_slist_copy(current_entry->next);
 		entry = current_entry->data;
 		sq_archive_store_append_history(store, current_entry);
@@ -1047,6 +1050,9 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 			g_value_unset(&value);
 			return;
 		}
+
+		/* FIXME */
+		gtk_tree_view_set_model(store->treeview, NULL);
 
 		current_entry = g_slist_prepend(g_slist_copy(current_entry), entry);
 		sq_archive_store_append_history(store, current_entry);
@@ -1076,6 +1082,9 @@ sq_archive_store_go_up(SQArchiveStore *store)
 
 	g_return_if_fail(((GSList*)store->navigation.present->data)->next);
 
+	/* FIXME */
+	gtk_tree_view_set_model(store->treeview, NULL);
+
 	current_entry = g_slist_copy(current_entry->next);
 	sq_archive_store_append_history(store, current_entry);
 
@@ -1101,6 +1110,9 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 		g_free(store->sort_list);
 		store->sort_list = NULL;
 	}
+
+	/* FIXME */
+	gtk_tree_view_set_model(store->treeview, NULL);
 
 	if(store->archive)
 	{
@@ -1290,6 +1302,9 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 
 	if(!stack->next || lsq_archive_iter_is_directory(store->archive, (LSQArchiveIter *)stack->data))
 	{
+		/* FIXME */
+		gtk_tree_view_set_model(store->treeview, NULL);
+
 		sq_archive_store_append_history(store, stack);
 
 		sq_archive_store_sort(store);
@@ -1426,6 +1441,9 @@ sq_archive_store_go_back(SQArchiveStore *store)
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
+	/* FIXME */
+	gtk_tree_view_set_model(store->treeview, NULL);
+
 	if(sq_archive_store_has_history(store))
 		store->navigation.present = store->navigation.present->prev;
 
@@ -1451,6 +1469,9 @@ sq_archive_store_go_forward(SQArchiveStore *store)
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
+
+	/* FIXME */
+	gtk_tree_view_set_model(store->treeview, NULL);
 
 	if(sq_archive_store_has_future(store))
 		store->navigation.present = store->navigation.present->next;
@@ -1582,6 +1603,9 @@ cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 	{
 		if(!store->navigation.present)
 		{
+			/* FIXME */
+			gtk_tree_view_set_model(store->treeview, NULL);
+
 			sq_archive_store_append_history(store, g_slist_prepend(NULL, lsq_archive_get_iter(archive, NULL)));
 			g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
 		}
@@ -1653,6 +1677,9 @@ cb_sq_archive_store_archive_path_changed(LSQArchive *archive, const gchar *path,
 		g_slist_free(list_iter->data);
 
 	g_list_free(store->navigation.history);
+
+	/* FIXME */
+	gtk_tree_view_set_model(store->treeview, NULL);
 
 	store->navigation.history = NULL;
 	store->navigation.present = NULL;
