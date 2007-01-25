@@ -88,6 +88,8 @@ lsq_archive_support_compr_init(LSQArchiveSupportCompr *support)
 
 	lsq_archive_support_add_mime(archive_support, "application/x-gzip");
 	lsq_archive_support_add_mime(archive_support, "application/x-bzip");
+	lsq_archive_support_add_mime(archive_support, "application/x-lzop");
+	lsq_archive_support_add_mime(archive_support, "application/x-compress");
 
 	archive_support->extract = lsq_archive_support_compr_extract;
 	archive_support->refresh = lsq_archive_support_compr_refresh;
@@ -183,6 +185,14 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 			{
 				filename[len-4] = '\0';
 			}
+			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".Z"))
+			{
+				filename[len-2] = '\0';
+			}
+			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".lzo"))
+			{
+				filename[len-4] = '\0';
+			}
 			file_path = g_strconcat(extract_path, "/", filename, NULL);
 			g_free(filename);
 		}
@@ -191,6 +201,10 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 			command = g_strconcat("gunzip -c ", archive_path, NULL);
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip"))
 			command = g_strconcat("bunzip2 -c ", archive_path, NULL);
+		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compress"))
+			command = g_strconcat("uncompress -c ", archive_path, NULL);
+		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-lzop"))
+			command = g_strconcat("lzop -dc ", archive_path, NULL);
 
 		g_unlink(file_path);
 		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_DEST_FILE, file_path);
