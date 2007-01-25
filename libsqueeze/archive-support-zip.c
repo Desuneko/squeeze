@@ -63,8 +63,6 @@ static gint lsq_archive_support_zip_extract(LSQArchive *, const gchar *, GSList 
 static gint lsq_archive_support_zip_remove(LSQArchive *, GSList *);
 static gint lsq_archive_support_zip_refresh(LSQArchive *);
 
-static gboolean lsq_archive_support_zip_integrity_test(LSQArchiveSupport *, LSQArchive *, LSQCustomAction*, gpointer);
-
 GType
 lsq_archive_support_zip_get_type ()
 {
@@ -94,7 +92,6 @@ static void
 lsq_archive_support_zip_init(LSQArchiveSupportZip *support)
 {
 	LSQArchiveSupport *archive_support = LSQ_ARCHIVE_SUPPORT(support);
-	LSQCustomAction *custom_action = NULL;
 
 	archive_support->id = "Zip";
 
@@ -105,16 +102,6 @@ lsq_archive_support_zip_init(LSQArchiveSupportZip *support)
 	archive_support->extract = lsq_archive_support_zip_extract;
 	archive_support->remove = lsq_archive_support_zip_remove;
 	archive_support->refresh = lsq_archive_support_zip_refresh;
-	
-	custom_action = lsq_custom_action_new("menu-test",
-	                                    _("Test"), 
-																			/* TRANSATORS: first line is short comment, after newline is long comment */
-																			_("Test archive integrity\nTest the integrity of the archive"),
-																			XA_TEST_ACTION_ICON,
-																			lsq_archive_support_zip_integrity_test,
-																			archive_support,
-																			NULL);
-	lsq_archive_support_install_action(LSQ_ARCHIVE_SUPPORT(support), custom_action);
 }
 
 static void
@@ -492,18 +479,6 @@ lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 		return FALSE; 
 	}
-	return TRUE;
-}
-
-static gboolean
-lsq_archive_support_zip_integrity_test(LSQArchiveSupport *support, LSQArchive *archive, LSQCustomAction *action, gpointer user_data)
-{
-#ifdef DEBUG
-	g_debug("Custom action %s called", __FUNCTION__);
-#endif /* DEBUG */
-
-	lsq_custom_action_notify(action, "Integrity test completed");
-
 	return TRUE;
 }
 
