@@ -103,10 +103,11 @@ lsq_archive_support_gnu_tar_init(LSQArchiveSupportGnuTar *support)
 
 	archive_support->id = "Gnu Tar";
 
-	if(g_find_program_in_path("gtar"))
-		support->app_name = "gtar";
-	else
-		support->app_name = "tar";
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
+	support->app_name = "gtar";
+#else
+	support->app_name = "tar";
+#endif
 
 	support->_add_mode = g_strdup("");
 
