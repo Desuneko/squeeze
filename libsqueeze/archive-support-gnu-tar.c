@@ -681,7 +681,7 @@ lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 		if(!out_file)
 			g_critical("Could not open file");
 
-		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
+		while(g_io_channel_read_chars(ioc, buf, 1024, (gsize *)&read, &error) == G_IO_STATUS_NORMAL)
 		{
 			if(read)
 			{
@@ -735,7 +735,7 @@ lsq_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition 
 		if(!out_file)
 			g_critical("Could not open file");
 
-		while(g_io_channel_read_chars(ioc, buf, 1024, &read, &error) == G_IO_STATUS_NORMAL)
+		while(g_io_channel_read_chars(ioc, buf, 1024, (gsize *)&read, &error) == G_IO_STATUS_NORMAL)
 		{
 			if(read)
 			{
