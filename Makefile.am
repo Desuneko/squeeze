@@ -15,6 +15,7 @@ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST = \
+	icons \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
