@@ -654,7 +654,7 @@ lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			if(line[0] == 'd')
 			{
 				/* work around for gtar, which does not output trailing slashes with directories */
-				if(line[strlen(line)-1] != '/')
+				if(line[linesize-2] != '/')
 					temp_filename = g_strconcat(line + n, "/", NULL); 
 				else
 					temp_filename = g_strdup(line + n); 
