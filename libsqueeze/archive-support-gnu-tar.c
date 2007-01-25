@@ -651,10 +651,23 @@ lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 			{
 				line[linesize-1] = '\0';
 			}
-
-			temp_filename = line + n; 
+			if(line[0] == 'd')
+			{
+				/* work around for gtar, which does not output trailing slashes with directories */
+				if(line[strlen(line)-1] != '/')
+					temp_filename = g_strconcat(line + n, "/", NULL); 
+				else
+					temp_filename = g_strdup(line + n); 
  
-			entry = lsq_archive_add_file(archive, temp_filename);
+				entry = lsq_archive_add_file(archive, temp_filename);
+				g_free(temp_filename);
+			}
+			else
+			{
+				temp_filename = line + n; 
+ 
+				entry = lsq_archive_add_file(archive, temp_filename);
+			}
 			lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
 			g_free(line);
 		}
