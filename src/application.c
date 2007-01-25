@@ -102,7 +102,7 @@ sq_application_init(SQApplication *application)
 	application->settings = sq_settings_new();
 	sq_settings_set_group(application->settings, "Global");
 
-	application->props._tabs = sq_settings_read_bool_entry(application->settings, "UseTabs", TRUE);
+	application->props._tabs = sq_settings_read_bool_entry(application->settings, "UseTabs", FALSE);
 
 }
 

@@ -33,7 +33,7 @@ AC_INIT([Squeeze], [squeeze_version], [http://bugzilla.xfce.org/])
 AC_PREREQ([2.50])
 
 SQUEEZE_VERSION=squeeze_version
-AM_INIT_AUTOMAKE([1.8 dist-bzip2 tar-ustar])
+AM_INIT_AUTOMAKE([squeeze], [$SQUEEZE_VERSION])
 AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 

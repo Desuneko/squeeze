@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze trunk\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-22 18:19+0100\n"
+"POT-Creation-Date: 2007-01-25 01:23+0100\n"
 "PO-Revision-Date: 2007-01-20 04:24+0300\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -16,52 +16,52 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:481
+#: ../libsqueeze/archive.c:482
 msgid "Filename"
 msgstr "Назва файла"
 
-#: ../libsqueeze/archive.c:484
+#: ../libsqueeze/archive.c:485
 msgid "Mime type"
 msgstr "Тып MIME"
 
-#: ../libsqueeze/archive.c:1561
+#: ../libsqueeze/archive.c:1573
 msgid "Initializing archive"
 msgstr "Ініцыялізацыя архіва"
 
-#: ../libsqueeze/archive.c:1564
+#: ../libsqueeze/archive.c:1576
 msgid "Refreshing archive contents"
 msgstr "Абнаўленьне зьместу архіва"
 
-#: ../libsqueeze/archive.c:1567
+#: ../libsqueeze/archive.c:1579
 msgid "Adding file(s) to archive"
 msgstr "Дадаваньне файлаў да архіва"
 
-#: ../libsqueeze/archive.c:1570
+#: ../libsqueeze/archive.c:1582
 msgid "Extracting file(s) from archive"
 msgstr "Распакоўка файлаў з архіва"
 
-#: ../libsqueeze/archive.c:1573
+#: ../libsqueeze/archive.c:1585
 msgid "Removing file(s) from archive"
 msgstr "Выдаленьне файлаў з архіва"
 
-#: ../libsqueeze/archive.c:1576
+#: ../libsqueeze/archive.c:1588
 msgid "Done"
 msgstr "Зроблена"
 
-#: ../libsqueeze/archive.c:1579
+#: ../libsqueeze/archive.c:1591
 #, fuzzy
 msgid "Extracting file(s) to temporary directory"
 msgstr "Распакоўка файлаў з архіва"
 
-#: ../libsqueeze/archive.c:1581
+#: ../libsqueeze/archive.c:1593
 msgid "Performing an extended action"
 msgstr "Выкананьне пашыранага дзеяньня"
 
-#: ../libsqueeze/archive.c:1584
+#: ../libsqueeze/archive.c:1596
 msgid "Cancelled"
 msgstr "Скасаванае"
 
-#: ../libsqueeze/archive.c:1587
+#: ../libsqueeze/archive.c:1599
 msgid "Error"
 msgstr "Памылка"
 
@@ -101,7 +101,7 @@ msgid "Override permissions"
 msgstr "Перазапісаць правы"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:198
-#: ../libsqueeze/archive-support-gnu-tar.c:506
+#: ../libsqueeze/archive-support-gnu-tar.c:503
 #: ../libsqueeze/archive-support-zip.c:172
 #: ../libsqueeze/archive-support-zip.c:328
 #: ../libsqueeze/archive-support-rar.c:176
@@ -116,7 +116,7 @@ msgid "View filesize"
 msgstr "Прагляд памеру файлаў"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:205
-#: ../libsqueeze/archive-support-gnu-tar.c:498
+#: ../libsqueeze/archive-support-gnu-tar.c:495
 #: ../libsqueeze/archive-support-rar.c:204
 #: ../libsqueeze/archive-support-rar.c:365
 msgid "Permissions"
@@ -128,7 +128,7 @@ msgid "View permissions"
 msgstr "Прагляд правоў"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:212
-#: ../libsqueeze/archive-support-gnu-tar.c:502
+#: ../libsqueeze/archive-support-gnu-tar.c:499
 msgid "Owner/Group"
 msgstr "Уладальнік/група"
 
@@ -137,7 +137,7 @@ msgid "View owner/group"
 msgstr "Прагляд уладальніка/групы"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:219
-#: ../libsqueeze/archive-support-gnu-tar.c:510
+#: ../libsqueeze/archive-support-gnu-tar.c:507
 #: ../libsqueeze/archive-support-zip.c:158
 #: ../libsqueeze/archive-support-zip.c:344
 #: ../libsqueeze/archive-support-rar.c:162
@@ -152,7 +152,7 @@ msgid "View date"
 msgstr "Прагляд даты"
 
 #: ../libsqueeze/archive-support-gnu-tar.c:226
-#: ../libsqueeze/archive-support-gnu-tar.c:514
+#: ../libsqueeze/archive-support-gnu-tar.c:511
 #: ../libsqueeze/archive-support-zip.c:151
 #: ../libsqueeze/archive-support-zip.c:348
 #: ../libsqueeze/archive-support-rar.c:155
@@ -275,23 +275,23 @@ msgstr ""
 "%s: %s\n"
 "Паспрабуйце %s --help, каб убачыць сьпіс наяўных опцыяў.\n"
 
-#: ../src/main_window.c:130
+#: ../src/main_window.c:132
 msgid "Internal Style"
 msgstr "Унутраны стыль"
 
-#: ../src/main_window.c:131
+#: ../src/main_window.c:133
 msgid "Tool Bar Style"
 msgstr "Стыль панэлі сродкаў"
 
-#: ../src/main_window.c:132
+#: ../src/main_window.c:134
 msgid "Path Bar Style"
 msgstr "Стыль панэлі шляху"
 
-#: ../src/main_window.c:177
+#: ../src/main_window.c:181
 msgid "Navigation Style"
 msgstr "Стыль навігацыі"
 
-#: ../src/main_window.c:178
+#: ../src/main_window.c:182
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -300,121 +300,125 @@ msgstr ""
 "Стыль навігацыі праз архіў"
 
 #. File menu
-#: ../src/main_window.c:265
+#: ../src/main_window.c:281
 msgid "_File"
 msgstr "_Файл"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:298
+#: ../src/main_window.c:314
 msgid "_Action"
 msgstr "_Дзеяньне"
 
-#: ../src/main_window.c:303
+#: ../src/main_window.c:319
 msgid "_Add"
 msgstr "_Дадаць"
 
-#: ../src/main_window.c:309
+#: ../src/main_window.c:325
 msgid "_Extract"
 msgstr "Рас_пакаваць"
 
 #. View menu
-#: ../src/main_window.c:323
+#: ../src/main_window.c:339
 msgid "_View"
 msgstr "_Выгляд"
 
 #. Help menu
-#: ../src/main_window.c:347
+#: ../src/main_window.c:363
 msgid "_Help"
 msgstr "_Даведка"
 
-#: ../src/main_window.c:378
+#: ../src/main_window.c:394
 msgid "Add"
 msgstr "Дадаць"
 
-#: ../src/main_window.c:382 ../src/main_window.c:1027
+#: ../src/main_window.c:398 ../src/main_window.c:1046
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Распакаваць"
 
-#: ../src/main_window.c:659
+#: ../src/main_window.c:675
 msgid "Open archive in new window"
 msgstr "Адкрыць архіў у новым акне"
 
-#: ../src/main_window.c:665
+#: ../src/main_window.c:681
 msgid "Open archive"
 msgstr "Адкрыць архіў"
 
-#: ../src/main_window.c:735 ../src/main_window.c:1065 ../src/application.c:197
+#: ../src/main_window.c:751 ../src/main_window.c:1087 ../src/application.c:197
 #: ../src/application.c:213
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:773 ../src/application.c:287
+#: ../src/main_window.c:789 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:794
+#: ../src/main_window.c:810
 #, fuzzy
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:807
+#: ../src/main_window.c:823
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:846
+#: ../src/main_window.c:862
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
 
-#: ../src/main_window.c:926
+#: ../src/main_window.c:942
 msgid "Lead developer:"
 msgstr "Асноўны распрацоўнік:"
 
-#: ../src/main_window.c:929
+#: ../src/main_window.c:945
 msgid "Contributors:"
 msgstr "Укладальнікі:"
 
-#: ../src/main_window.c:932
+#: ../src/main_window.c:948
+msgid "Artwork:"
+msgstr ""
+
+#: ../src/main_window.c:951
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "У натхненьні ад Xarchiver, напісана Giuseppe Torelli"
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:956
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr "Squeeze - гэта лёгкі і гнуткі кіраўнік архіваў для асяродзьдзя Xfce"
 
-#: ../src/main_window.c:943
+#: ../src/main_window.c:962
 msgid "translator-credits"
 msgstr "Аляксандар Няхайчык"
 
-#: ../src/main_window.c:1026
+#: ../src/main_window.c:1045
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:1027
+#: ../src/main_window.c:1046
 msgid "View"
 msgstr "Выгляд"
 
-#: ../src/main_window.c:1041
+#: ../src/main_window.c:1060
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1106
+#: ../src/main_window.c:1128
 msgid "Failed to open file"
 msgstr "Немагчыма адкрыць файл"
 
-#: ../src/main_window.c:1107
+#: ../src/main_window.c:1129
 #, c-format
 msgid ""
 "'%s'\n"
@@ -529,24 +533,24 @@ msgstr "Прастора"
 msgid "The amount of space between the path buttons"
 msgstr "Памер прасторы паміж элемэнтамі кнопак шляху"
 
-#: ../src/notebook.c:177 ../src/archive_store.c:242
+#: ../src/notebook.c:177 ../src/archive_store.c:246
 msgid "Show mime icons"
 msgstr "Паказваць значкі mime-тыпаў"
 
-#: ../src/notebook.c:178 ../src/archive_store.c:243
+#: ../src/notebook.c:178 ../src/archive_store.c:247
 msgid "Show the mime type icons for each entry"
 msgstr "Паказваць значку MIME-тыпу для кожнага файла"
 
-#: ../src/notebook.c:184 ../src/archive_store.c:256
+#: ../src/notebook.c:184 ../src/archive_store.c:260
 msgid "Sort folders before files"
 msgstr "Зьмяшчаць тэчкі перад файламі"
 
-#: ../src/notebook.c:185 ../src/archive_store.c:257
+#: ../src/notebook.c:185 ../src/archive_store.c:261
 msgid "The folders will be put at the top of the list"
 msgstr "Тэчкі будуць зьмяшчацца перад файламі"
 
-#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:263
-#: ../src/archive_store.c:264
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:267
+#: ../src/archive_store.c:268
 msgid "Sort text case sensitive"
 msgstr "Упарадкаваць згодна з рэгістрам"
 
@@ -558,21 +562,21 @@ msgstr "Падказкі"
 msgid "Make the row background colors alternate"
 msgstr "Задаць альтэрнатыўныя колеры тла радка"
 
-#: ../src/notebook.c:549
+#: ../src/notebook.c:555
 #, c-format
 msgid "Failed to open archive '%s'."
 msgstr "Немагчыма адкрыць архіў \"%s\"."
 
-#: ../src/notebook.c:557
+#: ../src/notebook.c:563
 #, c-format
 msgid "Failed to extract contents of archive '%s'."
 msgstr "Немагчыма распакаваць зьмест архіва \"%s\"."
 
-#: ../src/archive_store.c:249
+#: ../src/archive_store.c:253
 msgid "Show up dir entry"
 msgstr "Паказваць бацькоўскую тэчку"
 
-#: ../src/archive_store.c:250
+#: ../src/archive_store.c:254
 msgid "Show '..' to go to the parent directory"
 msgstr "Паказваць \"..\" для пераходу ў бацькоўскую тэчку"
 
