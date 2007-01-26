@@ -143,17 +143,11 @@ lsq_concat_filenames(GSList *filenames)
 {
 	GSList *_filenames = filenames;
 	gchar *concat_str = g_strdup(" "), *_concat_str;
-	gchar *current_dir = g_get_current_dir();
 
 	while(_filenames)
 	{
 		_concat_str = concat_str;
-		if(g_str_has_prefix(_filenames->data, current_dir))
-		{
-			concat_str = g_strconcat(concat_str, " ", g_shell_quote(_filenames->data + (strlen(current_dir)+1)) , NULL);
-		}
-		else
-			concat_str = g_strconcat(concat_str, " ", g_shell_quote(_filenames->data) , NULL);
+		concat_str = g_strconcat(concat_str, " ", g_shell_quote(_filenames->data) , NULL);
 		_filenames = _filenames->next;
 		g_free(_concat_str);
 	}
