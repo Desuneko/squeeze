@@ -1062,8 +1062,6 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 
 	gint *indices = gtk_tree_path_get_indices(path);
 	gint depth = gtk_tree_path_get_depth(path) - 1;
-	GValue value;
-	memset(&value, 0, sizeof(GValue));
 
 	/* only support list: depth is always 0 */
 	g_return_if_fail(depth == 0);
@@ -1096,9 +1094,7 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 #ifdef DEBUG
 			g_debug("file clicked");
 #endif
-			lsq_archive_iter_get_prop_value(archive, entry, LSQ_ARCHIVE_PROP_FILENAME, &value);
-			g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, g_value_get_string(&value), NULL); 
-			g_value_unset(&value);
+			g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, lsq_archive_iter_get_filename(archive, entry), NULL); 
 			return;
 		}
 
@@ -1256,15 +1252,13 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 	if(!store->navigation.present)
 		return NULL;
 
-	GValue basename;
+	const gchar *basename;
 	gchar *path = NULL;
 	gchar **buf = NULL;
 	GSList *iter = store->navigation.present->data;
 	gint i = g_slist_length(iter);
 	gchar *lastfile = NULL;
 	gint namelen = 0;
-
-	memset(&basename, 0, sizeof(GValue));
 
 	if(i <= 1)
 		return g_strdup("");
@@ -1273,11 +1267,10 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 	i--;
 	buf[i] = NULL;
 
-	lsq_archive_iter_get_prop_value(store->archive, (LSQArchiveIter*)iter->data, LSQ_ARCHIVE_PROP_FILENAME, &basename);
-	namelen = strlen(g_value_get_string(&basename));
+	basename = lsq_archive_iter_get_filename(store->archive, (LSQArchiveIter*)iter->data);
+	namelen = strlen(basename);
 	lastfile = g_new(gchar, namelen+2);
-	strcpy(lastfile, g_value_get_string(&basename));
-	g_value_unset(&basename);
+	strcpy(lastfile, basename);
 	if(lastfile[namelen-1] != '/')
 	{
 		lastfile[namelen] = '/';
@@ -1293,9 +1286,8 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 		while(iter->next)
 		{
 			--i;
-			lsq_archive_iter_get_prop_value(store->archive, (LSQArchiveIter*)iter->data, LSQ_ARCHIVE_PROP_FILENAME, &basename);
-			buf[i] = g_value_dup_string(&basename);
-			g_value_unset(&basename);
+			basename = lsq_archive_iter_get_filename(store->archive, (LSQArchiveIter*)iter->data);
+			buf[i] = g_strdup(basename);
 			iter = iter->next;
 		}
 	}
@@ -1324,21 +1316,18 @@ sq_archive_store_get_pwd_list(SQArchiveStore *store)
 	if(!store->navigation.present)
 		return NULL;
 
-	GValue basename;
+	const gchar *basename;
 	GSList *iter = store->navigation.present->data;
 	GSList *path = NULL;
 
 	if(!iter)
 		return NULL;
 
-	memset(&basename, 0, sizeof(GValue));
-
 	/* we don't want to include de archive rootentry */
 	while(iter->next)
 	{
-		lsq_archive_iter_get_prop_value(store->archive, (LSQArchiveIter*)iter->data, LSQ_ARCHIVE_PROP_FILENAME, &basename);
-		path = g_slist_prepend(path, g_value_dup_string(&basename));
-		g_value_unset(&basename);
+		basename = lsq_archive_iter_get_filename(store->archive, (LSQArchiveIter*)iter->data);
+		path = g_slist_prepend(path, g_strdup(basename));
 		iter = iter->next;
 	}
 
@@ -1483,15 +1472,14 @@ sq_archive_store_get_filename(SQArchiveStore *store, GtkTreeIter *iter)
 {
 	LSQArchiveIter *entry = iter->user_data;
 
-	GValue value;
-	memset(&value, 0, sizeof(GValue));
+	const gchar *basename;
 	
-	lsq_archive_iter_get_prop_value(store->archive, entry, LSQ_ARCHIVE_PROP_FILENAME, &value);
+	basename = lsq_archive_iter_get_filename(store->archive, entry);
 
 	if(lsq_archive_iter_is_directory(store->archive, entry))
-		return g_strconcat(g_value_get_string(&value), "/", NULL);
+		return g_strconcat(basename, "/", NULL);
 	else
-		return g_value_dup_string(&value);
+		return g_strdup(basename);
 }
 
 gboolean

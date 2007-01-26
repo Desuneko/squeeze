@@ -438,7 +438,6 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 		if(GPOINTER_TO_INT(g_object_get_data(data, LSQ_ARCHIVE_RAR_STATUS)) == REFRESH_STATUS_FILES)
 		{
 			entry = g_object_get_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY);
-			g_object_set_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY, NULL);
 
 			for(o = 0; o < 500; o++)
 			{
@@ -469,6 +468,10 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 						g_object_set_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY, entry);
 						break; 
 					}
+				}
+				else
+				{
+					g_object_set_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY, NULL);
 				}
 				/* filename, length, size, ratio, date, time, rights, crc-32, method , version*/
 

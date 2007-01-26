@@ -94,8 +94,6 @@ static guint64
 lsq_archive_iter_get_prop_uint64(const LSQArchive *, const LSQArchiveIter *, guint);
 
 static const gchar *
-lsq_archive_iter_get_filename(const LSQArchive *, const LSQArchiveIter *);
-static const gchar *
 lsq_archive_iter_get_mimetype(const LSQArchive *, const LSQArchiveIter *);
 
 static gchar *
@@ -1133,7 +1131,7 @@ lsq_archive_del_file(LSQArchive *archive, const gchar *path)
  *
  * returns filename
  */
-static const gchar*
+const gchar*
 lsq_archive_iter_get_filename(const LSQArchive *archive, const LSQArchiveIter *iter)
 {
 	return ((LSQEntry *)iter)->filename;
