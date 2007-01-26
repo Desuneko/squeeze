@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-25 01:23+0100\n"
+"POT-Creation-Date: 2007-01-26 19:44+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,232 +16,219 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:482
+#: ../libsqueeze/archive.c:485
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: ../libsqueeze/archive.c:485
+#: ../libsqueeze/archive.c:488
 msgid "Mime type"
 msgstr "Mime type"
 
-#: ../libsqueeze/archive.c:1573
+#: ../libsqueeze/archive.c:1576
 msgid "Initializing archive"
 msgstr "Archief initialiseren"
 
-#: ../libsqueeze/archive.c:1576
+#: ../libsqueeze/archive.c:1579
 msgid "Refreshing archive contents"
 msgstr "Inhoud van archief vernieuwen"
 
-#: ../libsqueeze/archive.c:1579
+#: ../libsqueeze/archive.c:1582
 msgid "Adding file(s) to archive"
 msgstr "Bestand(en) aan het toevoegen aan archief"
 
-#: ../libsqueeze/archive.c:1582
+#: ../libsqueeze/archive.c:1585
 msgid "Extracting file(s) from archive"
 msgstr "Bestand(en) uitpakken uit archief"
 
-#: ../libsqueeze/archive.c:1585
+#: ../libsqueeze/archive.c:1588
 msgid "Removing file(s) from archive"
 msgstr "Bestand(en) verwijderen uit archief"
 
-#: ../libsqueeze/archive.c:1588
+#: ../libsqueeze/archive.c:1591
 msgid "Done"
 msgstr "Klaar"
 
-#: ../libsqueeze/archive.c:1591
+#: ../libsqueeze/archive.c:1594
 msgid "Extracting file(s) to temporary directory"
 msgstr "Bestand(en) uitpakken naar tijdelijke map"
 
-#: ../libsqueeze/archive.c:1593
+#: ../libsqueeze/archive.c:1596
 msgid "Performing an extended action"
 msgstr "Uitgebreide actie uitvoeren"
 
-#: ../libsqueeze/archive.c:1596
+#: ../libsqueeze/archive.c:1599
 msgid "Cancelled"
 msgstr "Geannulleerd"
 
-#: ../libsqueeze/archive.c:1599
+#: ../libsqueeze/archive.c:1602
 msgid "Error"
 msgstr "Fout"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:161
-#: ../libsqueeze/archive-support-zip.c:137
-#: ../libsqueeze/archive-support-rar.c:141
+#: ../libsqueeze/archive-support-gnu-tar.c:166
+#: ../libsqueeze/archive-support-zip.c:124
+#: ../libsqueeze/archive-support-rar.c:150
 msgid "Overwrite existing files"
 msgstr "Bestaande bestanden overschrijven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:162
-#: ../libsqueeze/archive-support-zip.c:138
-#: ../libsqueeze/archive-support-rar.c:142
+#: ../libsqueeze/archive-support-gnu-tar.c:167
+#: ../libsqueeze/archive-support-zip.c:125
+#: ../libsqueeze/archive-support-rar.c:151
 msgid "Overwrite existing files on extraction"
 msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:168
-#: ../libsqueeze/archive-support-gnu-tar.c:169
+#: ../libsqueeze/archive-support-gnu-tar.c:173
+#: ../libsqueeze/archive-support-gnu-tar.c:174
 msgid "Touch files"
 msgstr "Bestanden aanraken"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:175
-#: ../libsqueeze/archive-support-gnu-tar.c:176
+#: ../libsqueeze/archive-support-gnu-tar.c:180
+#: ../libsqueeze/archive-support-gnu-tar.c:181
 msgid "Strip directories"
 msgstr "Mappen strippen"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:184
+#: ../libsqueeze/archive-support-gnu-tar.c:189
 msgid "Keep newer files"
 msgstr "Nieuwere bestanden behouden"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:185
-msgid "Do not overwrite files newer then those in the archive"
+#: ../libsqueeze/archive-support-gnu-tar.c:190
+msgid "Do not overwrite files newer than those in the archive"
 msgstr "Bestanden die nieuwer zijn dan die in het archief niet overschrijven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:191
-#: ../libsqueeze/archive-support-gnu-tar.c:192
+#: ../libsqueeze/archive-support-gnu-tar.c:196
+#: ../libsqueeze/archive-support-gnu-tar.c:197
 msgid "Override permissions"
 msgstr "Rechten overschrijven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:198
-#: ../libsqueeze/archive-support-gnu-tar.c:503
-#: ../libsqueeze/archive-support-zip.c:172
-#: ../libsqueeze/archive-support-zip.c:328
-#: ../libsqueeze/archive-support-rar.c:176
-#: ../libsqueeze/archive-support-rar.c:345
+#: ../libsqueeze/archive-support-gnu-tar.c:203
+#: ../libsqueeze/archive-support-gnu-tar.c:508
+#: ../libsqueeze/archive-support-zip.c:159
+#: ../libsqueeze/archive-support-zip.c:315
+#: ../libsqueeze/archive-support-rar.c:185
+#: ../libsqueeze/archive-support-rar.c:354
 msgid "Size"
 msgstr "Grootte"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:199
-#: ../libsqueeze/archive-support-zip.c:173
-#: ../libsqueeze/archive-support-rar.c:177
+#: ../libsqueeze/archive-support-gnu-tar.c:204
+#: ../libsqueeze/archive-support-zip.c:160
+#: ../libsqueeze/archive-support-rar.c:186
 msgid "View filesize"
 msgstr "Grootte weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:205
-#: ../libsqueeze/archive-support-gnu-tar.c:495
-#: ../libsqueeze/archive-support-rar.c:204
-#: ../libsqueeze/archive-support-rar.c:365
+#: ../libsqueeze/archive-support-gnu-tar.c:210
+#: ../libsqueeze/archive-support-gnu-tar.c:500
+#: ../libsqueeze/archive-support-rar.c:213
+#: ../libsqueeze/archive-support-rar.c:374
 msgid "Permissions"
 msgstr "Rechten"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:206
-#: ../libsqueeze/archive-support-rar.c:205
+#: ../libsqueeze/archive-support-gnu-tar.c:211
+#: ../libsqueeze/archive-support-rar.c:214
 msgid "View permissions"
 msgstr "Rechten weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:212
-#: ../libsqueeze/archive-support-gnu-tar.c:499
+#: ../libsqueeze/archive-support-gnu-tar.c:217
+#: ../libsqueeze/archive-support-gnu-tar.c:504
 msgid "Owner/Group"
 msgstr "Eigenaar/Groep"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:213
+#: ../libsqueeze/archive-support-gnu-tar.c:218
 msgid "View owner/group"
 msgstr "Eigenaar / groep weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:219
-#: ../libsqueeze/archive-support-gnu-tar.c:507
-#: ../libsqueeze/archive-support-zip.c:158
-#: ../libsqueeze/archive-support-zip.c:344
-#: ../libsqueeze/archive-support-rar.c:162
-#: ../libsqueeze/archive-support-rar.c:357
+#: ../libsqueeze/archive-support-gnu-tar.c:224
+#: ../libsqueeze/archive-support-gnu-tar.c:512
+#: ../libsqueeze/archive-support-zip.c:145
+#: ../libsqueeze/archive-support-zip.c:331
+#: ../libsqueeze/archive-support-rar.c:171
+#: ../libsqueeze/archive-support-rar.c:366
 msgid "Date"
 msgstr "Datum"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:220
-#: ../libsqueeze/archive-support-zip.c:159
-#: ../libsqueeze/archive-support-rar.c:163
+#: ../libsqueeze/archive-support-gnu-tar.c:225
+#: ../libsqueeze/archive-support-zip.c:146
+#: ../libsqueeze/archive-support-rar.c:172
 msgid "View date"
 msgstr "Datum weergeven"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:226
-#: ../libsqueeze/archive-support-gnu-tar.c:511
-#: ../libsqueeze/archive-support-zip.c:151
-#: ../libsqueeze/archive-support-zip.c:348
-#: ../libsqueeze/archive-support-rar.c:155
-#: ../libsqueeze/archive-support-rar.c:361
+#: ../libsqueeze/archive-support-gnu-tar.c:231
+#: ../libsqueeze/archive-support-gnu-tar.c:516
+#: ../libsqueeze/archive-support-zip.c:138
+#: ../libsqueeze/archive-support-zip.c:335
+#: ../libsqueeze/archive-support-rar.c:164
+#: ../libsqueeze/archive-support-rar.c:370
 msgid "Time"
 msgstr "Tijd"
 
-#: ../libsqueeze/archive-support-gnu-tar.c:227
-#: ../libsqueeze/archive-support-zip.c:152
-#: ../libsqueeze/archive-support-rar.c:156
+#: ../libsqueeze/archive-support-gnu-tar.c:232
+#: ../libsqueeze/archive-support-zip.c:139
+#: ../libsqueeze/archive-support-rar.c:165
 msgid "View time"
 msgstr "Tijd weergeven"
 
-#: ../libsqueeze/archive-support-zip.c:110
-msgid "Test"
-msgstr "Testen"
-
-#. TRANSATORS: first line is short comment, after newline is long comment
-#: ../libsqueeze/archive-support-zip.c:112
-msgid ""
-"Test archive integrity\n"
-"Test the integrity of the archive"
-msgstr ""
-"Test archief integriteir\n"
-"Test de integriteit van het archief"
-
-#: ../libsqueeze/archive-support-zip.c:130
-#: ../libsqueeze/archive-support-zip.c:131
-#: ../libsqueeze/archive-support-rar.c:134
-#: ../libsqueeze/archive-support-rar.c:135
+#: ../libsqueeze/archive-support-zip.c:117
+#: ../libsqueeze/archive-support-zip.c:118
+#: ../libsqueeze/archive-support-rar.c:143
+#: ../libsqueeze/archive-support-rar.c:144
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../libsqueeze/archive-support-zip.c:144
-#: ../libsqueeze/archive-support-zip.c:336
-#: ../libsqueeze/archive-support-rar.c:148
-#: ../libsqueeze/archive-support-rar.c:349
+#: ../libsqueeze/archive-support-zip.c:131
+#: ../libsqueeze/archive-support-zip.c:323
+#: ../libsqueeze/archive-support-rar.c:157
+#: ../libsqueeze/archive-support-rar.c:358
 msgid "Compressed Size"
 msgstr "Gecomprimeerde Grootte"
 
-#: ../libsqueeze/archive-support-zip.c:145
-#: ../libsqueeze/archive-support-rar.c:149
+#: ../libsqueeze/archive-support-zip.c:132
+#: ../libsqueeze/archive-support-rar.c:158
 msgid "View compressed filesize"
 msgstr "Gecomprimeerde bestandsgrootte weergeven"
 
-#: ../libsqueeze/archive-support-zip.c:165
-#: ../libsqueeze/archive-support-zip.c:340
-#: ../libsqueeze/archive-support-rar.c:169
-#: ../libsqueeze/archive-support-rar.c:353
+#: ../libsqueeze/archive-support-zip.c:152
+#: ../libsqueeze/archive-support-zip.c:327
+#: ../libsqueeze/archive-support-rar.c:178
+#: ../libsqueeze/archive-support-rar.c:362
 msgid "Ratio"
 msgstr "Verhouding"
 
-#: ../libsqueeze/archive-support-zip.c:166
-#: ../libsqueeze/archive-support-rar.c:170
+#: ../libsqueeze/archive-support-zip.c:153
+#: ../libsqueeze/archive-support-rar.c:179
 msgid "View ratio"
 msgstr "Verhouding weergeven"
 
-#: ../libsqueeze/archive-support-zip.c:179
-#: ../libsqueeze/archive-support-zip.c:332
-#: ../libsqueeze/archive-support-rar.c:183
-#: ../libsqueeze/archive-support-rar.c:373
+#: ../libsqueeze/archive-support-zip.c:166
+#: ../libsqueeze/archive-support-zip.c:319
+#: ../libsqueeze/archive-support-rar.c:192
+#: ../libsqueeze/archive-support-rar.c:382
 msgid "Method"
 msgstr "Methode"
 
-#: ../libsqueeze/archive-support-zip.c:180
-#: ../libsqueeze/archive-support-rar.c:184
+#: ../libsqueeze/archive-support-zip.c:167
+#: ../libsqueeze/archive-support-rar.c:193
 msgid "View method"
 msgstr "methode weergeven"
 
-#: ../libsqueeze/archive-support-zip.c:186
-#: ../libsqueeze/archive-support-zip.c:352
-#: ../libsqueeze/archive-support-rar.c:190
-#: ../libsqueeze/archive-support-rar.c:369
+#: ../libsqueeze/archive-support-zip.c:173
+#: ../libsqueeze/archive-support-zip.c:339
+#: ../libsqueeze/archive-support-rar.c:199
+#: ../libsqueeze/archive-support-rar.c:378
 msgid "Checksum"
 msgstr "Checksom"
 
-#: ../libsqueeze/archive-support-zip.c:187
-#: ../libsqueeze/archive-support-rar.c:191
+#: ../libsqueeze/archive-support-zip.c:174
+#: ../libsqueeze/archive-support-rar.c:200
 msgid "View Checksum"
 msgstr "Checksom weergeven"
 
-#: ../libsqueeze/archive-support-rar.c:197
+#: ../libsqueeze/archive-support-rar.c:206
 msgid "Compression version"
 msgstr "Compressie versie"
 
-#: ../libsqueeze/archive-support-rar.c:198
+#: ../libsqueeze/archive-support-rar.c:207
 msgid "View compression version"
 msgstr "Compressie versie weergeven"
 
-#: ../libsqueeze/archive-support-rar.c:377
+#: ../libsqueeze/archive-support-rar.c:386
 msgid "Version"
 msgstr "Versie"
 
@@ -274,23 +261,23 @@ msgstr ""
 "%s: %s\n"
 "Probeer %s --help voor een volledige lijst van mogelijke opties.\n"
 
-#: ../src/main_window.c:132
+#: ../src/main_window.c:130
 msgid "Internal Style"
 msgstr "Interne Stijl"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:131
 msgid "Tool Bar Style"
 msgstr "Werkbalk Stijl"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:132
 msgid "Path Bar Style"
 msgstr "Padbalk Stijl"
 
-#: ../src/main_window.c:181
+#: ../src/main_window.c:179
 msgid "Navigation Style"
 msgstr "Navigatie Stijl"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:180
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -299,51 +286,51 @@ msgstr ""
 "De stijl om te navigeren door het archief"
 
 #. File menu
-#: ../src/main_window.c:281
+#: ../src/main_window.c:279
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:314
+#: ../src/main_window.c:312
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:319
+#: ../src/main_window.c:317
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:325
+#: ../src/main_window.c:323
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:339
+#: ../src/main_window.c:337
 msgid "_View"
 msgstr "B_eeld"
 
 #. Help menu
-#: ../src/main_window.c:363
+#: ../src/main_window.c:361
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window.c:394
+#: ../src/main_window.c:392
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:398 ../src/main_window.c:1046
+#: ../src/main_window.c:396 ../src/main_window.c:1044
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:675
+#: ../src/main_window.c:673
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:681
+#: ../src/main_window.c:679
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:751 ../src/main_window.c:1087 ../src/application.c:197
+#: ../src/main_window.c:749 ../src/main_window.c:1085 ../src/application.c:197
 #: ../src/application.c:213
 msgid ""
 "Squeeze cannot extract this archive type,\n"
@@ -352,7 +339,7 @@ msgstr ""
 "Squeeze kan dit archief type niet uitpakken,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:789 ../src/application.c:287
+#: ../src/main_window.c:787 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -360,11 +347,11 @@ msgstr ""
 "Squeeze kan aan dit archief type geen bestanden toevoegen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:810
+#: ../src/main_window.c:808
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Weet je zeker dat je de geselecteerde bestanden wilt verwijderen?"
 
-#: ../src/main_window.c:823
+#: ../src/main_window.c:821
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -372,7 +359,7 @@ msgstr ""
 "Squeeze kan van dit archief type geen bestanden verwijderen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:860
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -380,23 +367,31 @@ msgstr ""
 "Weet je zeker dat je deze actie wilt annuleren?\n"
 "Dit zou het archief kunnen beschadigen."
 
-#: ../src/main_window.c:942
+#: ../src/main_window.c:940
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:945
+#: ../src/main_window.c:943
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:948
+#: ../src/main_window.c:946
 msgid "Artwork:"
 msgstr "Graphisch:"
 
-#: ../src/main_window.c:951
+#: ../src/main_window.c:947
+msgid ""
+"The add and extract icons are based on the extract icon created by Andreas "
+"Nilsson"
+msgstr ""
+"De pictogrammen voor het toevoegen en uitpakken zijn gebaseerd op een "
+"'uitpakken' pictogram dat gemaakt is door Andreas Nilsson"
+
+#: ../src/main_window.c:949
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:956
+#: ../src/main_window.c:954
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -404,19 +399,19 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:960
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:1045
+#: ../src/main_window.c:1043
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:1046
+#: ../src/main_window.c:1044
 msgid "View"
 msgstr "Weergeven"
 
-#: ../src/main_window.c:1060
+#: ../src/main_window.c:1058
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -424,11 +419,11 @@ msgstr ""
 "Squeeze kan dit bestand niet weergeven.\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:1128
+#: ../src/main_window.c:1126
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1129
+#: ../src/main_window.c:1127
 #, c-format
 msgid ""
 "'%s'\n"
@@ -597,6 +592,16 @@ msgstr "Archief beheerder"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce archief beheerder"
+
+#~ msgid "Test"
+#~ msgstr "Testen"
+
+#~ msgid ""
+#~ "Test archive integrity\n"
+#~ "Test the integrity of the archive"
+#~ msgstr ""
+#~ "Test archief integriteir\n"
+#~ "Test de integriteit van het archief"
 
 #~ msgid "_General"
 #~ msgstr "_Algemeen"

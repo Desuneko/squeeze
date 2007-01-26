@@ -187,7 +187,7 @@ lsq_archive_support_gnu_tar_class_init(LSQArchiveSupportGnuTarClass *supportclas
 
 	pspec = g_param_spec_boolean("extract-keep-new",
 		_("Keep newer files"),
-		_("Do not overwrite files newer then those in the archive"),
+		_("Do not overwrite files newer than those in the archive"),
 		FALSE,
 		G_PARAM_READWRITE);
 	g_object_class_install_property(object_class, LSQ_ARCHIVE_SUPPORT_GNU_TAR_EXTRACT_KEEP_NEW, pspec);
