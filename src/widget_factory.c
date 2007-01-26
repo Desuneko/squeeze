@@ -136,7 +136,12 @@ sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, 
 	g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 	g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), check);
 	g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+	
+	/* FIXME: HACK */
+	if(GTK_IS_WIDGET(obj))
 		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+	else
+		g_object_ref(obj);
 
 	const gchar *large_tip = g_param_spec_get_blurb(pspec);
 	gchar *small_tip = NULL;
@@ -244,7 +249,11 @@ sq_widget_factory_create_numeric_widget(SQWidgetFactory *factory, GObject *obj, 
 	g_signal_connect(G_OBJECT(spin), "value-changed", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 	g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), spin);
 	g_signal_connect(GTK_OBJECT(spin), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+	/* FIXME: HACK */
+	if(GTK_IS_WIDGET(obj))
 		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), spin);
+	else
+		g_object_ref(obj);
 
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, FALSE, 3);
 	gtk_box_pack_end(GTK_BOX(box), spin, TRUE, TRUE, 3);
@@ -286,8 +295,12 @@ sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *ob
 		g_object_set_data(G_OBJECT(radio), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
 		g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 		g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), radio);
-	g_signal_connect(GTK_OBJECT(radio), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
-		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), radio);
+		g_signal_connect(GTK_OBJECT(radio), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+		/* FIXME: HACK */
+		if(GTK_IS_WIDGET(obj))
+			g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), radio);
+		else
+			g_object_ref(obj);
 
 		if(g_value_get_enum(value) == values[i].value)
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio), TRUE);
@@ -326,7 +339,11 @@ sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj
 	g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 	g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), combo);
 	g_signal_connect(GTK_OBJECT(combo), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+	/* FIXME: HACK */
+	if(GTK_IS_WIDGET(obj))
 		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), combo);
+	else
+		g_object_ref(obj);
 
 	for(i = 0; i < n; ++i)
 	{
@@ -378,8 +395,12 @@ sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GP
 		g_object_set_data(G_OBJECT(check), SQ_PROPERTY_VALUE_DATA, GINT_TO_POINTER(values[i].value));
 		g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 		g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), check);
-	g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
-		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+		g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+		/* FIXME: HACK */
+		if(GTK_IS_WIDGET(obj))
+			g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+		else
+			g_object_ref(obj);
 
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check), g_value_get_enum(value) & values[i].value);
 		gtk_box_pack_start(GTK_BOX(box), check, FALSE, FALSE, 5);
@@ -413,7 +434,11 @@ sq_widget_factory_create_string_widget(SQWidgetFactory *factory, GObject *obj, G
 	g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 	g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), entry);
 	g_signal_connect(GTK_OBJECT(entry), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+	/* FIXME: HACK */
+	if(GTK_IS_WIDGET(obj))
 		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), entry);
+	else
+		g_object_ref(obj);
 
 	gtk_entry_set_text(GTK_ENTRY(entry), g_value_get_string(value));
 
@@ -505,7 +530,11 @@ sq_widget_factory_create_boolean_menu(SQWidgetFactory *factory, GObject *obj, GP
 	g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 	g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), check);
 	g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
+	/* FIXME: HACK */
+	if(GTK_IS_WIDGET(obj))
 		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+	else
+		g_object_ref(obj);
 
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_boolean(value));
 
@@ -533,7 +562,11 @@ sq_widget_factory_create_enum_menu_group(SQWidgetFactory *factory, GObject *obj,
 		g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 		g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), radio);
 		g_signal_connect(GTK_OBJECT(radio), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
-		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), radio);
+		/* FIXME: HACK */
+		if(GTK_IS_WIDGET(obj))
+			g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), radio);
+		else
+			g_object_ref(obj);
 
 		if(g_value_get_enum(value) == values[i].value)
 			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(radio), TRUE);
@@ -568,7 +601,11 @@ sq_widget_factory_create_enum_menu_list(SQWidgetFactory *factory, GObject *obj, 
 		g_signal_connect(G_OBJECT(radio), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 		g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), radio);
 		g_signal_connect(GTK_OBJECT(radio), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
-		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), radio);
+		/* FIXME: HACK */
+		if(GTK_IS_WIDGET(obj))
+			g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), radio);
+		else
+			g_object_ref(obj);
 
 		if(g_value_get_enum(value) == values[i].value)
 			gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(radio), TRUE);
@@ -603,7 +640,11 @@ sq_widget_factory_create_flags_menu_group(SQWidgetFactory *factory, GObject *obj
 		g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 		g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), check);
 		g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
-		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+		/* FIXME: HACK */
+		if(GTK_IS_WIDGET(obj))
+			g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+		else
+			g_object_ref(obj);
 
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_enum(value) & values[i].value);
 
@@ -634,7 +675,11 @@ sq_widget_factory_create_flags_menu_list(SQWidgetFactory *factory, GObject *obj,
 		g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
 		g_signal_connect(obj, "notify", G_CALLBACK(cb_sq_widget_factory_property_notify), check);
 		g_signal_connect(GTK_OBJECT(check), "destroy", G_CALLBACK(cb_sq_widget_factory_widget_destroyed), obj);
-		g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+		/* FIXME: HACK */
+		if(GTK_IS_WIDGET(obj))
+			g_signal_connect(obj, "destroy", G_CALLBACK(cb_sq_widget_factory_object_destroyed), check);
+		else
+			g_object_ref(obj);
 
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(check), g_value_get_enum(value) & values[i].value);
 
@@ -1011,6 +1056,8 @@ cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
 	if(user_data)
 	{
 		g_signal_handlers_disconnect_by_func(user_data, cb_sq_widget_factory_property_notify, obj);
+		if(!GTK_IS_WIDGET(user_data))
+			g_object_unref(user_data);
 	}
 }
 
