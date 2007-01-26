@@ -288,7 +288,9 @@ lsq_archive_new(gchar *path, const gchar *mime)
 			g_free(base);
 		}
 	}
+#ifdef DEBUG
 	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->mime_info));
+#endif
 
 	if(!lsq_get_support_for_mime(archive->mime_info))
 	{

@@ -49,8 +49,6 @@ static void lsq_tempfs_clean_dir(const gchar *path)
 	if(!path)
 		return;
 
-	g_debug("clean %s", path);
-
 	GDir *dir = g_dir_open(path, 0, NULL);
 
 	if(dir)
@@ -77,6 +75,10 @@ void lsq_tempfs_clean_root_dir(LSQArchive *archive)
 		return;
 
 	lsq_tempfs_clean_dir(archive->temp_dir);
+
+#ifdef DEBUG
+	g_debug("clean %s", archive->temp_dir);
+#endif
 
 	GSList *iter = archive->monitor_list;
 	while(iter)

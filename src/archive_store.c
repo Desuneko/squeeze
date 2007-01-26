@@ -980,8 +980,6 @@ sq_archive_store_refresh(SQArchiveStore *store)
 	GtkTreePath *path_ = NULL;
 	GtkTreeIter iter;
 
-	g_debug("%s %d %d", __FUNCTION__, prev_size, new_size);
-
 	if(store->treeview)
 	{
 		/* we need to add up dir .. */
@@ -1005,7 +1003,6 @@ sq_archive_store_refresh(SQArchiveStore *store)
 			new_size++;
 		}
 
-		g_debug("%s %d", __FUNCTION__, new_size);
 		/* notify the tree view that we have rows */
 		for(; i < new_size; ++i)
 		{
@@ -1028,7 +1025,6 @@ sq_archive_store_refresh(SQArchiveStore *store)
 			gtk_tree_path_free(path_);
 		}
   
-		g_debug("%s %d", __FUNCTION__, prev_size - new_size);
 		/* notify tree view we romeved all the remaining rows */
 		i = prev_size;
 		while(i > new_size)
