@@ -206,6 +206,11 @@ sq_main_window_dispose(GObject *object)
 		else
 			sq_settings_write_bool_entry(window->settings, "MenuBar", FALSE);
 
+		if(window->tool_bar)
+			sq_settings_write_bool_entry(window->settings, "ToolBar", TRUE);
+		else
+			sq_settings_write_bool_entry(window->settings, "ToolBar", FALSE);
+
 		if(!window->navigationbar)
 		{
 			sq_settings_write_entry(window->settings, "NavigationBar", "None");
@@ -245,7 +250,6 @@ sq_main_window_dispose(GObject *object)
 static void
 sq_main_window_init(SQMainWindow *window)
 {
-	GtkWidget     *toolbar;
 	GtkToolItem   *tool_separator;
 	GtkWidget     *menu_separator;
 	GtkWidget     *tmp_image;
@@ -257,6 +261,7 @@ sq_main_window_init(SQMainWindow *window)
 	gboolean sort_folders = TRUE;
 	gboolean use_tabs = TRUE;
 	gboolean show_menubar = TRUE;
+	gboolean show_toolbar = TRUE;
 
 	window->accel_group = gtk_accel_group_new();
 	gtk_window_add_accel_group(GTK_WINDOW(window), window->accel_group);
@@ -373,51 +378,56 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_help);
 	}
 
-	toolbar = gtk_toolbar_new();
+	show_toolbar = sq_settings_read_bool_entry(window->settings, "ToolBar", TRUE);
 
-/* Archive pane */
-	window->toolbar.tool_item_new = gtk_tool_button_new_from_stock(GTK_STOCK_NEW);
-	window->toolbar.tool_item_open = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
-	tool_separator = gtk_separator_tool_item_new ();
+	if(show_toolbar)
+	{
+		window->tool_bar = gtk_toolbar_new();
 
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_new));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_open));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(tool_separator));
+	/* Archive pane */
+		window->toolbar.tool_item_new = gtk_tool_button_new_from_stock(GTK_STOCK_NEW);
+		window->toolbar.tool_item_open = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
+		tool_separator = gtk_separator_tool_item_new ();
 
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_new), "clicked", G_CALLBACK(cb_sq_main_new_archive), window);
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_sq_main_open_archive), window);
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_new));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_open));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(tool_separator));
 
-/* Action pane */
-	tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
-	window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_new), "clicked", G_CALLBACK(cb_sq_main_new_archive), window);
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_open), "clicked", G_CALLBACK(cb_sq_main_open_archive), window);
 
-	tmp_image = sq_main_window_find_image("archive-extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
-	window->toolbar.tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+	/* Action pane */
+		tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+		window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
 
-	window->toolbar.tool_item_remove = gtk_tool_button_new_from_stock(GTK_STOCK_DELETE);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+		tmp_image = sq_main_window_find_image("archive-extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+		window->toolbar.tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 
-	tool_separator = gtk_separator_tool_item_new ();
+		window->toolbar.tool_item_remove = gtk_tool_button_new_from_stock(GTK_STOCK_DELETE);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_add));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_extract));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_remove));
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(tool_separator));
+		tool_separator = gtk_separator_tool_item_new ();
 
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_add), "clicked", G_CALLBACK(cb_sq_main_add_to_archive), window);
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_extract), "clicked", G_CALLBACK(cb_sq_main_extract_archive), window);
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_remove), "clicked", G_CALLBACK(cb_sq_main_remove_from_archive), window);
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_add));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_extract));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_remove));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(tool_separator));
 
-/* control pane */
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_add), "clicked", G_CALLBACK(cb_sq_main_add_to_archive), window);
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_extract), "clicked", G_CALLBACK(cb_sq_main_extract_archive), window);
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_remove), "clicked", G_CALLBACK(cb_sq_main_remove_from_archive), window);
 
-	window->toolbar.tool_item_stop = gtk_tool_button_new_from_stock(GTK_STOCK_STOP);
-	gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+	/* control pane */
 
-	gtk_container_add(GTK_CONTAINER(toolbar), GTK_WIDGET(window->toolbar.tool_item_stop));
+		window->toolbar.tool_item_stop = gtk_tool_button_new_from_stock(GTK_STOCK_STOP);
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
 
-	g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_sq_main_stop_archive), window);
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_stop));
+
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_stop), "clicked", G_CALLBACK(cb_sq_main_stop_archive), window);
+	}
 
 	nav_bar = sq_settings_read_entry(window->settings, "NavigationBar", "None");
 	window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_INTERNAL;
@@ -457,29 +467,32 @@ sq_main_window_init(SQMainWindow *window)
 	g_signal_connect(G_OBJECT(window->notebook), "active-archive-status-changed", G_CALLBACK(cb_sq_main_window_notebook_status_changed), window);
 
 /* menu item */
-	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "show-icons");
-	for(iter = list; iter; iter = iter->next)
+	if(show_menubar)
 	{
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
-		gtk_widget_show(iter->data);
-	}
-	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "sort-folders-first");
-	for(iter = list; iter; iter = iter->next)
-	{
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
-		gtk_widget_show(iter->data);
-	}
-	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "sort-case-sensitive");
-	for(iter = list; iter; iter = iter->next)
-	{
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
-		gtk_widget_show(iter->data);
-	}
-	list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "rules-hint");
-	for(iter = list; iter; iter = iter->next)
-	{
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
-		gtk_widget_show(iter->data);
+		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "show-icons");
+		for(iter = list; iter; iter = iter->next)
+		{
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+			gtk_widget_show(iter->data);
+		}
+		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "sort-folders-first");
+		for(iter = list; iter; iter = iter->next)
+		{
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+			gtk_widget_show(iter->data);
+		}
+		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "sort-case-sensitive");
+		for(iter = list; iter; iter = iter->next)
+		{
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+			gtk_widget_show(iter->data);
+		}
+		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "rules-hint");
+		for(iter = list; iter; iter = iter->next)
+		{
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+			gtk_widget_show(iter->data);
+		}
 	}
 
 /* Statusbar */
@@ -489,7 +502,8 @@ sq_main_window_init(SQMainWindow *window)
 	if(show_menubar)
 		gtk_box_pack_start(GTK_BOX(window->main_vbox), window->menu_bar, FALSE, FALSE, 0);
 
-	gtk_box_pack_start(GTK_BOX(window->main_vbox), toolbar, FALSE, FALSE, 0);
+	if(show_toolbar)
+		gtk_box_pack_start(GTK_BOX(window->main_vbox), window->tool_bar, FALSE, FALSE, 0);
 
 	if(window->navigationbar)
 	{
@@ -502,7 +516,8 @@ sq_main_window_init(SQMainWindow *window)
 	gtk_box_pack_end(GTK_BOX(window->main_vbox), window->statusbar, FALSE, FALSE, 0);
 
 	gtk_widget_show_all(window->main_vbox);
-	gtk_widget_show_all(toolbar);
+	if(show_toolbar)
+		gtk_widget_show_all(window->tool_bar);
 	gtk_widget_show_all(window->notebook);
 	gtk_widget_show_all(window->statusbar);
 
@@ -588,6 +603,9 @@ sq_main_window_find_image(gchar *filename, GtkIconSize size)
 static void
 sq_main_window_new_action_menu(SQMainWindow *window, LSQArchiveSupport *support, LSQArchive *archive)
 {
+	if(!window->menu_bar)
+		return;
+
 	GSList *iter, *list;
 
 	gtk_container_remove(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
@@ -981,25 +999,37 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 
 	if(lp_archive && (status == LSQ_ARCHIVESTATUS_IDLE || status == LSQ_ARCHIVESTATUS_ERROR || status == LSQ_ARCHIVESTATUS_USERBREAK))
 	{
-		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), TRUE);
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), TRUE);
+		}
 
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		}
 	}
 	else
 	{
-		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
+		}
 
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+		}
 	}
 
 	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lsq_archive_get_filename(lp_archive), NULL));
@@ -1017,17 +1047,23 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 
 	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
-		gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);
 
-		gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+		}
 
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		}
 
 		gtk_window_set_title(GTK_WINDOW(window), PACKAGE_STRING);
 	}
@@ -1180,17 +1216,23 @@ cb_sq_main_window_notebook_status_changed(SQNotebook *notebook, LSQArchive *arch
 
 	if((status == LSQ_ARCHIVESTATUS_IDLE) || (status == LSQ_ARCHIVESTATUS_USERBREAK) || (status == LSQ_ARCHIVESTATUS_ERROR))
 	{
-		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
 
-		gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+		}
 
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		}
 	}
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");

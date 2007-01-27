@@ -69,6 +69,7 @@ struct _SQMainWindow
 	GtkIconTheme *icon_theme;
 	SQApplication *app;
 	GtkWidget *menu_bar;
+	GtkWidget *tool_bar;
 	GtkWidget *main_vbox;
 	SQWidgetFactory *widget_factory;
 	struct {
