@@ -513,6 +513,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	sq_archive_store_connect_treeview(SQ_ARCHIVE_STORE(tree_model), GTK_TREE_VIEW(tree_view));
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
+	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tree_view), notebook->props._rules_hint);
 
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), TRUE);
@@ -844,7 +845,7 @@ sq_notebook_page_get_archive(SQNotebook *notebook, LSQArchive **lp_archive, LSQA
 static void
 cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 {
-	if(strcmp(g_param_spec_get_name(pspec), "show-icons") == 0 || strcmp(g_param_spec_get_name(pspec), "rules-hint") == 0)
+	if(strcmp(g_param_spec_get_name(pspec), "show-icons") == 0)
 	{
 		g_object_notify(user_data, g_param_spec_get_name(pspec));
 
@@ -854,6 +855,10 @@ cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 		sq_notebook_treeview_reset_columns(sq_archive_store_get_archive(store), treeview);
 	}
 	if(strcmp(g_param_spec_get_name(pspec), "sort-folders-first") == 0 || strcmp(g_param_spec_get_name(pspec), "sort-case-sensitive") == 0)
+	{
+		g_object_notify(user_data, g_param_spec_get_name(pspec));
+	}
+	if(strcmp(g_param_spec_get_name(pspec), "rules-hint") == 0)
 	{
 		g_object_notify(user_data, g_param_spec_get_name(pspec));
 	}
