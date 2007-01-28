@@ -77,9 +77,6 @@ struct _LSQArchive
 	GType              *entry_property_types;
 	gchar             **entry_property_names;
 	LSQEntry           *root_entry;
-#ifdef G_THREADS_ENABLED
-	GStaticRWLock       rw_lock;
-#endif
 	LSQArchiveStatus    status;
 	LSQArchiveStatus    old_status;
 	gchar              *status_msg;

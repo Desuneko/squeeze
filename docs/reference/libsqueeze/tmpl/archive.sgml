@@ -59,6 +59,7 @@ LSQArchive
 @entry_property_types: 
 @entry_property_names: 
 @root_entry: 
+@status: 
 @old_status: 
 @status_msg: 
 @progress: 

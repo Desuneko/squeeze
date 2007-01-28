@@ -80,6 +80,8 @@ sq_main_window_get_property(GObject *object, guint prop_id, GValue *value, GPara
 static void
 sq_main_window_dispose(GObject *object);
 
+static gboolean show_toolbar = TRUE;
+
 
 static void cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata);
@@ -261,7 +263,6 @@ sq_main_window_init(SQMainWindow *window)
 	gboolean sort_folders = TRUE;
 	gboolean use_tabs = TRUE;
 	gboolean show_menubar = TRUE;
-	gboolean show_toolbar = TRUE;
 
 	window->accel_group = gtk_accel_group_new();
 	gtk_window_add_accel_group(GTK_WINDOW(window), window->accel_group);
@@ -1202,7 +1203,10 @@ sq_main_window_set_navigation(SQMainWindow *window)
 	if(nav_bar)
 	{
 		gtk_box_pack_start(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, FALSE, FALSE, 0);
-		gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, 2);
+		if(show_toolbar)
+			gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, 2);
+		else
+			gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, 1);
 		gtk_widget_show_all((GtkWidget *)nav_bar);
 	}	
 }
