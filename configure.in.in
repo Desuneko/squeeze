@@ -12,11 +12,11 @@ dnl ***************************
 m4_define([squeeze_verinfo], [0:1:0])
 m4_define([squeeze_version_branch], [])
 m4_define([squeeze_version_major], [0])
-m4_define([squeeze_version_minor], [0])
-m4_define([squeeze_version_micro], [1])
+m4_define([squeeze_version_minor], [1])
+m4_define([squeeze_version_micro], [0])
 m4_define([squeeze_version_nano], []) # Leave empty for no nano version
 m4_define([squeeze_version_build], [r@REVISION@])
-m4_define([squeeze_version_tag], [svn]) # Leave empty for releases
+m4_define([squeeze_version_tag], []) # Leave empty for releases
 m4_define([squeeze_version], [ifelse(squeeze_version_branch(), [], [squeeze_version_major().squeeze_version_minor().squeeze_version_micro()ifelse(squeeze_version_nano(), [], [], [.squeeze_version_nano()])], [squeeze_version_branch()])ifelse(squeeze_version_tag(),[],[], [-ifelse(squeeze_version_tag(), [svn], [squeeze_version_tag()-squeeze_version_build()], [squeeze_version_tag()])])])
 
 dnl *******************************************
