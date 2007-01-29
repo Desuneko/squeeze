@@ -531,7 +531,8 @@ void
 lsq_archive_support_gnu_tar_passive_watch(GPid pid, gint status, gpointer data)
 {
 	LSQArchive *archive = data;
-	archive->child_pid = 0;
+	if(!((archive->status == LSQ_ARCHIVESTATUS_ADD) || (archive->status == LSQ_ARCHIVESTATUS_REMOVE)))
+		archive->child_pid = 0;
 }
 
 void
@@ -692,9 +693,11 @@ lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 	GError *error = NULL;
 	gchar *command = NULL;
 
+	const gchar *out_filename = g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE);
+
 	if(cond & (G_IO_PRI | G_IO_IN))
 	{
-		out_file = fopen(g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE), "ab");
+		out_file = fopen(out_filename, "ab");
 		if(!out_file)
 			g_critical("Could not open file");
 
@@ -713,18 +716,19 @@ lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 	{
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
-
 		if(!(cond & G_IO_ERR))
 		{
 			switch(archive->status)
 			{
 				case(LSQ_ARCHIVESTATUS_ADD):
-					command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf \"", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE), "\" ", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES), NULL);
+					archive->child_pid = 0;
+					command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf \"", out_filename, "\" ", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES), NULL);
 					lsq_execute(command, archive, lsq_archive_support_gnu_tar_compress_watch, NULL, NULL, NULL);
 					g_free(command);
 					break;
 				case(LSQ_ARCHIVESTATUS_REMOVE):
-					command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f \"", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE), "\" --delete ", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES), NULL);
+					archive->child_pid = 0;
+					command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f \"", out_filename, "\" --delete ", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES), NULL);
 					lsq_execute(command, archive, lsq_archive_support_gnu_tar_compress_watch, NULL, NULL, NULL);
 					g_free(command);
 					break;
@@ -732,6 +736,8 @@ lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 					break;
 			}
 		}
+		else
+			lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ERROR);
 		return FALSE; 
 	}
 	return TRUE;
@@ -769,6 +775,7 @@ lsq_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition 
 		g_io_channel_unref (ioc);
 		if(g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE))
 			g_unlink(g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE));
+		archive->child_pid = 0;
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 		return FALSE;
 	}

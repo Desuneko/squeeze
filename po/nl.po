@@ -18,7 +18,7 @@ msgstr ""
 
 #: ../libsqueeze/archive.c:483
 msgid "Name"
-msgstr "Naam:"
+msgstr "Naam"
 
 #: ../libsqueeze/archive.c:486
 msgid "Mime type"
