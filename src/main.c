@@ -127,6 +127,8 @@ int main(int argc, char **argv)
 	sq_icon_theme = gtk_icon_theme_get_default();
 	sq_app = sq_application_new(sq_icon_theme);
 
+	gtk_window_set_default_icon_name("squeeze");
+
 	g_signal_connect(G_OBJECT(sq_app), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 	if(version)

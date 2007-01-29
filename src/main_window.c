@@ -523,7 +523,6 @@ GtkWidget *
 sq_main_window_new(SQApplication *app, GtkIconTheme *icon_theme)
 {
 	SQMainWindow *window;
-	GdkPixbuf *icon;
 
 	window = g_object_new(sq_main_window_get_type(),
 			"title", PACKAGE_STRING,
@@ -533,12 +532,8 @@ sq_main_window_new(SQApplication *app, GtkIconTheme *icon_theme)
 
 	sq_notebook_set_icon_theme(SQ_NOTEBOOK(window->notebook), icon_theme);
 
-	icon = gtk_icon_theme_load_icon(icon_theme, "squeeze", 24, 0, NULL);
-
 	g_object_ref(app);
 	window->app = app;
-
-	gtk_window_set_icon(GTK_WINDOW(window), icon);
 
 	return GTK_WIDGET(window);
 }
