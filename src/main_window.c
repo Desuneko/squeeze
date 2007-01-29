@@ -60,7 +60,6 @@
 #include "new_dialog.h"
 #include "extract_dialog.h"
 #include "add_dialog.h"
-#include "properties_dialog.h"
 
 #include "main.h"
 
@@ -93,7 +92,7 @@ static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
-static void cb_sq_main_properties(GtkWidget *widget, gpointer userdata);
+/*static void cb_sq_main_properties(GtkWidget *widget, gpointer userdata);*/
 /*static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);*/
 
 static void cb_sq_main_about(GtkWidget *widget, gpointer userdata);
@@ -295,10 +294,6 @@ sq_main_window_init(SQMainWindow *window)
 		menu_separator = gtk_separator_menu_item_new();
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), menu_separator);
 
-		window->menubar.menu_item_properties = gtk_image_menu_item_new_from_stock(GTK_STOCK_PROPERTIES, window->accel_group);
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_properties);
-		gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);
-
 		window->menubar.menu_item_close = gtk_image_menu_item_new_from_stock(GTK_STOCK_CLOSE, window->accel_group);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_file), window->menubar.menu_item_close);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
@@ -311,7 +306,6 @@ sq_main_window_init(SQMainWindow *window)
 
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_new), "activate", G_CALLBACK(cb_sq_main_new_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_open), "activate", G_CALLBACK(cb_sq_main_open_archive), window);
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_properties), "activate", G_CALLBACK(cb_sq_main_properties), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_close), "activate", G_CALLBACK(cb_sq_main_close_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_quit), "activate", G_CALLBACK(cb_sq_main_close_window), window);
 		/* Action menu: ref all the childs*/
@@ -887,6 +881,7 @@ cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 	}
 }
 
+/*
 static void 
 cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
 {
@@ -900,6 +895,7 @@ cb_sq_main_properties(GtkWidget *widget, gpointer userdata)
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }
+*/
 
 
 /*
@@ -1051,7 +1047,7 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 		if(window->menu_bar)
 		{
 			gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);
+			/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);*/
 
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
@@ -1151,7 +1147,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 		else
 			sq_notebook_page_set_archive(SQ_NOTEBOOK(window->notebook), archive, support, replace);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
+		/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
 		return 0;
 	}
 	else
@@ -1223,7 +1219,7 @@ cb_sq_main_window_notebook_status_changed(SQNotebook *notebook, LSQArchive *arch
 		if(window->menu_bar)
 		{
 			gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);
+			/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
 
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
