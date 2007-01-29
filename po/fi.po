@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.4.2rc2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-29 12:08+0100\n"
+"POT-Creation-Date: 2007-01-29 14:19+0100\n"
 "PO-Revision-Date: 2007-01-18 17:17+0200\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -263,23 +263,23 @@ msgstr ""
 "%s: %s\n"
 "Kirjoittamalla %s --help saat täyden listan komentorivivalitsimista.\n"
 
-#: ../src/main_window.c:132
+#: ../src/main_window.c:131
 msgid "Internal Style"
 msgstr "Sisäinen tyyli"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:132
 msgid "Tool Bar Style"
 msgstr "Työkalupalkkityyli"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:133
 msgid "Path Bar Style"
 msgstr "Polkupalkkityyli"
 
-#: ../src/main_window.c:181
+#: ../src/main_window.c:180
 msgid "Navigation Style"
 msgstr "Navigointitapa"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:181
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -288,103 +288,103 @@ msgstr ""
 "Tapa, jolla navigoit arkistossa"
 
 #. File menu
-#: ../src/main_window.c:285
+#: ../src/main_window.c:284
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:318
+#: ../src/main_window.c:312
 msgid "_Action"
 msgstr "Toi_minto"
 
-#: ../src/main_window.c:323
+#: ../src/main_window.c:317
 msgid "_Add"
 msgstr "_Lisää"
 
-#: ../src/main_window.c:329
+#: ../src/main_window.c:323
 msgid "_Extract"
 msgstr "P_ura"
 
 #. View menu
-#: ../src/main_window.c:343
+#: ../src/main_window.c:337
 msgid "_View"
 msgstr "_Näytä"
 
 #. Help menu
-#: ../src/main_window.c:367
+#: ../src/main_window.c:361
 msgid "_Help"
 msgstr "_Ohje"
 
-#: ../src/main_window.c:402
+#: ../src/main_window.c:396
 msgid "Add"
 msgstr "Lisää"
 
-#: ../src/main_window.c:406 ../src/main_window.c:1081
+#: ../src/main_window.c:400 ../src/main_window.c:1078
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Pura"
 
-#: ../src/main_window.c:692
+#: ../src/main_window.c:686
 msgid "Open archive in new window"
 msgstr "Avaa arkisto uuteen ikkunaan"
 
-#: ../src/main_window.c:698
+#: ../src/main_window.c:692
 msgid "Open archive"
 msgstr "Avaa arkisto"
 
-#: ../src/main_window.c:768 ../src/main_window.c:1122 ../src/application.c:197
+#: ../src/main_window.c:762 ../src/main_window.c:1119 ../src/application.c:197
 #: ../src/application.c:213
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:806 ../src/application.c:287
+#: ../src/main_window.c:800 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:827
+#: ../src/main_window.c:821
 #, fuzzy
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:840
+#: ../src/main_window.c:834
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:879
+#: ../src/main_window.c:873
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
 
-#: ../src/main_window.c:959
+#: ../src/main_window.c:955
 msgid "Lead developer:"
 msgstr "Pääkehittäjä:"
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:958
 msgid "Contributors:"
 msgstr "Avustavat kehittäjät:"
 
-#: ../src/main_window.c:965
+#: ../src/main_window.c:961
 msgid "Artwork:"
 msgstr ""
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:962
 msgid ""
 "The add and extract icons are based on the extract icon created by Andreas "
 "Nilsson"
 msgstr ""
 
-#: ../src/main_window.c:968
+#: ../src/main_window.c:964
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiraatio Giuseppe Torellin sovelluksesta Xarchiver"
 
-#: ../src/main_window.c:973
+#: ../src/main_window.c:969
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -392,29 +392,29 @@ msgstr ""
 "Squeeze on kevyt ja joustava arkistonhallintasovellus Xfce-"
 "työpöytäympäristöön"
 
-#: ../src/main_window.c:979
+#: ../src/main_window.c:976
 msgid "translator-credits"
 msgstr "Jari Rahkonen <jari.rahkonen@pp1.inet.fi>"
 
-#: ../src/main_window.c:1080
+#: ../src/main_window.c:1077
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:1081
-msgid "View"
-msgstr "Näytä"
+#: ../src/main_window.c:1078
+msgid "Open"
+msgstr ""
 
-#: ../src/main_window.c:1095
+#: ../src/main_window.c:1092
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1163
+#: ../src/main_window.c:1160
 msgid "Failed to open file"
 msgstr "Linkin avaaminen epäonnistui"
 
-#: ../src/main_window.c:1164
+#: ../src/main_window.c:1161
 #, c-format
 msgid ""
 "'%s'\n"
@@ -583,6 +583,9 @@ msgstr "Arkistonhallinta"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce:n arkistonhallinta"
+
+#~ msgid "View"
+#~ msgstr "Näytä"
 
 #~ msgid "Filename"
 #~ msgstr "Tiedostonimi"

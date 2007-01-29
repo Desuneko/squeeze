@@ -967,6 +967,7 @@ cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 	gtk_about_dialog_set_name((GtkAboutDialog *)about_dialog, PACKAGE_NAME);
 	gtk_about_dialog_set_version((GtkAboutDialog *)about_dialog, PACKAGE_VERSION);
 	gtk_about_dialog_set_comments((GtkAboutDialog *)about_dialog, _("Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"));
+	gtk_about_dialog_set_website((GtkAboutDialog *)about_dialog, "http://squeeze.xfce.org");
 
 	gtk_about_dialog_set_logo_icon_name((GtkAboutDialog *)about_dialog, "squeeze");
 
@@ -1074,7 +1075,7 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 	LSQArchiveSupport *lp_support = NULL;
 	gchar *extract_archive_path = NULL;
 	GtkWidget *label = gtk_label_new(_("Which action do you want to perform on the selected file(s)?"));
-	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, _("View"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, _("Open"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 	GtkWidget *extr_dialog = NULL;
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 20);
 	gtk_widget_show(label);

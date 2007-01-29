@@ -402,7 +402,7 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, const gchar *extract_pa
 			}
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			{
-				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -xf --use-compress-program=lzop ", archive_path,
+				command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " --use-compress-program=lzop -xf ", archive_path,
 						" -C ", dest_path, 
 						command_options,
 						files, NULL);

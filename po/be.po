@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze trunk\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-29 12:08+0100\n"
+"POT-Creation-Date: 2007-01-29 14:19+0100\n"
 "PO-Revision-Date: 2007-01-20 04:24+0300\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -264,23 +264,23 @@ msgstr ""
 "%s: %s\n"
 "Паспрабуйце %s --help, каб убачыць сьпіс наяўных опцыяў.\n"
 
-#: ../src/main_window.c:132
+#: ../src/main_window.c:131
 msgid "Internal Style"
 msgstr "Унутраны стыль"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:132
 msgid "Tool Bar Style"
 msgstr "Стыль панэлі сродкаў"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:133
 msgid "Path Bar Style"
 msgstr "Стыль панэлі шляху"
 
-#: ../src/main_window.c:181
+#: ../src/main_window.c:180
 msgid "Navigation Style"
 msgstr "Стыль навігацыі"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:181
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -289,131 +289,131 @@ msgstr ""
 "Стыль навігацыі праз архіў"
 
 #. File menu
-#: ../src/main_window.c:285
+#: ../src/main_window.c:284
 msgid "_File"
 msgstr "_Файл"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:318
+#: ../src/main_window.c:312
 msgid "_Action"
 msgstr "_Дзеяньне"
 
-#: ../src/main_window.c:323
+#: ../src/main_window.c:317
 msgid "_Add"
 msgstr "_Дадаць"
 
-#: ../src/main_window.c:329
+#: ../src/main_window.c:323
 msgid "_Extract"
 msgstr "Рас_пакаваць"
 
 #. View menu
-#: ../src/main_window.c:343
+#: ../src/main_window.c:337
 msgid "_View"
 msgstr "_Выгляд"
 
 #. Help menu
-#: ../src/main_window.c:367
+#: ../src/main_window.c:361
 msgid "_Help"
 msgstr "_Даведка"
 
-#: ../src/main_window.c:402
+#: ../src/main_window.c:396
 msgid "Add"
 msgstr "Дадаць"
 
-#: ../src/main_window.c:406 ../src/main_window.c:1081
+#: ../src/main_window.c:400 ../src/main_window.c:1078
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Распакаваць"
 
-#: ../src/main_window.c:692
+#: ../src/main_window.c:686
 msgid "Open archive in new window"
 msgstr "Адкрыць архіў у новым акне"
 
-#: ../src/main_window.c:698
+#: ../src/main_window.c:692
 msgid "Open archive"
 msgstr "Адкрыць архіў"
 
-#: ../src/main_window.c:768 ../src/main_window.c:1122 ../src/application.c:197
+#: ../src/main_window.c:762 ../src/main_window.c:1119 ../src/application.c:197
 #: ../src/application.c:213
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:806 ../src/application.c:287
+#: ../src/main_window.c:800 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:827
+#: ../src/main_window.c:821
 #, fuzzy
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:840
+#: ../src/main_window.c:834
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:879
+#: ../src/main_window.c:873
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
 
-#: ../src/main_window.c:959
+#: ../src/main_window.c:955
 msgid "Lead developer:"
 msgstr "Асноўны распрацоўнік:"
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:958
 msgid "Contributors:"
 msgstr "Укладальнікі:"
 
-#: ../src/main_window.c:965
+#: ../src/main_window.c:961
 msgid "Artwork:"
 msgstr ""
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:962
 msgid ""
 "The add and extract icons are based on the extract icon created by Andreas "
 "Nilsson"
 msgstr ""
 
-#: ../src/main_window.c:968
+#: ../src/main_window.c:964
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "У натхненьні ад Xarchiver, напісана Giuseppe Torelli"
 
-#: ../src/main_window.c:973
+#: ../src/main_window.c:969
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr "Squeeze - гэта лёгкі і гнуткі кіраўнік архіваў для асяродзьдзя Xfce"
 
-#: ../src/main_window.c:979
+#: ../src/main_window.c:976
 msgid "translator-credits"
 msgstr "Аляксандар Няхайчык"
 
-#: ../src/main_window.c:1080
+#: ../src/main_window.c:1077
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:1081
-msgid "View"
-msgstr "Выгляд"
+#: ../src/main_window.c:1078
+msgid "Open"
+msgstr ""
 
-#: ../src/main_window.c:1095
+#: ../src/main_window.c:1092
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1163
+#: ../src/main_window.c:1160
 msgid "Failed to open file"
 msgstr "Немагчыма адкрыць файл"
 
-#: ../src/main_window.c:1164
+#: ../src/main_window.c:1161
 #, c-format
 msgid ""
 "'%s'\n"
@@ -582,6 +582,9 @@ msgstr "Кіраўнік архіваў"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Кіраўнік архіваў Xfce"
+
+#~ msgid "View"
+#~ msgstr "Выгляд"
 
 #~ msgid "Filename"
 #~ msgstr "Назва файла"

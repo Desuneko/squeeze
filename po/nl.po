@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-29 12:08+0100\n"
+"POT-Creation-Date: 2007-01-29 14:19+0100\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -261,23 +261,23 @@ msgstr ""
 "%s: %s\n"
 "Probeer %s --help voor een volledige lijst van mogelijke opties.\n"
 
-#: ../src/main_window.c:132
+#: ../src/main_window.c:131
 msgid "Internal Style"
 msgstr "Interne Stijl"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:132
 msgid "Tool Bar Style"
 msgstr "Werkbalk Stijl"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:133
 msgid "Path Bar Style"
 msgstr "Padbalk Stijl"
 
-#: ../src/main_window.c:181
+#: ../src/main_window.c:180
 msgid "Navigation Style"
 msgstr "Navigatie Stijl"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:181
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -286,51 +286,51 @@ msgstr ""
 "De stijl om te navigeren door het archief"
 
 #. File menu
-#: ../src/main_window.c:285
+#: ../src/main_window.c:284
 msgid "_File"
 msgstr "_Bestand"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:318
+#: ../src/main_window.c:312
 msgid "_Action"
 msgstr "_Actie"
 
-#: ../src/main_window.c:323
+#: ../src/main_window.c:317
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: ../src/main_window.c:329
+#: ../src/main_window.c:323
 msgid "_Extract"
 msgstr "_Uitpakken"
 
 #. View menu
-#: ../src/main_window.c:343
+#: ../src/main_window.c:337
 msgid "_View"
 msgstr "B_eeld"
 
 #. Help menu
-#: ../src/main_window.c:367
+#: ../src/main_window.c:361
 msgid "_Help"
 msgstr "_Help"
 
-#: ../src/main_window.c:402
+#: ../src/main_window.c:396
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:406 ../src/main_window.c:1081
+#: ../src/main_window.c:400 ../src/main_window.c:1078
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:692
+#: ../src/main_window.c:686
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:698
+#: ../src/main_window.c:692
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:768 ../src/main_window.c:1122 ../src/application.c:197
+#: ../src/main_window.c:762 ../src/main_window.c:1119 ../src/application.c:197
 #: ../src/application.c:213
 msgid ""
 "Squeeze cannot extract this archive type,\n"
@@ -339,7 +339,7 @@ msgstr ""
 "Squeeze kan dit archief type niet uitpakken,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:806 ../src/application.c:287
+#: ../src/main_window.c:800 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -347,11 +347,11 @@ msgstr ""
 "Squeeze kan aan dit archief type geen bestanden toevoegen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:827
+#: ../src/main_window.c:821
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Weet je zeker dat je de geselecteerde bestanden wilt verwijderen?"
 
-#: ../src/main_window.c:840
+#: ../src/main_window.c:834
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -359,7 +359,7 @@ msgstr ""
 "Squeeze kan van dit archief type geen bestanden verwijderen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:879
+#: ../src/main_window.c:873
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -367,19 +367,19 @@ msgstr ""
 "Weet je zeker dat je deze actie wilt annuleren?\n"
 "Dit zou het archief kunnen beschadigen."
 
-#: ../src/main_window.c:959
+#: ../src/main_window.c:955
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:958
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:965
+#: ../src/main_window.c:961
 msgid "Artwork:"
 msgstr "Graphisch:"
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:962
 msgid ""
 "The add and extract icons are based on the extract icon created by Andreas "
 "Nilsson"
@@ -387,11 +387,11 @@ msgstr ""
 "De pictogrammen voor het toevoegen en uitpakken zijn gebaseerd op een "
 "'uitpakken' pictogram dat gemaakt is door Andreas Nilsson"
 
-#: ../src/main_window.c:968
+#: ../src/main_window.c:964
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:973
+#: ../src/main_window.c:969
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -399,19 +399,19 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:979
+#: ../src/main_window.c:976
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:1080
+#: ../src/main_window.c:1077
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:1081
-msgid "View"
-msgstr "Weergeven"
+#: ../src/main_window.c:1078
+msgid "Open"
+msgstr "Openen"
 
-#: ../src/main_window.c:1095
+#: ../src/main_window.c:1092
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -419,11 +419,11 @@ msgstr ""
 "Squeeze kan dit bestand niet weergeven.\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:1163
+#: ../src/main_window.c:1160
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1164
+#: ../src/main_window.c:1161
 #, c-format
 msgid ""
 "'%s'\n"
@@ -592,52 +592,3 @@ msgstr "Archief beheerder"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce archief beheerder"
-
-#~ msgid "Filename"
-#~ msgstr "Bestandsnaam"
-
-#~ msgid "Test"
-#~ msgstr "Testen"
-
-#~ msgid ""
-#~ "Test archive integrity\n"
-#~ "Test the integrity of the archive"
-#~ msgstr ""
-#~ "Test archief integriteir\n"
-#~ "Test de integriteit van het archief"
-
-#~ msgid "_General"
-#~ msgstr "_Algemeen"
-
-#~ msgid "Archive viewer:"
-#~ msgstr "Archieveerder:"
-
-#~ msgid "_Show Icons"
-#~ msgstr "Pictogrammen _Tonen"
-
-#~ msgid "_Rules Hint"
-#~ msgstr "_Regel Hints"
-
-#~ msgid "Sorting:"
-#~ msgstr "Sorteren:"
-
-#~ msgid "Sort _Case Sensitive "
-#~ msgstr "Tekst _hoofdlettergevoelig sorteren"
-
-#~ msgid "Sort _Folders First"
-#~ msgstr "_Mappen voor bestanden sorteren"
-
-#~ msgid "Navigation bar:"
-#~ msgstr "Navigatie balk:"
-
-#~ msgid "_Behaviour"
-#~ msgstr "_Gedrag"
-
-#~ msgid "Preferences"
-#~ msgstr "Voorkeuren"
-
-#~ msgid "Visible:"
-#~ msgstr "Zichtbaar:"
-
-#~ msgid "Available:"
-#~ msgstr "Beschikbaar:"
