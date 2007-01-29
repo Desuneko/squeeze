@@ -557,6 +557,7 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 																				lsq_archive_get_filename(archive));
 				break;
 			case LSQ_ARCHIVESTATUS_EXTRACT:
+			case LSQ_ARCHIVESTATUS_PREPARE_VIEW:
 				dialog = gtk_message_dialog_new(NULL, 
 				                                0, 
 																				GTK_MESSAGE_ERROR, 
@@ -567,8 +568,11 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 			default:
 				break;
 		}
-		gtk_dialog_run((GtkDialog *)dialog);
-		gtk_widget_destroy(dialog);
+		if(dialog)
+		{
+			gtk_dialog_run((GtkDialog *)dialog);
+			gtk_widget_destroy(dialog);
+		}
 	}
 	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_IDLE)
 	{

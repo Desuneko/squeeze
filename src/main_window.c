@@ -751,12 +751,15 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 		if(lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames))
 		{
 			GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-			                                                   GTK_DIALOG_MODAL, 
+			                                                   GTK_DIALOG_DESTROY_WITH_PARENT, 
 																												 GTK_MESSAGE_WARNING,
 																												 GTK_BUTTONS_CLOSE,
 																												 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
-			gtk_dialog_run (GTK_DIALOG (warning_dialog) );
-			gtk_widget_destroy(warning_dialog);
+			if(warning_dialog)
+			{
+				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+				gtk_widget_destroy(warning_dialog);
+			}
 		}
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
@@ -789,7 +792,7 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 			if(lsq_archive_support_add(lp_support, lp_archive, filenames))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-																													 GTK_DIALOG_MODAL, 
+																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																													 GTK_MESSAGE_WARNING,
 																													 GTK_BUTTONS_CLOSE,
 																													 _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
@@ -823,7 +826,7 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 			if(lsq_archive_support_remove(lp_support, lp_archive, filenames))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-																													 GTK_DIALOG_MODAL, 
+																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																													 GTK_MESSAGE_WARNING,
 																													 GTK_BUTTONS_CLOSE,
 																													 _("Squeeze cannot remove files from this archive type,\nthe application to support this is missing."));
@@ -1070,7 +1073,7 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 	LSQArchiveSupport *lp_support = NULL;
 	gchar *extract_archive_path = NULL;
 	GtkWidget *label = gtk_label_new(_("Which action do you want to perform on the selected file(s)?"));
-	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, _("Open"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_DESTROY_WITH_PARENT, _("Open"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 	GtkWidget *extr_dialog = NULL;
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 20);
 	gtk_widget_show(label);
@@ -1084,7 +1087,7 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(notebook), &lp_archive, &lp_support);
 			if(lsq_archive_support_view(lp_support, lp_archive, filenames))
 			{
-				GtkWidget *warning_dialog = gtk_message_dialog_new(window, GTK_DIALOG_MODAL, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE, _("Squeeze cannot view this file.\nthe application to support this is missing."));
+				GtkWidget *warning_dialog = gtk_message_dialog_new(window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE, _("Squeeze cannot view this file.\nthe application to support this is missing."));
 				if(warning_dialog)
 				{
 					gtk_dialog_run(GTK_DIALOG(warning_dialog));
@@ -1108,7 +1111,7 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 				if(lsq_archive_support_extract(lp_support, lp_archive, extract_archive_path, filenames))
 				{
 					GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-																														 GTK_DIALOG_MODAL, 
+																														 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																														 GTK_MESSAGE_WARNING,
 																														 GTK_BUTTONS_CLOSE,
 																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
@@ -1149,7 +1152,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 	else
 	{
 		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-				GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL, 
+				GTK_DIALOG_DESTROY_WITH_PARENT, 
 				GTK_MESSAGE_ERROR, 
 				GTK_BUTTONS_OK,
 				_("Failed to open file"));

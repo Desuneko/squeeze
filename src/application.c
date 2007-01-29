@@ -191,7 +191,7 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 				if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
 				{
 					GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-																														 GTK_DIALOG_MODAL, 
+																														 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																														 GTK_MESSAGE_WARNING,
 																														 GTK_BUTTONS_CLOSE,
 																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
@@ -207,7 +207,7 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 			if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
 			{
 					GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-																														 GTK_DIALOG_MODAL, 
+																														 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																														 GTK_MESSAGE_WARNING,
 																														 GTK_BUTTONS_CLOSE,
 																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
@@ -251,7 +251,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			/* 
 			 * Could not create archive (mime type unsupported) 
 			 */
-			dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not create archive, MIME-type unsupported"));
+			dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_DESTROY_WITH_PARENT,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not create archive, MIME-type unsupported"));
 			gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 			gtk_dialog_run (GTK_DIALOG (dialog) );
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
@@ -268,7 +268,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			 * Could not open archive (mime type not supported or file did not exist)
 			 * Should be a more specific error message.
 			 */ 
-			dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not open archive, MIME-type unsupported or file did not exist"));
+			dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_DESTROY_WITH_PARENT,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not open archive, MIME-type unsupported or file did not exist"));
 			gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 			gtk_dialog_run (GTK_DIALOG (dialog) );
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
@@ -281,7 +281,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 	{
 		/* FIXME: show warning dialog */
 		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-																											 GTK_DIALOG_MODAL, 
+																											 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																											 GTK_MESSAGE_WARNING,
 																											 GTK_BUTTONS_CLOSE,
 																											 _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
