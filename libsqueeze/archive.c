@@ -480,7 +480,7 @@ lsq_archive_get_entry_property_name(LSQArchive *archive, guint i)
 	switch(i)
 	{
 		case LSQ_ARCHIVE_PROP_FILENAME:
-			retval = _("Filename");
+			retval = _("Name");
 			break;
 		case LSQ_ARCHIVE_PROP_MIME_TYPE:
 			retval = _("Mime type");
