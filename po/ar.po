@@ -1,0 +1,570 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: squeeze\n"
+"Report-Msgid-Bugs-To: stephan@xfce.org\n"
+"POT-Creation-Date: 2007-01-22 18:19+0100\n"
+"PO-Revision-Date: 2007-01-24 09:48+0200\n"
+"Last-Translator: Mohamed Magdy <alnokta@yahoo.com>\n"
+"Language-Team: Arabeyes Translation & Documentation <admin@arabeyes.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../libsqueeze/archive.c:481
+msgid "Filename"
+msgstr ""
+
+#: ../libsqueeze/archive.c:484
+msgid "Mime type"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1561
+msgid "Initializing archive"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1564
+msgid "Refreshing archive contents"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1567
+msgid "Adding file(s) to archive"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1570
+msgid "Extracting file(s) from archive"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1573
+msgid "Removing file(s) from archive"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1576
+msgid "Done"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1579
+msgid "Extracting file(s) to temporary directory"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1581
+msgid "Performing an extended action"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1584
+msgid "Cancelled"
+msgstr ""
+
+#: ../libsqueeze/archive.c:1587
+msgid "Error"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:161
+#: ../libsqueeze/archive-support-zip.c:137
+#: ../libsqueeze/archive-support-rar.c:141
+msgid "Overwrite existing files"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:162
+#: ../libsqueeze/archive-support-zip.c:138
+#: ../libsqueeze/archive-support-rar.c:142
+msgid "Overwrite existing files on extraction"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:168
+#: ../libsqueeze/archive-support-gnu-tar.c:169
+msgid "Touch files"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:175
+#: ../libsqueeze/archive-support-gnu-tar.c:176
+msgid "Strip directories"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:184
+msgid "Keep newer files"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:185
+msgid "Do not overwrite files newer then those in the archive"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:191
+#: ../libsqueeze/archive-support-gnu-tar.c:192
+msgid "Override permissions"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:198
+#: ../libsqueeze/archive-support-gnu-tar.c:506
+#: ../libsqueeze/archive-support-zip.c:172
+#: ../libsqueeze/archive-support-zip.c:328
+#: ../libsqueeze/archive-support-rar.c:176
+#: ../libsqueeze/archive-support-rar.c:345
+msgid "Size"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:199
+#: ../libsqueeze/archive-support-zip.c:173
+#: ../libsqueeze/archive-support-rar.c:177
+msgid "View filesize"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:205
+#: ../libsqueeze/archive-support-gnu-tar.c:498
+#: ../libsqueeze/archive-support-rar.c:204
+#: ../libsqueeze/archive-support-rar.c:365
+msgid "Permissions"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:206
+#: ../libsqueeze/archive-support-rar.c:205
+msgid "View permissions"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:212
+#: ../libsqueeze/archive-support-gnu-tar.c:502
+msgid "Owner/Group"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:213
+msgid "View owner/group"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:219
+#: ../libsqueeze/archive-support-gnu-tar.c:510
+#: ../libsqueeze/archive-support-zip.c:158
+#: ../libsqueeze/archive-support-zip.c:344
+#: ../libsqueeze/archive-support-rar.c:162
+#: ../libsqueeze/archive-support-rar.c:357
+msgid "Date"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:220
+#: ../libsqueeze/archive-support-zip.c:159
+#: ../libsqueeze/archive-support-rar.c:163
+msgid "View date"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:226
+#: ../libsqueeze/archive-support-gnu-tar.c:514
+#: ../libsqueeze/archive-support-zip.c:151
+#: ../libsqueeze/archive-support-zip.c:348
+#: ../libsqueeze/archive-support-rar.c:155
+#: ../libsqueeze/archive-support-rar.c:361
+msgid "Time"
+msgstr ""
+
+#: ../libsqueeze/archive-support-gnu-tar.c:227
+#: ../libsqueeze/archive-support-zip.c:152
+#: ../libsqueeze/archive-support-rar.c:156
+msgid "View time"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:110
+msgid "Test"
+msgstr ""
+
+#. TRANSATORS: first line is short comment, after newline is long comment
+#: ../libsqueeze/archive-support-zip.c:112
+msgid ""
+"Test archive integrity\n"
+"Test the integrity of the archive"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:130
+#: ../libsqueeze/archive-support-zip.c:131
+#: ../libsqueeze/archive-support-rar.c:134
+#: ../libsqueeze/archive-support-rar.c:135
+msgid "Password"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:144
+#: ../libsqueeze/archive-support-zip.c:336
+#: ../libsqueeze/archive-support-rar.c:148
+#: ../libsqueeze/archive-support-rar.c:349
+msgid "Compressed Size"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:145
+#: ../libsqueeze/archive-support-rar.c:149
+msgid "View compressed filesize"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:165
+#: ../libsqueeze/archive-support-zip.c:340
+#: ../libsqueeze/archive-support-rar.c:169
+#: ../libsqueeze/archive-support-rar.c:353
+msgid "Ratio"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:166
+#: ../libsqueeze/archive-support-rar.c:170
+msgid "View ratio"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:179
+#: ../libsqueeze/archive-support-zip.c:332
+#: ../libsqueeze/archive-support-rar.c:183
+#: ../libsqueeze/archive-support-rar.c:373
+msgid "Method"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:180
+#: ../libsqueeze/archive-support-rar.c:184
+msgid "View method"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:186
+#: ../libsqueeze/archive-support-zip.c:352
+#: ../libsqueeze/archive-support-rar.c:190
+#: ../libsqueeze/archive-support-rar.c:369
+msgid "Checksum"
+msgstr ""
+
+#: ../libsqueeze/archive-support-zip.c:187
+#: ../libsqueeze/archive-support-rar.c:191
+msgid "View Checksum"
+msgstr ""
+
+#: ../libsqueeze/archive-support-rar.c:197
+msgid "Compression version"
+msgstr ""
+
+#: ../libsqueeze/archive-support-rar.c:198
+msgid "View compression version"
+msgstr ""
+
+#: ../libsqueeze/archive-support-rar.c:377
+msgid "Version"
+msgstr ""
+
+#: ../src/main.c:52
+msgid "[destination path]"
+msgstr ""
+
+#: ../src/main.c:60
+msgid "[archive path] [file1] [file2] ... [fileN]"
+msgstr ""
+
+#: ../src/main.c:64
+msgid "[file1] [file2] ... [fileN]"
+msgstr ""
+
+#: ../src/main.c:67
+msgid "Version information"
+msgstr ""
+
+#: ../src/main.c:114
+msgid "[archive name]"
+msgstr ""
+
+#: ../src/main.c:118
+#, c-format
+msgid ""
+"%s: %s\n"
+"Try %s --help to see a full list of available command line options.\n"
+msgstr ""
+
+#: ../src/main_window.c:130
+msgid "Internal Style"
+msgstr ""
+
+#: ../src/main_window.c:131
+msgid "Tool Bar Style"
+msgstr ""
+
+#: ../src/main_window.c:132
+msgid "Path Bar Style"
+msgstr ""
+
+#: ../src/main_window.c:177
+msgid "Navigation Style"
+msgstr ""
+
+#: ../src/main_window.c:178
+msgid ""
+"Style of navigation\n"
+"The style to navigate trough the archive"
+msgstr ""
+
+#. File menu
+#: ../src/main_window.c:265
+msgid "_File"
+msgstr ""
+
+#. Action menu: ref all the childs
+#: ../src/main_window.c:298
+msgid "_Action"
+msgstr ""
+
+#: ../src/main_window.c:303
+msgid "_Add"
+msgstr ""
+
+#: ../src/main_window.c:309
+msgid "_Extract"
+msgstr ""
+
+#. View menu
+#: ../src/main_window.c:323
+msgid "_View"
+msgstr ""
+
+#. Help menu
+#: ../src/main_window.c:347
+msgid "_Help"
+msgstr ""
+
+#: ../src/main_window.c:378
+msgid "Add"
+msgstr ""
+
+#: ../src/main_window.c:382 ../src/main_window.c:1027
+#: ../src/extract_dialog.c:102
+msgid "Extract"
+msgstr ""
+
+#: ../src/main_window.c:659
+msgid "Open archive in new window"
+msgstr ""
+
+#: ../src/main_window.c:665
+msgid "Open archive"
+msgstr ""
+
+#: ../src/main_window.c:735 ../src/main_window.c:1065 ../src/application.c:197
+#: ../src/application.c:213
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:773 ../src/application.c:287
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:794
+msgid "Are you sure you want to remove the selected files?"
+msgstr ""
+
+#: ../src/main_window.c:807
+msgid ""
+"Squeeze cannot remove files from this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:846
+msgid ""
+"Are you sure you want to cancel this operation?\n"
+"This could damage the archive."
+msgstr ""
+
+#: ../src/main_window.c:926
+msgid "Lead developer:"
+msgstr ""
+
+#: ../src/main_window.c:929
+msgid "Contributors:"
+msgstr ""
+
+#: ../src/main_window.c:932
+msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
+msgstr ""
+
+#: ../src/main_window.c:937
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+
+#: ../src/main_window.c:943
+msgid "translator-credits"
+msgstr ""
+
+#: ../src/main_window.c:1026
+msgid "Which action do you want to perform on the selected file(s)?"
+msgstr ""
+
+#: ../src/main_window.c:1027
+msgid "View"
+msgstr ""
+
+#: ../src/main_window.c:1041
+msgid ""
+"Squeeze cannot view this file.\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:1106
+msgid "Failed to open file"
+msgstr ""
+
+#: ../src/main_window.c:1107
+#, c-format
+msgid ""
+"'%s'\n"
+"Could not be opened"
+msgstr ""
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:254
+msgid "Could not create archive, MIME-type unsupported"
+msgstr ""
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:271
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+
+#: ../src/new_dialog.c:69
+msgid "Archive type:"
+msgstr ""
+
+#: ../src/new_dialog.c:73
+msgid "Append extension to filename"
+msgstr ""
+
+#: ../src/new_dialog.c:83
+msgid "Archives"
+msgstr ""
+
+#: ../src/new_dialog.c:142
+msgid "Create new archive"
+msgstr ""
+
+#: ../src/add_dialog.c:75
+msgid "Files and directories to add"
+msgstr ""
+
+#: ../src/add_dialog.c:76
+msgid "Options:"
+msgstr ""
+
+#: ../src/add_dialog.c:109
+msgid "Files"
+msgstr ""
+
+#: ../src/add_dialog.c:113
+msgid "Directories"
+msgstr ""
+
+#: ../src/add_dialog.c:149
+msgid "Add file(s) to archive"
+msgstr ""
+
+#. Select Files Dialog
+#: ../src/add_dialog.c:185
+msgid "Select files"
+msgstr ""
+
+#. Select Folder Dialog
+#: ../src/add_dialog.c:191
+msgid "Select folders"
+msgstr ""
+
+#: ../src/extract_dialog.c:78
+msgid "<b>Extract files:</b>"
+msgstr ""
+
+#: ../src/extract_dialog.c:79
+msgid "<b>Options:</b>"
+msgstr ""
+
+#: ../src/extract_dialog.c:89
+msgid "All files"
+msgstr ""
+
+#: ../src/extract_dialog.c:90
+msgid "Selected files"
+msgstr ""
+
+#: ../src/extract_dialog.c:115
+msgid "Extract archive"
+msgstr ""
+
+#: ../src/properties_dialog.c:87
+msgid "Name:"
+msgstr ""
+
+#: ../src/properties_dialog.c:100
+msgid "Kind:"
+msgstr ""
+
+#: ../src/properties_dialog.c:121
+msgid "Properties"
+msgstr ""
+
+#: ../src/tool_bar.c:159
+msgid "Location:"
+msgstr ""
+
+#: ../src/path_bar.c:141
+msgid "Spacing"
+msgstr ""
+
+#: ../src/path_bar.c:142
+msgid "The amount of space between the path buttons"
+msgstr ""
+
+#: ../src/notebook.c:177 ../src/archive_store.c:242
+msgid "Show mime icons"
+msgstr ""
+
+#: ../src/notebook.c:178 ../src/archive_store.c:243
+msgid "Show the mime type icons for each entry"
+msgstr ""
+
+#: ../src/notebook.c:184 ../src/archive_store.c:256
+msgid "Sort folders before files"
+msgstr ""
+
+#: ../src/notebook.c:185 ../src/archive_store.c:257
+msgid "The folders will be put at the top of the list"
+msgstr ""
+
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:263
+#: ../src/archive_store.c:264
+msgid "Sort text case sensitive"
+msgstr ""
+
+#: ../src/notebook.c:198
+msgid "Rules hint"
+msgstr ""
+
+#: ../src/notebook.c:199
+msgid "Make the row background colors alternate"
+msgstr ""
+
+#: ../src/notebook.c:549
+#, c-format
+msgid "Failed to open archive '%s'."
+msgstr ""
+
+#: ../src/notebook.c:557
+#, c-format
+msgid "Failed to extract contents of archive '%s'."
+msgstr ""
+
+#: ../src/archive_store.c:249
+msgid "Show up dir entry"
+msgstr ""
+
+#: ../src/archive_store.c:250
+msgid "Show '..' to go to the parent directory"
+msgstr ""
+
+#: ../squeeze.desktop.in.h:1
+msgid "Archive manager"
+msgstr ""
+
+#: ../squeeze.desktop.in.h:2
+msgid "Xfce archive manager"
+msgstr ""
