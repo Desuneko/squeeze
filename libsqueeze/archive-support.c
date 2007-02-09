@@ -1,7 +1,4 @@
-/*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
- *  This program is free software; you can redistribute it and/or modify
+/*  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
@@ -203,7 +200,6 @@ lsq_archive_support_add(LSQArchiveSupport *support, LSQArchive *archive, GSList 
 {
 	if(support->add)
 	{
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ADD);
 		archive->support = support;
 		return support->add(archive, files);
 	}
@@ -217,7 +213,6 @@ lsq_archive_support_extract(LSQArchiveSupport *support, LSQArchive *archive, con
 {
 	if(support->extract)
 	{
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_EXTRACT);
 		archive->support = support;
 		return support->extract(archive, dest_path, files);
 	}
@@ -231,26 +226,6 @@ lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSLi
 {
 	if(support->remove)
 	{
-		const gchar *path;
-		GSList *iter = archive->files;
-		while(iter)
-		{
-			g_free(iter->data);
-			iter = g_slist_next(iter);
-		}
-		g_slist_free(archive->files);
-		iter = archive->files = g_slist_copy(files);
-		/* TODO: is add children really nesecery? */
-		lsq_archive_add_children(archive, files);
-		while(iter)
-		{
-			path = (const gchar*)iter->data;
-			iter->data = g_strdup(path);
-			lsq_archive_del_file(archive, path);
-			iter = g_slist_next(iter);
-		}
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REMOVE);
-		archive->support = support;
 		return support->remove(archive, files);
 	}
 	else
@@ -263,7 +238,6 @@ lsq_archive_support_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 {
 	if(support->refresh)
 	{
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_REFRESH);
 		archive->support = support;
 		return support->refresh(archive);
 	}
@@ -278,20 +252,6 @@ lsq_archive_support_view(LSQArchiveSupport *support, LSQArchive *archive, GSList
 	if(support->extract)
 	{
 		archive->support = support;
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_PREPARE_VIEW);
-		GSList *iter = archive->files;
-		while(iter)
-		{
-			g_free(iter->data);
-			iter = g_slist_next(iter);
-		}
-		g_slist_free(archive->files);
-		iter = archive->files = g_slist_copy(files);
-		while(iter)
-		{
-			iter->data = g_strdup(iter->data);
-			iter = g_slist_next(iter);
-		}
 		if(support->extract(archive, lsq_tempfs_get_root_dir(archive), files))
 			return -1;
 		return 0;
@@ -299,23 +259,6 @@ lsq_archive_support_view(LSQArchiveSupport *support, LSQArchive *archive, GSList
 	else
 		g_critical("EXTRACT NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
-}
-
-void
-lsq_archive_support_view_prepared(LSQArchive *archive, GSList *files, gpointer user_data)
-{
-	gchar *full_file;
-	while(files)
-	{	
-		lsq_tempfs_chmod(archive, files->data, 0400);
-		full_file = g_strconcat(lsq_tempfs_get_root_dir(archive), "/", files->data, NULL);
-#ifdef DEBUG
-		g_debug("Open file: '%s'", full_file);
-#endif
-		exo_url_show(full_file, NULL, NULL);
-		g_free(full_file);
-		files = g_slist_next(files);
-	}
 }
 
 guint64
@@ -423,20 +366,4 @@ void
 lsq_custom_action_notify(LSQCustomAction *action, const gchar *message)
 {
 	action->callback->notify_func(action, message);
-}
-
-/**
- * gboolean
- * lsq_archive_support_can_stop(LSQArchiveSupport *support)
- * 
- * Returns: TRUE if there is no risk of corrupting the archive when closing the support-app
- *          FALSE otherwise, there should be a warning dialog to let the user proceed anyway.
- *
- */
-gboolean
-lsq_archive_support_can_stop(LSQArchiveSupport *support, LSQArchive *archive)
-{
-	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_REFRESH)
-		return TRUE;
-	return FALSE;
 }

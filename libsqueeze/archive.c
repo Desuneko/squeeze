@@ -1,5 +1,4 @@
-/*  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
+/*
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or 
@@ -96,8 +95,10 @@ lsq_archive_iter_get_prop_uint64(const LSQArchive *, const LSQArchiveIter *, gui
 static const gchar *
 lsq_archive_iter_get_mimetype(const LSQArchive *, const LSQArchiveIter *);
 
+/*
 static gchar *
 lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path);
+*/
 
 static gint
 lsq_entry_filename_compare(LSQEntry *, LSQEntry *);
@@ -204,9 +205,6 @@ static void
 lsq_archive_init(LSQArchive *archive)
 {
 	archive->root_entry = g_new0(LSQEntry, 1);
-	archive->status = LSQ_ARCHIVESTATUS_INIT;
-	archive->old_status = LSQ_ARCHIVESTATUS_INIT;
-	archive->files = NULL;
 #ifdef LSQ_THREADSAFE
 	g_static_rw_lock_init(&archive->rw_lock);
 #endif /* LSQ_THREADSAFE */
@@ -232,17 +230,6 @@ lsq_archive_finalize(GObject *object)
 		thunar_vfs_mime_info_unref(archive->mime_info);
 
 	lsq_archive_entry_free(archive, archive->root_entry);
-	switch(archive->status)
-	{
-		case(LSQ_ARCHIVESTATUS_IDLE):
-		case(LSQ_ARCHIVESTATUS_ERROR):
-		case(LSQ_ARCHIVESTATUS_USERBREAK):
-			break;
-		default:
-			if(archive->child_pid)
-				kill ( archive->child_pid , SIGHUP);
-			break;
-	}
 	lsq_tempfs_clean_root_dir(archive);
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, object);
 }
@@ -299,55 +286,9 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	return archive;
 }
 
-void 
-lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status)
-{
-	gchar *_path = NULL;
-	gchar *_path_ = NULL;
-	GSList *iter;
-
-	if(LSQ_IS_ARCHIVE(archive))
-	{
-		if(archive->status != status)
-		{
-			archive->old_status = archive->status;
-			archive->status = status;
-			g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED], 0, NULL);
-			if((archive->old_status == LSQ_ARCHIVESTATUS_REFRESH) && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
-			if((archive->old_status == LSQ_ARCHIVESTATUS_PREPARE_VIEW))// && (archive->status == LSQ_ARCHIVESTATUS_IDLE))
-			{
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED], 0, archive->files, NULL);
-				iter = archive->files;
-				while(iter)
-				{
-					g_free(iter->data);
-					iter = g_slist_next(iter);
-				}
-				g_slist_free(archive->files);
-				archive->files = NULL;
-			}
-
-			if((archive->old_status == LSQ_ARCHIVESTATUS_REMOVE) && (archive->files))
-			{
-				/* FIXME: can not be space in path */
-				_path = archive->files->data;
-				_path = g_shell_unquote(_path, NULL);
-				_path_ = lsq_archive_get_iter_part(archive, _path);
-				g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED], 0, _path_, NULL);
-				g_free(_path_);
-				g_free(_path);
-				g_slist_free(archive->files);
-				archive->files = NULL;
-			}
-		} 
-	}
-}
-
 gint
 lsq_stop_archive_child( LSQArchive *archive )
 {
-	lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_USERBREAK);
 	return 0;
 }
 
@@ -599,6 +540,7 @@ lsq_archive_get_iter(const LSQArchive *archive, const gchar *path)
 	return entry;
 }
 
+/*
 static gchar *
 lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path)
 {
@@ -616,12 +558,12 @@ lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path)
 		iter[0] = strdup("/");
 	}
 
-	while(iter[1]) /* next iter must exist */
+	while(iter[1]) // next iter must exist
 	{
 		if((*iter)[0])
 		{
 			entry = lsq_archive_iter_get_child(archive, entry, *iter);
-			if(!entry) /*&& lsq_archive_iter_is_directory(archive, entry))*/
+			if(!entry) //&& lsq_archive_iter_is_directory(archive, entry))
 			{
 				break;
 			}
@@ -643,6 +585,7 @@ lsq_archive_get_iter_part(const LSQArchive *archive, const gchar *path)
 
 	return result;
 }
+*/
 
 /******************
  * LSQEntry stuff *
@@ -1548,61 +1491,6 @@ lsq_archive_get_mimetype(LSQArchive *archive)
 	return thunar_vfs_mime_info_get_name(archive->mime_info);
 }
 
-LSQArchiveStatus
-lsq_archive_get_status(LSQArchive *archive)
-{
-	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), LSQ_ARCHIVESTATUS_ERROR);
-	return archive->status;
-}
-
-LSQArchiveStatus
-lsq_archive_get_old_status(LSQArchive *archive)
-{
-	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), LSQ_ARCHIVESTATUS_ERROR);
-	return archive->old_status;
-}
-
-const gchar *
-lsq_archive_get_status_msg(LSQArchive *archive)
-{
-	const gchar *msg = "";
-	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), "");
-
-	switch(archive->status)
-	{
-		case LSQ_ARCHIVESTATUS_INIT:
-			msg = N_("Initializing archive");
-			break;
-		case LSQ_ARCHIVESTATUS_REFRESH:
-			msg = N_("Refreshing archive contents");
-			break;
-		case LSQ_ARCHIVESTATUS_ADD:
-			msg = N_("Adding file(s) to archive");
-			break;
-		case LSQ_ARCHIVESTATUS_EXTRACT:
-			msg = N_("Extracting file(s) from archive");
-			break;
-		case LSQ_ARCHIVESTATUS_REMOVE:
-			msg = N_("Removing file(s) from archive");
-			break;
-		case LSQ_ARCHIVESTATUS_IDLE:
-			msg = N_("Done");
-			break;
-		case LSQ_ARCHIVESTATUS_PREPARE_VIEW:
-			msg = N_("Extracting file(s) to temporary directory");
-		case LSQ_ARCHIVESTATUS_CUSTOM:
-			msg = N_("Performing an extended action");
-			break;
-		case LSQ_ARCHIVESTATUS_USERBREAK:
-			msg = N_("Cancelled");
-			break;
-		case LSQ_ARCHIVESTATUS_ERROR:
-			msg = N_("Error");
-			break;
-	}
-	return msg;
-}
-
 void
 lsq_archive_iter_get_icon_name(const LSQArchive *archive, const LSQArchiveIter *iter, GValue *value, GtkIconTheme *icon_theme)
 {
@@ -1634,10 +1522,15 @@ lsq_archive_add_children(LSQArchive *archive, GSList *files)
 	}
 }
 
-gboolean
-lsq_archive_stop(LSQArchive *archive)
+void
+lsq_archive_enqueue(LSQArchive *archive, LSQArchiveCommand *command)
 {
-	if(archive->child_pid)
-		kill ( archive->child_pid , SIGHUP);
-	return TRUE;
+	archive->command_queue = g_slist_append(archive->command_queue, command);
+}
+
+void
+lsq_archive_dequeue(LSQArchive *archive, LSQArchiveCommand *command)
+{
+	g_return_if_fail(archive->command_queue->data == command);
+	archive->command_queue = g_slist_remove(archive->command_queue, command);
 }

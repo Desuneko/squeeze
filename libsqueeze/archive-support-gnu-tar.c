@@ -528,18 +528,9 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 }
 
 void
-lsq_archive_support_gnu_tar_passive_watch(GPid pid, gint status, gpointer data)
-{
-	LSQArchive *archive = data;
-	if(!((archive->status == LSQ_ARCHIVESTATUS_ADD) || (archive->status == LSQ_ARCHIVESTATUS_REMOVE)))
-		archive->child_pid = 0;
-}
-
-void
 lsq_archive_support_gnu_tar_compress_watch(GPid pid, gint status, gpointer data)
 {
 	LSQArchive *archive = data;
-	archive->child_pid = 0;
 	gchar *command = NULL;
 
 	if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
@@ -721,13 +712,11 @@ lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOConditio
 			switch(archive->status)
 			{
 				case(LSQ_ARCHIVESTATUS_ADD):
-					archive->child_pid = 0;
 					command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -rf \"", out_filename, "\" ", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES), NULL);
 					lsq_execute(command, archive, lsq_archive_support_gnu_tar_compress_watch, NULL, NULL, NULL);
 					g_free(command);
 					break;
 				case(LSQ_ARCHIVESTATUS_REMOVE):
-					archive->child_pid = 0;
 					command = g_strconcat(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->app_name, " -f \"", out_filename, "\" --delete ", g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_FILES), NULL);
 					lsq_execute(command, archive, lsq_archive_support_gnu_tar_compress_watch, NULL, NULL, NULL);
 					g_free(command);
@@ -775,7 +764,6 @@ lsq_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition 
 		g_io_channel_unref (ioc);
 		if(g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE))
 			g_unlink(g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE));
-		archive->child_pid = 0;
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 		return FALSE;
 	}

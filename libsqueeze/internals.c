@@ -39,7 +39,7 @@
 static gint
 lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer path);
 
-
+/*
 void
 lsq_default_child_watch_func(GPid pid, gint status, gpointer data)
 {
@@ -137,6 +137,7 @@ lsq_execute(gchar *command, LSQArchive *archive, GChildWatchFunc function, GIOFu
 	}
 	return 0;
 }
+*/
 
 gchar *
 lsq_concat_filenames(GSList *filenames)

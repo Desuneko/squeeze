@@ -25,6 +25,7 @@
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-zip.h"
+#include "archive-command.h"
 
 #include "internals.h"
 
@@ -198,6 +199,7 @@ lsq_archive_support_zip_new()
 static gint
 lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 {
+	LSQArchiveCommand *archive_command = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not zip");
@@ -210,16 +212,16 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 	}
 	else
 	{
-		gchar *command = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
-		gchar *archive_path = g_shell_quote(archive->path);
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			command = g_strconcat("zip -r ", archive_path, " ", files, NULL);
-			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
+			gchar *files = lsq_concat_filenames(filenames);
+
+			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s");
+			g_object_set(archive_command, "files", files);
+			g_free(files);
+			g_object_unref(archive_command);
 		}
-		g_free(archive_path);
 	}
 	return 0;
 }
@@ -227,6 +229,8 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 static gint
 lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
+	LSQArchiveCommand *archive_command = NULL;
+	gchar *dest_path = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not Zip");
@@ -239,26 +243,23 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 	}
 	else
 	{
-		gchar *command = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
-		gchar *archive_path = g_shell_quote(archive->path);
-		gchar *dest_path = g_shell_quote(extract_path);
-		if(archive->file_info) /* FIXME */
+		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
+	     !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
-		     !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
-			{
-				command = g_strconcat("unzip -o ", archive_path, " ", files, " -d ", dest_path, NULL);
-				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
-			}	
-		} else
-		{
+			gchar *files = lsq_concat_filenames(filenames);
+			if(extract_path)
+				dest_path = g_shell_quote(extract_path);
+
+			gchar *options = g_strconcat(" -d ", dest_path, NULL);
+
+			archive_command = lsq_archive_command_new("", archive, "zip -o %1$s %2$s %3$s");
+			g_object_set(archive_command, "files", files);
+			g_object_set(archive_command, "options", options);
+			g_object_unref(archive_command);
 			g_free(dest_path);
-			g_free(archive_path);
-			return 1;
-		}
-		g_free(dest_path);
-		g_free(archive_path);
+			g_free(options);
+			g_free(files);
+		}	
 	}
 	return 0;
 }
@@ -266,6 +267,7 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 static gint
 lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 {
+	LSQArchiveCommand *archive_command = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not zip");
@@ -278,16 +280,16 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 	}
 	else
 	{
-		gchar *command = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
-		gchar *archive_path = g_shell_quote(archive->path);
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			command = g_strconcat("zip -d ", archive_path, " ", files, NULL);
-			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
+			gchar *files = lsq_concat_filenames(filenames);
+
+			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s");
+			g_object_set(archive_command, "files", files);
+			g_free(files);
+			g_object_unref(archive_command);
 		}
-		g_free(archive_path);
 	}
 	return 0;
 }
@@ -296,6 +298,7 @@ static gint
 lsq_archive_support_zip_refresh(LSQArchive *archive)
 {
 	guint i = 0;
+	LSQArchiveCommand *archive_command = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
 	{
 		g_critical("Support is not Zip");
@@ -310,7 +313,6 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 	{
 		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
-		gchar *archive_path = g_shell_quote(archive->path);
 		if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
@@ -339,10 +341,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
-		gchar *command = g_strconcat("unzip -lv -qq ", archive_path, NULL);
-		lsq_execute(command, archive, NULL, NULL, lsq_archive_support_zip_refresh_parse_output, NULL);
-		g_free(command);
-		g_free(archive_path);
+		archive_command = lsq_archive_command_new("", archive, "unzip -lv -qq %1$s");
 	}
 	return 0;
 }
@@ -476,7 +475,6 @@ lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 	{
 		g_io_channel_shutdown ( ioc,TRUE,NULL );
 		g_io_channel_unref (ioc);
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 		return FALSE; 
 	}
 	return TRUE;

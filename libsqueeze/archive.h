@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -19,19 +17,7 @@
 #define __LIBSQUEEZE_ARCHIVE_H__ 
 G_BEGIN_DECLS
 
-typedef enum
-{
-	LSQ_ARCHIVESTATUS_INIT = 0,
-	LSQ_ARCHIVESTATUS_IDLE,
-	LSQ_ARCHIVESTATUS_ADD,
-	LSQ_ARCHIVESTATUS_EXTRACT,
-	LSQ_ARCHIVESTATUS_REMOVE,
-	LSQ_ARCHIVESTATUS_REFRESH,
-	LSQ_ARCHIVESTATUS_ERROR,
-	LSQ_ARCHIVESTATUS_PREPARE_VIEW,
-	LSQ_ARCHIVESTATUS_CUSTOM,
-	LSQ_ARCHIVESTATUS_USERBREAK
-} LSQArchiveStatus;
+typedef struct _LSQArchiveCommand LSQArchiveCommand;
 
 enum
 {
@@ -77,17 +63,8 @@ struct _LSQArchive
 	GType              *entry_property_types;
 	gchar             **entry_property_names;
 	LSQEntry           *root_entry;
-	LSQArchiveStatus    status;
-	LSQArchiveStatus    old_status;
-	gchar              *status_msg;
-	gdouble             progress;
-	GPid                child_pid;
-	GIOChannel         *ioc_in;
-	GIOChannel         *ioc_out;
-	GIOChannel         *ioc_err;
 	gpointer            support;
-	GSList             *files;
-	gboolean            has_passwd;
+	GSList             *command_queue;
 	struct {
 		guint64 archive_size;
 		guint64 content_size;
@@ -108,10 +85,6 @@ struct _LSQArchiveClass
 GType               lsq_archive_get_type(void);
 LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
 
-void                lsq_archive_set_status(LSQArchive *archive, LSQArchiveStatus status) G_GNUC_INTERNAL;
-LSQArchiveStatus    lsq_archive_get_status(LSQArchive *archive);
-const gchar *       lsq_archive_get_status_msg(LSQArchive *archive);
-LSQArchiveStatus    lsq_archive_get_old_status(LSQArchive *archive);
 const gchar *       lsq_archive_get_filename(LSQArchive *archive);
 const gchar *       lsq_archive_get_mimetype(LSQArchive *archive);
 
@@ -148,6 +121,9 @@ guint64             lsq_archive_get_n_directories(LSQArchive *archive);
 gboolean            lsq_archive_stop(LSQArchive *archive);
 
 void                lsq_archive_add_children(LSQArchive *, GSList *) G_GNUC_INTERNAL;
+
+void                lsq_archive_enqueue(LSQArchive *archive, LSQArchiveCommand *command);
+void                lsq_archive_dequeue(LSQArchive *archive, LSQArchiveCommand *command);
 
 G_END_DECLS
 

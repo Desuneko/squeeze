@@ -215,13 +215,6 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 	return 0;
 }
 
-void
-lsq_archive_support_compr_passive_watch(GPid pid, gint status, gpointer data)
-{
-	LSQArchive *archive = data;
-	archive->child_pid = 0;
-}
-
 static gint
 lsq_archive_support_compr_refresh(LSQArchive *archive)
 {
