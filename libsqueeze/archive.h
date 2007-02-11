@@ -122,8 +122,9 @@ gboolean            lsq_archive_stop(LSQArchive *archive);
 
 void                lsq_archive_add_children(LSQArchive *, GSList *) G_GNUC_INTERNAL;
 
-void                lsq_archive_enqueue(LSQArchive *archive, LSQArchiveCommand *command);
-void                lsq_archive_dequeue(LSQArchive *archive, LSQArchiveCommand *command);
+void                lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command);
+void                lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command);
+LSQArchiveCommand  *lsq_archive_get_front_command(LSQArchive *archive);
 
 G_END_DECLS
 

@@ -1523,14 +1523,23 @@ lsq_archive_add_children(LSQArchive *archive, GSList *files)
 }
 
 void
-lsq_archive_enqueue(LSQArchive *archive, LSQArchiveCommand *command)
+lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
 	archive->command_queue = g_slist_append(archive->command_queue, command);
 }
 
 void
-lsq_archive_dequeue(LSQArchive *archive, LSQArchiveCommand *command)
+lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
 	g_return_if_fail(archive->command_queue->data == command);
 	archive->command_queue = g_slist_remove(archive->command_queue, command);
+}
+
+LSQArchiveCommand *
+lsq_archive_get_front_command(LSQArchive *archive)
+{
+	if(archive->command_queue)
+		return archive->command_queue->data;
+	else
+		return NULL;
 }
