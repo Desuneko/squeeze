@@ -24,8 +24,10 @@
 #include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "archive.h"
+#include "libsqueeze-archive.h"
+#include "archive-iter.h"
 #include "archive-command.h"
+#include "archive.h"
 
 static void
 lsq_archive_command_class_init(LSQArchiveCommandClass *);
@@ -90,7 +92,7 @@ static void
 lsq_archive_command_dispose(GObject *object)
 {
 	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(object);
-	lsq_archive_dequeue(archive_command->archive, archive_command);
+	lsq_archive_dequeue_command(archive_command->archive, archive_command);
 }
 
 /**
@@ -116,7 +118,7 @@ lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *
 	archive_command->command = g_strdup(command);
 	archive_command->archive = archive;
 
-	lsq_archive_enqueue(archive, archive_command);
+	lsq_archive_enqueue_command(archive, archive_command);
 
 	return archive_command;
 }

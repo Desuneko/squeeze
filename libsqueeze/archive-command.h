@@ -35,6 +35,7 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
 			lsq_archive_command_get_type()))
 
+typedef struct _LSQArchiveCommand LSQArchiveCommand;
 
 struct _LSQArchiveCommand
 {

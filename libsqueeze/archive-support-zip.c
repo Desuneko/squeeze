@@ -22,10 +22,13 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include "libsqueeze-archive.h"
+#include "libsqueeze-module.h"
+#include "archive-iter.h"
+#include "archive-command.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-zip.h"
-#include "archive-command.h"
 
 #include "internals.h"
 
@@ -218,7 +221,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 			gchar *files = lsq_concat_filenames(filenames);
 
 			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s");
-			g_object_set(archive_command, "files", files);
+			g_object_set(archive_command, "files", files, NULL);
 			g_free(files);
 			g_object_unref(archive_command);
 		}
@@ -253,8 +256,8 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 			gchar *options = g_strconcat(" -d ", dest_path, NULL);
 
 			archive_command = lsq_archive_command_new("", archive, "zip -o %1$s %2$s %3$s");
-			g_object_set(archive_command, "files", files);
-			g_object_set(archive_command, "options", options);
+			g_object_set(archive_command, "files", files, NULL);
+			g_object_set(archive_command, "options", options, NULL);
 			g_object_unref(archive_command);
 			g_free(dest_path);
 			g_free(options);
@@ -286,7 +289,7 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 			gchar *files = lsq_concat_filenames(filenames);
 
 			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s");
-			g_object_set(archive_command, "files", files);
+			g_object_set(archive_command, "files", files, NULL);
 			g_free(files);
 			g_object_unref(archive_command);
 		}
@@ -352,7 +355,7 @@ lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 	GIOStatus status = G_IO_STATUS_NORMAL;
 	LSQArchive *archive = data;
 	gchar *line	= NULL;
-	LSQEntry *entry;
+	LSQArchiveIter *entry;
 
 	guint64 size;
 	guint64 length;
@@ -467,7 +470,7 @@ lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 			temp_filename = line+n; 
 
 			entry = lsq_archive_add_file(archive, temp_filename);
-			lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
+			lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);
 			g_free(line);
 		}
 	}

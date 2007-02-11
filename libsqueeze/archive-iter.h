@@ -10,29 +10,24 @@
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Library General Public License for more details.
- *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  along with this program; if not, write to the Free Software 
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
-#ifndef __LSQ_SLIST_H__
-#define __LSQ_SLIST_H__
+#ifndef __LIBSQUEEZE_ARCHIVE_ITER_H__
+#define __LIBSQUEEZE_ARCHIVE_ITER_H__ 
+G_BEGIN_DECLS
 
-typedef struct _LSQSList LSQSList;
+typedef struct _LSQArchiveIterPool LSQArchiveIterPool;
 
-struct _LSQSList {
-	LSQArchiveEntry *entry;
-	LSQSList *next;
-};
+void     lsq_archive_init_iter(LSQArchive *);
+void     lsq_archive_free_iter(LSQArchive *);
 
-LSQSList *
-lsq_slist_insert_sorted_single(LSQSList *list, LSQArchiveEntry *entry, GCompareFunc);
+gboolean lsq_archive_remove_file(LSQArchive *, const gchar *);
 
-guint
-lsq_slist_length(LSQSList *list);
+void     lsq_archive_iter_remove(LSQArchiveIter *);
 
-void
-lsq_slist_free(LSQSList *list);
+G_END_DECLS
 
-#endif /* __LSQ_SLIST_H__ */
+#endif /* __LIBSQUEEZE_ARCHIVE_ITER_H__ */

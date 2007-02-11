@@ -5,12 +5,15 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include "libsqueeze-archive.h"
+#include "archive-iter.h"
+#include "archive-command.h"
 #include "archive.h"
 #include "internals.h"
 #include "slist.h"
 
 LSQSList *
-lsq_slist_insert_sorted_single(LSQSList *list, LSQEntry *entry, GCompareFunc cmp_func)
+lsq_slist_insert_sorted_single(LSQSList *list, LSQArchiveEntry *entry, GCompareFunc cmp_func)
 {
 	gint cmp = 1;
 	LSQSList *iter = list;
@@ -20,7 +23,7 @@ lsq_slist_insert_sorted_single(LSQSList *list, LSQEntry *entry, GCompareFunc cmp
 	for(; iter; iter = iter->next)
 	{
 		/* archive can be NULL */
-		cmp = cmp_func(entry, (LSQEntry*)iter->entry);
+		cmp = cmp_func(entry, (LSQArchiveEntry*)iter->entry);
 
 		if(!cmp)
 		{

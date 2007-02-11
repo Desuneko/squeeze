@@ -15,11 +15,13 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #ifndef __LIBSQUEEZE_H__
 #define __LIBSQUEEZE_H__
 
-#include <libsqueeze/archive.h>
-#include <libsqueeze/archive-support.h>
+#include <libsqueeze/libsqueeze-archive.h>
+#include <libsqueeze/libsqueeze-view.h>
+/* #include <libsqueeze/libsqueeze-module.h> */
 
 
 G_BEGIN_DECLS
