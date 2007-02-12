@@ -4,6 +4,7 @@
 <!ENTITY libsqueeze SYSTEM "xml/libsqueeze.xml">
 <!ENTITY archive SYSTEM "xml/archive.xml">
 <!ENTITY archive-support SYSTEM "xml/archive-support.xml">
+<!ENTITY archive-command SYSTEM "xml/archive-command.xml">
 <!ENTITY version SYSTEM "version.xml">
 <!ENTITY date "January 2007">
 ]>
@@ -51,6 +52,7 @@
     <title>Archiving</title>
     &archive;
     &archive-support;
+    &archive-command;
   </part>
 
   <index>

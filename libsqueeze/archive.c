@@ -46,7 +46,7 @@
 
 struct _LSQArchiveClass
 {
-	GObject parent;
+	GObjectClass parent;
 };
 
 static void
@@ -63,7 +63,6 @@ enum
 	LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED = 0,
 	LSQ_ARCHIVE_SIGNAL_REFRESHED,
 	LSQ_ARCHIVE_SIGNAL_PATH_CHANGED,
-	LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED,
 	LSQ_ARCHIVE_SIGNAL_COUNT
 };
 
@@ -135,19 +134,6 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			1,
 			G_TYPE_STRING,
 			NULL);
-
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_VIEW_PREPARED] = g_signal_new("lsq_view_prepared",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE,
-			1,
-			G_TYPE_POINTER,
-			NULL);
-
 }
 
 static void
@@ -191,8 +177,6 @@ lsq_archive_new(gchar *path, const gchar *mime)
 
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
-	g_signal_connect(G_OBJECT(archive), "lsq_view_prepared", (GCallback)lsq_archive_support_view_prepared, NULL);
-
 	if(path)
 	{
 		if(g_path_is_absolute(path))
@@ -226,7 +210,7 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->mime_info));
 #endif
 
-	if(!lsq_get_support_for_mime(archive->mime_info))
+	if(!lsq_get_support_for_mimetype(thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		g_object_unref(archive);
 		archive = NULL;
@@ -475,4 +459,10 @@ lsq_archive_get_front_command(LSQArchive *archive)
 		return archive->command_queue->data;
 	else
 		return NULL;
+}
+
+const gchar *
+lsq_archive_get_mimetype(LSQArchive *archive)
+{
+	return thunar_vfs_mime_info_get_name(archive->mime_info);
 }

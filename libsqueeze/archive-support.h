@@ -43,6 +43,7 @@ typedef struct _LSQCustomAction LSQCustomAction;
 typedef struct _LSQCustomActionCallback LSQCustomActionCallback;
 typedef struct _LSQArchiveSupport LSQArchiveSupport;
 
+
 typedef gboolean (*LSQCustomActionPreFunc) (LSQCustomAction *);
 typedef gboolean (*LSQCustomActionFunc) (LSQArchiveSupport *support, LSQArchive *, LSQCustomAction*, gpointer user_data);
 typedef gboolean (*LSQCustomActionPostFunc) (LSQCustomAction *, gboolean);
@@ -99,13 +100,13 @@ struct _LSQArchiveSupportClass
 }; 
 
 GType                lsq_archive_support_get_type(void);
-LSQArchiveSupport *  lsq_archive_support_new();
-void                 lsq_archive_support_add_mime(LSQArchiveSupport *support, gchar *mime);
-gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,const gchar *mime);
+LSQArchiveSupport *  lsq_archive_support_new() G_GNUC_INTERNAL;
+void                 lsq_archive_support_add_mime(LSQArchiveSupport *support, gchar *mime) G_GNUC_INTERNAL;
+gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,const gchar *mime) G_GNUC_INTERNAL;
 
 GSList *             lsq_get_registered_support_list();
 gboolean             lsq_register_support(LSQArchiveSupport *support);
-LSQArchiveSupport *  lsq_get_support_for_mime(ThunarVfsMimeInfo *mime_info);
+LSQArchiveSupport *  lsq_get_support_for_mimetype(const gchar *mime_type);
 LSQArchiveSupport *  lsq_get_support_for_mime_from_slist(GSList *list, const gchar *mime);
 
 const gchar *        lsq_archive_support_get_id(LSQArchiveSupport *support);

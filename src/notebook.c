@@ -546,6 +546,7 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 #endif /* DEBUG */
 	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_ERROR)
 	{
+		/*
 		switch(lsq_archive_get_old_status(archive))
 		{
 			case LSQ_ARCHIVESTATUS_REFRESH:
@@ -568,12 +569,14 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 			default:
 				break;
 		}
+		*/
 		if(dialog)
 		{
 			gtk_dialog_run((GtkDialog *)dialog);
 			gtk_widget_destroy(dialog);
 		}
 	}
+	/*
 	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_IDLE)
 	{
 		switch(lsq_archive_get_old_status(archive))
@@ -581,12 +584,13 @@ cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
 			case LSQ_ARCHIVESTATUS_ADD:
 				if(lsq_archive_support_refresh(archive->support, archive))
 				{
-					/* FIXME: show warning dialog */
+					// FIXME: show warning dialog
 				}
 				break;
 			default:break;
 		}
 	}
+	*/
 	if(sq_notebook_is_active_archive(notebook, archive))
 		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED], 0, archive, NULL);
 }

@@ -236,7 +236,6 @@ lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data)
 gboolean
 lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
-	GIOStatus status = G_IO_STATUS_NORMAL;
 	gint i = 0;
 	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(data);
 
@@ -271,6 +270,7 @@ lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command, guint fd,
 		default:
 			break;
 	}
+	return TRUE;
 }
 
 GIOStatus

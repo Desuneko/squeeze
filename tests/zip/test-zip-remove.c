@@ -14,27 +14,32 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/*
- * temp extract
- * get mime type
- * copy from local
- * create dir
- * check modify
- */
+#include <config.h>
+#include <glib.h>
+#include <glib-object.h>
+#include <thunar-vfs/thunar-vfs.h>
+#include <libsqueeze/libsqueeze.h>
 
-void lsq_tempfs_clean_root_dir(LSQArchive *archive);
+int main()
+{
+	g_type_init();
 
-const gchar* lsq_tempfs_get_root_dir(LSQArchive *archive);
+	LSQArchive *archive = NULL;
+	gchar *current_dir = g_get_current_dir();
+	gchar *path = g_strconcat(current_dir, "/data/test.zip", NULL);
 
-gboolean lsq_tempfs_make_root_dir(LSQArchive *archive);
+	thunar_vfs_init();
+	lsq_init();
 
-gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode);
+	lsq_new_archive(path, TRUE, "application/zip", &archive);
 
-gboolean lsq_tempfs_chmod(LSQArchive *archive, const gchar *path, gint mode);
 
-gboolean
-lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
+	lsq_close_archive(archive);
 
-gboolean
-lsq_tempfs_changed_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
+	lsq_shutdown();
+	thunar_vfs_shutdown();
 
+	g_free(path);
+	g_free(current_dir);
+	return 0;
+}

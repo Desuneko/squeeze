@@ -161,9 +161,9 @@ lsq_register_support(LSQArchiveSupport *support)
  *
  */
 LSQArchiveSupport *
-lsq_get_support_for_mime(ThunarVfsMimeInfo *mime_info)
+lsq_get_support_for_mimetype(const gchar *mimetype)
 {
-	return lsq_get_support_for_mime_from_slist(lsq_archive_support_list, thunar_vfs_mime_info_get_name(mime_info));
+	return lsq_get_support_for_mime_from_slist(lsq_archive_support_list, mimetype);
 }
 
 /*

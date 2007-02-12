@@ -1,3 +1,19 @@
+<!-- ##### ENUM LSQArchiveStatus ##### -->
+<para>
+
+</para>
+
+@LSQ_ARCHIVESTATUS_INIT: 
+@LSQ_ARCHIVESTATUS_IDLE: 
+@LSQ_ARCHIVESTATUS_ADD: 
+@LSQ_ARCHIVESTATUS_EXTRACT: 
+@LSQ_ARCHIVESTATUS_REMOVE: 
+@LSQ_ARCHIVESTATUS_REFRESH: 
+@LSQ_ARCHIVESTATUS_ERROR: 
+@LSQ_ARCHIVESTATUS_PREPARE_VIEW: 
+@LSQ_ARCHIVESTATUS_CUSTOM: 
+@LSQ_ARCHIVESTATUS_USERBREAK: 
+
 <!-- ##### STRUCT LSQSList ##### -->
 <para>
 
@@ -5,6 +21,30 @@
 
 @entry: 
 @next: 
+
+<!-- ##### FUNCTION lsq_archive_get_old_status ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+<!-- ##### FUNCTION lsq_archive_get_status ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
+
+<!-- ##### FUNCTION lsq_archive_get_status_msg ##### -->
+<para>
+
+</para>
+
+@archive: 
+@Returns: 
 
 <!-- ##### FUNCTION lsq_archive_iter_del_child ##### -->
 <para>
@@ -34,6 +74,14 @@
 @Param1: 
 @Param2: 
 @Param3: 
+
+<!-- ##### FUNCTION lsq_archive_set_status ##### -->
+<para>
+
+</para>
+
+@archive: 
+@status: 
 
 <!-- ##### FUNCTION lsq_concat_filenames ##### -->
 <para>

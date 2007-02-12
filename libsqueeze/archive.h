@@ -45,9 +45,9 @@ struct _LSQArchive
 
 LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
 
-void                lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command);
-void                lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command);
-LSQArchiveCommand  *lsq_archive_get_front_command(LSQArchive *archive);
+void                lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command) G_GNUC_INTERNAL;
+void                lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command) G_GNUC_INTERNAL;
+LSQArchiveCommand  *lsq_archive_get_front_command(LSQArchive *archive) G_GNUC_INTERNAL;
 
 G_END_DECLS
 

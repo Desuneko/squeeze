@@ -99,6 +99,16 @@ LSQ_IS_ARCHIVE_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>archive-command</FILE>
+<TITLE>LSQArchiveCommand</TITLE>
+LSQArchiveCommand
+lsq_archive_command_get_type
+lsq_archive_command_new
+lsq_archive_command_run
+lsq_archive_command_stop
+</SECTION>
+
+<SECTION>
 <FILE>archive-support-zip</FILE>
 <TITLE>LSQArchiveSupportZip</TITLE>
 LSQArchiveSupportZip

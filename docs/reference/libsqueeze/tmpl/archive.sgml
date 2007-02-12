@@ -17,22 +17,6 @@ LSQArchive
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### ENUM LSQArchiveStatus ##### -->
-<para>
-
-</para>
-
-@LSQ_ARCHIVESTATUS_INIT: 
-@LSQ_ARCHIVESTATUS_IDLE: 
-@LSQ_ARCHIVESTATUS_ADD: 
-@LSQ_ARCHIVESTATUS_EXTRACT: 
-@LSQ_ARCHIVESTATUS_REMOVE: 
-@LSQ_ARCHIVESTATUS_REFRESH: 
-@LSQ_ARCHIVESTATUS_ERROR: 
-@LSQ_ARCHIVESTATUS_PREPARE_VIEW: 
-@LSQ_ARCHIVESTATUS_CUSTOM: 
-@LSQ_ARCHIVESTATUS_USERBREAK: 
-
 <!-- ##### STRUCT LSQEntry ##### -->
 <para>
 
@@ -59,17 +43,8 @@ LSQArchive
 @entry_property_types: 
 @entry_property_names: 
 @root_entry: 
-@status: 
-@old_status: 
-@status_msg: 
-@progress: 
-@child_pid: 
-@ioc_in: 
-@ioc_out: 
-@ioc_err: 
 @support: 
-@files: 
-@has_passwd: 
+@command_queue: 
 @temp_dir: 
 @monitor_list: 
 
@@ -80,42 +55,6 @@ LSQArchive
 
 @Param1: 
 @Param2: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_set_status ##### -->
-<para>
-
-</para>
-
-@archive: 
-@status: 
-
-
-<!-- ##### FUNCTION lsq_archive_get_status ##### -->
-<para>
-
-</para>
-
-@archive: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_get_status_msg ##### -->
-<para>
-
-</para>
-
-@archive: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_get_old_status ##### -->
-<para>
-
-</para>
-
-@archive: 
 @Returns: 
 
 
