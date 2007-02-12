@@ -53,7 +53,7 @@ static void
 lsq_archive_support_zip_class_init(LSQArchiveSupportZipClass *supportclass);
 
 gboolean
-lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+lsq_archive_support_zip_refresh_parse_output(LSQArchiveCommand *archive_command);
 
 static void
 lsq_archive_support_zip_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
@@ -221,6 +221,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s", FALSE);
 			g_object_set(archive_command, "files", files, NULL);
 			g_free(files);
+			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
 		}
 	}
@@ -256,6 +257,7 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 			archive_command = lsq_archive_command_new("", archive, "zip -o %1$s %2$s %3$s", TRUE);
 			g_object_set(archive_command, "files", files, NULL);
 			g_object_set(archive_command, "options", options, NULL);
+			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
 			g_free(dest_path);
 			g_free(options);
@@ -288,8 +290,9 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 
 			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s", FALSE);
 			g_object_set(archive_command, "files", files, NULL);
-			g_free(files);
+			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
+			g_free(files);
 		}
 	}
 	return 0;
@@ -343,141 +346,129 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 			i++;
 		}
 		archive_command = lsq_archive_command_new("", archive, "unzip -lv -qq %1$s", TRUE);
+		lsq_archive_command_run(archive_command);
+		g_object_unref(archive_command);
 	}
 	return 0;
 }
 
 gboolean
-lsq_archive_support_zip_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+lsq_archive_support_zip_refresh_parse_output(LSQArchiveCommand *archive_command)
 {
+	gchar *line = NULL;
+	gsize linesize= 0;
 	GIOStatus status = G_IO_STATUS_NORMAL;
-	LSQArchive *archive = data;
-	gchar *line	= NULL;
-	LSQArchiveIter *entry;
-
+	LSQArchive *archive = archive_command->archive;
 	guint64 size;
 	guint64 length;
 	gpointer props[8]; 
 	gint n = 0, a = 0, i = 0, o = 0;
 	gchar *temp_filename = NULL;
-	gint linesize = 0;
 
-	if(!LSQ_IS_ARCHIVE(archive))
-		return FALSE;
+	LSQArchiveIter *entry;
 
-
-	if(cond & (G_IO_PRI | G_IO_IN))
+	status = lsq_archive_command_read_line(archive_command, 1, &line, &linesize);
+	if (line == NULL)
 	{
-		for(o = 0; o < 500; o++)
-		{
-			i = 0;
-
-			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
-			if (line == NULL)
- 				break; 
-			/* length, method , size, ratio, date, time, crc-32, filename*/
-			linesize = strlen(line);
-
-			for(n=0; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length)
-			{
-				line[n]='\0';
-				length = g_ascii_strtoull(line + a, NULL, 0);
-				props[i] = &length;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size)
-			{
-				line[n]='\0';
-				size = g_ascii_strtoull(line + a, NULL, 0);
-				props[i] = &size;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n++;
-
-			for(; n < linesize && line[n] == ' '; n++);
-			a = n;
-			for(; n < linesize && line[n] != ' '; n++);
-
-			if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-			n+=2;
-
-			line[linesize-1] = '\0';
-			temp_filename = line+n; 
-
-			entry = lsq_archive_add_file(archive, temp_filename);
-			lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);
-			g_free(line);
-		}
+		if(status == G_IO_STATUS_AGAIN)
+			return TRUE;
+		else
+			return FALSE;
 	}
-	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	/* length, method , size, ratio, date, time, crc-32, filename*/
+	for(n=0; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_length)
 	{
-		g_io_channel_shutdown ( ioc,TRUE,NULL );
-		g_io_channel_unref (ioc);
-		return FALSE; 
+		line[n]='\0';
+		length = g_ascii_strtoull(line + a, NULL, 0);
+		props[i] = &length;
+		i++;
 	}
+	n++;
+
+	for(; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_method)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+	n++;
+
+	for(; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_size)
+	{
+		line[n]='\0';
+		size = g_ascii_strtoull(line + a, NULL, 0);
+		props[i] = &size;
+		i++;
+	}
+	n++;
+
+	for(; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_ratio)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+	n++;
+
+	for(; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_date)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+	n++;
+
+	for(; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_time)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+	n++;
+
+	for(; n < linesize && line[n] == ' '; n++);
+	a = n;
+	for(; n < linesize && line[n] != ' '; n++);
+
+	if(LSQ_ARCHIVE_SUPPORT_ZIP(archive->support)->_view_crc_32)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+	n+=2;
+
+	line[linesize-1] = '\0';
+	temp_filename = line+n; 
+
+	entry = lsq_archive_add_file(archive, temp_filename);
+	lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);
+	g_free(line);
+
 	return TRUE;
 }
 

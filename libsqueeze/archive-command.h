@@ -37,6 +37,8 @@ G_BEGIN_DECLS
 
 typedef struct _LSQArchiveCommand LSQArchiveCommand;
 
+typedef gboolean (*LSQParseFunc) (LSQArchiveCommand *archive_command);
+
 struct _LSQArchiveCommand
 {
 	GObject     parent;
@@ -49,7 +51,7 @@ struct _LSQArchiveCommand
 	GIOChannel *ioc_err;
 	gboolean    safe;
 
-	gboolean  (*parse_stdout)(LSQArchiveCommand *archive_command);
+	LSQParseFunc parse_stdout;
 };
 
 typedef struct _LSQArchiveCommandClass LSQArchiveCommandClass;
@@ -68,6 +70,10 @@ LSQArchiveCommand  *lsq_archive_command_new(const gchar *comment,
 gboolean            lsq_archive_command_run(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
 
 gboolean            lsq_archive_command_stop(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
+GIOStatus           lsq_archive_command_read_line(LSQArchiveCommand *archive_command,
+                                                  guint fd,
+                                                  gchar **lines,
+                                                  gsize *length) G_GNUC_INTERNAL;
 
 G_END_DECLS
 

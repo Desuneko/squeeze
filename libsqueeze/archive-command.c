@@ -86,6 +86,7 @@ lsq_archive_command_class_init(LSQArchiveCommandClass *archive_command_class)
 static void
 lsq_archive_command_init(LSQArchiveCommand *archive_command)
 {
+	archive_command->parse_stdout = NULL;
 }
 
 /**
@@ -115,6 +116,8 @@ lsq_archive_command_dispose(GObject *object)
  * %%1$s is the application to be executed.
  *
  * %%2$s are the files to be appended
+ *
+ * %%3$s are any additional options
  * 
  * Returns: a new LSQArchiveCommand object
  */
@@ -193,6 +196,13 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 	return TRUE;
 }
 
+/**
+ * lsq_archive_command_stop
+ * @archive_command:
+ *
+ *
+ * Returns: TRUE on success, FALSE if the command is not running
+ */
 gboolean
 lsq_archive_command_stop(LSQArchiveCommand *archive_command)
 {
@@ -203,12 +213,26 @@ lsq_archive_command_stop(LSQArchiveCommand *archive_command)
 	return TRUE;
 }
 
+/**
+ * lsq_archive_command_child_watch_func:
+ * @pid:
+ * @status:
+ * @data:
+ */
 void
 lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data)
 {
 	g_object_unref(G_OBJECT(data));
 }
 
+/**
+ * lsq_archive_command_parse_stdout:
+ * @ioc:
+ * @cond:
+ * @data:
+ *
+ * Returns:
+ */
 gboolean
 lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data)
 {
@@ -235,4 +259,31 @@ lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer da
 		return FALSE; 
 	}
 	return TRUE;
+}
+
+gboolean
+lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command, guint fd, LSQParseFunc func)
+{
+	switch(fd)
+	{
+		case 1:
+			archive_command->parse_stdout = func;
+		default:
+			break;
+	}
+}
+
+GIOStatus
+lsq_archive_command_read_line(LSQArchiveCommand *archive_command, guint fd, gchar **line, gsize *length)
+{
+	GIOStatus status = G_IO_STATUS_EOF;
+	switch(fd)
+	{
+		case 1:
+			status = g_io_channel_read_line(archive_command->ioc_out, line, length, NULL, NULL);
+			break;
+		default:
+			break;
+	}
+	return status;
 }
