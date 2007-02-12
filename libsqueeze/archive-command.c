@@ -36,6 +36,12 @@ lsq_archive_command_init(LSQArchiveCommand *archive);
 static void
 lsq_archive_command_dispose(GObject *object);
 
+void
+lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data);
+
+gboolean
+lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data);
+
 //static gint lsq_archive_command_signals[0];
 
 static GObjectClass *parent_class;
@@ -93,6 +99,9 @@ lsq_archive_command_dispose(GObject *object)
 {
 	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(object);
 	lsq_archive_dequeue_command(archive_command->archive, archive_command);
+
+	LSQArchiveCommand *next_archive_command = lsq_archive_get_front_command(archive_command->archive);
+	lsq_archive_command_run(next_archive_command);
 }
 
 /**
@@ -100,6 +109,7 @@ lsq_archive_command_dispose(GObject *object)
  * @comment: a description, describing what the command does
  * @archive: the archive the command modifies
  * @command: a formatted string defining the command to be executed.
+ * @safe: is it safe to terminate this child premature?
  *
  *
  * %%1$s is the application to be executed.
@@ -109,7 +119,7 @@ lsq_archive_command_dispose(GObject *object)
  * Returns: a new LSQArchiveCommand object
  */
 LSQArchiveCommand *
-lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *command)
+lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *command, gboolean safe)
 {
 	LSQArchiveCommand *archive_command;
 
@@ -117,6 +127,7 @@ lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *
 
 	archive_command->command = g_strdup(command);
 	archive_command->archive = archive;
+	archive_command->safe = safe;
 
 	lsq_archive_enqueue_command(archive, archive_command);
 
@@ -126,12 +137,18 @@ lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *
 /**
  * lsq_archive_command_run:
  * @archive_command: the archive_command to be run
- * 
+ *
  * Returns: true on success
  */
 gboolean
 lsq_archive_command_run(LSQArchiveCommand *archive_command)
 {
+	gchar **argvp;
+	gint argcp;
+	gint fd_in, fd_out, fd_err;
+
+	g_return_val_if_fail(archive_command->child_pid == 0, FALSE);
+
 	const gchar *files = g_object_get_data(G_OBJECT(archive_command), "files");
 	const gchar *options = g_object_get_data(G_OBJECT(archive_command), "options");
 
@@ -139,16 +156,83 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 		files = "";
 	if(options == NULL)
 		options = "";
+	gchar *archive_path = g_shell_quote(archive_command->archive->path);
+	gchar *command = g_strdup_printf(archive_command->command, archive_path, files, options);
 
-	gchar *command = g_strdup_printf(archive_command->command, archive_command->archive->path, files, options);
 
+	g_shell_parse_argv(command, &argcp, &argvp, NULL);
+	if ( ! g_spawn_async_with_pipes (
+			NULL,
+			argvp,
+			NULL,
+			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+			NULL,
+			NULL,
+			&(archive_command->child_pid),
+			&fd_in,
+			&fd_out,
+			&fd_err,
+			NULL) )
+		return FALSE;
+
+	g_object_ref(archive_command);
+	g_child_watch_add(archive_command->child_pid, lsq_archive_command_child_watch_func, archive_command);
+
+	/* TODO: add iochannel_watches */
+	if(archive_command->parse_stdout)
+	{
+		g_object_ref(archive_command);
+		archive_command->ioc_out = g_io_channel_unix_new(fd_out);
+		g_io_channel_set_encoding (archive_command->ioc_out, NULL, NULL);
+		g_io_channel_set_flags (archive_command->ioc_out , G_IO_FLAG_NONBLOCK , NULL );
+		g_io_add_watch (archive_command->ioc_out, G_IO_IN|G_IO_PRI|G_IO_ERR|G_IO_HUP|G_IO_NVAL, lsq_archive_command_parse_stdout, archive_command);
+	}
+
+	g_free(archive_path);
 	g_free(command);
-
 	return TRUE;
 }
 
 gboolean
-lsq_archive_command_stop(LSQArchiveCommand *command)
+lsq_archive_command_stop(LSQArchiveCommand *archive_command)
 {
+	if(archive_command->child_pid != 0)
+		kill ( archive_command->child_pid , SIGHUP);
+	else
+		return FALSE; /* archive_command isn't running */
+	return TRUE;
+}
+
+void
+lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data)
+{
+	g_object_unref(G_OBJECT(data));
+}
+
+gboolean
+lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data)
+{
+	GIOStatus status = G_IO_STATUS_NORMAL;
+	gint i = 0;
+	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(data);
+
+	if(cond & (G_IO_PRI | G_IO_IN))
+	{
+		for(; i < 500; i++)
+		{
+			/* If parse_stdout returns FALSE, something seriously went wrong and we should cancel right away */
+			if(archive_command->parse_stdout(archive_command) == FALSE)
+			{
+				cond |= G_IO_ERR;
+			}
+		}
+	}
+	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+	{
+		g_io_channel_shutdown ( ioc,TRUE,NULL );
+		g_io_channel_unref (ioc);
+		g_object_unref(archive_command);
+		return FALSE; 
+	}
 	return TRUE;
 }

@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -220,7 +218,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 
-			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s");
+			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s", FALSE);
 			g_object_set(archive_command, "files", files, NULL);
 			g_free(files);
 			g_object_unref(archive_command);
@@ -255,7 +253,7 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 
 			gchar *options = g_strconcat(" -d ", dest_path, NULL);
 
-			archive_command = lsq_archive_command_new("", archive, "zip -o %1$s %2$s %3$s");
+			archive_command = lsq_archive_command_new("", archive, "zip -o %1$s %2$s %3$s", TRUE);
 			g_object_set(archive_command, "files", files, NULL);
 			g_object_set(archive_command, "options", options, NULL);
 			g_object_unref(archive_command);
@@ -288,7 +286,7 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 
-			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s");
+			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s", FALSE);
 			g_object_set(archive_command, "files", files, NULL);
 			g_free(files);
 			g_object_unref(archive_command);
@@ -344,7 +342,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
-		archive_command = lsq_archive_command_new("", archive, "unzip -lv -qq %1$s");
+		archive_command = lsq_archive_command_new("", archive, "unzip -lv -qq %1$s", TRUE);
 	}
 	return 0;
 }

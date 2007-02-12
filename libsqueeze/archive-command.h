@@ -47,7 +47,9 @@ struct _LSQArchiveCommand
 	GIOChannel *ioc_in;
 	GIOChannel *ioc_out;
 	GIOChannel *ioc_err;
-	gboolean    intrusive;
+	gboolean    safe;
+
+	gboolean  (*parse_stdout)(LSQArchiveCommand *archive_command);
 };
 
 typedef struct _LSQArchiveCommandClass LSQArchiveCommandClass;
@@ -57,22 +59,15 @@ struct _LSQArchiveCommandClass
 	GObjectClass parent;
 }; 
 
-/*
-GType               lsq_archive_command_get_type(void)                   G_GNUC_INTERNAL;
+GType               lsq_archive_command_get_type(void) G_GNUC_INTERNAL;
 LSQArchiveCommand  *lsq_archive_command_new(const gchar *comment, 
                                             LSQArchive *archive,
-                                            const gchar *command)        G_GNUC_INTERNAL;
+                                            const gchar *command,
+																						gboolean safe) G_GNUC_INTERNAL;
 
-void                lsq_archive_command_run(LSQArchiveCommand *command)  G_GNUC_INTERNAL;
-*/
-GType               lsq_archive_command_get_type(void);
-LSQArchiveCommand  *lsq_archive_command_new(const gchar *comment, 
-                                            LSQArchive *archive,
-                                            const gchar *command);
+gboolean            lsq_archive_command_run(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
 
-gboolean            lsq_archive_command_run(LSQArchiveCommand *command);
-
-gboolean            lsq_archive_command_stop(LSQArchiveCommand *command);
+gboolean            lsq_archive_command_stop(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
 
 G_END_DECLS
 
