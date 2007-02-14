@@ -20,7 +20,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
 /* FIXME: HACK */
-#include <libsqueeze/archive-support.h>
+//#include <libsqueeze/archive-support.h>
 
 int main()
 {

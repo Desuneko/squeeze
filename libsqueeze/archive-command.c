@@ -102,7 +102,8 @@ lsq_archive_command_dispose(GObject *object)
 	lsq_archive_dequeue_command(archive_command->archive, archive_command);
 
 	LSQArchiveCommand *next_archive_command = lsq_archive_get_front_command(archive_command->archive);
-	lsq_archive_command_run(next_archive_command);
+	if(next_archive_command)
+		lsq_archive_command_run(next_archive_command);
 }
 
 /**

@@ -41,7 +41,6 @@ G_BEGIN_DECLS
 
 typedef struct _LSQCustomAction LSQCustomAction;
 typedef struct _LSQCustomActionCallback LSQCustomActionCallback;
-typedef struct _LSQArchiveSupport LSQArchiveSupport;
 
 
 typedef gboolean (*LSQCustomActionPreFunc) (LSQCustomAction *);
@@ -106,19 +105,11 @@ gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,cons
 
 GSList *             lsq_get_registered_support_list();
 gboolean             lsq_register_support(LSQArchiveSupport *support);
-LSQArchiveSupport *  lsq_get_support_for_mimetype(const gchar *mime_type);
-LSQArchiveSupport *  lsq_get_support_for_mime_from_slist(GSList *list, const gchar *mime);
 
 const gchar *        lsq_archive_support_get_id(LSQArchiveSupport *support);
 gint                 lsq_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime);
 gint                 lsq_archive_support_lookup_support(gconstpointer support, gconstpointer mime);
 
-gint                 lsq_archive_support_add(LSQArchiveSupport *, LSQArchive *, GSList *);
-gint                 lsq_archive_support_extract(LSQArchiveSupport *, LSQArchive *, const gchar *, GSList *);
-gint                 lsq_archive_support_remove(LSQArchiveSupport *, LSQArchive *, GSList *);
-gint                 lsq_archive_support_refresh(LSQArchiveSupport *, LSQArchive *);
-gint                 lsq_archive_support_view(LSQArchiveSupport *, LSQArchive *, GSList *);
-guint64              lsq_archive_support_get_max_n_files(LSQArchiveSupport *);
 
 gboolean             lsq_archive_support_can_stop(LSQArchiveSupport *support, LSQArchive *archive);
 
