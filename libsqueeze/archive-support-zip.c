@@ -219,7 +219,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 			gchar *files = lsq_concat_filenames(filenames);
 
 			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s", FALSE);
-			g_object_set_data(G_OBJECT(archive_command), "files", files);
+			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_free(files);
 			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);

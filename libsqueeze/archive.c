@@ -59,9 +59,7 @@ lsq_archive_finalize(GObject *object);
 
 enum
 {
-	LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED = 0,
-	LSQ_ARCHIVE_SIGNAL_REFRESHED,
-	LSQ_ARCHIVE_SIGNAL_PATH_CHANGED,
+	LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED = 0,
 	LSQ_ARCHIVE_SIGNAL_COUNT
 };
 
@@ -100,7 +98,7 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 
 	object_class->finalize = lsq_archive_finalize;
 	
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATUS_CHANGED] = g_signal_new("lsq_status_changed",
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED] = g_signal_new("command-terminated",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 			0,
@@ -109,29 +107,6 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			g_cclosure_marshal_VOID__VOID,
 			G_TYPE_NONE,
 			0,
-			NULL);
-
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED] = g_signal_new("lsq_refreshed",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__VOID,
-			G_TYPE_NONE,
-			0,
-			NULL);
-
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_PATH_CHANGED] = g_signal_new("lsq_path_changed",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__STRING,
-			G_TYPE_NONE,
-			1,
-			G_TYPE_STRING,
 			NULL);
 }
 
@@ -449,6 +424,8 @@ lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
 	g_return_if_fail(archive->command_queue->data == command);
 	archive->command_queue = g_slist_remove(archive->command_queue, command);
+	if(archive->command_queue == NULL)
+		g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, archive, NULL);
 }
 
 LSQArchiveCommand *

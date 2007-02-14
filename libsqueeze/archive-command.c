@@ -99,11 +99,17 @@ static void
 lsq_archive_command_dispose(GObject *object)
 {
 	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(object);
-	lsq_archive_dequeue_command(archive_command->archive, archive_command);
+	LSQArchiveCommand *next_archive_command = NULL;
+	if(archive_command->archive)
+	{
+		lsq_archive_dequeue_command(archive_command->archive, archive_command);
 
-	LSQArchiveCommand *next_archive_command = lsq_archive_get_front_command(archive_command->archive);
-	if(next_archive_command)
-		lsq_archive_command_run(next_archive_command);
+		next_archive_command = lsq_archive_get_front_command(archive_command->archive);
+		if(next_archive_command)
+			lsq_archive_command_run(next_archive_command);
+
+		archive_command->archive = NULL;
+	}
 }
 
 /**
@@ -163,7 +169,7 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 	gchar *archive_path = g_shell_quote(archive_command->archive->path);
 	gchar *command = g_strdup_printf(archive_command->command, archive_path, files, options);
 
-
+	g_debug("%s\n", command);
 	g_shell_parse_argv(command, &argcp, &argvp, NULL);
 	if ( ! g_spawn_async_with_pipes (
 			NULL,
