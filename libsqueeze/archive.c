@@ -438,7 +438,13 @@ lsq_archive_get_front_command(LSQArchive *archive)
 }
 
 const gchar *
-lsq_archive_get_mimetype(LSQArchive *archive)
+lsq_archive_get_filename(const LSQArchive *archive)
+{
+	return archive->path;
+}
+
+const gchar *
+lsq_archive_get_mimetype(const LSQArchive *archive)
 {
 	return thunar_vfs_mime_info_get_name(archive->mime_info);
 }

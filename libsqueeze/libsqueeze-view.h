@@ -17,8 +17,8 @@
 #define __LIBSQUEEZE_VIEW_H__ 
 G_BEGIN_DECLS
 
-const gchar *       lsq_archive_get_filename(LSQArchive *archive);
-const gchar *       lsq_archive_get_mimetype(LSQArchive *archive);
+const gchar        *lsq_archive_get_filename(const LSQArchive *archive);
+const gchar        *lsq_archive_get_mimetype(const LSQArchive *archive);
 
 gboolean            lsq_archive_iter_is_real(const LSQArchiveIter *);
 LSQArchiveIter *    lsq_archive_iter_get_real_parent(LSQArchiveIter *);
@@ -27,9 +27,11 @@ gboolean            lsq_archive_iter_is_directory(const LSQArchiveIter *);
 guint               lsq_archive_iter_n_children(const LSQArchiveIter *);
 LSQArchiveIter     *lsq_archive_iter_nth_child(LSQArchiveIter *, guint);
 LSQArchiveIter     *lsq_archive_iter_get_child(LSQArchiveIter *, const gchar *);
+guint               lsq_archive_iter_get_depth(const LSQArchiveIter *);
 
 gboolean            lsq_archive_iter_get_prop_value(const LSQArchiveIter *iter, guint n, GValue *value);
 const gchar        *lsq_archive_iter_get_filename(const LSQArchiveIter *);
+gchar              *lsq_archive_iter_get_path(const LSQArchiveIter *archive);
 
 LSQArchiveIter     *lsq_archive_get_iter(LSQArchive *archive, const gchar *path);
 

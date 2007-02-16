@@ -560,6 +560,54 @@ lsq_archive_iter_remove(LSQArchiveIter *iter)
 	}
 }
 
+guint
+lsq_archive_iter_get_depth(const LSQArchiveIter *iter)
+{
+#ifdef debug
+	g_return_val_if_fail(iter, 0);
+#endif
+	guint depth = 0;
+	while((iter = iter->parent))
+		depth++;
+	return depth;
+}
+
+gchar*
+lsq_archive_iter_get_path(const LSQArchiveIter *iter)
+{
+#ifdef debug
+	g_return_val_if_fail(iter, NULL);
+#endif
+	const gchar **list;
+	gchar *path;
+	guint depth = lsq_archive_iter_get_depth(iter);
+	
+	if(lsq_archive_iter_is_directory(iter))
+	{
+		list = g_new(const gchar*, depth+2);
+		list[depth] = "";
+		list[depth+1] = NULL;
+	}
+	else
+	{
+		list = g_new(const gchar*, depth+1);
+		list[depth] =	NULL;
+	}
+
+	while(depth > 0)
+	{
+		depth--;
+		list[depth] = lsq_archive_entry_get_filename(iter->entry);
+		iter = iter->parent;
+	}
+
+	path = g_strjoinv("/", (gchar**)list);
+	
+	g_free(list);
+
+	return path;
+}
+
 const gchar*
 lsq_archive_iter_get_filename(const LSQArchiveIter *iter)
 {
