@@ -8,38 +8,37 @@ LIBS =                                                                  \
 	$(top_builddir)/libsqueeze/libsqueeze-1.la
 
 TESTS =                                                                 \
-	test-zip-add                                                          \
-	test-zip-extract                                                      \
-	test-zip-remove                                                       \
-	test-zip-refresh
+	test-zip-add.pl                                                       \
+	test-zip-extract.pl                                                   \
+	test-zip-remove.pl                                                    \
+	test-zip-refresh.pl
 
-check_PROGRAMS =                                                        \
-	test-zip-add                                                          \
-	test-zip-extract                                                      \
-	test-zip-remove                                                       \
-	test-zip-refresh
+check_PROGRAMS =                                                    \
+	test-add                                                    \
+	test-extract                                                \
+	test-remove                                                 \
+	test-refresh
 
-test_zip_add_SOURCES =                                                  \
-	test-zip-add.c
+test_add_SOURCES =                                                  \
+	test-add.c
 
-test_zip_add_DEPENDENCIES =                                             \
+test_add_DEPENDENCIES =                                             \
 	$(top_builddir)/libsqueeze/libsqueeze-1.la
 
-test_zip_extract_SOURCES =                                              \
-	test-zip-extract.c
+test_extract_SOURCES =                                              \
+	test-extract.c
 
-test_zip_extract_DEPENDENCIES =                                         \
+test_extract_DEPENDENCIES =                                         \
 	$(top_builddir)/libsqueeze/libsqueeze-1.la
 
-test_zip_remove_SOURCES =                                               \
-	test-zip-remove.c
+test_remove_SOURCES =                                               \
+	test-remove.c
 
-test_zip_remove_DEPENDENCIES =                                          \
+test_remove_DEPENDENCIES =                                          \
 	$(top_builddir)/libsqueeze/libsqueeze-1.la
 
+test_refresh_SOURCES =                                              \
+	test-refresh.c
 
-test_zip_refresh_SOURCES =                                              \
-	test-zip-refresh.c
-
-test_zip_refresh_DEPENDENCIES =                                         \
+test_refresh_DEPENDENCIES =                                         \
 	$(top_builddir)/libsqueeze/libsqueeze-1.la

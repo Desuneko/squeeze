@@ -22,6 +22,16 @@
 
 GMainLoop *loop = NULL;
 gint ret_val = 0;
+gchar *mime_type = NULL;
+
+static GOptionEntry entries[] =
+{
+	{	"mime", 'm', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &mime_type,
+		NULL,
+		NULL
+	},
+	{ NULL }
+};
 
 void
 cb_command_terminated(LSQArchive *archive)
@@ -32,19 +42,30 @@ cb_command_terminated(LSQArchive *archive)
 		ret_val = 1;
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	g_type_init();
-
-	LSQArchive *archive = NULL;
-	LSQArchiveSupport *archive_support = NULL;
-	gchar *current_dir = g_get_current_dir();
-	gchar *path = g_strconcat(current_dir, "/data/test.zip", NULL);
-	GSList *files = g_slist_prepend(NULL, "data/1.txt");
-
 	thunar_vfs_init();
 	lsq_init();
 
+	//LSQArchive *archive = NULL;
+	//LSQArchiveSupport *archive_support = NULL;
+
+	GOptionContext *opt_context = g_option_context_new("test-add -m <mime-type> [OPTION...]");
+	g_option_context_add_main_entries(opt_context, entries, NULL);
+	g_option_context_parse (opt_context, &argc, &argv, NULL);
+
+	if(mime_type == NULL)
+	{
+		//g_error("OOPS");
+		g_print("OOPS");
+		return 1;
+	}
+	else
+	{
+		g_print("MIME_TYPE: %s\n", mime_type);
+	}
+/*
 	lsq_new_archive(path, TRUE, "application/zip", &archive);
 	archive_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(archive));
 
@@ -61,11 +82,10 @@ int main()
 	}
 
 	lsq_close_archive(archive);
+*/
 
 	lsq_shutdown();
 	thunar_vfs_shutdown();
 
-	g_free(path);
-	g_free(current_dir);
 	return ret_val;
 }
