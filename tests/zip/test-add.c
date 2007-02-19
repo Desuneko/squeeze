@@ -22,11 +22,11 @@
 
 GMainLoop *loop = NULL;
 gint ret_val = 0;
-gchar *mime_type = NULL;
+gchar *filename = NULL;
 
 static GOptionEntry entries[] =
 {
-	{	"mime", 'm', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &mime_type,
+	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &filename,
 		NULL,
 		NULL
 	},
@@ -48,30 +48,31 @@ int main(int argc, char **argv)
 	thunar_vfs_init();
 	lsq_init();
 
-	//LSQArchive *archive = NULL;
-	//LSQArchiveSupport *archive_support = NULL;
+	LSQArchive *archive = NULL;
+	LSQArchiveSupport *archive_support = NULL;
+	GSList *files = NULL;
+	gint i = 0;
 
-	GOptionContext *opt_context = g_option_context_new("test-add -m <mime-type> [OPTION...]");
+	GOptionContext *opt_context = g_option_context_new("test-add -n <archive> [filename ...]");
 	g_option_context_add_main_entries(opt_context, entries, NULL);
 	g_option_context_parse (opt_context, &argc, &argv, NULL);
 
-	if(mime_type == NULL)
+	if(filename == NULL)
 	{
-		//g_error("OOPS");
-		g_print("OOPS");
+		g_print("Filename is not specified\n");
 		return 1;
 	}
-	else
-	{
-		g_print("MIME_TYPE: %s\n", mime_type);
-	}
-/*
-	lsq_new_archive(path, TRUE, "application/zip", &archive);
+
+	lsq_new_archive(filename, TRUE, NULL, &archive);
 	archive_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(archive));
 
 	g_signal_connect(G_OBJECT(archive), "command-terminated", G_CALLBACK(cb_command_terminated), NULL);
 
-	
+	for(i = 1; i < argc; i++)
+	{
+		files = g_slist_prepend(files, argv[i]);
+	}
+
 	if(lsq_archive_support_add(archive_support, archive, files))
 		ret_val = 1;
 
@@ -82,7 +83,6 @@ int main(int argc, char **argv)
 	}
 
 	lsq_close_archive(archive);
-*/
 
 	lsq_shutdown();
 	thunar_vfs_shutdown();

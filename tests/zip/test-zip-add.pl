@@ -1,10 +1,18 @@
 #!/usr/bin/env perl
-my $mime_type = "application/x-zip";
-open(ZIP, "./test-add -m $mime_type |");
+chomp($cwd = `pwd`);
+$test_file = "$cwd/data/test.zip";
 
-$aaa = <ZIP>;
-while($aaa)
-{
-	print $aaa;
-	$aaa = <ZIP>;
-}
+print "========================================";
+print "========================================\n";
+print "Target archive:\n";
+print "$test_file\n";
+
+@args = ("./test-add", "-n", $test_file, "$cwd/data/1.txt");
+system(@args) == 0
+	or die "system @args failed: $?";
+
+open(ZIP, "unzip -lv -qq $test_file |")
+	or die "Cant execute 'zip -lvqq $test_file'";
+
+print "========================================";
+print "========================================\n";
