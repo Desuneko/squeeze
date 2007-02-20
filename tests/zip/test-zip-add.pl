@@ -11,8 +11,13 @@ print "$test_file\n";
 system(@args) == 0
 	or die "system @args failed: $?";
 
-open(ZIP, "unzip -lv -qq $test_file |")
-	or die "Cant execute 'zip -lvqq $test_file'";
+unlink $test_file;
+
+@args = ("./test-add", "-n", $test_file, "$cwd/data/2.txt");
+system(@args) != 0
+	or die "system @args should fail: $?";
+
+unlink $test_file;
 
 print "========================================";
 print "========================================\n";

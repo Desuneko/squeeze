@@ -35,6 +35,8 @@ static void
 lsq_archive_command_init(LSQArchiveCommand *archive);
 static void
 lsq_archive_command_dispose(GObject *object);
+static void
+lsq_archive_command_finalize(GObject *object);
 
 void
 lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data);
@@ -78,6 +80,7 @@ lsq_archive_command_class_init(LSQArchiveCommandClass *archive_command_class)
 	GObjectClass *object_class = G_OBJECT_CLASS(archive_command_class);
 
 	object_class->dispose = lsq_archive_command_dispose;
+	object_class->finalize = lsq_archive_command_finalize;
 
 	parent_class = g_type_class_peek(G_TYPE_OBJECT); 
 
@@ -87,6 +90,7 @@ static void
 lsq_archive_command_init(LSQArchiveCommand *archive_command)
 {
 	archive_command->parse_stdout = NULL;
+	archive_command->domain = g_quark_from_string("Command");
 }
 
 /**
@@ -111,6 +115,21 @@ lsq_archive_command_dispose(GObject *object)
 		archive_command->archive = NULL;
 	}
 }
+
+/**
+ * lsq_archive_command_finalize:
+ *
+ * @object: LSQArchiveCommand object
+ *
+ */
+static void
+lsq_archive_command_finalize(GObject *object)
+{
+	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(object);
+	if(command->error)
+		g_error_free(command->error);
+}
+
 
 /**
  * lsq_archive_command_new:
@@ -229,6 +248,37 @@ lsq_archive_command_stop(LSQArchiveCommand *archive_command)
 void
 lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data)
 {
+	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(data);
+	if(WIFEXITED(status))
+	{
+		if(WEXITSTATUS(status))
+		{
+			if(!command->error)
+			{
+				command->error = g_error_new(command->domain, status, _("Command exited with status %d."), status);
+			}
+		}
+	}
+	if(WIFSIGNALED(status))
+	{
+		switch(WTERMSIG(status))
+		{
+			case SIGHUP:
+				if(!command->error)
+					command->error = g_error_new(command->domain, status, _("Command interrupted by user"));
+				break;
+			case SIGSEGV:
+				if(!command->error)
+					command->error = g_error_new(command->domain, status, _("Command received SIGSEGV"));
+				break;
+			case SIGKILL:
+			case SIGINT:
+				if(!command->error)
+					command->error = g_error_new(command->domain, status, _("Command Terminated"));
+				break;
+		}
+	}
+	g_spawn_close_pid(pid);
 	g_object_unref(G_OBJECT(data));
 }
 

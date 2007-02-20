@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-02-19 14:20+0100\n"
+"POT-Creation-Date: 2007-02-19 14:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:292
+#: ../libsqueeze/archive.c:293
 msgid "Name"
 msgstr ""
 
-#: ../libsqueeze/archive.c:294
+#: ../libsqueeze/archive.c:295
 msgid "Mime type"
 msgstr ""
 

@@ -34,12 +34,17 @@ static GOptionEntry entries[] =
 };
 
 void
-cb_command_terminated(LSQArchive *archive)
+cb_command_terminated(LSQArchive *archive, GError *error)
 {
 	if(loop)
 		g_main_loop_quit(loop);
 	else
 		ret_val = 1;
+	if(error)
+	{
+		g_debug("%s", error->message);
+		ret_val = 1;
+	}
 }
 
 int main(int argc, char **argv)
@@ -86,6 +91,5 @@ int main(int argc, char **argv)
 
 	lsq_shutdown();
 	thunar_vfs_shutdown();
-
 	return ret_val;
 }

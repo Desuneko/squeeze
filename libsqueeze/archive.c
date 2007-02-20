@@ -104,9 +104,10 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			0,
 			NULL,
 			NULL,
-			g_cclosure_marshal_VOID__VOID,
+			g_cclosure_marshal_VOID__POINTER,
 			G_TYPE_NONE,
-			0,
+			1,
+			G_TYPE_POINTER,
 			NULL);
 }
 
@@ -425,7 +426,14 @@ lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 	g_return_if_fail(archive->command_queue->data == command);
 	archive->command_queue = g_slist_remove(archive->command_queue, command);
 	if(archive->command_queue == NULL)
-		g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, archive, NULL);
+	{
+		GError *error = NULL;
+		if(command->error)
+		{
+			error = g_error_copy(command->error);
+		}
+		g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
+	}
 }
 
 LSQArchiveCommand *

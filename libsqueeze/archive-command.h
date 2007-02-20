@@ -41,16 +41,17 @@ typedef gboolean (*LSQParseFunc) (LSQArchiveCommand *archive_command);
 
 struct _LSQArchiveCommand
 {
-	GObject     parent;
-	gchar      *comment;
-	gchar      *command;
-	LSQArchive *archive;
-	GPid        child_pid;
-	GIOChannel *ioc_in;
-	GIOChannel *ioc_out;
-	GIOChannel *ioc_err;
-	gboolean    safe;
-
+	GObject      parent;
+	GQuark       domain;
+	gchar       *comment;
+	gchar       *command;
+	LSQArchive  *archive;
+	GPid         child_pid;
+	GIOChannel  *ioc_in;
+	GIOChannel  *ioc_out;
+	GIOChannel  *ioc_err;
+	gboolean     safe;
+	GError      *error;
 	LSQParseFunc parse_stdout;
 };
 
