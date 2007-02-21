@@ -217,9 +217,11 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
 			gchar *files = lsq_concat_filenames(filenames);
+			gchar *options = g_strdup("");
 
-			archive_command = lsq_archive_command_new("", archive, "zip -r %1$s %2$s", FALSE);
+			archive_command = lsq_archive_command_new("", archive, "zip %3$s -r %1$s %2$s", FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
+			g_object_set_data(G_OBJECT(archive_command), "options", options);
 			g_free(files);
 			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
@@ -254,9 +256,9 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 
 			gchar *options = g_strconcat(" -d ", dest_path, NULL);
 
-			archive_command = lsq_archive_command_new("", archive, "zip -o %1$s %2$s %3$s", TRUE);
-			g_object_set(archive_command, "files", files, NULL);
-			g_object_set(archive_command, "options", options, NULL);
+			archive_command = lsq_archive_command_new("", archive, "unzip -o %1$s %2$s %3$s", TRUE);
+			g_object_set_data(G_OBJECT(archive_command), "files", files);
+			g_object_set_data(G_OBJECT(archive_command), "options", options);
 			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
 			g_free(dest_path);
@@ -289,7 +291,7 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 			gchar *files = lsq_concat_filenames(filenames);
 
 			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s", FALSE);
-			g_object_set(archive_command, "files", files, NULL);
+			g_object_set_data(G_OBJECT(archive_command), "files", files);
 			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
 			g_free(files);

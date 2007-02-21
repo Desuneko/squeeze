@@ -20,26 +20,81 @@
 #include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
 
-int main()
+GMainLoop *loop = NULL;
+gint ret_val = 0;
+gchar *filename = NULL;
+gchar *dest_path = NULL;
+
+static GOptionEntry entries[] =
+{
+	{	"extract", 'e', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &filename,
+		NULL,
+		NULL
+	},
+	{	"destination", 'd', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &dest_path,
+		NULL,
+		NULL
+	},
+	{ NULL }
+};
+
+void
+cb_command_terminated(LSQArchive *archive, GError *error)
+{
+	if(loop)
+		g_main_loop_quit(loop);
+	else
+		ret_val = 1;
+	if(error)
+	{
+		g_debug("%s", error->message);
+		ret_val = 1;
+	}
+}
+
+int main(int argc, char **argv)
 {
 	g_type_init();
-
-	LSQArchive *archive = NULL;
-	gchar *current_dir = g_get_current_dir();
-	gchar *path = g_strconcat(current_dir, "/data/test.zip", NULL);
-
 	thunar_vfs_init();
 	lsq_init();
 
-	lsq_new_archive(path, TRUE, "application/zip", &archive);
+	LSQArchive *archive = NULL;
+	LSQArchiveSupport *archive_support = NULL;
+	GSList *files = NULL;
+	gint i = 0;
 
+	GOptionContext *opt_context = g_option_context_new("test-add -n <archive> [filename ...]");
+	g_option_context_add_main_entries(opt_context, entries, NULL);
+	g_option_context_parse (opt_context, &argc, &argv, NULL);
+
+	if(filename == NULL)
+	{
+		g_print("Filename is not specified\n");
+		return 1;
+	}
+
+	lsq_open_archive(filename, &archive);
+	archive_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(archive));
+
+	g_signal_connect(G_OBJECT(archive), "command-terminated", G_CALLBACK(cb_command_terminated), NULL);
+
+	for(i = 1; i < argc; i++)
+	{
+		files = g_slist_prepend(files, argv[i]);
+	}
+
+	if(lsq_archive_support_extract(archive_support, archive, dest_path, files))
+		ret_val = 1;
+
+	if(ret_val == 0)
+	{
+		loop = g_main_loop_new(NULL, FALSE);
+		g_main_loop_run(loop);
+	}
 
 	lsq_close_archive(archive);
 
 	lsq_shutdown();
 	thunar_vfs_shutdown();
-
-	g_free(path);
-	g_free(current_dir);
-	return 0;
+	return ret_val;
 }
