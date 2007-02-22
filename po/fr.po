@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-01-29 14:19+0100\n"
+"POT-Creation-Date: 2007-02-19 14:20+0100\n"
 "PO-Revision-Date: 2007-02-20 20:16+0100\n"
 "Last-Translator: Maximilian Schleiss <maxschleiss@bluewin.ch>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
@@ -276,8 +276,7 @@ msgstr "_Aide"
 msgid "Add"
 msgstr "Ajouter"
 
-#: ../src/main_window.c:400
-#: ../src/main_window.c:1076
+#: ../src/main_window.c:400 ../src/main_window.c:1076
 #: ../src/extract_dialog.c:102
 msgid "Extract"
 msgstr "Extraire"
@@ -290,9 +289,7 @@ msgstr "Ouvrir l'archive dans une nouvelle fenêtre"
 msgid "Open archive"
 msgstr "Ouvrir l'archive"
 
-#: ../src/main_window.c:757
-#: ../src/main_window.c:1117
-#: ../src/application.c:197
+#: ../src/main_window.c:757 ../src/main_window.c:1117 ../src/application.c:197
 #: ../src/application.c:213
 msgid ""
 "Squeeze cannot extract this archive type,\n"
@@ -301,8 +298,7 @@ msgstr ""
 "Squeeze ne peut pas extraire de fichier de ce type d'archive,\n"
 "l'application nécessaire n'est pas présente."
 
-#: ../src/main_window.c:798
-#: ../src/application.c:287
+#: ../src/main_window.c:798 ../src/application.c:287
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -343,16 +339,24 @@ msgid "Artwork:"
 msgstr "Images :"
 
 #: ../src/main_window.c:960
-msgid "The add and extract icons are based on the extract icon created by Andreas Nilsson"
-msgstr "Les icônes \"ajouter\" et \"extraire\" sont basés sur les icônes d'extraction de Andreas Nilsson"
+msgid ""
+"The add and extract icons are based on the extract icon created by Andreas "
+"Nilsson"
+msgstr ""
+"Les icônes \"ajouter\" et \"extraire\" sont basés sur les icônes "
+"d'extraction de Andreas Nilsson"
 
 #: ../src/main_window.c:962
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiré de Xarchiver, écrit par Giuseppe Torelli"
 
 #: ../src/main_window.c:967
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "Squeeze est un gestionnaire d'archives léger et flexible pour l'environnement de bureau xfce"
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+"Squeeze est un gestionnaire d'archives léger et flexible pour "
+"l'environnement de bureau xfce"
 
 #: ../src/main_window.c:974
 msgid "translator-credits"
@@ -360,7 +364,8 @@ msgstr "Maximilian Schleiss <maxschleiss@bluewin.ch>"
 
 #: ../src/main_window.c:1075
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Quelle action voulez-vous effectuer sur le(s) fichier(s) sélectionné(s) ?"
+msgstr ""
+"Quelle action voulez-vous effectuer sur le(s) fichier(s) sélectionné(s) ?"
 
 #: ../src/main_window.c:1076
 msgid "Open"
@@ -400,7 +405,9 @@ msgstr "Échec à la création de l'archive, type MIME non supporté"
 #.
 #: ../src/application.c:271
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Échec à l'ouverture de l'archive, type MIME non supporté ou fichier inexistant"
+msgstr ""
+"Échec à l'ouverture de l'archive, type MIME non supporté ou fichier "
+"inexistant"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -492,29 +499,23 @@ msgstr "Espacement"
 msgid "The amount of space between the path buttons"
 msgstr "L'espacement entre les boutons du chemin"
 
-#: ../src/notebook.c:177
-#: ../src/archive_store.c:246
+#: ../src/notebook.c:177 ../src/archive_store.c:246
 msgid "Show mime icons"
 msgstr "Afficher les icônes MIME"
 
-#: ../src/notebook.c:178
-#: ../src/archive_store.c:247
+#: ../src/notebook.c:178 ../src/archive_store.c:247
 msgid "Show the mime type icons for each entry"
 msgstr "Afficher l'icône du type MIME pour chaque position"
 
-#: ../src/notebook.c:184
-#: ../src/archive_store.c:260
+#: ../src/notebook.c:184 ../src/archive_store.c:260
 msgid "Sort folders before files"
 msgstr "Trier les dossiers avant les fichiers"
 
-#: ../src/notebook.c:185
-#: ../src/archive_store.c:261
+#: ../src/notebook.c:185 ../src/archive_store.c:261
 msgid "The folders will be put at the top of the list"
 msgstr "Les dossiers s'afficheront en haut de la liste"
 
-#: ../src/notebook.c:191
-#: ../src/notebook.c:192
-#: ../src/archive_store.c:267
+#: ../src/notebook.c:191 ../src/notebook.c:192 ../src/archive_store.c:267
 #: ../src/archive_store.c:268
 msgid "Sort text case sensitive"
 msgstr "Classer le texte en fonction de la casse"
@@ -542,4 +543,3 @@ msgstr "Gestionnaire d'archives"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Gestionnaire d'archives pour Xfce"
-
