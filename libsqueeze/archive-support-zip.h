@@ -47,6 +47,7 @@ struct _LSQArchiveSupportZip
 	gboolean  _extr_overwrite;
 	gchar    *_extr_password;
 
+/* Display properties */
 	gboolean  _view_size;
 	gboolean  _view_time;
 	gboolean  _view_date;

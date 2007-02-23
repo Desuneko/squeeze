@@ -43,7 +43,6 @@ typedef struct _LSQArchiveSupportGnuTar LSQArchiveSupportGnuTar;
 struct _LSQArchiveSupportGnuTar
 {
 	LSQArchiveSupport parent;
-	gchar *app_name;
 	gboolean _extr_overwrite;
 	gboolean _extr_touch;
 	guint    _extr_strip;
@@ -52,7 +51,7 @@ struct _LSQArchiveSupportGnuTar
 
 	gchar   *_add_mode;
 
-/* Optional properties */
+/* Display properties */
 	gboolean _view_size;
 	gboolean _view_date;
 	gboolean _view_time;
@@ -69,11 +68,6 @@ struct _LSQArchiveSupportGnuTarClass
 
 GType                lsq_archive_support_gnu_tar_get_type(void) G_GNUC_INTERNAL;
 LSQArchiveSupport *  lsq_archive_support_gnu_tar_new() G_GNUC_INTERNAL;
-
-gint                 lsq_archive_support_gnu_tar_add(LSQArchive *, GSList *) G_GNUC_INTERNAL;
-gint                 lsq_archive_support_gnu_tar_extract(LSQArchive *, const gchar *, GSList *) G_GNUC_INTERNAL;
-gint                 lsq_archive_support_gnu_tar_remove(LSQArchive *, GSList *) G_GNUC_INTERNAL;
-gint                 lsq_archive_support_gnu_tar_refresh(LSQArchive *) G_GNUC_INTERNAL;
 
 G_END_DECLS
 

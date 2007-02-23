@@ -217,7 +217,7 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
 			gchar *files = lsq_concat_filenames(filenames);
-			gchar *options = g_strdup("");
+			gchar *options = NULL;
 
 			archive_command = lsq_archive_command_new("", archive, "zip %3$s -r %1$s %2$s", FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));

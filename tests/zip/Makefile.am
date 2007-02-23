@@ -9,6 +9,7 @@ LIBS =                                                                  \
 
 TESTS =                                                                 \
 	test-zip-add.pl                                                       \
+	test-gnu-tar-add.pl                                                       \
 	test-zip-extract.pl                                                   \
 	test-zip-remove.pl                                                    \
 	test-zip-refresh.pl
