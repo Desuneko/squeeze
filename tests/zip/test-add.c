@@ -22,11 +22,16 @@
 
 GMainLoop *loop = NULL;
 gint ret_val = 0;
-gchar *filename = NULL;
+gchar *n_filename = NULL;
+gchar *a_filename = NULL;
 
 static GOptionEntry entries[] =
 {
-	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &filename,
+	{	"new", 'n', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &n_filename,
+		NULL,
+		NULL
+	},
+	{	"add", 'a', G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &a_filename,
 		NULL,
 		NULL
 	},
@@ -62,13 +67,20 @@ int main(int argc, char **argv)
 	g_option_context_add_main_entries(opt_context, entries, NULL);
 	g_option_context_parse (opt_context, &argc, &argv, NULL);
 
-	if(filename == NULL)
+	if(a_filename == NULL && n_filename == NULL)
 	{
 		g_print("Filename is not specified\n");
 		return 1;
 	}
 
-	lsq_new_archive(filename, TRUE, NULL, &archive);
+	if(n_filename)
+	{
+		lsq_new_archive(n_filename, TRUE, NULL, &archive);
+	}
+	if(a_filename && !archive) 
+	{
+		lsq_open_archive(a_filename, &archive);
+	}
 	archive_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(archive));
 
 	g_signal_connect(G_OBJECT(archive), "command-terminated", G_CALLBACK(cb_command_terminated), NULL);

@@ -65,11 +65,11 @@ void
 lsq_archive_support_gnu_tar_class_init(LSQArchiveSupportGnuTarClass *supportclass);
 
 gboolean
-lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+lsq_archive_support_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_command);
 gboolean
-lsq_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+lsq_archive_support_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_command);
 gboolean
-lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+lsq_archive_support_gnu_tar_decompress_parse_output(LSQArchiveCommand *archive_command);
 
 void
 lsq_archive_support_gnu_tar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
@@ -298,11 +298,6 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 		}
 		else
 		{
-			if(g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tar"))
-			{
-				gchar *tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX.tar" , NULL);
-				g_mkstemp(tmp_file);
-			}
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 				command_skeleton = g_strdup("uncompress -c %1$s");
 			if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compressed-tar"))
@@ -314,12 +309,17 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			if(command_skeleton)
 			{
 				archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
+				lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_gnu_tar_decompress_parse_output);
+				tmp_file = g_strconcat(lsq_tmp_dir, "/squeeze-XXXXXX.tar" , NULL);
+				g_mkstemp(tmp_file);
 				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
 				g_free(command_skeleton);
 			}
 
 			command_skeleton = g_strconcat(GNU_TAR_APP_NAME, " %3$s -r -f %1$s %2$s", NULL);
 			archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
+			if(tmp_file)
+				g_object_set_data(G_OBJECT(archive_command), "archive", g_strdup(tmp_file));
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
 			g_free(command_skeleton);
@@ -336,7 +336,10 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			if(command_skeleton)
 			{
 				archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
-				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
+				lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_gnu_tar_compress_parse_output);
+				if(tmp_file)
+					g_object_set_data(G_OBJECT(archive_command), "archive", g_strdup(tmp_file));
+				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, g_strdup(tmp_file));
 				g_free(command_skeleton);
 			}
 		}
@@ -372,7 +375,7 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 }
 
 gboolean
-lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+lsq_archive_support_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_command)
 {
 /*
 	GIOStatus status = G_IO_STATUS_NORMAL;
@@ -502,61 +505,71 @@ lsq_archive_support_gnu_tar_refresh_parse_output(GIOChannel *ioc, GIOCondition c
 }
 
 gboolean
-lsq_archive_support_gnu_tar_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+lsq_archive_support_gnu_tar_decompress_parse_output(LSQArchiveCommand *archive_command)
 {
-	FILE *out_file = NULL;
-	LSQArchive *archive = data;
+	GIOStatus status = G_IO_STATUS_NORMAL;
 	gchar *buf = g_new0(gchar, 1024);
 	guint read = 0;
 	GError *error = NULL;
+	FILE *out_file;
 
-	const gchar *out_filename = g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_TEMP_FILE);
+	const gchar *out_filename = g_object_get_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE);
 
-	if(cond & (G_IO_PRI | G_IO_IN))
+	out_file = fopen(out_filename, "ab");
+	if(!out_file)
+		return FALSE; 
+	
+	status = lsq_archive_command_read_bytes(archive_command, 1, buf, 1024, (gsize *)&read, &error);
+	if(status == G_IO_STATUS_EOF)
 	{
-		out_file = fopen(out_filename, "ab");
-		if(!out_file)
-			g_critical("Could not open file");
-
-		while(g_io_channel_read_chars(ioc, buf, 1024, (gsize *)&read, &error) == G_IO_STATUS_NORMAL)
-		{
-			if(read)
-			{
-				fwrite(buf, 1, read, out_file);
-			}
-			read = 0;
-		}
 		fclose(out_file);
+		return TRUE;
 	}
+
+	if(read)
+	{
+		fwrite(buf, 1, read, out_file);
+	}
+	fclose(out_file);
 	g_free(buf);
-	return FALSE;
+
+	return TRUE;
 }
 
 gboolean
-lsq_archive_support_gnu_tar_compress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+lsq_archive_support_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_command)
 {
-	FILE *out_file = NULL;
-	LSQArchive *archive = data;
+	GIOStatus status = G_IO_STATUS_NORMAL;
 	gchar *buf = g_new0(gchar, 1024);
+	LSQArchive *archive = archive_command->archive;
 	guint read = 0;
 	GError *error = NULL;
+	FILE *out_file;
 
-	if(cond & (G_IO_PRI | G_IO_IN))
+	const gchar *out_filename = archive->path;
+	gboolean remove = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(archive_command), "compressing"));
+	if(remove == FALSE)
 	{
-		out_file = fopen(archive->path, "ab");
-		if(!out_file)
-			g_critical("Could not open file");
-
-		while(g_io_channel_read_chars(ioc, buf, 1024, (gsize *)&read, &error) == G_IO_STATUS_NORMAL)
-		{
-			if(read)
-			{
-				fwrite(buf, 1, read, out_file);
-			}
-			read = 0;
-		}
-		fclose(out_file);
+		g_object_set_data(G_OBJECT(archive_command), "compressing", GUINT_TO_POINTER(TRUE));
+		g_unlink(out_filename);
 	}
+
+	out_file = fopen(out_filename, "ab");
+	if(!out_file)
+		return FALSE; 
+	
+	status = lsq_archive_command_read_bytes(archive_command, 1, buf, 1024, (gsize *)&read, &error);
+	if(status == G_IO_STATUS_EOF)
+	{
+		fclose(out_file);
+		return TRUE;
+	}
+
+	if(read)
+	{
+		fwrite(buf, 1, read, out_file);
+	}
+	fclose(out_file);
 	g_free(buf);
 	return FALSE;
 }

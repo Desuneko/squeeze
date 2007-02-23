@@ -7,7 +7,7 @@ print "========================================\n";
 print "Target archive:\n";
 print "$test_archive\n";
 
-@args = ("./test-add", "-n", $test_archive, "$cwd/data/2.txt");
+@args = ("./test-add", "-n", $test_archive, "$cwd/data/3.txt");
 system(@args) != 0
 	or die "system @args should fail: $?";
 

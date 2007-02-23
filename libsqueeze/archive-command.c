@@ -178,20 +178,31 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 	gchar **argvp;
 	gint argcp;
 	gint fd_in, fd_out, fd_err;
+	gchar *escaped_archive_path;
 
 	g_return_val_if_fail(archive_command->child_pid == 0, FALSE);
 
 	const gchar *files = g_object_get_data(G_OBJECT(archive_command), "files");
 	const gchar *options = g_object_get_data(G_OBJECT(archive_command), "options");
+	const gchar *archive_path = g_object_get_data(G_OBJECT(archive_command), "archive");
 
 	if(files == NULL)
 		files = "";
 	if(options == NULL)
 		options = "";
-	gchar *archive_path = g_shell_quote(archive_command->archive->path);
-	gchar *command = g_strdup_printf(archive_command->command, archive_path, files, options);
+	
+	if(archive_path)
+	{
+		escaped_archive_path = g_shell_quote(archive_path);
+	}
+	else
+		escaped_archive_path = g_shell_quote(archive_command->archive->path);
 
+	gchar *command = g_strdup_printf(archive_command->command, escaped_archive_path, files, options);
+
+#ifdef DEBUG
 	g_debug("%s\n", command);
+#endif
 	g_shell_parse_argv(command, &argcp, &argvp, NULL);
 	if ( ! g_spawn_async_with_pipes (
 			NULL,
@@ -205,13 +216,15 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 			&fd_out,
 			&fd_err,
 			NULL) )
+	{
+		g_object_unref(archive_command);
 		return FALSE;
+	}
 
 	g_object_ref(archive_command);
 	g_child_watch_add(archive_command->child_pid, lsq_archive_command_child_watch_func, archive_command);
 
-	/* TODO: add iochannel_watches */
-	if(archive_command->parse_stdout)
+	if(archive_command->parse_stdout != NULL)
 	{
 		g_object_ref(archive_command);
 		archive_command->ioc_out = g_io_channel_unix_new(fd_out);
@@ -220,7 +233,7 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 		g_io_add_watch (archive_command->ioc_out, G_IO_IN|G_IO_PRI|G_IO_ERR|G_IO_HUP|G_IO_NVAL, lsq_archive_command_parse_stdout, archive_command);
 	}
 
-	g_free(archive_path);
+	g_free(escaped_archive_path);
 	g_free(command);
 	return TRUE;
 }
@@ -334,13 +347,28 @@ lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command, guint fd,
 }
 
 GIOStatus
-lsq_archive_command_read_line(LSQArchiveCommand *archive_command, guint fd, gchar **line, gsize *length)
+lsq_archive_command_read_line(LSQArchiveCommand *archive_command, guint fd, gchar **line, gsize *length, GError **error)
 {
 	GIOStatus status = G_IO_STATUS_EOF;
 	switch(fd)
 	{
 		case 1:
-			status = g_io_channel_read_line(archive_command->ioc_out, line, length, NULL, NULL);
+			status = g_io_channel_read_line(archive_command->ioc_out, line, length, NULL, error);
+			break;
+		default:
+			break;
+	}
+	return status;
+}
+
+GIOStatus
+lsq_archive_command_read_bytes(LSQArchiveCommand *archive_command, guint fd, gchar *buf, gsize max_length, gsize *length, GError **error)
+{
+	GIOStatus status = G_IO_STATUS_EOF;
+	switch(fd)
+	{
+		case 1:
+			status = g_io_channel_read_chars(archive_command->ioc_out, buf, max_length, length, error);
 			break;
 		default:
 			break;
