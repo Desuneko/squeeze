@@ -294,7 +294,6 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
-			g_object_unref(archive_command);
 			g_free(command_skeleton);
 		}
 		else
@@ -316,7 +315,6 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			{
 				archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
 				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
-				g_object_unref(archive_command);
 				g_free(command_skeleton);
 			}
 
@@ -324,7 +322,6 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
-			g_object_unref(archive_command);
 			g_free(command_skeleton);
 			command_skeleton = NULL;
 
@@ -340,14 +337,16 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			{
 				archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE);
 				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
-				g_object_unref(archive_command);
 				g_free(command_skeleton);
 			}
 		}
 		g_free(files);
 		archive_command = lsq_archive_get_front_command(archive);
 		if(archive_command)
+		{
 			lsq_archive_command_run(archive_command);
+			g_object_unref(archive_command);
+		}
 		else
 			return 1;
 	}
