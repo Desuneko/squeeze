@@ -46,9 +46,9 @@ struct _SQArchiveStore
 	gint stamp;
 	LSQArchive *archive;
 	LSQArchiveSupport *support;
-	gint sort_column;
-	GtkSortType sort_order;
-	LSQEntry **sort_list;
+	// gint sort_column;
+	// GtkSortType sort_order;
+	// LSQArchiveIter **sort_list;
 	guint list_size;
 	GtkIconTheme *icon_theme;
 	GtkTreeView *treeview;
@@ -62,7 +62,7 @@ struct _SQArchiveStore
 		GList *history;
 		GList *present;
 		guint maxhistory;
-		GSList *trailing;
+		LSQArchiveIter *trailing;
 	} navigation;
 };
 

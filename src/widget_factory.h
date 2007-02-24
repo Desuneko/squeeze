@@ -42,7 +42,7 @@ typedef struct
 {
 	GObject parent;
 	GtkTooltips *tips;
-	LSQCustomActionCallback *custom_callback;
+	// LSQCustomActionCallback *custom_callback;
 } SQWidgetFactory;
 
 typedef struct
@@ -55,10 +55,10 @@ SQWidgetFactory    *sq_widget_factory_new();
 
 GtkWidget          *sq_widget_factory_create_property_widget(SQWidgetFactory *, GObject *, const gchar *);
 GSList             *sq_widget_factory_create_property_menu(SQWidgetFactory *, GObject *, const gchar *);
-GtkWidget          *sq_widget_factory_create_action_widget(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
-GtkWidget          *sq_widget_factory_create_action_menu_item(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
-GtkToolItem        *sq_widget_factory_create_action_bar(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
-GSList             *sq_widget_factory_create_action_menu(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *);
+// GtkWidget          *sq_widget_factory_create_action_widget(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+// GtkWidget          *sq_widget_factory_create_action_menu_item(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+// GtkToolItem        *sq_widget_factory_create_action_bar(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+// GSList             *sq_widget_factory_create_action_menu(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *);
 
 #endif /*__SQ_WIDGET_FACTORY_H__*/
 
