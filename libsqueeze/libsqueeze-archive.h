@@ -51,8 +51,8 @@ typedef struct _LSQArchiveClass LSQArchiveClass;
 
 GType lsq_archive_get_type(void);
 
-void  lsq_archive_iter_ref(LSQArchiveIter *);
-void  lsq_archive_iter_unref(LSQArchiveIter *);
+LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *);
+void            lsq_archive_iter_unref(LSQArchiveIter *);
 
 G_END_DECLS
 

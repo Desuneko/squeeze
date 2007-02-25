@@ -46,9 +46,9 @@ struct _SQArchiveStore
 	gint stamp;
 	LSQArchive *archive;
 	LSQArchiveSupport *support;
-	// gint sort_column;
-	// GtkSortType sort_order;
-	// LSQArchiveIter **sort_list;
+	gint sort_column;
+	GtkSortType sort_order;
+	LSQArchiveIter **sort_list;
 	guint list_size;
 	GtkIconTheme *icon_theme;
 	GtkTreeView *treeview;
@@ -93,16 +93,6 @@ void sq_archive_store_set_show_icons(SQArchiveStore *, gboolean);
 void sq_archive_store_set_sort_case_sensitive(SQArchiveStore *, gboolean);
 void sq_archive_store_set_sort_folders_first(SQArchiveStore *, gboolean);
 
-gchar *
-sq_archive_store_get_filename(SQArchiveStore *store, GtkTreeIter *iter);
-
-/* want to depricate these */
-/*void
-sq_archive_store_set_history(SQArchiveStore *store, GList *history, GList *pwd);
-void
-sq_archive_store_get_history(SQArchiveStore *store, GList **history, GList **pwd);
-*/
-/* these replace them */
 gboolean
 sq_archive_store_has_history(SQArchiveStore *store);
 gboolean

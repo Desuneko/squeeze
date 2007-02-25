@@ -242,7 +242,7 @@ lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
  * LSQArchiveIter stuff *
  ************************/
 
-static LSQArchiveIter*
+static LSQArchiveIter *
 lsq_archive_iter_new(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive *archive)
 {
 #ifdef DEBUG
@@ -288,8 +288,7 @@ lsq_archive_iter_get_for_path(LSQArchive *archive, GSList *path)
 	/* iter has been found */
 	if(lsq_archive_iter_pool_find_iter(archive->pool, path->data, &iter, &pos))
 	{
-		lsq_archive_iter_ref(iter);
-		return iter;
+		return lsq_archive_iter_ref(iter);
 	}
 
 	/* create a new iter */
@@ -304,7 +303,7 @@ lsq_archive_iter_get_for_path(LSQArchive *archive, GSList *path)
 	return iter;
 }
 
-static LSQArchiveIter*
+static LSQArchiveIter *
 lsq_archive_iter_get_with_parent(LSQArchiveEntry *entry, LSQArchiveIter *parent)
 {
 #ifdef DEBUG
@@ -317,8 +316,7 @@ lsq_archive_iter_get_with_parent(LSQArchiveEntry *entry, LSQArchiveIter *parent)
 	/* iter has been found */
 	if(lsq_archive_iter_pool_find_iter(parent->archive->pool, entry, &iter, &pos))
 	{
-		lsq_archive_iter_ref(iter);
-		return iter;
+		return lsq_archive_iter_ref(iter);
 	}
 
 #ifdef DEBUG
@@ -372,15 +370,17 @@ lsq_archive_iter_unref(LSQArchiveIter* iter)
 	}
 }
 
-void
+LSQArchiveIter *
 lsq_archive_iter_ref(LSQArchiveIter* iter)
 {
 #ifdef DEBUG
-	g_return_if_fail(iter);
+	g_return_val_if_fail(iter, iter);
 #endif
-	g_return_if_fail(iter->ref_count);
+	g_return_val_if_fail(iter->ref_count, iter);
 
 	iter->ref_count++;
+
+	return iter;
 }
 
 gboolean
@@ -422,7 +422,7 @@ lsq_archive_iter_is_real(const LSQArchiveIter *iter)
 	return TRUE;
 }
 
-LSQArchiveIter*
+LSQArchiveIter *
 lsq_archive_iter_get_real_parent(LSQArchiveIter *iter)
 {
 #ifdef DEBUG
@@ -437,7 +437,7 @@ lsq_archive_iter_get_real_parent(LSQArchiveIter *iter)
 		back_stack = g_slist_prepend(back_stack, parent);
 		parent = parent->parent;
 	}
-	/* the root entry is archive root entry */
+	/* the root entry is not archive root entry */
 	if(((LSQArchiveIter*)back_stack->data)->entry != iter->archive->root_entry)
 	{
 		g_slist_free(back_stack);
@@ -458,8 +458,7 @@ lsq_archive_iter_get_real_parent(LSQArchiveIter *iter)
 		}
 	}
 	g_slist_free(back_stack);
-	lsq_archive_iter_ref(iter);
-	return iter;
+	return lsq_archive_iter_ref(iter);
 }
 
 gboolean
@@ -476,6 +475,18 @@ lsq_archive_iter_is_directory(const LSQArchiveIter *iter)
 	return FALSE;
 }
 
+gboolean
+lsq_archive_iter_has_parent(const LSQArchiveIter *iter)
+{
+	return iter->parent?TRUE:FALSE;
+}
+
+LSQArchiveIter *
+lsq_archive_iter_get_parent(LSQArchiveIter *iter)
+{
+	return lsq_archive_iter_ref(iter->parent);
+}
+
 guint
 lsq_archive_iter_n_children(const LSQArchiveIter *iter)
 {
@@ -485,7 +496,7 @@ lsq_archive_iter_n_children(const LSQArchiveIter *iter)
 	return lsq_archive_entry_n_children(iter->entry);
 }
 
-LSQArchiveIter*
+LSQArchiveIter *
 lsq_archive_iter_nth_child(LSQArchiveIter *parent, guint n)
 {
 #ifdef DEBUG
@@ -615,6 +626,15 @@ lsq_archive_iter_get_filename(const LSQArchiveIter *iter)
 	g_return_val_if_fail(iter, FALSE);
 #endif
 	return lsq_archive_entry_get_filename(iter->entry);
+}
+
+const gchar*
+lsq_archive_iter_get_mime(const LSQArchiveIter *iter)
+{
+#ifdef debug
+	g_return_val_if_fail(iter, FALSE);
+#endif
+	return lsq_archive_entry_get_mimetype(iter->entry);
 }
 
 gboolean
