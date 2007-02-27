@@ -377,131 +377,116 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 gboolean
 lsq_archive_support_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_command)
 {
-/*
+	gchar *line = NULL;
+	gsize linesize = 0;
 	GIOStatus status = G_IO_STATUS_NORMAL;
-	LSQArchive *archive = data;
-	gchar *line	= NULL;
-	gpointer props[6];
-
+	LSQArchive *archive = archive_command->archive;
 	guint64 size;
-	guint linesize;
-	gint n = 0, a = 0, i = 0, o = 0;
+	gpointer props[6];
+	gint n = 0, a = 0, i = 0;
 	gchar *temp_filename = NULL;
 
-	if(!LSQ_IS_ARCHIVE(archive))
-		return FALSE;
+	LSQArchiveIter *entry;
 
-
-	if(cond & (G_IO_PRI | G_IO_IN))
+	status = lsq_archive_command_read_line(archive_command, 1, &line, &linesize, NULL);
+	if (line == NULL)
 	{
-		for(o = 0; o < 500; o++)
-		{
-			i = 0;
-
-			status = g_io_channel_read_line(ioc, &line, NULL,NULL,NULL);
-			if (line == NULL)
- 				break;
-
-			linesize = strlen(line);
-
-			if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights)
-			{
-				line[10] = '\0';
-				props[i] = line;
-				i++;
-			}
-
-
-			for(n=13; n < linesize; ++n)
-				if(line[n] == ' ') break;
-
-			if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner)
-			{
-				line[n] = '\0';
-				props[i] = line+11;
-				i++;
-			}
-
-			for(++n; n < linesize; ++n)
-				if(line[n] >= '0' && line[n] <= '9') break;
-
-			a = n;
-
-			for(; n < linesize; ++n)
-				if(line[n] == ' ') break;
-
-			if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
-			{
-				line[n] = '\0';
-				size = g_ascii_strtoull(line + a, NULL, 0);
-				props[i] = &size;
-				i++;
-			}
-
-			a = ++n;
-
-			for(; n < linesize; n++) // DATE
-				if(line[n] == ' ') break;
-
-			if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-
-			a = ++n;
-			for (; n < linesize; n++) // TIME
-				if (line[n] == ' ') break;
-
-			if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time)
-			{
-				line[n] = '\0';
-				props[i] = line + a;
-				i++;
-			}
-
-			n++;
-
-			gchar *temp = g_strrstr (&line[n],"->"); 
-			if (temp ) 
-			{ 
-				temp[0] = '\0';
-			}
-			else
-			{
-				line[linesize-1] = '\0';
-			}
-			if(line[0] == 'd')
-			{
-				// work around for gtar, which does not output trailing slashes with directories
-				if(line[linesize-2] != '/')
-					temp_filename = g_strconcat(line + n, "/", NULL); 
-				else
-					temp_filename = g_strdup(line + n); 
- 
-				entry = lsq_archive_add_file(archive, temp_filename);
-				g_free(temp_filename);
-			}
-			else
-			{
-				temp_filename = line + n; 
- 
-				entry = lsq_archive_add_file(archive, temp_filename);
-			}
-			lsq_archive_iter_set_propsv(archive, entry, (gconstpointer*)props);
-			g_free(line);
-		}
+		if(status == G_IO_STATUS_AGAIN)
+			return TRUE;
+		else
+			return FALSE;
 	}
-	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
+
+	if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights)
 	{
-		g_io_channel_shutdown ( ioc,TRUE,NULL );
-		g_io_channel_unref (ioc);
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
-		return FALSE; 
+		line[10] = '\0';
+		props[i] = line;
+		i++;
 	}
-	*/
-	return FALSE;
+	for(n=13; n < linesize; ++n)
+		if(line[n] == ' ') break;
+
+	if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner)
+	{
+		line[n] = '\0';
+		props[i] = line+11;
+		i++;
+	}
+
+	for(++n; n < linesize; ++n)
+		if(line[n] >= '0' && line[n] <= '9') break;
+
+	a = n;
+
+	for(; n < linesize; ++n)
+		if(line[n] == ' ') break;
+
+	if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
+	{
+		line[n] = '\0';
+		size = g_ascii_strtoull(line + a, NULL, 0);
+		props[i] = &size;
+		i++;
+	}
+
+	a = ++n;
+
+	for(; n < linesize; n++) // DATE
+		if(line[n] == ' ') break;
+
+	if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+
+	a = ++n;
+	for (; n < linesize; n++) // TIME
+		if (line[n] == ' ') break;
+
+	if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time)
+	{
+		line[n] = '\0';
+		props[i] = line + a;
+		i++;
+	}
+	n++;
+
+	gchar *temp = g_strrstr (&line[n],"->"); 
+	if (temp ) 
+	{ 
+		temp[0] = '\0';
+	}
+	else
+	{
+		line[linesize-1] = '\0';
+	}
+	if(line[0] == 'd')
+	{
+		/* 1: Work around for gtar, which does not output 
+		 * trailing slashes with directories. */
+		/* 2: The line includes the newline character, this 
+		 * would probably break on platforms that use 
+		 * more then one character to indicate a line-end (\r\n) */
+		if(line[linesize-2] != '/')
+			temp_filename = g_strconcat(line + n, "/", NULL); 
+		else
+			temp_filename = g_strdup(line + n); 
+
+		entry = lsq_archive_add_file(archive, temp_filename);
+		g_free(temp_filename);
+	}
+	else
+	{
+		temp_filename = line + n; 
+
+		entry = lsq_archive_add_file(archive, temp_filename);
+	}
+
+	lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);
+	g_free(line);
+	return TRUE;
 }
 
 gboolean

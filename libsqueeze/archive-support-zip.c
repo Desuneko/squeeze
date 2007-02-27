@@ -359,7 +359,7 @@ gboolean
 lsq_archive_support_zip_refresh_parse_output(LSQArchiveCommand *archive_command)
 {
 	gchar *line = NULL;
-	gsize linesize= 0;
+	gsize linesize = 0;
 	GIOStatus status = G_IO_STATUS_NORMAL;
 	LSQArchive *archive = archive_command->archive;
 	guint64 size;
