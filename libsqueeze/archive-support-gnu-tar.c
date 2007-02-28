@@ -387,6 +387,31 @@ lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 	{
 		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
+		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_rights)
+		{
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Permissions"));
+			i++;
+		}
+		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_owner)
+		{
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING,_("Owner/Group"));
+			i++;
+		}
+		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_size)
+		{
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
+			i++;
+		}
+		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_date)
+		{
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Date"));
+			i++;
+		}
+		if(LSQ_ARCHIVE_SUPPORT_GNU_TAR(archive->support)->_view_time)
+		{
+			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Time"));
+			i++;
+		}
 
 		gchar *command_skeleton = g_strconcat(GNU_TAR_APP_NAME, " -tvvf %1$s", NULL);
 		archive_command = lsq_archive_command_new("", archive, command_skeleton, TRUE);
@@ -478,6 +503,7 @@ lsq_archive_support_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_comm
 	}
 	n++;
 
+	props[i] = NULL;
 	gchar *temp = g_strrstr (&line[n],"->"); 
 	if (temp ) 
 	{ 

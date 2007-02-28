@@ -185,14 +185,14 @@ lsq_archive_support_zip_new()
 	LSQArchiveSupportZip *support;
 
 	support = g_object_new(LSQ_TYPE_ARCHIVE_SUPPORT_ZIP,
-												 "view-uncompressed-size", TRUE,
+	                       "view-uncompressed-size", TRUE,
 	                       "view-compressed-size", TRUE,
-												 "view-time", TRUE,
-												 "view-date", TRUE,
-												 "view-ratio", TRUE,
-												 "view-crc32", TRUE,
-												 "view-method", TRUE,
-												 NULL);
+	                       "view-time", TRUE,
+	                       "view-date", TRUE,
+	                       "view-ratio", TRUE,
+	                       "view-crc32", TRUE,
+	                       "view-method", TRUE,
+	                       NULL);
 	
 	return LSQ_ARCHIVE_SUPPORT(support);
 }
@@ -468,6 +468,7 @@ lsq_archive_support_zip_refresh_parse_output(LSQArchiveCommand *archive_command)
 
 	line[linesize-1] = '\0';
 	temp_filename = line+n; 
+	props[i] = NULL;
 
 	entry = lsq_archive_add_file(archive, temp_filename);
 	lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);

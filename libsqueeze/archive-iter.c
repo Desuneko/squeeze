@@ -172,8 +172,8 @@ lsq_archive_iter_pool_find_iter(LSQArchiveIterPool *ipool, LSQArchiveEntry *entr
 		}
 		if(cmp > 0)
 		{
+			size -= ++pos;
 			off += pos;
-			size -= pos;
 		}
 		if(cmp < 0)
 		{
