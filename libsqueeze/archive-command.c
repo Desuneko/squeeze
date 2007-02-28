@@ -152,7 +152,7 @@ lsq_archive_command_finalize(GObject *object)
  * Returns: a new LSQArchiveCommand object
  */
 LSQArchiveCommand *
-lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *command, gboolean safe)
+lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *command, gboolean safe, gboolean refresh)
 {
 	LSQArchiveCommand *archive_command;
 
@@ -161,6 +161,7 @@ lsq_archive_command_new(const gchar *comment, LSQArchive *archive, const gchar *
 	archive_command->command = g_strdup(command);
 	archive_command->archive = archive;
 	archive_command->safe = safe;
+	archive_command->refresh = refresh;
 
 	lsq_archive_enqueue_command(archive, archive_command);
 

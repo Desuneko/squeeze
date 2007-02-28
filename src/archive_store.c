@@ -140,8 +140,8 @@ sq_archive_store_append_history(SQArchiveStore *store, LSQArchiveIter *entry);
 static void
 sq_archive_store_check_trailing(SQArchiveStore *store);
 
-/* static void                                                                                           */
-/* cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data);                       */
+static void
+cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data);
 /* static void                                                                                           */
 /* cb_sq_archive_store_archive_path_changed(LSQArchive *archive, const gchar *path, gpointer user_data); */
 
@@ -1126,7 +1126,7 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 
 		g_return_if_fail(entry);
 
-		/* TODO Signal file-activated */
+		/* Signal file-activated */
 		if(!lsq_archive_iter_is_directory(entry))
 		{
 #ifdef DEBUG
@@ -1224,7 +1224,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	/* disconnect from the archive */
 	if(store->archive)
 	{
-		/* g_signal_handlers_disconnect_by_func(store->archive, cb_sq_archive_store_archive_refreshed, store); */
+		g_signal_handlers_disconnect_by_func(store->archive, cb_sq_archive_store_archive_refreshed, store);
 		/* g_signal_handlers_disconnect_by_func(store->archive, cb_sq_archive_store_archive_path_changed, store); */
 		g_object_unref(store->archive);
 		store->archive = NULL;
@@ -1275,7 +1275,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 
 	/* notify all we have a new archive and connect with the archive */
 	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0, NULL);
-	/* g_signal_connect(store->archive, "refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store); */
+	g_signal_connect(store->archive, "refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store);
 	/* g_signal_connect(store->archive, "lsq_path_changed", G_CALLBACK(cb_sq_archive_store_archive_path_changed), store); */
 }
 
@@ -1613,3 +1613,22 @@ sq_archive_store_dispose(GObject *object)
 	}
 	parent_class->dispose(object);
 }
+
+static void
+cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
+{
+	SQArchiveStore *store = SQ_ARCHIVE_STORE(user_data);
+	GList *iter;
+	LSQArchiveIter *aIter;
+
+	for(iter = store->navigation.history; iter; iter = g_list_next(iter))
+	{
+		aIter = lsq_archive_iter_get_real_parent(iter->data);
+		lsq_archive_iter_unref(iter->data);
+		iter->data = aIter;
+	}
+
+	sq_archive_store_sort(store);
+	sq_archive_store_refresh(store);
+}
+
