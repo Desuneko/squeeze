@@ -103,8 +103,7 @@ static void
 cb_sq_main_window_notebook_page_removed(SQNotebook *, gpointer);
 static void
 cb_sq_main_window_notebook_file_activated(SQNotebook *, gchar *, gpointer);
-static void
-cb_sq_main_window_notebook_status_changed(SQNotebook *, LSQArchive *, gpointer);
+/* static void cb_sq_main_window_notebook_status_changed(SQNotebook *, LSQArchive *, gpointer); */
 
 static void
 sq_main_window_set_navigation(SQMainWindow *window);
@@ -459,7 +458,6 @@ sq_main_window_init(SQMainWindow *window)
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_sq_main_window_notebook_page_switched), window);
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_sq_main_window_notebook_page_removed), window);
 	g_signal_connect(G_OBJECT(window->notebook), "file-activated", G_CALLBACK(cb_sq_main_window_notebook_file_activated), window);
-	g_signal_connect(G_OBJECT(window->notebook), "active-archive-status-changed", G_CALLBACK(cb_sq_main_window_notebook_status_changed), window);
 
 /* menu item */
 	if(show_menubar)
@@ -593,40 +591,6 @@ sq_main_window_find_image(gchar *filename, GtkIconSize size)
 static void
 sq_main_window_new_action_menu(SQMainWindow *window, LSQArchiveSupport *support, LSQArchive *archive)
 {
-	if(!window->menu_bar)
-		return;
-
-	GSList *iter, *list;
-
-	gtk_container_remove(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
-	gtk_container_remove(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_extract);
-	gtk_container_remove(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_remove);
-
-	window->menubar.menu_action = gtk_menu_new();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_action), window->menubar.menu_action);
-
-	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
-	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_extract);
-	gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_remove);
-
-	if(support)
-	{
-		iter = list = sq_widget_factory_create_action_menu(window->widget_factory, support, archive);
-		if(list)
-		{
-			gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), gtk_separator_menu_item_new());
-
-			do
-			{
-				gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), iter->data);
-			}
-			while((iter = iter->next));
-
-			g_slist_free(list);
-		}
-	}
-
-	gtk_widget_show_all(window->menubar.menu_action);
 }
 
 static void
@@ -651,7 +615,7 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		
 		if(!lsq_new_archive(archive_path, TRUE, NULL, &archive))
 		{
-			support = lsq_get_support_for_mime(archive->mime_info);
+			support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(archive));
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, TRUE);
 		}
 		else
@@ -679,16 +643,16 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 	
 	if(mod_type & GDK_SHIFT_MASK)
 		dialog = gtk_file_chooser_dialog_new(_("Open archive in new window"), 
-																			 GTK_WINDOW(window),
-																			 GTK_FILE_CHOOSER_ACTION_OPEN,
-																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+		                                     GTK_WINDOW(window),
+		                                     GTK_FILE_CHOOSER_ACTION_OPEN,
+		                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		                                     GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
 	else
 		dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
-																			 GTK_WINDOW(window),
-																			 GTK_FILE_CHOOSER_ACTION_OPEN,
-																			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-																			 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+		                                     GTK_WINDOW(window),
+		                                     GTK_FILE_CHOOSER_ACTION_OPEN,
+		                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+		                                     GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
 
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
@@ -863,7 +827,7 @@ cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 	gint result = 0;
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive, &lp_support);
 	
-	if(lsq_archive_support_can_stop(lp_support, lp_archive))
+	if(lsq_archive_can_stop(lp_archive))
 		lsq_archive_stop(lp_archive);
 	else
 	{
@@ -988,52 +952,13 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	LSQArchiveSupport *lp_support;
 	sq_notebook_page_get_archive(notebook, &lp_archive, &lp_support, page_nr);
 	SQMainWindow *window = SQ_MAIN_WINDOW(data);
-	LSQArchiveStatus status = LSQ_ARCHIVESTATUS_IDLE;
-
-	if(lp_archive)
-		 status = lsq_archive_get_status(lp_archive);
-
-	if(lp_archive && (status == LSQ_ARCHIVESTATUS_IDLE || status == LSQ_ARCHIVESTATUS_ERROR || status == LSQ_ARCHIVESTATUS_USERBREAK))
-	{
-		if(window->menu_bar)
-		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), TRUE);
-		}
-
-		if(window->tool_bar)
-		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
-		}
-	}
-	else
-	{
-		if(window->menu_bar)
-		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_add), FALSE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_extract), FALSE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->menubar.menu_item_remove), FALSE);
-		}
-
-		if(window->tool_bar)
-		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
-		}
-	}
 
 	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lsq_archive_get_filename(lp_archive), NULL));
 
 	sq_main_window_new_action_menu(window, lp_support, lp_archive);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status_msg(lp_archive));
+	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status(lp_archive));
 }
 
 static void
@@ -1140,7 +1065,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 
 	if(!lsq_open_archive(path, &archive))
 	{
-		support = lsq_get_support_for_mime(archive->mime_info);
+		support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(archive));
 		if(replace < 0)
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, support, FALSE);
 		else
@@ -1206,34 +1131,13 @@ sq_main_window_set_navigation(SQMainWindow *window)
 	}	
 }
 
+/*
 static void
 cb_sq_main_window_notebook_status_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LSQArchiveStatus status = lsq_archive_get_status(archive);
-
-	if((status == LSQ_ARCHIVESTATUS_IDLE) || (status == LSQ_ARCHIVESTATUS_USERBREAK) || (status == LSQ_ARCHIVESTATUS_ERROR))
-	{
-		if(window->menu_bar)
-		{
-			gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
-			/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
-
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
-		}
-
-		if(window->tool_bar)
-		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
-		}
-	}
-
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status_msg(archive));
+	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status(archive));
 }
+*/

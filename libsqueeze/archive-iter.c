@@ -1166,7 +1166,8 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 
 	if(!mime || strcmp(mime, LSQ_MIME_DIRECTORY))
 	{
-		thunar_vfs_mime_info_unref(parent->mime_info);
+		if(parent->mime_info)
+			thunar_vfs_mime_info_unref(parent->mime_info);
 		parent->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, LSQ_MIME_DIRECTORY);
 	}
 

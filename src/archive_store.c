@@ -1,20 +1,18 @@
-	/*
-	 *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
-	 *
-	 *  This program is free software; you can redistribute it and/or modify
-	 *  it under the terms of the GNU General Public License as published by
-	 *  the Free Software Foundation; either version 2 of the License, or
-	 *  (at your option) any later version.
-	 *
-	 *  This program is distributed in the hope that it will be useful,
-	 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 *  GNU Library General Public License for more details.
-	 *
-	 *  You should have received a copy of the GNU General Public License
-	 *  along with this program; if not, write to the Free Software
-	 *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-	 */
+/*
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
 /* archive iter referencing needs testing */
 /* TODO: archive signaling                */
@@ -1277,7 +1275,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 
 	/* notify all we have a new archive and connect with the archive */
 	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0, NULL);
-	/* g_signal_connect(store->archive, "lsq_refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store); */
+	/* g_signal_connect(store->archive, "refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store); */
 	/* g_signal_connect(store->archive, "lsq_path_changed", G_CALLBACK(cb_sq_archive_store_archive_path_changed), store); */
 }
 

@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -146,27 +144,10 @@ sq_application_new_window(SQApplication *app)
 	return window;
 }
 
-void
-cb_sq_application_archive_status_changed(LSQArchive *archive, gpointer data)
-{
-	SQApplication *app = SQ_APPLICATION(data);
-
-	switch(archive->status)
-	{
-		case LSQ_ARCHIVESTATUS_IDLE:
-		case LSQ_ARCHIVESTATUS_ERROR:
-			lsq_close_archive(archive);
-		case LSQ_ARCHIVESTATUS_USERBREAK:
-			g_object_unref(app);
-			break;
-		default:
-			break;
-	}
-}
-
 gint
 sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *dest_path)
 {
+/*
 	GtkWidget *dialog = NULL;
 	gint result = 0;
 	LSQArchive *lp_archive = NULL;
@@ -174,49 +155,9 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 
 	if(!lsq_open_archive(archive_path, &lp_archive))
 	{
-		g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
-		lp_support = lsq_get_support_for_mime(lp_archive->mime_info);
-		if(!dest_path)
-		{
-			dialog = sq_extract_archive_dialog_new(lp_support, lp_archive, FALSE);
-			result = gtk_dialog_run (GTK_DIALOG (dialog) );
-			if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
-			{
-				gtk_widget_destroy (GTK_WIDGET (dialog) );
-				lsq_close_archive(lp_archive);
-			}
-			if(result == GTK_RESPONSE_OK)
-			{
-				dest_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-				if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
-				{
-					GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-																														 GTK_DIALOG_DESTROY_WITH_PARENT, 
-																														 GTK_MESSAGE_WARNING,
-																														 GTK_BUTTONS_CLOSE,
-																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
-					gtk_dialog_run (GTK_DIALOG (warning_dialog) );
-					gtk_widget_destroy(warning_dialog);
-				}
-				g_free(dest_path);
-				dest_path = NULL;
-			}
-		}
-		else
-		{
-			if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
-			{
-					GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-																														 GTK_DIALOG_DESTROY_WITH_PARENT, 
-																														 GTK_MESSAGE_WARNING,
-																														 GTK_BUTTONS_CLOSE,
-																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
-					gtk_dialog_run (GTK_DIALOG (warning_dialog) );
-					gtk_widget_destroy(warning_dialog);
-			}
-		}
 	}
 	g_object_ref(app);
+*/
 	return 0;
 }
 
@@ -275,8 +216,8 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			return 1;
 		}
 	}
-	g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
-	lp_support = lsq_get_support_for_mime(lp_archive->mime_info);
+	//g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
+	lp_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(lp_archive));
 	if(lsq_archive_support_add(lp_support, lp_archive, files))
 	{
 		/* FIXME: show warning dialog */

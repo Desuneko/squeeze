@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -107,10 +105,7 @@ sq_extract_archive_dialog_init(SQExtractArchiveDialog *dialog)
 GtkWidget *
 sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, gboolean sel_option)
 {
-	GSList *extract_options;
-	GtkWidget *test;
 	SQExtractArchiveDialog *dialog;
-	SQWidgetFactory *factory = sq_widget_factory_new();
 
 	dialog = g_object_new(sq_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 /* Handle 'extract selected files' option */
@@ -121,6 +116,7 @@ sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, g
 	gtk_container_add(GTK_CONTAINER(dialog->r_frame), r_vbox);
 
 	dialog->support = support;
+/*
 	if(dialog->support)
 	{
 		extract_options = lsq_archive_support_list_properties(support, "extract");
@@ -131,6 +127,7 @@ sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, g
 			extract_options = extract_options->next;
 		}
 	}
+*/
 	/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
 	gchar **filename_components = g_strsplit(lsq_archive_get_filename(archive), ".", 2);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);

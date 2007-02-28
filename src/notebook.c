@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -53,8 +51,6 @@ sq_notebook_get_tree_view(SQNotebook *notebook, gint page_nr);
 static void
 cb_notebook_close_archive(GtkButton *button, GtkWidget *child);
 
-static void
-cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook);
 static void
 cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *tree_view);
 static void
@@ -159,13 +155,6 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 			NULL, NULL,
 			g_cclosure_marshal_VOID__POINTER,
 			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
-
-	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED] = g_signal_new("active-archive-status-changed",
-			G_TYPE_FROM_CLASS(notebook_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
-			NULL, NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE, 1, G_TYPE_OBJECT, NULL);
 
 	pspec = g_param_spec_boolean("multi_tab",
 		"",
@@ -469,7 +458,8 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 {
 	GtkWidget *lbl_hbox = gtk_hbox_new(FALSE, 0);
 	GtkWidget *label = gtk_label_new(lsq_archive_get_filename(archive));
-	GtkWidget *archive_image = gtk_image_new_from_icon_name(thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, notebook->icon_theme), GTK_ICON_SIZE_MENU);
+	GtkWidget *archive_image = gtk_image_new_from_icon_name("unknown", GTK_ICON_SIZE_MENU);
+	/*thunar_vfs_mime_info_lookup_icon_name(lsq_archive_get_mimetype(archive), notebook->icon_theme), GTK_ICON_SIZE_MENU);*/
 	GtkWidget *close_button = gtk_button_new();
 	GtkWidget *close_image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
 	GtkWidget *scroll_window = gtk_scrolled_window_new(NULL, NULL);
@@ -502,8 +492,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	gtk_widget_show_all(tree_view);
 	gtk_widget_show(scroll_window);
 
-	g_signal_connect(G_OBJECT(archive), "lsq_status_changed", G_CALLBACK(cb_notebook_archive_status_changed), notebook);
-	g_signal_connect(G_OBJECT(archive), "lsq_refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
+	g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
 
 	g_signal_connect(G_OBJECT(close_button), "clicked", G_CALLBACK(cb_notebook_close_archive), scroll_window);
 	g_signal_connect(G_OBJECT(tree_model), "sq_file_activated", G_CALLBACK(cb_notebook_file_activated), notebook);
@@ -534,65 +523,6 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 		lsq_archive_support_refresh(support, archive);
 	}
 
-}
-
-void
-cb_notebook_archive_status_changed(LSQArchive *archive, SQNotebook *notebook)
-{
-	GtkWidget *dialog = NULL;
-
-#ifdef DEBUG
-	g_debug("NOTEBOOK: Archive status changed");
-#endif /* DEBUG */
-	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_ERROR)
-	{
-		/*
-		switch(lsq_archive_get_old_status(archive))
-		{
-			case LSQ_ARCHIVESTATUS_REFRESH:
-				dialog = gtk_message_dialog_new(NULL, 
-				                                0, 
-																				GTK_MESSAGE_ERROR, 
-																				GTK_BUTTONS_OK, 
-																				_("Failed to open archive '%s'."), 
-																				lsq_archive_get_filename(archive));
-				break;
-			case LSQ_ARCHIVESTATUS_EXTRACT:
-			case LSQ_ARCHIVESTATUS_PREPARE_VIEW:
-				dialog = gtk_message_dialog_new(NULL, 
-				                                0, 
-																				GTK_MESSAGE_ERROR, 
-																				GTK_BUTTONS_OK, 
-																				_("Failed to extract contents of archive '%s'."), 
-																				lsq_archive_get_filename(archive));
-				break;
-			default:
-				break;
-		}
-		*/
-		if(dialog)
-		{
-			gtk_dialog_run((GtkDialog *)dialog);
-			gtk_widget_destroy(dialog);
-		}
-	}
-	/*
-	if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_IDLE)
-	{
-		switch(lsq_archive_get_old_status(archive))
-		{
-			case LSQ_ARCHIVESTATUS_ADD:
-				if(lsq_archive_support_refresh(archive->support, archive))
-				{
-					// FIXME: show warning dialog
-				}
-				break;
-			default:break;
-		}
-	}
-	*/
-	if(sq_notebook_is_active_archive(notebook, archive))
-		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED], 0, archive, NULL);
 }
 
 static void
@@ -692,7 +622,7 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 
 	if(!show_only_filenames)
 	{
-		for(x = LSQ_ARCHIVE_PROP_USER; x < lsq_archive_n_property(archive); ++x)
+		for(x = LSQ_ARCHIVE_PROP_USER; x < lsq_archive_n_entry_properties(archive); ++x)
 		{
 			switch(lsq_archive_get_entry_property_type(archive, x))
 			{
@@ -793,8 +723,7 @@ sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchi
 		sq_archive_store_set_archive(SQ_ARCHIVE_STORE(store), archive);
 		sq_archive_store_set_support(SQ_ARCHIVE_STORE(store), support);
 
-		g_signal_connect(G_OBJECT(archive), "lsq_status_changed", G_CALLBACK(cb_notebook_archive_status_changed), notebook);
-		g_signal_connect(G_OBJECT(archive), "lsq_refreshed", G_CALLBACK(cb_notebook_archive_refreshed), treeview);
+		g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), treeview);
 
 		if(lsq_archive_support_refresh(support, archive))
 		{

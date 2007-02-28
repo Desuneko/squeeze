@@ -114,7 +114,8 @@ lsq_archive_command_dispose(GObject *object)
 			lsq_archive_command_run(next_archive_command);
 			g_object_unref(next_archive_command);
 		}
-
+		if(archive_command->refresh)
+			lsq_archive_refreshed(archive_command->archive);
 		archive_command->archive = NULL;
 	}
 }
@@ -374,4 +375,10 @@ lsq_archive_command_read_bytes(LSQArchiveCommand *archive_command, guint fd, gch
 			break;
 	}
 	return status;
+}
+
+const gchar *
+lsq_archive_command_get_comment(LSQArchiveCommand *archive_command)
+{
+	return archive_command->comment;
 }

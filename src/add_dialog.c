@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -140,10 +138,8 @@ sq_add_dialog_init(SQAddDialog *dialog)
 GtkWidget *
 sq_add_dialog_new(LSQArchiveSupport *support)
 {
-	GSList *add_options;
 	SQAddDialog *dialog;
-	GtkWidget *optionbox, *test;
-	SQWidgetFactory *factory = sq_widget_factory_new();
+	GtkWidget *optionbox;
 
 	dialog = g_object_new(sq_add_dialog_get_type(),
 			"title", _("Add file(s) to archive"),
@@ -153,6 +149,7 @@ sq_add_dialog_new(LSQArchiveSupport *support)
 	gtk_container_add(GTK_CONTAINER(dialog->optionframe), optionbox);
 
 	dialog->support = support;
+/*
 	if(support)
 	{
 		add_options = lsq_archive_support_list_properties(support, "add");
@@ -163,6 +160,7 @@ sq_add_dialog_new(LSQArchiveSupport *support)
 			add_options = add_options->next;
 		}
 	}
+*/
 
 	gtk_widget_set_size_request(GTK_WIDGET(dialog), 400,300);
 

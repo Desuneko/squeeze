@@ -43,5 +43,8 @@ squeeze_LDADD = \
 	@GLIB_LIBS@ \
 	@THUNAR_VFS_LIBS@
 
+squeeze_LDFLAGS = -static
+
+
 INCLUDES = \
 	-I${top_srcdir}

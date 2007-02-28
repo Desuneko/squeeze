@@ -69,27 +69,6 @@ static GOptionEntry entries[] =
 };
 
 void
-sq_archive_status_changed(LSQArchive *archive, gpointer data)
-{
-	if(archive->status == LSQ_ARCHIVESTATUS_IDLE)
-	{
-		opened_archives--;
-	}
-	if(opened_archives <= 0)
-		gtk_main_quit();
-}
-
-void
-archive_operation_failed(LSQArchive *archive, gpointer data)
-{
-}
-
-void
-archive_initialized(LSQArchive *archive, gpointer data)
-{
-}
-
-void
 cb_main_window_destroy(SQMainWindow *window, gpointer data)
 {
 	gtk_main_quit();

@@ -60,6 +60,7 @@ lsq_archive_finalize(GObject *object);
 enum
 {
 	LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED = 0,
+	LSQ_ARCHIVE_SIGNAL_REFRESHED,
 	LSQ_ARCHIVE_SIGNAL_COUNT
 };
 
@@ -108,6 +109,16 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			G_TYPE_NONE,
 			1,
 			G_TYPE_POINTER,
+			NULL);
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED] = g_signal_new("refreshed",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
 			NULL);
 }
 
@@ -437,7 +448,7 @@ lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 }
 
 LSQArchiveCommand *
-lsq_archive_get_front_command(LSQArchive *archive)
+lsq_archive_get_front_command(const LSQArchive *archive)
 {
 	if(archive->command_queue)
 		return archive->command_queue->data;
@@ -455,4 +466,40 @@ const gchar *
 lsq_archive_get_mimetype(const LSQArchive *archive)
 {
 	return thunar_vfs_mime_info_get_name(archive->mime_info);
+}
+
+gboolean
+lsq_archive_can_stop(const LSQArchive *archive)
+{
+	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);
+	if(command)
+		return command->safe;
+	else
+		return TRUE;
+}
+
+gboolean
+lsq_archive_stop(const LSQArchive *archive)
+{
+	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);
+	if(command)
+		return lsq_archive_command_stop(command);
+	else
+		return FALSE;
+}
+
+const gchar *
+lsq_archive_get_status(const LSQArchive *archive)
+{
+	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);
+	if(command)
+		return lsq_archive_command_get_comment(command);
+	else
+		return _("idle");
+}
+
+void
+lsq_archive_refreshed(const LSQArchive *archive)
+{
+	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
 }

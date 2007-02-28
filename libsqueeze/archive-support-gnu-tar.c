@@ -371,7 +371,32 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 static gint
 lsq_archive_support_gnu_tar_refresh(LSQArchive *archive)
 {
-	return 1;
+	guint i = 0;
+	LSQArchiveCommand *archive_command = NULL;
+	if(!LSQ_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
+	{
+		g_critical("Support is not GNU TAR");
+		return -1;
+	}
+
+	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	{
+		return 1;
+	}
+	else
+	{
+		lsq_archive_clear_entry_property_types(archive);
+		i = LSQ_ARCHIVE_PROP_USER;
+
+		gchar *command_skeleton = g_strconcat(GNU_TAR_APP_NAME, " -tvvf %1$s", NULL);
+		archive_command = lsq_archive_command_new("", archive, command_skeleton, TRUE);
+		g_free(command_skeleton);
+		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_gnu_tar_refresh_parse_output);
+		archive_command->refresh = TRUE;
+		lsq_archive_command_run(archive_command);
+		g_object_unref(archive_command);
+	}
+	return 0;
 }
 
 gboolean

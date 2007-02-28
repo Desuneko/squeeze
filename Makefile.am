@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS =							\
 	1.8								\
 	dist-bzip2
 
-SUBDIRS = pixmaps libsqueeze tests po docs
+SUBDIRS = pixmaps libsqueeze tests po docs src
 
 wrapperdir = $(libexecdir)/thunar-archive-plugin/
 wrapper_SCRIPTS = squeeze.tap

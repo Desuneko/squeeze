@@ -1,6 +1,4 @@
 /*
- *  Copyright (c) 2006 Stephan Arts <stephan@xfce.org>
- *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -319,18 +317,12 @@ cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 	LSQArchive *lp_archive = sq_archive_store_get_archive(store);
 
 	if(!lp_archive)
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
-	else
-	{
-		if(lsq_archive_get_status(lp_archive) != LSQ_ARCHIVESTATUS_IDLE)
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
-		else
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
-	}
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), FALSE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), FALSE);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
+
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), TRUE);
 }
 
 static void
@@ -385,10 +377,6 @@ cb_sq_tool_bar_store_set(SQNavigationBar *bar)
 		if(!path)
 			path = g_strdup("");
 		sq_tool_bar_refresh(tool_bar, path);
-		if(bar->store->archive->status == LSQ_ARCHIVESTATUS_IDLE)
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
-		else
-			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
 		g_free(path);
 	}
 	else

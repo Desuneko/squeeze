@@ -349,6 +349,7 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 		}
 		archive_command = lsq_archive_command_new("", archive, "unzip -lv -qq %1$s", TRUE);
 		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_zip_refresh_parse_output);
+		archive_command->refresh = TRUE;
 		lsq_archive_command_run(archive_command);
 		g_object_unref(archive_command);
 	}
