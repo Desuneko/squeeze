@@ -1215,7 +1215,8 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 		lsq_archive_iter_unref(list_iter->data);
 
 	g_list_free(store->navigation.history);
-	lsq_archive_iter_unref(store->navigation.trailing);
+	if(store->navigation.trailing)
+		lsq_archive_iter_unref(store->navigation.trailing);
 
 	store->navigation.history = NULL;
 	store->navigation.present = NULL;
@@ -1318,10 +1319,12 @@ sq_archive_store_get_pwd_list(SQArchiveStore *store)
 		basename = lsq_archive_iter_get_filename(iter);
 		path = g_slist_prepend(path, g_strdup(basename));
 		iter = lsq_archive_iter_get_parent(iter);
-		lsq_archive_iter_unref(child);
 		child = iter;
+		if(child)
+			lsq_archive_iter_unref(child);
+		else
+			break;
 	}
-	lsq_archive_iter_unref(child);
 
 	return path;
 }
@@ -1540,18 +1543,21 @@ sq_archive_store_check_trailing(SQArchiveStore *store)
 		{
 			if(titer == piter)
 			{
-				lsq_archive_iter_unref(child);
+				if(child)
+					lsq_archive_iter_unref(child);
 				return;
 			}
 
 			titer = lsq_archive_iter_get_parent(titer);
-			lsq_archive_iter_unref(child);
+			if(child)
+				lsq_archive_iter_unref(child);
 			child = titer;
 		}
-		lsq_archive_iter_unref(child);
+		if(child)
+			lsq_archive_iter_unref(child);
 	}
-
-	lsq_archive_iter_unref(store->navigation.trailing);
+	if(store->navigation.trailing)
+		lsq_archive_iter_unref(store->navigation.trailing);
 	lsq_archive_iter_ref(piter);
 	store->navigation.trailing = piter;
 }
@@ -1576,10 +1582,12 @@ sq_archive_store_get_trailing(SQArchiveStore *store)
 		basename = lsq_archive_iter_get_filename(iter);
 		path = g_slist_prepend(path, &basename);
 		iter = lsq_archive_iter_get_parent(iter);
-		lsq_archive_iter_unref(child);
 		child = iter;
+		if(child)
+			lsq_archive_iter_unref(child);
+		else
+			break;
 	}
-	lsq_archive_iter_unref(child);
 
 	return path;
 }

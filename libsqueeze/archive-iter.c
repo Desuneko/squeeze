@@ -623,7 +623,7 @@ const gchar*
 lsq_archive_iter_get_filename(const LSQArchiveIter *iter)
 {
 #ifdef debug
-	g_return_val_if_fail(iter, FALSE);
+	g_return_val_if_fail(iter, NULL);
 #endif
 	return lsq_archive_entry_get_filename(iter->entry);
 }
