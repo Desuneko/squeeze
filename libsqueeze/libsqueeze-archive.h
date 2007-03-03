@@ -51,13 +51,17 @@ typedef struct _LSQArchiveClass LSQArchiveClass;
 
 GType lsq_archive_get_type(void);
 
+#ifdef DEBUG
+LSQArchiveIter *_lsq_archive_iter_ref(LSQArchiveIter *iter, const gchar*, int);
+void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int);
+/*
+#define lsq_archive_iter_ref(iter) _lsq_archive_iter_ref(iter, __FILE__, __LINE__)
+#define lsq_archive_iter_unref(iter) _lsq_archive_iter_unref(iter, __FILE__, __LINE__)
+*/
+#endif
+
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void            lsq_archive_iter_unref(LSQArchiveIter *iter);
-
-gboolean        lsq_archive_can_stop(const LSQArchive *archive);
-gboolean        lsq_archive_stop(const LSQArchive *archive);
-
-const gchar    *lsq_archive_get_status(const LSQArchive *archive);
 
 G_END_DECLS
 

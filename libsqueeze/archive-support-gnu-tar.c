@@ -638,6 +638,7 @@ lsq_archive_support_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_comm
 	}
 
 	lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);
+	lsq_archive_iter_unref(entry);
 	g_free(line);
 	return TRUE;
 }

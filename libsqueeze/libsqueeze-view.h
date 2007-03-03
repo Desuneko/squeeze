@@ -42,6 +42,11 @@ GType               lsq_archive_get_entry_property_type(LSQArchive *archive, gui
 const gchar        *lsq_archive_get_entry_property_name(LSQArchive *archive, guint n);
 guint               lsq_archive_n_entry_properties(LSQArchive *archive);
 
+gboolean        lsq_archive_can_stop(const LSQArchive *archive);
+gboolean        lsq_archive_stop(const LSQArchive *archive);
+
+const gchar    *lsq_archive_get_status(const LSQArchive *archive);
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_VIEW_H__ */

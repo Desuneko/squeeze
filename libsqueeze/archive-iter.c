@@ -115,11 +115,12 @@ struct _LSQArchiveIterPool
 /**************
  * Init stuff *
  **************/
+volatile LSQArchiveIterPool* pool;
 
 void
 lsq_archive_init_iter(LSQArchive *archive)
 {
-	archive->pool = g_new0(LSQArchiveIterPool, 1);
+	pool = archive->pool = g_new0(LSQArchiveIterPool, 1);
 	archive->root_entry = g_new0(LSQArchiveEntry, 1);
 }
 
@@ -133,6 +134,20 @@ lsq_archive_free_iter(LSQArchive *archive)
 /****************************
  * LSQArchiveIterPool stuff *
  ****************************/
+
+#ifdef DEBUG
+void lsq_archive_iter_pool_print()
+{
+	guint i;
+	for(i = 0; i < pool->size; ++i)
+	{
+		if(pool->pool[i]->parent)
+			printf("%d %d %p %s\t%p %s\n", i, pool->pool[i]->ref_count, pool->pool[i]->entry, pool->pool[i]->entry?pool->pool[i]->entry->filename:"(no entry)", pool->pool[i]->parent->entry, pool->pool[i]->parent->entry?pool->pool[i]->parent->entry->filename:"(no parent)");
+		else
+			printf("%d %d %p %s\t(no parent)\n", i, pool->pool[i]->ref_count, pool->pool[i]->entry, pool->pool[i]->entry?pool->pool[i]->entry->filename:"(no entry)");
+	}
+}
+#endif
 
 inline static void
 lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
@@ -161,7 +176,7 @@ lsq_archive_iter_pool_find_iter(LSQArchiveIterPool *ipool, LSQArchiveEntry *entr
 	while(size)
 	{
 		pos = size / 2;
-		cmp = entry - pool[off+pos]->entry;
+		cmp = (gint)entry - (gint)pool[off+pos]->entry;
 		if(cmp == 0)
 		{
 			if(ret_iter)
@@ -255,8 +270,7 @@ lsq_archive_iter_new(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive 
 	/* iter has been found */
 	if(lsq_archive_iter_pool_find_iter(archive->pool, entry, &iter, &pos))
 	{
-		lsq_archive_iter_ref(iter);
-		return iter;
+		return lsq_archive_iter_ref(iter);
 	}
 
 #ifdef DEBUG
@@ -268,7 +282,7 @@ lsq_archive_iter_new(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive 
 	iter = g_new(LSQArchiveIter, 1);
 	iter->archive = archive;
 	iter->entry = entry;
-	iter->parent = parent;
+	iter->parent = parent?lsq_archive_iter_ref(parent):NULL;
 	iter->ref_count = 1;
 
 	lsq_archive_iter_pool_insert_iter(archive->pool, iter, pos);
@@ -295,10 +309,13 @@ lsq_archive_iter_get_for_path(LSQArchive *archive, GSList *path)
 	iter = g_new(LSQArchiveIter, 1);
 	iter->archive = archive;
 	iter->entry = path->data;
-	iter->parent = lsq_archive_iter_get_for_path(archive, path->next);
+	iter->parent = NULL;
 	iter->ref_count = 1;
 
 	lsq_archive_iter_pool_insert_iter(archive->pool, iter, pos);
+
+	/* must be done here, otherwise the pool gets currupted */
+	iter->parent = lsq_archive_iter_get_for_path(archive, path->next);
 
 	return iter;
 }
@@ -327,7 +344,7 @@ lsq_archive_iter_get_with_parent(LSQArchiveEntry *entry, LSQArchiveIter *parent)
 	iter = g_new(LSQArchiveIter, 1);
 	iter->archive = parent->archive;
 	iter->entry = entry;
-	iter->parent = parent;
+	iter->parent = lsq_archive_iter_ref(parent);
 	iter->ref_count = 1;
 
 	lsq_archive_iter_pool_insert_iter(parent->archive->pool, iter, pos);
@@ -349,9 +366,30 @@ lsq_archive_iter_free(LSQArchiveIter *iter)
 		lsq_archive_entry_free(iter->archive, iter->entry);
 
 	/* free the iter */
-	lsq_archive_iter_unref(iter->parent);
+	if(iter->parent)
+		lsq_archive_iter_unref(iter->parent);
 	g_free(iter);
 }
+
+#ifdef DEBUG
+void
+_lsq_archive_iter_unref(LSQArchiveIter* iter, const gchar *file, int line)
+{
+	if(!iter || !iter->ref_count)
+		g_debug("unref: %p file: %s line: %d", iter, file, line);
+
+	g_return_if_fail(iter);
+	g_return_if_fail(iter->ref_count);
+	
+	iter->ref_count--;
+
+	/* free the iter if there are no ref's left */
+	if(!iter->ref_count)
+	{
+		lsq_archive_iter_free(iter);
+	}
+}
+#endif
 
 void
 lsq_archive_iter_unref(LSQArchiveIter* iter)
@@ -369,6 +407,22 @@ lsq_archive_iter_unref(LSQArchiveIter* iter)
 		lsq_archive_iter_free(iter);
 	}
 }
+
+#ifdef DEBUG
+LSQArchiveIter *
+_lsq_archive_iter_ref(LSQArchiveIter* iter, const gchar *file, int line)
+{
+	if(!iter || !iter->ref_count)
+		g_debug("ref: %p file: %s line: %d", iter, file, line);
+
+	g_return_val_if_fail(iter, NULL);
+	g_return_val_if_fail(iter->ref_count, NULL);
+
+	iter->ref_count++;
+
+	return iter;
+}
+#endif
 
 LSQArchiveIter *
 lsq_archive_iter_ref(LSQArchiveIter* iter)
@@ -484,7 +538,10 @@ lsq_archive_iter_has_parent(const LSQArchiveIter *iter)
 LSQArchiveIter *
 lsq_archive_iter_get_parent(LSQArchiveIter *iter)
 {
-	return lsq_archive_iter_ref(iter->parent);
+#ifdef DEBUG
+	g_return_val_if_fail(iter, NULL);
+#endif
+	return iter->parent?lsq_archive_iter_ref(iter->parent):NULL;
 }
 
 guint

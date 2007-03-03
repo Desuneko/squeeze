@@ -471,6 +471,7 @@ lsq_archive_support_zip_refresh_parse_output(LSQArchiveCommand *archive_command)
 
 	entry = lsq_archive_add_file(archive, temp_filename);
 	lsq_archive_iter_set_propsv(entry, (gconstpointer*)props);
+	lsq_archive_iter_unref(entry);
 	g_free(line);
 
 	return TRUE;
