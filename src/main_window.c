@@ -1071,6 +1071,10 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 		else
 			sq_notebook_page_set_archive(SQ_NOTEBOOK(window->notebook), archive, support, replace);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
+
+		gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
 		/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
 		return 0;
 	}

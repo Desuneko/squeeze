@@ -20,6 +20,10 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include "libsqueeze.h"
+#include "libsqueeze-module.h"
+#include "archive-iter.h"
+#include "archive-command.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-rar.h"
@@ -58,7 +62,7 @@ static void
 lsq_archive_support_rar_class_init(LSQArchiveSupportRarClass *supportclass);
 
 gboolean
-lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+lsq_archive_support_rar_refresh_parse_output(LSQArchiveCommand *archive_command);
 
 static void
 lsq_archive_support_rar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
@@ -221,16 +225,16 @@ lsq_archive_support_rar_new()
 	LSQArchiveSupportRar *support;
 
 	support = g_object_new(LSQ_TYPE_ARCHIVE_SUPPORT_RAR,
-												 "view-uncompressed-size", TRUE,
+	                       "view-uncompressed-size", TRUE,
 	                       "view-compressed-size", TRUE,
-												 "view-time", TRUE,
-												 "view-date", TRUE,
-												 "view-ratio", TRUE,
-												 "view-crc32", TRUE,
-												 "view-method", TRUE,
-												 "view-version", TRUE,
-												 "view-rights", TRUE,
-												 NULL);
+	                       "view-time", TRUE,
+                               "view-date", TRUE,
+	                       "view-ratio", TRUE,
+	                       "view-crc32", TRUE,
+	                       "view-method", TRUE,
+	                       "view-version", TRUE,
+	                       "view-rights", TRUE,
+	                       NULL);
 	
 	return LSQ_ARCHIVE_SUPPORT(support);
 }
@@ -238,6 +242,7 @@ lsq_archive_support_rar_new()
 static gint
 lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 {
+	LSQArchiveCommand *archive_command = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
 	{
 		g_critical("Support is not rar");
@@ -250,15 +255,16 @@ lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 	}
 	else
 	{
-		gchar *command = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
-		gchar *archive_path = g_shell_quote(archive->path);
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
 		{
-			command = g_strconcat("rar a ", archive_path, " ", files, NULL);
-			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
+			gchar *files = lsq_concat_filenames(filenames);
+
+			archive_command = lsq_archive_command_new("", archive, "rar %3$s a %1$s %2$s", FALSE, TRUE);
+			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
+			g_free(files);
+			lsq_archive_command_run(archive_command);
+			g_object_unref(archive_command);
 		}
-		g_free(archive_path);
 	}
 	return 0;
 }
@@ -266,6 +272,8 @@ lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 static gint
 lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
+	LSQArchiveCommand *archive_command = NULL;
+	gchar *dest_path = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
 	{
 		g_critical("Support is not Rar");
@@ -278,25 +286,20 @@ lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, 
 	}
 	else
 	{
-		gchar *command = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
-		gchar *archive_path = g_shell_quote(archive->path);
-		gchar *dest_path = g_shell_quote(extract_path);
-		if(archive->file_info) /* FIXME */
+		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
 		{
-			if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
-			{
-				command = g_strconcat("unrar x -y ", archive_path, " ", files, " ", dest_path, NULL);
-				lsq_execute(command, archive, NULL, NULL, NULL, NULL);
-			}	
-		} else
-		{
+			gchar *files = lsq_concat_filenames(filenames);
+			if(extract_path)
+				dest_path = g_shell_quote(extract_path);
+
+			archive_command = lsq_archive_command_new("", archive, "unrar x -y %1$s %2$s %3$s", TRUE, FALSE);
+			g_object_set_data(G_OBJECT(archive_command), "files", files);
+			g_object_set_data(G_OBJECT(archive_command), "options", dest_path);
+			lsq_archive_command_run(archive_command);
+			g_object_unref(archive_command);
 			g_free(dest_path);
-			g_free(archive_path);
-			return 1;
-		}
-		g_free(dest_path);
-		g_free(archive_path);
+			g_free(files);
+		}	
 	}
 	return 0;
 }
@@ -304,6 +307,7 @@ lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, 
 static gint
 lsq_archive_support_rar_remove(LSQArchive *archive, GSList *filenames)
 {
+	LSQArchiveCommand *archive_command = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
 	{
 		g_critical("Support is not rar");
@@ -316,15 +320,16 @@ lsq_archive_support_rar_remove(LSQArchive *archive, GSList *filenames)
 	}
 	else
 	{
-		gchar *command = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
-		gchar *archive_path = g_shell_quote(archive->path);
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
 		{
-			command = g_strconcat("rar d ", archive_path, " ", files, NULL);
-			lsq_execute(command, archive, NULL, NULL, NULL, NULL);
-		}
-		g_free(archive_path);
+			gchar *files = lsq_concat_filenames(filenames);
+
+			archive_command = lsq_archive_command_new("", archive, "rar d %3$s %1$s %2$s", TRUE, FALSE);
+			g_object_set_data(G_OBJECT(archive_command), "files", files);
+			lsq_archive_command_run(archive_command);
+			g_object_unref(archive_command);
+			g_free(files);
+		}	
 	}
 	return 0;
 }
@@ -332,6 +337,7 @@ lsq_archive_support_rar_remove(LSQArchive *archive, GSList *filenames)
 static gint
 lsq_archive_support_rar_refresh(LSQArchive *archive)
 {
+	LSQArchiveCommand *archive_command = NULL;
 	guint i = 0;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
 	{
@@ -347,7 +353,6 @@ lsq_archive_support_rar_refresh(LSQArchive *archive)
 	{
 		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
-		gchar *archive_path = g_shell_quote(archive->path);
 		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_length) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
@@ -385,35 +390,30 @@ lsq_archive_support_rar_refresh(LSQArchive *archive)
 			i++;
 		}
 		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_RAR_STATUS, GINT_TO_POINTER(REFRESH_STATUS_INIT));
-		gchar *command = g_strconcat("unrar v ", archive_path, NULL);
-		lsq_execute(command, archive, NULL, NULL, lsq_archive_support_rar_refresh_parse_output, NULL);
-		g_free(command);
-		g_free(archive_path);
+		archive_command = lsq_archive_command_new("", archive, "unrar v %1$s", TRUE, TRUE);
+		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_rar_refresh_parse_output);
+		lsq_archive_command_run(archive_command);
+		g_object_unref(archive_command);
 	}
 	return 0;
 }
 
 gboolean
-lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+lsq_archive_support_rar_refresh_parse_output(LSQArchiveCommand *archive_command)
 {
+	/*
+	gchar *line = NULL;
+	gsize linesize = 0;
 	GIOStatus status = G_IO_STATUS_NORMAL;
-	LSQArchive *archive = data;
-	gchar *line	= NULL;
-	LSQEntry *entry;
-
+	LSQArchive *archive = archive_command->archive;
 	guint64 size;
 	guint64 length;
-	gpointer props[10]; 
-	gint n = 0, a = 0, i = 0, o = 0;
-	gsize linesize = 0;
-	gchar *temp_filename;
+	gpointer props[8]; 
+	gint n = 0, a = 0, i = 0;
+	gchar *temp_filename = NULL;
 
-	if(!LSQ_IS_ARCHIVE(archive))
-		return FALSE;
+	LSQArchiveIter *entry;
 
-
-	if(cond & (G_IO_PRI | G_IO_IN))
-	{
 		if(GPOINTER_TO_INT(g_object_get_data(data, LSQ_ARCHIVE_RAR_STATUS)) == REFRESH_STATUS_INIT)
 		{
 			line = NULL;
@@ -471,7 +471,7 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 				{
 					g_object_set_data(data, LSQ_ARCHIVE_RAR_LAST_ENTRY, NULL);
 				}
-				/* filename, length, size, ratio, date, time, rights, crc-32, method , version*/
+				// filename, length, size, ratio, date, time, rights, crc-32, method , version
 
 				for(n=0; n < linesize && line[n] == ' '; n++);
 				a = n;
@@ -601,7 +601,8 @@ lsq_archive_support_rar_refresh_parse_output(GIOChannel *ioc, GIOCondition cond,
 		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 		return FALSE; 
 	}
-	return TRUE;
+	*/
+	return FALSE;
 }
 
 static void
