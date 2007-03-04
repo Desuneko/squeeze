@@ -48,6 +48,7 @@ struct _SQPathBar
 	GtkButton *home_button;
 	GSList *path_button;
 	GSList *first_button;
+	LSQArchiveIter *trailing;
 	guint scroll_timeout;
 	guint scroll_dir;
 	gboolean scroll_click;

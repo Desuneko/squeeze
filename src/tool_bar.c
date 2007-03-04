@@ -47,7 +47,7 @@ static void
 sq_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
+cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter*, SQNavigationBar *bar);
 static void
 cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 static void
@@ -193,24 +193,26 @@ sq_tool_bar_new(SQArchiveStore *store)
 }
 
 static void
-sq_tool_bar_refresh(SQToolBar *tool_bar, gchar *path)
+sq_tool_bar_refresh(SQToolBar *tool_bar, LSQArchiveIter *path)
 {
-	gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), path);
-	gtk_editable_set_position(GTK_EDITABLE(tool_bar->path_field), -1);
+	if(SQ_NAVIGATION_BAR(tool_bar)->store && path)
+	{
+		gchar *text = lsq_archive_iter_get_path(path);
+		gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), text);
+		gtk_editable_set_position(GTK_EDITABLE(tool_bar->path_field), -1);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), 1);
+		g_free(text);
 
-	/* FIXME: the part about path[0] '/' could be bugged */
-	if(strlen(path) < 1 || (strlen(path) == 1 && path[0] == '/'))
-	{
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
-	}
-	else
-	{
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 1);
-	}
-	if(SQ_NAVIGATION_BAR(tool_bar)->store)
-	{
+		if(lsq_archive_iter_has_parent(path))
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 1);
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 1);
+		}
+		else
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
+			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
+		}
 		if(sq_archive_store_has_future(SQ_NAVIGATION_BAR(tool_bar)->store))
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 1);
 		else
@@ -225,8 +227,14 @@ sq_tool_bar_refresh(SQToolBar *tool_bar, gchar *path)
 	}
 	else
 	{
+		gtk_entry_set_text(GTK_ENTRY(tool_bar->path_field), "");
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), 0);
+
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
 		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), 0);
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->refresh_button), 0);
 	}
 }
 
@@ -310,54 +318,31 @@ sq_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallb
 }
 
 static void
-cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
+cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *path, SQNavigationBar *bar)
 {
 	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
-	gchar *path= sq_archive_store_get_pwd(store);
-	if(!path)
-		path = g_strdup("");
 	sq_tool_bar_refresh(tool_bar, path);
-	g_free(path);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
 }
 
 static void
 cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 {
 	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
-
-	LSQArchive *lp_archive = sq_archive_store_get_archive(store);
-
-	if(!lp_archive)
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), TRUE);
-
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), TRUE);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->refresh_button), TRUE);
+	LSQArchiveIter *path = sq_archive_store_get_pwd(bar->store);
+	sq_tool_bar_refresh(tool_bar, path);
+	lsq_archive_iter_unref(path);
 }
 
 static void
 cb_sq_tool_bar_history_back(GtkWidget *back_button, SQToolBar *tool_bar)
 {
 	sq_archive_store_go_back(SQ_NAVIGATION_BAR(tool_bar)->store);
-	gchar *path= sq_archive_store_get_pwd(SQ_NAVIGATION_BAR(tool_bar)->store);
-	if(!path)
-		path = g_strdup("");
-	sq_tool_bar_refresh(tool_bar, path);
-	g_free(path);
 }
 
 static void
 cb_sq_tool_bar_history_forward(GtkWidget *forward_button, SQToolBar *tool_bar)
 {
 	sq_archive_store_go_forward(SQ_NAVIGATION_BAR(tool_bar)->store);
-	gchar *path= sq_archive_store_get_pwd(SQ_NAVIGATION_BAR(tool_bar)->store);
-	if(!path)
-		path = g_strdup("");
-	sq_tool_bar_refresh(tool_bar, path);
-	g_free(path);
 }
 
 static void
@@ -369,8 +354,10 @@ cb_sq_tool_bar_up(GtkWidget *up_button, SQToolBar *tool_bar)
 static void
 cb_sq_tool_bar_home(GtkWidget *home_button, SQToolBar *tool_bar)
 {
-	/* FIXME: the part about "/" could be bugged */
-	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, "");
+	LSQArchive *archive = sq_archive_store_get_archive(SQ_NAVIGATION_BAR(tool_bar)->store);
+	LSQArchiveIter *path = lsq_archive_get_iter(archive, NULL);
+	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, path);
+	lsq_archive_iter_unref(path);
 }
 
 static void
@@ -384,8 +371,14 @@ cb_sq_tool_bar_refresh(GtkWidget *refresh_button, SQToolBar *tool_bar)
 static void
 cb_sq_tool_bar_path_field_activated(GtkWidget *entry, SQToolBar *tool_bar)
 {
+	LSQArchive *archive = sq_archive_store_get_archive(SQ_NAVIGATION_BAR(tool_bar)->store);
 	const gchar *path = gtk_entry_get_text(GTK_ENTRY(entry));
-	sq_archive_store_set_pwd(SQ_ARCHIVE_STORE(SQ_NAVIGATION_BAR(tool_bar)->store), path);
+	LSQArchiveIter *iter = lsq_archive_get_iter(archive, path);
+	if(iter)
+	{
+		sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, iter);
+		lsq_archive_iter_unref(iter);
+	}
 }
 
 static void
@@ -394,15 +387,12 @@ cb_sq_tool_bar_store_set(SQNavigationBar *bar)
 	SQToolBar *tool_bar = SQ_TOOL_BAR(bar);
 	if(bar->store)
 	{
-		gchar *path = sq_archive_store_get_pwd(bar->store);
-		if(!path)
-			path = g_strdup("");
+		LSQArchiveIter *path = sq_archive_store_get_pwd(bar->store);
 		sq_tool_bar_refresh(tool_bar, path);
-		g_free(path);
+		lsq_archive_iter_unref(path);
 	}
 	else
 	{
-		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), FALSE);
-		sq_tool_bar_refresh(tool_bar, "");
+		sq_tool_bar_refresh(tool_bar, NULL);
 	}
 }

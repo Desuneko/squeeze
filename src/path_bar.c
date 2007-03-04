@@ -39,6 +39,8 @@
 #define SQ_SCROLL_LEFT 1
 #define SQ_SCROLL_RIGHT 2
 
+#define SQ_PATH_BAR_PATH_BUTTON_ITER "sq-path-bar-path-iter"
+
 static void
 sq_path_bar_class_init(SQPathBarClass *archive_class);
 
@@ -60,7 +62,7 @@ static void
 sq_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_sq_path_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
+cb_sq_path_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *, SQNavigationBar *bar);
 static void
 cb_sq_path_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 static void
@@ -191,6 +193,7 @@ sq_path_bar_init(SQPathBar *path_bar)
 
 	path_bar->path_button = g_slist_prepend(NULL, path_bar->home_button);
 	path_bar->first_button = NULL;
+	path_bar->trailing = NULL;
 	path_bar->scroll_timeout = 0;
 	path_bar->scroll_dir = SQ_SCROLL_NONE;
 	path_bar->scroll_click = TRUE;
@@ -258,10 +261,13 @@ sq_path_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallb
 
 	g_slist_foreach(path_bar->path_button, (GFunc)callback, callback_data);
 
-	if(path_bar->left_button)
-		(*callback)(GTK_WIDGET(path_bar->left_button), callback_data);
-	if(path_bar->right_button)
-		(*callback)(GTK_WIDGET(path_bar->right_button), callback_data);
+	if(include_internals)
+	{
+		if(path_bar->left_button)
+			(*callback)(GTK_WIDGET(path_bar->left_button), callback_data);
+		if(path_bar->right_button)
+			(*callback)(GTK_WIDGET(path_bar->right_button), callback_data);
+	}
 }
 
 static void
@@ -518,7 +524,7 @@ cb_sq_path_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 {
 	SQPathBar *path_bar = SQ_PATH_BAR(bar);
 	GSList *buttons = path_bar->path_button->next;
-	GSList *path, *iter;
+	LSQArchiveIter *iter, *parent;
 	GtkRadioButton *button;
 
 	SQ_PATH_BAR(bar)->updating = TRUE;
@@ -535,98 +541,93 @@ cb_sq_path_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 	path_bar->path_button->next = NULL;
 
 	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), (store&&store->archive));
+	g_object_set_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER, NULL);
+	if(path_bar->trailing)
+		lsq_archive_iter_unref(path_bar->trailing);
 
 	if(store)
 	{
-		iter = path = sq_archive_store_get_trailing(store);
-		while(iter)
+		path_bar->trailing = iter = lsq_archive_iter_ref(sq_archive_store_get_trailing(store));
+		if(iter)
 		{
-			button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, (const gchar*)iter->data));
-			gtk_widget_ref(GTK_WIDGET(button));
-			gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
-			path_bar->path_button = g_slist_append(path_bar->path_button, button);
+			while(lsq_archive_iter_has_parent(iter))
+			{
+				button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, lsq_archive_iter_get_filename(iter)));
+				gtk_widget_ref(GTK_WIDGET(button));
+				gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
+				path_bar->path_button = g_slist_prepend(path_bar->path_button->next, button);
 
-			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
+				g_object_set_data(G_OBJECT(button), SQ_PATH_BAR_PATH_BUTTON_ITER, iter);
+				g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
 
-			gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
-			gtk_widget_show(GTK_WIDGET(button));
+				gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
+				gtk_widget_show(GTK_WIDGET(button));
 
-			g_free(iter->data);
-			iter = iter->next;
+				parent = lsq_archive_iter_get_parent(iter);
+				lsq_archive_iter_unref(iter);
+				iter = parent;
+			}
+
+			g_object_set_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER, iter);
+			lsq_archive_iter_unref(iter);
 		}
-		g_slist_free(path);
 	}
 
 	SQ_PATH_BAR(bar)->updating = FALSE;
 }
 
 static void
-cb_sq_path_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
+cb_sq_path_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *path, SQNavigationBar *bar)
 {
 	SQPathBar *path_bar = SQ_PATH_BAR(bar);
-	GSList *path = sq_archive_store_get_pwd_list(store);
-	GSList *iter = path;
+	LSQArchiveIter *iter = sq_archive_store_get_trailing(store);
+	LSQArchiveIter *parent;
 	GSList *buttons = path_bar->path_button->next;
-	GSList *lastbutton = path_bar->path_button;
-	GtkRadioButton *button = GTK_RADIO_BUTTON(path_bar->home_button);
-	const gchar *label;
-	gint cmp = 0;
+	GtkRadioButton *button;
 
 	path_bar->updating = TRUE;
 
-	while(iter && buttons)
+	while(buttons)
 	{
-		button = GTK_RADIO_BUTTON(buttons->data);
-		label = gtk_button_get_label(GTK_BUTTON(button));
-		cmp = strcmp(label, (gchar*)iter->data);
-		if(cmp != 0)
+		gtk_container_remove(GTK_CONTAINER(path_bar), GTK_WIDGET(buttons->data));
+		gtk_widget_unref(GTK_WIDGET(buttons->data));
+		buttons = buttons->next;
+	}
+	g_slist_free(path_bar->path_button->next);
+	path_bar->path_button->next = NULL;
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(path_bar->home_button), TRUE);
+	g_object_set_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER, NULL);
+	if(path_bar->trailing)
+		lsq_archive_iter_unref(path_bar->trailing);
+	path_bar->trailing = lsq_archive_iter_ref(iter);
+
+	if(iter)
+	{
+		while(lsq_archive_iter_has_parent(iter))
 		{
-			/* Remove wrong trailing buttons */
-			while(buttons)
-			{
-				gtk_container_remove(GTK_CONTAINER(path_bar), GTK_WIDGET(buttons->data));
-				gtk_widget_unref(GTK_WIDGET(buttons->data));
-				buttons = buttons->next;
-			}
-			if(lastbutton)
-			{
-				g_slist_free(lastbutton->next);
-				lastbutton->next = NULL;
-			}
-			else
-			{
-				g_slist_free(path_bar->path_button);
-				path_bar->path_button = NULL;
-			}
-			break;
+			button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, lsq_archive_iter_get_filename(iter)));
+			gtk_widget_ref(GTK_WIDGET(button));
+			gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
+			path_bar->path_button->next = g_slist_prepend(path_bar->path_button->next, button);
+
+			if(iter == path)
+				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), TRUE);
+
+			g_object_set_data(G_OBJECT(button), SQ_PATH_BAR_PATH_BUTTON_ITER, iter);
+			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
+
+			gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
+			gtk_widget_show(GTK_WIDGET(button));
+
+			parent = lsq_archive_iter_get_parent(iter);
+			lsq_archive_iter_unref(iter);
+			iter = parent;
 		}
 
-		lastbutton = buttons;
-		buttons = buttons->next;
-
-		g_free(iter->data);
-		iter = iter->next;
+		g_object_set_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER, iter);
+		lsq_archive_iter_unref(iter);
 	}
-
-	while(iter)
-	{
-		button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(path_bar->path_button, (const gchar*)iter->data));
-		gtk_widget_ref(GTK_WIDGET(button));
-		gtk_toggle_button_set_mode(GTK_TOGGLE_BUTTON(button), FALSE);
-		path_bar->path_button = g_slist_append(path_bar->path_button, button);
-
-		g_signal_connect(G_OBJECT(button), "clicked", (GCallback)cb_sq_path_bar_path_button_clicked, path_bar);
-
-		gtk_container_add(GTK_CONTAINER(path_bar), GTK_WIDGET(button));
-		gtk_widget_show(GTK_WIDGET(button));
-
-		g_free(iter->data);
-		iter = iter->next;
-	}
-
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), TRUE);
-
-	g_slist_free(path);
 
 	path_bar->first_button = g_slist_last(path_bar->path_button);
 
@@ -638,26 +639,10 @@ cb_sq_path_bar_path_button_clicked(GtkRadioButton *button, SQPathBar *path_bar)
 {
 	if(path_bar->updating)
 		return;
-	gchar *path = g_strdup("");
-	gchar *prev = NULL;
-	const gchar *folder = NULL;
-	GSList *iter = path_bar->path_button;
 
-	while(iter->data != (gpointer)button)
-	{
-		iter = iter->next;
-		prev = path;
-		folder = gtk_button_get_label(GTK_BUTTON(iter->data));
-		if(folder[0] == '/')
-			path = g_strconcat(path, folder, NULL);
-		else
-			path = g_strconcat(path, folder, "/", NULL);
-		g_free(prev);
-	}
+	LSQArchiveIter *path = g_object_get_data(G_OBJECT(button), SQ_PATH_BAR_PATH_BUTTON_ITER);
 
 	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(path_bar)->store, path);
-
-	g_free(path);
 }
 
 static void
@@ -772,6 +757,6 @@ cb_sq_path_bar_store_set(SQNavigationBar *bar)
 	cb_sq_path_bar_new_archive(bar->store, bar);
 
 	if(bar->store)
-		cb_sq_path_bar_pwd_changed(bar->store, bar);
+		cb_sq_path_bar_pwd_changed(bar->store, sq_archive_store_get_pwd(bar->store), bar);
 }
 

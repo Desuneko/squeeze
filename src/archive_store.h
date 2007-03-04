@@ -51,6 +51,7 @@ struct _SQArchiveStore
 	GtkIconTheme *icon_theme;
 	GtkTreeView *treeview;
 	struct {
+		guint _show_full_path :1;
 		guint _show_icons : 1;
 		guint _show_up_dir : 1;
 		guint _sort_folders_first : 1;
@@ -77,16 +78,16 @@ GtkTreeModel * sq_archive_store_new(LSQArchive *archive, gboolean show_icons, gb
 void sq_archive_store_connect_treeview(SQArchiveStore *store, GtkTreeView *treeview);
 void sq_archive_store_connect_iconview(SQArchiveStore *store, GtkIconView *iconview);
 void sq_archive_store_go_up(SQArchiveStore *store);
-gchar * sq_archive_store_get_pwd(SQArchiveStore *store);
-GSList * sq_archive_store_get_pwd_list(SQArchiveStore *store);
-gchar * sq_archive_store_get_basename(SQArchiveStore *store);
-gboolean sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path);
+LSQArchiveIter * sq_archive_store_get_pwd(SQArchiveStore *store);
+gboolean sq_archive_store_set_pwd(SQArchiveStore *store, LSQArchiveIter *path);
 void sq_archive_store_set_icon_theme(SQArchiveStore *store, GtkIconTheme *icon_theme);
 
+gboolean sq_archive_store_get_show_full_path(SQArchiveStore *);
 gboolean sq_archive_store_get_show_icons(SQArchiveStore *store);
 gboolean sq_archive_store_get_sort_case_sensitive(SQArchiveStore *store);
 gboolean sq_archive_store_get_sort_folders_first(SQArchiveStore *store);
 
+void sq_archive_store_set_show_full_path(SQArchiveStore *, gboolean);
 void sq_archive_store_set_show_icons(SQArchiveStore *, gboolean);
 void sq_archive_store_set_sort_case_sensitive(SQArchiveStore *, gboolean);
 void sq_archive_store_set_sort_folders_first(SQArchiveStore *, gboolean);
@@ -99,7 +100,7 @@ void
 sq_archive_store_go_back(SQArchiveStore *store);
 void
 sq_archive_store_go_forward(SQArchiveStore *store);
-GSList *
+LSQArchiveIter *
 sq_archive_store_get_trailing(SQArchiveStore *store);
 
 LSQArchive *

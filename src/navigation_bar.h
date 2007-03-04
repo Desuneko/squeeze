@@ -44,7 +44,7 @@ struct _SQNavigationBar
 {
 	GtkContainer parent;
 	SQArchiveStore *store;
-	void (*_cb_pwd_changed)(SQArchiveStore *, SQNavigationBar *);
+	void (*_cb_pwd_changed)(SQArchiveStore *, LSQArchiveIter *, SQNavigationBar *);
 	void (*_cb_new_archive)(SQArchiveStore *, SQNavigationBar *);
 	void (*_cb_store_set)(SQNavigationBar *);
 };

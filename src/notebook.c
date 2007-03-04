@@ -66,6 +66,7 @@ cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 
 enum {
 	SQ_NOTEBOOK_MULTI_TAB = 1,
+	SQ_NOTEBOOK_STORE_SHOW_FULL_PATH,
 	SQ_NOTEBOOK_STORE_SHOW_ICONS,
 	SQ_NOTEBOOK_STORE_SORT_FOLDERS_FIRST,
 	SQ_NOTEBOOK_STORE_SORT_CASE_SENSITIVE,
@@ -162,6 +163,13 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 		TRUE,
 		G_PARAM_READWRITE); g_object_class_install_property(object_class, SQ_NOTEBOOK_MULTI_TAB, pspec); 
 
+	pspec = g_param_spec_boolean("show-full-path",
+		_("Show full path"),
+		_("Show the full path strings for each entry"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, SQ_NOTEBOOK_STORE_SHOW_FULL_PATH, pspec);
+
 	pspec = g_param_spec_boolean("show-icons",
 		_("Show mime icons"),
 		_("Show the mime type icons for each entry"),
@@ -204,6 +212,7 @@ sq_notebook_init(SQNotebook *notebook)
 
 	notebook->current_page_fix = 0;
 	notebook->props._rules_hint = sq_settings_read_bool_entry(notebook->settings, "RulesHint", FALSE);
+	notebook->props._show_full_path = sq_settings_read_bool_entry(notebook->settings, "ShowFullPath", FALSE);
 	notebook->props._show_icons = sq_settings_read_bool_entry(notebook->settings, "ShowIcons", TRUE);
 	notebook->props._sort_folders_first = sq_settings_read_bool_entry(notebook->settings, "SortFoldersFirst", TRUE);
 	notebook->props._sort_case_sensitive = sq_settings_read_bool_entry(notebook->settings, "SortCaseSensitive", TRUE);
@@ -227,6 +236,7 @@ sq_notebook_dispose(GObject *object)
 	if(sq_notebook->settings)
 	{
 		sq_settings_write_bool_entry(sq_notebook->settings, "RulesHint", sq_notebook->props._rules_hint);
+		sq_settings_write_bool_entry(sq_notebook->settings, "ShowFullPath", sq_notebook->props._show_full_path);
 		sq_settings_write_bool_entry(sq_notebook->settings, "ShowIcons", sq_notebook->props._show_icons);
 		sq_settings_write_bool_entry(sq_notebook->settings, "SortFoldersFirst", sq_notebook->props._sort_folders_first);
 		sq_settings_write_bool_entry(sq_notebook->settings, "SortCaseSensitive", sq_notebook->props._sort_case_sensitive);
@@ -288,6 +298,14 @@ sq_notebook_set_property(GObject *object, guint prop_id, const GValue *value, GP
 		case SQ_NOTEBOOK_MULTI_TAB:
 			SQ_NOTEBOOK(object)->multi_tab = g_value_get_boolean(value);		
 			break;
+		case SQ_NOTEBOOK_STORE_SHOW_FULL_PATH:
+		{
+			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
+			if(store)
+				sq_archive_store_set_show_full_path(store, g_value_get_boolean(value));
+			SQ_NOTEBOOK(object)->props._show_full_path = g_value_get_boolean(value);
+			break;
+		}
 		case SQ_NOTEBOOK_STORE_SHOW_ICONS:
 		{
 			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
@@ -331,6 +349,15 @@ sq_notebook_get_property(GObject *object, guint prop_id, GValue *value, GParamSp
 		case SQ_NOTEBOOK_MULTI_TAB:
 			g_value_set_boolean(value, SQ_NOTEBOOK(object)->multi_tab);
 			break;
+		case SQ_NOTEBOOK_STORE_SHOW_FULL_PATH:
+		{
+			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
+			if(store)
+				g_value_set_boolean(value, sq_archive_store_get_show_full_path(store));
+			else
+				g_value_set_boolean(value, SQ_NOTEBOOK(object)->props._show_full_path);
+			break;
+		}
 		case SQ_NOTEBOOK_STORE_SHOW_ICONS:
 		{
 			SQArchiveStore *store = sq_notebook_get_store(SQ_NOTEBOOK(object), SQ_NOTEBOOK(object)->current_page_fix);
@@ -481,6 +508,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
 
 	GtkTreeModel *tree_model = sq_archive_store_new(archive, notebook->props._show_icons, notebook->props._up_dir, notebook->icon_theme);
+	sq_archive_store_set_show_full_path(SQ_ARCHIVE_STORE(tree_model), notebook->props._show_full_path);
 	sq_archive_store_set_sort_folders_first(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_folders_first);
 	sq_archive_store_set_sort_case_sensitive(SQ_ARCHIVE_STORE(tree_model), notebook->props._sort_case_sensitive);
 	g_signal_connect(G_OBJECT(tree_model), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
@@ -678,9 +706,9 @@ cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data)
 static void
 cb_notebook_file_activated(SQArchiveStore *store, gchar *filename, SQNotebook *notebook)
 {
-	gchar *pwd = sq_archive_store_get_pwd(store);
-	gchar *path = g_strconcat(pwd, filename, NULL);
-	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, path, NULL);
+	//gchar *pwd = sq_archive_store_get_pwd(store);
+	//gchar *path = g_strconcat(pwd, filename, NULL);
+	//g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, path, NULL);
 }
 
 gboolean
@@ -747,7 +775,7 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 
 	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 	GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
-	gchar *pwd = sq_archive_store_get_pwd(SQ_ARCHIVE_STORE(store));
+	//gchar *pwd = sq_archive_store_get_pwd(SQ_ARCHIVE_STORE(store));
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(treeview));
 	GList *rows = gtk_tree_selection_get_selected_rows(selection, &store);
 	GList *_rows = rows;
@@ -756,13 +784,13 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 		gtk_tree_model_get_iter(store, &iter, _rows->data);
 		gtk_tree_model_get_value(store, &iter, 1, &value);
 
-		filenames = g_slist_prepend(filenames, g_strconcat(pwd, g_value_get_string(&value), NULL));
+		//filenames = g_slist_prepend(filenames, g_strconcat(pwd, g_value_get_string(&value), NULL));
 
 		g_value_unset((GValue*)&value);
 		_rows = _rows->next;
 	}
 	g_list_free(rows);
-	g_free(pwd);
+	//g_free(pwd);
 	
 	return filenames;
 }
@@ -791,7 +819,7 @@ cb_sq_notebook_notify_proxy(GObject *obj, GParamSpec *pspec, gpointer user_data)
 
 		sq_notebook_treeview_reset_columns(sq_archive_store_get_archive(store), treeview);
 	}
-	if(strcmp(g_param_spec_get_name(pspec), "sort-folders-first") == 0 || strcmp(g_param_spec_get_name(pspec), "sort-case-sensitive") == 0)
+	if(strcmp(g_param_spec_get_name(pspec), "show-full-path") == 0 || strcmp(g_param_spec_get_name(pspec), "sort-folders-first") == 0 || strcmp(g_param_spec_get_name(pspec), "sort-case-sensitive") == 0)
 	{
 		g_object_notify(user_data, g_param_spec_get_name(pspec));
 	}

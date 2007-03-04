@@ -33,7 +33,7 @@ static void
 sq_navigation_bar_dispose(GObject *object);
 
 static void
-cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar);
+cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *, SQNavigationBar *bar);
 
 static void
 cb_sq_navigation_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
@@ -154,7 +154,7 @@ sq_navigation_bar_new(SQArchiveStore *store)
 }
 
 static void
-cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, SQNavigationBar *bar)
+cb_sq_navigation_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *path, SQNavigationBar *bar)
 {
 }
 

@@ -48,6 +48,7 @@ struct _SQNotebook
 	SQSettings *settings;
 	struct
 	{
+		gboolean _show_full_path;
 		gboolean _show_icons;
 		gboolean _up_dir;
 		gboolean _sort_folders_first;

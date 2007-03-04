@@ -45,7 +45,8 @@ sq_archive_store_dispose(GObject *object);
 
 /* properties */
 enum {
-	SQ_ARCHIVE_STORE_SHOW_ICONS = 1, 
+	SQ_ARCHIVE_STORE_SHOW_FULL_PATH = 1, 
+	SQ_ARCHIVE_STORE_SHOW_ICONS, 
 	SQ_ARCHIVE_STORE_SHOW_UP_DIR,
 	SQ_ARCHIVE_STORE_SORT_FOLDERS_FIRST,
 	SQ_ARCHIVE_STORE_SORT_CASE_SENSITIVE
@@ -222,6 +223,7 @@ sq_archive_store_init(SQArchiveStore *as)
 	as->sort_order = GTK_SORT_ASCENDING;
 	as->sort_list = NULL;
 	as->icon_theme = NULL;
+	as->props._show_full_path = 0;
 	as->props._show_icons = 0;
 	as->props._show_up_dir = 1;
 	as->props._sort_folders_first = 1;
@@ -243,6 +245,13 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 	object_class->dispose = sq_archive_store_dispose;
 
 	parent_class = gtk_type_class (G_TYPE_OBJECT);
+
+	pspec = g_param_spec_boolean("show-full-path",
+		_("Show full path"),
+		_("Show the full path strings for each entry"),
+		FALSE,
+		G_PARAM_READWRITE);
+	g_object_class_install_property(object_class, SQ_ARCHIVE_STORE_SHOW_ICONS, pspec);
 
 	pspec = g_param_spec_boolean("show-icons",
 		_("Show mime icons"),
@@ -278,9 +287,10 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 		 0,
 		 NULL,
 		 NULL,
-		 g_cclosure_marshal_VOID__VOID,
+		 g_cclosure_marshal_VOID__POINTER,
 		 G_TYPE_NONE,
-		 0, 
+		 1, 
+		 G_TYPE_POINTER,
 		 NULL);
 
 	sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE] = g_signal_new("sq-new-archive",
@@ -313,6 +323,9 @@ sq_archive_store_set_property(GObject *object, guint prop_id, const GValue *valu
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
 	switch(prop_id)
 	{
+		case SQ_ARCHIVE_STORE_SHOW_FULL_PATH:
+			sq_archive_store_set_show_full_path(store, g_value_get_boolean(value));
+			break;
 		case SQ_ARCHIVE_STORE_SHOW_ICONS:
 			sq_archive_store_set_show_icons(store, g_value_get_boolean(value));
 			break;
@@ -337,6 +350,9 @@ sq_archive_store_get_property(GObject *object, guint prop_id, GValue *value, GPa
 {
 	switch(prop_id)
 	{
+		case SQ_ARCHIVE_STORE_SHOW_FULL_PATH:
+			g_value_set_boolean(value, SQ_ARCHIVE_STORE(object)->props._show_full_path?TRUE:FALSE);
+			break;
 		case SQ_ARCHIVE_STORE_SHOW_ICONS:
 			g_value_set_boolean(value, SQ_ARCHIVE_STORE(object)->props._show_icons?TRUE:FALSE);
 			break;
@@ -496,7 +512,12 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		}
 		else
 		{
-			if(column < (gint)lsq_archive_n_entry_properties(archive))
+			if(store->props._show_full_path && column == LSQ_ARCHIVE_PROP_FILENAME)
+			{
+				g_value_init(value, G_TYPE_STRING);
+				g_value_take_string(value, lsq_archive_iter_get_path(entry));
+			}
+			else if(column < (gint)lsq_archive_n_entry_properties(archive))
 				lsq_archive_iter_get_prop_value(entry, column, value);
 			/* what if it isn't utf-8 */
 			if(G_VALUE_HOLDS_STRING(value) && g_value_get_string(value) && !g_utf8_validate(g_value_get_string(value), -1, NULL))
@@ -1097,7 +1118,7 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 
 	sq_archive_store_sort(store);
 	sq_archive_store_refresh(store);
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, entry, NULL);
 }
 
 void
@@ -1121,7 +1142,7 @@ sq_archive_store_go_up(SQArchiveStore *store)
 
 	sq_archive_store_sort(store);
 	sq_archive_store_refresh(store);
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, entry, NULL);
 }
 
 void
@@ -1233,7 +1254,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	/* g_signal_connect(store->archive, "lsq_path_changed", G_CALLBACK(cb_sq_archive_store_archive_path_changed), store); */
 }
 
-gchar *
+LSQArchiveIter *
 sq_archive_store_get_pwd(SQArchiveStore *store)
 {
 #ifdef DEBUG
@@ -1246,45 +1267,14 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 
 	LSQArchiveIter *iter = store->navigation.present->data;
 
-	return lsq_archive_iter_get_path(iter);
-}
-
-GSList *
-sq_archive_store_get_pwd_list(SQArchiveStore *store)
-{
-#ifdef DEBUG
-	g_return_val_if_fail(store, NULL);
-#endif
-
-	if(!store->navigation.present)
-		return NULL;
-
-	const gchar *basename;
-	LSQArchiveIter *child = NULL, *iter = store->navigation.present->data;
-	GSList *path = NULL;
-
-	if(!iter)
-		return NULL;
-
-	/* we don't want to include de archive rootentry */
-	while(lsq_archive_iter_has_parent(iter))
-	{
-		basename = lsq_archive_iter_get_filename(iter);
-		path = g_slist_prepend(path, g_strdup(basename));
-		iter = lsq_archive_iter_get_parent(iter);
-		if(child)
-			lsq_archive_iter_unref(child);
-		child = iter;
-	}
-	if(child)
-		lsq_archive_iter_unref(child);
-
-	return path;
+	return lsq_archive_iter_ref(iter);
 }
 
 gboolean
-sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
+sq_archive_store_set_pwd(SQArchiveStore *store, LSQArchiveIter *path)
 {
+	/* should check if the iter is of the current archive */
+
 	g_return_val_if_fail(store, FALSE);
 
 	if(!store->archive)
@@ -1295,17 +1285,22 @@ sq_archive_store_set_pwd(SQArchiveStore *store, const gchar *path)
 	g_return_val_if_fail(store->navigation.present->data, FALSE);
 #endif
 
-	LSQArchiveIter *iter = lsq_archive_get_iter(store->archive, path);
-
-	if(lsq_archive_iter_is_directory(iter))
+	if(lsq_archive_iter_is_directory(path))
 	{
-		sq_archive_store_append_history(store, iter);
+		sq_archive_store_append_history(store, lsq_archive_iter_ref(path));
 
 		sq_archive_store_sort(store);
 		sq_archive_store_refresh(store);
 
-		g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+		g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, path, NULL);
 		return TRUE;
+	}
+	else
+	{
+#ifdef DEBUG
+		g_debug("file activated");
+#endif
+		g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, lsq_archive_iter_get_filename(path), NULL); 
 	}
 
 	return FALSE;
@@ -1316,6 +1311,12 @@ sq_archive_store_set_icon_theme(SQArchiveStore *store, GtkIconTheme *icon_theme)
 {
 	if(store)
 		store->icon_theme = icon_theme;
+}
+
+gboolean
+sq_archive_store_get_show_full_path(SQArchiveStore *store)
+{
+	return store->props._show_full_path;
 }
 
 gboolean
@@ -1334,6 +1335,20 @@ gboolean
 sq_archive_store_get_sort_folders_first(SQArchiveStore *store)
 {
 	return store->props._sort_folders_first;
+}
+
+void
+sq_archive_store_set_show_full_path(SQArchiveStore *store, gboolean show)
+{
+	show = show?1:0;
+
+	if(store->props._show_full_path != show)
+	{
+		store->props._show_full_path = show;
+		if(store->archive)
+			sq_archive_store_refresh(store);
+		g_object_notify(G_OBJECT(store), "show-full-path");
+	}
 }
 
 void
@@ -1424,7 +1439,7 @@ sq_archive_store_go_back(SQArchiveStore *store)
 
 	sq_archive_store_check_trailing(store);
 
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, store->navigation.present->data, NULL);
 }
 
 void
@@ -1447,7 +1462,7 @@ sq_archive_store_go_forward(SQArchiveStore *store)
 
 	sq_archive_store_check_trailing(store);
 
-	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0,NULL);
+	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, store->navigation.present->data, NULL);
 }
 
 static void
@@ -1514,34 +1529,17 @@ sq_archive_store_check_trailing(SQArchiveStore *store)
 	store->navigation.trailing = lsq_archive_iter_ref(piter);
 }
 
-GSList *
+LSQArchiveIter *
 sq_archive_store_get_trailing(SQArchiveStore *store)
 {
 #ifdef DEBUG
 	g_return_val_if_fail(store, NULL);
+	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(store), NULL);
 #endif
 
-	const gchar *basename;
-	LSQArchiveIter *child = NULL, *iter = store->navigation.trailing;
-	GSList *path = NULL;
+	LSQArchiveIter *iter = store->navigation.trailing;
 
-	if(!iter)
-		return NULL;
-
-	/* we don't want to include de archive rootentry */
-	while(lsq_archive_iter_has_parent(iter))
-	{
-		basename = lsq_archive_iter_get_filename(iter);
-		path = g_slist_prepend(path, &basename);
-		iter = lsq_archive_iter_get_parent(iter);
-		if(child)
-			lsq_archive_iter_unref(child);
-		child = iter;
-	}
-	if(child)
-		lsq_archive_iter_unref(child);
-
-	return path;
+	return lsq_archive_iter_ref(iter);
 }
 
 LSQArchive *
@@ -1590,5 +1588,6 @@ cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 
 	sq_archive_store_sort(store);
 	sq_archive_store_refresh(store);
+	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, store->navigation.present->data, NULL);
 }
 

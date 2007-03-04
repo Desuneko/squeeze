@@ -257,9 +257,6 @@ sq_main_window_init(SQMainWindow *window)
 	const gchar   *nav_bar;
 	GSList        *list, *iter;
 	gboolean up_dir = TRUE;
-	gboolean show_icons = TRUE;
-	gboolean sort_case = TRUE;
-	gboolean sort_folders = TRUE;
 	gboolean use_tabs = TRUE;
 	gboolean show_menubar = TRUE;
 
@@ -467,9 +464,6 @@ sq_main_window_init(SQMainWindow *window)
 
 	g_object_notify(G_OBJECT(window), "navigation-style");
 
-	show_icons = sq_settings_read_bool_entry(window->settings, "ShowIcons", TRUE);
-	sort_case = sq_settings_read_bool_entry(window->settings, "SortCaseSensitive", TRUE);
-	sort_folders = sq_settings_read_bool_entry(window->settings, "SortFoldersFirst", TRUE);
 	use_tabs = sq_settings_read_bool_entry(window->settings, "UseTabs", TRUE);
 
 /* main view */
@@ -481,6 +475,12 @@ sq_main_window_init(SQMainWindow *window)
 /* menu item */
 	if(show_menubar)
 	{
+		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "show-full-path");
+		for(iter = list; iter; iter = iter->next)
+		{
+			gtk_container_add(GTK_CONTAINER(window->menubar.menu_view), iter->data);
+			gtk_widget_show(iter->data);
+		}
 		list = sq_widget_factory_create_property_menu(window->widget_factory, G_OBJECT(window->notebook), "show-icons");
 		for(iter = list; iter; iter = iter->next)
 		{
