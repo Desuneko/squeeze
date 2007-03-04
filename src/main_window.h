@@ -92,6 +92,7 @@ struct _SQMainWindow
 			GtkWidget *menu_item_add;
 			GtkWidget *menu_item_extract;
 			GtkWidget *menu_item_remove;
+			GtkWidget *menu_item_refresh;
 		/***************************/
 
 		/* 'view' menu */

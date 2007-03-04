@@ -18,6 +18,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <thunar-vfs/thunar-vfs.h>
 #include <libsqueeze/libsqueeze.h>
 #include "archive_store.h"
@@ -61,6 +62,8 @@ static void
 cb_sq_tool_bar_up(GtkWidget *, SQToolBar *tool_bar);
 static void
 cb_sq_tool_bar_home(GtkWidget *, SQToolBar *tool_bar);
+static void
+cb_sq_tool_bar_refresh(GtkWidget *, SQToolBar *tool_bar);
 
 static void
 cb_sq_tool_bar_path_field_activated(GtkWidget *entry, SQToolBar *tool_bar);
@@ -140,14 +143,21 @@ sq_tool_bar_init(SQToolBar *tool_bar)
 	g_signal_connect(G_OBJECT(tool_bar->up_button), "clicked", (GCallback)cb_sq_tool_bar_up, tool_bar);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->up_button), 0);
 
-	tool_bar->home_button = gtk_tool_button_new_from_stock(GTK_STOCK_HOME);
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->home_button, 3);
-	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_sq_tool_bar_home, tool_bar);
-	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
+	tool_bar->refresh_button = gtk_tool_button_new_from_stock(GTK_STOCK_REFRESH);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->refresh_button, 3);
+	g_signal_connect(G_OBJECT(tool_bar->refresh_button), "clicked", (GCallback)cb_sq_tool_bar_refresh, tool_bar);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->refresh_button), 0);
 
 	button = gtk_separator_tool_item_new();
 	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), button, 4);
 
+	tool_bar->home_button = gtk_tool_button_new_from_stock(GTK_STOCK_HOME);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), tool_bar->home_button, 5);
+	g_signal_connect(G_OBJECT(tool_bar->home_button), "clicked", (GCallback)cb_sq_tool_bar_home, tool_bar);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), 0);
+
+	button = gtk_separator_tool_item_new();
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), button, 6);
 	button = gtk_tool_item_new();
 	tool_bar->path_field = gtk_entry_new();
 	gtk_tool_item_set_expand(button, TRUE);
@@ -160,7 +170,7 @@ sq_tool_bar_init(SQToolBar *tool_bar)
 	gtk_tool_item_set_visible_horizontal(button, TRUE);
 	gtk_tool_item_set_homogeneous(button, FALSE);
 
-	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), button, 5);
+	gtk_toolbar_insert(GTK_TOOLBAR(tool_bar->bar), button, 7);
 	gtk_widget_show_all(GTK_WIDGET(button));
 	gtk_widget_show(GTK_WIDGET(tool_bar->path_field));
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->hbox), 0);
@@ -210,6 +220,8 @@ sq_tool_bar_refresh(SQToolBar *tool_bar, gchar *path)
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 1);
 		else
 			gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), 0);
+
+		gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->refresh_button), 1);
 	}
 	else
 	{
@@ -323,6 +335,7 @@ cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->home_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->forward_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->back_button), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(tool_bar->refresh_button), TRUE);
 }
 
 static void
@@ -348,16 +361,24 @@ cb_sq_tool_bar_history_forward(GtkWidget *forward_button, SQToolBar *tool_bar)
 }
 
 static void
-cb_sq_tool_bar_up(GtkWidget *forward_button, SQToolBar *tool_bar)
+cb_sq_tool_bar_up(GtkWidget *up_button, SQToolBar *tool_bar)
 {
 	sq_archive_store_go_up(SQ_NAVIGATION_BAR(tool_bar)->store);
 }
 
 static void
-cb_sq_tool_bar_home(GtkWidget *forward_button, SQToolBar *tool_bar)
+cb_sq_tool_bar_home(GtkWidget *home_button, SQToolBar *tool_bar)
 {
 	/* FIXME: the part about "/" could be bugged */
 	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(tool_bar)->store, "");
+}
+
+static void
+cb_sq_tool_bar_refresh(GtkWidget *refresh_button, SQToolBar *tool_bar)
+{
+	LSQArchive *archive = sq_archive_store_get_archive(SQ_NAVIGATION_BAR(tool_bar)->store);
+	LSQArchiveSupport *archive_support = sq_archive_store_get_support(SQ_NAVIGATION_BAR(tool_bar)->store);
+	lsq_archive_support_refresh(archive_support, archive);
 }
 
 static void

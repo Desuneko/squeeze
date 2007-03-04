@@ -94,9 +94,6 @@ static gboolean
 sq_archive_store_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *child);
 
 static void
-sq_archive_store_refresh(SQArchiveStore *store);
-
-static void
 sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path);
 
 static void
@@ -132,6 +129,9 @@ sq_archive_store_append_history(SQArchiveStore *store, LSQArchiveIter *entry);
 
 static void
 sq_archive_store_check_trailing(SQArchiveStore *store);
+
+static void
+sq_archive_store_refresh(SQArchiveStore *store);
 
 static void
 cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data);

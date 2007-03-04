@@ -89,6 +89,7 @@ static void cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_close_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_refresh_archive(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
@@ -328,9 +329,27 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_remove);
 
+		window->menubar.menu_item_refresh = g_object_ref(gtk_image_menu_item_new_from_stock(GTK_STOCK_REFRESH, window->accel_group));
+		gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_refresh);
+
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_sq_main_add_to_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_sq_main_extract_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "activate", G_CALLBACK(cb_sq_main_remove_from_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_refresh), "activate", G_CALLBACK(cb_sq_main_refresh_archive), window);
+
+		gtk_widget_add_accelerator (window->menubar.menu_item_refresh,
+		                            "activate",
+		                            window->accel_group,
+		                            GDK_F5,
+		                            0,
+		                            GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
+		gtk_widget_add_accelerator (window->menubar.menu_item_refresh,
+		                            "activate",
+		                            window->accel_group,
+		                            GDK_r,
+		                            GDK_CONTROL_MASK,
+		                            GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
 
 		/* View menu */
 		window->menubar.menu_item_view = gtk_menu_item_new_with_mnemonic(_("_View"));
@@ -816,6 +835,16 @@ cb_sq_main_close_window(GtkWidget *widget, gpointer userdata)
 	gtk_widget_destroy(GTK_WIDGET(window));
 }
 
+static void 
+cb_sq_main_refresh_archive(GtkWidget *widget, gpointer userdata)
+{
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	SQArchiveStore *store = sq_notebook_get_active_store(SQ_NOTEBOOK(window->notebook));
+	LSQArchive *archive = sq_archive_store_get_archive(store);
+	LSQArchiveSupport *support = sq_archive_store_get_support(store);
+	lsq_archive_support_refresh(support, archive);
+}
+
 static void
 cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
@@ -976,6 +1005,7 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
 		}
 
 		if(window->tool_bar)
@@ -1075,6 +1105,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 		gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
 		gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
 		gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+		gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
 		/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
 		return 0;
 	}

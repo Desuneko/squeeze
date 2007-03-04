@@ -48,6 +48,7 @@ struct _SQToolBar
 	GtkToolItem *forward_button;
 	GtkToolItem *up_button;
 	GtkToolItem *home_button;
+	GtkToolItem *refresh_button;
 	GtkWidget *path_field;
 	GtkWidget *hbox;
 };
