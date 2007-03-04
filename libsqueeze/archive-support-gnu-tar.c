@@ -710,7 +710,7 @@ lsq_archive_support_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_com
 	}
 	fclose(out_file);
 	g_free(buf);
-	return FALSE;
+	return TRUE;
 }
 
 void
