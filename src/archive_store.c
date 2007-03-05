@@ -1591,3 +1591,10 @@ cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_PWD_CHANGED], 0, store->navigation.present->data, NULL);
 }
 
+
+LSQArchiveIter *
+sq_archive_store_get_archive_iter(SQArchiveStore *store, GtkTreeIter *iter)
+{
+	LSQArchiveIter *entry = iter->user_data;
+	return entry;
+}

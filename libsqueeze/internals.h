@@ -36,6 +36,8 @@ lsq_execute(
 
 gchar *
 lsq_concat_filenames(GSList *filenames) G_GNUC_INTERNAL;
+gchar *
+lsq_concat_iter_filenames(GSList *file_iters) G_GNUC_INTERNAL;
 
 LSQArchive *
 lsq_opened_archive_get_archive(gchar *path) G_GNUC_INTERNAL;

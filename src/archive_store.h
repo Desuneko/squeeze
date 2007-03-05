@@ -92,6 +92,8 @@ void sq_archive_store_set_show_icons(SQArchiveStore *, gboolean);
 void sq_archive_store_set_sort_case_sensitive(SQArchiveStore *, gboolean);
 void sq_archive_store_set_sort_folders_first(SQArchiveStore *, gboolean);
 
+LSQArchiveIter *sq_archive_store_get_archive_iter(SQArchiveStore *, GtkTreeIter *);
+
 gboolean
 sq_archive_store_has_history(SQArchiveStore *store);
 gboolean

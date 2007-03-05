@@ -226,11 +226,11 @@ lsq_archive_support_extract(LSQArchiveSupport *support, LSQArchive *archive, con
 }
 
 gint
-lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSList *files)
+lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSList *file_iters)
 {
 	if(support->remove)
 	{
-		return support->remove(archive, files);
+		return support->remove(archive, file_iters);
 	}
 	else
 		g_critical("REMOVE NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);

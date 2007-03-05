@@ -22,6 +22,7 @@
 
 #include "libsqueeze-archive.h"
 #include "libsqueeze-support.h"
+#include "libsqueeze-view.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"
@@ -52,6 +53,24 @@ lsq_concat_filenames(GSList *filenames)
 		concat_str = g_strconcat(concat_str, " ", g_shell_quote(_filenames->data) , NULL);
 		_filenames = _filenames->next;
 		g_free(_concat_str);
+	}
+	return concat_str;
+}
+
+gchar *
+lsq_concat_iter_filenames(GSList *file_iters)
+{
+	GSList *_file_iters = file_iters;
+	gchar *concat_str = g_strdup(" "), *_concat_str;
+
+	while(_file_iters)
+	{
+		gchar *path = lsq_archive_iter_get_path(_file_iters->data);
+		_concat_str = concat_str;
+		concat_str = g_strconcat(_concat_str, " ", g_shell_quote(path) , NULL);
+		_file_iters = _file_iters->next;
+		g_free(_concat_str);
+		g_free(path);
 	}
 	return concat_str;
 }

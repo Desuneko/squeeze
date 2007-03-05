@@ -395,7 +395,7 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, const gchar *extract_pa
 }
 
 static gint
-lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
+lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *file_iters)
 {
 	if(!LSQ_IS_ARCHIVE_SUPPORT_GNU_TAR(archive->support))
 	{
@@ -412,7 +412,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *filenames)
 		LSQArchiveCommand *archive_command = NULL;
 		gchar *options = NULL;
 		gchar *tmp_file = NULL;
-		gchar *files = lsq_concat_filenames(filenames);
+		gchar *files = lsq_concat_iter_filenames(file_iters);
 		gchar *command_skeleton = NULL;
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 			command_skeleton = g_strdup("uncompress -c %1$s");

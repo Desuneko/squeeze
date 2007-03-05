@@ -775,22 +775,20 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 
 	GtkWidget *treeview = gtk_bin_get_child(GTK_BIN(scrolledwindow));
 	GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
-	//gchar *pwd = sq_archive_store_get_pwd(SQ_ARCHIVE_STORE(store));
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(treeview));
 	GList *rows = gtk_tree_selection_get_selected_rows(selection, &store);
 	GList *_rows = rows;
 	while(_rows)
 	{
 		gtk_tree_model_get_iter(store, &iter, _rows->data);
-		gtk_tree_model_get_value(store, &iter, 1, &value);
+		LSQArchiveIter *entry = sq_archive_store_get_archive_iter(SQ_ARCHIVE_STORE(store), &iter);
 
-		//filenames = g_slist_prepend(filenames, g_strconcat(pwd, g_value_get_string(&value), NULL));
+		lsq_archive_iter_ref(entry);
+		filenames = g_slist_prepend(filenames, entry);
 
-		g_value_unset((GValue*)&value);
 		_rows = _rows->next;
 	}
 	g_list_free(rows);
-	//g_free(pwd);
 	
 	return filenames;
 }

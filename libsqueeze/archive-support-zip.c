@@ -270,7 +270,7 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 }
 
 static gint
-lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
+lsq_archive_support_zip_remove(LSQArchive *archive, GSList *file_iters)
 {
 	LSQArchiveCommand *archive_command = NULL;
 	if(!LSQ_IS_ARCHIVE_SUPPORT_ZIP(archive->support))
@@ -288,7 +288,8 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *filenames)
 		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-zip") || 
 		   !g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/zip"))
 		{
-			gchar *files = lsq_concat_filenames(filenames);
+			/* FIXME: when directories are removed, append a '*' wildcard to the filenames */
+			gchar *files = lsq_concat_iter_filenames(file_iters);
 
 			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s", FALSE, TRUE);
 			g_object_set_data(G_OBJECT(archive_command), "files", files);
