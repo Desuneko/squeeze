@@ -387,7 +387,7 @@ sq_archive_store_get_n_columns(GtkTreeModel *tree_model)
 	if(!archive)
 		return 0;
 	
-	return lsq_archive_n_entry_properties(archive) + 1;
+	return lsq_archive_n_entry_properties(archive) + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT;
 }
 
 static GType
@@ -402,12 +402,14 @@ sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
 	if(!archive)
 		return G_TYPE_INVALID;
 
-	index--;
-
-	if(index == -1) /* icon */
-		return G_TYPE_STRING; 
-
-	return lsq_archive_get_entry_property_type(archive, index);
+	switch(index)
+	{
+		case SQ_ARCHIVE_STORE_EXTRA_PROP_PATH:
+		case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
+			return G_TYPE_STRING; 
+		default:
+			return lsq_archive_get_entry_property_type(archive, index - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
+	}
 }
 
 static gboolean
@@ -495,51 +497,62 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
 	LSQArchive *archive = store->archive;
-	LSQArchiveIter *entry = iter->user_data;
+	LSQArchiveIter *parent, *entry = iter->user_data;
 
 	g_return_if_fail(archive);
 
-	column--;
-
 	if(entry)
 	{
-		if(column == -1)
+		switch(column)
 		{
-			g_value_init(value, G_TYPE_STRING);
-
-			if(store->props._show_icons)
-				g_value_set_string(value, sq_archive_store_get_icon_name_for_iter(store, entry));
-		}
-		else
-		{
-			if(store->props._show_full_path && column == LSQ_ARCHIVE_PROP_FILENAME)
-			{
+			case SQ_ARCHIVE_STORE_EXTRA_PROP_PATH:
 				g_value_init(value, G_TYPE_STRING);
-				g_value_take_string(value, lsq_archive_iter_get_path(entry));
-			}
-			else if(column < (gint)lsq_archive_n_entry_properties(archive))
-				lsq_archive_iter_get_prop_value(entry, column, value);
-			/* what if it isn't utf-8 */
-			if(G_VALUE_HOLDS_STRING(value) && g_value_get_string(value) && !g_utf8_validate(g_value_get_string(value), -1, NULL))
-				g_value_take_string(value, g_convert(g_value_get_string(value), -1, "UTF-8", "WINDOWS-1252", NULL, NULL, NULL));
+
+				parent = lsq_archive_iter_get_parent(entry);
+				g_value_take_string(value, lsq_archive_iter_get_path(parent));
+				lsq_archive_iter_unref(parent);
+			break;
+			case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
+				g_value_init(value, G_TYPE_STRING);
+
+				if(store->props._show_icons)
+					g_value_set_string(value, sq_archive_store_get_icon_name_for_iter(store, entry));
+			break;
+			case LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT:
+				if(store->props._show_full_path)
+				{
+					g_value_init(value, G_TYPE_STRING);
+					g_value_take_string(value, lsq_archive_iter_get_path(entry));
+					if(!g_utf8_validate(g_value_get_string(value), -1, NULL))
+						g_value_take_string(value, g_convert(g_value_get_string(value), -1, "UTF-8", "WINDOWS-1252", NULL, NULL, NULL));
+					break;
+				}
+			default:
+				column -= SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT;
+				if(column < (gint)lsq_archive_n_entry_properties(archive))
+					lsq_archive_iter_get_prop_value(entry, column, value);
+				/* what if it isn't utf-8 */
+				if(G_VALUE_HOLDS_STRING(value) && g_value_get_string(value) && !g_utf8_validate(g_value_get_string(value), -1, NULL))
+					g_value_take_string(value, g_convert(g_value_get_string(value), -1, "UTF-8", "WINDOWS-1252", NULL, NULL, NULL));
+			break;
 		}
 	}
 	else
 	{
 		switch(column)
 		{
-			case -1:
+			case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
 				g_value_init(value, G_TYPE_STRING);
 				if(store->props._show_icons)
 					g_value_set_string(value, GTK_STOCK_GO_UP);
-				break;
-			case LSQ_ARCHIVE_PROP_FILENAME:
+			break;
+			case LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT:
 				g_value_init(value, G_TYPE_STRING);
 				g_value_set_string(value, "..");
-				break;
+			break;
 			default:
-				g_value_init(value, lsq_archive_get_entry_property_type(archive, column));
-				break;
+				g_value_init(value, lsq_archive_get_entry_property_type(archive, column - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT));
+			break;
 		}
 	}
 }
@@ -738,7 +751,7 @@ sq_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id,
 	if(store->sort_column == sort_col_id && store->sort_order == order)
 		return;
 
-	if(sort_col_id == 0)
+	if(sort_col_id == SQ_ARCHIVE_STORE_EXTRA_PROP_PATH || sort_col_id == SQ_ARCHIVE_STORE_EXTRA_PROP_ICON)
 		return;
 
 	store->sort_column = sort_col_id;
@@ -765,7 +778,7 @@ sq_archive_store_set_default_sort_func(GtkTreeSortable *s, GtkTreeIterCompareFun
 static gboolean
 sq_archive_store_has_default_sort_func(GtkTreeSortable *s)
 {
-	return SQ_ARCHIVE_STORE(s)->props._sort_folders_first?FALSE:TRUE;
+	return SQ_ARCHIVE_STORE(s)->props._sort_folders_first||!SQ_ARCHIVE_STORE(s)->props._sort_case_sensitive?FALSE:TRUE;
 }
 
 static gint
@@ -798,7 +811,7 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 	}
 
 	LSQArchive *archive = store->archive;
-	column = store->sort_column - 1;
+	column = store->sort_column - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT;
 
 	lsq_archive_iter_get_prop_value(a, column, &prop_a);
 	lsq_archive_iter_get_prop_value(b, column, &prop_b);
@@ -867,7 +880,7 @@ sq_archive_store_sort(SQArchiveStore *store)
 	{
 		store->sort_list[i] = lsq_archive_iter_nth_child(pentry, i);
 	}
-	if(psize && store->sort_column > 0)
+	if(psize && store->sort_column >= SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT)
 	{
 		sq_archive_quicksort(store, 0, psize-1);
 		sq_archive_insertionsort(store, 0, psize-1);
@@ -964,7 +977,7 @@ sq_archive_store_new(LSQArchive *archive, gboolean show_icons, gboolean show_up_
 	tree_model->icon_theme = icon_theme;
 
 	if(tree_model->props._sort_folders_first)
-		tree_model->sort_column = 1;
+		tree_model->sort_column = SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT + LSQ_ARCHIVE_PROP_FILENAME;
 
 	sq_archive_store_set_archive(tree_model, archive);
 
@@ -1005,6 +1018,7 @@ sq_archive_store_refresh(SQArchiveStore *store)
 		/* we need to add up dir .. */
 		if(store->props._show_up_dir && lsq_archive_iter_has_parent(entry))
 		{ 
+			/* use a hack like in thunar-list-model to prevent re-allocating */
 			path_ = gtk_tree_path_new();
 			gtk_tree_path_append_index(path_, 0);
 
@@ -1027,6 +1041,7 @@ sq_archive_store_refresh(SQArchiveStore *store)
 			/* notify the tree view that we have rows */
 			for(; i < new_size; ++i)
 			{
+				/* use a hack like in thunar-list-model to prevent re-allocating */
 				path_ = gtk_tree_path_new();
 				gtk_tree_path_append_index(path_, i);
 
@@ -1048,6 +1063,7 @@ sq_archive_store_refresh(SQArchiveStore *store)
 		while(i > new_size)
 		{
 			--i;
+			/* use a hack like in thunar-list-model to prevent re-allocating */
 			path_ = gtk_tree_path_new();
 			gtk_tree_path_append_index(path_, i);
 
@@ -1176,6 +1192,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	while(i)
 	{
 		--i;
+		/* use a hack like in thunar-list-model to prevent re-allocating */
 		path_ = gtk_tree_path_new();
 		gtk_tree_path_append_index(path_, i);
 
@@ -1234,6 +1251,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 		{
 			for(i = 0; i < store->list_size; ++i)
 			{
+				/* use a hack like in thunar-list-model to prevent re-allocating */
 				path_ = gtk_tree_path_new();
 				gtk_tree_path_append_index(path_, i);
 
@@ -1373,14 +1391,15 @@ sq_archive_store_set_sort_case_sensitive(SQArchiveStore *store, gboolean sort)
 	if(store->props._sort_case_sensitive != sort)
 	{
 		store->props._sort_case_sensitive = sort;
-		if(store->sort_column <= 0)
-			store->sort_column = 1;
+		if(!sort && store->sort_column < SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT)
+			store->sort_column = SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT + LSQ_ARCHIVE_PROP_FILENAME;
 
 		if(store->archive)
 		{
 			sq_archive_store_sort(store);
 			sq_archive_store_refresh(store);
 		}
+		g_object_notify(G_OBJECT(store), "sort-case-sensitive");
 	}
 }
 
@@ -1392,14 +1411,15 @@ sq_archive_store_set_sort_folders_first(SQArchiveStore *store, gboolean sort)
 	if(store->props._sort_folders_first != sort)
 	{
 		store->props._sort_folders_first = sort;
-		if(store->sort_column <= 0)
-			store->sort_column = 1;
+		if(sort && store->sort_column < SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT)
+			store->sort_column = SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT + LSQ_ARCHIVE_PROP_FILENAME;
 
 		if(store->archive)
 		{
 			sq_archive_store_sort(store);
 			sq_archive_store_refresh(store);
 		}
+		g_object_notify(G_OBJECT(store), "sort-folders-first");
 	}
 }
 

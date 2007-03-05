@@ -72,6 +72,12 @@ struct _SQArchiveStoreClass
 	GObjectClass parent_class;
 };
 
+/* archive iter extra props columns */
+enum {
+	SQ_ARCHIVE_STORE_EXTRA_PROP_PATH = 0,
+	SQ_ARCHIVE_STORE_EXTRA_PROP_ICON,
+	SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT
+};
 
 GType sq_archive_store_get_type();
 GtkTreeModel * sq_archive_store_new(LSQArchive *archive, gboolean show_icons, gboolean show_up_dir, GtkIconTheme *icon_theme);

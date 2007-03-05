@@ -636,15 +636,15 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 	renderer = gtk_cell_renderer_pixbuf_new();
 	g_object_set(G_OBJECT(renderer), "stock-size", GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
-	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", 0, NULL);
+	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", SQ_ARCHIVE_STORE_EXTRA_PROP_ICON, NULL);
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);
-	gtk_tree_view_column_set_attributes(column, renderer, "text", LSQ_ARCHIVE_PROP_FILENAME + 1, NULL);
+	gtk_tree_view_column_set_attributes(column, renderer, "text", LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT, NULL);
 
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	gtk_tree_view_column_set_sort_column_id(column, LSQ_ARCHIVE_PROP_FILENAME + 1);
+	gtk_tree_view_column_set_sort_column_id(column, LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
 	gtk_tree_view_column_set_title(column, lsq_archive_get_entry_property_name(archive, LSQ_ARCHIVE_PROP_FILENAME));
 	gtk_tree_view_append_column(treeview, column);
 
@@ -657,15 +657,15 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 				case(G_TYPE_STRING):
 				case(G_TYPE_UINT64):
 					renderer = gtk_cell_renderer_text_new();
-					column = gtk_tree_view_column_new_with_attributes(lsq_archive_get_entry_property_name(archive, x), renderer, "text", x+1, NULL);
+					column = gtk_tree_view_column_new_with_attributes(lsq_archive_get_entry_property_name(archive, x), renderer, "text", x+SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT, NULL);
 					break;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
-			gtk_tree_view_column_set_sort_column_id(column, x+1);
+			gtk_tree_view_column_set_sort_column_id(column, x+SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
 			gtk_tree_view_append_column(treeview, column);
 		}
 	}
-	gtk_tree_view_set_search_column(treeview, 1);
+	gtk_tree_view_set_search_column(treeview, LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
 }
 
 void
