@@ -413,6 +413,13 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *file_iters)
 		gchar *options = NULL;
 		gchar *tmp_file = NULL;
 		gchar *files = lsq_concat_iter_filenames(file_iters);
+
+		while(file_iters)
+		{
+			lsq_archive_iter_remove(file_iters->data);
+			file_iters = g_slist_next(file_iters);
+		}
+
 		gchar *command_skeleton = NULL;
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tarz"))
 			command_skeleton = g_strdup("uncompress -c %1$s");

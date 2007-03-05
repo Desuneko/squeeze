@@ -291,6 +291,12 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *file_iters)
 			/* FIXME: when directories are removed, append a '*' wildcard to the filenames */
 			gchar *files = lsq_concat_iter_filenames(file_iters);
 
+			while(file_iters)
+			{
+				lsq_archive_iter_remove(file_iters->data);
+				file_iters = g_slist_next(file_iters);
+			}
+
 			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s", FALSE, TRUE);
 			g_object_set_data(G_OBJECT(archive_command), "files", files);
 			lsq_archive_command_run(archive_command);
