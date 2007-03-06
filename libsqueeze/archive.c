@@ -443,7 +443,6 @@ lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 		{
 			error = g_error_copy(command->error);
 		}
-		g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
 	}
 }
 
@@ -502,4 +501,19 @@ void
 lsq_archive_refreshed(const LSQArchive *archive)
 {
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
+}
+
+void
+lsq_archive_command_terminated(const LSQArchive *archive, const GError *error)
+{
+	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
+}
+
+gboolean
+lsq_archive_has_queue(LSQArchive *archive)
+{
+	if(lsq_archive_get_front_command(archive))
+		return TRUE;
+	else
+		return FALSE;
 }

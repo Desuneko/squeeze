@@ -63,6 +63,8 @@ void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int)
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void            lsq_archive_iter_unref(LSQArchiveIter *iter);
 
+gboolean        lsq_archive_has_queue(LSQArchive *archive);
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_ARCHIVE_H__ */

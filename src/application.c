@@ -42,6 +42,9 @@ sq_application_finalize(GObject *);
 static void
 sq_application_dispose(GObject *object);
 
+static void
+cb_sq_application_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata);
+
 enum
 {
 	SQ_APPLICATION_SIGNAL_DESTROY = 0,
@@ -216,7 +219,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			return 1;
 		}
 	}
-	//g_signal_connect(G_OBJECT(lp_archive), "lsq_status_changed", G_CALLBACK(cb_sq_application_archive_status_changed), app);
+	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
 	lp_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(lp_archive));
 	if(lsq_archive_support_add(lp_support, lp_archive, files))
 	{
@@ -252,4 +255,19 @@ sq_application_open_archive(SQApplication *app, GtkWidget *window, gchar *path)
 	}
 	gtk_widget_show(window);
 	return retval;
+}
+
+static void
+cb_sq_application_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata)
+{
+	SQApplication *app = userdata;
+	if(lsq_archive_has_queue(archive))
+	{
+		return;
+	}
+	else
+	{
+		lsq_close_archive(archive);
+		g_object_unref(app);
+	}
 }

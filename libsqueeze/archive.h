@@ -50,6 +50,7 @@ void                lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveC
 
 LSQArchiveCommand  *lsq_archive_get_front_command(const LSQArchive *archive) G_GNUC_INTERNAL;
 void                lsq_archive_refreshed(const LSQArchive *archive) G_GNUC_INTERNAL;
+void                lsq_archive_command_terminated(const LSQArchive *archive, const GError *error) G_GNUC_INTERNAL;
 
 G_END_DECLS
 

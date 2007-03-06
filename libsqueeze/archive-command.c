@@ -111,6 +111,7 @@ lsq_archive_command_dispose(GObject *object)
 		next_archive_command = lsq_archive_get_front_command(archive_command->archive);
 		if(archive_command->refresh)
 			lsq_archive_refreshed(archive_command->archive);
+		lsq_archive_command_terminated(archive_command->archive, archive_command->error);
 		archive_command->archive = NULL;
 		if(next_archive_command)
 		{
