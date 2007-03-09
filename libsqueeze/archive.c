@@ -440,6 +440,7 @@ lsq_archive_n_entry_properties(LSQArchive *archive)
 void
 lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
+	g_object_ref(command);
 	archive->command_queue = g_slist_append(archive->command_queue, command);
 	command->archive = archive;
 	if(archive->command_queue->data == command)
@@ -451,6 +452,11 @@ lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
 	g_return_if_fail(archive->command_queue->data == command);
 	archive->command_queue = g_slist_remove(archive->command_queue, command);
+	LSQArchiveCommand *next_command = lsq_archive_get_front_command(archive);
+	if(next_command)
+	{
+		lsq_archive_command_run(next_command);
+	}
 }
 
 LSQArchiveCommand *

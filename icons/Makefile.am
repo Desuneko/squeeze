@@ -1,7 +1,7 @@
 
 # Inspired by Makefile.am from the Thunar file-manager
 
-SUBDIRS = 48x48 scalable
+SUBDIRS = 16x16 48x48 scalable
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 

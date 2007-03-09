@@ -304,7 +304,7 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 		 0,
 		 NULL);
 
-	sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED] = g_signal_new("sq-file-activated",
+	sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED] = g_signal_new("file-activated",
 	   G_TYPE_FROM_CLASS(as_class),
 		 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		 0,

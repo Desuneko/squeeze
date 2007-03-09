@@ -103,21 +103,14 @@ static void
 lsq_archive_command_dispose(GObject *object)
 {
 	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(object);
-	LSQArchiveCommand *next_archive_command = NULL;
 	if(archive_command->archive)
 	{
 		lsq_archive_dequeue_command(archive_command->archive, archive_command);
 
-		next_archive_command = lsq_archive_get_front_command(archive_command->archive);
 		if(archive_command->refresh)
 			lsq_archive_refreshed(archive_command->archive);
 		lsq_archive_command_terminated(archive_command->archive, archive_command->error);
 		archive_command->archive = NULL;
-		if(next_archive_command)
-		{
-			lsq_archive_command_run(next_archive_command);
-			g_object_unref(next_archive_command);
-		}
 	}
 }
 
@@ -158,7 +151,6 @@ lsq_archive_command_new(const gchar *comment, const gchar *command, gboolean saf
 	LSQArchiveCommand *archive_command;
 
 	archive_command = g_object_new(lsq_archive_command_get_type(), NULL);
-
 	archive_command->command = g_strdup(command);
 	archive_command->safe = safe;
 	archive_command->refresh = refresh;
@@ -221,7 +213,6 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 		return FALSE;
 	}
 
-	g_object_ref(archive_command);
 	g_child_watch_add(archive_command->child_pid, lsq_archive_command_child_watch_func, archive_command);
 
 	if(archive_command->parse_stdout != NULL)

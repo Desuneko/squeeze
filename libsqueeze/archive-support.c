@@ -246,7 +246,7 @@ lsq_archive_support_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 		return support->refresh(archive);
 	}
 	else
-		g_critical("VIEW NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
+		g_critical("REFRESH NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
 	return -1;
 }
 

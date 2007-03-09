@@ -523,7 +523,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
 
 	g_signal_connect(G_OBJECT(close_button), "clicked", G_CALLBACK(cb_notebook_close_archive), scroll_window);
-	g_signal_connect(G_OBJECT(tree_model), "sq_file_activated", G_CALLBACK(cb_notebook_file_activated), notebook);
+	g_signal_connect(G_OBJECT(tree_model), "file-activated", G_CALLBACK(cb_notebook_file_activated), notebook);
 
 
 	sq_archive_store_set_support(SQ_ARCHIVE_STORE(tree_model), support);
@@ -706,9 +706,7 @@ cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data)
 static void
 cb_notebook_file_activated(SQArchiveStore *store, gchar *filename, SQNotebook *notebook)
 {
-	//gchar *pwd = sq_archive_store_get_pwd(store);
-	//gchar *path = g_strconcat(pwd, filename, NULL);
-	//g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, path, NULL);
+	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, filename, NULL);
 }
 
 gboolean

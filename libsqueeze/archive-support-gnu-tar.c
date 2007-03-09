@@ -295,6 +295,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
 			lsq_archive_enqueue_command(archive, archive_command);
+			g_object_unref(archive_command);
 			g_free(command_skeleton);
 		}
 		else
@@ -315,6 +316,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 				g_mkstemp(tmp_file);
 				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
 				lsq_archive_enqueue_command(archive, archive_command);
+				g_object_unref(archive_command);
 				g_free(command_skeleton);
 			}
 
@@ -325,6 +327,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
 			lsq_archive_enqueue_command(archive, archive_command);
+			g_object_unref(archive_command);
 			g_free(command_skeleton);
 			command_skeleton = NULL;
 
@@ -344,6 +347,7 @@ lsq_archive_support_gnu_tar_add(LSQArchive *archive, GSList *filenames)
 					g_object_set_data(G_OBJECT(archive_command), "archive", g_strdup(tmp_file));
 				g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, g_strdup(tmp_file));
 				lsq_archive_enqueue_command(archive, archive_command);
+				g_object_unref(archive_command);
 				g_free(command_skeleton);
 			}
 		}
@@ -441,6 +445,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *file_iters)
 			g_mkstemp(tmp_file);
 			g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
 			lsq_archive_enqueue_command(archive, archive_command);
+			g_object_unref(archive_command);
 			g_free(command_skeleton);
 		}
 
@@ -451,6 +456,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *file_iters)
 		g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 		g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
 		lsq_archive_enqueue_command(archive, archive_command);
+		g_object_unref(archive_command);
 		g_free(command_skeleton);
 		command_skeleton = NULL;
 
@@ -470,6 +476,7 @@ lsq_archive_support_gnu_tar_remove(LSQArchive *archive, GSList *file_iters)
 				g_object_set_data(G_OBJECT(archive_command), "archive", g_strdup(tmp_file));
 			g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE, g_strdup(tmp_file));
 			lsq_archive_enqueue_command(archive, archive_command);
+			g_object_unref(archive_command);
 			g_free(command_skeleton);
 		}
 		g_free(files);

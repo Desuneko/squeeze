@@ -262,8 +262,8 @@ lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 			archive_command = lsq_archive_command_new("", "rar %3$s a %1$s %2$s", FALSE, TRUE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			lsq_archive_enqueue_command(archive, archive_command);
-			g_free(files);
 			g_object_unref(archive_command);
+			g_free(files);
 		}
 	}
 	return 0;
