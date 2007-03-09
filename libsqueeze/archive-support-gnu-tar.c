@@ -385,12 +385,19 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, const gchar *extract_pa
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-tzo"))
 			options = "--use-compress-program=lzop";
 
+		if(extract_path)
+			options = g_strconcat(options, " -C ", extract_path, NULL);
+
+
 		archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE, TRUE);
 		g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 		g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
 		lsq_archive_command_run(archive_command);
+		g_object_unref(archive_command);
 		g_free(command_skeleton);
 		g_free(files);
+		if(extract_path)
+			g_free(options);
 	}
 	return 0;
 }
