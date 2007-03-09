@@ -388,6 +388,7 @@ lsq_archive_support_gnu_tar_extract(LSQArchive *archive, const gchar *extract_pa
 		archive_command = lsq_archive_command_new("", archive, command_skeleton, FALSE, TRUE);
 		g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 		g_object_set_data(G_OBJECT(archive_command), "options", g_strdup(options));
+		lsq_archive_command_run(archive_command);
 		g_free(command_skeleton);
 		g_free(files);
 	}
