@@ -42,10 +42,10 @@ lsq_init()
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 	lsq_register_support(lsq_archive_support_zip_new());
 	lsq_register_support(lsq_archive_support_gnu_tar_new());
+	lsq_register_support(lsq_archive_support_compr_new());
 
 /*
 	lsq_register_support(lsq_archive_support_rar_new());
-	lsq_register_support(lsq_archive_support_compr_new());
 	*/
 
 	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);

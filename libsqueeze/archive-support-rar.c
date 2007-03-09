@@ -259,10 +259,10 @@ lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 
-			archive_command = lsq_archive_command_new("", archive, "rar %3$s a %1$s %2$s", FALSE, TRUE);
+			archive_command = lsq_archive_command_new("", "rar %3$s a %1$s %2$s", FALSE, TRUE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
+			lsq_archive_enqueue_command(archive, archive_command);
 			g_free(files);
-			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
 		}
 	}
@@ -292,10 +292,10 @@ lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, 
 			if(extract_path)
 				dest_path = g_shell_quote(extract_path);
 
-			archive_command = lsq_archive_command_new("", archive, "unrar x -y %1$s %2$s %3$s", TRUE, FALSE);
+			archive_command = lsq_archive_command_new("", "unrar x -y %1$s %2$s %3$s", TRUE, FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", files);
 			g_object_set_data(G_OBJECT(archive_command), "options", dest_path);
-			lsq_archive_command_run(archive_command);
+			lsq_archive_enqueue_command(archive, archive_command);
 			g_object_unref(archive_command);
 			g_free(dest_path);
 			g_free(files);
@@ -324,9 +324,9 @@ lsq_archive_support_rar_remove(LSQArchive *archive, GSList *filenames)
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 
-			archive_command = lsq_archive_command_new("", archive, "rar d %3$s %1$s %2$s", TRUE, FALSE);
+			archive_command = lsq_archive_command_new("", "rar d %3$s %1$s %2$s", TRUE, FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", files);
-			lsq_archive_command_run(archive_command);
+			lsq_archive_enqueue_command(archive, archive_command);
 			g_object_unref(archive_command);
 			g_free(files);
 		}	
@@ -390,9 +390,9 @@ lsq_archive_support_rar_refresh(LSQArchive *archive)
 			i++;
 		}
 		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_RAR_STATUS, GINT_TO_POINTER(REFRESH_STATUS_INIT));
-		archive_command = lsq_archive_command_new("", archive, "unrar v %1$s", TRUE, TRUE);
+		archive_command = lsq_archive_command_new("", "unrar v %1$s", TRUE, TRUE);
 		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_rar_refresh_parse_output);
-		lsq_archive_command_run(archive_command);
+		lsq_archive_enqueue_command(archive, archive_command);
 		g_object_unref(archive_command);
 	}
 	return 0;

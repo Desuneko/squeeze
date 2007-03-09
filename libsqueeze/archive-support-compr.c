@@ -21,6 +21,10 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include "libsqueeze.h"
+#include "libsqueeze-module.h"
+#include "archive-iter.h"
+#include "archive-command.h"
 #include "archive.h"
 #include "archive-support.h"
 #include "archive-support-compr.h"
@@ -37,9 +41,6 @@ lsq_archive_support_compr_class_init(LSQArchiveSupportComprClass *supportclass);
 void
 lsq_archive_support_compr_passive_watch(GPid pid, gint status, gpointer data);
 
-gboolean
-lsq_archive_support_compr_refresh_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
-
 static void
 lsq_archive_support_compr_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
@@ -49,7 +50,7 @@ static gint lsq_archive_support_compr_extract(LSQArchive *, const gchar *, GSLis
 static gint lsq_archive_support_compr_refresh(LSQArchive *);
 
 static gboolean
-lsq_archive_support_compr_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data);
+lsq_archive_support_compr_decompress_parse_output(LSQArchiveCommand *archive_command);
 
 GType
 lsq_archive_support_compr_get_type ()
@@ -108,7 +109,7 @@ lsq_archive_support_compr_new()
 	LSQArchiveSupportCompr *support;
 
 	support = g_object_new(LSQ_TYPE_ARCHIVE_SUPPORT_COMPR,
-												 NULL);
+	                       NULL);
 	
 	return LSQ_ARCHIVE_SUPPORT(support);
 }
@@ -149,7 +150,7 @@ lsq_archive_support_compr_add(LSQArchive *archive, GSList *filenames)
 static gint
 lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
-	gchar *command = NULL;
+	gchar *command_skeleton = NULL;
 
 	if(!LSQ_IS_ARCHIVE_SUPPORT_COMPR(archive->support))
 	{
@@ -169,7 +170,7 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 			file_path = g_strconcat(extract_path, "/", filenames->data, NULL);
 		else
 		{
-			gchar *filename = g_strdup(lsq_archive_get_filename(archive));
+			gchar *filename = g_path_get_basename(lsq_archive_get_filename(archive));
 			gint len = strlen(filename);
 			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".gz"))
 			{
@@ -183,31 +184,36 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 			{
 				filename[len-4] = '\0';
 			}
-			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".Z"))
-			{
-				filename[len-2] = '\0';
-			}
 			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".lzo"))
 			{
 				filename[len-4] = '\0';
+			}
+			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".Z"))
+			{
+				filename[len-2] = '\0';
 			}
 			file_path = g_strconcat(extract_path, "/", filename, NULL);
 			g_free(filename);
 		}
 
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-gzip"))
-			command = g_strconcat("gunzip -c ", archive_path, NULL);
+			command_skeleton = g_strdup("gunzip -c %1$s");
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip"))
-			command = g_strconcat("bunzip2 -c ", archive_path, NULL);
+			command_skeleton = g_strdup("bunzip2 -c %1$s");
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compress"))
-			command = g_strconcat("uncompress -c ", archive_path, NULL);
+			command_skeleton = g_strdup("uncompress -c %1$s");
 		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-lzop"))
-			command = g_strconcat("lzop -dc ", archive_path, NULL);
+			command_skeleton = g_strdup("lzop -dc  %1$s");
 
 		g_unlink(file_path);
-		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_DEST_FILE, file_path);
-		lsq_execute(command, archive, lsq_archive_support_compr_passive_watch, NULL, lsq_archive_support_compr_decompress_parse_output, NULL);
+		LSQArchiveCommand *archive_command = lsq_archive_command_new("", command_skeleton, FALSE, TRUE);
+		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_compr_decompress_parse_output);
+		g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_DEST_FILE, file_path);
+		lsq_archive_enqueue_command(archive, archive_command);
+		
+		g_object_unref(archive_command);
 
+		g_free(command_skeleton);
 		g_free(archive_path);
 	}
 	return 0;
@@ -228,7 +234,7 @@ lsq_archive_support_compr_refresh(LSQArchive *archive)
 	}
 	else
 	{
-		gchar *filename = g_strdup(lsq_archive_get_filename(archive));
+		gchar *filename = g_path_get_basename(lsq_archive_get_filename(archive));
 		gint len = strlen(filename);
 		if(g_str_has_suffix(lsq_archive_get_filename(archive), ".gz"))
 		{
@@ -243,49 +249,41 @@ lsq_archive_support_compr_refresh(LSQArchive *archive)
 			filename[len-4] = '\0';
 		}
 		lsq_archive_add_file(archive, filename);
+		lsq_archive_refreshed(archive);
 		g_free(filename);
-		lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
 	}
 	return 0;
 }
 
 static gboolean
-lsq_archive_support_compr_decompress_parse_output(GIOChannel *ioc, GIOCondition cond, gpointer data)
+lsq_archive_support_compr_decompress_parse_output(LSQArchiveCommand *archive_command)
 {
-	FILE *out_file = NULL;
-	LSQArchive *archive = data;
+	GIOStatus status = G_IO_STATUS_NORMAL;
 	gchar *buf = g_new0(gchar, 1024);
 	guint read = 0;
 	GError *error = NULL;
+	FILE *out_file;
 
-	if(cond & (G_IO_PRI | G_IO_IN))
-	{
-		out_file = fopen(g_object_get_data(G_OBJECT(archive), LSQ_ARCHIVE_DEST_FILE), "ab");
-		if(!out_file)
-			g_critical("Could not open file");
+	const gchar *out_filename = g_object_get_data(G_OBJECT(archive_command), LSQ_ARCHIVE_DEST_FILE);
 
-		while(g_io_channel_read_chars(ioc, buf, 1024, (gsize *)&read, &error) == G_IO_STATUS_NORMAL)
-		{
-			if(read)
-			{
-				fwrite(buf, 1, read, out_file);
-			}
-			read = 0;
-		}
-		fclose(out_file);
-	}
-	g_free(buf);
-	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
-	{
-		g_io_channel_shutdown ( ioc,TRUE,NULL );
-		g_io_channel_unref (ioc);
-
-		if(!(cond & G_IO_ERR))
-			lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_IDLE);
-		else
-			lsq_archive_set_status(archive, LSQ_ARCHIVESTATUS_ERROR);
+	out_file = fopen(out_filename, "ab");
+	if(!out_file)
 		return FALSE; 
+	
+	status = lsq_archive_command_read_bytes(archive_command, 1, buf, 1024, (gsize *)&read, &error);
+	if(status == G_IO_STATUS_EOF)
+	{
+		fclose(out_file);
+		return TRUE;
 	}
+
+	if(read)
+	{
+		fwrite(buf, 1, read, out_file);
+	}
+	fclose(out_file);
+	g_free(buf);
+
 	return TRUE;
 }
 

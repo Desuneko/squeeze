@@ -441,6 +441,9 @@ void
 lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
 	archive->command_queue = g_slist_append(archive->command_queue, command);
+	command->archive = archive;
+	if(archive->command_queue->data == command)
+		lsq_archive_command_run(command);
 }
 
 void

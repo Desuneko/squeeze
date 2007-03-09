@@ -9,7 +9,7 @@ dnl
 dnl ***************************
 dnl *** Version information ***
 dnl ***************************
-m4_define([squeeze_verinfo], [0:1:0])
+m4_define([squeeze_verinfo], [0:2:0])
 m4_define([squeeze_version_branch], [])
 m4_define([squeeze_version_major], [0])
 m4_define([squeeze_version_minor], [1])

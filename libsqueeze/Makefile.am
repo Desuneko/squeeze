@@ -15,8 +15,8 @@ libsqueeze_1_la_SOURCES =  \
 	archive-support.c archive-support.h \
 	archive-support-zip.c archive-support-zip.h \
 	archive-support-rar.c archive-support-rar.h \
-	archive-support-gnu-tar.c archive-support-gnu-tar.h
-#	archive-support-compr.c archive-support-compr.h
+	archive-support-gnu-tar.c archive-support-gnu-tar.h \
+	archive-support-compr.c archive-support-compr.h
 
 libsqueeze_1_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \

@@ -65,10 +65,10 @@ struct _LSQArchiveCommandClass
 
 GType               lsq_archive_command_get_type(void) G_GNUC_INTERNAL;
 LSQArchiveCommand  *lsq_archive_command_new(const gchar *comment, 
-                                            LSQArchive *archive,
                                             const gchar *command,
-																						gboolean safe,
-																						gboolean change) G_GNUC_INTERNAL;
+                                            gboolean safe,
+                                            gboolean change)
+                                            G_GNUC_INTERNAL;
 
 gboolean            lsq_archive_command_run(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
 

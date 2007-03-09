@@ -219,11 +219,11 @@ lsq_archive_support_zip_add(LSQArchive *archive, GSList *filenames)
 			gchar *files = lsq_concat_filenames(filenames);
 			gchar *options = NULL;
 
-			archive_command = lsq_archive_command_new("", archive, "zip %3$s -r %1$s %2$s", FALSE, TRUE);
+			archive_command = lsq_archive_command_new("", "zip %3$s -r %1$s %2$s", FALSE, TRUE);
 			g_object_set_data(G_OBJECT(archive_command), "files", g_strdup(files));
 			g_object_set_data(G_OBJECT(archive_command), "options", options);
+			lsq_archive_enqueue_command(archive, archive_command);
 			g_free(files);
-			lsq_archive_command_run(archive_command);
 			g_object_unref(archive_command);
 		}
 	}
@@ -256,10 +256,10 @@ lsq_archive_support_zip_extract(LSQArchive *archive, const gchar *extract_path, 
 
 			gchar *options = g_strconcat(" -d ", dest_path, NULL);
 
-			archive_command = lsq_archive_command_new("", archive, "unzip -o %1$s %2$s %3$s", TRUE, FALSE);
+			archive_command = lsq_archive_command_new("", "unzip -o %1$s %2$s %3$s", TRUE, FALSE);
 			g_object_set_data(G_OBJECT(archive_command), "files", files);
 			g_object_set_data(G_OBJECT(archive_command), "options", options);
-			lsq_archive_command_run(archive_command);
+			lsq_archive_enqueue_command(archive, archive_command);
 			g_object_unref(archive_command);
 			g_free(dest_path);
 			g_free(options);
@@ -297,9 +297,9 @@ lsq_archive_support_zip_remove(LSQArchive *archive, GSList *file_iters)
 				file_iters = g_slist_next(file_iters);
 			}
 
-			archive_command = lsq_archive_command_new("", archive, "zip -d %1$s %2$s", FALSE, TRUE);
+			archive_command = lsq_archive_command_new("", "zip -d %1$s %2$s", FALSE, TRUE);
 			g_object_set_data(G_OBJECT(archive_command), "files", files);
-			lsq_archive_command_run(archive_command);
+			lsq_archive_enqueue_command(archive, archive_command);
 			g_object_unref(archive_command);
 			g_free(files);
 		}
@@ -354,9 +354,9 @@ lsq_archive_support_zip_refresh(LSQArchive *archive)
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
-		archive_command = lsq_archive_command_new("", archive, "unzip -lv -qq %1$s", TRUE, TRUE);
+		archive_command = lsq_archive_command_new("", "unzip -lv -qq %1$s", TRUE, TRUE);
 		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_zip_refresh_parse_output);
-		lsq_archive_command_run(archive_command);
+		lsq_archive_enqueue_command(archive, archive_command);
 		g_object_unref(archive_command);
 	}
 	return 0;
