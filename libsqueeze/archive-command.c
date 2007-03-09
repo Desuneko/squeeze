@@ -235,7 +235,7 @@ lsq_archive_command_run(LSQArchiveCommand *archive_command)
 		g_io_channel_set_flags (archive_command->ioc_out , G_IO_FLAG_NONBLOCK , NULL );
 		g_io_add_watch (archive_command->ioc_out, G_IO_IN|G_IO_PRI|G_IO_ERR|G_IO_HUP|G_IO_NVAL, lsq_archive_command_parse_stdout, archive_command);
 	}
-
+	lsq_archive_command_started(archive_command->archive, archive_command->comment);
 	g_free(escaped_archive_path);
 	g_free(command);
 	return TRUE;
@@ -284,16 +284,16 @@ lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data)
 		{
 			case SIGHUP:
 				if(!command->error)
-					command->error = g_error_new(command->domain, status, _("Command interrupted by user"));
+					command->error = g_error_new_literal(command->domain, status, _("Command interrupted by user"));
 				break;
 			case SIGSEGV:
 				if(!command->error)
-					command->error = g_error_new(command->domain, status, _("Command received SIGSEGV"));
+					command->error = g_error_new_literal(command->domain, status, _("Command received SIGSEGV"));
 				break;
 			case SIGKILL:
 			case SIGINT:
 				if(!command->error)
-					command->error = g_error_new(command->domain, status, _("Command Terminated"));
+					command->error = g_error_new_literal(command->domain, status, _("Command Terminated"));
 				break;
 		}
 	}

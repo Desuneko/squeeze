@@ -59,7 +59,8 @@ lsq_archive_finalize(GObject *object);
 
 enum
 {
-	LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED = 0,
+	LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED = 0,
+	LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED,
 	LSQ_ARCHIVE_SIGNAL_REFRESHED,
 	LSQ_ARCHIVE_SIGNAL_COUNT
 };
@@ -99,6 +100,17 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 
 	object_class->finalize = lsq_archive_finalize;
 	
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED] = g_signal_new("command-started",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
 	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED] = g_signal_new("command-terminated",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
@@ -436,14 +448,6 @@ lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
 {
 	g_return_if_fail(archive->command_queue->data == command);
 	archive->command_queue = g_slist_remove(archive->command_queue, command);
-	if(archive->command_queue == NULL)
-	{
-		GError *error = NULL;
-		if(command->error)
-		{
-			error = g_error_copy(command->error);
-		}
-	}
 }
 
 LSQArchiveCommand *
@@ -507,6 +511,12 @@ void
 lsq_archive_command_terminated(const LSQArchive *archive, const GError *error)
 {
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
+}
+
+void
+lsq_archive_command_started(const LSQArchive *archive, const gchar *comment)
+{
+	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED], 0, comment, NULL);
 }
 
 gboolean

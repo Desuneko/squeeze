@@ -150,17 +150,54 @@ sq_application_new_window(SQApplication *app)
 gint
 sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *dest_path)
 {
-/*
 	GtkWidget *dialog = NULL;
-	gint result = 0;
 	LSQArchive *lp_archive = NULL;
 	LSQArchiveSupport *lp_support = NULL;
-
-	if(!lsq_open_archive(archive_path, &lp_archive))
+	if(lsq_open_archive(archive_path, &lp_archive))
 	{
+		/*
+		 * Could not open archive (mime type not supported or file did not exist)
+		 * Should be a more specific error message.
+		 */ 
+		dialog = gtk_message_dialog_new (NULL,GTK_DIALOG_DESTROY_WITH_PARENT,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,_("Could not open archive, MIME-type unsupported or file did not exist"));
+		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+		gtk_dialog_run (GTK_DIALOG (dialog) );
+		gtk_widget_destroy (GTK_WIDGET (dialog) );
+		return 1;
+	}
+	lp_support = lsq_get_support_for_mimetype(lsq_archive_get_mimetype(lp_archive));
+	if(!dest_path)
+	{
+		GtkWidget *extr_dialog = sq_extract_archive_dialog_new(lp_support, lp_archive, 0);
+		gint result = gtk_dialog_run (GTK_DIALOG (extr_dialog) );
+		if(result == GTK_RESPONSE_OK)
+		{
+			gtk_widget_hide(extr_dialog);
+			dest_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(extr_dialog));
+		}
+		gtk_widget_destroy(extr_dialog);
+	}
+	if(!dest_path)
+	{
+		lsq_close_archive(lp_archive);
+		return 1;
+	}
+	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
+	if(lsq_archive_support_extract(lp_support, lp_archive, dest_path, NULL))
+	{
+		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
+		                                                   GTK_DIALOG_DESTROY_WITH_PARENT, 
+		                                                   GTK_MESSAGE_WARNING,
+		                                                   GTK_BUTTONS_CLOSE,
+		                                                   _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+		if(warning_dialog)
+		{
+			gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+			gtk_widget_destroy(warning_dialog);
+		}
+
 	}
 	g_object_ref(app);
-*/
 	return 0;
 }
 

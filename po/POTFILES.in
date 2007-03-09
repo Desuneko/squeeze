@@ -13,7 +13,6 @@ src/application.c
 src/new_dialog.c
 src/add_dialog.c
 src/extract_dialog.c
-src/properties_dialog.c
 
 src/tool_bar.c
 src/path_bar.c

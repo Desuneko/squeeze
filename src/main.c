@@ -117,14 +117,18 @@ int main(int argc, char **argv)
 
 	if(extract_archive_path || extract_archive)
 	{
+		gint err = 0;
 		if(argc == 1)
 		{
 			return 1;
 		}
 		for(i = 1; i < argc; i++)
 		{
-			sq_application_extract_archive(sq_app, argv[i], extract_archive_path);
+			if(sq_application_extract_archive(sq_app, argv[i], extract_archive_path))
+				err++;
 		}
+		if(err)
+			return 1;
 	}
 	if(new_archive || add_archive_path)
 	{
