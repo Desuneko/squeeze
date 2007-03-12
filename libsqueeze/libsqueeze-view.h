@@ -17,9 +17,6 @@
 #define __LIBSQUEEZE_VIEW_H__ 
 G_BEGIN_DECLS
 
-const gchar        *lsq_archive_get_filename(const LSQArchive *archive);
-const gchar        *lsq_archive_get_mimetype(const LSQArchive *archive);
-
 gboolean            lsq_archive_iter_is_real(const LSQArchiveIter *);
 LSQArchiveIter *    lsq_archive_iter_get_real_parent(LSQArchiveIter *);
 

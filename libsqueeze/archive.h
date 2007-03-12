@@ -30,7 +30,6 @@ struct _LSQArchive
 	GType              *entry_property_types;
 	gchar             **entry_property_names;
 	LSQArchiveEntry    *root_entry;
-	gpointer            support;
 	GSList             *command_queue;
 	struct {
 		guint64 archive_size;
@@ -45,11 +44,9 @@ struct _LSQArchive
 
 LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
 
-void                lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command) G_GNUC_INTERNAL;
 void                lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command) G_GNUC_INTERNAL;
 
 LSQArchiveCommand  *lsq_archive_get_front_command(const LSQArchive *archive) G_GNUC_INTERNAL;
-void                lsq_archive_refreshed(const LSQArchive *archive) G_GNUC_INTERNAL;
 void                lsq_archive_command_terminated(const LSQArchive *archive, const GError *error) G_GNUC_INTERNAL;
 void                lsq_archive_command_started(const LSQArchive *archive, const gchar *comment) G_GNUC_INTERNAL;
 

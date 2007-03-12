@@ -21,15 +21,9 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze.h"
-#include "libsqueeze-module.h"
-#include "archive-iter.h"
-#include "archive-command.h"
-#include "archive.h"
-#include "archive-support.h"
-#include "archive-support-compr.h"
+#include <libsqueeze/libsqueeze-module.h>
 
-#include "internals.h"
+#include "archive-support-compr.h"
 
 #define LSQ_ARCHIVE_DEST_FILE "compr_dest_file"
 
@@ -46,11 +40,11 @@ lsq_archive_support_compr_set_property(GObject *object, guint prop_id, const GVa
 static void
 lsq_archive_support_compr_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
-static gint lsq_archive_support_compr_extract(LSQArchive *, const gchar *, GSList *);
-static gint lsq_archive_support_compr_refresh(LSQArchive *);
+static gint lsq_archive_support_compr_extract(LSQArchiveSupport *, LSQArchive *, const gchar *, GSList *);
+static gint lsq_archive_support_compr_refresh(LSQArchiveSupport *, LSQArchive *);
 
 static gboolean
-lsq_archive_support_compr_decompress_parse_output(LSQArchiveCommand *archive_command);
+lsq_archive_support_compr_decompress_parse_output(LSQArchiveCommand *archive_command, gpointer user_data);
 
 GType
 lsq_archive_support_compr_get_type ()
@@ -148,23 +142,23 @@ lsq_archive_support_compr_add(LSQArchive *archive, GSList *filenames)
 */
 
 static gint
-lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
+lsq_archive_support_compr_extract(LSQArchiveSupport *support, LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
 	gchar *command_skeleton = NULL;
 
-	if(!LSQ_IS_ARCHIVE_SUPPORT_COMPR(archive->support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT_COMPR(support))
 	{
 		g_critical("Support is not Compr");
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(support, lsq_archive_get_mimetype(archive)))
 	{
 		return 1;
 	}
 	else
 	{
-		gchar *archive_path = g_shell_quote(archive->path);
+		gchar *archive_path = g_shell_quote(lsq_archive_get_filename(archive));
 		gchar *file_path;
 		if(filenames)
 			file_path = g_strconcat(extract_path, "/", filenames->data, NULL);
@@ -196,18 +190,18 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 			g_free(filename);
 		}
 
-		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-gzip"))
+		if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-gzip"))
 			command_skeleton = g_strdup("gunzip -c %1$s");
-		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-bzip"))
+		if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-bzip"))
 			command_skeleton = g_strdup("bunzip2 -c %1$s");
-		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-compress"))
+		if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-compress"))
 			command_skeleton = g_strdup("uncompress -c %1$s");
-		if(!g_strcasecmp(thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-lzop"))
+		if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-lzop"))
 			command_skeleton = g_strdup("lzop -dc  %1$s");
 
 		g_unlink(file_path);
 		LSQArchiveCommand *archive_command = lsq_archive_command_new("", command_skeleton, FALSE, TRUE);
-		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_compr_decompress_parse_output);
+		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_compr_decompress_parse_output, support);
 		g_object_set_data(G_OBJECT(archive_command), LSQ_ARCHIVE_DEST_FILE, file_path);
 		lsq_archive_enqueue_command(archive, archive_command);
 		
@@ -220,15 +214,15 @@ lsq_archive_support_compr_extract(LSQArchive *archive, const gchar *extract_path
 }
 
 static gint
-lsq_archive_support_compr_refresh(LSQArchive *archive)
+lsq_archive_support_compr_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 {
-	if(!LSQ_IS_ARCHIVE_SUPPORT_COMPR(archive->support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT_COMPR(support))
 	{
 		g_critical("Support is not Compr");
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(support, lsq_archive_get_mimetype(archive)))
 	{
 		return 1;
 	}
@@ -256,7 +250,7 @@ lsq_archive_support_compr_refresh(LSQArchive *archive)
 }
 
 static gboolean
-lsq_archive_support_compr_decompress_parse_output(LSQArchiveCommand *archive_command)
+lsq_archive_support_compr_decompress_parse_output(LSQArchiveCommand *archive_command, gpointer user_data)
 {
 	GIOStatus status = G_IO_STATUS_NORMAL;
 	gchar *buf = g_new0(gchar, 1024);

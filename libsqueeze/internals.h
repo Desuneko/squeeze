@@ -14,7 +14,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-const gchar            *lsq_tmp_dir;
 GSList                 *lsq_archive_support_list;
 GSList                 *lsq_opened_archive_list;
 ThunarVfsPath          *lsq_relative_base_path;
@@ -33,11 +32,6 @@ lsq_execute(
             GIOFunc f_in, 
             GIOFunc f_out, 
             GIOFunc f_err) G_GNUC_INTERNAL; 
-
-gchar *
-lsq_concat_filenames(GSList *filenames) G_GNUC_INTERNAL;
-gchar *
-lsq_concat_iter_filenames(GSList *file_iters) G_GNUC_INTERNAL;
 
 LSQArchive *
 lsq_opened_archive_get_archive(gchar *path) G_GNUC_INTERNAL;

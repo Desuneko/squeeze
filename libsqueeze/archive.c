@@ -481,6 +481,22 @@ lsq_archive_get_mimetype(const LSQArchive *archive)
 }
 
 gboolean
+lsq_archive_exists(const LSQArchive *archive)
+{
+	if(archive->file_info)
+		return TRUE;
+	
+	if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
+	{
+		if(!g_file_test(archive->path, G_FILE_TEST_IS_DIR))
+			return TRUE;
+			/* TODO: should file_info be created */
+	}
+
+	return FALSE;
+}
+
+gboolean
 lsq_archive_can_stop(const LSQArchive *archive)
 {
 	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);

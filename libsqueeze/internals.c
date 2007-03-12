@@ -23,6 +23,7 @@
 #include "libsqueeze-archive.h"
 #include "libsqueeze-support.h"
 #include "libsqueeze-view.h"
+#include "libsqueeze-module.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"

@@ -21,7 +21,7 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze.h"
+#include "libsqueeze-module.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"
@@ -73,7 +73,6 @@ lsq_archive_support_init(LSQArchiveSupport *support)
 	support->extract = NULL;
 	support->remove = NULL;
 	support->refresh = NULL;
-	support->custom_action = NULL;
 }
 
 /*
@@ -86,19 +85,6 @@ lsq_archive_support_class_init(LSQArchiveSupportClass *supportclass)
 	GObjectClass *gobject_class = G_OBJECT_CLASS (supportclass);
 	LSQArchiveSupportClass *klass = LSQ_ARCHIVE_SUPPORT_CLASS (supportclass);
 	*/
-}
-
-/*
- *
- */
-LSQArchiveSupport*
-lsq_archive_support_new()
-{
-	LSQArchiveSupport*support;
-
-	support = g_object_new(LSQ_TYPE_ARCHIVE_SUPPORT, NULL);
-	
-	return support;
 }
 
 /*
@@ -204,8 +190,7 @@ lsq_archive_support_add(LSQArchiveSupport *support, LSQArchive *archive, GSList 
 {
 	if(support->add)
 	{
-		archive->support = support;
-		return support->add(archive, files);
+		return support->add(support, archive, files);
 	}
 	else
 		g_critical("ADD NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
@@ -217,8 +202,7 @@ lsq_archive_support_extract(LSQArchiveSupport *support, LSQArchive *archive, con
 {
 	if(support->extract)
 	{
-		archive->support = support;
-		return support->extract(archive, dest_path, files);
+		return support->extract(support, archive, dest_path, files);
 	}
 	else
 		g_critical("EXTRACT NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
@@ -230,7 +214,7 @@ lsq_archive_support_remove(LSQArchiveSupport *support, LSQArchive *archive, GSLi
 {
 	if(support->remove)
 	{
-		return support->remove(archive, file_iters);
+		return support->remove(support, archive, file_iters);
 	}
 	else
 		g_critical("REMOVE NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
@@ -242,8 +226,7 @@ lsq_archive_support_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 {
 	if(support->refresh)
 	{
-		archive->support = support;
-		return support->refresh(archive);
+		return support->refresh(support, archive);
 	}
 	else
 		g_critical("REFRESH NOT IMPLEMENTED BY SUPPORT OBJECT '%s'", support->id);
@@ -255,8 +238,7 @@ lsq_archive_support_view(LSQArchiveSupport *support, LSQArchive *archive, GSList
 {
 	if(support->extract)
 	{
-		archive->support = support;
-		if(support->extract(archive, lsq_tempfs_get_root_dir(archive), files))
+		if(support->extract(support, archive, lsq_tempfs_get_root_dir(archive), files))
 			return -1;
 		return 0;
 	}
@@ -291,7 +273,7 @@ lsq_archive_support_list_properties(LSQArchiveSupport *support, gchar *prefix)
 	}
 	return pspec_list;
 }
-
+/*
 void
 lsq_archive_support_install_action(LSQArchiveSupport *support, LSQCustomAction *action)
 {
@@ -371,3 +353,4 @@ lsq_custom_action_notify(LSQCustomAction *action, const gchar *message)
 {
 	action->callback->notify_func(action, message);
 }
+*/

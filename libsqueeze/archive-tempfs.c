@@ -27,6 +27,8 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze-archive.h"
+#include "libsqueeze-support.h"
+#include "libsqueeze-command.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"
@@ -130,6 +132,25 @@ gboolean lsq_tempfs_make_root_dir(LSQArchive *archive)
 	}
 
 	return FALSE;
+}
+
+gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *suffix)
+{
+	gchar dirname[256];
+	gint handle;
+
+	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name());
+	if(g_mkdir_with_parents(dirname, 0700))
+		return FALSE;
+
+	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/file-XXXXXX%s", g_get_tmp_dir(), g_get_user_name(), suffix?suffix:"");
+
+	handle = g_mkstemp(dirname);
+	if(handle == -1)
+		return NULL;
+	close(handle);
+
+	return strdup(dirname);
 }
 
 gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode)

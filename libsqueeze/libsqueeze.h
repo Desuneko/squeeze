@@ -20,7 +20,6 @@
 #include <libsqueeze/libsqueeze-archive.h>
 #include <libsqueeze/libsqueeze-support.h>
 #include <libsqueeze/libsqueeze-view.h>
-/* #include <libsqueeze/libsqueeze-module.h> */
 
 
 G_BEGIN_DECLS
@@ -72,12 +71,6 @@ lsq_open_archive( gchar *path,
  */
 void 
 lsq_close_archive( LSQArchive *archive );
-
-gint
-lsq_stop_archive_child( LSQArchive *archive );
-
-void
-lsq_convert_mime_to_icon_name(GtkIconTheme *icon_theme, GValue *value);
 
 GSList *
 lsq_get_supported_mime_types();

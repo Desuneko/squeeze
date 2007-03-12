@@ -20,15 +20,9 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze.h"
-#include "libsqueeze-module.h"
-#include "archive-iter.h"
-#include "archive-command.h"
-#include "archive.h"
-#include "archive-support.h"
-#include "archive-support-rar.h"
+#include <libsqueeze/libsqueeze-module.h>
 
-#include "internals.h"
+#include "archive-support-rar.h"
 
 enum
 {
@@ -62,17 +56,17 @@ static void
 lsq_archive_support_rar_class_init(LSQArchiveSupportRarClass *supportclass);
 
 gboolean
-lsq_archive_support_rar_refresh_parse_output(LSQArchiveCommand *archive_command);
+lsq_archive_support_rar_refresh_parse_output(LSQArchiveCommand *archive_command, gpointer user_data);
 
 static void
 lsq_archive_support_rar_set_property(GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec);
 static void
 lsq_archive_support_rar_get_property(GObject *object, guint prop_id, GValue *value, GParamSpec *pspec);
 
-static gint lsq_archive_support_rar_add(LSQArchive *, GSList *);
-static gint lsq_archive_support_rar_extract(LSQArchive *, const gchar *, GSList *);
-static gint lsq_archive_support_rar_remove(LSQArchive *, GSList *);
-static gint lsq_archive_support_rar_refresh(LSQArchive *);
+static gint lsq_archive_support_rar_add(LSQArchiveSupport*, LSQArchive *, GSList *);
+static gint lsq_archive_support_rar_extract(LSQArchiveSupport*, LSQArchive *, const gchar *, GSList *);
+static gint lsq_archive_support_rar_remove(LSQArchiveSupport*, LSQArchive *, GSList *);
+static gint lsq_archive_support_rar_refresh(LSQArchiveSupport*, LSQArchive *);
 
 GType
 lsq_archive_support_rar_get_type ()
@@ -240,22 +234,22 @@ lsq_archive_support_rar_new()
 }
 
 static gint
-lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
+lsq_archive_support_rar_add(LSQArchiveSupport *support, LSQArchive *archive, GSList *filenames)
 {
 	LSQArchiveCommand *archive_command = NULL;
-	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(support))
 	{
 		g_critical("Support is not rar");
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(support, lsq_archive_get_mimetype(archive)))
 	{
 		return 1;
 	}
 	else
 	{
-		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
+		if(!g_strcasecmp((gchar *)lsq_archive_get_mimetype(archive), "application/x-rar"))
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 
@@ -270,23 +264,23 @@ lsq_archive_support_rar_add(LSQArchive *archive, GSList *filenames)
 }
 
 static gint
-lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, GSList *filenames)
+lsq_archive_support_rar_extract(LSQArchiveSupport *support, LSQArchive *archive, const gchar *extract_path, GSList *filenames)
 {
 	LSQArchiveCommand *archive_command = NULL;
 	gchar *dest_path = NULL;
-	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(support))
 	{
 		g_critical("Support is not Rar");
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(support, lsq_archive_get_mimetype(archive)))
 	{
 		return 1;
 	}
 	else
 	{
-		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
+		if(!g_strcasecmp((gchar *)lsq_archive_get_mimetype(archive), "application/x-rar"))
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 			if(extract_path)
@@ -305,22 +299,22 @@ lsq_archive_support_rar_extract(LSQArchive *archive, const gchar *extract_path, 
 }
 
 static gint
-lsq_archive_support_rar_remove(LSQArchive *archive, GSList *filenames)
+lsq_archive_support_rar_remove(LSQArchiveSupport *support, LSQArchive *archive, GSList *filenames)
 {
 	LSQArchiveCommand *archive_command = NULL;
-	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(support))
 	{
 		g_critical("Support is not rar");
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(support, lsq_archive_get_mimetype(archive)))
 	{
 		return 1;
 	}
 	else
 	{
-		if(!g_strcasecmp((gchar *)thunar_vfs_mime_info_get_name(archive->mime_info), "application/x-rar"))
+		if(!g_strcasecmp((gchar *)lsq_archive_get_mimetype(archive), "application/x-rar"))
 		{
 			gchar *files = lsq_concat_filenames(filenames);
 
@@ -335,17 +329,17 @@ lsq_archive_support_rar_remove(LSQArchive *archive, GSList *filenames)
 }
 
 static gint
-lsq_archive_support_rar_refresh(LSQArchive *archive)
+lsq_archive_support_rar_refresh(LSQArchiveSupport *support, LSQArchive *archive)
 {
 	LSQArchiveCommand *archive_command = NULL;
 	guint i = 0;
-	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(archive->support))
+	if(!LSQ_IS_ARCHIVE_SUPPORT_RAR(support))
 	{
 		g_critical("Support is not Rar");
 		return -1;
 	}
 
-	if(!lsq_archive_support_mime_supported(archive->support, thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!lsq_archive_support_mime_supported(support, lsq_archive_get_mimetype(archive)))
 	{
 		return 1;
 	}
@@ -353,45 +347,45 @@ lsq_archive_support_rar_refresh(LSQArchive *archive)
 	{
 		lsq_archive_clear_entry_property_types(archive);
 		i = LSQ_ARCHIVE_PROP_USER;
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_length) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_length) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Size"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_size) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_size) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_UINT64, _("Compressed Size"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_ratio) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_ratio) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Ratio"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_date) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_date) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Date"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_time) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_time) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Time"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_rights) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_rights) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Permissions"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_crc_32) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_crc_32) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Checksum"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_method) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_method) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING,_("Method"));
 			i++;
 		}
-		if(LSQ_ARCHIVE_SUPPORT_RAR(archive->support)->_view_version) {
+		if(LSQ_ARCHIVE_SUPPORT_RAR(support)->_view_version) {
 			lsq_archive_set_entry_property_type(archive, i, G_TYPE_STRING, _("Version"));
 			i++;
 		}
 		g_object_set_data(G_OBJECT(archive), LSQ_ARCHIVE_RAR_STATUS, GINT_TO_POINTER(REFRESH_STATUS_INIT));
 		archive_command = lsq_archive_command_new("", "unrar v %1$s", TRUE, TRUE);
-		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_rar_refresh_parse_output);
+		lsq_archive_command_set_parse_func(archive_command, 1, lsq_archive_support_rar_refresh_parse_output, support);
 		lsq_archive_enqueue_command(archive, archive_command);
 		g_object_unref(archive_command);
 	}
@@ -399,7 +393,7 @@ lsq_archive_support_rar_refresh(LSQArchive *archive)
 }
 
 gboolean
-lsq_archive_support_rar_refresh_parse_output(LSQArchiveCommand *archive_command)
+lsq_archive_support_rar_refresh_parse_output(LSQArchiveCommand *archive_command, gpointer user_data)
 {
 	/*
 	gchar *line = NULL;

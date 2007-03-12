@@ -25,6 +25,9 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze-archive.h"
+#include "libsqueeze-support.h"
+#include "libsqueeze-command.h"
+#include "libsqueeze-module.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"
@@ -105,11 +108,12 @@ lsq_archive_command_dispose(GObject *object)
 	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(object);
 	if(archive_command->archive)
 	{
-		lsq_archive_dequeue_command(archive_command->archive, archive_command);
-
 		if(archive_command->refresh)
 			lsq_archive_refreshed(archive_command->archive);
 		lsq_archive_command_terminated(archive_command->archive, archive_command->error);
+
+		lsq_archive_dequeue_command(archive_command->archive, archive_command);
+
 		archive_command->archive = NULL;
 	}
 }
@@ -308,7 +312,7 @@ lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer da
 		for(; i < 500; i++)
 		{
 			/* If parse_stdout returns FALSE, something seriously went wrong and we should cancel right away */
-			if(archive_command->parse_stdout(archive_command) == FALSE)
+			if(archive_command->parse_stdout(archive_command, archive_command->user_data) == FALSE)
 			{
 				cond |= G_IO_ERR;
 			}
@@ -325,12 +329,13 @@ lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer da
 }
 
 gboolean
-lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command, guint fd, LSQParseFunc func)
+lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command, guint fd, LSQParseFunc func, gpointer user_data)
 {
 	switch(fd)
 	{
 		case 1:
 			archive_command->parse_stdout = func;
+			archive_command->user_data = user_data;
 		default:
 			break;
 	}
@@ -365,6 +370,12 @@ lsq_archive_command_read_bytes(LSQArchiveCommand *archive_command, guint fd, gch
 			break;
 	}
 	return status;
+}
+
+LSQArchive *
+lsq_archive_command_get_archive(LSQArchiveCommand *command)
+{
+	return command->archive;
 }
 
 const gchar *

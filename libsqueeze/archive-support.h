@@ -18,27 +18,6 @@
 
 G_BEGIN_DECLS
 
-
-#define LSQ_TYPE_ARCHIVE_SUPPORT lsq_archive_support_get_type()
-
-#define LSQ_ARCHIVE_SUPPORT(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LSQ_TYPE_ARCHIVE_SUPPORT,      \
-			LSQArchiveSupport))
-
-#define LSQ_IS_ARCHIVE_SUPPORT(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LSQ_TYPE_ARCHIVE_SUPPORT))
-
-#define LSQ_ARCHIVE_SUPPORT_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			LSQ_TYPE_ARCHIVE_SUPPORT,      \
-			LSQArchiveSupportClass))
-
-#define LSQ_IS_ARCHIVE_SUPPORT_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
-			LSQ_TYPE_ARCHIVE_SUPPORT))
-
 typedef struct _LSQCustomAction LSQCustomAction;
 typedef struct _LSQCustomActionCallback LSQCustomActionCallback;
 
@@ -68,52 +47,11 @@ struct _LSQCustomAction
 	gpointer user_data;
 };
 
-struct _LSQArchiveSupport
-{
-	GObject       parent;
-	gchar        *id;
-	GSList       *mime;
-	GSList       *custom_action;
-	guint64       max_n_files;
-/*
- * The following functions should _NOT_ be called directly.
- *
- * lsq_archive_support_add()
- * lsq_archive_support_extract()
- * lsq_archive_support_remove()
- * lsq_archive_support_refresh()
- * 
- * should be called instead.
- */
-	gint        (*add)(LSQArchive *archive, GSList *files);
-	gint        (*extract)(LSQArchive *archive, const gchar *dest_path, GSList *files);
-	gint        (*remove)(LSQArchive *archive, GSList *files);
-	gint        (*refresh)(LSQArchive *archive);
-};
-
-typedef struct _LSQArchiveSupportClass LSQArchiveSupportClass;
-
-struct _LSQArchiveSupportClass
-{
-	GObjectClass  parent;
-}; 
-
 GType                lsq_archive_support_get_type(void);
-LSQArchiveSupport *  lsq_archive_support_new() G_GNUC_INTERNAL;
-void                 lsq_archive_support_add_mime(LSQArchiveSupport *support, gchar *mime) G_GNUC_INTERNAL;
-gboolean             lsq_archive_support_mime_supported(LSQArchiveSupport *,const gchar *mime) G_GNUC_INTERNAL;
 
-GSList *             lsq_get_registered_support_list();
-gboolean             lsq_register_support(LSQArchiveSupport *support);
-
-const gchar *        lsq_archive_support_get_id(LSQArchiveSupport *support);
 gint                 lsq_archive_support_lookup_mime(gconstpointer support_mime, gconstpointer mime);
 gint                 lsq_archive_support_lookup_support(gconstpointer support, gconstpointer mime);
 
-
-gboolean             lsq_archive_support_can_stop(LSQArchiveSupport *support, LSQArchive *archive);
-
-GSList *             lsq_archive_support_list_properties(LSQArchiveSupport *support, gchar *);
 
 void                 lsq_archive_support_install_action(LSQArchiveSupport *support, LSQCustomAction *action);
 LSQCustomAction*       lsq_archive_support_find_action(LSQArchiveSupport *support, const gchar *name);

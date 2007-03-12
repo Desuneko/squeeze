@@ -22,6 +22,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
+#include "libsqueeze/libsqueeze-module.h"
 #include "libsqueeze/archive-iter.h"
 #include "libsqueeze/archive-command.h"
 #include "libsqueeze/archive.h"
@@ -37,7 +38,6 @@ void
 lsq_init()
 {
 	gchar *current_dir = g_get_current_dir();
-	lsq_tmp_dir = g_get_tmp_dir();
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 	lsq_register_support(lsq_archive_support_zip_new());

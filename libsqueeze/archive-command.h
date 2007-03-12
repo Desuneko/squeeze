@@ -17,28 +17,6 @@
 #define __LIBSQUEEZE_ARCHIVE_COMMAND_H__ 
 G_BEGIN_DECLS
 
-#define LSQ_ARCHIVE_COMMAND(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			lsq_archive_command_get_type(),      \
-			LSQArchiveCommand))
-
-#define LSQ_IS_ARCHIVE_COMMAND(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			lsq_archive_command_get_type()))
-
-#define LSQ_ARCHIVE_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			lsq_archive_command_get_type(),      \
-			LSQArchiveCommandClass))
-
-#define LSQ_IS_ARCHIVE_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			lsq_archive_command_get_type()))
-
-typedef struct _LSQArchiveCommand LSQArchiveCommand;
-
-typedef gboolean (*LSQParseFunc) (LSQArchiveCommand *archive_command);
-
 struct _LSQArchiveCommand
 {
 	GObject      parent;
@@ -54,39 +32,17 @@ struct _LSQArchiveCommand
 	gboolean     refresh;
 	GError      *error;
 	LSQParseFunc parse_stdout;
+	gpointer     user_data;
 };
-
-typedef struct _LSQArchiveCommandClass LSQArchiveCommandClass;
 
 struct _LSQArchiveCommandClass
 {
 	GObjectClass parent;
 }; 
 
-GType               lsq_archive_command_get_type(void) G_GNUC_INTERNAL;
-LSQArchiveCommand  *lsq_archive_command_new(const gchar *comment, 
-                                            const gchar *command,
-                                            gboolean safe,
-                                            gboolean change)
-                                            G_GNUC_INTERNAL;
+gboolean            lsq_archive_command_run(LSQArchiveCommand *archive_command);
+gboolean            lsq_archive_command_stop(LSQArchiveCommand *archive_command);
 
-gboolean            lsq_archive_command_run(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
-
-gboolean            lsq_archive_command_stop(LSQArchiveCommand *archive_command) G_GNUC_INTERNAL;
-GIOStatus           lsq_archive_command_read_line(LSQArchiveCommand *archive_command,
-                                                  guint fd,
-                                                  gchar **lines,
-                                                  gsize *length,
-																									GError **error) G_GNUC_INTERNAL;
-GIOStatus           lsq_archive_command_read_bytes(LSQArchiveCommand *archive_command, 
-                                                  guint fd,
-                                                  gchar *buf,
-                                                  gsize max_length,
-                                                  gsize *length,
-                                                  GError **error) G_GNUC_INTERNAL;
-gboolean            lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command,
-                                                  guint fd,
-                                                  LSQParseFunc func);
 const gchar        *lsq_archive_command_get_comment(LSQArchiveCommand *archive_command);
 
 G_END_DECLS
