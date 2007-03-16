@@ -28,7 +28,7 @@
 #include "libsqueeze-command.h"
 #include "libsqueeze-module.h"
 #include "archive-iter.h"
-#include "command.h"
+#include "archive-command.h"
 #include "archive.h"
 
 static void
