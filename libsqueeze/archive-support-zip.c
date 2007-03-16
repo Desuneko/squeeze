@@ -20,6 +20,7 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include <libsqueeze/libsqueeze-command.h>
 #include <libsqueeze/libsqueeze-module.h>
 
 #include "archive-support-zip.h"

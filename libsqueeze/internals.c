@@ -27,7 +27,7 @@
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"
-#include "archive-support.h"
+#include "command-builder.h"
 
 #include "internals.h"
 

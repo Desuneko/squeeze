@@ -687,7 +687,7 @@ lsq_archive_support_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_com
 	GError *error = NULL;
 	FILE *out_file;
 
-	const gchar *out_filename = lsq_archive_get_filename(archive);
+	const gchar *out_filename = lsq_archive_get_path(archive);
 	gboolean remove = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(archive_command), "compressing"));
 	if(remove == FALSE)
 	{

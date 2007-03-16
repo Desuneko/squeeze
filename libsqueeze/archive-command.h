@@ -22,17 +22,13 @@ struct _LSQArchiveCommand
 	GObject      parent;
 	GQuark       domain;
 	gchar       *comment;
-	gchar       *command;
 	LSQArchive  *archive;
-	GPid         child_pid;
-	GIOChannel  *ioc_in;
-	GIOChannel  *ioc_out;
-	GIOChannel  *ioc_err;
-	gboolean     safe;
-	gboolean     refresh;
 	GError      *error;
-	LSQParseFunc parse_stdout;
+	gboolean     running;
+	gboolean     safe;
 	gpointer     user_data;
+	gboolean   (*execute)(LSQArchiveCommand *);
+	gboolean   (*stop)(LSQArchiveCommand *);
 };
 
 struct _LSQArchiveCommandClass
@@ -40,10 +36,10 @@ struct _LSQArchiveCommandClass
 	GObjectClass parent;
 }; 
 
-gboolean            lsq_archive_command_run(LSQArchiveCommand *archive_command);
-gboolean            lsq_archive_command_stop(LSQArchiveCommand *archive_command);
-
-const gchar        *lsq_archive_command_get_comment(LSQArchiveCommand *archive_command);
+gboolean
+lsq_archive_command_stop(LSQArchiveCommand *command);
+const gchar *
+lsq_archive_command_get_comment(LSQArchiveCommand *archive_command);
 
 G_END_DECLS
 #endif /* __LIBSQUEEZE_ARCHIVE_COMMAND_H__ */

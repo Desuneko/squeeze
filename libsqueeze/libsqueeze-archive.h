@@ -51,7 +51,8 @@ typedef struct _LSQArchiveClass LSQArchiveClass;
 
 GType lsq_archive_get_type(void);
 
-const gchar    *lsq_archive_get_filename(const LSQArchive *archive);
+const gchar    *lsq_archive_get_path(const LSQArchive *archive);
+gchar          *lsq_archive_get_filename(const LSQArchive *archive);
 const gchar    *lsq_archive_get_mimetype(const LSQArchive *archive);
 gboolean        lsq_archive_exists(const LSQArchive *archive);
 
@@ -67,7 +68,6 @@ void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int)
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void            lsq_archive_iter_unref(LSQArchiveIter *iter);
 
-gboolean        lsq_archive_has_queue(LSQArchive *archive);
 
 G_END_DECLS
 

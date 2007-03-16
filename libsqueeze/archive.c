@@ -29,7 +29,7 @@
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"
-#include "archive-support.h"
+#include "command-builder.h"
 #include "slist.h"
 #include "archive-tempfs.h"
 
@@ -437,39 +437,14 @@ lsq_archive_n_entry_properties(LSQArchive *archive)
 	return archive->entry_n_property + LSQ_ARCHIVE_PROP_USER;
 }
 
-void
-lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command)
+gchar *
+lsq_archive_get_filename(const LSQArchive *archive)
 {
-	g_object_ref(command);
-	archive->command_queue = g_slist_append(archive->command_queue, command);
-	command->archive = archive;
-	if(archive->command_queue->data == command)
-		lsq_archive_command_run(command);
-}
-
-void
-lsq_archive_dequeue_command(LSQArchive *archive, LSQArchiveCommand *command)
-{
-	g_return_if_fail(archive->command_queue->data == command);
-	archive->command_queue = g_slist_remove(archive->command_queue, command);
-	LSQArchiveCommand *next_command = lsq_archive_get_front_command(archive);
-	if(next_command)
-	{
-		lsq_archive_command_run(next_command);
-	}
-}
-
-LSQArchiveCommand *
-lsq_archive_get_front_command(const LSQArchive *archive)
-{
-	if(archive->command_queue)
-		return archive->command_queue->data;
-	else
-		return NULL;
+	return g_path_get_basename(archive->path);
 }
 
 const gchar *
-lsq_archive_get_filename(const LSQArchive *archive)
+lsq_archive_get_path(const LSQArchive *archive)
 {
 	return archive->path;
 }
@@ -499,9 +474,8 @@ lsq_archive_exists(const LSQArchive *archive)
 gboolean
 lsq_archive_can_stop(const LSQArchive *archive)
 {
-	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);
-	if(command)
-		return command->safe;
+	if(archive->command)
+		return archive->command->safe;
 	else
 		return TRUE;
 }
@@ -509,9 +483,8 @@ lsq_archive_can_stop(const LSQArchive *archive)
 gboolean
 lsq_archive_stop(const LSQArchive *archive)
 {
-	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);
-	if(command)
-		return lsq_archive_command_stop(command);
+	if(archive->command)
+		return lsq_archive_command_stop(archive->command);
 	else
 		return FALSE;
 }
@@ -519,9 +492,8 @@ lsq_archive_stop(const LSQArchive *archive)
 const gchar *
 lsq_archive_get_status(const LSQArchive *archive)
 {
-	LSQArchiveCommand *command = lsq_archive_get_front_command(archive);
-	if(command)
-		return lsq_archive_command_get_comment(command);
+	if(archive->command)
+		return lsq_archive_command_get_comment(archive->command);
 	else
 		return _("idle");
 }
@@ -530,25 +502,4 @@ void
 lsq_archive_refreshed(const LSQArchive *archive)
 {
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
-}
-
-void
-lsq_archive_command_terminated(const LSQArchive *archive, const GError *error)
-{
-	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
-}
-
-void
-lsq_archive_command_started(const LSQArchive *archive, const gchar *comment)
-{
-	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED], 0, comment, NULL);
-}
-
-gboolean
-lsq_archive_has_queue(LSQArchive *archive)
-{
-	if(lsq_archive_get_front_command(archive))
-		return TRUE;
-	else
-		return FALSE;
 }

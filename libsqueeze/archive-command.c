@@ -25,11 +25,10 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze-archive.h"
-#include "libsqueeze-support.h"
 #include "libsqueeze-command.h"
 #include "libsqueeze-module.h"
 #include "archive-iter.h"
-#include "archive-command.h"
+#include "command.h"
 #include "archive.h"
 
 static void
@@ -40,14 +39,6 @@ static void
 lsq_archive_command_dispose(GObject *object);
 static void
 lsq_archive_command_finalize(GObject *object);
-
-void
-lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data);
-
-gboolean
-lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data);
-
-//static gint lsq_archive_command_signals[0];
 
 static GObjectClass *parent_class;
 
@@ -92,7 +83,6 @@ lsq_archive_command_class_init(LSQArchiveCommandClass *archive_command_class)
 static void
 lsq_archive_command_init(LSQArchiveCommand *archive_command)
 {
-	archive_command->parse_stdout = NULL;
 	archive_command->domain = g_quark_from_string("Command");
 }
 
@@ -105,17 +95,8 @@ lsq_archive_command_init(LSQArchiveCommand *archive_command)
 static void
 lsq_archive_command_dispose(GObject *object)
 {
-	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(object);
-	if(archive_command->archive)
-	{
-		if(archive_command->refresh)
-			lsq_archive_refreshed(archive_command->archive);
-		lsq_archive_command_terminated(archive_command->archive, archive_command->error);
 
-		lsq_archive_dequeue_command(archive_command->archive, archive_command);
-
-		archive_command->archive = NULL;
-	}
+	parent_class->dispose(object);
 }
 
 /**
@@ -134,250 +115,52 @@ lsq_archive_command_finalize(GObject *object)
 
 
 /**
- * lsq_archive_command_new:
- * @comment: a description, describing what the command does
- * @archive: the archive the command modifies
- * @command: a formatted string defining the command to be executed.
- * @safe: is it safe to terminate this child premature?
- *
- *
- * %%1$s is the application to be executed.
- *
- * %%2$s are the files to be appended
- *
- * %%3$s are any additional options
- * 
- * Returns: a new LSQArchiveCommand object
- */
-LSQArchiveCommand *
-lsq_archive_command_new(const gchar *comment, const gchar *command, gboolean safe, gboolean refresh)
-{
-	LSQArchiveCommand *archive_command;
-
-	archive_command = g_object_new(lsq_archive_command_get_type(), NULL);
-	archive_command->command = g_strdup(command);
-	archive_command->safe = safe;
-	archive_command->refresh = refresh;
-
-	return archive_command;
-}
-
-/**
  * lsq_archive_command_run:
- * @archive_command: the archive_command to be run
+ * @command: the archive_command to be run
  *
  * Returns: true on success
  */
 gboolean
-lsq_archive_command_run(LSQArchiveCommand *archive_command)
+lsq_archive_command_execute(LSQArchiveCommand *command)
 {
-	gchar **argvp;
-	gint argcp;
-	gint fd_in, fd_out, fd_err;
-	gchar *escaped_archive_path;
-
-	g_return_val_if_fail(archive_command->child_pid == 0, FALSE);
-
-	const gchar *files = g_object_get_data(G_OBJECT(archive_command), "files");
-	const gchar *options = g_object_get_data(G_OBJECT(archive_command), "options");
-	const gchar *archive_path = g_object_get_data(G_OBJECT(archive_command), "archive");
-
-	if(files == NULL)
-		files = "";
-	if(options == NULL)
-		options = "";
-	
-	if(archive_path)
-	{
-		escaped_archive_path = g_shell_quote(archive_path);
-	}
-	else
-		escaped_archive_path = g_shell_quote(archive_command->archive->path);
-
-	gchar *command = g_strdup_printf(archive_command->command, escaped_archive_path, files, options);
-
 #ifdef DEBUG
-	g_debug("%s\n", command);
-#endif
-	g_shell_parse_argv(command, &argcp, &argvp, NULL);
-	if ( ! g_spawn_async_with_pipes (
-			NULL,
-			argvp,
-			NULL,
-			G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			NULL,
-			NULL,
-			&(archive_command->child_pid),
-			&fd_in,
-			&fd_out,
-			&fd_err,
-			NULL) )
-	{
-		g_object_unref(archive_command);
-		return FALSE;
-	}
+	g_return_val_if_fail(command->archive, FALSE);
+	g_return_val_if_fail(LSQ_IS_ARCHIVE(command->archive), FALSE);
+#endif /* DEBUG */
 
-	g_child_watch_add(archive_command->child_pid, lsq_archive_command_child_watch_func, archive_command);
-
-	if(archive_command->parse_stdout != NULL)
-	{
-		g_object_ref(archive_command);
-		archive_command->ioc_out = g_io_channel_unix_new(fd_out);
-		g_io_channel_set_encoding (archive_command->ioc_out, NULL, NULL);
-		g_io_channel_set_flags (archive_command->ioc_out , G_IO_FLAG_NONBLOCK , NULL );
-		g_io_add_watch (archive_command->ioc_out, G_IO_IN|G_IO_PRI|G_IO_ERR|G_IO_HUP|G_IO_NVAL, lsq_archive_command_parse_stdout, archive_command);
-	}
-	lsq_archive_command_started(archive_command->archive, archive_command->comment);
-	g_free(escaped_archive_path);
-	g_free(command);
-	return TRUE;
+	return command->execute(command);
 }
 
 /**
  * lsq_archive_command_stop
- * @archive_command:
- *
+ * @command:
  *
  * Returns: TRUE on success, FALSE if the command is not running
  */
 gboolean
-lsq_archive_command_stop(LSQArchiveCommand *archive_command)
+lsq_archive_command_stop(LSQArchiveCommand *command)
 {
-	if(archive_command->child_pid != 0)
-		kill ( archive_command->child_pid , SIGHUP);
-	else
-		return FALSE; /* archive_command isn't running */
-	return TRUE;
+	return command->stop(command);
 }
 
 /**
- * lsq_archive_command_child_watch_func:
- * @pid:
- * @status:
- * @data:
- */
-void
-lsq_archive_command_child_watch_func(GPid pid, gint status, gpointer data)
-{
-	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(data);
-	if(WIFEXITED(status))
-	{
-		if(WEXITSTATUS(status))
-		{
-			if(!command->error)
-			{
-				command->error = g_error_new(command->domain, status, _("Command exited with status %d."), status);
-			}
-		}
-	}
-	if(WIFSIGNALED(status))
-	{
-		switch(WTERMSIG(status))
-		{
-			case SIGHUP:
-				if(!command->error)
-					command->error = g_error_new_literal(command->domain, status, _("Command interrupted by user"));
-				break;
-			case SIGSEGV:
-				if(!command->error)
-					command->error = g_error_new_literal(command->domain, status, _("Command received SIGSEGV"));
-				break;
-			case SIGKILL:
-			case SIGINT:
-				if(!command->error)
-					command->error = g_error_new_literal(command->domain, status, _("Command Terminated"));
-				break;
-		}
-	}
-	g_spawn_close_pid(pid);
-	g_object_unref(G_OBJECT(data));
-}
-
-/**
- * lsq_archive_command_parse_stdout:
- * @ioc:
- * @cond:
- * @data:
+ * lsq_archive_command_get_archive
+ * @command:
  *
- * Returns:
+ * Returns: the associated archive
  */
-gboolean
-lsq_archive_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data)
-{
-	gint i = 0;
-	LSQArchiveCommand *archive_command = LSQ_ARCHIVE_COMMAND(data);
-
-	if(cond & (G_IO_PRI | G_IO_IN))
-	{
-		for(; i < 500; i++)
-		{
-			/* If parse_stdout returns FALSE, something seriously went wrong and we should cancel right away */
-			if(archive_command->parse_stdout(archive_command, archive_command->user_data) == FALSE)
-			{
-				cond |= G_IO_ERR;
-			}
-		}
-	}
-	if(cond & (G_IO_ERR | G_IO_HUP | G_IO_NVAL) )
-	{
-		g_io_channel_shutdown ( ioc,TRUE,NULL );
-		g_io_channel_unref (ioc);
-		g_object_unref(archive_command);
-		return FALSE; 
-	}
-	return TRUE;
-}
-
-gboolean
-lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command, guint fd, LSQParseFunc func, gpointer user_data)
-{
-	switch(fd)
-	{
-		case 1:
-			archive_command->parse_stdout = func;
-			archive_command->user_data = user_data;
-		default:
-			break;
-	}
-	return TRUE;
-}
-
-GIOStatus
-lsq_archive_command_read_line(LSQArchiveCommand *archive_command, guint fd, gchar **line, gsize *length, GError **error)
-{
-	GIOStatus status = G_IO_STATUS_EOF;
-	switch(fd)
-	{
-		case 1:
-			status = g_io_channel_read_line(archive_command->ioc_out, line, length, NULL, error);
-			break;
-		default:
-			break;
-	}
-	return status;
-}
-
-GIOStatus
-lsq_archive_command_read_bytes(LSQArchiveCommand *archive_command, guint fd, gchar *buf, gsize max_length, gsize *length, GError **error)
-{
-	GIOStatus status = G_IO_STATUS_EOF;
-	switch(fd)
-	{
-		case 1:
-			status = g_io_channel_read_chars(archive_command->ioc_out, buf, max_length, length, error);
-			break;
-		default:
-			break;
-	}
-	return status;
-}
-
 LSQArchive *
 lsq_archive_command_get_archive(LSQArchiveCommand *command)
 {
 	return command->archive;
 }
 
+/**
+ * lsq_archive_command_get_comment
+ * @command:
+ *
+ * Returns: the command comment describing what it is actually doing
+ */
 const gchar *
 lsq_archive_command_get_comment(LSQArchiveCommand *archive_command)
 {

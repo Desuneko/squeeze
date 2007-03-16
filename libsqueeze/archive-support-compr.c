@@ -158,31 +158,31 @@ lsq_archive_support_compr_extract(LSQArchiveSupport *support, LSQArchive *archiv
 	}
 	else
 	{
-		gchar *archive_path = g_shell_quote(lsq_archive_get_filename(archive));
+		gchar *archive_path = g_shell_quote(lsq_archive_get_path(archive));
 		gchar *file_path;
 		if(filenames)
 			file_path = g_strconcat(extract_path, "/", filenames->data, NULL);
 		else
 		{
-			gchar *filename = g_path_get_basename(lsq_archive_get_filename(archive));
+			gchar *filename = g_path_get_basename(lsq_archive_get_path(archive));
 			gint len = strlen(filename);
-			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".gz"))
+			if(g_str_has_suffix(lsq_archive_get_path(archive), ".gz"))
 			{
 				filename[len-3] = '\0';
 			}
-			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".bz"))
+			if(g_str_has_suffix(lsq_archive_get_path(archive), ".bz"))
 			{
 				filename[len-3] = '\0';
 			}
-			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".bz2"))
+			if(g_str_has_suffix(lsq_archive_get_path(archive), ".bz2"))
 			{
 				filename[len-4] = '\0';
 			}
-			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".lzo"))
+			if(g_str_has_suffix(lsq_archive_get_path(archive), ".lzo"))
 			{
 				filename[len-4] = '\0';
 			}
-			if(g_str_has_suffix(lsq_archive_get_filename(archive), ".Z"))
+			if(g_str_has_suffix(lsq_archive_get_path(archive), ".Z"))
 			{
 				filename[len-2] = '\0';
 			}
@@ -228,17 +228,17 @@ lsq_archive_support_compr_refresh(LSQArchiveSupport *support, LSQArchive *archiv
 	}
 	else
 	{
-		gchar *filename = g_path_get_basename(lsq_archive_get_filename(archive));
+		gchar *filename = lsq_archive_get_filename(archive);
 		gint len = strlen(filename);
-		if(g_str_has_suffix(lsq_archive_get_filename(archive), ".gz"))
+		if(g_str_has_suffix(lsq_archive_get_path(archive), ".gz"))
 		{
 			filename[len-3] = '\0';
 		}
-		if(g_str_has_suffix(lsq_archive_get_filename(archive), ".bz"))
+		if(g_str_has_suffix(lsq_archive_get_path(archive), ".bz"))
 		{
 			filename[len-3] = '\0';
 		}
-		if(g_str_has_suffix(lsq_archive_get_filename(archive), ".bz2"))
+		if(g_str_has_suffix(lsq_archive_get_path(archive), ".bz2"))
 		{
 			filename[len-4] = '\0';
 		}

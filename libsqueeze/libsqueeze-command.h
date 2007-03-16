@@ -65,7 +65,7 @@ GIOStatus           lsq_archive_command_read_bytes(LSQArchiveCommand *archive_co
 gboolean            lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command,
                                                   guint fd,
                                                   LSQParseFunc func,
-																									gpointer user_data);
+                                                  gpointer user_data);
 
 LSQArchive         *lsq_archive_command_get_archive(LSQArchiveCommand *command);
 
