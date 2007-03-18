@@ -24,17 +24,7 @@
 #include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze-archive.h"
-#include "libsqueeze-command.h"
 #include "libsqueeze-module.h"
-#include "archive-iter.h"
-#include "archive-tempfs.h"
-#include "archive.h"
-#include "archive-command.h"
-#include "macro-command.h"
-#include "spawn-command.h"
-#include "dbus-command.h"
-#include "command-builder.h"
 #include "command-builder-gnu-tar.h"
 
 #define LSQ_ARCHIVE_TEMP_FILE "gnu_tar_temp_file"
@@ -113,6 +103,14 @@ lsq_command_builder_gnu_tar_init(LSQCommandBuilderGnuTar *command_builder_gnu_ta
 	command_builder->build_extract = lsq_command_builder_gnu_tar_build_extract;
 	command_builder->build_remove = lsq_command_builder_gnu_tar_build_remove;
 	command_builder->build_refresh = lsq_command_builder_gnu_tar_build_refresh;
+
+	command_builder->mime_types = g_new0(gchar *, 7);
+	command_builder->mime_types[0] = "application/x-tar";
+	command_builder->mime_types[1] = "application/x-tarz";
+	command_builder->mime_types[2] = "application/x-compressed-tar";
+	command_builder->mime_types[3] = "application/x-bzip-compressed-tar";
+	command_builder->mime_types[4] = "application/x-bzip2-compressed-tar";
+	command_builder->mime_types[5] = "application/x-tzo";
 }
 
 /**

@@ -27,10 +27,11 @@ struct _LSQCommandBuilder
 {
 	GObject       parent;
 	gchar        *id;
+	gchar       **mime_types;
 
 	LSQArchiveCommand *(*build_add)    (LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
 	LSQArchiveCommand *(*build_extract)(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *files);
-	LSQArchiveCommand *(*build_remove) (LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
+	LSQArchiveCommand *(*build_remove) (LSQCommandBuilder *builder, LSQArchive *archive, GSList *file_iters);
 	LSQArchiveCommand *(*build_refresh)(LSQCommandBuilder *builder, LSQArchive *archive);
 	LSQArchiveCommand *(*build_open)   (LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
 };

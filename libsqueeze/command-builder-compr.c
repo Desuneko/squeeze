@@ -24,17 +24,7 @@
 #include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze-archive.h"
-#include "libsqueeze-command.h"
 #include "libsqueeze-module.h"
-#include "archive-iter.h"
-#include "archive-tempfs.h"
-#include "archive.h"
-#include "archive-command.h"
-#include "macro-command.h"
-#include "spawn-command.h"
-#include "dbus-command.h"
-#include "command-builder.h"
 #include "command-builder-compr.h"
 
 static void
@@ -104,6 +94,12 @@ lsq_command_builder_compr_init(LSQCommandBuilderCompr *command_builder_compr)
 	command_builder->build_extract = lsq_command_builder_compr_build_extract;
 	command_builder->build_remove = lsq_command_builder_compr_build_remove;
 	command_builder->build_refresh = lsq_command_builder_compr_build_refresh;
+
+	command_builder->mime_types = g_new0(gchar *, 4);
+	command_builder->mime_types[0] = "application/x-gzip";
+	command_builder->mime_types[1] = "application/x-bzip";
+	command_builder->mime_types[2] = "application/x-lzop";
+	command_builder->mime_types[3] = "application/x-compress";
 }
 
 /**

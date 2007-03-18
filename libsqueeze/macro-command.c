@@ -24,9 +24,6 @@
 #include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze-archive.h"
-#include "libsqueeze-support.h"
-#include "libsqueeze-command.h"
 #include "libsqueeze-module.h"
 #include "archive-iter.h"
 #include "archive-command.h"

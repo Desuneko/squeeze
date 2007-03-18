@@ -27,10 +27,10 @@
 #include "libsqueeze/archive-command.h"
 #include "libsqueeze/archive.h"
 #include "libsqueeze/command-builder.h"
-#include "libsqueeze/archive-support-zip.h"
-#include "libsqueeze/archive-support-rar.h"
-#include "libsqueeze/archive-support-compr.h"
-#include "libsqueeze/archive-support-gnu-tar.h"
+#include "libsqueeze/command-builder-zip.h"
+#include "libsqueeze/command-builder-rar.h"
+#include "libsqueeze/command-builder-compr.h"
+#include "libsqueeze/command-builder-gnu-tar.h"
 
 #include "internals.h"
 
@@ -40,11 +40,11 @@ lsq_init()
 	gchar *current_dir = g_get_current_dir();
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
+
+/*
 	lsq_register_support(lsq_archive_support_zip_new());
 	lsq_register_support(lsq_archive_support_gnu_tar_new());
 	lsq_register_support(lsq_archive_support_compr_new());
-
-/*
 	lsq_register_support(lsq_archive_support_rar_new());
 	*/
 
@@ -119,29 +119,3 @@ lsq_close_archive(LSQArchive *archive)
 	g_object_unref(archive);
 }
 
-/**
- * Some nice support functions should come for this
- *
- */
-GSList *
-lsq_get_supported_mime_types()
-{
-	GSList *mime_types_list = NULL;
-	LSQArchiveSupport *archive_support = NULL;
-	GSList *supported_mime_types_list = NULL;
-	GSList *archive_support_list = lsq_archive_support_list;
-
-	while(archive_support_list)
-	{
-		archive_support = archive_support_list->data;
-		supported_mime_types_list = archive_support->mime;
-		while(supported_mime_types_list)
-		{
-			mime_types_list = g_slist_prepend(mime_types_list, supported_mime_types_list->data);
-
-			supported_mime_types_list	= g_slist_next(supported_mime_types_list);
-		}
-		archive_support_list = g_slist_next(archive_support_list);
-	}
-	return mime_types_list;
-}

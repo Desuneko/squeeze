@@ -18,7 +18,6 @@
 #define __LIBSQUEEZE_H__
 
 #include <libsqueeze/libsqueeze-archive.h>
-#include <libsqueeze/libsqueeze-support.h>
 #include <libsqueeze/libsqueeze-view.h>
 
 

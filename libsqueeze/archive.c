@@ -208,11 +208,13 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->mime_info));
 #endif
 
+	/*
 	if(!lsq_get_support_for_mimetype(thunar_vfs_mime_info_get_name(archive->mime_info)))
 	{
 		g_object_unref(archive);
 		archive = NULL;
 	}
+	*/
 	
 	return archive;
 }

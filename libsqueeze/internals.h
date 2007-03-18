@@ -24,19 +24,10 @@ ThunarVfsPath          *lsq_relative_base_path;
  *
  * general function for executing child-apps
  */
-gint 
-lsq_execute(
-            gchar *command, 
-            LSQArchive *archive, 
-            GChildWatchFunc function, 
-            GIOFunc f_in, 
-            GIOFunc f_out, 
-            GIOFunc f_err) G_GNUC_INTERNAL; 
+ThunarVfsMimeDatabase  *lsq_mime_database;
+
+gchar *
+lsq_concat_filenames(GSList *filenames);
 
 LSQArchive *
-lsq_opened_archive_get_archive(gchar *path) G_GNUC_INTERNAL;
-
-void
-lsq_archive_support_view_prepared(LSQArchive *archive, GSList *, gpointer user_data) G_GNUC_INTERNAL;
-
-ThunarVfsMimeDatabase  *lsq_mime_database;
+lsq_opened_archive_get_archive(gchar *path);
