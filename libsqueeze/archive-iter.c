@@ -158,7 +158,7 @@ lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
 	{
 		if(!lsq_archive_iter_is_real(pool->pool[i]))
 			lsq_archive_entry_free(pool->pool[i]->archive, pool->pool[i]->entry);
-		g_free(pool->pool[i]);
+		g_slice_free(LSQArchiveIter, pool->pool[i]);
 	}
 	g_free(pool->pool);
 	g_free(pool);
@@ -279,7 +279,7 @@ lsq_archive_iter_new(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive 
 #endif
 
 	/* create a new iter */
-	iter = g_new(LSQArchiveIter, 1);
+	iter = g_slice_new(LSQArchiveIter);
 	iter->archive = archive;
 	iter->entry = entry;
 	iter->parent = parent?lsq_archive_iter_ref(parent):NULL;
@@ -306,7 +306,7 @@ lsq_archive_iter_get_for_path(LSQArchive *archive, GSList *path)
 	}
 
 	/* create a new iter */
-	iter = g_new(LSQArchiveIter, 1);
+	iter = g_slice_new(LSQArchiveIter);
 	iter->archive = archive;
 	iter->entry = path->data;
 	iter->parent = NULL;
@@ -341,7 +341,7 @@ lsq_archive_iter_get_with_parent(LSQArchiveEntry *entry, LSQArchiveIter *parent)
 #endif
 
 	/* create a new iter */
-	iter = g_new(LSQArchiveIter, 1);
+	iter = g_slice_new(LSQArchiveIter);
 	iter->archive = parent->archive;
 	iter->entry = entry;
 	iter->parent = lsq_archive_iter_ref(parent);
@@ -368,7 +368,7 @@ lsq_archive_iter_free(LSQArchiveIter *iter)
 	/* free the iter */
 	if(iter->parent)
 		lsq_archive_iter_unref(iter->parent);
-	g_free(iter);
+	g_slice_free(LSQArchiveIter, iter);
 }
 
 #ifdef DEBUG
