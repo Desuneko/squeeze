@@ -158,7 +158,19 @@ lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
 	{
 		if(!lsq_archive_iter_is_real(pool->pool[i]))
 			lsq_archive_entry_free(pool->pool[i]->archive, pool->pool[i]->entry);
+#ifdef USE_LSQITER_SLICES
+		/* Cleaning up the whole pool */
+		/* Now we can free the iters  */
+#ifdef USE_GSLICES
 		g_slice_free(LSQArchiveIter, pool->pool[i]);
+#else
+		g_free(pool->pool[i]);
+#endif
+#elif USE_GSLICES
+		g_slice_free(LSQArchiveIter, pool->pool[i]);
+#else
+		g_free(pool->pool[i]);
+#endif
 	}
 	g_free(pool->pool);
 	g_free(pool);
@@ -229,6 +241,14 @@ lsq_archive_iter_pool_insert_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
 		ipool->reserved += ipool->size;
 		ipool->pool = pool;
 		g_free(old_pool);
+#ifdef USE_LSQITER_SLICES
+		/* We need to know if there are still allocations left */
+		/* Make all unallocated NULL                           */
+		for(i = ipool->size; i < ipool->reserved; ++i)
+		{
+			pool[i] = NULL;
+		}
+#endif
 	}
 
 	/* insert the iter */
@@ -250,6 +270,11 @@ lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
 		{
 			pool[pos] = pool[pos+1];
 		}
+#ifdef USE_LSQITER_SLICES
+		/* We don't free the pointer so move it */
+		/* Place it at the end om the pool      */
+		pool[ipool->size] = iter;
+#endif
 	}
 }
 
@@ -260,32 +285,28 @@ lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
 static LSQArchiveIter *
 lsq_archive_iter_new(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive *archive)
 {
-#ifdef DEBUG
-	g_return_val_if_fail(entry, NULL);
-#endif
-
-	LSQArchiveIter *iter;
-	guint pos;
-
-	/* iter has been found */
-	if(lsq_archive_iter_pool_find_iter(archive->pool, entry, &iter, &pos))
-	{
-		return lsq_archive_iter_ref(iter);
-	}
-
-#ifdef DEBUG
-	if(parent)
-		g_return_val_if_fail(parent->archive == archive, NULL);
-#endif
-
 	/* create a new iter */
+	LSQArchiveIter *iter;
+#ifdef USE_LSQITER_SLICES
+	/* Lets see if there is an iter we can use */
+	if(archive->pool->size >= archive->pool->reserved || !(iter = archive->pool->pool[archive->pool->size]))
+	{
+		/* No iter found, make a new one */
+#ifdef USE_GSLICES
+			iter = g_slice_new(LSQArchiveIter);
+#else
+			iter = g_new(LSQArchiveIter, 1);
+#endif
+	}
+#elif USE_GSLICES
 	iter = g_slice_new(LSQArchiveIter);
+#else
+	iter = g_new(LSQArchiveIter, 1);
+#endif
 	iter->archive = archive;
 	iter->entry = entry;
 	iter->parent = parent?lsq_archive_iter_ref(parent):NULL;
 	iter->ref_count = 1;
-
-	lsq_archive_iter_pool_insert_iter(archive->pool, iter, pos);
 
 	return iter;
 }
@@ -306,16 +327,41 @@ lsq_archive_iter_get_for_path(LSQArchive *archive, GSList *path)
 	}
 
 	/* create a new iter */
-	iter = g_slice_new(LSQArchiveIter);
-	iter->archive = archive;
-	iter->entry = path->data;
-	iter->parent = NULL;
-	iter->ref_count = 1;
+	iter = lsq_archive_iter_new(path->data, NULL, archive);
 
 	lsq_archive_iter_pool_insert_iter(archive->pool, iter, pos);
 
 	/* must be done here, otherwise the pool gets currupted */
 	iter->parent = lsq_archive_iter_get_for_path(archive, path->next);
+
+	return iter;
+}
+
+static LSQArchiveIter *
+lsq_archive_iter_get_with_archive(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive *archive)
+{
+#ifdef DEBUG
+	g_return_val_if_fail(entry, NULL);
+#endif
+
+	LSQArchiveIter *iter;
+	guint pos;
+
+	/* iter has been found */
+	if(lsq_archive_iter_pool_find_iter(archive->pool, entry, &iter, &pos))
+	{
+		return lsq_archive_iter_ref(iter);
+	}
+
+#ifdef DEBUG
+	if(parent)
+		g_return_val_if_fail(parent->archive == archive, NULL);
+#endif
+
+	/* create a new iter */
+	iter = lsq_archive_iter_new(entry, parent, archive);
+
+	lsq_archive_iter_pool_insert_iter(archive->pool, iter, pos);
 
 	return iter;
 }
@@ -341,11 +387,7 @@ lsq_archive_iter_get_with_parent(LSQArchiveEntry *entry, LSQArchiveIter *parent)
 #endif
 
 	/* create a new iter */
-	iter = g_slice_new(LSQArchiveIter);
-	iter->archive = parent->archive;
-	iter->entry = entry;
-	iter->parent = lsq_archive_iter_ref(parent);
-	iter->ref_count = 1;
+	iter = lsq_archive_iter_new(entry, parent, parent->archive);
 
 	lsq_archive_iter_pool_insert_iter(parent->archive->pool, iter, pos);
 
@@ -368,7 +410,13 @@ lsq_archive_iter_free(LSQArchiveIter *iter)
 	/* free the iter */
 	if(iter->parent)
 		lsq_archive_iter_unref(iter->parent);
+#ifdef USE_LSQITER_SLICES
+	/* We don't free the poiter we moved it */
+#elif USE_GSLICES
 	g_slice_free(LSQArchiveIter, iter);
+#else
+	g_free(iter);
+#endif
 }
 
 #ifdef DEBUG
@@ -495,7 +543,7 @@ lsq_archive_iter_get_real_parent(LSQArchiveIter *iter)
 	if(((LSQArchiveIter*)back_stack->data)->entry != iter->archive->root_entry)
 	{
 		g_slist_free(back_stack);
-		return lsq_archive_iter_new(iter->archive->root_entry, NULL, iter->archive);
+		return lsq_archive_iter_get_with_archive(iter->archive->root_entry, NULL, iter->archive);
 	}
 	/* find the childeren */
 	back_iter = back_stack;
@@ -801,7 +849,7 @@ lsq_archive_get_iter(LSQArchive *archive, const gchar *path)
 	g_return_val_if_fail(archive, NULL);
 #endif
 	if(!path)
-		return lsq_archive_iter_new(archive->root_entry, NULL, archive);
+		return lsq_archive_iter_get_with_archive(archive->root_entry, NULL, archive);
 
 	gchar **buf = g_strsplit_set(path, "/\n", -1);
 	gchar **iter = buf;
@@ -848,7 +896,7 @@ lsq_archive_add_file(LSQArchive *archive, const gchar *path)
 	g_return_val_if_fail(archive, NULL);
 #endif
 	if(!path)
-		return lsq_archive_iter_new(archive->root_entry, NULL, archive);
+		return lsq_archive_iter_get_with_archive(archive->root_entry, NULL, archive);
 	
 	gchar **buf = g_strsplit_set(path, "/\n", -1);
 	gchar **iter = buf;
