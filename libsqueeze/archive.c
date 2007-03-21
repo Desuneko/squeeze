@@ -59,6 +59,9 @@ lsq_archive_init(LSQArchive *archive);
 static void
 lsq_archive_finalize(GObject *object);
 
+static void
+cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error, LSQArchive *archive);
+
 enum
 {
 	LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED = 0,
@@ -519,8 +522,14 @@ lsq_archive_add(LSQArchive *archive, GSList *files)
 		return FALSE;
 
 	archive->command = builder->build_add(builder, archive, files);
-
-	lsq_archive_command_execute(archive->command);
+	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+	if(!lsq_archive_command_execute(archive->command))
+	{
+		g_object_unref(archive->command);
+		archive->command = NULL;
+	}
+	else
+		g_object_unref(archive->command);
 	return FALSE;
 }
 
@@ -533,7 +542,14 @@ lsq_archive_extract(LSQArchive *archive, const gchar *dest_path, GSList *files)
 		return FALSE;
 	
 	archive->command = builder->build_extract(builder, archive, dest_path, files);
-	lsq_archive_command_execute(archive->command);
+	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+	if(!lsq_archive_command_execute(archive->command))
+	{
+		g_object_unref(archive->command);
+		archive->command = NULL;
+	}
+	else
+		g_object_unref(archive->command);
 	return FALSE;
 }
 
@@ -546,7 +562,14 @@ lsq_archive_remove(LSQArchive *archive, GSList *files)
 		return FALSE;
 
 	archive->command = builder->build_remove(builder, archive, files);
-	lsq_archive_command_execute(archive->command);
+	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+	if(!lsq_archive_command_execute(archive->command))
+	{
+		g_object_unref(archive->command);
+		archive->command = NULL;
+	}
+	else
+		g_object_unref(archive->command);
 	return FALSE;
 }
 
@@ -559,7 +582,14 @@ lsq_archive_refresh(LSQArchive *archive)
 		return FALSE;
 
 	archive->command = builder->build_refresh(builder, archive);
-	lsq_archive_command_execute(archive->command);
+	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+	if(!lsq_archive_command_execute(archive->command))
+	{
+		g_object_unref(archive->command);
+		archive->command = NULL;
+	}
+	else
+		g_object_unref(archive->command);
 	return FALSE;
 }
 
@@ -572,6 +602,22 @@ lsq_archive_view(LSQArchive *archive, GSList *files)
 		return FALSE;
 
 	archive->command = builder->build_open(builder, archive, files);
-	lsq_archive_command_execute(archive->command);
+	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+	if(!lsq_archive_command_execute(archive->command))
+	{
+		g_object_unref(archive->command);
+		archive->command = NULL;
+	}
+	else
+		g_object_unref(archive->command);
 	return FALSE;
+}
+
+static void
+cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error, LSQArchive *archive)
+{
+	archive->command = NULL;
+#ifdef DEBUG
+	g_debug("COMMAND TERMINATED");
+#endif
 }

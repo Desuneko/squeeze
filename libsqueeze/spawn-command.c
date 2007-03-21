@@ -206,12 +206,12 @@ lsq_spawn_command_execute(LSQArchiveCommand *command)
 			&fd_err,
 			NULL) )
 	{
-		g_object_unref(spawn_command);
 		return FALSE;
 	}
 	LSQ_ARCHIVE_COMMAND(command)->running = TRUE;
 
 	g_child_watch_add(spawn_command->child_pid, lsq_spawn_command_child_watch_func, spawn_command);
+	g_object_ref(spawn_command);
 
 	if(spawn_command->parse_stdout != NULL)
 	{

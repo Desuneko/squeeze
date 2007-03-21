@@ -42,6 +42,14 @@ lsq_archive_command_finalize(GObject *object);
 
 static GObjectClass *parent_class;
 
+enum
+{
+	LSQ_ARCHIVE_COMMAND_SIGNAL_TERMINATED = 0,
+	LSQ_ARCHIVE_COMMAND_SIGNAL_COUNT
+};
+
+static gint lsq_archive_command_signals[LSQ_ARCHIVE_COMMAND_SIGNAL_COUNT];
+
 GType
 lsq_archive_command_get_type ()
 {
@@ -78,6 +86,17 @@ lsq_archive_command_class_init(LSQArchiveCommandClass *archive_command_class)
 
 	parent_class = g_type_class_peek(G_TYPE_OBJECT); 
 
+	lsq_archive_command_signals[LSQ_ARCHIVE_COMMAND_SIGNAL_TERMINATED] = g_signal_new("terminated",
+			G_TYPE_FROM_CLASS(archive_command_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE,
+			1,
+			G_TYPE_POINTER,
+			NULL);
 }
 
 static void
@@ -95,7 +114,8 @@ lsq_archive_command_init(LSQArchiveCommand *archive_command)
 static void
 lsq_archive_command_dispose(GObject *object)
 {
-
+	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(object);
+	g_signal_emit(object, lsq_archive_command_signals[LSQ_ARCHIVE_COMMAND_SIGNAL_TERMINATED], 0, command->error, NULL);
 	parent_class->dispose(object);
 }
 
