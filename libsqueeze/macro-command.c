@@ -44,6 +44,9 @@ lsq_macro_command_execute(LSQArchiveCommand *command);
 static gboolean
 lsq_macro_command_stop(LSQArchiveCommand *command);
 
+static void
+cb_macro_command_sub_command_terminated(LSQArchiveCommand *, GError *, LSQMacroCommand *);
+
 static GObjectClass *parent_class;
 
 GType
@@ -141,7 +144,15 @@ lsq_macro_command_new(const gchar *comment, LSQArchive *archive)
 static gboolean
 lsq_macro_command_execute(LSQArchiveCommand *command)
 {
-	return TRUE;
+	g_object_ref(command);
+	LSQMacroCommand *macro_command = LSQ_MACRO_COMMAND(command);
+	g_signal_connect(macro_command->command_queue->data, "terminated", G_CALLBACK(cb_macro_command_sub_command_terminated), command);
+
+	gboolean retval = lsq_archive_command_execute(macro_command->command_queue->data);
+
+	g_object_unref(macro_command->command_queue->data);
+
+	return retval;
 }
 
 static gboolean
@@ -153,5 +164,37 @@ lsq_macro_command_stop(LSQArchiveCommand *command)
 void
 lsq_macro_command_append(LSQMacroCommand *command, LSQArchiveCommand *sub_command)
 {
+	g_object_ref(sub_command);
 	command->command_queue = g_slist_append(command->command_queue, sub_command);
+}
+
+static void
+cb_macro_command_sub_command_terminated(LSQArchiveCommand *sub_command, GError *error, LSQMacroCommand *macro_command)
+{
+	macro_command->command_queue = g_slist_remove(macro_command->command_queue, sub_command);
+	if(macro_command->command_queue)
+	{
+		LSQArchiveCommand *command = macro_command->command_queue->data;
+
+		g_signal_connect(command, "terminated", G_CALLBACK(cb_macro_command_sub_command_terminated), macro_command);
+
+		if(!lsq_archive_command_execute(command))
+		{
+			g_signal_handlers_disconnect_by_func(command, cb_macro_command_sub_command_terminated, macro_command);
+			/* And here i kind of have no idea if this works */	
+			GSList *termination_queue = macro_command->command_queue;
+			macro_command->command_queue = NULL;
+			g_slist_foreach(termination_queue, (GFunc)g_object_unref, NULL);
+			g_slist_free(termination_queue);
+			g_object_unref(macro_command);
+		}
+		else
+		{
+			g_object_unref(command);
+		}
+	}
+	else
+	{
+		g_object_unref(macro_command);
+	}
 }

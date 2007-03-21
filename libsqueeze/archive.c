@@ -580,14 +580,19 @@ lsq_archive_refresh(LSQArchive *archive)
 		return FALSE;
 
 	archive->command = builder->build_refresh(builder, archive);
-	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-	if(!lsq_archive_command_execute(archive->command))
+	if(archive->command)
 	{
-		g_object_unref(archive->command);
-		archive->command = NULL;
+		g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+		if(!lsq_archive_command_execute(archive->command))
+		{
+			g_object_unref(archive->command);
+			archive->command = NULL;
+			return FALSE;
+		}
+		else
+			g_object_unref(archive->command);
+		return TRUE;
 	}
-	else
-		g_object_unref(archive->command);
 	return FALSE;
 }
 
