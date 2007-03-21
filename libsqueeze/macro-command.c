@@ -130,7 +130,7 @@ lsq_macro_command_new(const gchar *comment, LSQArchive *archive)
 {
 	LSQArchiveCommand *archive_command;
 
-	archive_command = g_object_new(lsq_macro_command_get_type(), NULL);
+	archive_command = g_object_new(LSQ_TYPE_MACRO_COMMAND, NULL);
 
 	if(comment)
 		archive_command->comment = g_strdup(comment);

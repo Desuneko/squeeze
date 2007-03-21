@@ -215,13 +215,11 @@ lsq_archive_new(gchar *path, const gchar *mime)
 
 	archive->builder = lsq_archive_mime_get_default_builder(thunar_vfs_mime_info_get_name(archive->mime_info));
 
-	/*
-	if(!lsq_get_support_for_mimetype(thunar_vfs_mime_info_get_name(archive->mime_info)))
+	if(!archive->builder) /* Then it is not supported */
 	{
 		g_object_unref(archive);
 		archive = NULL;
 	}
-	*/
 	
 	return archive;
 }
