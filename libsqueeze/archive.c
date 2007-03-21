@@ -33,6 +33,8 @@
 #include "slist.h"
 #include "archive-tempfs.h"
 
+#include "vfs-mime.h"
+
 #include "internals.h"
 
 #ifndef LSQ_ENTRY_CHILD_BUFFER_SIZE
@@ -207,6 +209,8 @@ lsq_archive_new(gchar *path, const gchar *mime)
 #ifdef DEBUG
 	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->mime_info));
 #endif
+
+	archive->builder = lsq_archive_mime_get_default_builder(thunar_vfs_mime_info_get_name(archive->mime_info));
 
 	/*
 	if(!lsq_get_support_for_mimetype(thunar_vfs_mime_info_get_name(archive->mime_info)))

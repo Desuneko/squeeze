@@ -67,7 +67,7 @@ lsq_dbus_command_get_type ()
 			NULL
 		};
 
-		lsq_dbus_command_type = g_type_register_static (G_TYPE_OBJECT, "LSQDBusCommand", &lsq_dbus_command_info, 0);
+		lsq_dbus_command_type = g_type_register_static (LSQ_TYPE_ARCHIVE_COMMAND, "LSQDBusCommand", &lsq_dbus_command_info, 0);
 	}
 	return lsq_dbus_command_type;
 }

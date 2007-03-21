@@ -32,19 +32,33 @@
 #include "libsqueeze/command-builder-compr.h"
 #include "libsqueeze/command-builder-gnu-tar.h"
 
+#include "vfs-mime.h"
+
 #include "internals.h"
 
 void
 lsq_init()
 {
+	LSQCommandBuilder *builder = NULL;
 	gchar *current_dir = g_get_current_dir();
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 
-	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_zip_new());
-	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_gnu_tar_new());
-	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_rar_new());
-	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_compr_new());
+	builder = lsq_command_builder_zip_new();
+	if(builder)
+		lsq_command_builder_register(builder);
+
+	builder = lsq_command_builder_gnu_tar_new();
+	if(builder)
+		lsq_command_builder_register(builder);
+
+	builder = lsq_command_builder_rar_new();
+	if(builder)
+		lsq_command_builder_register(builder);
+
+	builder = lsq_command_builder_compr_new();
+	if(builder)
+		lsq_command_builder_register(builder);
 
 	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
 	lsq_opened_archive_list = NULL;
@@ -54,7 +68,7 @@ lsq_init()
 void
 lsq_shutdown()
 {
-	g_slist_foreach(lsq_command_builder_list, (GFunc)g_object_unref, NULL);
+	//g_slist_foreach(lsq_command_builder_list, (GFunc)g_object_unref, NULL);
 	g_slist_foreach(lsq_opened_archive_list,  (GFunc)g_object_unref, NULL);
 
 	g_object_unref(lsq_mime_database);

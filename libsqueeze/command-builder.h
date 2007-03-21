@@ -44,6 +44,5 @@ struct _LSQCommandBuilderClass
 };
 
 GType                lsq_command_builder_get_type(void);
-LSQCommandBuilder   *lsq_command_builder_get_by_id(const gchar *id);
 
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_H__ */

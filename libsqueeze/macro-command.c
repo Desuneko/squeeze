@@ -67,7 +67,7 @@ lsq_macro_command_get_type ()
 			NULL
 		};
 
-		lsq_macro_command_type = g_type_register_static (G_TYPE_OBJECT, "LSQMacroCommand", &lsq_macro_command_info, 0);
+		lsq_macro_command_type = g_type_register_static (LSQ_TYPE_ARCHIVE_COMMAND, "LSQMacroCommand", &lsq_macro_command_info, 0);
 	}
 	return lsq_macro_command_type;
 }

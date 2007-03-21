@@ -14,7 +14,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-GSList                 *lsq_command_builder_list;
+GSList                 *lsq_mime_info_list;
 GSList                 *lsq_opened_archive_list;
 ThunarVfsPath          *lsq_relative_base_path;
 
