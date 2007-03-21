@@ -161,11 +161,15 @@ lsq_spawn_command_new(const gchar *comment,
 
 	archive_command = g_object_new(lsq_spawn_command_get_type(), NULL);
 
+	if(!files)
+		files = "";
+	if(!options)
+		options = "";
+
 	LSQ_SPAWN_COMMAND(archive_command)->command = g_strdup(command);
-	if(files)
-		LSQ_SPAWN_COMMAND(archive_command)->files = g_strdup(files);
-	if(options)
-		LSQ_SPAWN_COMMAND(archive_command)->options = g_strdup(options);
+	LSQ_SPAWN_COMMAND(archive_command)->files = g_strdup(files);
+	LSQ_SPAWN_COMMAND(archive_command)->options = g_strdup(options);
+
 	if(archive_path)
 		LSQ_SPAWN_COMMAND(archive_command)->archive_path = g_strdup(archive_path);
 	else
@@ -209,6 +213,8 @@ lsq_spawn_command_execute(LSQArchiveCommand *command)
 		return FALSE;
 	}
 	LSQ_ARCHIVE_COMMAND(command)->running = TRUE;
+
+	g_debug("executing: %s\n", cmd);
 
 	g_child_watch_add(spawn_command->child_pid, lsq_spawn_command_child_watch_func, spawn_command);
 	g_object_ref(spawn_command);
