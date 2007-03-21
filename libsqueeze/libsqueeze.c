@@ -41,12 +41,10 @@ lsq_init()
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 
-/*
-	lsq_register_support(lsq_archive_support_zip_new());
-	lsq_register_support(lsq_archive_support_gnu_tar_new());
-	lsq_register_support(lsq_archive_support_compr_new());
-	lsq_register_support(lsq_archive_support_rar_new());
-	*/
+	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_zip_new());
+	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_gnu_tar_new());
+	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_rar_new());
+	lsq_command_builder_list = g_slist_prepend(lsq_command_builder_list, lsq_command_builder_compr_new());
 
 	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
 	lsq_opened_archive_list = NULL;
@@ -56,7 +54,7 @@ lsq_init()
 void
 lsq_shutdown()
 {
-	g_slist_foreach(lsq_archive_support_list, (GFunc)g_object_unref, NULL);
+	g_slist_foreach(lsq_command_builder_list, (GFunc)g_object_unref, NULL);
 	g_slist_foreach(lsq_opened_archive_list,  (GFunc)g_object_unref, NULL);
 
 	g_object_unref(lsq_mime_database);

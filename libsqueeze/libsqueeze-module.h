@@ -18,11 +18,11 @@
 
 #include <libsqueeze/libsqueeze-archive.h>
 #include <libsqueeze/libsqueeze-command.h>
-#include <libsqueeze/command-builder.h>
 #include <libsqueeze/archive-command.h>
 #include <libsqueeze/macro-command.h>
 #include <libsqueeze/spawn-command.h>
 #include <libsqueeze/dbus-command.h>
+#include <libsqueeze/command-builder.h>
 #include <libsqueeze/internals.h>
 
 G_BEGIN_DECLS

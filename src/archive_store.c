@@ -218,7 +218,6 @@ sq_archive_store_init(SQArchiveStore *as)
 {
 	as->stamp = g_random_int();
 	as->archive = NULL;
-	as->support = NULL;
 	as->sort_column = GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID;
 	as->sort_order = GTK_SORT_ASCENDING;
 	as->sort_list = NULL;
@@ -1566,18 +1565,6 @@ LSQArchive *
 sq_archive_store_get_archive(SQArchiveStore *archive_store)
 {
 	return archive_store->archive;
-}
-
-LSQArchiveSupport *
-sq_archive_store_get_support(SQArchiveStore *archive_store)
-{
-	return archive_store->support;
-}
-
-void
-sq_archive_store_set_support(SQArchiveStore *archive_store, LSQArchiveSupport *support)
-{
-	archive_store->support = support;
 }
 
 static void

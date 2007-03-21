@@ -136,35 +136,16 @@ sq_add_dialog_init(SQAddDialog *dialog)
 }
 
 GtkWidget *
-sq_add_dialog_new(LSQArchiveSupport *support)
+sq_add_dialog_new()
 {
 	SQAddDialog *dialog;
-	GtkWidget *optionbox;
 
 	dialog = g_object_new(sq_add_dialog_get_type(),
 			"title", _("Add file(s) to archive"),
 			NULL);
 
-	optionbox = gtk_vbox_new(FALSE, 0);
-	gtk_container_add(GTK_CONTAINER(dialog->optionframe), optionbox);
-
-	dialog->support = support;
-/*
-	if(support)
-	{
-		add_options = lsq_archive_support_list_properties(support, "add");
-		while(add_options)
-		{
-			test = sq_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(add_options->data)));
-			gtk_box_pack_start(GTK_BOX(optionbox), test, FALSE, FALSE, 0);
-			add_options = add_options->next;
-		}
-	}
-*/
-
 	gtk_widget_set_size_request(GTK_WIDGET(dialog), 400,300);
 
-	gtk_widget_show_all(optionbox);
 	return (GtkWidget*)dialog;
 }
 

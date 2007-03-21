@@ -505,3 +505,69 @@ lsq_archive_refreshed(const LSQArchive *archive)
 {
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
 }
+
+gboolean
+lsq_archive_add(LSQArchive *archive, GSList *files)
+{
+	g_return_val_if_fail(archive->builder, FALSE);
+	LSQCommandBuilder *builder = archive->builder;
+	if(archive->command)
+		return FALSE;
+
+	archive->command = builder->build_add(builder, archive, files);
+
+	lsq_archive_command_execute(archive->command);
+	return FALSE;
+}
+
+gboolean
+lsq_archive_extract(LSQArchive *archive, const gchar *dest_path, GSList *files)
+{
+	g_return_val_if_fail(archive->builder, FALSE);
+	LSQCommandBuilder *builder = archive->builder;
+	if(archive->command)
+		return FALSE;
+	
+	archive->command = builder->build_extract(builder, archive, dest_path, files);
+	lsq_archive_command_execute(archive->command);
+	return FALSE;
+}
+
+gboolean
+lsq_archive_remove(LSQArchive *archive, GSList *files)
+{
+	g_return_val_if_fail(archive->builder, FALSE);
+	LSQCommandBuilder *builder = archive->builder;
+	if(archive->command)
+		return FALSE;
+
+	archive->command = builder->build_remove(builder, archive, files);
+	lsq_archive_command_execute(archive->command);
+	return FALSE;
+}
+
+gboolean
+lsq_archive_refresh(LSQArchive *archive)
+{
+	g_return_val_if_fail(archive->builder, FALSE);
+	LSQCommandBuilder *builder = archive->builder;
+	if(archive->command)
+		return FALSE;
+
+	archive->command = builder->build_refresh(builder, archive);
+	lsq_archive_command_execute(archive->command);
+	return FALSE;
+}
+
+gboolean
+lsq_archive_view(LSQArchive *archive, GSList *files)
+{
+	g_return_val_if_fail(archive->builder, FALSE);
+	LSQCommandBuilder *builder = archive->builder;
+	if(archive->command)
+		return FALSE;
+
+	archive->command = builder->build_open(builder, archive, files);
+	lsq_archive_command_execute(archive->command);
+	return FALSE;
+}

@@ -8,6 +8,7 @@ libsqueeze_1_la_SOURCES =  \
 	libsqueeze-view.h \
 	libsqueeze-module.h \
 	slist.c slist.h \
+	vfs-mime.c vfs-mime.h \
 	archive.c archive.h \
 	archive-iter.c archive-iter.h \
 	archive-command.c archive-command.h \
@@ -20,10 +21,6 @@ libsqueeze_1_la_SOURCES =  \
 	command-builder-rar.c command-builder-rar.h \
 	command-builder-compr.c command-builder-compr.h \
 	command-builder-gnu-tar.c command-builder-gnu-tar.h
-#archive-support-compr.c archive-support-compr.h
-#archive-support-zip.c archive-support-zip.h
-#archive-support-rar.c archive-support-rar.h
-#archive-support-gnu-tar.c archive-support-gnu-tar.h
 
 libsqueeze_1_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \

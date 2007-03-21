@@ -48,9 +48,10 @@ typedef struct _LSQCommandBuilderZipClass LSQCommandBuilderZipClass;
 
 struct _LSQCommandBuilderZipClass
 {
-	GObjectClass parent;
+	LSQCommandBuilderClass parent;
 };
 
 GType                lsq_command_builder_zip_get_type(void);
+LSQCommandBuilder   *lsq_command_builder_zip_new();
 
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_ZIP_H__ */

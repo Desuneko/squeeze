@@ -1,7 +1,7 @@
-/*
+/* 
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation; either version 2 of the License, or 
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -14,20 +14,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-GSList                 *lsq_command_builder_list;
-GSList                 *lsq_opened_archive_list;
-ThunarVfsPath          *lsq_relative_base_path;
+#ifndef __LIBSQUEEZE_VFS_MIME_H__
+#define __LIBSQUEEZE_VFS_MIME_H__
 
-/*
- * gint
- * lsq_execute(gchar *command)
- *
- * general function for executing child-apps
- */
-ThunarVfsMimeDatabase  *lsq_mime_database;
+typedef struct ThunarVfsMimeInfo LSQVfsMimeInfo;
 
-gchar *
-lsq_concat_filenames(GSList *filenames);
-
-LSQArchive *
-lsq_opened_archive_get_archive(gchar *path);
+#endif

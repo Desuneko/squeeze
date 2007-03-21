@@ -48,9 +48,10 @@ typedef struct _LSQCommandBuilderRarClass LSQCommandBuilderRarClass;
 
 struct _LSQCommandBuilderRarClass
 {
-	GObjectClass parent;
+	LSQCommandBuilderClass parent;
 };
 
 GType                lsq_command_builder_rar_get_type(void);
+LSQCommandBuilder   *lsq_command_builder_rar_new();
 
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_RAR_H__ */

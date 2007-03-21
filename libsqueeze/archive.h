@@ -37,7 +37,7 @@ struct _LSQArchive
 		guint64 n_files;
 		guint64 n_directories;
 	} props;
-	LSQCommandBuilder *cmd_builder;
+	LSQCommandBuilder *builder;
 	gchar *temp_dir;
 	GSList *monitor_list;
 	LSQArchiveIterPool *pool;

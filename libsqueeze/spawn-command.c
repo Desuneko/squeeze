@@ -305,7 +305,7 @@ lsq_spawn_command_parse_stdout(GIOChannel *ioc, GIOCondition cond, gpointer data
 		for(; i < 500; i++)
 		{
 			/* If parse_stdout returns FALSE, something seriously went wrong and we should cancel right away */
-			if(spawn_command->parse_stdout(archive_command, archive_command->user_data) == FALSE)
+			if(spawn_command->parse_stdout(spawn_command, archive_command->user_data) == FALSE)
 			{
 				cond |= G_IO_ERR;
 			}

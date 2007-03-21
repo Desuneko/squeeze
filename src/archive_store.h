@@ -43,7 +43,6 @@ struct _SQArchiveStore
 	GObject parent;
 	gint stamp;
 	LSQArchive *archive;
-	LSQArchiveSupport *support;
 	gint sort_column;
 	GtkSortType sort_order;
 	LSQArchiveIter **sort_list;
@@ -113,10 +112,7 @@ sq_archive_store_get_trailing(SQArchiveStore *store);
 
 LSQArchive *
 sq_archive_store_get_archive(SQArchiveStore *archive_store);
-LSQArchiveSupport *
-sq_archive_store_get_support(SQArchiveStore *archive_store);
 
 void sq_archive_store_set_archive(SQArchiveStore *archive_store, LSQArchive *archive);
-void sq_archive_store_set_support(SQArchiveStore *archive_store, LSQArchiveSupport *support);
 
 #endif /* __SQRCHIVER_ARCHIVE_STORE_H__ */

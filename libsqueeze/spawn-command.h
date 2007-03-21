@@ -37,7 +37,10 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
 			LSQ_TYPE_SPAWN_COMMAND))
 
+
 typedef struct _LSQSpawnCommand LSQSpawnCommand;
+
+typedef gboolean (*LSQParseFunc) (LSQSpawnCommand *, gpointer user_data);
 
 struct _LSQSpawnCommand
 {
@@ -75,6 +78,22 @@ lsq_spawn_command_new(const gchar *comment,
                       const gchar *archive_path);
 gboolean
 lsq_spawn_command_set_parse_func(LSQSpawnCommand *spawn_command, guint fd, LSQParseFunc func, gpointer user_data);
+
+GIOStatus
+lsq_spawn_command_read_line(LSQSpawnCommand *spawn_command,
+                      guint fd,
+                      gchar **lines,
+                      gsize *length,
+                      GError **error);
+
+GIOStatus
+lsq_spawn_command_read_bytes(LSQSpawnCommand *spawn_command, 
+                      guint fd,
+                      gchar *buf,
+                      gsize max_length,
+                      gsize *length,
+                      GError **error);
+
 
 G_END_DECLS
 #endif /* __LIBSQUEEZE_ARCHIVE_COMMAND_H__ */

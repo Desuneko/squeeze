@@ -47,7 +47,6 @@ struct _SQAddDialog
 	GtkWidget *file_treeview;
 	GtkWidget *files_radio;
 	GtkWidget *dirs_radio;
-	LSQArchiveSupport *support;
 	GtkWidget *add;
 	GtkWidget *remove;
 };
@@ -60,7 +59,7 @@ struct _SQAddDialogClass
 };
 
 GType      sq_add_dialog_get_type();
-GtkWidget *sq_add_dialog_new(LSQArchiveSupport *support);
+GtkWidget *sq_add_dialog_new();
 GSList    *sq_add_dialog_get_filenames(SQAddDialog *dialog);
 
 G_END_DECLS

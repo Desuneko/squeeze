@@ -68,7 +68,7 @@ lsq_command_builder_rar_get_type ()
 			NULL
 		};
 
-		lsq_command_builder_rar_type = g_type_register_static (G_TYPE_OBJECT, "LSQCommandBuilderRar", &lsq_command_builder_rar_info, 0);
+		lsq_command_builder_rar_type = g_type_register_static (LSQ_TYPE_COMMAND_BUILDER, "LSQCommandBuilderRar", &lsq_command_builder_rar_info, 0);
 	}
 	return lsq_command_builder_rar_type;
 }
@@ -166,3 +166,12 @@ lsq_command_builder_rar_build_refresh(LSQCommandBuilder *builder, LSQArchive *ar
 	return spawn;
 }
 
+LSQCommandBuilder *
+lsq_command_builder_rar_new()
+{
+	LSQCommandBuilder *builder;
+
+	builder = g_object_new(lsq_command_builder_rar_get_type(), NULL);
+
+	return builder;
+}

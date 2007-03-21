@@ -48,9 +48,10 @@ typedef struct _LSQCommandBuilderGnuTarClass LSQCommandBuilderGnuTarClass;
 
 struct _LSQCommandBuilderGnuTarClass
 {
-	GObjectClass parent;
+	LSQCommandBuilderClass parent;
 };
 
 GType                lsq_command_builder_gnu_tar_get_type(void);
+LSQCommandBuilder   *lsq_command_builder_gnu_tar_new();
 
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_GNU_TAR_H__ */

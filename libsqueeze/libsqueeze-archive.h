@@ -68,6 +68,12 @@ void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int)
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void            lsq_archive_iter_unref(LSQArchiveIter *iter);
 
+gboolean        lsq_archive_add(LSQArchive *, GSList *files);
+gboolean        lsq_archive_extract(LSQArchive *, const gchar *dest_path, GSList *files);
+gboolean        lsq_archive_remove(LSQArchive *, GSList *files);
+gboolean        lsq_archive_refresh(LSQArchive *);
+gboolean        lsq_archive_view(LSQArchive *, GSList *files);
+
 
 G_END_DECLS
 

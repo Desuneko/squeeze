@@ -48,11 +48,11 @@ static LSQArchiveCommand *
 lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
 
 static gboolean
-lsq_command_builder_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_command, gpointer user_data);
+lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data);
 static gboolean
-lsq_command_builder_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_command, gpointer user_data);
+lsq_command_builder_gnu_tar_compress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data);
 static gboolean
-lsq_command_builder_gnu_tar_decompress_parse_output(LSQArchiveCommand *archive_command, gpointer user_data);
+lsq_command_builder_gnu_tar_decompress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data);
 
 static GObjectClass *parent_class;
 
@@ -77,7 +77,7 @@ lsq_command_builder_gnu_tar_get_type ()
 			NULL
 		};
 
-		lsq_command_builder_gnu_tar_type = g_type_register_static (G_TYPE_OBJECT, "LSQCommandBuilderGnuTar", &lsq_command_builder_gnu_tar_info, 0);
+		lsq_command_builder_gnu_tar_type = g_type_register_static (LSQ_TYPE_COMMAND_BUILDER, "LSQCommandBuilderGnuTar", &lsq_command_builder_gnu_tar_info, 0);
 	}
 	return lsq_command_builder_gnu_tar_type;
 }
@@ -323,12 +323,12 @@ lsq_command_builder_gnu_tar_build_refresh(LSQCommandBuilder *builder, LSQArchive
 
 
 static gboolean
-lsq_command_builder_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_command, gpointer user_data)
+lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data)
 {
 	gchar *line = NULL;
 	gsize linesize = 0;
 	GIOStatus status = G_IO_STATUS_NORMAL;
-	LSQArchive *archive = lsq_archive_command_get_archive(archive_command);
+	LSQArchive *archive = lsq_archive_command_get_archive(LSQ_ARCHIVE_COMMAND(spawn_command));
 	guint64 size;
 	gpointer props[6];
 	gint n = 0, a = 0, i = 0;
@@ -336,7 +336,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_comm
 
 	LSQArchiveIter *entry;
 
-	status = lsq_archive_command_read_line(archive_command, 1, &line, &linesize, NULL);
+	status = lsq_spawn_command_read_line(spawn_command, 1, &line, &linesize, NULL);
 	if (line == NULL)
 	{
 		if(status == G_IO_STATUS_AGAIN)
@@ -440,7 +440,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQArchiveCommand *archive_comm
 }
 
 static gboolean
-lsq_command_builder_gnu_tar_decompress_parse_output(LSQArchiveCommand *archive_command, gpointer user_data)
+lsq_command_builder_gnu_tar_decompress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data)
 {
 	GIOStatus status = G_IO_STATUS_NORMAL;
 	gchar *buf = g_new0(gchar, 1024);
@@ -448,13 +448,13 @@ lsq_command_builder_gnu_tar_decompress_parse_output(LSQArchiveCommand *archive_c
 	GError *error = NULL;
 	FILE *out_file;
 
-	const gchar *out_filename = g_object_get_data(G_OBJECT(archive_command), LSQ_ARCHIVE_TEMP_FILE);
+	const gchar *out_filename = g_object_get_data(G_OBJECT(spawn_command), LSQ_ARCHIVE_TEMP_FILE);
 
 	out_file = fopen(out_filename, "ab");
 	if(!out_file)
 		return FALSE; 
 	
-	status = lsq_archive_command_read_bytes(archive_command, 1, buf, 1024, (gsize *)&read, &error);
+	status = lsq_spawn_command_read_bytes(spawn_command, 1, buf, 1024, (gsize *)&read, &error);
 	if(status == G_IO_STATUS_EOF)
 	{
 		fclose(out_file);
@@ -472,20 +472,20 @@ lsq_command_builder_gnu_tar_decompress_parse_output(LSQArchiveCommand *archive_c
 }
 
 static gboolean
-lsq_command_builder_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_command, gpointer user_data)
+lsq_command_builder_gnu_tar_compress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data)
 {
 	GIOStatus status = G_IO_STATUS_NORMAL;
 	gchar *buf = g_new0(gchar, 1024);
-	LSQArchive *archive = lsq_archive_command_get_archive(archive_command);
+	LSQArchive *archive = lsq_archive_command_get_archive(LSQ_ARCHIVE_COMMAND(spawn_command));
 	guint read = 0;
 	GError *error = NULL;
 	FILE *out_file;
 
 	const gchar *out_filename = lsq_archive_get_path(archive);
-	gboolean remove = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(archive_command), "compressing"));
+	gboolean remove = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(spawn_command), "compressing"));
 	if(remove == FALSE)
 	{
-		g_object_set_data(G_OBJECT(archive_command), "compressing", GUINT_TO_POINTER(TRUE));
+		g_object_set_data(G_OBJECT(spawn_command), "compressing", GUINT_TO_POINTER(TRUE));
 		g_unlink(out_filename);
 	}
 
@@ -493,7 +493,7 @@ lsq_command_builder_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_com
 	if(!out_file)
 		return FALSE; 
 	
-	status = lsq_archive_command_read_bytes(archive_command, 1, buf, 1024, (gsize *)&read, &error);
+	status = lsq_spawn_command_read_bytes(spawn_command, 1, buf, 1024, (gsize *)&read, &error);
 	if(status == G_IO_STATUS_EOF)
 	{
 		fclose(out_file);
@@ -507,4 +507,14 @@ lsq_command_builder_gnu_tar_compress_parse_output(LSQArchiveCommand *archive_com
 	fclose(out_file);
 	g_free(buf);
 	return TRUE;
+}
+
+LSQCommandBuilder *
+lsq_command_builder_gnu_tar_new()
+{
+	LSQCommandBuilder *builder;
+
+	builder = g_object_new(lsq_command_builder_gnu_tar_get_type(), NULL);
+
+	return builder;
 }

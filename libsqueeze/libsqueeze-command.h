@@ -39,33 +39,10 @@ G_BEGIN_DECLS
 
 typedef struct _LSQArchiveCommand LSQArchiveCommand;
 
-typedef gboolean (*LSQParseFunc) (LSQArchiveCommand *archive_command, gpointer user_data);
 
 typedef struct _LSQArchiveCommandClass LSQArchiveCommandClass;
 
 GType               lsq_archive_command_get_type(void);
-LSQArchiveCommand  *lsq_archive_command_new(const gchar *comment, 
-                                            const gchar *command,
-																						gboolean safe,
-																						gboolean change);
-
-void                lsq_archive_enqueue_command(LSQArchive *archive, LSQArchiveCommand *command);
-
-GIOStatus           lsq_archive_command_read_line(LSQArchiveCommand *archive_command,
-                                                  guint fd,
-                                                  gchar **lines,
-                                                  gsize *length,
-																									GError **error);
-GIOStatus           lsq_archive_command_read_bytes(LSQArchiveCommand *archive_command, 
-                                                  guint fd,
-                                                  gchar *buf,
-                                                  gsize max_length,
-                                                  gsize *length,
-                                                  GError **error);
-gboolean            lsq_archive_command_set_parse_func(LSQArchiveCommand *archive_command,
-                                                  guint fd,
-                                                  LSQParseFunc func,
-                                                  gpointer user_data);
 
 LSQArchive         *lsq_archive_command_get_archive(LSQArchiveCommand *command);
 

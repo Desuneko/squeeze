@@ -115,8 +115,8 @@ lsq_archive_command_finalize(GObject *object)
 
 
 /**
- * lsq_archive_command_run:
- * @command: the archive_command to be run
+ * lsq_archive_command_executr:
+ * @command: the archive_command to be executed
  *
  * Returns: true on success
  */

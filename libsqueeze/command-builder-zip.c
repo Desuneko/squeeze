@@ -47,7 +47,7 @@ static LSQArchiveCommand *
 lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
 
 static gboolean
-lsq_command_builder_zip_refresh_parse_output(LSQArchiveCommand *archive_command, gpointer user_data);
+lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *, gpointer);
 
 static GObjectClass *parent_class;
 
@@ -72,7 +72,7 @@ lsq_command_builder_zip_get_type ()
 			NULL
 		};
 
-		lsq_command_builder_zip_type = g_type_register_static (G_TYPE_OBJECT, "LSQCommandBuilderZip", &lsq_command_builder_zip_info, 0);
+		lsq_command_builder_zip_type = g_type_register_static (LSQ_TYPE_COMMAND_BUILDER, "LSQCommandBuilderZip", &lsq_command_builder_zip_info, 0);
 	}
 	return lsq_command_builder_zip_type;
 }
@@ -85,7 +85,7 @@ lsq_command_builder_zip_class_init(LSQCommandBuilderZipClass *command_builder_zi
 	object_class->dispose = lsq_command_builder_zip_dispose;
 	object_class->finalize = lsq_command_builder_zip_finalize;
 
-	parent_class = g_type_class_peek(G_TYPE_OBJECT); 
+	parent_class = g_type_class_peek(LSQ_TYPE_COMMAND_BUILDER); 
 
 }
 
@@ -177,12 +177,12 @@ lsq_command_builder_zip_build_refresh(LSQCommandBuilder *builder, LSQArchive *ar
 }
 
 static gboolean
-lsq_command_builder_zip_refresh_parse_output(LSQArchiveCommand *archive_command, gpointer user_data)
+lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data)
 {
 	gchar *line = NULL;
 	gsize linesize = 0;
 	GIOStatus status = G_IO_STATUS_NORMAL;
-	LSQArchive *archive = lsq_archive_command_get_archive(archive_command);
+	LSQArchive *archive = lsq_archive_command_get_archive(LSQ_ARCHIVE_COMMAND(spawn_command));
 	guint64 size;
 	guint64 length;
 	gpointer props[8]; 
@@ -191,7 +191,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQArchiveCommand *archive_command,
 
 	LSQArchiveIter *entry;
 
-	status = lsq_archive_command_read_line(archive_command, 1, &line, &linesize, NULL);
+	status = lsq_spawn_command_read_line(spawn_command, 1, &line, &linesize, NULL);
 	if (line == NULL)
 	{
 		if(status == G_IO_STATUS_AGAIN)
@@ -296,4 +296,14 @@ lsq_command_builder_zip_refresh_parse_output(LSQArchiveCommand *archive_command,
 	g_free(line);
 
 	return TRUE;
+}
+
+LSQCommandBuilder *
+lsq_command_builder_zip_new()
+{
+	LSQCommandBuilder *builder;
+
+	builder = g_object_new(lsq_command_builder_zip_get_type(), NULL);
+
+	return builder;
 }

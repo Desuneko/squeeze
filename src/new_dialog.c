@@ -76,8 +76,7 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 
 	gtk_widget_show_all(hbox);
 
-	GSList *supported_mime_types = lsq_get_supported_mime_types();
-	GSList *_supported_mime_types = supported_mime_types;
+	GSList *_supported_mime_types = NULL;
 
 	dialog->file_filter = gtk_file_filter_new();
 	gtk_file_filter_set_name(dialog->file_filter, _("Archives"));
@@ -122,8 +121,6 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
 	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 0);
-
-	g_slist_free(supported_mime_types);
 
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 

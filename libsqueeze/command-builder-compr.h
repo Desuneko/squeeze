@@ -48,9 +48,10 @@ typedef struct _LSQCommandBuilderComprClass LSQCommandBuilderComprClass;
 
 struct _LSQCommandBuilderComprClass
 {
-	GObjectClass parent;
+	LSQCommandBuilderClass parent;
 };
 
 GType                lsq_command_builder_compr_get_type(void);
+LSQCommandBuilder   *lsq_command_builder_compr_new();
 
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_COMPR_H__ */

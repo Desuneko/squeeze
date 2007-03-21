@@ -46,6 +46,9 @@ lsq_command_builder_finalize(GObject *object);
 static LSQArchiveCommand *
 lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
 
+static gint
+lsq_command_builder_lookup_id(gconstpointer command_builder, gconstpointer id);
+
 static GObjectClass *parent_class;
 
 GType
@@ -128,4 +131,22 @@ lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, 
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), launch);
 
 	return macro;
+}
+
+LSQCommandBuilder *
+lsq_command_builder_get_by_id(const gchar *id)
+{
+	GSList *result = g_slist_find_custom(lsq_command_builder_list, id, lsq_command_builder_lookup_id);
+	if(result)
+	{
+		g_object_ref(result->data);
+		return result->data;
+	}
+	return NULL;
+}
+
+static gint
+lsq_command_builder_lookup_id(gconstpointer command_builder, gconstpointer id)
+{
+	return (strcmp(LSQ_COMMAND_BUILDER(command_builder)->id, (gchar *)id));
 }

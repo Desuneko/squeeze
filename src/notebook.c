@@ -481,7 +481,7 @@ sq_notebook_set_navigation_bar(SQNotebook *notebook, SQNavigationBar *bar)
 }
 
 void
-sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSupport *support, gboolean new_archive)
+sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_archive)
 {
 	GtkWidget *lbl_hbox = gtk_hbox_new(FALSE, 0);
 	GtkWidget *label = gtk_label_new(lsq_archive_get_filename(archive));
@@ -526,7 +526,6 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 	g_signal_connect(G_OBJECT(tree_model), "file-activated", G_CALLBACK(cb_notebook_file_activated), notebook);
 
 
-	sq_archive_store_set_support(SQ_ARCHIVE_STORE(tree_model), support);
 	sq_archive_store_connect_treeview(SQ_ARCHIVE_STORE(tree_model), GTK_TREE_VIEW(tree_view));
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
@@ -548,7 +547,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSup
 
 	if(new_archive == FALSE)
 	{
-		lsq_archive_support_refresh(support, archive);
+		lsq_archive_refresh(archive);
 	}
 
 }
@@ -722,11 +721,11 @@ sq_notebook_is_active_archive(SQNotebook *notebook, LSQArchive *archive)
 }
 
 void
-sq_notebook_get_active_archive(SQNotebook *notebook, LSQArchive **lp_archive, LSQArchiveSupport **lp_support)
+sq_notebook_get_active_archive(SQNotebook *notebook, LSQArchive **lp_archive)
 {
 	gint n = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
 		
-	sq_notebook_page_get_archive(notebook, lp_archive, lp_support, n);
+	sq_notebook_page_get_archive(notebook, lp_archive, n);
 }
 
 GtkWidget *
@@ -738,7 +737,7 @@ sq_notebook_get_active_child(SQNotebook *notebook)
 }
 
 void
-sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchiveSupport *support, gint n)
+sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, gint n)
 {
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
@@ -747,11 +746,10 @@ sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchi
 		GtkTreeModel *store = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
 
 		sq_archive_store_set_archive(SQ_ARCHIVE_STORE(store), archive);
-		sq_archive_store_set_support(SQ_ARCHIVE_STORE(store), support);
 
 		g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), treeview);
 
-		if(lsq_archive_support_refresh(support, archive))
+		if(lsq_archive_refresh(archive))
 		{
 			/* FIXME: show warning dialog */
 		}
@@ -759,7 +757,7 @@ sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, LSQArchi
 		gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), store);
 	}
 	else
-		sq_notebook_add_archive(SQ_NOTEBOOK(notebook), archive, support, FALSE);
+		sq_notebook_add_archive(SQ_NOTEBOOK(notebook), archive, FALSE);
 }
 
 GSList *
@@ -793,14 +791,12 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 
 
 void
-sq_notebook_page_get_archive(SQNotebook *notebook, LSQArchive **lp_archive, LSQArchiveSupport **lp_support, gint n)
+sq_notebook_page_get_archive(SQNotebook *notebook, LSQArchive **lp_archive, gint n)
 {
 	SQArchiveStore *store = sq_notebook_get_store(notebook, n);
 		
 	if(lp_archive)
 		(*lp_archive) = sq_archive_store_get_archive(store);
-	if(lp_support)
-		(*lp_support) = sq_archive_store_get_support(store);
 }
 
 static void

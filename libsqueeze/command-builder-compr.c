@@ -68,7 +68,7 @@ lsq_command_builder_compr_get_type ()
 			NULL
 		};
 
-		lsq_command_builder_compr_type = g_type_register_static (G_TYPE_OBJECT, "LSQCommandBuilderCompr", &lsq_command_builder_compr_info, 0);
+		lsq_command_builder_compr_type = g_type_register_static (LSQ_TYPE_COMMAND_BUILDER, "LSQCommandBuilderCompr", &lsq_command_builder_compr_info, 0);
 	}
 	return lsq_command_builder_compr_type;
 }
@@ -162,3 +162,12 @@ lsq_command_builder_compr_build_refresh(LSQCommandBuilder *builder, LSQArchive *
 	return NULL;
 }
 
+LSQCommandBuilder *
+lsq_command_builder_compr_new()
+{
+	LSQCommandBuilder *builder;
+
+	builder = g_object_new(lsq_command_builder_compr_get_type(), NULL);
+
+	return builder;
+}

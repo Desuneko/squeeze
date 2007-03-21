@@ -38,6 +38,8 @@ struct _LSQArchiveCommandClass
 
 gboolean
 lsq_archive_command_stop(LSQArchiveCommand *command);
+gboolean
+lsq_archive_command_execute(LSQArchiveCommand *command);
 const gchar *
 lsq_archive_command_get_comment(LSQArchiveCommand *archive_command);
 

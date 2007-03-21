@@ -46,7 +46,6 @@ struct _SQExtractArchiveDialog
 	GtkWidget *all_files_radio;
 	GtkWidget *sel_files_radio;
 	LSQArchive *archive;
-	LSQArchiveSupport *support;
 };
 
 typedef struct _SQExtractArchiveDialogClass SQExtractArchiveDialogClass;
@@ -57,7 +56,7 @@ struct _SQExtractArchiveDialogClass
 };
 
 GType      sq_extract_archive_dialog_get_type();
-GtkWidget *sq_extract_archive_dialog_new(LSQArchiveSupport *, LSQArchive *, gboolean);
+GtkWidget *sq_extract_archive_dialog_new(LSQArchive *, gboolean);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_EXTRACT_ARCHIVE_DIALOG_H__ */

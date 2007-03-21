@@ -103,7 +103,7 @@ sq_extract_archive_dialog_init(SQExtractArchiveDialog *dialog)
 }
 
 GtkWidget *
-sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, gboolean sel_option)
+sq_extract_archive_dialog_new(LSQArchive *archive, gboolean sel_option)
 {
 	SQExtractArchiveDialog *dialog;
 
@@ -115,19 +115,6 @@ sq_extract_archive_dialog_new(LSQArchiveSupport *support, LSQArchive *archive, g
 	GtkWidget *r_vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(dialog->r_frame), r_vbox);
 
-	dialog->support = support;
-/*
-	if(dialog->support)
-	{
-		extract_options = lsq_archive_support_list_properties(support, "extract");
-		while(extract_options)
-		{
-			test = sq_widget_factory_create_property_widget(factory, G_OBJECT(support), g_param_spec_get_name(G_PARAM_SPEC(extract_options->data)));
-			gtk_box_pack_start(GTK_BOX(r_vbox), test, FALSE, FALSE, 0);
-			extract_options = extract_options->next;
-		}
-	}
-*/
 	/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
 	gchar **filename_components = g_strsplit(g_path_get_basename(lsq_archive_get_filename(archive)), ".", 2);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
@@ -146,7 +133,6 @@ sq_extract_dialog_option_toggled (GtkWidget *widget, gpointer data)
 
 	g_value_set_boolean(val, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
 
-	g_object_set_property(G_OBJECT(SQ_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val); 
 	g_free(val);
 }
 
@@ -158,7 +144,6 @@ sq_extract_dialog_option_child_notify (GtkWidget *widget, GParamSpec *pspec, gpo
 	{
 		val = g_value_init(val, G_TYPE_STRING);
 		g_object_get_property(G_OBJECT(widget), "text", val);
-		g_object_set_property(G_OBJECT(SQ_EXTRACT_ARCHIVE_DIALOG(gtk_widget_get_ancestor(widget, GTK_TYPE_DIALOG))->support), (gchar *)data, val);
 	}
 	g_free(val);
 }
