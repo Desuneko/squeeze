@@ -300,8 +300,11 @@ lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive 
 		                                                    tmp_file);
 		remove_macro = lsq_macro_command_new(NULL, archive);
 		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), decompress);
+		g_object_unref(decompress);
 		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), spawn);
+		g_object_unref(spawn);
 		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), compress);
+		g_object_unref(compress);
 
 		if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(compress), 1, lsq_command_builder_gnu_tar_compress_parse_output, NULL))
 		{
