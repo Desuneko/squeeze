@@ -542,7 +542,10 @@ cb_sq_path_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar)
 	path_bar->path_button->next = NULL;
 
 	gtk_widget_set_sensitive(GTK_WIDGET(path_bar->home_button), (store&&store->archive));
-	lsq_archive_iter_unref(g_object_get_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER));
+	iter = g_object_get_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER);
+	if(iter)
+		lsq_archive_iter_unref(iter);
+	iter = NULL;
 	g_object_set_data(G_OBJECT(path_bar->home_button), SQ_PATH_BAR_PATH_BUTTON_ITER, NULL);
 	if(path_bar->trailing)
 		lsq_archive_iter_unref(path_bar->trailing);
