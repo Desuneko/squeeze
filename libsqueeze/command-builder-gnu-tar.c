@@ -139,7 +139,7 @@ lsq_command_builder_gnu_tar_finalize(GObject *object)
 }
 
 static const gchar *
-lsq_command_builder_gnu_tar_get_compress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive)
+lsq_command_builder_gnu_tar_get_decompress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive)
 {
 	const gchar *decompress_skeleton = NULL;
 
@@ -156,7 +156,7 @@ lsq_command_builder_gnu_tar_get_compress_skeleton(LSQCommandBuilder *builder, LS
 }
 
 static const gchar *
-lsq_command_builder_gnu_tar_get_decompress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive)
+lsq_command_builder_gnu_tar_get_compress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive)
 {
 	const gchar *compress_skeleton = NULL;
 
@@ -182,13 +182,28 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 	const gchar *compress_skeleton = NULL;
 	const gchar *decompress_skeleton = NULL;
 	LSQArchiveCommand *add_macro = NULL;
-	
-	compress_skeleton = lsq_command_builder_gnu_tar_get_compress_skeleton(builder, archive);
-	decompress_skeleton = lsq_command_builder_gnu_tar_get_decompress_skeleton(builder, archive);
+	LSQArchiveCommand *decompress = NULL;
+	LSQArchiveCommand *compress = NULL;
 
-	if(decompress_skeleton)
+	compress_skeleton = lsq_command_builder_gnu_tar_get_compress_skeleton(builder, archive);
+
+	if(compress_skeleton)
+	{
 		tmp_file = lsq_archive_request_temp_file(archive, ".tar");
 
+		compress = lsq_spawn_command_new(_("Compressing"),
+										 archive,
+										 compress_skeleton,
+										 NULL,
+										 NULL,
+										 tmp_file);
+
+		if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(compress), 1, lsq_command_builder_gnu_tar_compress_parse_output, NULL))
+		{
+			g_critical("Could not set refresh parse function");
+		}
+	}
+	
 	if(!lsq_archive_exists(archive))
 	{
 		add_skeleton = "tar %3$s -c -f %1$s %2$s";
@@ -196,6 +211,24 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 	else
 	{
 		add_skeleton = "tar %3$s -r -f %1$s %2$s";
+		decompress_skeleton = lsq_command_builder_gnu_tar_get_decompress_skeleton(builder, archive);
+
+
+		if(decompress_skeleton)
+		{
+			decompress = lsq_spawn_command_new(_("Decompressing"), 
+											  archive,
+											  decompress_skeleton,
+											  NULL,
+											  NULL,
+											  NULL);
+			g_object_set_data(G_OBJECT(decompress), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
+
+			if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(decompress), 1, lsq_command_builder_gnu_tar_decompress_parse_output, NULL))
+			{
+				g_critical("Could not set refresh parse function");
+			}
+		}
 	}
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Adding files"),
 	                                                 archive,
@@ -203,32 +236,25 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 	                                                 files,
 	                                                 options,
                                                      tmp_file);
-
-	if(decompress_skeleton)
+	add_macro = lsq_macro_command_new(NULL, archive);
+	if(decompress)
 	{
-		LSQArchiveCommand *decompress = lsq_spawn_command_new(_("Decompressing"), 
-		                                                      archive,
-		                                                      decompress_skeleton,
-		                                                      NULL,
-		                                                      NULL,
-		                                                      tmp_file);
-		LSQArchiveCommand *compress = lsq_spawn_command_new(_("Compressing"),
-		                                                    archive,
-		                                                    compress_skeleton,
-		                                                    NULL,
-		                                                    NULL,
-		                                                    tmp_file);
-		add_macro = lsq_macro_command_new(NULL, archive);
 		lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), decompress);
-		lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), spawn);
-		lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), compress);
+		g_object_unref(decompress);
 	}
 
-	if(!add_macro)
-		add_macro = spawn;
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), spawn);
+	g_object_unref(spawn);
+
+	if(compress)
+	{
+		lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), compress);
+		g_object_unref(compress);
+	}
+
 
 	g_free(files);
-	return NULL;
+	return add_macro;
 }
 
 
