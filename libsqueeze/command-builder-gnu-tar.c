@@ -374,7 +374,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command,
 			return FALSE;
 	}
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_rights*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_rights*/
 	{
 		line[10] = '\0';
 		props[i] = line;
@@ -383,7 +383,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command,
 	for(n=13; n < linesize; ++n)
 		if(line[n] == ' ') break;
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_owner*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_owner*/
 	{
 		line[n] = '\0';
 		props[i] = line+11;
@@ -398,7 +398,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command,
 	for(; n < linesize; ++n)
 		if(line[n] == ' ') break;
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_size*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_size*/
 	{
 		line[n] = '\0';
 		size = g_ascii_strtoull(line + a, NULL, 0);
@@ -411,7 +411,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command,
 	for(; n < linesize; n++) // DATE
 		if(line[n] == ' ') break;
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_date*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_date*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -422,7 +422,7 @@ lsq_command_builder_gnu_tar_refresh_parse_output(LSQSpawnCommand *spawn_command,
 	for (; n < linesize; n++) // TIME
 		if (line[n] == ' ') break;
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_time*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_GNU_TAR(support)->_view_time*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;

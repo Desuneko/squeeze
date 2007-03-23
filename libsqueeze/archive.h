@@ -26,9 +26,6 @@ struct _LSQArchive
 	ThunarVfsPath      *path_info;
 	ThunarVfsInfo      *file_info;
 	ThunarVfsMimeInfo  *mime_info;
-	guint               entry_n_property;
-	GType              *entry_property_types;
-	gchar             **entry_property_names;
 	LSQArchiveEntry    *root_entry;
 	LSQArchiveCommand  *command;
 	struct {
@@ -37,7 +34,8 @@ struct _LSQArchive
 		guint64 n_files;
 		guint64 n_directories;
 	} props;
-	LSQCommandBuilder *builder;
+	LSQCommandBuilder  *builder;
+	LSQBuilderSettings *settings;
 	gchar *temp_dir;
 	GSList *monitor_list;
 	LSQArchiveIterPool *pool;

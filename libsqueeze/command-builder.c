@@ -33,6 +33,7 @@
 #include "spawn-command.h"
 #include "dbus-command.h"
 #include "command-builder.h"
+#include "builder-settings.h"
 
 static void
 lsq_command_builder_class_init(LSQCommandBuilderClass *);
@@ -89,6 +90,7 @@ lsq_command_builder_class_init(LSQCommandBuilderClass *command_builder_class)
 static void
 lsq_command_builder_init(LSQCommandBuilder *command_builder)
 {
+	command_builder->settings = lsq_builder_settings_new();
 	command_builder->build_open = lsq_command_builder_build_open;
 }
 
@@ -128,4 +130,11 @@ lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, 
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), launch);
 
 	return macro;
+}
+
+LSQBuilderSettings *
+lsq_command_builder_get_settings(LSQCommandBuilder *builder)
+{
+	g_object_ref(builder->settings);
+	return builder->settings;
 }

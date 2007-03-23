@@ -22,6 +22,7 @@
 #include <libsqueeze/macro-command.h>
 #include <libsqueeze/spawn-command.h>
 #include <libsqueeze/dbus-command.h>
+#include <libsqueeze/builder-settings.h>
 #include <libsqueeze/command-builder.h>
 #include <libsqueeze/internals.h>
 

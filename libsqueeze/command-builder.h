@@ -29,11 +29,13 @@ struct _LSQCommandBuilder
 	gchar        *id;
 	gchar       **mime_types;
 
-	LSQArchiveCommand *(*build_add)    (LSQCommandBuilder *builder, LSQArchive *archive, GSList *files) G_GNUC_WARN_UNUSED_RESULT;
-	LSQArchiveCommand *(*build_extract)(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *files) G_GNUC_WARN_UNUSED_RESULT;
-	LSQArchiveCommand *(*build_remove) (LSQCommandBuilder *builder, LSQArchive *archive, GSList *file_iters) G_GNUC_WARN_UNUSED_RESULT;
-	LSQArchiveCommand *(*build_refresh)(LSQCommandBuilder *builder, LSQArchive *archive) G_GNUC_WARN_UNUSED_RESULT;
-	LSQArchiveCommand *(*build_open)   (LSQCommandBuilder *builder, LSQArchive *archive, GSList *files) G_GNUC_WARN_UNUSED_RESULT;
+	LSQBuilderSettings *settings;
+
+	LSQArchiveCommand *(*build_add)    (LSQCommandBuilder *, LSQArchive *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
+	LSQArchiveCommand *(*build_extract)(LSQCommandBuilder *, LSQArchive *, const gchar *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
+	LSQArchiveCommand *(*build_remove) (LSQCommandBuilder *, LSQArchive *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
+	LSQArchiveCommand *(*build_refresh)(LSQCommandBuilder *, LSQArchive *) G_GNUC_WARN_UNUSED_RESULT;
+	LSQArchiveCommand *(*build_open)   (LSQCommandBuilder *, LSQArchive *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
 };
 
 typedef struct _LSQCommandBuilderClass LSQCommandBuilderClass;
@@ -44,5 +46,6 @@ struct _LSQCommandBuilderClass
 };
 
 GType                lsq_command_builder_get_type(void);
+LSQBuilderSettings  *lsq_command_builder_get_settings(LSQCommandBuilder *);
 
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_H__ */

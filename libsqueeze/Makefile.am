@@ -16,6 +16,7 @@ libsqueeze_1_la_SOURCES =  \
 	macro-command.c macro-command.h \
 	dbus-command.c dbus-command.h \
 	archive-tempfs.c archive-tempfs.h \
+	builder-settings.c builder-settings.h \
 	command-builder.c command-builder.h \
 	command-builder-zip.c command-builder-zip.h \
 	command-builder-rar.c command-builder-rar.h \

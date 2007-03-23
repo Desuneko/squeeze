@@ -167,7 +167,7 @@ lsq_command_builder_compr_new()
 {
 	LSQCommandBuilder *builder;
 
-	builder = g_object_new(lsq_command_builder_compr_get_type(), NULL);
+	builder = g_object_new(LSQ_TYPE_COMMAND_BUILDER_COMPR, NULL);
 
 	return builder;
 }

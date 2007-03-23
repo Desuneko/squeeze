@@ -35,9 +35,9 @@ gchar              *lsq_archive_iter_get_path(const LSQArchiveIter *archive);
 
 LSQArchiveIter     *lsq_archive_get_iter(LSQArchive *archive, const gchar *path);
 
-GType               lsq_archive_get_entry_property_type(LSQArchive *archive, guint n);
-const gchar        *lsq_archive_get_entry_property_name(LSQArchive *archive, guint n);
-guint               lsq_archive_n_entry_properties(LSQArchive *archive);
+GType               lsq_archive_get_entry_property_type(const LSQArchive *archive, guint n);
+const gchar        *lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n);
+guint               lsq_archive_n_entry_properties(const LSQArchive *archive);
 
 gboolean        lsq_archive_can_stop(const LSQArchive *archive);
 gboolean        lsq_archive_stop(const LSQArchive *archive);

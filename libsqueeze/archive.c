@@ -220,248 +220,108 @@ lsq_archive_new(gchar *path, const gchar *mime)
 		g_object_unref(archive);
 		archive = NULL;
 	}
+
+	archive->settings = lsq_command_builder_get_settings(archive->builder);
 	
 	return archive;
 }
 
-/********************
- * LSQArchive stuff *
- ********************/
-
-static GType *
-lsq_archive_get_entry_property_types(LSQArchive *archive, guint size)
+/*
+ * lsq_archive_n_entry_properties:
+ *
+ * @archive: LSQArchive object
+ *
+ */
+guint
+lsq_archive_n_entry_properties(const LSQArchive *archive)
 {
-	GType *new_props;
-	gchar **new_names;
-	guint i;
-
-	if(archive->entry_n_property < size)
-	{
-		new_props = g_new0(GType, size);
-		new_names = g_new0(gchar*, size);
-		for(i = 0; i < archive->entry_n_property; ++i)
-		{
-			new_props[i] = archive->entry_property_types[i];
-			new_names[i] = archive->entry_property_names[i];
-		}
-		g_free(archive->entry_property_types);
-		g_free(archive->entry_property_names);
-		archive->entry_property_types = new_props;
-		archive->entry_property_names = new_names;
-		archive->entry_n_property = size;
-	}
-	return archive->entry_property_types;
-}
-
-static gchar **
-lsq_archive_get_entry_property_names(LSQArchive *archive, guint size)
-{
-	GType *new_types;
-	gchar **new_names;
-	guint i;
-
-	if(archive->entry_n_property < size)
-	{
-		new_types = g_new0(GType, size);
-		new_names = g_new0(gchar*, size);
-		for(i = 0; i < archive->entry_n_property; ++i)
-		{
-			new_types[i] = archive->entry_property_types[i];
-			new_names[i] = archive->entry_property_names[i];
-		}
-		g_free(archive->entry_property_types);
-		g_free(archive->entry_property_names);
-		archive->entry_property_types = new_types;
-		archive->entry_property_names = new_names;
-		archive->entry_n_property = size;
-	}
-	return archive->entry_property_names;
+#ifdef DEBUG
+	g_return_val_if_fail(archive, 0);
+#endif
+	return lsq_builder_settings_get_n_properties(archive->settings) + LSQ_ARCHIVE_PROP_USER;
 }
 
 /*
- * GType
- * lsq_archive_get_entry_property_type(LSQArchive *archive, guint i)
+ * lsq_archive_get_entry_property_type:
+ *
+ * @archive: LSQArchive object
  *
  */
 GType
-lsq_archive_get_entry_property_type(LSQArchive *archive, guint i)
+lsq_archive_get_entry_property_type(const LSQArchive *archive, guint n)
 {
-#ifdef DEBUG /* n_property + 2, filename and MIME */
-	g_return_val_if_fail(archive, G_TYPE_INVALID);
-	g_return_val_if_fail(i < lsq_archive_n_entry_properties(archive), G_TYPE_INVALID);
-#endif
-
-	switch(i)
+	switch(n)
 	{
 		case LSQ_ARCHIVE_PROP_FILENAME:
 		case LSQ_ARCHIVE_PROP_MIME_TYPE:
 			return G_TYPE_STRING;
+			break;
 		default:
-#ifdef DEBUG
-			g_return_val_if_fail(archive->entry_property_types, G_TYPE_INVALID);
-#endif
-			return archive->entry_property_types[i - LSQ_ARCHIVE_PROP_USER];
+			return lsq_builder_settings_get_property_type(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
+			break;
 	}
 }
 
 /*
- * const gchar *
- * lsq_archive_get_entry_property_name(LSQArchive *, guint)
+ * lsq_archive_get_entry_property_name:
+ *
+ * @archive: LSQArchive object
  *
  */
 const gchar *
-lsq_archive_get_entry_property_name(LSQArchive *archive, guint i)
+lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
 {
-#ifdef DEBUG /* n_property + 2, filename and MIME */
-	g_return_val_if_fail(archive, G_TYPE_INVALID);
-	g_return_val_if_fail(i < lsq_archive_n_entry_properties(archive), G_TYPE_INVALID);
-#endif
-	
-	switch(i)
+	switch(n)
 	{
 		case LSQ_ARCHIVE_PROP_FILENAME:
 			return _("Name");
 		case LSQ_ARCHIVE_PROP_MIME_TYPE:
 			return _("Mime type");
+			break;
 		default:
-#ifdef DEBUG
-			g_return_val_if_fail(archive->entry_property_names, G_TYPE_INVALID);
-#endif
-			return archive->entry_property_names[i - LSQ_ARCHIVE_PROP_USER];
+			return lsq_builder_settings_get_property_name(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
+			break;
 	}
 }
 
 /*
- * void
- * lsq_archive_set_entry_property_type(LSQArchive *archive, guint i, GType *, const gchar *)
+ * lsq_archive_get_filename:
  *
+ * @archive: LSQArchive object
  */
-void
-lsq_archive_set_entry_property_type(LSQArchive *archive, guint i, GType type, const gchar *name)
-{
-#ifdef DEBUG
-	g_return_if_fail(archive);
-	g_return_if_fail(i >= LSQ_ARCHIVE_PROP_USER);
-#endif
-
-	GType *types_iter = lsq_archive_get_entry_property_types(archive, i+1-LSQ_ARCHIVE_PROP_USER);
-	gchar **names_iter = lsq_archive_get_entry_property_names(archive, i+1-LSQ_ARCHIVE_PROP_USER);
-
-	types_iter[i-LSQ_ARCHIVE_PROP_USER] = type;
-	g_free(names_iter[i-LSQ_ARCHIVE_PROP_USER]);
-	names_iter[i-LSQ_ARCHIVE_PROP_USER] = g_strdup(name);
-}
-
-/*
- * void
- * lsq_archive_set_entry_property_types(LSQArchive *archive, ...)
- *
- */
-void
-lsq_archive_set_entry_property_types(LSQArchive *archive, ...)
-{
-#ifdef DEBUG
-	g_return_if_fail(archive);
-#endif
-	GType   type;
-	gchar  *name;
-	guint   size = 0;
-	va_list ap;
-	va_start(ap, archive);
-	while(va_arg(ap, GType) && va_arg(ap, gchar*))
-	{
-		size++;
-	}
-	va_end(ap);
-	GType *types_iter = lsq_archive_get_entry_property_types(archive, size);
-	gchar **names_iter = lsq_archive_get_entry_property_names(archive, size);
-	va_start(ap, archive);
-	while((type = va_arg(ap, GType)) && (name = va_arg(ap, gchar*)))
-	{
-		*types_iter = type;
-		g_free(*names_iter);
-		*names_iter = g_strdup(name);
-		types_iter++;
-		names_iter++;
-	}
-}
-
-/*
- * void
- * lsq_archive_set_entry_property_typesv(LSQArchive *archive, GType *)
- *
- */
-void
-lsq_archive_set_entry_property_typesv(LSQArchive *archive, GType *types, const gchar **names)
-{
-#ifdef DEBUG
-	g_return_if_fail(archive);
-#endif
-	guint size = 0;
-	GType *type_iter = types;
-	const gchar **name_iter = names;
-	while(type_iter && name_iter)
-	{
-		size++;
-		type_iter++;
-		name_iter++;
-	}
-	GType *types_iter = lsq_archive_get_entry_property_types(archive, size);
-	gchar **names_iter = lsq_archive_get_entry_property_names(archive, size);
-	type_iter = types;
-	name_iter = names;
-	while(type_iter && name_iter)
-	{
-		*types_iter = *type_iter;
-		g_free(*names_iter);
-		*names_iter = g_strdup(*name_iter);
-		types_iter++;
-		type_iter++;
-		names_iter++;
-		name_iter++;
-	}
-}
-
-void
-lsq_archive_clear_entry_property_types(LSQArchive *archive)
-{
-#ifdef DEBUG
-	g_return_if_fail(archive);
-#endif
-	g_free(archive->entry_property_types);
-	g_free(archive->entry_property_names);
-	archive->entry_property_types = NULL;
-	archive->entry_property_names = NULL;
-	archive->entry_n_property = 0;
-}
-
-guint
-lsq_archive_n_entry_properties(LSQArchive *archive)
-{
-#ifdef DEBUG
-	g_return_val_if_fail(archive, 0);
-#endif
-	return archive->entry_n_property + LSQ_ARCHIVE_PROP_USER;
-}
-
 gchar *
 lsq_archive_get_filename(const LSQArchive *archive)
 {
 	return g_path_get_basename(archive->path);
 }
 
+/*
+ * lsq_archive_get_path:
+ *
+ * @archive: LSQArchive object
+ */
 const gchar *
 lsq_archive_get_path(const LSQArchive *archive)
 {
 	return archive->path;
 }
 
+/*
+ * lsq_archive_get_mimetype:
+ *
+ * @archive: LSQArchive object
+ */
 const gchar *
 lsq_archive_get_mimetype(const LSQArchive *archive)
 {
 	return thunar_vfs_mime_info_get_name(archive->mime_info);
 }
 
+/*
+ * lsq_archive_exists:
+ *
+ * @archive: LSQArchive object
+ */
 gboolean
 lsq_archive_exists(const LSQArchive *archive)
 {
@@ -623,4 +483,5 @@ cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error,
 #ifdef DEBUG
 	g_debug("COMMAND TERMINATED");
 #endif
+	lsq_archive_refreshed(archive);
 }
