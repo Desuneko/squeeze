@@ -204,7 +204,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE)/*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_length*/
+	if(!TRUE)/*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_length*/
 	{
 		line[n]='\0';
 		length = g_ascii_strtoull(line + a, NULL, 0);
@@ -217,7 +217,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_method*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_method*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -229,7 +229,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_size*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_size*/
 	{
 		line[n]='\0';
 		size = g_ascii_strtoull(line + a, NULL, 0);
@@ -242,7 +242,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_ratio*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_ratio*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -254,7 +254,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_date*/
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_date*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -266,7 +266,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE) /* LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_time */
+	if(!TRUE) /* LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_time */
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -278,7 +278,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_crc_32 */
+	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_crc_32 */
 	{
 		line[n] = '\0';
 		props[i] = line + a;
