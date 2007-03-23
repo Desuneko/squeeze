@@ -140,9 +140,9 @@ lsq_command_builder_zip_build_add(LSQCommandBuilder *builder, LSQArchive *archiv
 }
 
 static LSQArchiveCommand *
-lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *filenames)
+lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *file_iters)
 {
-	gchar *files = lsq_concat_filenames(filenames);
+	gchar *files = lsq_concat_iter_filenames(file_iters);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new("Remove", archive, "zip -d %1$s %2$s", files, NULL, NULL);
 

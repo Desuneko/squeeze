@@ -259,11 +259,11 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 
 
 static LSQArchiveCommand *
-lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *filenames)
+lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *file_iters)
 {
 	gchar *options = NULL;
 	gchar *tmp_file = NULL;
-	gchar *files = lsq_concat_filenames(filenames);
+	gchar *files = lsq_concat_iter_filenames(file_iters);
 	const gchar *compress_skeleton = NULL;
 	const gchar *decompress_skeleton = NULL;
 	LSQArchiveCommand *remove_macro = NULL;

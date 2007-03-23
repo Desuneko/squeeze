@@ -135,9 +135,9 @@ lsq_command_builder_rar_build_add(LSQCommandBuilder *builder, LSQArchive *archiv
 }
 
 static LSQArchiveCommand *
-lsq_command_builder_rar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *filenames)
+lsq_command_builder_rar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *iter_files)
 {
-	gchar *files = lsq_concat_filenames(filenames);
+	gchar *files = lsq_concat_iter_filenames(iter_files);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new("Remove", archive, "rar -d %1$s %2$s", files, NULL, NULL);
 
