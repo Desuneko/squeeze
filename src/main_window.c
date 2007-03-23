@@ -1057,10 +1057,10 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, gchar *path, gpo
 				if(lsq_archive_extract(lp_archive, extract_archive_path, filenames))
 				{
 					GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-																														 GTK_DIALOG_DESTROY_WITH_PARENT, 
-																														 GTK_MESSAGE_WARNING,
-																														 GTK_BUTTONS_CLOSE,
-																														 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+																	 GTK_DIALOG_DESTROY_WITH_PARENT, 
+																	 GTK_MESSAGE_WARNING,
+																	 GTK_BUTTONS_CLOSE,
+																	 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
 					gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 					gtk_widget_destroy(warning_dialog);
 

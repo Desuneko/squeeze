@@ -703,9 +703,9 @@ cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data)
 }
 
 static void
-cb_notebook_file_activated(SQArchiveStore *store, gchar *filename, SQNotebook *notebook)
+cb_notebook_file_activated(SQArchiveStore *store, gchar *path, SQNotebook *notebook)
 {
-	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, filename, NULL);
+	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, path, NULL);
 }
 
 gboolean

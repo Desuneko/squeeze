@@ -1124,7 +1124,7 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 #ifdef DEBUG
 			g_debug("file clicked");
 #endif
-			g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, lsq_archive_iter_get_filename(entry), NULL); 
+			g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_FILE_ACTIVATED], 0, lsq_archive_iter_get_path(entry), NULL); 
 			return;
 		}
 

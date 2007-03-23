@@ -129,6 +129,8 @@ lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, 
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), extract);
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), launch);
 
+	g_object_unref(extract);
+	g_object_unref(launch);
 	return macro;
 }
 
