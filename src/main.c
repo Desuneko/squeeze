@@ -15,6 +15,7 @@
  */
 
 #include <config.h>
+#include <string.h>
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
@@ -97,6 +98,8 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
+	gchar *current_dir = g_get_current_dir();
+	g_debug(current_dir);
 
 	thunar_vfs_init();
 	lsq_init();
@@ -134,13 +137,35 @@ int main(int argc, char **argv)
 	{
 		GSList *files = NULL;
 
+		/*
+		 * Remove prefix if it is the pwd
+		 */
 		for(i = 1; i < argc; i++)
 		{
-			files = g_slist_prepend(files, argv[i]);
+			gchar *filename;
+			if(g_str_has_prefix(argv[i], current_dir))
+			{
+				filename = g_strdup(&(argv[i][strlen(current_dir)+1]));
+			}
+			else
+				filename = g_strdup(argv[i]);
+			files = g_slist_prepend(files, filename);
 		}
 
+		/*
+		 * Remove prefix if it is the pwd
+		 */
 		if(new_archive)
-			files = g_slist_prepend(files, new_archive);
+		{
+			gchar *filename;
+			if(g_str_has_prefix(new_archive, current_dir))
+			{
+				filename = g_strdup(&(new_archive[strlen(current_dir)+1]));
+			}
+			else
+				filename = g_strdup(new_archive);
+			files = g_slist_prepend(files, filename);
+		}
 
 		if(sq_application_new_archive(sq_app, add_archive_path, files))
 			return 1;

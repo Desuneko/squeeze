@@ -484,4 +484,5 @@ cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error,
 	g_debug("COMMAND TERMINATED");
 #endif
 	lsq_archive_refreshed(archive);
+	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
 }
