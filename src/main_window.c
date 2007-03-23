@@ -93,6 +93,7 @@ static void cb_sq_main_refresh_archive(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
+static void cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata);
 /*static void cb_sq_main_properties(GtkWidget *widget, gpointer userdata);*/
 /*static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);*/
 
@@ -1096,6 +1097,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 		gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
 		gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
 		/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
+		g_signal_connect(G_OBJECT(archive), "command-terminated", G_CALLBACK(cb_sq_main_window_archive_command_terminated), window);
 		return 0;
 	}
 	else
@@ -1153,6 +1155,19 @@ sq_main_window_set_navigation(SQMainWindow *window)
 			gtk_box_reorder_child(GTK_BOX(window->main_vbox), (GtkWidget *)nav_bar, 1);
 		gtk_widget_show_all((GtkWidget *)nav_bar);
 	}	
+}
+
+static void
+cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata)
+{
+	SQMainWindow *window = userdata;
+
+	if(error)
+	{
+		GtkWidget *error_dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, error->message);
+		gtk_dialog_run(GTK_DIALOG(error_dialog));
+		gtk_widget_destroy(error_dialog);
+	}
 }
 
 /*

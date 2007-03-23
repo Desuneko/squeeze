@@ -20,7 +20,7 @@
 struct _LSQArchiveMimeInfo
 {
 	ThunarVfsMimeInfo *mime_info;
-	GSList           *command_builders;
+	GSList            *command_builders;
 };
 
 typedef struct _LSQArchiveMimeInfo LSQArchiveMimeInfo;
