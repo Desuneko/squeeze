@@ -97,6 +97,27 @@ lsq_command_builder_rar_init(LSQCommandBuilderRar *command_builder_rar)
 
 	command_builder->mime_types = g_new0(gchar *, 2);
 	command_builder->mime_types[0] = "application/x-rar";
+
+	lsq_builder_settings_set_property_types(command_builder->settings, 
+	                                        _("Compressed"), /* length */
+	                                        G_TYPE_UINT64,
+	                                        _("Size"), /* size */
+	                                        G_TYPE_UINT64,
+	                                        _("Ratio"), /* ratio */
+	                                        G_TYPE_STRING,
+	                                        _("Date"), /* date */
+	                                        G_TYPE_STRING,
+	                                        _("Time"), /* time */
+	                                        G_TYPE_STRING,
+	                                        _("Rights"), /* rights */
+	                                        G_TYPE_STRING,
+	                                        "CRC-32", /* crc-32 */
+	                                        G_TYPE_STRING,
+	                                        _("Method"), /* method */
+	                                        G_TYPE_STRING,
+	                                        _("Version"), /* version*/
+	                                        G_TYPE_STRING,
+											NULL);
 }
 
 /**

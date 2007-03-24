@@ -43,5 +43,6 @@ LSQBuilderSettings  *lsq_builder_settings_new();
 guint                lsq_builder_settings_get_n_properties(LSQBuilderSettings *settings);
 GType                lsq_builder_settings_get_property_type(LSQBuilderSettings *settings, guint n);
 const gchar         *lsq_builder_settings_get_property_name(LSQBuilderSettings *settings, guint n);
+void                 lsq_builder_settings_set_property_types(LSQBuilderSettings *settings, ...);
 
 #endif /* __LIBSQUEEZE_BUILDER_SETTINGS_H__ */

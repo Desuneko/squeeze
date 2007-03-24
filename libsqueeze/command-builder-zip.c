@@ -102,6 +102,23 @@ lsq_command_builder_zip_init(LSQCommandBuilderZip *command_builder_zip)
 	command_builder->mime_types = g_new0(gchar *, 3);
 	command_builder->mime_types[0] = "application/zip";
 	command_builder->mime_types[1] = "application/x-zip";
+
+	lsq_builder_settings_set_property_types(command_builder->settings, 
+	                                        _("Compressed"), /* length */
+	                                        G_TYPE_UINT64,
+	                                        _("Method"), /* method */
+	                                        G_TYPE_STRING,
+	                                        _("Size"), /* size */
+	                                        G_TYPE_UINT64,
+	                                        _("Ratio"), /* ratio */
+	                                        G_TYPE_STRING,
+	                                        _("Date"), /* date */
+	                                        G_TYPE_STRING,
+	                                        _("Time"), /* time */
+	                                        G_TYPE_STRING,
+	                                        "CRC-32", /* crc-32 */
+	                                        G_TYPE_STRING,
+											NULL);
 }
 
 /**
@@ -204,7 +221,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE)/*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_length*/
+	if(TRUE)/*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_length*/
 	{
 		line[n]='\0';
 		length = g_ascii_strtoull(line + a, NULL, 0);
@@ -217,7 +234,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_method*/
+	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_method*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -229,7 +246,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_size*/
+	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_size*/
 	{
 		line[n]='\0';
 		size = g_ascii_strtoull(line + a, NULL, 0);
@@ -242,7 +259,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_ratio*/
+	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_ratio*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -254,7 +271,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_date*/
+	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_date*/
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -266,7 +283,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE) /* LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_time */
+	if(TRUE) /* LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_time */
 	{
 		line[n] = '\0';
 		props[i] = line + a;
@@ -278,7 +295,7 @@ lsq_command_builder_zip_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 	a = n;
 	for(; n < linesize && line[n] != ' '; n++);
 
-	if(!TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_crc_32 */
+	if(TRUE) /*LSQ_ARCHIVE_SUPPORT_ZIP(support)->_view_crc_32 */
 	{
 		line[n] = '\0';
 		props[i] = line + a;

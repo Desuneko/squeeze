@@ -143,6 +143,39 @@ lsq_builder_settings_get_property_name(LSQBuilderSettings *settings, guint n)
 	return settings->property_names[n];
 }
 
+void
+lsq_builder_settings_set_property_types(LSQBuilderSettings *settings, ...)
+{
+	g_return_if_fail(!settings->property_names);
+	g_return_if_fail(!settings->property_types);
+
+	GType   type;
+	gchar  *name;
+	guint   size = 0;
+	va_list ap;
+	va_start(ap, settings);
+	while(va_arg(ap, gchar *) && va_arg(ap, GType))
+	{
+		size++;
+	}
+	va_end(ap);
+	GType *types_iter = g_new(GType, size);
+	gchar **names_iter = g_new(gchar *, size);
+
+	settings->n_properties = size;
+	settings->property_names = names_iter;
+	settings->property_types = types_iter;
+
+	va_start(ap, settings);
+	while((name = va_arg(ap, gchar *)) && (type = va_arg(ap, GType)))
+	{
+		*types_iter = type;
+		*names_iter = name;
+		types_iter++;
+		names_iter++;
+	}
+}
+
 /********************
  * LSQArchive stuff *
  ********************/
