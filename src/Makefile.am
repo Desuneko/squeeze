@@ -32,6 +32,7 @@ squeeze_SOURCES = \
 squeeze_CFLAGS = \
 	@GTK_CFLAGS@ \
 	@GLIB_CFLAGS@ \
+	@DBUS_CFLAGS@ \
 	$(THUNAR_VFS_CFLAGS) \
 	$(XFCE4UTIL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
@@ -42,6 +43,7 @@ squeeze_LDADD = \
 	$(top_srcdir)/libsqueeze/libsqueeze-1.la \
 	@GTK_LIBS@ \
 	@GLIB_LIBS@ \
+	@DBUS_LIBS@ \
 	@THUNAR_VFS_LIBS@
 
 squeeze_LDFLAGS = -static

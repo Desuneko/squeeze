@@ -42,7 +42,10 @@ typedef struct _LSQDBusCommand LSQDBusCommand;
 struct _LSQDBusCommand
 {
 	LSQArchiveCommand  parent;
-	GSList *command_queue;
+	DBusGConnection *connection;
+	DBusGProxy      *proxy;
+	gchar *method_name;
+	gchar *filename;
 };
 
 typedef struct _LSQDBusCommandClass LSQDBusCommandClass;
@@ -52,8 +55,8 @@ struct _LSQDBusCommandClass
 	LSQArchiveCommandClass parent;
 }; 
 
-LSQArchiveCommand * lsq_dbus_command_new(const gchar *comment, LSQArchive *archive);
-void lsq_dbus_command_append(LSQDBusCommand *command, LSQArchiveCommand *sub_command);
+LSQArchiveCommand * lsq_dbus_command_new(const gchar *comment, LSQArchive *archive, const gchar *, const gchar *, const gchar *, const gchar *);
+void                lsq_dbus_command_set_args(LSQDBusCommand *command, ...);
 
 G_END_DECLS
 #endif /* __LIBSQUEEZE_DBUS_COMMAND_H__ */

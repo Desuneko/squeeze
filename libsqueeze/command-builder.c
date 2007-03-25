@@ -124,8 +124,9 @@ static LSQArchiveCommand *
 lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files)
 {
 	LSQArchiveCommand *extract = builder->build_extract(builder, archive, lsq_tempfs_get_root_dir(archive), files);
-	LSQArchiveCommand *launch = lsq_dbus_command_new("Execute", archive);
+	LSQArchiveCommand *launch = lsq_dbus_command_new("Execute", archive, "org.xfce.FileManager", "/org/xfce/FileManager","org.xfce.FileManager", "Launch");
 	LSQArchiveCommand *macro = lsq_macro_command_new("Open", archive);
+
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), extract);
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), launch);
 

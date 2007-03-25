@@ -22,6 +22,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <dbus/dbus-glib.h>
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze-module.h"
@@ -124,18 +125,39 @@ lsq_dbus_command_finalize(GObject *object)
  * Returns: a new LSQDBusCommand object
  */
 LSQArchiveCommand *
-lsq_dbus_command_new(const gchar *comment, LSQArchive *archive)
+lsq_dbus_command_new(const gchar *comment, LSQArchive *archive, const gchar *service, const gchar *path, const gchar *interface, const gchar *method)
 {
+	GError *error = NULL;
 	LSQArchiveCommand *archive_command;
 
 	archive_command = g_object_new(lsq_dbus_command_get_type(), NULL);
 
+	LSQDBusCommand    *dbus_command = LSQ_DBUS_COMMAND(archive_command);
+
+	dbus_command->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+	dbus_command = LSQ_DBUS_COMMAND(archive_command);
+	dbus_command->proxy = dbus_g_proxy_new_for_name (dbus_command->connection, service, path, interface);
+	dbus_command->method_name = g_strdup(method);
+
+
+	archive_command->archive = archive;
+
 	return archive_command;
+}
+
+void
+lsq_dbus_command_set_args(LSQDBusCommand *command, ...)
+{
 }
 
 static gboolean
 lsq_dbus_command_execute(LSQArchiveCommand *command)
 {
-	g_critical("DBUS COMMAND NOT IMPLEMENTED");
-	return FALSE;
+	GError *error = NULL;
+	LSQDBusCommand *dbus_command = LSQ_DBUS_COMMAND(command);
+	
+	/* args */
+	dbus_g_proxy_call(dbus_command->proxy, dbus_command->method_name, &error, G_TYPE_STRING, "/home", G_TYPE_STRING, ":0.0", G_TYPE_INVALID);
+	return TRUE;
 }

@@ -25,6 +25,7 @@ libsqueeze_1_la_SOURCES =  \
 
 libsqueeze_1_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \
+	$(DBUS_CFLAGS)  \
 	$(THUNAR_VFS_CFLAGS)
 
 libsqueeze_1_la_LIBADD =

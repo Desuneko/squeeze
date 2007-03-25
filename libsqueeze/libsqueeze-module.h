@@ -16,6 +16,7 @@
 #ifndef __LIBSQUEEZE_MODULE_H__
 #define __LIBSQUEEZE_MODULE_H__ 
 
+#include <dbus/dbus-glib.h>
 #include <libsqueeze/libsqueeze-archive.h>
 #include <libsqueeze/libsqueeze-command.h>
 #include <libsqueeze/archive-command.h>
