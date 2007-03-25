@@ -1,9 +1,15 @@
 libsqueeze/libsqueeze.c
 libsqueeze/archive.c
-libsqueeze/archive-support.c
-libsqueeze/archive-support-gnu-tar.c
-libsqueeze/archive-support-zip.c
-libsqueeze/archive-support-rar.c
+libsqueeze/command-builder.c
+libsqueeze/command-builder-zip.c
+libsqueeze/command-builder-gnu-tar.c
+libsqueeze/command-builder-rar.c
+libsqueeze/command-builder-compr.c
+libsqueeze/archive-command.c
+libsqueeze/spawn-command.c
+libsqueeze/dbus-command.c
+libsqueeze/macro-command.c
+libsqueeze/vfs-mime.c
 libsqueeze/internals.c
 
 src/main.c
