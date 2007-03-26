@@ -44,7 +44,6 @@ struct _SQNewArchiveDialog
 {
 	GtkFileChooserDialog parent;
 	GtkWidget *archive_types_combo;
-	GtkWidget *append_extention_check;
 	GtkFileFilter *file_filter; /* HACK -- should just be set inside the constructor */
 };
 

@@ -70,9 +70,6 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 
 	dialog->archive_types_combo = gtk_combo_box_new_text();
 	gtk_box_pack_start (GTK_BOX (hbox),dialog->archive_types_combo,FALSE, FALSE, 0);
-	dialog->append_extention_check = gtk_check_button_new_with_label(_("Append extension to filename"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dialog->append_extention_check), TRUE);
-	gtk_box_pack_start (GTK_BOX (hbox),dialog->append_extention_check,FALSE, FALSE, 0);
 
 	gtk_widget_show_all(hbox);
 
@@ -118,13 +115,5 @@ gchar *
 sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
 {
 	gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(dialog->append_extention_check)))
-	{
-		gchar *extension = gtk_combo_box_get_active_text(GTK_COMBO_BOX(dialog->archive_types_combo));
-		gchar *_filename = g_strconcat(filename, extension, NULL);
-		g_free(extension);
-		g_free(filename);
-		filename = _filename;
-	}
 	return filename;
 }
