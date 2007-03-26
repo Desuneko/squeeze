@@ -76,48 +76,17 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 
 	gtk_widget_show_all(hbox);
 
-	GSList *_supported_mime_types = NULL;
+	GSList *_supported_mime_types = lsq_get_supported_mime_types();
 
 	dialog->file_filter = gtk_file_filter_new();
 	gtk_file_filter_set_name(dialog->file_filter, _("Archives"));
 	while(_supported_mime_types)
 	{
-		if(!strcmp(_supported_mime_types->data, "application/x-tar"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-tarz"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.Z");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-compressed-tar"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tgz");
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.gz");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-bzip-compressed-tar"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tbz");
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.bz");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-bzip2-compressed-tar"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tbz2");
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tar.bz2");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-tzo"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".tzo");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-zip"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".zip");
-		}
-		if(!strcmp(_supported_mime_types->data, "application/x-rar"))
-		{
-			gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo), ".rar");
-		}
-		gtk_file_filter_add_mime_type(dialog->file_filter, _supported_mime_types->data);
+		gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo),
+		        lsq_archive_mime_get_comment((LSQArchiveMime *)(_supported_mime_types->data)));
+
+		gtk_file_filter_add_mime_type(dialog->file_filter,
+		        lsq_archive_mime_get_name((LSQArchiveMime *)(_supported_mime_types->data)));
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
 	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 0);

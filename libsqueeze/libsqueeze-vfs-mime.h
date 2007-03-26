@@ -14,26 +14,19 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __ARCHIVE_MIME_H__
-#define __ARCHIVE_MIME_H__
+#ifndef __LIBSQUEEZE_ARCHIVE_MIME_H__
+#define __LIBSQUEEZE_ARCHIVE_MIME_H__
 
-struct _LSQArchiveMime
-{
-	ThunarVfsMimeInfo *mime_info;
-	GSList            *command_builders;
-};
+typedef struct _LSQArchiveMime LSQArchiveMime;
 
+gboolean
+lsq_archive_mime_set_default_builder(const gchar *mime, const gchar *id);
 
-LSQArchiveMime *
-lsq_archive_mime_new(const gchar *mime);
+const gchar *
+lsq_archive_mime_get_comment(LSQArchiveMime *);
 
-
-void
-lsq_command_builder_register(const LSQCommandBuilder *builder);
-
-LSQCommandBuilder *
-lsq_archive_mime_get_default_builder(const gchar *mime);
+const gchar *
+lsq_archive_mime_get_name(LSQArchiveMime *);
 
 
-#endif /* __ARCHIVE_MIME_H__ */
-
+#endif /* __LIBSQUEEZE_ARCHIVE_MIME_H__ */

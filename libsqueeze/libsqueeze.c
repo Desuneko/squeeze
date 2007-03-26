@@ -23,6 +23,7 @@
 
 #include "libsqueeze.h"
 #include "libsqueeze/libsqueeze-module.h"
+#include "libsqueeze/libsqueeze-vfs-mime.h"
 #include "libsqueeze/archive-iter.h"
 #include "libsqueeze/archive-command.h"
 #include "libsqueeze/archive.h"
@@ -129,5 +130,11 @@ void
 lsq_close_archive(LSQArchive *archive)
 {
 	g_object_unref(archive);
+}
+
+GSList *
+lsq_get_supported_mime_types()
+{
+	return g_slist_copy(lsq_mime_info_list);
 }
 

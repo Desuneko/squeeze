@@ -99,9 +99,8 @@ lsq_command_builder_zip_init(LSQCommandBuilderZip *command_builder_zip)
 	command_builder->build_remove = lsq_command_builder_zip_build_remove;
 	command_builder->build_refresh = lsq_command_builder_zip_build_refresh;
 
-	command_builder->mime_types = g_new0(gchar *, 3);
+	command_builder->mime_types = g_new0(gchar *, 2);
 	command_builder->mime_types[0] = "application/zip";
-	command_builder->mime_types[1] = "application/x-zip";
 
 	lsq_builder_settings_set_property_types(command_builder->settings, 
 	                                        _("Compressed"), /* length */

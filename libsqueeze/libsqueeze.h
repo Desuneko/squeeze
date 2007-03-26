@@ -18,6 +18,7 @@
 #define __LIBSQUEEZE_H__
 
 #include <libsqueeze/libsqueeze-archive.h>
+#include <libsqueeze/libsqueeze-vfs-mime.h>
 #include <libsqueeze/libsqueeze-view.h>
 
 

@@ -26,6 +26,7 @@
 
 #include "libsqueeze.h"
 #include "libsqueeze-module.h"
+#include "libsqueeze-vfs-mime.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "archive.h"

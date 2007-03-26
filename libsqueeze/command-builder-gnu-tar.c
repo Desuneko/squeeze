@@ -104,13 +104,12 @@ lsq_command_builder_gnu_tar_init(LSQCommandBuilderGnuTar *command_builder_gnu_ta
 	command_builder->build_remove = lsq_command_builder_gnu_tar_build_remove;
 	command_builder->build_refresh = lsq_command_builder_gnu_tar_build_refresh;
 
-	command_builder->mime_types = g_new0(gchar *, 7);
+	command_builder->mime_types = g_new0(gchar *, 6);
 	command_builder->mime_types[0] = "application/x-tar";
 	command_builder->mime_types[1] = "application/x-tarz";
 	command_builder->mime_types[2] = "application/x-compressed-tar";
 	command_builder->mime_types[3] = "application/x-bzip-compressed-tar";
-	command_builder->mime_types[4] = "application/x-bzip2-compressed-tar";
-	command_builder->mime_types[5] = "application/x-tzo";
+	command_builder->mime_types[4] = "application/x-tzo";
 
 	lsq_builder_settings_set_property_types(command_builder->settings, 
 	                                        _("Rights"), /* rights*/
