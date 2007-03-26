@@ -28,11 +28,6 @@
 #include "archive-iter.h"
 #include "archive-tempfs.h"
 #include "archive.h"
-#include "archive-command.h"
-#include "macro-command.h"
-#include "spawn-command.h"
-#include "dbus-command.h"
-#include "command-builder.h"
 #include "builder-settings.h"
 
 static void
@@ -124,7 +119,8 @@ static LSQArchiveCommand *
 lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files)
 {
 	LSQArchiveCommand *extract = builder->build_extract(builder, archive, lsq_tempfs_get_root_dir(archive), files);
-	LSQArchiveCommand *launch = lsq_dbus_command_new("Execute", archive, "org.xfce.FileManager", "/org/xfce/FileManager","org.xfce.FileManager", "Launch");
+	LSQArchiveCommand *launch = lsq_xfce_launch_command_new("Execute", 
+	                                                 archive, lsq_tempfs_get_root_dir(archive), files);
 	LSQArchiveCommand *macro = lsq_macro_command_new("Open", archive);
 
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), extract);
