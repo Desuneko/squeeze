@@ -16,6 +16,7 @@
 
 
 #include <config.h>
+#include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
@@ -36,6 +37,9 @@
 #include "vfs-mime.h"
 
 #include "internals.h"
+
+static gint
+lsq_lookup_mime(gconstpointer a, gconstpointer b);
 
 void
 lsq_init()
@@ -136,5 +140,24 @@ GSList *
 lsq_get_supported_mime_types()
 {
 	return g_slist_copy(lsq_mime_info_list);
+}
+
+static gint
+lsq_lookup_mime(gconstpointer a, gconstpointer b)
+{
+	return !thunar_vfs_mime_info_equal((((LSQArchiveMime *)a)->mime_info), b);
+}
+
+gboolean
+lsq_is_supported(const gchar *filename)
+{
+	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, filename);
+	GSList *result = g_slist_find_custom(lsq_mime_info_list, mime_info, lsq_lookup_mime);
+	thunar_vfs_mime_info_unref(mime_info);
+	if(result)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 

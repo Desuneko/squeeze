@@ -75,6 +75,9 @@ lsq_close_archive( LSQArchive *archive );
 GSList *
 lsq_get_supported_mime_types();
 
+gboolean
+lsq_is_supported(const gchar *filename);
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_H__ */

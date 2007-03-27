@@ -115,5 +115,42 @@ gchar *
 sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
 {
 	gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-	return filename;
+
+	gchar *base = g_path_get_basename(filename);
+	if(lsq_is_supported(base))
+	{
+		g_free(base);
+		return filename;
+	}
+	else
+	{
+		g_free(base);
+		gint i;
+		GSList *_supported_mime_types = lsq_get_supported_mime_types();
+		for(i = 0; i < gtk_combo_box_get_active(GTK_COMBO_BOX(dialog->archive_types_combo)); i++)
+		{
+			_supported_mime_types = g_slist_next(_supported_mime_types);
+		}
+		const gchar *mime_type = lsq_archive_mime_get_name(((LSQArchiveMime *)_supported_mime_types->data));
+		gchar *suffix = NULL;
+		if(!strcmp(mime_type, "application/x-tar")) suffix = ".tar";
+		if(!strcmp(mime_type, "application/x-compressed-tar")) suffix = ".tar.gz";
+		if(!strcmp(mime_type, "application/x-bzip-compressed-tar")) suffix = ".tar.bz2";
+		if(!strcmp(mime_type, "application/x-tarz")) suffix = ".tar.Z";
+		if(!strcmp(mime_type, "application/x-tzo")) suffix = ".tzo";
+
+		if(!strcmp(mime_type, "application/x-zip")) suffix = ".zip";
+
+		if(!strcmp(mime_type, "application/x-rar"))  suffix = ".rar";
+
+
+		if(!strcmp(mime_type, "application/x-gzip"))  suffix = ".gz";
+		if(!strcmp(mime_type, "application/x-bzip"))  suffix = ".bz2";
+		if(!strcmp(mime_type, "application/x-lzop"))  suffix = ".lzo";
+		if(!strcmp(mime_type, "application/x-compress"))  suffix = ".Z";
+		base = filename;
+		filename = g_strconcat(base, suffix, NULL);
+		g_free(base);
+		return filename;
+	}
 }
