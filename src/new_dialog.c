@@ -84,9 +84,10 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 
 		gtk_file_filter_add_mime_type(dialog->file_filter,
 		        lsq_archive_mime_get_name((LSQArchiveMime *)(_supported_mime_types->data)));
+		if(!strcmp(lsq_archive_mime_get_name((LSQArchiveMime *)_supported_mime_types->data), "application/x-compressed-tar"))
+			gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), g_slist_index(lsq_get_supported_mime_types(), _supported_mime_types->data));
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
-	gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), 0);
 
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog), 
