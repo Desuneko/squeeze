@@ -150,7 +150,7 @@ static LSQArchiveCommand *
 lsq_command_builder_zip_build_add(LSQCommandBuilder *builder, LSQArchive *archive, GSList *filenames)
 {
 	gchar *files = lsq_concat_filenames(filenames);
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Add", archive, "zip %3$s -r %1$s %2$s", files, NULL, NULL);
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Adding"), archive, "zip %3$s -r %1$s %2$s", files, NULL, NULL);
 	g_free(files);
 	return spawn;
 }
@@ -160,7 +160,7 @@ lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *arc
 {
 	gchar *files = lsq_concat_iter_filenames(file_iters);
 
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Remove", archive, "zip -d %1$s %2$s", files, NULL, NULL);
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Removing"), archive, "zip -d %1$s %2$s", files, NULL, NULL);
 
 	g_free(files);
 	return spawn;
@@ -172,7 +172,7 @@ lsq_command_builder_zip_build_extract(LSQCommandBuilder *builder, LSQArchive *ar
 	gchar *files = lsq_concat_filenames(filenames);
 	gchar *options = g_strconcat(" -d ", dest_path, NULL);
 
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Extract", archive, "unzip -o %1$s %2$s %3$s", files, options, NULL);
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "unzip -o %1$s %2$s %3$s", files, options, NULL);
 
 	g_free(options);
 	g_free(files);
@@ -182,7 +182,7 @@ lsq_command_builder_zip_build_extract(LSQCommandBuilder *builder, LSQArchive *ar
 static LSQArchiveCommand *
 lsq_command_builder_zip_build_refresh(LSQCommandBuilder *builder, LSQArchive *archive)
 {
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Refresh", archive, "unzip -lv -qq %1$s", NULL, NULL, NULL);
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Refresh"), archive, "unzip -lv -qq %1$s", NULL, NULL, NULL);
 
 	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(spawn), 1, lsq_command_builder_zip_refresh_parse_output, NULL))
 	{

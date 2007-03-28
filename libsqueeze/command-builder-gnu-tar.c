@@ -342,7 +342,7 @@ lsq_command_builder_gnu_tar_build_extract(LSQCommandBuilder *builder, LSQArchive
 	gchar *files = lsq_concat_filenames(filenames);
 	gchar *options = g_strconcat(" -C ", dest_path, NULL);
 
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Extract", archive, "tar %3$s -x -f %1$s %2$s", files, options, NULL);
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "tar %3$s -x -f %1$s %2$s", files, options, NULL);
 
 	g_free(options);
 	g_free(files);
@@ -352,7 +352,7 @@ lsq_command_builder_gnu_tar_build_extract(LSQCommandBuilder *builder, LSQArchive
 static LSQArchiveCommand *
 lsq_command_builder_gnu_tar_build_refresh(LSQCommandBuilder *builder, LSQArchive *archive)
 {
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Refresh", archive, "tar -tvvf %1$s", NULL, NULL, NULL);
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Refresh"), archive, "tar -tvvf %1$s", NULL, NULL, NULL);
 
 	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(spawn), 1, lsq_command_builder_gnu_tar_refresh_parse_output, NULL))
 	{
