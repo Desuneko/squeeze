@@ -1,3 +1,7 @@
+2007-03-28  Stephan Arts <stephan@xfce.org>
+
+	* LINGUAS: Added en_GB to LINGUAS file
+
 2007-03-27  Maximilian Schleiss <maxschleiss@bluewin.ch>
 
 	* en_GB.po: Added the British translation
