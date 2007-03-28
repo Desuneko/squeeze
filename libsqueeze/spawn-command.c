@@ -159,7 +159,7 @@ lsq_spawn_command_new(const gchar *comment,
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), NULL);
 #endif
 
-	archive_command = g_object_new(lsq_spawn_command_get_type(), NULL);
+	archive_command = g_object_new(LSQ_TYPE_SPAWN_COMMAND, NULL);
 
 	if(!files)
 		files = "";

@@ -7,7 +7,7 @@ libsqueeze/command-builder-rar.c
 libsqueeze/command-builder-compr.c
 libsqueeze/archive-command.c
 libsqueeze/spawn-command.c
-libsqueeze/dbus-command.c
+libsqueeze/xfce-launch-command.c
 libsqueeze/macro-command.c
 libsqueeze/vfs-mime.c
 libsqueeze/internals.c

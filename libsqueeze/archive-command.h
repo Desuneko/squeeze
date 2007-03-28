@@ -15,20 +15,23 @@
 
 #ifndef __LIBSQUEEZE_ARCHIVE_COMMAND_H__
 #define __LIBSQUEEZE_ARCHIVE_COMMAND_H__ 
+
+typedef gboolean (*LSQCommandFunc)(LSQArchiveCommand *);
+
 G_BEGIN_DECLS
 
 struct _LSQArchiveCommand
 {
-	GObject      parent;
-	GQuark       domain;
-	gchar       *comment;
-	LSQArchive  *archive;
-	GError      *error;
-	gboolean     running;
-	gboolean     safe;
-	gpointer     user_data;
-	gboolean   (*execute)(LSQArchiveCommand *);
-	gboolean   (*stop)(LSQArchiveCommand *);
+	GObject        parent;
+	GQuark         domain;
+	gchar         *comment;
+	LSQArchive    *archive;
+	GError        *error;
+	gboolean       running;
+	gboolean       safe;
+	gpointer       user_data;
+	LSQCommandFunc execute;
+	LSQCommandFunc stop;
 };
 
 struct _LSQArchiveCommandClass
@@ -42,6 +45,11 @@ gboolean
 lsq_archive_command_execute(LSQArchiveCommand *command);
 const gchar *
 lsq_archive_command_get_comment(LSQArchiveCommand *archive_command);
+
+LSQArchiveCommand *
+lsq_archive_command_new(const gchar *comment,
+                        LSQArchive *archive,
+                        LSQCommandFunc exec_command);
 
 G_END_DECLS
 #endif /* __LIBSQUEEZE_ARCHIVE_COMMAND_H__ */

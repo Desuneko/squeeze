@@ -27,6 +27,8 @@
 #include "libsqueeze-module.h"
 #include "command-builder-compr.h"
 
+#define LSQ_ARCHIVE_DEST_FILE "compr_dest_file"
+
 static void
 lsq_command_builder_compr_class_init(LSQCommandBuilderComprClass *);
 static void
@@ -44,6 +46,13 @@ static LSQArchiveCommand *
 lsq_command_builder_compr_build_refresh(LSQCommandBuilder *builder, LSQArchive *archive);
 static LSQArchiveCommand *
 lsq_command_builder_compr_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
+
+static gboolean
+lsq_command_builder_compr_refresh(LSQArchiveCommand *command);
+static gboolean
+lsq_command_builder_compr_compress_parse_output(LSQSpawnCommand *, gpointer);
+static gboolean
+lsq_command_builder_compr_decompress_parse_output(LSQSpawnCommand *, gpointer);
 
 static GObjectClass *parent_class;
 
@@ -127,14 +136,61 @@ lsq_command_builder_compr_finalize(GObject *object)
 	parent_class->finalize(object);
 }
 
+const gchar *
+lsq_command_builder_compr_get_decompress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive)
+{
+	const gchar *decompress_skeleton = NULL;
+
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-compress"))
+		decompress_skeleton = "uncompress -c %1$s";
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-gzip"))
+		decompress_skeleton = "gunzip -c %1$s";
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-bzip"))
+		decompress_skeleton = "bunzip2 -c %1$s";
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-lzop"))
+		decompress_skeleton = "lzop -dc %1$s";
+
+	return decompress_skeleton;
+}
+
+const gchar *
+lsq_command_builder_compr_get_compress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive)
+{
+	const gchar *compress_skeleton = NULL;
+
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-compress"))
+		compress_skeleton = "compress -c %1$s";
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-gzip"))
+		compress_skeleton = "gzip -c %1$s";
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-bzip"))
+		compress_skeleton = "bzip2 -c %1$s";
+	if(!g_strcasecmp(lsq_archive_get_mimetype(archive), "application/x-lzop"))
+		compress_skeleton = "lzop -c %1$s";
+
+	return compress_skeleton;
+}
+
 
 static LSQArchiveCommand *
 lsq_command_builder_compr_build_add(LSQCommandBuilder *builder, LSQArchive *archive, GSList *filenames)
 {
-	gchar *files = lsq_concat_filenames(filenames);
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Add", archive, "compr %3$s -r %1$s %2$s", files, NULL, NULL);
-	g_free(files);
-	return spawn;
+#ifdef DEBUG
+	g_return_val_if_fail(filenames, NULL);
+#endif
+
+	const gchar *compress_skeleton = lsq_command_builder_compr_get_compress_skeleton(builder, archive);
+	LSQArchiveCommand *compress = lsq_spawn_command_new(_("Compressing"), 
+	                                                      archive,
+	                                                      compress_skeleton,
+	                                                      NULL,
+	                                                      NULL,
+	                                                      filenames->data);
+
+	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(compress), 1, lsq_command_builder_compr_compress_parse_output, NULL))
+	{
+		g_critical("Could not set compress parse function");
+	}
+	return compress;
 }
 
 static LSQArchiveCommand *
@@ -146,20 +202,140 @@ lsq_command_builder_compr_build_remove(LSQCommandBuilder *builder, LSQArchive *a
 static LSQArchiveCommand *
 lsq_command_builder_compr_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *filenames)
 {
-	gchar *files = lsq_concat_filenames(filenames);
-	gchar *options = g_strconcat(" -d ", dest_path, NULL);
+	gchar *filename = lsq_archive_get_filename(archive);
+	gint length = strlen(filename);
+	if(g_str_has_suffix(filename, ".gz"))
+		filename[length-3] = '\0';
+	if(g_str_has_suffix(filename, ".bz"))
+		filename[length-3] = '\0';
+	if(g_str_has_suffix(filename, ".bz2"))
+		filename[length-4] = '\0';
+	if(g_str_has_suffix(filename, ".lzo"))
+		filename[length-4] = '\0';
+	if(g_str_has_suffix(filename, ".Z"))
+		filename[length-2] = '\0';
 
-	LSQArchiveCommand *spawn = lsq_spawn_command_new("Extract", archive, "uncompr -o %1$s %2$s %3$s", files, options, NULL);
+	gchar *dest_file = g_strconcat(dest_path, filename, NULL);
+	g_free(filename);
 
-	g_free(options);
-	g_free(files);
-	return spawn;
+	const gchar *decompress_skeleton = lsq_command_builder_compr_get_decompress_skeleton(builder, archive);
+	LSQArchiveCommand *decompress = lsq_spawn_command_new(_("Decompressing"), 
+	                                                      archive,
+	                                                      decompress_skeleton,
+	                                                      NULL,
+	                                                      NULL,
+	                                                      NULL);
+
+	g_object_set_data(G_OBJECT(decompress), LSQ_ARCHIVE_DEST_FILE, dest_file);
+
+	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(decompress), 1, lsq_command_builder_compr_decompress_parse_output, NULL))
+	{
+		g_critical("Could not set decompress parse function");
+	}
+	return decompress;
 }
 
 static LSQArchiveCommand *
 lsq_command_builder_compr_build_refresh(LSQCommandBuilder *builder, LSQArchive *archive)
 {
-	return NULL;
+	LSQArchiveCommand *command = lsq_archive_command_new("Refresh", archive, lsq_command_builder_compr_refresh);
+
+	return command;
+}
+
+static gboolean
+lsq_command_builder_compr_refresh(LSQArchiveCommand *command)
+{
+	LSQArchiveIter *entry;
+	LSQArchive *archive = lsq_archive_command_get_archive(command);
+	gchar *filename = lsq_archive_get_filename(archive);
+	gint length = strlen(filename);
+	if(g_str_has_suffix(filename, ".gz"))
+		filename[length-3] = '\0';
+	if(g_str_has_suffix(filename, ".bz"))
+		filename[length-3] = '\0';
+	if(g_str_has_suffix(filename, ".bz2"))
+		filename[length-4] = '\0';
+	if(g_str_has_suffix(filename, ".lzo"))
+		filename[length-4] = '\0';
+	if(g_str_has_suffix(filename, ".Z"))
+		filename[length-2] = '\0';
+
+	entry = lsq_archive_add_file(archive, filename);
+	lsq_archive_iter_unref(entry);
+	g_free(filename);
+
+	return TRUE;
+}
+
+static gboolean
+lsq_command_builder_compr_decompress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data)
+{
+	GIOStatus status = G_IO_STATUS_NORMAL;
+	gchar *buf = g_new0(gchar, 1024);
+	guint read = 0;
+	GError *error = NULL;
+	FILE *out_file;
+
+	const gchar *out_filename = g_object_get_data(G_OBJECT(spawn_command), LSQ_ARCHIVE_DEST_FILE);
+
+	out_file = fopen(out_filename, "ab");
+	if(!out_file)
+		return FALSE; 
+	
+	status = lsq_spawn_command_read_bytes(spawn_command, 1, buf, 1024, (gsize *)&read, &error);
+	if(status == G_IO_STATUS_EOF)
+	{
+		fclose(out_file);
+		return TRUE;
+	}
+
+	if(read)
+	{
+		fwrite(buf, 1, read, out_file);
+	}
+	fclose(out_file);
+	g_free(buf);
+
+	return TRUE;
+}
+
+static gboolean
+lsq_command_builder_compr_compress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data)
+{
+	GIOStatus status = G_IO_STATUS_NORMAL;
+	gchar *buf = g_new0(gchar, 1024);
+	LSQArchive *archive = lsq_archive_command_get_archive(LSQ_ARCHIVE_COMMAND(spawn_command));
+	guint read = 0;
+	GError *error = NULL;
+	FILE *out_file;
+
+	const gchar *out_filename = lsq_archive_get_path(archive);
+	gboolean remove = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(spawn_command), "compressing"));
+	if(remove == FALSE)
+	{
+		g_object_set_data(G_OBJECT(spawn_command), "compressing", GUINT_TO_POINTER(TRUE));
+		g_unlink(out_filename);
+	}
+
+	out_file = fopen(out_filename, "ab");
+	if(!out_file)
+		return FALSE; 
+	
+	status = lsq_spawn_command_read_bytes(spawn_command, 1, buf, 1024, (gsize *)&read, &error);
+	if(status == G_IO_STATUS_EOF)
+	{
+		fclose(out_file);
+		return TRUE;
+	}
+
+	if(read)
+	{
+		fwrite(buf, 1, read, out_file);
+	}
+	fclose(out_file);
+	g_free(buf);
+	return TRUE;
 }
 
 LSQCommandBuilder *

@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: English/GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../libsqueeze/archive.c:293
 msgid "Name"
@@ -542,4 +542,3 @@ msgstr "Archive manager"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce archive manager"
-

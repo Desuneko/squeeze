@@ -175,6 +175,8 @@ lsq_archive_command_get_archive(LSQArchiveCommand *command)
 	return command->archive;
 }
 
+
+
 /**
  * lsq_archive_command_get_comment
  * @command:
@@ -185,4 +187,27 @@ const gchar *
 lsq_archive_command_get_comment(LSQArchiveCommand *archive_command)
 {
 	return archive_command->comment;
+}
+
+LSQArchiveCommand *
+lsq_archive_command_new(const gchar *comment,
+                        LSQArchive *archive,
+                        LSQCommandFunc exec_command)
+{
+	LSQArchiveCommand *archive_command;
+
+#ifdef DEBUG
+	g_return_val_if_fail(archive, NULL);
+	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), NULL);
+#endif
+
+	archive_command = g_object_new(LSQ_TYPE_ARCHIVE_COMMAND, NULL);
+
+	archive_command->archive = archive;
+	if(comment)
+		archive_command->comment = g_strdup(comment);
+
+	archive_command->execute = exec_command;
+
+	return archive_command;
 }

@@ -54,4 +54,9 @@ struct _LSQCommandBuilderComprClass
 GType                lsq_command_builder_compr_get_type(void);
 LSQCommandBuilder   *lsq_command_builder_compr_new();
 
+const gchar *
+lsq_command_builder_compr_get_decompress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive);
+const gchar *
+lsq_command_builder_compr_get_compress_skeleton(LSQCommandBuilder *builder, LSQArchive *archive);
+
 #endif /* __LIBSQUEEZE_COMMAND_BUILDER_COMPR_H__ */
