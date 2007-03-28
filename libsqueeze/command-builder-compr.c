@@ -210,7 +210,7 @@ lsq_command_builder_compr_build_extract(LSQCommandBuilder *builder, LSQArchive *
 	                                                      NULL,
 	                                                      NULL);
 
-	g_object_set_data(G_OBJECT(decompress), LSQ_ARCHIVE_DEST_FILE, dest_path);
+	g_object_set_data(G_OBJECT(decompress), LSQ_ARCHIVE_DEST_FILE, g_strdup(dest_path));
 
 	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(decompress), 1, lsq_command_builder_compr_decompress_parse_output, NULL))
 	{
