@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-28 15:14+0200\n"
+"POT-Creation-Date: 2007-03-28 15:26+0200\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -25,15 +25,13 @@ msgid "Mime type"
 msgstr "Mime type"
 
 #: ../libsqueeze/archive.c:366
-#, fuzzy
-msgid "idle"
-msgstr "_Bestand"
+msgid "Done"
+msgstr "Klaar"
 
 #: ../libsqueeze/command-builder-zip.c:106
 #: ../libsqueeze/command-builder-rar.c:117
-#, fuzzy
 msgid "Compressed"
-msgstr "Gecomprimeerde Grootte"
+msgstr "Gecomprimeerd"
 
 #: ../libsqueeze/command-builder-zip.c:108
 #: ../libsqueeze/command-builder-rar.c:131
@@ -82,7 +80,7 @@ msgstr "Uitpakken"
 #: ../libsqueeze/command-builder-zip.c:185
 #: ../libsqueeze/command-builder-gnu-tar.c:355
 #: ../libsqueeze/command-builder-rar.c:200
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-compr.c:225
 msgid "Refresh"
 msgstr "Vernieuwen"
 
@@ -92,8 +90,7 @@ msgid "Rights"
 msgstr "Rechten"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:117
-#, fuzzy
-msgid "Owner"
+msgid "Owner/Group"
 msgstr "Eigenaar/Groep"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:206
@@ -104,7 +101,7 @@ msgstr "Comprimeren"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:231
 #: ../libsqueeze/command-builder-gnu-tar.c:298
-#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-compr.c:206
 msgid "Decompressing"
 msgstr "Decomprimeren"
 
@@ -479,6 +476,14 @@ msgstr "Archief beheerder"
 msgid "Xfce archive manager"
 msgstr "Xfce archief beheerder"
 
+#, fuzzy
+#~ msgid "idle"
+#~ msgstr "_Bestand"
+
+#, fuzzy
+#~ msgid "Owner"
+#~ msgstr "Eigenaar/Groep"
+
 #~ msgid "Overwrite existing files"
 #~ msgstr "Bestaande bestanden overschrijven"
 
@@ -509,9 +514,6 @@ msgstr "Xfce archief beheerder"
 
 #~ msgid "View permissions"
 #~ msgstr "Rechten weergeven"
-
-#~ msgid "View owner/group"
-#~ msgstr "Eigenaar / groep weergeven"
 
 #~ msgid "View date"
 #~ msgstr "Datum weergeven"
@@ -566,9 +568,6 @@ msgstr "Xfce archief beheerder"
 
 #~ msgid "Extracting file(s) from archive"
 #~ msgstr "Bestand(en) uitpakken uit archief"
-
-#~ msgid "Done"
-#~ msgstr "Klaar"
 
 #~ msgid "Extracting file(s) to temporary directory"
 #~ msgstr "Bestand(en) uitpakken naar tijdelijke map"

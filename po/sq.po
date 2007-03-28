@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-28 15:14+0200\n"
+"POT-Creation-Date: 2007-03-28 15:26+0200\n"
 "PO-Revision-Date: 2007-01-17 22:53+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -24,9 +24,8 @@ msgid "Mime type"
 msgstr "Tip MIME"
 
 #: ../libsqueeze/archive.c:366
-#, fuzzy
-msgid "idle"
-msgstr "_Kartelë"
+msgid "Done"
+msgstr "Kryer"
 
 #: ../libsqueeze/command-builder-zip.c:106
 #: ../libsqueeze/command-builder-rar.c:117
@@ -83,7 +82,7 @@ msgstr "Përfto"
 #: ../libsqueeze/command-builder-zip.c:185
 #: ../libsqueeze/command-builder-gnu-tar.c:355
 #: ../libsqueeze/command-builder-rar.c:200
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-compr.c:225
 msgid "Refresh"
 msgstr ""
 
@@ -94,8 +93,8 @@ msgstr ""
 
 #: ../libsqueeze/command-builder-gnu-tar.c:117
 #, fuzzy
-msgid "Owner"
-msgstr "Pronar/Grup"
+msgid "Owner/Group"
+msgstr "Shihni zotërues/grup"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:206
 #: ../libsqueeze/command-builder-gnu-tar.c:307
@@ -106,7 +105,7 @@ msgstr "Madhësi e Ngjeshur"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:231
 #: ../libsqueeze/command-builder-gnu-tar.c:298
-#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-compr.c:206
 msgid "Decompressing"
 msgstr ""
 
@@ -473,6 +472,14 @@ msgstr "Përgjegjës arkivash"
 msgid "Xfce archive manager"
 msgstr "Përgjegjësi Xfce arkivash"
 
+#, fuzzy
+#~ msgid "idle"
+#~ msgstr "_Kartelë"
+
+#, fuzzy
+#~ msgid "Owner"
+#~ msgstr "Pronar/Grup"
+
 #~ msgid "Overwrite existing files"
 #~ msgstr "Mbishkruaj kartela ekzistuese"
 
@@ -500,9 +507,6 @@ msgstr "Përgjegjësi Xfce arkivash"
 
 #~ msgid "View permissions"
 #~ msgstr "Shihni lejet"
-
-#~ msgid "View owner/group"
-#~ msgstr "Shihni zotërues/grup"
 
 #~ msgid "View date"
 #~ msgstr "Shih datë"
@@ -560,9 +564,6 @@ msgstr "Përgjegjësi Xfce arkivash"
 
 #~ msgid "Extracting file(s) from archive"
 #~ msgstr "Po përftoj kartelë(a) prej arkive"
-
-#~ msgid "Done"
-#~ msgstr "Kryer"
 
 #~ msgid "Performing an extended action"
 #~ msgstr "Po kryej një veprim të zgjeruar"

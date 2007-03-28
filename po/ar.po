@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-28 15:14+0200\n"
+"POT-Creation-Date: 2007-03-28 15:26+0200\n"
 "PO-Revision-Date: 2007-01-24 09:48+0200\n"
 "Last-Translator: Mohamed Magdy <alnokta@yahoo.com>\n"
 "Language-Team: Arabeyes Translation & Documentation <admin@arabeyes.org>\n"
@@ -21,7 +21,7 @@ msgid "Mime type"
 msgstr ""
 
 #: ../libsqueeze/archive.c:366
-msgid "idle"
+msgid "Done"
 msgstr ""
 
 #: ../libsqueeze/command-builder-zip.c:106
@@ -76,7 +76,7 @@ msgstr ""
 #: ../libsqueeze/command-builder-zip.c:185
 #: ../libsqueeze/command-builder-gnu-tar.c:355
 #: ../libsqueeze/command-builder-rar.c:200
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-compr.c:225
 msgid "Refresh"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgid "Rights"
 msgstr ""
 
 #: ../libsqueeze/command-builder-gnu-tar.c:117
-msgid "Owner"
+msgid "Owner/Group"
 msgstr ""
 
 #: ../libsqueeze/command-builder-gnu-tar.c:206
@@ -97,7 +97,7 @@ msgstr ""
 
 #: ../libsqueeze/command-builder-gnu-tar.c:231
 #: ../libsqueeze/command-builder-gnu-tar.c:298
-#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-compr.c:206
 msgid "Decompressing"
 msgstr ""
 

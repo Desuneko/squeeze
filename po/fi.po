@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xarchiver 0.4.2rc2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-28 15:14+0200\n"
+"POT-Creation-Date: 2007-03-28 15:26+0200\n"
 "PO-Revision-Date: 2007-01-18 17:17+0200\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -25,9 +25,8 @@ msgid "Mime type"
 msgstr "MIME-tyyppi"
 
 #: ../libsqueeze/archive.c:366
-#, fuzzy
-msgid "idle"
-msgstr "_Tiedosto"
+msgid "Done"
+msgstr "Valmis"
 
 #: ../libsqueeze/command-builder-zip.c:106
 #: ../libsqueeze/command-builder-rar.c:117
@@ -84,7 +83,7 @@ msgstr "Pura"
 #: ../libsqueeze/command-builder-zip.c:185
 #: ../libsqueeze/command-builder-gnu-tar.c:355
 #: ../libsqueeze/command-builder-rar.c:200
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-compr.c:225
 msgid "Refresh"
 msgstr ""
 
@@ -95,8 +94,8 @@ msgstr ""
 
 #: ../libsqueeze/command-builder-gnu-tar.c:117
 #, fuzzy
-msgid "Owner"
-msgstr "Omistaja/ryhmä"
+msgid "Owner/Group"
+msgstr "Näytä omistaja/ryhmä"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:206
 #: ../libsqueeze/command-builder-gnu-tar.c:307
@@ -107,7 +106,7 @@ msgstr "Koko pakattuna"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:231
 #: ../libsqueeze/command-builder-gnu-tar.c:298
-#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-compr.c:206
 msgid "Decompressing"
 msgstr ""
 
@@ -474,6 +473,14 @@ msgstr "Arkistonhallinta"
 msgid "Xfce archive manager"
 msgstr "Xfce:n arkistonhallinta"
 
+#, fuzzy
+#~ msgid "idle"
+#~ msgstr "_Tiedosto"
+
+#, fuzzy
+#~ msgid "Owner"
+#~ msgstr "Omistaja/ryhmä"
+
 #~ msgid "Overwrite existing files"
 #~ msgstr "Korvaa olemassaolevat"
 
@@ -504,9 +511,6 @@ msgstr "Xfce:n arkistonhallinta"
 
 #~ msgid "View permissions"
 #~ msgstr "Näytä oikeudet"
-
-#~ msgid "View owner/group"
-#~ msgstr "Näytä omistaja/ryhmä"
 
 #~ msgid "View date"
 #~ msgstr "Näytä pvm"
@@ -561,9 +565,6 @@ msgstr "Xfce:n arkistonhallinta"
 
 #~ msgid "Extracting file(s) from archive"
 #~ msgstr "Puretaan tiedosto(ja) arkistosta"
-
-#~ msgid "Done"
-#~ msgstr "Valmis"
 
 #, fuzzy
 #~ msgid "Extracting file(s) to temporary directory"

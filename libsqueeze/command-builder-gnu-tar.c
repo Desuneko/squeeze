@@ -114,7 +114,7 @@ lsq_command_builder_gnu_tar_init(LSQCommandBuilderGnuTar *command_builder_gnu_ta
 	lsq_builder_settings_set_property_types(command_builder->settings, 
 	                                        _("Rights"), /* rights*/
 	                                        G_TYPE_STRING,
-	                                        _("Owner"), /* owner */
+	                                        _("Owner/Group"), /* owner */
 	                                        G_TYPE_STRING,
 	                                        _("Size"), /* size */
 	                                        G_TYPE_UINT64,

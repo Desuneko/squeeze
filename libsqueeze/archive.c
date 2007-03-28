@@ -363,7 +363,7 @@ lsq_archive_get_status(const LSQArchive *archive)
 	if(archive->command)
 		return lsq_archive_command_get_comment(archive->command);
 	else
-		return _("idle");
+		return _("Done");
 }
 
 void
