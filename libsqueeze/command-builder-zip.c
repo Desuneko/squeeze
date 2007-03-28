@@ -167,9 +167,9 @@ lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *arc
 }
 
 static LSQArchiveCommand *
-lsq_command_builder_zip_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *filenames)
+lsq_command_builder_zip_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *file_iters)
 {
-	gchar *files = lsq_concat_filenames(filenames);
+	gchar *files = lsq_concat_iter_filenames(file_iters);
 	gchar *options = g_strconcat(" -d ", dest_path, NULL);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "unzip -o %1$s %2$s %3$s", files, options, NULL);
