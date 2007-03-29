@@ -65,7 +65,7 @@ cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error,
 
 enum
 {
-	LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED = 0,
+	LSQ_ARCHIVE_SIGNAL_STATE_CHANGED = 0,
 	LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED,
 	LSQ_ARCHIVE_SIGNAL_REFRESHED,
 	LSQ_ARCHIVE_SIGNAL_COUNT
@@ -105,18 +105,6 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 	GObjectClass *object_class = G_OBJECT_CLASS(archive_class);
 
 	object_class->finalize = lsq_archive_finalize;
-	
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_STARTED] = g_signal_new("command-started",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE,
-			1,
-			G_TYPE_POINTER,
-			NULL);
 	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED] = g_signal_new("command-terminated",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
@@ -127,6 +115,16 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 			G_TYPE_NONE,
 			1,
 			G_TYPE_POINTER,
+			NULL);
+	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED] = g_signal_new("state-changed",
+			G_TYPE_FROM_CLASS(archive_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			0,
+			NULL,
+			NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0,
 			NULL);
 	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED] = g_signal_new("refreshed",
 			G_TYPE_FROM_CLASS(archive_class),
@@ -386,10 +384,12 @@ lsq_archive_add(LSQArchive *archive, GSList *files)
 	{
 		g_object_unref(archive->command);
 		archive->command = NULL;
+		return FALSE;
 	}
 	else
 		g_object_unref(archive->command);
-	return FALSE;
+	lsq_archive_state_changed(archive);
+	return TRUE;
 }
 
 gboolean
@@ -406,10 +406,12 @@ lsq_archive_extract(LSQArchive *archive, const gchar *dest_path, GSList *files)
 	{
 		g_object_unref(archive->command);
 		archive->command = NULL;
+		return FALSE;
 	}
 	else
 		g_object_unref(archive->command);
-	return FALSE;
+	lsq_archive_state_changed(archive);
+	return TRUE;
 }
 
 gboolean
@@ -426,10 +428,12 @@ lsq_archive_remove(LSQArchive *archive, GSList *files)
 	{
 		g_object_unref(archive->command);
 		archive->command = NULL;
+		return FALSE;
 	}
 	else
 		g_object_unref(archive->command);
-	return FALSE;
+	lsq_archive_state_changed(archive);
+	return TRUE;
 }
 
 gboolean
@@ -452,6 +456,7 @@ lsq_archive_refresh(LSQArchive *archive)
 		}
 		else
 			g_object_unref(archive->command);
+		lsq_archive_state_changed(archive);
 		return TRUE;
 	}
 	return FALSE;
@@ -484,6 +489,13 @@ cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error,
 #ifdef DEBUG
 	g_debug("COMMAND TERMINATED");
 #endif
+	lsq_archive_state_changed(archive);
 	lsq_archive_refreshed(archive);
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
+}
+
+void
+lsq_archive_state_changed(const LSQArchive *archive)
+{
+	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED], 0, NULL);
 }

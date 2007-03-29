@@ -105,7 +105,7 @@ static void
 cb_sq_main_window_notebook_page_removed(SQNotebook *, gpointer);
 static void
 cb_sq_main_window_notebook_file_activated(SQNotebook *, gchar *, gpointer);
-/* static void cb_sq_main_window_notebook_status_changed(SQNotebook *, LSQArchive *, gpointer); */
+ static void cb_sq_main_window_notebook_state_changed(SQNotebook *, LSQArchive *, gpointer);
 
 static void
 sq_main_window_set_navigation(SQMainWindow *window);
@@ -469,6 +469,7 @@ sq_main_window_init(SQMainWindow *window)
 
 /* main view */
 	window->notebook = sq_notebook_new(window->navigationbar, use_tabs, window->accel_group);
+	g_signal_connect(G_OBJECT(window->notebook), "archive-state-changed", G_CALLBACK(cb_sq_main_window_notebook_state_changed), window);
 	g_signal_connect(G_OBJECT(window->notebook), "switch-page", G_CALLBACK(cb_sq_main_window_notebook_page_switched), window);
 	g_signal_connect(G_OBJECT(window->notebook), "archive-removed", G_CALLBACK(cb_sq_main_window_notebook_page_removed), window);
 	g_signal_connect(G_OBJECT(window->notebook), "file-activated", G_CALLBACK(cb_sq_main_window_notebook_file_activated), window);
@@ -1170,13 +1171,11 @@ cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error,
 	}
 }
 
-/*
 static void
-cb_sq_main_window_notebook_status_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
+cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
 	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status(archive));
 }
-*/

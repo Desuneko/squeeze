@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-28 15:26+0200\n"
+"POT-Creation-Date: 2007-03-29 09:27+0200\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:278
+#: ../libsqueeze/archive.c:276
 msgid "Name"
 msgstr "Naam"
 
-#: ../libsqueeze/archive.c:280
+#: ../libsqueeze/archive.c:278
 msgid "Mime type"
 msgstr "Mime type"
 
-#: ../libsqueeze/archive.c:366
+#: ../libsqueeze/archive.c:364
 msgid "Done"
 msgstr "Klaar"
 
@@ -219,20 +219,20 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:416 ../src/main_window.c:1023
+#: ../src/main_window.c:416 ../src/main_window.c:1024
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:663
+#: ../src/main_window.c:664
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:669
+#: ../src/main_window.c:670
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:738 ../src/main_window.c:1064 ../src/application.c:190
+#: ../src/main_window.c:739 ../src/main_window.c:1065 ../src/application.c:190
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -240,7 +240,7 @@ msgstr ""
 "Squeeze kan dit archief type niet uitpakken,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:778 ../src/application.c:264
+#: ../src/main_window.c:779 ../src/application.c:264
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -248,11 +248,11 @@ msgstr ""
 "Squeeze kan aan dit archief type geen bestanden toevoegen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:798
+#: ../src/main_window.c:799
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Weet je zeker dat je de geselecteerde bestanden wilt verwijderen?"
 
-#: ../src/main_window.c:811
+#: ../src/main_window.c:812
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -260,7 +260,7 @@ msgstr ""
 "Squeeze kan van dit archief type geen bestanden verwijderen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:858
+#: ../src/main_window.c:859
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -268,19 +268,19 @@ msgstr ""
 "Weet je zeker dat je deze actie wilt annuleren?\n"
 "Dit zou het archief kunnen beschadigen."
 
-#: ../src/main_window.c:940
+#: ../src/main_window.c:941
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:943
+#: ../src/main_window.c:944
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:946
+#: ../src/main_window.c:947
 msgid "Artwork:"
 msgstr "Graphisch:"
 
-#: ../src/main_window.c:947
+#: ../src/main_window.c:948
 msgid ""
 "The add and extract icons are based on the extract icon created by Andreas "
 "Nilsson"
@@ -288,11 +288,11 @@ msgstr ""
 "De pictogrammen voor het toevoegen en uitpakken zijn gebaseerd op een "
 "'uitpakken' pictogram dat gemaakt is door Andreas Nilsson"
 
-#: ../src/main_window.c:949
+#: ../src/main_window.c:950
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:954
+#: ../src/main_window.c:955
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -300,19 +300,19 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:961
+#: ../src/main_window.c:962
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:1022
+#: ../src/main_window.c:1023
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:1023
+#: ../src/main_window.c:1024
 msgid "Open"
 msgstr "Openen"
 
-#: ../src/main_window.c:1037
+#: ../src/main_window.c:1038
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -320,11 +320,11 @@ msgstr ""
 "Squeeze kan dit bestand niet weergeven.\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:1109
+#: ../src/main_window.c:1110
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1110
+#: ../src/main_window.c:1111
 #, c-format
 msgid ""
 "'%s'\n"
@@ -423,40 +423,40 @@ msgstr "Spatiering"
 msgid "The amount of space between the path buttons"
 msgstr "De ruimte tussen de pad knoppen"
 
-#: ../src/notebook.c:167 ../src/archive_store.c:249
+#: ../src/notebook.c:176 ../src/archive_store.c:249
 msgid "Show full path"
 msgstr "Toon volledig pad"
 
-#: ../src/notebook.c:168 ../src/archive_store.c:250
+#: ../src/notebook.c:177 ../src/archive_store.c:250
 msgid "Show the full path strings for each entry"
 msgstr "Toon het volledige pad voor elk item"
 
-#: ../src/notebook.c:174 ../src/archive_store.c:256
+#: ../src/notebook.c:183 ../src/archive_store.c:256
 msgid "Show mime icons"
 msgstr "Mime iconen weergeven"
 
-#: ../src/notebook.c:175 ../src/archive_store.c:257
+#: ../src/notebook.c:184 ../src/archive_store.c:257
 msgid "Show the mime type icons for each entry"
 msgstr "Mime type iconen weergeven voor elk item"
 
-#: ../src/notebook.c:181 ../src/archive_store.c:270
+#: ../src/notebook.c:190 ../src/archive_store.c:270
 msgid "Sort folders before files"
 msgstr "Mappen voor bestanden sorteren"
 
-#: ../src/notebook.c:182 ../src/archive_store.c:271
+#: ../src/notebook.c:191 ../src/archive_store.c:271
 msgid "The folders will be put at the top of the list"
 msgstr "De mappen zullen boven aan de lijst geplaatst worden"
 
-#: ../src/notebook.c:188 ../src/notebook.c:189 ../src/archive_store.c:277
+#: ../src/notebook.c:197 ../src/notebook.c:198 ../src/archive_store.c:277
 #: ../src/archive_store.c:278
 msgid "Sort text case sensitive"
 msgstr "Tekst hoofdlettergevoelig sorteren"
 
-#: ../src/notebook.c:195
+#: ../src/notebook.c:204
 msgid "Rules hint"
 msgstr "Regel hints"
 
-#: ../src/notebook.c:196
+#: ../src/notebook.c:205
 msgid "Make the row background colors alternate"
 msgstr "Laat de achtergrond kleur van de rijen verspringen"
 

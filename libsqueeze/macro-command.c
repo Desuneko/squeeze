@@ -180,6 +180,10 @@ cb_macro_command_sub_command_terminated(LSQArchiveCommand *sub_command, GError *
 
 		g_signal_connect(command, "terminated", G_CALLBACK(cb_macro_command_sub_command_terminated), macro_command);
 
+		LSQ_ARCHIVE_COMMAND(macro_command)->comment = command->comment;
+
+		lsq_archive_state_changed(LSQ_ARCHIVE_COMMAND(macro_command)->archive);
+
 		if(!lsq_archive_command_execute(command))
 		{
 			g_signal_handlers_disconnect_by_func(command, cb_macro_command_sub_command_terminated, macro_command);

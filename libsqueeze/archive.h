@@ -42,6 +42,7 @@ struct _LSQArchive
 };
 
 LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
+void                lsq_archive_state_changed(const LSQArchive *archive) G_GNUC_INTERNAL;
 
 G_END_DECLS
 

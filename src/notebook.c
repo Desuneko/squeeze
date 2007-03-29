@@ -54,6 +54,8 @@ cb_notebook_close_archive(GtkButton *button, GtkWidget *child);
 static void
 cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *tree_view);
 static void
+cb_notebook_archive_state_changed(LSQArchive *archive, SQNotebook *notebook);
+static void
 cb_notebook_file_activated(SQArchiveStore *, gchar *, SQNotebook *);
 
 static void
@@ -79,7 +81,7 @@ enum
 	SQ_NOTEBOOK_SIGNAL_PAGE_UP,
 	SQ_NOTEBOOK_SIGNAL_PAGE_DOWN,
 	SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED,
-	SQ_NOTEBOOK_SIGNAL_ACTIVE_ARCHIVE_STATUS_CHANGED,
+	SQ_NOTEBOOK_SIGNAL_STATE_CHANGED, /* is emitted when the state of the active archive changed */
 	SQ_NOTEBOOK_SIGNAL_COUNT
 };
 
@@ -156,6 +158,13 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 			NULL, NULL,
 			g_cclosure_marshal_VOID__POINTER,
 			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
+
+	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_STATE_CHANGED] = g_signal_new("archive-state-changed",
+			G_TYPE_FROM_CLASS(notebook_class),
+			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
+			NULL, NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE, 1, G_TYPE_OBJECT, NULL);
 
 	pspec = g_param_spec_boolean("multi_tab",
 		"",
@@ -521,6 +530,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	gtk_widget_show(scroll_window);
 
 	g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
+	g_signal_connect(G_OBJECT(archive), "state-changed", G_CALLBACK(cb_notebook_archive_state_changed), notebook);
 
 	g_signal_connect(G_OBJECT(close_button), "clicked", G_CALLBACK(cb_notebook_close_archive), scroll_window);
 	g_signal_connect(G_OBJECT(tree_model), "file-activated", G_CALLBACK(cb_notebook_file_activated), notebook);
@@ -611,6 +621,13 @@ cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *treeview)
 	gtk_tree_view_set_model(treeview, archive_store);
 	g_object_unref(archive_store);
 	sq_notebook_treeview_reset_columns(archive, treeview);
+}
+
+static void
+cb_notebook_archive_state_changed(LSQArchive *archive, SQNotebook *notebook)
+{
+	if(sq_notebook_is_active_archive(notebook, archive))
+		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_STATE_CHANGED], 0, archive, NULL);
 }
 
 static void
