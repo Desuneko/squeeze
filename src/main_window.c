@@ -1093,10 +1093,6 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 			sq_notebook_page_set_archive(SQ_NOTEBOOK(window->notebook), archive, replace);
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
 
-		gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
-		gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
 		/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
 		g_signal_connect(G_OBJECT(archive), "command-terminated", G_CALLBACK(cb_sq_main_window_archive_command_terminated), window);
 		return 0;
@@ -1169,6 +1165,13 @@ cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error,
 		gtk_dialog_run(GTK_DIALOG(error_dialog));
 		gtk_widget_destroy(error_dialog);
 	}
+	/* TODO: enable the buttons in menu and toolbar */
+
+	gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+	gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+	gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+	gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
+
 }
 
 static void
@@ -1178,4 +1181,9 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
 	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status(archive));
+
+	gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+	gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
+	gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+	gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
 }
