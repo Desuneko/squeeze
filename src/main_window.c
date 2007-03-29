@@ -770,7 +770,7 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 		filenames = sq_add_dialog_get_filenames(SQ_ADD_DIALOG(dialog));
 		if(filenames)
 		{
-			if(lsq_archive_add(lp_archive, filenames))
+			if(!lsq_archive_add(lp_archive, filenames))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
@@ -803,7 +803,7 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 			gtk_widget_hide(dialog);
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
 			/* gtk_tree_view_set_model(sq_notebook_get_active_tree_view(SQ_NOTEBOOK(window->notebook)), NULL); */
-			if(lsq_archive_remove(lp_archive, filenames))
+			if(!lsq_archive_remove(lp_archive, filenames))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																													 GTK_DIALOG_DESTROY_WITH_PARENT, 

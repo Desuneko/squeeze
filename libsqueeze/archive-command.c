@@ -40,6 +40,9 @@ lsq_archive_command_dispose(GObject *object);
 static void
 lsq_archive_command_finalize(GObject *object);
 
+static gboolean
+lsq_archive_command_remove_iters(LSQArchiveCommand *command);
+
 static GObjectClass *parent_class;
 
 enum

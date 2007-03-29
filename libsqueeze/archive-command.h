@@ -51,5 +51,10 @@ lsq_archive_command_new(const gchar *comment,
                         LSQArchive *archive,
                         LSQCommandFunc exec_command);
 
+LSQArchiveCommand *
+lsq_archive_command_new_remove(const gchar *comment,
+                        LSQArchive *archive,
+						GSList *iters);
+
 G_END_DECLS
 #endif /* __LIBSQUEEZE_ARCHIVE_COMMAND_H__ */

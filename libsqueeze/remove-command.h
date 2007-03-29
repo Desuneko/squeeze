@@ -13,49 +13,47 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
  */
 
-#ifndef __LIBSQUEEZE_MACRO_COMMAND_H__
-#define __LIBSQUEEZE_MACRO_COMMAND_H__ 
+#ifndef __LIBSQUEEZE_REMOVE_COMMAND_H__
+#define __LIBSQUEEZE_REMOVE_COMMAND_H__ 
 G_BEGIN_DECLS
 
-#define LSQ_TYPE_MACRO_COMMAND lsq_macro_command_get_type()
+#define LSQ_TYPE_REMOVE_COMMAND lsq_remove_command_get_type()
 
-#define LSQ_MACRO_COMMAND(obj)         ( \
+#define LSQ_REMOVE_COMMAND(obj)         ( \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LSQ_TYPE_MACRO_COMMAND,      \
-			LSQMacroCommand))
+			LSQ_TYPE_REMOVE_COMMAND,      \
+			LSQRemoveCommand))
 
-#define LSQ_IS_MACRO_COMMAND(obj)      ( \
+#define LSQ_IS_REMOVE_COMMAND(obj)      ( \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
-			LSQ_TYPE_MACRO_COMMAND))
+			LSQ_TYPE_REMOVE_COMMAND))
 
-#define LSQ_MACRO_COMMAND_CLASS(class) ( \
+#define LSQ_REMOVE_COMMAND_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			LSQ_TYPE_MACRO_COMMAND,      \
-			LSQMacroCommandClass))
+			LSQ_TYPE_REMOVE_COMMAND,      \
+			LSQRemoveCommandClass))
 
-#define LSQ_IS_MACRO_COMMAND_CLASS(class) ( \
+#define LSQ_IS_REMOVE_COMMAND_CLASS(class) ( \
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
-			LSQ_TYPE_MACRO_COMMAND))
+			LSQ_TYPE_REMOVE_COMMAND))
 
-typedef struct _LSQMacroCommand LSQMacroCommand;
+typedef struct _LSQRemoveCommand LSQRemoveCommand;
 
-struct _LSQMacroCommand
+struct _LSQRemoveCommand
 {
 	LSQArchiveCommand  parent;
-	GSList *command_queue;
 };
 
-typedef struct _LSQMacroCommandClass LSQMacroCommandClass;
+typedef struct _LSQRemoveCommandClass LSQRemoveCommandClass;
 
-struct _LSQMacroCommandClass
+struct _LSQRemoveCommandClass
 {
 	LSQArchiveCommandClass parent;
 }; 
 
-GType lsq_macro_command_get_type();
+GType lsq_remove_command_get_type();
 
-LSQArchiveCommand * lsq_macro_command_new(LSQArchive *archive);
-void lsq_macro_command_append(LSQMacroCommand *command, LSQArchiveCommand *sub_command);
+LSQArchiveCommand * lsq_remove_command_new(const gchar *comment, LSQArchive *archive, GSList *);
 
 G_END_DECLS
-#endif /* __LIBSQUEEZE_MACRO_COMMAND_H__ */
+#endif /* __LIBSQUEEZE_REMOVE_COMMAND_H__ */

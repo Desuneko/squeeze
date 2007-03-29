@@ -161,9 +161,16 @@ lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *arc
 	gchar *files = lsq_concat_iter_filenames(file_iters);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Removing"), archive, "zip -d %1$s %2$s", files, NULL, NULL);
+	LSQArchiveCommand *macro = lsq_macro_command_new(archive);
+	LSQArchiveCommand *remove = lsq_remove_command_new(_("Removing"), archive, file_iters);
+
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), spawn);
+	g_object_unref(spawn);
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), remove);
+	g_object_unref(remove);
 
 	g_free(files);
-	return spawn;
+	return macro;
 }
 
 static LSQArchiveCommand *

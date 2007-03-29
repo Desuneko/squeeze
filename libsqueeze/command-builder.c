@@ -121,7 +121,7 @@ lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, 
 	LSQArchiveCommand *extract = builder->build_extract(builder, archive, lsq_tempfs_get_root_dir(archive), files);
 	LSQArchiveCommand *launch = lsq_xfce_launch_command_new("Execute", 
 	                                                 archive, lsq_tempfs_get_root_dir(archive), files);
-	LSQArchiveCommand *macro = lsq_macro_command_new("Open", archive);
+	LSQArchiveCommand *macro = lsq_macro_command_new(archive);
 
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), extract);
 	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), launch);

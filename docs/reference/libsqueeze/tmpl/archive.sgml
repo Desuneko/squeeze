@@ -17,13 +17,7 @@ LSQArchive
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### STRUCT LSQEntry ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### TYPEDEF LSQArchiveIter ##### -->
+<!-- ##### STRUCT LSQArchiveIter ##### -->
 <para>
 
 </para>
@@ -39,14 +33,13 @@ LSQArchive
 @path_info: 
 @file_info: 
 @mime_info: 
-@entry_n_property: 
-@entry_property_types: 
-@entry_property_names: 
 @root_entry: 
-@support: 
-@command_queue: 
+@command: 
+@builder: 
+@settings: 
 @temp_dir: 
 @monitor_list: 
+@pool: 
 
 <!-- ##### FUNCTION lsq_archive_new ##### -->
 <para>
@@ -55,6 +48,15 @@ LSQArchive
 
 @Param1: 
 @Param2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION lsq_archive_get_status ##### -->
+<para>
+
+</para>
+
+@archive: 
 @Returns: 
 
 
@@ -73,7 +75,6 @@ LSQArchive
 </para>
 
 @Param1: 
-@Param2: 
 @Returns: 
 
 
@@ -83,7 +84,6 @@ LSQArchive
 </para>
 
 @Param1: 
-@Param2: 
 @Returns: 
 
 
@@ -94,18 +94,6 @@ LSQArchive
 
 @Param1: 
 @Param2: 
-@Param3: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_add_child ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
 @Returns: 
 
 
@@ -116,72 +104,7 @@ LSQArchive
 
 @Param1: 
 @Param2: 
-@Param3: 
 @Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_set_mime ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_set_prop_str ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_set_prop_uint ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_set_prop_uint64 ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_set_prop_value ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_set_props ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Varargs: 
 
 
 <!-- ##### FUNCTION lsq_archive_iter_set_propsv ##### -->
@@ -191,7 +114,6 @@ LSQArchive
 
 @Param1: 
 @Param2: 
-@Param3: 
 
 
 <!-- ##### FUNCTION lsq_archive_iter_get_prop_value ##### -->
@@ -199,22 +121,10 @@ LSQArchive
 
 </para>
 
-@archive: 
 @iter: 
 @n: 
 @value: 
 @Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_iter_get_icon_name ##### -->
-<para>
-
-</para>
-
-@archive: 
-@iter: 
-@value: 
-@icon_theme: 
 
 
 <!-- ##### FUNCTION lsq_archive_add_file ##### -->
@@ -222,8 +132,8 @@ LSQArchive
 
 </para>
 
-@archive: 
-@path: 
+@Param1: 
+@Param2: 
 @Returns: 
 
 
@@ -254,15 +164,6 @@ LSQArchive
 
 @archive: 
 @n: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_n_property ##### -->
-<para>
-
-</para>
-
-@archive: 
 @Returns: 
 
 

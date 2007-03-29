@@ -61,21 +61,3 @@ libsqueeze
 @archive: 
 
 
-<!-- ##### FUNCTION lsq_stop_archive_child ##### -->
-<para>
-
-</para>
-
-@archive: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_convert_mime_to_icon_name ##### -->
-<para>
-
-</para>
-
-@icon_theme: 
-@value: 
-
-

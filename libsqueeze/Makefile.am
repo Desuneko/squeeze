@@ -13,6 +13,7 @@ libsqueeze_1_la_SOURCES =  \
 	archive-command.c archive-command.h \
 	spawn-command.c spawn-command.h \
 	macro-command.c macro-command.h \
+	remove-command.c remove-command.h \
 	xfce-launch-command.c xfce-launch-command.h \
 	archive-tempfs.c archive-tempfs.h \
 	builder-settings.c builder-settings.h \

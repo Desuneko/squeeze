@@ -23,6 +23,7 @@
 #include <libsqueeze/archive-command.h>
 #include <libsqueeze/macro-command.h>
 #include <libsqueeze/spawn-command.h>
+#include <libsqueeze/remove-command.h>
 #include <libsqueeze/xfce-launch-command.h>
 #include <libsqueeze/builder-settings.h>
 #include <libsqueeze/command-builder.h>

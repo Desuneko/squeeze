@@ -17,27 +17,3 @@ LSQArchiveSupportZip
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### STRUCT LSQArchiveSupportZip ##### -->
-<para>
-
-</para>
-
-@parent: 
-@_extr_overwrite: 
-@_extr_password: 
-@_view_size: 
-@_view_time: 
-@_view_date: 
-@_view_ratio: 
-@_view_length: 
-@_view_method: 
-@_view_crc_32: 
-
-<!-- ##### FUNCTION lsq_archive_support_zip_new ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-

@@ -104,7 +104,7 @@ lsq_command_builder_compr_init(LSQCommandBuilderCompr *command_builder_compr)
 	command_builder->build_remove = lsq_command_builder_compr_build_remove;
 	command_builder->build_refresh = lsq_command_builder_compr_build_refresh;
 
-	command_builder->mime_types = g_new0(gchar *, 4);
+	command_builder->mime_types = g_new0(gchar *, 5);
 	command_builder->mime_types[0] = "application/x-gzip";
 	command_builder->mime_types[1] = "application/x-bzip";
 	command_builder->mime_types[2] = "application/x-lzop";

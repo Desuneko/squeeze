@@ -123,22 +123,18 @@ lsq_macro_command_finalize(GObject *object)
 
 /**
  * lsq_macro_command_new:
- * @comment: a description, describing what the command does
  * @archive: the archive the command modifies
  * 
  * Returns: a new LSQMacroCommand object
  */
 LSQArchiveCommand *
-lsq_macro_command_new(const gchar *comment, LSQArchive *archive)
+lsq_macro_command_new(LSQArchive *archive)
 {
 	LSQArchiveCommand *archive_command;
 
 	archive_command = g_object_new(LSQ_TYPE_MACRO_COMMAND, NULL);
 
 	archive_command->archive = archive;
-
-	if(comment)
-		archive_command->comment = g_strdup(comment);
 
 	return archive_command;
 }
@@ -166,6 +162,8 @@ lsq_macro_command_stop(LSQArchiveCommand *command)
 void
 lsq_macro_command_append(LSQMacroCommand *command, LSQArchiveCommand *sub_command)
 {
+	if(!command->command_queue)
+		LSQ_ARCHIVE_COMMAND(command)->comment = sub_command->comment;
 	g_object_ref(sub_command);
 	command->command_queue = g_slist_append(command->command_queue, sub_command);
 }
