@@ -4,7 +4,6 @@ libsqueeze_1_la_SOURCES =  \
 	internals.c internals.h \
 	libsqueeze.c libsqueeze.h \
 	libsqueeze-archive.h \
-	libsqueeze-support.h \
 	libsqueeze-view.h \
 	libsqueeze-module.h \
 	slist.c slist.h \
