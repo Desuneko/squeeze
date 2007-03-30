@@ -56,7 +56,7 @@ cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *tree_view);
 static void
 cb_notebook_archive_state_changed(LSQArchive *archive, SQNotebook *notebook);
 static void
-cb_notebook_file_activated(SQArchiveStore *, gchar *, SQNotebook *);
+cb_notebook_file_activated(SQArchiveStore *, LSQArchiveIter *, SQNotebook *);
 
 static void
 cb_sq_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *, guint page_nr, gpointer data);
@@ -720,9 +720,9 @@ cb_sq_notebook_page_removed(SQNotebook *notebook, gpointer data)
 }
 
 static void
-cb_notebook_file_activated(SQArchiveStore *store, gchar *path, SQNotebook *notebook)
+cb_notebook_file_activated(SQArchiveStore *store, LSQArchiveIter *iter, SQNotebook *notebook)
 {
-	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, path, NULL);
+	g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_FILE_ACTIVATED], 0, iter, NULL);
 }
 
 gboolean

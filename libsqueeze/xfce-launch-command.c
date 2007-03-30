@@ -141,7 +141,10 @@ lsq_xfce_launch_command_new(const gchar *comment, LSQArchive *archive, const gch
 	                                                       "org.xfce.FileManager");
 	
 	archive_command->archive = archive;
-	xfce_launch_command->files = g_strconcat(prefix, files->data, NULL);
+	if(comment)
+		archive_command->comment = g_strdup(comment);
+
+	xfce_launch_command->files = g_strconcat(prefix, lsq_archive_iter_get_path(files->data), NULL);
 
 	return archive_command;
 }

@@ -119,7 +119,7 @@ static LSQArchiveCommand *
 lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files)
 {
 	LSQArchiveCommand *extract = builder->build_extract(builder, archive, lsq_tempfs_get_root_dir(archive), files);
-	LSQArchiveCommand *launch = lsq_xfce_launch_command_new("Execute", 
+	LSQArchiveCommand *launch = lsq_xfce_launch_command_new(_("Execute"), 
 	                                                 archive, lsq_tempfs_get_root_dir(archive), files);
 	LSQArchiveCommand *macro = lsq_macro_command_new(archive);
 
