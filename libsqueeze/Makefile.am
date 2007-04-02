@@ -5,6 +5,7 @@ libsqueeze_1_la_SOURCES =  \
 	libsqueeze.c libsqueeze.h \
 	libsqueeze-archive.h \
 	libsqueeze-view.h \
+	libsqueeze-command.h \
 	libsqueeze-module.h \
 	slist.c slist.h \
 	vfs-mime.c vfs-mime.h \
