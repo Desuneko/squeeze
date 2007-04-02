@@ -23,6 +23,7 @@
 
 #include "new_dialog.h"
 #include "add_dialog.h"
+#include "message_dialog.h"
 #include "extract_dialog.h"
 
 #include "settings.h"
@@ -181,7 +182,9 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 		return 1;
 	}
 	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
-	if(lsq_archive_extract(lp_archive, dest_path, NULL))
+	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
+	gtk_widget_show(message_dialog);
+	if(!lsq_archive_extract(lp_archive, dest_path, NULL))
 	{
 		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
 		                                                   GTK_DIALOG_DESTROY_WITH_PARENT, 
@@ -254,7 +257,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 		}
 	}
 	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
-	if(lsq_archive_add(lp_archive, files))
+	if(!lsq_archive_add(lp_archive, files))
 	{
 		/* FIXME: show warning dialog */
 		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 

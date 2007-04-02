@@ -730,7 +730,7 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 			g_slist_free(filenames);
 			filenames = NULL;
 		}
-		if(lsq_archive_extract(lp_archive, extract_archive_path, filenames))
+		if(!lsq_archive_extract(lp_archive, extract_archive_path, filenames))
 		{
 			GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 			                                                   GTK_DIALOG_DESTROY_WITH_PARENT, 
@@ -944,10 +944,15 @@ cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 		_("Contributors:"),
 		"Peter de Ridder <peter@xfce.org>",
 		"",
-		_("Artwork:"),
-		_("The add and extract icons are based on the extract icon created by Andreas Nilsson"),
-		"",
 		_("Inspired by Xarchiver, written by Giuseppe Torelli"), NULL};
+	const gchar *artists[] = {
+		_("Application Icon:"),
+		"Stephan Arts <stephan@xfce.org",
+		"",
+		_("Add / Extract icons:"),
+		_("Based on the original extract icon created by Andreas Nilsson"),
+		NULL
+	};
 	GtkWidget *about_dialog = gtk_about_dialog_new();
 
 	gtk_about_dialog_set_name((GtkAboutDialog *)about_dialog, PACKAGE_NAME);
@@ -962,6 +967,10 @@ cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 	gtk_about_dialog_set_translator_credits((GtkAboutDialog *)about_dialog, _("translator-credits"));
 
 	gtk_about_dialog_set_license((GtkAboutDialog *)about_dialog, xfce_get_license_text(XFCE_LICENSE_TEXT_GPL));
+
+	gtk_about_dialog_set_artists((GtkAboutDialog *)about_dialog, artists);
+
+	gtk_about_dialog_set_copyright((GtkAboutDialog *)about_dialog, "Copyright \302\251 2006-2007 Stephan Arts");
 
 	gtk_dialog_run(GTK_DIALOG(about_dialog));
 
