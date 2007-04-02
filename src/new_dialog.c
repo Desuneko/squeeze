@@ -141,7 +141,7 @@ sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
 		if(!strcmp(mime_type, "application/x-tarz")) suffix = ".tar.Z";
 		if(!strcmp(mime_type, "application/x-tzo")) suffix = ".tzo";
 
-		if(!strcmp(mime_type, "application/x-zip")) suffix = ".zip";
+		if(!strcmp(mime_type, "application/zip")) suffix = ".zip";
 
 		if(!strcmp(mime_type, "application/x-rar"))  suffix = ".rar";
 

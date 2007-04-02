@@ -276,6 +276,11 @@ lsq_command_builder_rar_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 			else if(!entry)
 			{
 				/* strip first ' ' and last '\n' */
+				if(line[0] == '*')
+				{
+					/* we've just detected a password-protected entry, what to do?! */
+					g_print("passwd protected entry found\n");
+				}
 				temp_filename = line+1;
 				line[linesize - 1] = '\0';
 				entry = lsq_archive_add_file(archive, temp_filename);
