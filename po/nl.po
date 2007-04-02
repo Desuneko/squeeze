@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-29 09:27+0200\n"
+"POT-Creation-Date: 2007-04-02 12:35+0200\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -27,6 +27,10 @@ msgstr "Mime type"
 #: ../libsqueeze/archive.c:364
 msgid "Done"
 msgstr "Klaar"
+
+#: ../libsqueeze/command-builder.c:122
+msgid "Execute"
+msgstr "Uitvoeren"
 
 #: ../libsqueeze/command-builder-zip.c:106
 #: ../libsqueeze/command-builder-rar.c:117
@@ -67,18 +71,20 @@ msgid "Adding"
 msgstr "Toevoegen"
 
 #: ../libsqueeze/command-builder-zip.c:163
+#: ../libsqueeze/command-builder-zip.c:165
+#: ../libsqueeze/command-builder-gnu-tar.c:321
 #: ../libsqueeze/command-builder-rar.c:178
 msgid "Removing"
 msgstr "Verwijderen"
 
-#: ../libsqueeze/command-builder-zip.c:175
-#: ../libsqueeze/command-builder-gnu-tar.c:345
+#: ../libsqueeze/command-builder-zip.c:182
+#: ../libsqueeze/command-builder-gnu-tar.c:349
 #: ../libsqueeze/command-builder-rar.c:190
 msgid "Extracting"
 msgstr "Uitpakken"
 
-#: ../libsqueeze/command-builder-zip.c:185
-#: ../libsqueeze/command-builder-gnu-tar.c:355
+#: ../libsqueeze/command-builder-zip.c:192
+#: ../libsqueeze/command-builder-gnu-tar.c:359
 #: ../libsqueeze/command-builder-rar.c:200
 #: ../libsqueeze/command-builder-compr.c:225
 msgid "Refresh"
@@ -219,7 +225,7 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:416 ../src/main_window.c:1024
+#: ../src/main_window.c:416 ../src/main_window.c:1033
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Uitpakken"
@@ -232,7 +238,7 @@ msgstr "Archief openen in een niew venster"
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:739 ../src/main_window.c:1065 ../src/application.c:190
+#: ../src/main_window.c:739 ../src/main_window.c:1074 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -240,7 +246,7 @@ msgstr ""
 "Squeeze kan dit archief type niet uitpakken,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:779 ../src/application.c:264
+#: ../src/main_window.c:779 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -277,22 +283,23 @@ msgid "Contributors:"
 msgstr "Medewerkers:"
 
 #: ../src/main_window.c:947
-msgid "Artwork:"
-msgstr "Graphisch:"
-
-#: ../src/main_window.c:948
-msgid ""
-"The add and extract icons are based on the extract icon created by Andreas "
-"Nilsson"
-msgstr ""
-"De pictogrammen voor het toevoegen en uitpakken zijn gebaseerd op een "
-"'uitpakken' pictogram dat gemaakt is door Andreas Nilsson"
-
-#: ../src/main_window.c:950
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:955
+#: ../src/main_window.c:949
+msgid "Application Icon:"
+msgstr "Programma Pictogram:"
+
+#: ../src/main_window.c:952
+msgid "Add / Extract icons:"
+msgstr "Toevoegen / Uitpakken pictogrammen"
+
+#: ../src/main_window.c:953
+msgid "Based on the original extract icon created by Andreas Nilsson"
+msgstr ""
+"Gebaseerd op een 'uitpakken' pictogram dat gemaakt is door Andreas Nilsson"
+
+#: ../src/main_window.c:960
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -300,19 +307,19 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:967
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:1023
+#: ../src/main_window.c:1032
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:1024
+#: ../src/main_window.c:1033
 msgid "Open"
 msgstr "Openen"
 
-#: ../src/main_window.c:1038
+#: ../src/main_window.c:1047
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -320,11 +327,11 @@ msgstr ""
 "Squeeze kan dit bestand niet weergeven.\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:1110
+#: ../src/main_window.c:1115
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1111
+#: ../src/main_window.c:1116
 #, c-format
 msgid ""
 "'%s'\n"
@@ -337,7 +344,7 @@ msgstr ""
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:161 ../src/application.c:249
+#: ../src/application.c:162 ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Kan archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
@@ -345,7 +352,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:232
+#: ../src/application.c:235
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type niet ondersteund"
 
@@ -475,114 +482,3 @@ msgstr "Archief beheerder"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce archief beheerder"
-
-#, fuzzy
-#~ msgid "idle"
-#~ msgstr "_Bestand"
-
-#, fuzzy
-#~ msgid "Owner"
-#~ msgstr "Eigenaar/Groep"
-
-#~ msgid "Overwrite existing files"
-#~ msgstr "Bestaande bestanden overschrijven"
-
-#~ msgid "Overwrite existing files on extraction"
-#~ msgstr "Bestaande bestanden overschrijven tijdens uitpakken"
-
-#~ msgid "Touch files"
-#~ msgstr "Bestanden aanraken"
-
-#~ msgid "Strip directories"
-#~ msgstr "Mappen strippen"
-
-#~ msgid "Keep newer files"
-#~ msgstr "Nieuwere bestanden behouden"
-
-#~ msgid "Do not overwrite files newer than those in the archive"
-#~ msgstr ""
-#~ "Bestanden die nieuwer zijn dan die in het archief niet overschrijven"
-
-#~ msgid "Override permissions"
-#~ msgstr "Rechten overschrijven"
-
-#~ msgid "View filesize"
-#~ msgstr "Grootte weergeven"
-
-#~ msgid "Permissions"
-#~ msgstr "Rechten"
-
-#~ msgid "View permissions"
-#~ msgstr "Rechten weergeven"
-
-#~ msgid "View date"
-#~ msgstr "Datum weergeven"
-
-#~ msgid "View time"
-#~ msgstr "Tijd weergeven"
-
-#~ msgid "Password"
-#~ msgstr "Wachtwoord"
-
-#~ msgid "View compressed filesize"
-#~ msgstr "Gecomprimeerde bestandsgrootte weergeven"
-
-#~ msgid "View ratio"
-#~ msgstr "Verhouding weergeven"
-
-#~ msgid "View method"
-#~ msgstr "methode weergeven"
-
-#~ msgid "Checksum"
-#~ msgstr "Checksom"
-
-#~ msgid "View Checksum"
-#~ msgstr "Checksom weergeven"
-
-#~ msgid "Compression version"
-#~ msgstr "Compressie versie"
-
-#~ msgid "View compression version"
-#~ msgstr "Compressie versie weergeven"
-
-#~ msgid "Append extension to filename"
-#~ msgstr "Extensie toevoegen aan bestandsnaam"
-
-#~ msgid "Name:"
-#~ msgstr "Naam:"
-
-#~ msgid "Kind:"
-#~ msgstr "Soort:"
-
-#~ msgid "Properties"
-#~ msgstr "Eigenschappen"
-
-#~ msgid "Initializing archive"
-#~ msgstr "Archief initialiseren"
-
-#~ msgid "Refreshing archive contents"
-#~ msgstr "Inhoud van archief vernieuwen"
-
-#~ msgid "Adding file(s) to archive"
-#~ msgstr "Bestand(en) aan het toevoegen aan archief"
-
-#~ msgid "Extracting file(s) from archive"
-#~ msgstr "Bestand(en) uitpakken uit archief"
-
-#~ msgid "Extracting file(s) to temporary directory"
-#~ msgstr "Bestand(en) uitpakken naar tijdelijke map"
-
-#~ msgid "Performing an extended action"
-#~ msgstr "Uitgebreide actie uitvoeren"
-
-#~ msgid "Cancelled"
-#~ msgstr "Geannulleerd"
-
-#~ msgid "Error"
-#~ msgstr "Fout"
-
-#~ msgid "Failed to open archive '%s'."
-#~ msgstr "Kan archief '%s' niet openen."
-
-#~ msgid "Failed to extract contents of archive '%s'."
-#~ msgstr "Het uitpakken van de inhoud van archief '%s' is mislukt."

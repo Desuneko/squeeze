@@ -153,7 +153,7 @@ sq_message_dialog_new(GtkWindowType type, LSQArchive *archive)
 	SQMessageDialog *dialog;
 
 	dialog = g_object_new(sq_message_dialog_get_type(),
-			"title", _("Archive Manager"),
+			"title", _("Archive manager"),
 			"type", type,
 			"resizable", FALSE,
 			"deletable", FALSE,

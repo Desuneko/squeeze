@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze trunk\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-03-29 09:27+0200\n"
+"POT-Creation-Date: 2007-04-02 12:35+0200\n"
 "PO-Revision-Date: 2007-01-20 04:24+0300\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -28,6 +28,10 @@ msgstr "Тып MIME"
 #: ../libsqueeze/archive.c:364
 msgid "Done"
 msgstr "Зроблена"
+
+#: ../libsqueeze/command-builder.c:122
+msgid "Execute"
+msgstr ""
 
 #: ../libsqueeze/command-builder-zip.c:106
 #: ../libsqueeze/command-builder-rar.c:117
@@ -70,19 +74,21 @@ msgid "Adding"
 msgstr "Дадаць"
 
 #: ../libsqueeze/command-builder-zip.c:163
+#: ../libsqueeze/command-builder-zip.c:165
+#: ../libsqueeze/command-builder-gnu-tar.c:321
 #: ../libsqueeze/command-builder-rar.c:178
 msgid "Removing"
 msgstr ""
 
-#: ../libsqueeze/command-builder-zip.c:175
-#: ../libsqueeze/command-builder-gnu-tar.c:345
+#: ../libsqueeze/command-builder-zip.c:182
+#: ../libsqueeze/command-builder-gnu-tar.c:349
 #: ../libsqueeze/command-builder-rar.c:190
 #, fuzzy
 msgid "Extracting"
 msgstr "Распакаваць"
 
-#: ../libsqueeze/command-builder-zip.c:185
-#: ../libsqueeze/command-builder-gnu-tar.c:355
+#: ../libsqueeze/command-builder-zip.c:192
+#: ../libsqueeze/command-builder-gnu-tar.c:359
 #: ../libsqueeze/command-builder-rar.c:200
 #: ../libsqueeze/command-builder-compr.c:225
 msgid "Refresh"
@@ -227,7 +233,7 @@ msgstr "_Даведка"
 msgid "Add"
 msgstr "Дадаць"
 
-#: ../src/main_window.c:416 ../src/main_window.c:1024
+#: ../src/main_window.c:416 ../src/main_window.c:1033
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Распакаваць"
@@ -240,13 +246,13 @@ msgstr "Адкрыць архіў у новым акне"
 msgid "Open archive"
 msgstr "Адкрыць архіў"
 
-#: ../src/main_window.c:739 ../src/main_window.c:1065 ../src/application.c:190
+#: ../src/main_window.c:739 ../src/main_window.c:1074 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:779 ../src/application.c:264
+#: ../src/main_window.c:779 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -278,48 +284,51 @@ msgid "Contributors:"
 msgstr "Укладальнікі:"
 
 #: ../src/main_window.c:947
-msgid "Artwork:"
-msgstr ""
-
-#: ../src/main_window.c:948
-msgid ""
-"The add and extract icons are based on the extract icon created by Andreas "
-"Nilsson"
-msgstr ""
-
-#: ../src/main_window.c:950
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "У натхненьні ад Xarchiver, напісана Giuseppe Torelli"
 
-#: ../src/main_window.c:955
+#: ../src/main_window.c:949
+msgid "Application Icon:"
+msgstr ""
+
+#: ../src/main_window.c:952
+#, fuzzy
+msgid "Add / Extract icons:"
+msgstr "Распакаваць"
+
+#: ../src/main_window.c:953
+msgid "Based on the original extract icon created by Andreas Nilsson"
+msgstr ""
+
+#: ../src/main_window.c:960
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr "Squeeze - гэта лёгкі і гнуткі кіраўнік архіваў для асяродзьдзя Xfce"
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:967
 msgid "translator-credits"
 msgstr "Аляксандар Няхайчык"
 
-#: ../src/main_window.c:1023
+#: ../src/main_window.c:1032
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:1024
+#: ../src/main_window.c:1033
 msgid "Open"
 msgstr ""
 
-#: ../src/main_window.c:1038
+#: ../src/main_window.c:1047
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1110
+#: ../src/main_window.c:1115
 msgid "Failed to open file"
 msgstr "Немагчыма адкрыць файл"
 
-#: ../src/main_window.c:1111
+#: ../src/main_window.c:1116
 #, c-format
 msgid ""
 "'%s'\n"
@@ -332,7 +341,7 @@ msgstr ""
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:161 ../src/application.c:249
+#: ../src/application.c:162 ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Немагчыма адкрыць архіў: MIME-тып не падтрымліваецца альбо файл не існуе"
@@ -340,7 +349,7 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:232
+#: ../src/application.c:235
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Немагчыма стварыць архіў, MIME-тып не падтрымліваецца"
 
