@@ -137,9 +137,23 @@ lsq_close_archive(LSQArchive *archive)
 }
 
 GSList *
-lsq_get_supported_mime_types()
+lsq_get_supported_mime_types(LSQSupportTypes types)
 {
-	return g_slist_copy(lsq_mime_info_list);
+	GSList *m_types = g_slist_copy(lsq_mime_info_list);
+	if(types &= LSQ_SUPPORT_ADD)
+	{
+		GSList *_types = m_types;
+		while(_types)
+		{
+			LSQArchiveMime *mime = _types->data;
+			LSQCommandBuilder *builder = mime->command_builders->data;
+			if(!builder->build_add)
+				m_types = g_slist_remove(m_types, mime);
+			_types = g_slist_next(_types);
+		}
+	}
+	
+	return m_types;
 }
 
 static gint

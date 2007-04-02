@@ -105,11 +105,30 @@ lsq_command_builder_gnu_tar_init(LSQCommandBuilderGnuTar *command_builder_gnu_ta
 	command_builder->build_refresh = lsq_command_builder_gnu_tar_build_refresh;
 
 	command_builder->mime_types = g_new0(gchar *, 6);
-	command_builder->mime_types[0] = "application/x-tar";
-	command_builder->mime_types[1] = "application/x-tarz";
-	command_builder->mime_types[2] = "application/x-compressed-tar";
-	command_builder->mime_types[3] = "application/x-bzip-compressed-tar";
-	command_builder->mime_types[4] = "application/x-tzo";
+	if(g_find_program_in_path("tar"))
+	{
+		command_builder->mime_types[0] = "application/x-tar";
+		int i = 1;
+		if(g_find_program_in_path("compress"))
+		{
+			command_builder->mime_types[i] = "application/x-tarz";
+			i++;
+		}
+		if(g_find_program_in_path("gzip"))
+		{
+			command_builder->mime_types[i] = "application/x-compressed-tar";
+			i++;
+		}
+		if(g_find_program_in_path("bzip2"))
+		{
+			command_builder->mime_types[i] = "application/x-bzip-compressed-tar";
+			i++;
+		}
+		if(g_find_program_in_path("lzop"))
+		{
+			command_builder->mime_types[i] = "application/x-tzo";
+		}
+	}
 
 	lsq_builder_settings_set_property_types(command_builder->settings, 
 	                                        _("Rights"), /* rights*/

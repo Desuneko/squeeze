@@ -45,6 +45,7 @@ struct _SQNewArchiveDialog
 	GtkFileChooserDialog parent;
 	GtkWidget *archive_types_combo;
 	GtkFileFilter *file_filter; /* HACK -- should just be set inside the constructor */
+	GSList *supported_mime_types;
 };
 
 typedef struct _SQNewArchiveDialogClass SQNewArchiveDialogClass;

@@ -105,10 +105,26 @@ lsq_command_builder_compr_init(LSQCommandBuilderCompr *command_builder_compr)
 	command_builder->build_refresh = lsq_command_builder_compr_build_refresh;
 
 	command_builder->mime_types = g_new0(gchar *, 5);
-	command_builder->mime_types[0] = "application/x-gzip";
-	command_builder->mime_types[1] = "application/x-bzip";
-	command_builder->mime_types[2] = "application/x-lzop";
-	command_builder->mime_types[3] = "application/x-compress";
+	gint i = 0;
+	if(g_find_program_in_path("compress"))
+	{
+		command_builder->mime_types[i] = "application/x-compress";
+		i++;
+	}
+	if(g_find_program_in_path("gzip"))
+	{
+		command_builder->mime_types[i] = "application/x-gzip";
+		i++;
+	}
+	if(g_find_program_in_path("bzip2"))
+	{
+		command_builder->mime_types[i] = "application/x-bzip";
+		i++;
+	}
+	if(g_find_program_in_path("lzop"))
+	{
+		command_builder->mime_types[i] = "application/x-lzop";
+	}
 }
 
 /**

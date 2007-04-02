@@ -100,7 +100,8 @@ lsq_command_builder_zip_init(LSQCommandBuilderZip *command_builder_zip)
 	command_builder->build_refresh = lsq_command_builder_zip_build_refresh;
 
 	command_builder->mime_types = g_new0(gchar *, 2);
-	command_builder->mime_types[0] = "application/zip";
+	if(g_find_program_in_path("zip") && g_find_program_in_path("unzip"))
+		command_builder->mime_types[0] = "application/zip";
 
 	lsq_builder_settings_set_property_types(command_builder->settings, 
 	                                        _("Compressed"), /* length */

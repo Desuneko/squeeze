@@ -105,13 +105,23 @@ lsq_command_builder_rar_init(LSQCommandBuilderRar *command_builder_rar)
 {
 	LSQCommandBuilder *command_builder = LSQ_COMMAND_BUILDER(command_builder_rar);
 
-	command_builder->build_add = lsq_command_builder_rar_build_add;
-	command_builder->build_extract = lsq_command_builder_rar_build_extract;
-	command_builder->build_remove = lsq_command_builder_rar_build_remove;
-	command_builder->build_refresh = lsq_command_builder_rar_build_refresh;
+	gchar *rar_path = g_find_program_in_path("rar");
+	gchar *unrar_path = g_find_program_in_path("unrar");
+
+	if(rar_path)
+	{
+		command_builder->build_add = lsq_command_builder_rar_build_add;
+		command_builder->build_remove = lsq_command_builder_rar_build_remove;
+	}
+	if(unrar_path)
+	{
+		command_builder->build_extract = lsq_command_builder_rar_build_extract;
+		command_builder->build_refresh = lsq_command_builder_rar_build_refresh;
+	}
 
 	command_builder->mime_types = g_new0(gchar *, 2);
-	command_builder->mime_types[0] = "application/x-rar";
+	if(rar_path || unrar_path)
+		command_builder->mime_types[0] = "application/x-rar";
 
 	lsq_builder_settings_set_property_types(command_builder->settings, 
 	                                        _("Compressed"), /* length */
@@ -133,6 +143,8 @@ lsq_command_builder_rar_init(LSQCommandBuilderRar *command_builder_rar)
 	                                        _("Version"), /* version*/
 	                                        G_TYPE_STRING,
                                           NULL);
+	g_free(rar_path);
+	g_free(unrar_path);
 }
 
 /**

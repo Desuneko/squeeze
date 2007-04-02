@@ -24,6 +24,14 @@
 
 G_BEGIN_DECLS
 
+typedef enum
+{
+	LSQ_SUPPORT_ADD = 1,
+	LSQ_SUPPORT_REMOVE = 2,
+	LSQ_SUPPORT_REFRESH = 3,
+	LSQ_SUPPORT_EXTRACT = 4
+} LSQSupportTypes;
+
 /*
  * void
  * lsq_init()
@@ -73,7 +81,7 @@ void
 lsq_close_archive( LSQArchive *archive );
 
 GSList *
-lsq_get_supported_mime_types();
+lsq_get_supported_mime_types(LSQSupportTypes);
 
 gboolean
 lsq_is_supported(const gchar *filename);

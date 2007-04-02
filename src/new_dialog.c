@@ -73,7 +73,8 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 
 	gtk_widget_show_all(hbox);
 
-	GSList *_supported_mime_types = lsq_get_supported_mime_types();
+	dialog->supported_mime_types = lsq_get_supported_mime_types(LSQ_SUPPORT_ADD);
+	GSList *_supported_mime_types = dialog->supported_mime_types;
 
 	dialog->file_filter = gtk_file_filter_new();
 	gtk_file_filter_set_name(dialog->file_filter, _("Archives"));
@@ -85,7 +86,7 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 		gtk_file_filter_add_mime_type(dialog->file_filter,
 		        lsq_archive_mime_get_name((LSQArchiveMime *)(_supported_mime_types->data)));
 		if(!strcmp(lsq_archive_mime_get_name((LSQArchiveMime *)_supported_mime_types->data), "application/x-compressed-tar"))
-			gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), g_slist_index(lsq_get_supported_mime_types(), _supported_mime_types->data));
+			gtk_combo_box_set_active(GTK_COMBO_BOX(dialog->archive_types_combo), g_slist_index(dialog->supported_mime_types, _supported_mime_types->data));
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
 
@@ -127,7 +128,7 @@ sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
 	{
 		g_free(base);
 		gint i;
-		GSList *_supported_mime_types = lsq_get_supported_mime_types();
+		GSList *_supported_mime_types = dialog->supported_mime_types;
 		for(i = 0; i < gtk_combo_box_get_active(GTK_COMBO_BOX(dialog->archive_types_combo)); i++)
 		{
 			_supported_mime_types = g_slist_next(_supported_mime_types);
