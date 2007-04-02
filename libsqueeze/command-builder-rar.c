@@ -403,7 +403,8 @@ lsq_command_builder_rar_refresh_parse_output(LSQSpawnCommand *spawn_command, gpo
 			}
 		break;
 		case REFRESH_STATUS_FINISH:
-			status = lsq_spawn_command_read_line(spawn_command, 1, NULL, NULL,NULL);
+			g_free(line);
+			status = lsq_spawn_command_read_line(spawn_command, 1, &line, &linesize,NULL);
 		break;
 	}
 	g_free(line);

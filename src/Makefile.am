@@ -47,7 +47,7 @@ squeeze_LDADD = \
 	@DBUS_LIBS@ \
 	@THUNAR_VFS_LIBS@
 
-squeeze_LDFLAGS = -static
+# squeeze_LDFLAGS = -static
 
 
 INCLUDES = \
