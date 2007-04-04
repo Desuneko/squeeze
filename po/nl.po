@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-02 12:35+0200\n"
+"POT-Creation-Date: 2007-04-04 12:03+0200\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -24,102 +24,100 @@ msgstr "Naam"
 msgid "Mime type"
 msgstr "Mime type"
 
-#: ../libsqueeze/archive.c:364
-msgid "Done"
-msgstr "Klaar"
-
 #: ../libsqueeze/command-builder.c:122
 msgid "Execute"
 msgstr "Uitvoeren"
 
-#: ../libsqueeze/command-builder-zip.c:106
-#: ../libsqueeze/command-builder-rar.c:117
+#: ../libsqueeze/command-builder-zip.c:107
+#: ../libsqueeze/command-builder-rar.c:127
 msgid "Compressed"
 msgstr "Gecomprimeerd"
 
-#: ../libsqueeze/command-builder-zip.c:108
-#: ../libsqueeze/command-builder-rar.c:131
+#: ../libsqueeze/command-builder-zip.c:109
+#: ../libsqueeze/command-builder-rar.c:141
 msgid "Method"
 msgstr "Methode"
 
-#: ../libsqueeze/command-builder-zip.c:110
-#: ../libsqueeze/command-builder-gnu-tar.c:119
-#: ../libsqueeze/command-builder-rar.c:119
+#: ../libsqueeze/command-builder-zip.c:111
+#: ../libsqueeze/command-builder-gnu-tar.c:138
+#: ../libsqueeze/command-builder-rar.c:129
 msgid "Size"
 msgstr "Grootte"
 
-#: ../libsqueeze/command-builder-zip.c:112
-#: ../libsqueeze/command-builder-rar.c:121
+#: ../libsqueeze/command-builder-zip.c:113
+#: ../libsqueeze/command-builder-rar.c:131
 msgid "Ratio"
 msgstr "Verhouding"
 
-#: ../libsqueeze/command-builder-zip.c:114
-#: ../libsqueeze/command-builder-gnu-tar.c:121
-#: ../libsqueeze/command-builder-rar.c:123
+#: ../libsqueeze/command-builder-zip.c:115
+#: ../libsqueeze/command-builder-gnu-tar.c:140
+#: ../libsqueeze/command-builder-rar.c:133
 msgid "Date"
 msgstr "Datum"
 
-#: ../libsqueeze/command-builder-zip.c:116
-#: ../libsqueeze/command-builder-gnu-tar.c:123
-#: ../libsqueeze/command-builder-rar.c:125
+#: ../libsqueeze/command-builder-zip.c:117
+#: ../libsqueeze/command-builder-gnu-tar.c:142
+#: ../libsqueeze/command-builder-rar.c:135
 msgid "Time"
 msgstr "Tijd"
 
-#: ../libsqueeze/command-builder-zip.c:153
-#: ../libsqueeze/command-builder-rar.c:168
+#: ../libsqueeze/command-builder-zip.c:154
+#: ../libsqueeze/command-builder-rar.c:180
 msgid "Adding"
 msgstr "Toevoegen"
 
-#: ../libsqueeze/command-builder-zip.c:163
-#: ../libsqueeze/command-builder-zip.c:165
-#: ../libsqueeze/command-builder-gnu-tar.c:321
-#: ../libsqueeze/command-builder-rar.c:178
+#: ../libsqueeze/command-builder-zip.c:164
+#: ../libsqueeze/command-builder-zip.c:166
+#: ../libsqueeze/command-builder-gnu-tar.c:340
+#: ../libsqueeze/command-builder-gnu-tar.c:357
+#: ../libsqueeze/command-builder-rar.c:190
+#: ../libsqueeze/command-builder-rar.c:192
 msgid "Removing"
 msgstr "Verwijderen"
 
-#: ../libsqueeze/command-builder-zip.c:182
-#: ../libsqueeze/command-builder-gnu-tar.c:349
-#: ../libsqueeze/command-builder-rar.c:190
+#: ../libsqueeze/command-builder-zip.c:183
+#: ../libsqueeze/command-builder-gnu-tar.c:376
+#: ../libsqueeze/command-builder-rar.c:209
 msgid "Extracting"
 msgstr "Uitpakken"
 
-#: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:359
-#: ../libsqueeze/command-builder-rar.c:200
-#: ../libsqueeze/command-builder-compr.c:225
+#: ../libsqueeze/command-builder-zip.c:193
+#: ../libsqueeze/command-builder-gnu-tar.c:386
+#: ../libsqueeze/command-builder-rar.c:219
+#: ../libsqueeze/command-builder-compr.c:241
 msgid "Refresh"
 msgstr "Vernieuwen"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:115
-#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-gnu-tar.c:134
+#: ../libsqueeze/command-builder-rar.c:137
 msgid "Rights"
 msgstr "Rechten"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:117
+#: ../libsqueeze/command-builder-gnu-tar.c:136
 msgid "Owner/Group"
 msgstr "Eigenaar/Groep"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:206
-#: ../libsqueeze/command-builder-gnu-tar.c:307
-#: ../libsqueeze/command-builder-compr.c:182
+#: ../libsqueeze/command-builder-gnu-tar.c:225
+#: ../libsqueeze/command-builder-gnu-tar.c:326
+#: ../libsqueeze/command-builder-compr.c:198
 msgid "Compressing"
 msgstr "Comprimeren"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:231
-#: ../libsqueeze/command-builder-gnu-tar.c:298
-#: ../libsqueeze/command-builder-compr.c:206
+#: ../libsqueeze/command-builder-gnu-tar.c:250
+#: ../libsqueeze/command-builder-gnu-tar.c:317
+#: ../libsqueeze/command-builder-compr.c:222
 msgid "Decompressing"
 msgstr "Decomprimeren"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:245
+#: ../libsqueeze/command-builder-gnu-tar.c:264
 msgid "Adding files"
 msgstr "Bestanden toevoegen"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:289
+#: ../libsqueeze/command-builder-gnu-tar.c:308
 msgid "Removing files"
 msgstr "Bestand(en) verwijderen"
 
-#: ../libsqueeze/command-builder-rar.c:133
+#: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
 msgstr "Versie"
 
@@ -225,20 +223,20 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../src/main_window.c:416 ../src/main_window.c:1033
+#: ../src/main_window.c:416 ../src/main_window.c:1086
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Uitpakken"
 
-#: ../src/main_window.c:664
+#: ../src/main_window.c:677
 msgid "Open archive in new window"
 msgstr "Archief openen in een niew venster"
 
-#: ../src/main_window.c:670
+#: ../src/main_window.c:683
 msgid "Open archive"
 msgstr "Archief openen"
 
-#: ../src/main_window.c:739 ../src/main_window.c:1074 ../src/application.c:193
+#: ../src/main_window.c:752 ../src/main_window.c:1127 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -246,7 +244,7 @@ msgstr ""
 "Squeeze kan dit archief type niet uitpakken,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:779 ../src/application.c:267
+#: ../src/main_window.c:792 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -254,11 +252,11 @@ msgstr ""
 "Squeeze kan aan dit archief type geen bestanden toevoegen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:799
+#: ../src/main_window.c:812
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Weet je zeker dat je de geselecteerde bestanden wilt verwijderen?"
 
-#: ../src/main_window.c:812
+#: ../src/main_window.c:825
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -266,7 +264,7 @@ msgstr ""
 "Squeeze kan van dit archief type geen bestanden verwijderen,\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:859
+#: ../src/main_window.c:872
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -274,32 +272,32 @@ msgstr ""
 "Weet je zeker dat je deze actie wilt annuleren?\n"
 "Dit zou het archief kunnen beschadigen."
 
-#: ../src/main_window.c:941
+#: ../src/main_window.c:954
 msgid "Lead developer:"
 msgstr "Hoofd ontwikkelaar:"
 
-#: ../src/main_window.c:944
+#: ../src/main_window.c:957
 msgid "Contributors:"
 msgstr "Medewerkers:"
 
-#: ../src/main_window.c:947
+#: ../src/main_window.c:960
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Geinspireerd door Xarchiver, dat is geschreven door Giuseppe Torelli"
 
-#: ../src/main_window.c:949
+#: ../src/main_window.c:962
 msgid "Application Icon:"
 msgstr "Programma Pictogram:"
 
-#: ../src/main_window.c:952
+#: ../src/main_window.c:965
 msgid "Add / Extract icons:"
 msgstr "Toevoegen / Uitpakken pictogrammen"
 
-#: ../src/main_window.c:953
+#: ../src/main_window.c:966
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 "Gebaseerd op een 'uitpakken' pictogram dat gemaakt is door Andreas Nilsson"
 
-#: ../src/main_window.c:960
+#: ../src/main_window.c:973
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -307,19 +305,23 @@ msgstr ""
 "Squeeze is een lightgewicht en flexibele archief beheerder voor de Xfce "
 "Bureaublad omgeving"
 
-#: ../src/main_window.c:967
+#: ../src/main_window.c:980
 msgid "translator-credits"
 msgstr "Stephan Arts <stephan@xfce.org>"
 
-#: ../src/main_window.c:1032
+#: ../src/main_window.c:1009 ../src/main_window.c:1241
+msgid "Done"
+msgstr "Klaar"
+
+#: ../src/main_window.c:1085
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Welke actie wil je uitvoeren op de geselecteerde bestand(en)?"
 
-#: ../src/main_window.c:1033
+#: ../src/main_window.c:1086
 msgid "Open"
 msgstr "Openen"
 
-#: ../src/main_window.c:1047
+#: ../src/main_window.c:1100
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -327,11 +329,11 @@ msgstr ""
 "Squeeze kan dit bestand niet weergeven.\n"
 "het programma om dit te ondersteunen ontbreekt."
 
-#: ../src/main_window.c:1115
+#: ../src/main_window.c:1168
 msgid "Failed to open file"
 msgstr "Kan bestand niet openen"
 
-#: ../src/main_window.c:1116
+#: ../src/main_window.c:1169
 #, c-format
 msgid ""
 "'%s'\n"
@@ -360,11 +362,11 @@ msgstr "Kan archief niet maken, MIME-type niet ondersteund"
 msgid "Archive type:"
 msgstr "Archief type:"
 
-#: ../src/new_dialog.c:79
+#: ../src/new_dialog.c:80
 msgid "Archives"
 msgstr "Archieven"
 
-#: ../src/new_dialog.c:106
+#: ../src/new_dialog.c:107
 msgid "Create new archive"
 msgstr "Nieuw archief maken"
 
