@@ -1268,7 +1268,6 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	/* notify all we have a new archive and connect with the archive */
 	g_signal_emit(store, sq_archive_store_signals[SQ_ARCHIVE_STORE_SIGNAL_NEW_ARCHIVE], 0, NULL);
 	g_signal_connect(store->archive, "refreshed", G_CALLBACK(cb_sq_archive_store_archive_refreshed), store);
-	/* g_signal_connect(store->archive, "lsq_path_changed", G_CALLBACK(cb_sq_archive_store_archive_path_changed), store); */
 }
 
 LSQArchiveIter *
@@ -1575,6 +1574,14 @@ sq_archive_store_dispose(GObject *object)
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
 	if(store->archive)
 	{
+		GList *list_iter;
+		for(list_iter = store->navigation.history; list_iter; list_iter = list_iter->next)
+			lsq_archive_iter_unref(list_iter->data);
+
+		g_list_free(store->navigation.history);
+		if(store->navigation.trailing)
+			lsq_archive_iter_unref(store->navigation.trailing);
+
 		g_object_unref(store->archive);
 		store->archive = NULL;
 	}

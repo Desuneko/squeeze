@@ -33,7 +33,7 @@
 static void
 lsq_command_builder_class_init(LSQCommandBuilderClass *);
 static void
-lsq_command_builder_init(LSQCommandBuilder *archive);
+lsq_command_builder_init(LSQCommandBuilder *);
 static void
 lsq_command_builder_dispose(GObject *object);
 static void
