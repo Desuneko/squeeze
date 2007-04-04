@@ -183,14 +183,21 @@ lsq_command_builder_rar_build_add(LSQCommandBuilder *builder, LSQArchive *archiv
 }
 
 static LSQArchiveCommand *
-lsq_command_builder_rar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *iter_files)
+lsq_command_builder_rar_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *file_iters)
 {
-	gchar *files = lsq_concat_iter_filenames(iter_files);
+	gchar *files = lsq_concat_iter_filenames(file_iters);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Removing"), archive, "rar d %1$s %2$s", files, NULL, NULL);
+	LSQArchiveCommand *macro = lsq_macro_command_new(archive);
+	LSQArchiveCommand *remove = lsq_remove_command_new(_("Removing"), archive, file_iters);
+
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), spawn);
+	g_object_unref(spawn);
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), remove);
+	g_object_unref(remove);
 
 	g_free(files);
-	return spawn;
+	return macro;
 }
 
 static LSQArchiveCommand *

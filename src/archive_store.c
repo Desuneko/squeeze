@@ -1235,7 +1235,7 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 	store->archive = archive;
 
 	/* only update if we are not busy */
-	/* if(lsq_archive_get_status(archive) == LSQ_ARCHIVESTATUS_IDLE) */
+	/* if(lsq_archive_get_status(archive) == NULL) */
 	{
 		root_entry = lsq_archive_get_iter(archive, NULL);
 
@@ -1487,9 +1487,11 @@ sq_archive_store_go_forward(SQArchiveStore *store)
 static void
 sq_archive_store_append_history(SQArchiveStore *store, LSQArchiveIter *entry)
 {
-/*	if(lsq_archive_get_status(store->archive) != LSQ_ARCHIVESTATUS_IDLE)
+	/*
+	if(lsq_archive_get_status(store->archive) != NULL)
 		return;
-*/
+	*/
+
 	GList *iter = store->navigation.present;
 
 	if(store->navigation.present)

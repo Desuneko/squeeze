@@ -353,7 +353,15 @@ lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive 
 	}
 
 	if(!remove_macro)
-		remove_macro = spawn;
+	{
+		LSQArchiveCommand *remove = lsq_remove_command_new(_("Removing"), archive, file_iters);
+
+		remove_macro = lsq_macro_command_new(archive);
+		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), spawn);
+		g_object_unref(spawn);
+		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), remove);
+		g_object_unref(remove);
+	}
 
 	g_free(files);
 	return remove_macro;

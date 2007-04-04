@@ -219,8 +219,8 @@ lsq_archive_new(gchar *path, const gchar *mime)
 		g_object_unref(archive);
 		archive = NULL;
 	}
-
-	archive->settings = lsq_command_builder_get_settings(archive->builder);
+	else
+		archive->settings = lsq_command_builder_get_settings(archive->builder);
 	
 	return archive;
 }
@@ -361,7 +361,7 @@ lsq_archive_get_status(const LSQArchive *archive)
 	if(archive->command)
 		return lsq_archive_command_get_comment(archive->command);
 	else
-		return _("Done");
+		return NULL;
 }
 
 void

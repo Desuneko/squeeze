@@ -514,7 +514,8 @@ lsq_archive_iter_is_real(const LSQArchiveIter *iter)
 		back_iter = g_slist_next(back_iter);
 		if(!back_iter)
 			break;
-		if(!lsq_archive_entry_get_child(parent->entry, lsq_archive_entry_get_filename(((LSQArchiveIter*)back_iter->data)->entry)))
+		if(!lsq_archive_entry_get_child(parent->entry,
+				   lsq_archive_entry_get_filename(((LSQArchiveIter*)back_iter->data)->entry)))
 		{
 			g_slist_free(back_stack);
 			return FALSE;

@@ -636,6 +636,19 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		if(!lsq_new_archive(archive_path, TRUE, NULL, &archive))
 		{
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
+
+			if(window->tool_bar)
+			{
+				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+
+				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+			}
 		}
 		else
 		{
@@ -990,7 +1003,47 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	sq_main_window_new_action_menu(window, lp_archive);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status(lp_archive));
+	const gchar *message = lsq_archive_get_status(lp_archive);
+	if(!message)
+	{
+		message = _("Done");
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
+		}
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		}
+	}
+	else
+	{
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
+		}
+
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+		}
+
+	}
+	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, message);
 }
 
 static void
@@ -1174,21 +1227,6 @@ cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error,
 		gtk_dialog_run(GTK_DIALOG(error_dialog));
 		gtk_widget_destroy(error_dialog);
 	}
-	/* TODO: enable the buttons in menu and toolbar */
-
-	gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
-	gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
-	gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
-	gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
-
-	if(window->tool_bar)
-	{
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
-
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
-	}
 }
 
 static void
@@ -1197,19 +1235,47 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, lsq_archive_get_status(archive));
-
-	gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
-	gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
-	gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
-	gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
-
-	if(window->tool_bar)
+	const gchar *message = lsq_archive_get_status(archive);
+	if(!message)
 	{
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+		message = _("Done");
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
+		}
 
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
+
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
+		}
 	}
+	else
+	{
+
+		if(window->menu_bar)
+		{
+			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
+		}
+
+		if(window->tool_bar)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
+
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
+		}
+	}
+
+	gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, message);
 }
