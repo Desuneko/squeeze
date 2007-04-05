@@ -136,8 +136,6 @@ docs/Makefile
 docs/reference/Makefile
 docs/reference/libsqueeze/Makefile
 docs/reference/libsqueeze/version.xml
-tests/Makefile
-tests/zip/Makefile
 ])
 
 echo "----------------------------------------"

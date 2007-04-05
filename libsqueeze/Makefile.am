@@ -28,7 +28,7 @@ libsqueeze_1_la_SOURCES =  \
 libsqueeze_1_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \
 	$(DBUS_CFLAGS)  \
-	$(THUNAR_VFS_CFLAGS)
+	$(THUNAR_VFS_CFLAGS) -pg
 
 libsqueeze_1_la_LIBADD =
 
@@ -37,3 +37,5 @@ libsqueeze_1_la_LDFLAGS = \
 
 libsqueeze_includedir= \
 	$(includedir)/libsqueeze
+
+INCLUDES = -I$(top_srcdir)
