@@ -1574,13 +1574,7 @@ sq_archive_store_dispose(GObject *object)
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(object);
 	if(store->archive)
 	{
-		GList *list_iter;
-		for(list_iter = store->navigation.history; list_iter; list_iter = list_iter->next)
-			lsq_archive_iter_unref(list_iter->data);
-
-		g_list_free(store->navigation.history);
-		if(store->navigation.trailing)
-			lsq_archive_iter_unref(store->navigation.trailing);
+		g_signal_handlers_disconnect_by_func(store->archive, cb_sq_archive_store_archive_refreshed, store);
 
 		g_object_unref(store->archive);
 		store->archive = NULL;

@@ -24,6 +24,8 @@ squeeze_SOURCES = \
 	settings.c settings.h \
 	archive_store.c archive_store.h \
 	message_dialog.c message_dialog.h \
+	throbber-fallback.c	throbber-fallback.h \
+	throbber.c	throbber.h \
 	new_dialog.c new_dialog.h \
 	add_dialog.c add_dialog.h \
 	extract_dialog.c extract_dialog.h \
@@ -47,8 +49,11 @@ squeeze_LDADD = \
 	@DBUS_LIBS@ \
 	@THUNAR_VFS_LIBS@ 
 
-# squeeze_LDFLAGS = -static
+squeeze_LDFLAGS = -static
 
 
 INCLUDES = \
 	-I${top_srcdir}
+
+throbber-fallback.c: $(srcdir)/throbber-fallback.png Makefile
+	(echo "#include \"throbber-fallback.h\"" && gdk-pixbuf-csource --extern --raw --stream --name=sq_throbber_fallback $(srcdir)/throbber-fallback.png) > throbber-fallback.c

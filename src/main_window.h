@@ -72,6 +72,7 @@ struct _SQMainWindow
 	GtkWidget *tool_bar;
 	GtkWidget *main_vbox;
 	SQWidgetFactory *widget_factory;
+	GtkWidget *throbber;
 	struct {
 		/* 'file' menu */
 		GtkWidget *menu_item_file;

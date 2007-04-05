@@ -56,6 +56,7 @@
 #include "notebook.h"
 #include "application.h"
 #include "main_window.h"
+#include "throbber.h"
 
 #include "new_dialog.h"
 #include "extract_dialog.h"
@@ -387,6 +388,17 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_action);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_view);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_help);
+  
+		GtkMenuItem *item = gtk_menu_item_new ();
+		gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
+		gtk_menu_item_set_right_justified (GTK_MENU_ITEM (item), TRUE);
+		gtk_menu_shell_append (GTK_MENU_SHELL (window->menu_bar), item);
+		gtk_widget_show (item);
+
+		window->throbber = sq_throbber_new ();
+		gtk_container_add (GTK_CONTAINER (item), window->throbber);
+		gtk_widget_show (window->throbber);
+
 	}
 
 	show_toolbar = sq_settings_read_bool_entry(window->settings, "ToolBar", TRUE);
@@ -1238,6 +1250,7 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 	const gchar *message = lsq_archive_get_status(archive);
 	if(!message)
 	{
+		sq_throbber_set_animated(window->throbber, FALSE);
 		message = _("Done");
 		if(window->menu_bar)
 		{
@@ -1261,6 +1274,7 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 
 		if(window->menu_bar)
 		{
+			sq_throbber_set_animated(window->throbber, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);

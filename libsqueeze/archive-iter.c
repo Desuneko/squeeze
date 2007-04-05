@@ -495,7 +495,7 @@ lsq_archive_iter_is_real(const LSQArchiveIter *iter)
 	GSList *back_stack = NULL;
 	GSList *back_iter;
 	const LSQArchiveIter *parent = iter;
-	while(parent)
+	while(parent != NULL)
 	{
 		back_stack = g_slist_prepend(back_stack, (gpointer)parent);
 		parent = parent->parent;
