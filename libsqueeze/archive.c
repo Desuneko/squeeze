@@ -157,14 +157,6 @@ lsq_archive_finalize(GObject *object)
 {
 	g_return_if_fail(LSQ_IS_ARCHIVE(object));
 	LSQArchive *archive = (LSQArchive *)(object);
-	if(archive->path)
-		g_free(archive->path);
-	if(archive->path_info)
-		thunar_vfs_path_unref(archive->path_info);
-	if(archive->file_info)
-		thunar_vfs_info_unref(archive->file_info);
-	if(archive->mime_info)
-		thunar_vfs_mime_info_unref(archive->mime_info);
 
 	lsq_archive_free_iter(archive);
 	lsq_tempfs_clean_root_dir(archive);
@@ -503,8 +495,20 @@ lsq_archive_state_changed(const LSQArchive *archive)
 void
 lsq_close_archive(LSQArchive *archive)
 {
+	g_debug("%d", G_OBJECT(archive)->ref_count);
+	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
 	if(archive->command)
 		g_signal_handlers_disconnect_by_func(archive->command, cb_archive_archive_command_terminated, archive);
+
+	if(archive->path)
+		g_free(archive->path);
+	if(archive->path_info)
+		thunar_vfs_path_unref(archive->path_info);
+	if(archive->file_info)
+		thunar_vfs_info_unref(archive->file_info);
+	if(archive->mime_info)
+		thunar_vfs_mime_info_unref(archive->mime_info);
+
 	lsq_archive_stop(archive);
 	g_object_unref(archive);
 }

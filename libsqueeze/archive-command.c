@@ -153,8 +153,6 @@ lsq_archive_command_execute(LSQArchiveCommand *command)
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(command->archive), FALSE);
 #endif /* DEBUG */
 
-	g_object_ref(command->archive);
-
 	gboolean ret_val = command->execute(command);
 	if(ret_val)
 		g_object_ref(command->archive);
