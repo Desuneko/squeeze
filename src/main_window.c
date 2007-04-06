@@ -1021,6 +1021,7 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 		message = _("Done");
 		if(window->menu_bar)
 		{
+			sq_throbber_set_animated(SQ_THROBBER(window->throbber), FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
@@ -1038,6 +1039,7 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	{
 		if(window->menu_bar)
 		{
+			sq_throbber_set_animated(SQ_THROBBER(window->throbber), TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);

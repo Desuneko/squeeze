@@ -499,6 +499,12 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	GtkWidget *label = gtk_label_new(lsq_archive_get_filename(archive));
 	GtkWidget *archive_image = gtk_image_new_from_icon_name("unknown", GTK_ICON_SIZE_MENU);
 	GtkWidget *throbber = sq_throbber_new();
+	GtkWidget *alignment = gtk_alignment_new(0.5,0.5,1,1);
+	
+	gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 4, 0, 0, 0);
+
+	gtk_container_add(GTK_CONTAINER(alignment), throbber);
+
 	/*thunar_vfs_mime_info_lookup_icon_name(lsq_archive_get_mimetype(archive), notebook->icon_theme), GTK_ICON_SIZE_MENU);*/
 	GtkWidget *close_button = gtk_button_new();
 	GtkWidget *close_image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
@@ -508,6 +514,8 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 
 	gtk_button_set_image(GTK_BUTTON(close_button), close_image);
 	gtk_button_set_relief(GTK_BUTTON(close_button), GTK_RELIEF_NONE);
+
+//	gtk_widget_set_size_request(lbl_hbox, -1, 20);
 
 	gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
 	gtk_label_set_max_width_chars(GTK_LABEL(label), 20);
@@ -527,7 +535,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	g_signal_connect(G_OBJECT(tree_model), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
-	gtk_box_pack_start(GTK_BOX(lbl_hbox), throbber, FALSE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(lbl_hbox), alignment, FALSE, FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), close_button, FALSE, FALSE, 0);
 	gtk_widget_show_all(lbl_hbox);
@@ -645,13 +653,13 @@ cb_notebook_tab_archive_state_changed(LSQArchive *archive, GtkContainer *widget)
 	if(lsq_archive_get_status(archive))
 	{
 		gtk_widget_hide(GTK_WIDGET(children->data));
-		sq_throbber_set_animated(SQ_THROBBER(children->next->data), TRUE);
+		sq_throbber_set_animated(SQ_THROBBER(gtk_bin_get_child(GTK_BIN(children->next->data))), TRUE);
 		gtk_widget_show(GTK_WIDGET(children->next->data));
 	}
 	else
 	{
 		gtk_widget_show(GTK_WIDGET(children->data));
-		sq_throbber_set_animated(SQ_THROBBER(children->next->data), FALSE);
+		sq_throbber_set_animated(SQ_THROBBER(gtk_bin_get_child(GTK_BIN(children->next->data))), FALSE);
 		gtk_widget_hide(GTK_WIDGET(children->next->data));
 	}
 
