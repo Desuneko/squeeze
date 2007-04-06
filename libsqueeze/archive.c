@@ -499,3 +499,12 @@ lsq_archive_state_changed(const LSQArchive *archive)
 {
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED], 0, NULL);
 }
+
+void
+lsq_close_archive(LSQArchive *archive)
+{
+	if(archive->command)
+		g_signal_handlers_disconnect_by_func(archive->command, cb_archive_archive_command_terminated, archive);
+	lsq_archive_stop(archive);
+	g_object_unref(archive);
+}

@@ -130,11 +130,6 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 	return 0;
 }
 
-void
-lsq_close_archive(LSQArchive *archive)
-{
-	g_object_unref(archive);
-}
 
 GSList *
 lsq_get_supported_mime_types(LSQSupportTypes types)

@@ -116,6 +116,11 @@ lsq_archive_command_dispose(GObject *object)
 {
 	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(object);
 	g_signal_emit(object, lsq_archive_command_signals[LSQ_ARCHIVE_COMMAND_SIGNAL_TERMINATED], 0, command->error, NULL);
+	if(command->archive)
+	{
+		g_object_unref(command->archive);
+		command->archive = NULL;
+	}
 	parent_class->dispose(object);
 }
 
@@ -148,7 +153,12 @@ lsq_archive_command_execute(LSQArchiveCommand *command)
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(command->archive), FALSE);
 #endif /* DEBUG */
 
-	return command->execute(command);
+	g_object_ref(command->archive);
+
+	gboolean ret_val = command->execute(command);
+	if(ret_val)
+		g_object_ref(command->archive);
+	return ret_val;
 }
 
 /**
