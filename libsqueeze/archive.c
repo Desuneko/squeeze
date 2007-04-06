@@ -495,7 +495,6 @@ lsq_archive_state_changed(const LSQArchive *archive)
 void
 lsq_close_archive(LSQArchive *archive)
 {
-	g_debug("%d", G_OBJECT(archive)->ref_count);
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
 	if(archive->command)
 		g_signal_handlers_disconnect_by_func(archive->command, cb_archive_archive_command_terminated, archive);
