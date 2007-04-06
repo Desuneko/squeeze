@@ -1083,6 +1083,8 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 		}
 
 		gtk_window_set_title(GTK_WINDOW(window), PACKAGE_STRING);
+		guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
+		gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, _("Done"));
 	}
 }
 

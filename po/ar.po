@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-04 12:03+0200\n"
+"POT-Creation-Date: 2007-04-06 15:12+0200\n"
 "PO-Revision-Date: 2007-01-24 09:48+0200\n"
 "Last-Translator: Mohamed Magdy <alnokta@yahoo.com>\n"
 "Language-Team: Arabeyes Translation & Documentation <admin@arabeyes.org>\n"
@@ -12,11 +12,11 @@ msgstr ""
 "X-Poedit-Language: Arabic\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../libsqueeze/archive.c:276
+#: ../libsqueeze/archive.c:268
 msgid "Name"
 msgstr ""
 
-#: ../libsqueeze/archive.c:278
+#: ../libsqueeze/archive.c:270
 msgid "Mime type"
 msgstr ""
 
@@ -161,158 +161,159 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 
-#: ../src/main_window.c:132
+#: ../src/main_window.c:133
 msgid "Internal Style"
 msgstr ""
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:134
 msgid "Tool Bar Style"
 msgstr ""
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:135
 msgid "Path Bar Style"
 msgstr ""
 
-#: ../src/main_window.c:181
+#: ../src/main_window.c:182
 msgid "Navigation Style"
 msgstr ""
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:183
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
 msgstr ""
 
 #. File menu
-#: ../src/main_window.c:282
+#: ../src/main_window.c:283
 msgid "_File"
 msgstr ""
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:310
+#: ../src/main_window.c:311
 msgid "_Action"
 msgstr ""
 
-#: ../src/main_window.c:315
+#: ../src/main_window.c:316
 msgid "_Add"
 msgstr ""
 
-#: ../src/main_window.c:321
+#: ../src/main_window.c:322
 msgid "_Extract"
 msgstr ""
 
 #. View menu
-#: ../src/main_window.c:353
+#: ../src/main_window.c:354
 msgid "_View"
 msgstr ""
 
 #. Help menu
-#: ../src/main_window.c:377
+#: ../src/main_window.c:378
 msgid "_Help"
 msgstr ""
 
-#: ../src/main_window.c:412
+#: ../src/main_window.c:424
 msgid "Add"
 msgstr ""
 
-#: ../src/main_window.c:416 ../src/main_window.c:1086
+#: ../src/main_window.c:428 ../src/main_window.c:1098
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr ""
 
-#: ../src/main_window.c:677
+#: ../src/main_window.c:689
 msgid "Open archive in new window"
 msgstr ""
 
-#: ../src/main_window.c:683
+#: ../src/main_window.c:695
 msgid "Open archive"
 msgstr ""
 
-#: ../src/main_window.c:752 ../src/main_window.c:1127 ../src/application.c:193
+#: ../src/main_window.c:764 ../src/main_window.c:1139 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:792 ../src/application.c:267
+#: ../src/main_window.c:804 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:812
+#: ../src/main_window.c:824
 msgid "Are you sure you want to remove the selected files?"
 msgstr ""
 
-#: ../src/main_window.c:825
+#: ../src/main_window.c:837
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:872
+#: ../src/main_window.c:884
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
 
-#: ../src/main_window.c:954
+#: ../src/main_window.c:966
 msgid "Lead developer:"
 msgstr ""
 
-#: ../src/main_window.c:957
+#: ../src/main_window.c:969
 msgid "Contributors:"
 msgstr ""
 
-#: ../src/main_window.c:960
+#: ../src/main_window.c:972
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr ""
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:974
 msgid "Application Icon:"
 msgstr ""
 
-#: ../src/main_window.c:965
+#: ../src/main_window.c:977
 msgid "Add / Extract icons:"
 msgstr ""
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:978
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 
-#: ../src/main_window.c:973
+#: ../src/main_window.c:985
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
 
-#: ../src/main_window.c:980
+#: ../src/main_window.c:992
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/main_window.c:1009 ../src/main_window.c:1241
+#: ../src/main_window.c:1021 ../src/main_window.c:1087
+#: ../src/main_window.c:1254
 msgid "Done"
 msgstr ""
 
-#: ../src/main_window.c:1085
+#: ../src/main_window.c:1097
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr ""
 
-#: ../src/main_window.c:1086
+#: ../src/main_window.c:1098
 msgid "Open"
 msgstr ""
 
-#: ../src/main_window.c:1100
+#: ../src/main_window.c:1112
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1168
+#: ../src/main_window.c:1180
 msgid "Failed to open file"
 msgstr ""
 
-#: ../src/main_window.c:1169
+#: ../src/main_window.c:1181
 #, c-format
 msgid ""
 "'%s'\n"
@@ -408,40 +409,40 @@ msgstr ""
 msgid "The amount of space between the path buttons"
 msgstr ""
 
-#: ../src/notebook.c:176 ../src/archive_store.c:249
+#: ../src/notebook.c:179 ../src/archive_store.c:249
 msgid "Show full path"
 msgstr ""
 
-#: ../src/notebook.c:177 ../src/archive_store.c:250
+#: ../src/notebook.c:180 ../src/archive_store.c:250
 msgid "Show the full path strings for each entry"
 msgstr ""
 
-#: ../src/notebook.c:183 ../src/archive_store.c:256
+#: ../src/notebook.c:186 ../src/archive_store.c:256
 msgid "Show mime icons"
 msgstr ""
 
-#: ../src/notebook.c:184 ../src/archive_store.c:257
+#: ../src/notebook.c:187 ../src/archive_store.c:257
 msgid "Show the mime type icons for each entry"
 msgstr ""
 
-#: ../src/notebook.c:190 ../src/archive_store.c:270
+#: ../src/notebook.c:193 ../src/archive_store.c:270
 msgid "Sort folders before files"
 msgstr ""
 
-#: ../src/notebook.c:191 ../src/archive_store.c:271
+#: ../src/notebook.c:194 ../src/archive_store.c:271
 msgid "The folders will be put at the top of the list"
 msgstr ""
 
-#: ../src/notebook.c:197 ../src/notebook.c:198 ../src/archive_store.c:277
+#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
 #: ../src/archive_store.c:278
 msgid "Sort text case sensitive"
 msgstr ""
 
-#: ../src/notebook.c:204
+#: ../src/notebook.c:207
 msgid "Rules hint"
 msgstr ""
 
-#: ../src/notebook.c:205
+#: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
 msgstr ""
 
