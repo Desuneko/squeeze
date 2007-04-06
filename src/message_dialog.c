@@ -69,7 +69,6 @@ static void
 sq_message_dialog_class_init(SQMessageDialogClass *dialog_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (dialog_class);
-	GParamSpec *pspec = NULL;
 
 	parent_class = gtk_type_class (GTK_TYPE_WINDOW);
 

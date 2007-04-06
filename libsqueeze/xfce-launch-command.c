@@ -25,6 +25,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze-module.h"
+#include "libsqueeze-view.h"
 #include "archive-iter.h"
 #include "archive-command.h"
 #include "xfce-launch-command.h"

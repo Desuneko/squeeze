@@ -26,6 +26,7 @@
 #include "tool_bar.h"
 #include "path_bar.h"
 #include "notebook.h"
+#include "throbber.h"
 
 static void
 sq_notebook_class_init(SQNotebookClass *archive_class);
@@ -55,6 +56,8 @@ static void
 cb_notebook_archive_refreshed(LSQArchive *archive, GtkTreeView *tree_view);
 static void
 cb_notebook_archive_state_changed(LSQArchive *archive, SQNotebook *notebook);
+static void
+cb_notebook_tab_archive_state_changed(LSQArchive *archive, GtkContainer *widget);
 static void
 cb_notebook_file_activated(SQArchiveStore *, LSQArchiveIter *, SQNotebook *);
 
@@ -495,6 +498,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	GtkWidget *lbl_hbox = gtk_hbox_new(FALSE, 0);
 	GtkWidget *label = gtk_label_new(lsq_archive_get_filename(archive));
 	GtkWidget *archive_image = gtk_image_new_from_icon_name("unknown", GTK_ICON_SIZE_MENU);
+	GtkWidget *throbber = sq_throbber_new();
 	/*thunar_vfs_mime_info_lookup_icon_name(lsq_archive_get_mimetype(archive), notebook->icon_theme), GTK_ICON_SIZE_MENU);*/
 	GtkWidget *close_button = gtk_button_new();
 	GtkWidget *close_image = gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
@@ -523,6 +527,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	g_signal_connect(G_OBJECT(tree_model), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
 
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), archive_image, FALSE, FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(lbl_hbox), throbber, FALSE, FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), label, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(lbl_hbox), close_button, FALSE, FALSE, 0);
 	gtk_widget_show_all(lbl_hbox);
@@ -531,6 +536,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 
 	g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), tree_view);
 	g_signal_connect(G_OBJECT(archive), "state-changed", G_CALLBACK(cb_notebook_archive_state_changed), notebook);
+	g_signal_connect(G_OBJECT(archive), "state-changed", G_CALLBACK(cb_notebook_tab_archive_state_changed), lbl_hbox);
 
 	g_signal_connect(G_OBJECT(close_button), "clicked", G_CALLBACK(cb_notebook_close_archive), scroll_window);
 	g_signal_connect(G_OBJECT(tree_model), "file-activated", G_CALLBACK(cb_notebook_file_activated), notebook);
@@ -628,6 +634,26 @@ cb_notebook_archive_state_changed(LSQArchive *archive, SQNotebook *notebook)
 {
 	if(sq_notebook_is_active_archive(notebook, archive))
 		g_signal_emit(G_OBJECT(notebook), sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_STATE_CHANGED], 0, archive, NULL);
+}
+
+static void
+cb_notebook_tab_archive_state_changed(LSQArchive *archive, GtkContainer *widget)
+{
+	GList *children = gtk_container_get_children(widget);
+	if(lsq_archive_get_status(archive))
+	{
+		gtk_widget_hide(GTK_WIDGET(children->data));
+		sq_throbber_set_animated(SQ_THROBBER(children->next->data), TRUE);
+		gtk_widget_show(GTK_WIDGET(children->next->data));
+	}
+	else
+	{
+		gtk_widget_show(GTK_WIDGET(children->data));
+		sq_throbber_set_animated(SQ_THROBBER(children->next->data), FALSE);
+		gtk_widget_hide(GTK_WIDGET(children->next->data));
+	}
+
+	g_list_free(children);
 }
 
 static void
@@ -805,7 +831,7 @@ sq_notebook_get_selected_items(SQNotebook *notebook)
 	
 	return filenames;
 }
-
+		
 
 void
 sq_notebook_page_get_archive(SQNotebook *notebook, LSQArchive **lp_archive, gint n)

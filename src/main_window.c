@@ -389,8 +389,8 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_view);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_help);
   
-		GtkMenuItem *item = gtk_menu_item_new ();
-		gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
+		GtkWidget *item = gtk_menu_item_new ();
+		gtk_widget_set_sensitive (item, FALSE);
 		gtk_menu_item_set_right_justified (GTK_MENU_ITEM (item), TRUE);
 		gtk_menu_shell_append (GTK_MENU_SHELL (window->menu_bar), item);
 		gtk_widget_show (item);
@@ -1250,7 +1250,7 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 	const gchar *message = lsq_archive_get_status(archive);
 	if(!message)
 	{
-		sq_throbber_set_animated(window->throbber, FALSE);
+		sq_throbber_set_animated(SQ_THROBBER(window->throbber), FALSE);
 		message = _("Done");
 		if(window->menu_bar)
 		{
@@ -1274,7 +1274,7 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 
 		if(window->menu_bar)
 		{
-			sq_throbber_set_animated(window->throbber, TRUE);
+			sq_throbber_set_animated(SQ_THROBBER(window->throbber), TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);

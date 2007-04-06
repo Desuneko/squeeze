@@ -40,7 +40,7 @@ squeeze_CFLAGS = \
 	$(XFCE4UTIL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
 	-DSRCDIR=\"$(top_srcdir)\" \
-	-DLOCALEDIR=\"$(localedir)\" -pg
+	-DLOCALEDIR=\"$(localedir)\"
  
 squeeze_LDADD = \
 	$(top_builddir)/libsqueeze/libsqueeze-1.la \
@@ -49,7 +49,7 @@ squeeze_LDADD = \
 	@DBUS_LIBS@ \
 	@THUNAR_VFS_LIBS@ 
 
-squeeze_LDFLAGS = -static
+# squeeze_LDFLAGS = -static
 
 
 INCLUDES = \
