@@ -371,10 +371,12 @@ static LSQArchiveCommand *
 lsq_command_builder_gnu_tar_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *file_iters)
 {
 	gchar *files = lsq_concat_iter_filenames(file_iters);
-	gchar *options = g_strconcat(" -C ", dest_path, NULL);
+	gchar *_dest_path = g_shell_quote(dest_path);
+	gchar *options = g_strconcat(" -C ", _dest_path, NULL);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "tar %3$s -x -f %1$s %2$s", files, options, NULL);
 
+	g_free(_dest_path);
 	g_free(options);
 	g_free(files);
 	return spawn;

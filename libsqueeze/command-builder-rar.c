@@ -204,7 +204,7 @@ static LSQArchiveCommand *
 lsq_command_builder_rar_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *file_iters)
 {
 	gchar *files = lsq_concat_iter_filenames(file_iters);
-	gchar *options = g_strconcat(dest_path, NULL);
+	gchar *options = g_shell_quote(dest_path);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "unrar x -y %1$s %2$s %3$s", files, options, NULL);
 
