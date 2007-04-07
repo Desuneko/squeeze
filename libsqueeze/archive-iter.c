@@ -684,8 +684,11 @@ lsq_archive_iter_get_depth(const LSQArchiveIter *iter)
 	g_return_val_if_fail(iter, 0);
 #endif
 	guint depth = 0;
-	while((iter = iter->parent))
+	while(iter)
+	{
+		iter = iter->parent;
 		depth++;
+	}
 	return depth;
 }
 
@@ -718,7 +721,10 @@ lsq_archive_iter_get_path(const LSQArchiveIter *iter)
 		iter = iter->parent;
 	}
 
-	path = g_strjoinv("/", (gchar**)list);
+	if(list[0])
+		path = g_strjoinv("/", (gchar**)list);
+	else
+		path = g_strjoinv("/", (gchar **)&list[1]);
 	
 	g_free(list);
 

@@ -515,7 +515,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	gtk_button_set_image(GTK_BUTTON(close_button), close_image);
 	gtk_button_set_relief(GTK_BUTTON(close_button), GTK_RELIEF_NONE);
 
-//	gtk_widget_set_size_request(lbl_hbox, -1, 20);
+	gtk_widget_set_size_request(lbl_hbox, -1, 22);
 
 	gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
 	gtk_label_set_max_width_chars(GTK_LABEL(label), 20);
