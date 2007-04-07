@@ -225,8 +225,20 @@ lsq_command_builder_compr_build_extract(LSQCommandBuilder *builder, LSQArchive *
 	                                                      NULL,
 	                                                      NULL,
 	                                                      NULL);
+	gchar *filename = lsq_archive_get_filename(archive);
+	gint length = strlen(filename);
+	if(g_str_has_suffix(filename, ".gz"))
+		filename[length-3] = '\0';
+	if(g_str_has_suffix(filename, ".bz"))
+		filename[length-3] = '\0';
+	if(g_str_has_suffix(filename, ".bz2"))
+		filename[length-4] = '\0';
+	if(g_str_has_suffix(filename, ".lzo"))
+		filename[length-4] = '\0';
+	if(g_str_has_suffix(filename, ".Z"))
+		filename[length-2] = '\0';
 
-	g_object_set_data(G_OBJECT(decompress), LSQ_ARCHIVE_DEST_FILE, g_strconcat(dest_path, "/", lsq_archive_iter_get_filename(filenames->data), NULL));
+	g_object_set_data(G_OBJECT(decompress), LSQ_ARCHIVE_DEST_FILE, g_strconcat(dest_path, "/", filename, NULL));
 
 	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(decompress), 1, lsq_command_builder_compr_decompress_parse_output, NULL))
 	{
@@ -277,7 +289,7 @@ lsq_command_builder_compr_decompress_parse_output(LSQSpawnCommand *spawn_command
 	GError *error = NULL;
 	FILE *out_file;
 
-	const gchar *out_filename = g_object_get_data(G_OBJECT(spawn_command), LSQ_ARCHIVE_DEST_FILE);
+	gchar *out_filename = g_object_get_data(G_OBJECT(spawn_command), LSQ_ARCHIVE_DEST_FILE);
 
 	out_file = fopen(out_filename, "ab");
 	if(!out_file)
@@ -287,6 +299,8 @@ lsq_command_builder_compr_decompress_parse_output(LSQSpawnCommand *spawn_command
 	if(status == G_IO_STATUS_EOF)
 	{
 		fclose(out_file);
+		g_object_set_data(G_OBJECT(spawn_command), LSQ_ARCHIVE_DEST_FILE, NULL);
+		g_free(out_filename);
 		return TRUE;
 	}
 
