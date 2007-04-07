@@ -20,6 +20,7 @@
 #include <dbus/dbus-glib.h>
 #include <libsqueeze/libsqueeze-archive.h>
 #include <libsqueeze/libsqueeze-command.h>
+#include <libsqueeze/libsqueeze-view.h>
 #include <libsqueeze/archive-command.h>
 #include <libsqueeze/macro-command.h>
 #include <libsqueeze/spawn-command.h>
