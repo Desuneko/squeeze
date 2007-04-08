@@ -135,7 +135,6 @@ lsq_archive_free_iter(LSQArchive *archive)
  * LSQArchiveIterPool stuff *
  ****************************/
 
-#ifdef DEBUG
 void lsq_archive_iter_pool_print()
 {
 	guint i;
@@ -146,8 +145,13 @@ void lsq_archive_iter_pool_print()
 		else
 			printf("%d %d %p %s\t(no parent)\n", i, pool->pool[i]->ref_count, pool->pool[i]->entry, pool->pool[i]->entry?pool->pool[i]->entry->filename:"(no entry)");
 	}
-}
+#ifdef USE_LSQITER_SLICES
+	for(; i < pool->reserved; ++i)
+	{
+		printf("%d %p\n", i, pool->pool[i]);
+	}
 #endif
+}
 
 inline static void
 lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
@@ -172,6 +176,20 @@ lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
 		g_free(pool->pool[i]);
 #endif
 	}
+#ifdef USE_LSQITER_SLICES
+	for(; i < pool->reserved; ++i)
+	{
+		/* Cleaning up the whole pool */
+		/* Now we can free the iters  */
+		if(!pool->pool[i])
+			break;
+#ifdef USE_GSLICES
+		g_slice_free(LSQArchiveIter, pool->pool[i]);
+#else
+		g_free(pool->pool[i]);
+#endif
+	}
+#endif
 	g_free(pool->pool);
 	g_free(pool);
 }
@@ -514,8 +532,7 @@ lsq_archive_iter_is_real(const LSQArchiveIter *iter)
 		back_iter = g_slist_next(back_iter);
 		if(!back_iter)
 			break;
-		if(!lsq_archive_entry_get_child(parent->entry,
-				   lsq_archive_entry_get_filename(((LSQArchiveIter*)back_iter->data)->entry)))
+		if(!lsq_archive_entry_get_filename(((LSQArchiveIter*)back_iter->data)->entry) || !lsq_archive_entry_get_child(parent->entry, lsq_archive_entry_get_filename(((LSQArchiveIter*)back_iter->data)->entry)))
 		{
 			g_slist_free(back_stack);
 			return FALSE;
