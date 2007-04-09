@@ -160,12 +160,11 @@ lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
 	guint i;
 	for(i = 0; i < pool->size; ++i)
 	{
-		/* we don't need to remove unexisting entries, just clean the pool */
-		/*
 		if(!lsq_archive_iter_is_real(pool->pool[i]))
 			lsq_archive_entry_free(pool->pool[i]->archive, pool->pool[i]->entry);
-		*/
-			
+	}
+	for(i = 0; i < pool->size; ++i)
+	{
 #ifdef USE_LSQITER_SLICES
 		/* Cleaning up the whole pool */
 		/* Now we can free the iters  */
