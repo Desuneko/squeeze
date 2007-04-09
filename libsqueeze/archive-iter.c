@@ -424,9 +424,6 @@ lsq_archive_iter_free(LSQArchiveIter *iter)
 
 	lsq_archive_iter_pool_remove_iter(iter->archive->pool, iter);
 
-	const gchar *filename = lsq_archive_entry_get_filename(iter->entry);
-	g_debug("%s: %s", __FUNCTION__, filename);
-
 	/* free the entry if it doesn't exist */
 	if(!lsq_archive_iter_is_real(iter))
 		lsq_archive_entry_free(iter->archive, iter->entry);

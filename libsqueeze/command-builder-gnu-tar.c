@@ -54,6 +54,9 @@ lsq_command_builder_gnu_tar_compress_parse_output(LSQSpawnCommand *spawn_command
 static gboolean
 lsq_command_builder_gnu_tar_decompress_parse_output(LSQSpawnCommand *spawn_command, gpointer user_data);
 
+static gboolean
+lsq_command_builder_gnu_tar_cleanup(LSQArchiveCommand *command);
+
 static GObjectClass *parent_class;
 
 GType
@@ -281,6 +284,10 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 	{
 		lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), compress);
 		g_object_unref(compress);
+		LSQArchiveCommand *cleanup = lsq_archive_command_new(_("Cleanup"), archive, lsq_command_builder_gnu_tar_cleanup);
+		g_object_set_data(G_OBJECT(cleanup), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
+		lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), cleanup);
+		g_object_unref(cleanup);
 	}
 
 
@@ -340,6 +347,11 @@ lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive 
 		LSQArchiveCommand *remove = lsq_remove_command_new(_("Removing"), archive, file_iters);
 		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), remove);
 		g_object_unref(remove);
+
+		LSQArchiveCommand *cleanup = lsq_archive_command_new(_("Cleanup"), archive, lsq_command_builder_gnu_tar_cleanup);
+		g_object_set_data(G_OBJECT(cleanup), LSQ_ARCHIVE_TEMP_FILE, tmp_file);
+		lsq_macro_command_append(LSQ_MACRO_COMMAND(remove_macro), cleanup);
+		g_object_unref(cleanup);
 
 		if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(compress), 1, lsq_command_builder_gnu_tar_compress_parse_output, NULL))
 		{
@@ -580,6 +592,17 @@ lsq_command_builder_gnu_tar_compress_parse_output(LSQSpawnCommand *spawn_command
 	}
 	fclose(out_file);
 	g_free(buf);
+	return TRUE;
+}
+
+static gboolean
+lsq_command_builder_gnu_tar_cleanup(LSQArchiveCommand *command)
+{
+	const gchar *tmp_file = g_object_get_data(G_OBJECT(command), LSQ_ARCHIVE_TEMP_FILE);
+	if(tmp_file)
+		g_unlink(tmp_file);
+	g_object_set_data(G_OBJECT(command), LSQ_ARCHIVE_TEMP_FILE, NULL);
+
 	return TRUE;
 }
 
