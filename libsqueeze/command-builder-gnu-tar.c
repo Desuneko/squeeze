@@ -290,6 +290,9 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 		g_object_unref(cleanup);
 	}
 
+	LSQArchiveCommand *refresh = lsq_command_builder_gnu_tar_build_refresh(builder, archive);
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(add_macro), refresh);
+	g_object_unref(refresh);
 
 	g_free(files);
 	return add_macro;

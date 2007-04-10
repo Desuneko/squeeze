@@ -151,9 +151,17 @@ static LSQArchiveCommand *
 lsq_command_builder_zip_build_add(LSQCommandBuilder *builder, LSQArchive *archive, GSList *filenames)
 {
 	gchar *files = lsq_concat_filenames(filenames);
+	LSQArchiveCommand *macro= lsq_macro_command_new(archive);
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Adding"), archive, "zip %3$s -r %1$s %2$s", files, NULL, NULL);
+	LSQArchiveCommand *refresh = lsq_command_builder_zip_build_refresh(builder, archive);
+
+
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), spawn);
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), refresh);
+	g_object_unref(spawn);
+	g_object_unref(refresh);
 	g_free(files);
-	return spawn;
+	return macro;
 }
 
 static LSQArchiveCommand *
