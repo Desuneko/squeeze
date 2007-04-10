@@ -6,6 +6,8 @@
 
 iconsdir = $(datadir)/icons/hicolor/scalable/apps
 icons_DATA = squeeze.svg
+
+EXTRA_DIST = $(icons_DATA)
 	
 
 # EXTRA_DIST = $(appicons_DATA)

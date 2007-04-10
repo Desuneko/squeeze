@@ -55,11 +55,15 @@ squeeze_LDADD = \
 INCLUDES = \
 	-I${top_srcdir}
 
+if MAINTAINER_MODE
+
 DISTCLEANFILES = \
 	throbber-fallback.c
 
-#BUILT_SOURCES = \
-#	throbber-fallback.c
+BUILT_SOURCES = \
+	throbber-fallback.c
 
 throbber-fallback.c: $(srcdir)/throbber-fallback.png Makefile
 	(echo "#include \"throbber-fallback.h\"" && gdk-pixbuf-csource --extern --raw --stream --name=sq_throbber_fallback $(srcdir)/throbber-fallback.png) > throbber-fallback.c
+
+endif
