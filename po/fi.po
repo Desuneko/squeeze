@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.1.9-svn-r25516\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-11 13:44+0300\n"
+"POT-Creation-Date: 2007-04-11 14:59+0200\n"
 "PO-Revision-Date: 2007-04-11 13:46+0300\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -227,7 +227,7 @@ msgstr "_Ohje"
 msgid "Add"
 msgstr "Lisää"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1100
+#: ../src/main_window.c:428 ../src/main_window.c:1123
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Pura"
@@ -240,7 +240,11 @@ msgstr "Avaa arkisto uuteen ikkunaan"
 msgid "Open archive"
 msgstr "Avaa arkisto"
 
-#: ../src/main_window.c:764 ../src/main_window.c:1141 ../src/application.c:193
+#: ../src/main_window.c:707 ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Arkistonhallinta"
+
+#: ../src/main_window.c:787 ../src/main_window.c:1164 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -248,7 +252,7 @@ msgstr ""
 "Squeeze ei voi purkaa tätä pakkaustyyppiä.\n"
 "Tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:804 ../src/application.c:267
+#: ../src/main_window.c:827 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -256,11 +260,11 @@ msgstr ""
 "Squeeze ei voi lisätä tiedostoja tähän arkistotyyppiin.\n"
 "Tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:824
+#: ../src/main_window.c:847
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Haluatko varmasti poistaa valitut tiedostot?"
 
-#: ../src/main_window.c:837
+#: ../src/main_window.c:860
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -268,7 +272,7 @@ msgstr ""
 "Squeeze ei voi poistaa tiedostoja tästä arkistotyypistä.\n"
 "Tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:884
+#: ../src/main_window.c:907
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -276,55 +280,55 @@ msgstr ""
 "Haluatko varmasti peruuttaa toiminnon?\n"
 "Arkisto saattaa vahingoittua."
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:989
 msgid "Lead developer:"
 msgstr "Pääkehittäjä:"
 
-#: ../src/main_window.c:969
+#: ../src/main_window.c:992
 msgid "Contributors:"
 msgstr "Avustavat kehittäjät:"
 
-#: ../src/main_window.c:972
+#: ../src/main_window.c:995
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiraatio Giuseppe Torellin sovelluksesta Xarchiver"
 
-#: ../src/main_window.c:974
+#: ../src/main_window.c:997
 msgid "Application Icon:"
 msgstr "Sovelluskuvake:"
 
-#: ../src/main_window.c:977
+#: ../src/main_window.c:1000
 msgid "Add / Extract icons:"
 msgstr "Lisäys- ja purkukuvakkeet:"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:1001
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Perustuu Andreas Nilssonin luomaan purkukuvakkeeseen"
 
-#: ../src/main_window.c:985
+#: ../src/main_window.c:1008
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
 "Squeeze on kevyt ja joustava arkistointisovellus Xfce-työpöytäympäristöön"
 
-#: ../src/main_window.c:992
+#: ../src/main_window.c:1015
 msgid "translator-credits"
 msgstr "Jari Rahkonen <jari.rahkonen@pp1.inet.fi>"
 
-#: ../src/main_window.c:1021 ../src/main_window.c:1089
-#: ../src/main_window.c:1256
+#: ../src/main_window.c:1044 ../src/main_window.c:1112
+#: ../src/main_window.c:1279
 msgid "Done"
 msgstr "Valmis"
 
-#: ../src/main_window.c:1099
+#: ../src/main_window.c:1122
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:1100
+#: ../src/main_window.c:1123
 msgid "Open"
 msgstr "Avaa"
 
-#: ../src/main_window.c:1114
+#: ../src/main_window.c:1137
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -332,11 +336,11 @@ msgstr ""
 "Squeeze ei voi näyttää tiedostoa.\n"
 "Tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:1182
+#: ../src/main_window.c:1205
 msgid "Failed to open file"
 msgstr "Linkin avaaminen epäonnistui"
 
-#: ../src/main_window.c:1183
+#: ../src/main_window.c:1206
 #, c-format
 msgid ""
 "'%s'\n"
@@ -364,10 +368,6 @@ msgstr "Arkistoa ei voi luoda, MIME-tyyppiä ei tueta"
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
 msgstr "Arkiston tyyppi:"
-
-#: ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Arkistonhallinta"
 
 #: ../src/new_dialog.c:107
 msgid "Create new archive"

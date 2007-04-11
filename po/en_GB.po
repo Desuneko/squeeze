@@ -9,13 +9,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-06 15:12+0200\n"
+"POT-Creation-Date: 2007-04-11 14:59+0200\n"
 "PO-Revision-Date: 2007-04-11 08:07+1000\n"
 "Last-Translator: Jeff Bailes <thepizzaking@gmail.com>\n"
 "Language-Team: English/GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../libsqueeze/archive.c:268
 msgid "Name"
@@ -40,7 +40,7 @@ msgid "Method"
 msgstr "Method"
 
 #: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:138
+#: ../libsqueeze/command-builder-gnu-tar.c:141
 #: ../libsqueeze/command-builder-rar.c:129
 msgid "Size"
 msgstr "Size"
@@ -51,70 +51,75 @@ msgid "Ratio"
 msgstr "Ratio"
 
 #: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:140
+#: ../libsqueeze/command-builder-gnu-tar.c:143
 #: ../libsqueeze/command-builder-rar.c:133
 msgid "Date"
 msgstr "Date"
 
 #: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:142
+#: ../libsqueeze/command-builder-gnu-tar.c:145
 #: ../libsqueeze/command-builder-rar.c:135
 msgid "Time"
 msgstr "Time"
 
-#: ../libsqueeze/command-builder-zip.c:154
-#: ../libsqueeze/command-builder-rar.c:180
+#: ../libsqueeze/command-builder-zip.c:155
+#: ../libsqueeze/command-builder-rar.c:181
 msgid "Adding"
 msgstr "Adding"
 
-#: ../libsqueeze/command-builder-zip.c:164
-#: ../libsqueeze/command-builder-zip.c:166
-#: ../libsqueeze/command-builder-gnu-tar.c:340
-#: ../libsqueeze/command-builder-gnu-tar.c:357
-#: ../libsqueeze/command-builder-rar.c:190
-#: ../libsqueeze/command-builder-rar.c:192
+#: ../libsqueeze/command-builder-zip.c:172
+#: ../libsqueeze/command-builder-zip.c:174
+#: ../libsqueeze/command-builder-gnu-tar.c:350
+#: ../libsqueeze/command-builder-gnu-tar.c:372
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
 msgid "Removing"
 msgstr "Removing"
 
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-gnu-tar.c:376
-#: ../libsqueeze/command-builder-rar.c:209
+#: ../libsqueeze/command-builder-zip.c:192
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:216
 msgid "Extracting"
 msgstr "Extracting"
 
-#: ../libsqueeze/command-builder-zip.c:193
-#: ../libsqueeze/command-builder-gnu-tar.c:386
-#: ../libsqueeze/command-builder-rar.c:219
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-gnu-tar.c:403
+#: ../libsqueeze/command-builder-rar.c:226
+#: ../libsqueeze/command-builder-compr.c:253
 msgid "Refresh"
 msgstr "Refresh"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:134
+#: ../libsqueeze/command-builder-gnu-tar.c:137
 #: ../libsqueeze/command-builder-rar.c:137
 msgid "Rights"
 msgstr "Rights"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:136
+#: ../libsqueeze/command-builder-gnu-tar.c:139
 msgid "Owner/Group"
 msgstr "Owner/Group"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:225
-#: ../libsqueeze/command-builder-gnu-tar.c:326
+#: ../libsqueeze/command-builder-gnu-tar.c:228
+#: ../libsqueeze/command-builder-gnu-tar.c:336
 #: ../libsqueeze/command-builder-compr.c:198
 msgid "Compressing"
 msgstr "Compressing"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:250
-#: ../libsqueeze/command-builder-gnu-tar.c:317
+#: ../libsqueeze/command-builder-gnu-tar.c:253
+#: ../libsqueeze/command-builder-gnu-tar.c:327
 #: ../libsqueeze/command-builder-compr.c:222
 msgid "Decompressing"
 msgstr "Decompressing"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:264
+#: ../libsqueeze/command-builder-gnu-tar.c:267
 msgid "Adding files"
 msgstr "Adding files"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:308
+#: ../libsqueeze/command-builder-gnu-tar.c:287
+#: ../libsqueeze/command-builder-gnu-tar.c:354
+msgid "Cleanup"
+msgstr ""
+
+#: ../libsqueeze/command-builder-gnu-tar.c:318
 msgid "Removing files"
 msgstr "Removing files"
 
@@ -224,7 +229,7 @@ msgstr "_Help"
 msgid "Add"
 msgstr "Add"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1098
+#: ../src/main_window.c:428 ../src/main_window.c:1123
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Extract"
@@ -237,7 +242,11 @@ msgstr "Open archive in new window"
 msgid "Open archive"
 msgstr "Open archive"
 
-#: ../src/main_window.c:764 ../src/main_window.c:1139 ../src/application.c:193
+#: ../src/main_window.c:707 ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Archives"
+
+#: ../src/main_window.c:787 ../src/main_window.c:1164 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -245,7 +254,7 @@ msgstr ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 
-#: ../src/main_window.c:804 ../src/application.c:267
+#: ../src/main_window.c:827 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -253,11 +262,11 @@ msgstr ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 
-#: ../src/main_window.c:824
+#: ../src/main_window.c:847
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Are you sure you want to remove the selected files?"
 
-#: ../src/main_window.c:837
+#: ../src/main_window.c:860
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -265,7 +274,7 @@ msgstr ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 
-#: ../src/main_window.c:884
+#: ../src/main_window.c:907
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -273,31 +282,31 @@ msgstr ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:989
 msgid "Lead developer:"
 msgstr "Lead developer:"
 
-#: ../src/main_window.c:969
+#: ../src/main_window.c:992
 msgid "Contributors:"
 msgstr "Contributors:"
 
-#: ../src/main_window.c:972
+#: ../src/main_window.c:995
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspired by Xarchiver, written by Giuseppe Torelli"
 
-#: ../src/main_window.c:974
+#: ../src/main_window.c:997
 msgid "Application Icon:"
 msgstr "Application Icon:"
 
-#: ../src/main_window.c:977
+#: ../src/main_window.c:1000
 msgid "Add / Extract icons:"
 msgstr "Add / Extract icons:"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:1001
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Based on the original extract icon created by Andreas Nilsson"
 
-#: ../src/main_window.c:985
+#: ../src/main_window.c:1008
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -305,24 +314,24 @@ msgstr ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 
-#: ../src/main_window.c:992
+#: ../src/main_window.c:1015
 msgid "translator-credits"
 msgstr "Jeff Bailes <thepizzaking@gmail.com>"
 
-#: ../src/main_window.c:1021 ../src/main_window.c:1087
-#: ../src/main_window.c:1254
+#: ../src/main_window.c:1044 ../src/main_window.c:1112
+#: ../src/main_window.c:1279
 msgid "Done"
 msgstr "Done"
 
-#: ../src/main_window.c:1097
+#: ../src/main_window.c:1122
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Which action do you want to perform on the selected file(s)?"
 
-#: ../src/main_window.c:1098
+#: ../src/main_window.c:1123
 msgid "Open"
 msgstr "Open"
 
-#: ../src/main_window.c:1112
+#: ../src/main_window.c:1137
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -330,11 +339,11 @@ msgstr ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 
-#: ../src/main_window.c:1180
+#: ../src/main_window.c:1205
 msgid "Failed to open file"
 msgstr "Failed to open file"
 
-#: ../src/main_window.c:1181
+#: ../src/main_window.c:1206
 #, c-format
 msgid ""
 "'%s'\n"
@@ -361,10 +370,6 @@ msgstr "Could not create archive, MIME-type unsupported"
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
 msgstr "Archive type:"
-
-#: ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Archives"
 
 #: ../src/new_dialog.c:107
 msgid "Create new archive"

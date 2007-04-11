@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24005\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-06 15:12+0200\n"
+"POT-Creation-Date: 2007-04-11 14:59+0200\n"
 "PO-Revision-Date: 2007-01-17 22:53+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -39,7 +39,7 @@ msgid "Method"
 msgstr "Metodë"
 
 #: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:138
+#: ../libsqueeze/command-builder-gnu-tar.c:141
 #: ../libsqueeze/command-builder-rar.c:129
 msgid "Size"
 msgstr "Madhësi"
@@ -50,75 +50,80 @@ msgid "Ratio"
 msgstr "Përpjestim"
 
 #: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:140
+#: ../libsqueeze/command-builder-gnu-tar.c:143
 #: ../libsqueeze/command-builder-rar.c:133
 msgid "Date"
 msgstr "Datë"
 
 #: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:142
+#: ../libsqueeze/command-builder-gnu-tar.c:145
 #: ../libsqueeze/command-builder-rar.c:135
 msgid "Time"
 msgstr "Kohë"
 
-#: ../libsqueeze/command-builder-zip.c:154
-#: ../libsqueeze/command-builder-rar.c:180
+#: ../libsqueeze/command-builder-zip.c:155
+#: ../libsqueeze/command-builder-rar.c:181
 #, fuzzy
 msgid "Adding"
 msgstr "Shto"
 
-#: ../libsqueeze/command-builder-zip.c:164
-#: ../libsqueeze/command-builder-zip.c:166
-#: ../libsqueeze/command-builder-gnu-tar.c:340
-#: ../libsqueeze/command-builder-gnu-tar.c:357
-#: ../libsqueeze/command-builder-rar.c:190
-#: ../libsqueeze/command-builder-rar.c:192
+#: ../libsqueeze/command-builder-zip.c:172
+#: ../libsqueeze/command-builder-zip.c:174
+#: ../libsqueeze/command-builder-gnu-tar.c:350
+#: ../libsqueeze/command-builder-gnu-tar.c:372
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
 msgid "Removing"
 msgstr ""
 
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-gnu-tar.c:376
-#: ../libsqueeze/command-builder-rar.c:209
+#: ../libsqueeze/command-builder-zip.c:192
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:216
 #, fuzzy
 msgid "Extracting"
 msgstr "Përfto"
 
-#: ../libsqueeze/command-builder-zip.c:193
-#: ../libsqueeze/command-builder-gnu-tar.c:386
-#: ../libsqueeze/command-builder-rar.c:219
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-gnu-tar.c:403
+#: ../libsqueeze/command-builder-rar.c:226
+#: ../libsqueeze/command-builder-compr.c:253
 msgid "Refresh"
 msgstr ""
 
-#: ../libsqueeze/command-builder-gnu-tar.c:134
+#: ../libsqueeze/command-builder-gnu-tar.c:137
 #: ../libsqueeze/command-builder-rar.c:137
 msgid "Rights"
 msgstr ""
 
-#: ../libsqueeze/command-builder-gnu-tar.c:136
+#: ../libsqueeze/command-builder-gnu-tar.c:139
 #, fuzzy
 msgid "Owner/Group"
 msgstr "Shihni zotërues/grup"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:225
-#: ../libsqueeze/command-builder-gnu-tar.c:326
+#: ../libsqueeze/command-builder-gnu-tar.c:228
+#: ../libsqueeze/command-builder-gnu-tar.c:336
 #: ../libsqueeze/command-builder-compr.c:198
 #, fuzzy
 msgid "Compressing"
 msgstr "Madhësi e Ngjeshur"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:250
-#: ../libsqueeze/command-builder-gnu-tar.c:317
+#: ../libsqueeze/command-builder-gnu-tar.c:253
+#: ../libsqueeze/command-builder-gnu-tar.c:327
 #: ../libsqueeze/command-builder-compr.c:222
 msgid "Decompressing"
 msgstr ""
 
-#: ../libsqueeze/command-builder-gnu-tar.c:264
+#: ../libsqueeze/command-builder-gnu-tar.c:267
 #, fuzzy
 msgid "Adding files"
 msgstr "Tërë kartelat"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:308
+#: ../libsqueeze/command-builder-gnu-tar.c:287
+#: ../libsqueeze/command-builder-gnu-tar.c:354
+msgid "Cleanup"
+msgstr ""
+
+#: ../libsqueeze/command-builder-gnu-tar.c:318
 #, fuzzy
 msgid "Removing files"
 msgstr "Po heq kartelë(a) prej arkive"
@@ -230,7 +235,7 @@ msgstr "_Ndihmë"
 msgid "Add"
 msgstr "Shto"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1098
+#: ../src/main_window.c:428 ../src/main_window.c:1123
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Përfto"
@@ -243,61 +248,65 @@ msgstr "Hap arkivë në dritare të re"
 msgid "Open archive"
 msgstr "Hap arkivë"
 
-#: ../src/main_window.c:764 ../src/main_window.c:1139 ../src/application.c:193
+#: ../src/main_window.c:707 ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Arkiva"
+
+#: ../src/main_window.c:787 ../src/main_window.c:1164 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:804 ../src/application.c:267
+#: ../src/main_window.c:827 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:824
+#: ../src/main_window.c:847
 #, fuzzy
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Cilin veprim doni të kryhet mbi kartelën(at) e përzgjedhur?"
 
-#: ../src/main_window.c:837
+#: ../src/main_window.c:860
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:884
+#: ../src/main_window.c:907
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:989
 msgid "Lead developer:"
 msgstr "Udhëheqës zhvillimi:"
 
-#: ../src/main_window.c:969
+#: ../src/main_window.c:992
 msgid "Contributors:"
 msgstr "Pjesëmarrësa:"
 
-#: ../src/main_window.c:972
+#: ../src/main_window.c:995
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Frymëzuar prej Xarchiver, shkruar nga Giuseppe Torelli"
 
-#: ../src/main_window.c:974
+#: ../src/main_window.c:997
 msgid "Application Icon:"
 msgstr ""
 
-#: ../src/main_window.c:977
+#: ../src/main_window.c:1000
 #, fuzzy
 msgid "Add / Extract icons:"
 msgstr "Përfto"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:1001
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 
-#: ../src/main_window.c:985
+#: ../src/main_window.c:1008
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -305,34 +314,34 @@ msgstr ""
 "Squeeze është një përgjegjës arkivash i peshës së lehtë dhe i epshëm për "
 "Mjedisin Desktop Xfce"
 
-#: ../src/main_window.c:992
+#: ../src/main_window.c:1015
 msgid "translator-credits"
 msgstr "kredite përkthyesish"
 
-#: ../src/main_window.c:1021 ../src/main_window.c:1087
-#: ../src/main_window.c:1254
+#: ../src/main_window.c:1044 ../src/main_window.c:1112
+#: ../src/main_window.c:1279
 msgid "Done"
 msgstr "Kryer"
 
-#: ../src/main_window.c:1097
+#: ../src/main_window.c:1122
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Cilin veprim doni të kryhet mbi kartelën(at) e përzgjedhur?"
 
-#: ../src/main_window.c:1098
+#: ../src/main_window.c:1123
 msgid "Open"
 msgstr ""
 
-#: ../src/main_window.c:1112
+#: ../src/main_window.c:1137
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1180
+#: ../src/main_window.c:1205
 msgid "Failed to open file"
 msgstr "Dështova në hapje kartel"
 
-#: ../src/main_window.c:1181
+#: ../src/main_window.c:1206
 #, c-format
 msgid ""
 "'%s'\n"
@@ -359,10 +368,6 @@ msgstr "Nuk krijova dot arkivë, tip MIME i pambuluar"
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
 msgstr "Tip arkive:"
-
-#: ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Arkiva"
 
 #: ../src/new_dialog.c:107
 msgid "Create new archive"
