@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: squeeze 0.0.1-svn\n"
+"Project-Id-Version: squeeze 0.1.9-svn-r25516\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-10 23:17+0300\n"
-"PO-Revision-Date: 2007-04-10 23:31+0300\n"
+"POT-Creation-Date: 2007-04-11 13:44+0300\n"
+"PO-Revision-Date: 2007-04-11 13:46+0300\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -173,19 +173,19 @@ msgstr ""
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr "Sisäinen tyyli"
+msgstr "Sisäinen"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "Työkalupalkkityyli"
+msgstr "Työkalupalkki"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "Polkupalkkityyli"
+msgstr "Polkupalkki"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "Navigointitapa"
+msgstr "Navigointityyli"
 
 #: ../src/main_window.c:183
 msgid ""
