@@ -997,7 +997,7 @@ cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 		_("Inspired by Xarchiver, written by Giuseppe Torelli"), NULL};
 	const gchar *artists[] = {
 		_("Application Icon:"),
-		"Stephan Arts <stephan@xfce.org",
+		"Stephan Arts <stephan@xfce.org>",
 		"",
 		_("Add / Extract icons:"),
 		_("Based on the original extract icon created by Andreas Nilsson"),

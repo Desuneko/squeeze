@@ -5,12 +5,16 @@ libsqueeze/command-builder-zip.c
 libsqueeze/command-builder-gnu-tar.c
 libsqueeze/command-builder-rar.c
 libsqueeze/command-builder-compr.c
+libsqueeze/builder-settings.c
 libsqueeze/archive-command.c
 libsqueeze/spawn-command.c
 libsqueeze/xfce-launch-command.c
 libsqueeze/macro-command.c
+libsqueeze/remove-command.c
 libsqueeze/vfs-mime.c
 libsqueeze/internals.c
+libsqueeze/archive-iter.c
+libsqueeze/archive-tempfs.c
 
 src/main.c
 src/main_window.c
