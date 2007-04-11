@@ -699,6 +699,31 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 		                                     GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
 
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
+
+	GSList *supported_mime_types = lsq_get_supported_mime_types(0);
+	GSList *_supported_mime_types = supported_mime_types;
+	
+	GtkFileFilter *filter_all = gtk_file_filter_new();
+	gtk_file_filter_set_name(filter_all, _("Archives"));
+	while(_supported_mime_types)
+	{
+		GtkFileFilter *filter = gtk_file_filter_new();
+		gtk_file_filter_add_mime_type(filter,
+		        lsq_archive_mime_get_name((LSQArchiveMime *)(_supported_mime_types->data)));
+
+		gtk_file_filter_set_name(filter, lsq_archive_mime_get_comment((LSQArchiveMime *)(_supported_mime_types->data)));
+		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
+
+		gtk_file_filter_add_mime_type(filter_all,
+		        lsq_archive_mime_get_name((LSQArchiveMime *)(_supported_mime_types->data)));
+		_supported_mime_types = g_slist_next(_supported_mime_types);
+	}
+	g_slist_free(supported_mime_types);
+
+	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_all);
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter_all);
+	
+
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
 	if(result == GTK_RESPONSE_CANCEL || result == GTK_RESPONSE_DELETE_EVENT)
 	{
