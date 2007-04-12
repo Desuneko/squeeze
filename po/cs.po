@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Squeeze 0.0.1-svn-r24156\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-11 21:08+0200\n"
-"PO-Revision-Date: 2007-01-20 11:55+0100\n"
+"PO-Revision-Date: 2007-04-12 23:17+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: ../libsqueeze/archive.c:268
-#, fuzzy
 msgid "Name"
-msgstr "Název:"
+msgstr "Název"
 
 #: ../libsqueeze/archive.c:270
 msgid "Mime type"
@@ -27,13 +26,12 @@ msgstr "Typ MIME"
 
 #: ../libsqueeze/command-builder.c:122
 msgid "Execute"
-msgstr ""
+msgstr "Spustit"
 
 #: ../libsqueeze/command-builder-zip.c:107
 #: ../libsqueeze/command-builder-rar.c:127
-#, fuzzy
 msgid "Compressed"
-msgstr "Komprimovaná velikost"
+msgstr "Komprimovaný"
 
 #: ../libsqueeze/command-builder-zip.c:109
 #: ../libsqueeze/command-builder-rar.c:141
@@ -65,9 +63,8 @@ msgstr "Čas"
 
 #: ../libsqueeze/command-builder-zip.c:155
 #: ../libsqueeze/command-builder-rar.c:181
-#, fuzzy
 msgid "Adding"
-msgstr "Přidat"
+msgstr "Přidávám"
 
 #: ../libsqueeze/command-builder-zip.c:172
 #: ../libsqueeze/command-builder-zip.c:174
@@ -76,59 +73,54 @@ msgstr "Přidat"
 #: ../libsqueeze/command-builder-rar.c:197
 #: ../libsqueeze/command-builder-rar.c:199
 msgid "Removing"
-msgstr ""
+msgstr "Odebírám"
 
 #: ../libsqueeze/command-builder-zip.c:192
 #: ../libsqueeze/command-builder-gnu-tar.c:392
 #: ../libsqueeze/command-builder-rar.c:216
-#, fuzzy
 msgid "Extracting"
-msgstr "Rozbalit"
+msgstr "Rozbaluji"
 
 #: ../libsqueeze/command-builder-zip.c:203
 #: ../libsqueeze/command-builder-gnu-tar.c:403
 #: ../libsqueeze/command-builder-rar.c:226
 #: ../libsqueeze/command-builder-compr.c:253
 msgid "Refresh"
-msgstr ""
+msgstr "Obnovit"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:137
 #: ../libsqueeze/command-builder-rar.c:137
 msgid "Rights"
-msgstr ""
+msgstr "Práva"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:139
-#, fuzzy
 msgid "Owner/Group"
-msgstr "Zobrazit vlastníka/skupinu"
+msgstr "Vlastník/skupina"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:228
 #: ../libsqueeze/command-builder-gnu-tar.c:336
 #: ../libsqueeze/command-builder-compr.c:198
-#, fuzzy
 msgid "Compressing"
-msgstr "Komprimovaná velikost"
+msgstr "Komprimuji"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:253
 #: ../libsqueeze/command-builder-gnu-tar.c:327
 #: ../libsqueeze/command-builder-compr.c:222
 msgid "Decompressing"
-msgstr ""
+msgstr "Rozbaluji"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:267
-#, fuzzy
 msgid "Adding files"
-msgstr "Všechny soubory"
+msgstr "Přidávám soubory"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:287
 #: ../libsqueeze/command-builder-gnu-tar.c:354
 msgid "Cleanup"
-msgstr ""
+msgstr "Vyčistit"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:318
-#, fuzzy
 msgid "Removing files"
-msgstr "Odebírám soubor(y) z archivu"
+msgstr "Odebírám soubory"
 
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
@@ -137,19 +129,19 @@ msgstr "Verze"
 #: ../libsqueeze/spawn-command.c:267
 #, c-format
 msgid "Command exited with status %d."
-msgstr ""
+msgstr "Příkaz skončil se stavem %d."
 
 #: ../libsqueeze/spawn-command.c:277
 msgid "Command interrupted by user"
-msgstr ""
+msgstr "Příkaz byl přerušen uživatelem"
 
 #: ../libsqueeze/spawn-command.c:281
 msgid "Command received SIGSEGV"
-msgstr ""
+msgstr "Příkaz obdržel signál SIGSEGV"
 
 #: ../libsqueeze/spawn-command.c:286
 msgid "Command Terminated"
-msgstr ""
+msgstr "Příkaz byl ukončen"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -178,8 +170,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové "
-"řádky.\n"
+"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové řádky.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -237,7 +228,8 @@ msgstr "_Nápověda"
 msgid "Add"
 msgstr "Přidat"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1125
+#: ../src/main_window.c:428
+#: ../src/main_window.c:1125
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Rozbalit"
@@ -250,21 +242,29 @@ msgstr "Otevřít archiv v novém okně"
 msgid "Open archive"
 msgstr "Otevřít archiv"
 
-#: ../src/main_window.c:707 ../src/new_dialog.c:80
+#: ../src/main_window.c:707
+#: ../src/new_dialog.c:80
 msgid "Archives"
 msgstr "Archivy"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1166 ../src/application.c:193
+#: ../src/main_window.c:789
+#: ../src/main_window.c:1166
+#: ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Aplikace Squeeze nemůže rozbalit archiv tohoto typu,\n"
+"potřebná aplikace není dostupná."
 
-#: ../src/main_window.c:829 ../src/application.c:267
+#: ../src/main_window.c:829
+#: ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Aplikace Squeeze nemůže přidat soubory do archivu tohoto typu,\n"
+"potřebná aplikace není dostupná."
 
 #: ../src/main_window.c:849
 msgid "Are you sure you want to remove the selected files?"
@@ -275,6 +275,8 @@ msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Aplikace Squeeze nemůže odebrat soubory z archivu tohoto typu,\n"
+"potřebná aplikace není dostupná."
 
 #: ../src/main_window.c:909
 msgid ""
@@ -298,28 +300,26 @@ msgstr "Inspirováno aplikací Xarchiver od Giuseppe Torelliho"
 
 #: ../src/main_window.c:999
 msgid "Application Icon:"
-msgstr ""
+msgstr "Ikona aplikace:"
 
 #: ../src/main_window.c:1002
-#, fuzzy
 msgid "Add / Extract icons:"
-msgstr "Rozbalit"
+msgstr "Přidat nebo odebrat ikony:"
 
 #: ../src/main_window.c:1003
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
+msgstr "Založeno na původní rozbalovací ikoně, kterou vytvořil Andreas Nilsson"
 
 #: ../src/main_window.c:1010
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr "Squeeze je odlehčený a pružný správce archivů pro prostředí Xfce."
 
 #: ../src/main_window.c:1017
 msgid "translator-credits"
 msgstr "translator-credits"
 
-#: ../src/main_window.c:1046 ../src/main_window.c:1114
+#: ../src/main_window.c:1046
+#: ../src/main_window.c:1114
 #: ../src/main_window.c:1281
 msgid "Done"
 msgstr "Hotovo"
@@ -330,13 +330,15 @@ msgstr "Jakou akci si přejete provést na vybraných souborech?"
 
 #: ../src/main_window.c:1125
 msgid "Open"
-msgstr ""
+msgstr "Otevřít"
 
 #: ../src/main_window.c:1139
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
+"Aplikace Squeeze nemůže zobrazit tento soubor.\n"
+"potřebná aplikace není dostupná."
 
 #: ../src/main_window.c:1207
 msgid "Failed to open file"
@@ -355,7 +357,8 @@ msgstr ""
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:162 ../src/application.c:252
+#: ../src/application.c:162
+#: ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Nelze otevřít archiv, typ MIME není podporován nebo soubor neexistuje"
 
@@ -436,32 +439,39 @@ msgstr "Rozestupy"
 msgid "The amount of space between the path buttons"
 msgstr "Prostor mezi tlačítky cesty"
 
-#: ../src/notebook.c:179 ../src/archive_store.c:249
+#: ../src/notebook.c:179
+#: ../src/archive_store.c:249
 msgid "Show full path"
-msgstr ""
+msgstr "Zobrazit celou cestu"
 
-#: ../src/notebook.c:180 ../src/archive_store.c:250
-#, fuzzy
+#: ../src/notebook.c:180
+#: ../src/archive_store.c:250
 msgid "Show the full path strings for each entry"
-msgstr "Zobrazit ikony typu MIME pro každou položku"
+msgstr "Zobrazí celou cestou pro každou položku"
 
-#: ../src/notebook.c:186 ../src/archive_store.c:256
+#: ../src/notebook.c:186
+#: ../src/archive_store.c:256
 msgid "Show mime icons"
 msgstr "Zobrazit ikony typu MIME"
 
-#: ../src/notebook.c:187 ../src/archive_store.c:257
+#: ../src/notebook.c:187
+#: ../src/archive_store.c:257
 msgid "Show the mime type icons for each entry"
 msgstr "Zobrazit ikony typu MIME pro každou položku"
 
-#: ../src/notebook.c:193 ../src/archive_store.c:270
+#: ../src/notebook.c:193
+#: ../src/archive_store.c:270
 msgid "Sort folders before files"
 msgstr "Zařadit adresáře před soubory"
 
-#: ../src/notebook.c:194 ../src/archive_store.c:271
+#: ../src/notebook.c:194
+#: ../src/archive_store.c:271
 msgid "The folders will be put at the top of the list"
 msgstr "Adresáře budou umístěny na začátku seznamu"
 
-#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
+#: ../src/notebook.c:200
+#: ../src/notebook.c:201
+#: ../src/archive_store.c:277
 #: ../src/archive_store.c:278
 msgid "Sort text case sensitive"
 msgstr "Rozlišovat velikost písmen při řazení"
@@ -497,159 +507,112 @@ msgstr "Správce archivů Xfce"
 #, fuzzy
 #~ msgid "Owner"
 #~ msgstr "Vlastník/skupina"
-
 #~ msgid "Overwrite existing files"
 #~ msgstr "Přepsat existující soubory"
-
 #~ msgid "Overwrite existing files on extraction"
 #~ msgstr "Přepsat existující soubory při rozbalování"
-
 #~ msgid "Touch files"
 #~ msgstr "Dotknout se souborů"
-
 #~ msgid "Strip directories"
 #~ msgstr "Nevytvářet adresáře"
-
 #~ msgid "Keep newer files"
 #~ msgstr "Ponechat novější soubory"
 
 #, fuzzy
 #~ msgid "Do not overwrite files newer than those in the archive"
 #~ msgstr "Nepřepisovat soubory novější než v archivu"
-
 #~ msgid "Override permissions"
 #~ msgstr "Přepsat přístupová práva"
-
 #~ msgid "View filesize"
 #~ msgstr "Zobrazit velikost souboru"
-
 #~ msgid "Permissions"
 #~ msgstr "Přístupová práva"
-
 #~ msgid "View permissions"
 #~ msgstr "Zobrazit přístupová práva"
-
 #~ msgid "View date"
 #~ msgstr "Zobrazit datum"
-
 #~ msgid "View time"
 #~ msgstr "Zobrazit čas"
-
 #~ msgid "Password"
 #~ msgstr "Heslo"
-
 #~ msgid "View compressed filesize"
 #~ msgstr "Zobrazit komprimovanou velikost souboru"
-
 #~ msgid "View ratio"
 #~ msgstr "Zobrazit poměr"
-
 #~ msgid "View method"
 #~ msgstr "Zobrazit metodu"
-
 #~ msgid "Checksum"
 #~ msgstr "Kontrolní součet"
-
 #~ msgid "View Checksum"
 #~ msgstr "Zobrazit kontrolní součet"
-
 #~ msgid "Compression version"
 #~ msgstr "Verze komprese"
-
 #~ msgid "View compression version"
 #~ msgstr "Zobrazí verzi komprese"
-
 #~ msgid "Append extension to filename"
 #~ msgstr "Přidat za název souboru příponu"
-
 #~ msgid "Name:"
 #~ msgstr "Název:"
-
 #~ msgid "Kind:"
 #~ msgstr "Druh:"
-
 #~ msgid "Properties"
 #~ msgstr "Vlastnosti"
-
 #~ msgid "Initializing archive"
 #~ msgstr "Inicializuji archiv"
-
 #~ msgid "Refreshing archive contents"
 #~ msgstr "Znovu načítám obsah archivu"
-
 #~ msgid "Adding file(s) to archive"
 #~ msgstr "Přidávám soubor(y) z archivu"
-
 #~ msgid "Extracting file(s) from archive"
 #~ msgstr "Rozbaluji soubor(y) z archivu"
 
 #, fuzzy
 #~ msgid "Extracting file(s) to temporary directory"
 #~ msgstr "Rozbaluji soubor(y) z archivu"
-
 #~ msgid "Performing an extended action"
 #~ msgstr "Provádí se rozšířená funkce"
-
 #~ msgid "Cancelled"
 #~ msgstr "Zrušeno"
-
 #~ msgid "Error"
 #~ msgstr "Chyba"
-
 #~ msgid "Failed to open archive '%s'."
 #~ msgstr "Nepodařilo se otevřít archiv '%s'"
-
 #~ msgid "Failed to extract contents of archive '%s'."
 #~ msgstr "Nepodařilo se rozbalit obsah archivu '%s'."
-
 #~ msgid "View"
 #~ msgstr "Zobrazit"
-
 #~ msgid "Filename"
 #~ msgstr "Název souboru"
-
 #~ msgid "Test"
 #~ msgstr "Test"
-
 #~ msgid ""
 #~ "Test archive integrity\n"
 #~ "Test the integrity of the archive"
 #~ msgstr ""
 #~ "Otestovat integritu archivu\n"
 #~ "Otestuje integritu archivu"
-
 #~ msgid "_General"
 #~ msgstr "_Obecné"
-
 #~ msgid "Archive viewer:"
 #~ msgstr "Prohlížeč archivů"
-
 #~ msgid "_Show Icons"
 #~ msgstr "_Zobrazit ikony"
-
 #~ msgid "_Rules Hint"
 #~ msgstr "_Rada o pravidlech"
-
 #~ msgid "Sorting:"
 #~ msgstr "Řazení:"
-
 #~ msgid "Sort _Case Sensitive "
 #~ msgstr "Rozlišovat _velikost písmen při řazení"
-
 #~ msgid "Sort _Folders First"
 #~ msgstr "Zařadit a_dresáře před soubory"
-
 #~ msgid "Navigation bar:"
 #~ msgstr "Navigační panel:"
-
 #~ msgid "_Behaviour"
 #~ msgstr "_Chování"
-
 #~ msgid "Preferences"
 #~ msgstr "Předvolby"
-
 #~ msgid "Visible:"
 #~ msgstr "Viditelné:"
-
 #~ msgid "Available:"
 #~ msgstr "Dostupné:"
+
