@@ -117,7 +117,7 @@ msgstr "Adding files"
 #: ../libsqueeze/command-builder-gnu-tar.c:287
 #: ../libsqueeze/command-builder-gnu-tar.c:354
 msgid "Cleanup"
-msgstr ""
+msgstr "Cleanup"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:318
 msgid "Removing files"
