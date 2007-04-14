@@ -13,6 +13,8 @@
 	rar isn't installed (Bug #2774).
 	* libsqueeze/archive-command.c: Added a better reporting of errors,
 	though at the moment it only gives technical details of what went wrong.
+	* libsqueeze/archive-iter.c: Added an extra layer to keep the internals
+	of libsqueeze safe of direct modification.
 	* po/be.po,
 	  po/ca.po,
 	  po/cs.po,
