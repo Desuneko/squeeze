@@ -27,6 +27,14 @@
 #include "libsqueeze-module.h"
 #include "command-builder-gnu-tar.h"
 
+#ifdef SQ_BSD
+#undef SQ_BSD
+#endif
+
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
+#define SQ_BSD
+#endif
+
 #define LSQ_ARCHIVE_TEMP_FILE "gnu_tar_temp_file"
 
 static void
@@ -240,11 +248,19 @@ lsq_command_builder_gnu_tar_build_add(LSQCommandBuilder *builder, LSQArchive *ar
 	
 	if(!lsq_archive_exists(archive))
 	{
+#ifdef SQ_BSD
+		add_skeleton = "gtar %3$s -c -f %1$s %2$s";
+#else
 		add_skeleton = "tar %3$s -c -f %1$s %2$s";
+#endif
 	}
 	else
 	{
+#ifdef SQ_BSD
+		add_skeleton = "gtar %3$s -r -f %1$s %2$s";
+#else
 		add_skeleton = "tar %3$s -r -f %1$s %2$s";
+#endif
 		decompress_skeleton = lsq_command_builder_gnu_tar_get_decompress_skeleton(builder, archive);
 
 
@@ -317,7 +333,11 @@ lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive 
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Removing files"),
 	                                                 archive,
+#ifdef SQ_BSD
+	                                                 "gtar %3$s -f %1$s --delete %2$s",
+#else
 	                                                 "tar %3$s -f %1$s --delete %2$s",
+#endif
 	                                                 files,
 	                                                 options,
                                                      tmp_file);
@@ -389,7 +409,11 @@ lsq_command_builder_gnu_tar_build_extract(LSQCommandBuilder *builder, LSQArchive
 	gchar *_dest_path = g_shell_quote(dest_path);
 	gchar *options = g_strconcat(" -C ", _dest_path, NULL);
 
+#ifdef SQ_BSD
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "gtar %3$s -x -f %1$s %2$s", files, options, NULL);
+#else
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Extracting"), archive, "tar %3$s -x -f %1$s %2$s", files, options, NULL);
+#endif
 
 	g_free(_dest_path);
 	g_free(options);
@@ -400,7 +424,11 @@ lsq_command_builder_gnu_tar_build_extract(LSQCommandBuilder *builder, LSQArchive
 static LSQArchiveCommand *
 lsq_command_builder_gnu_tar_build_refresh(LSQCommandBuilder *builder, LSQArchive *archive)
 {
+#ifdef SQ_BSD
+	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Refresh"), archive, "gtar -tvvf %1$s", NULL, NULL, NULL);
+#else
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Refresh"), archive, "tar -tvvf %1$s", NULL, NULL, NULL);
+#endif
 
 	if(!lsq_spawn_command_set_parse_func(LSQ_SPAWN_COMMAND(spawn), 1, lsq_command_builder_gnu_tar_refresh_parse_output, NULL))
 	{
