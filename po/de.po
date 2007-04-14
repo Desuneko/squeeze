@@ -1,171 +1,168 @@
-# Translation of squeeze to Ukrainian
-# Copyright (C) 2007 Dmitry Nikitin
-# This file is distributed under the same license as the PACKAGE package.
-#
-# Dmitry Nikitin <luckas_fb@mail.ru>, 2007.
+# German translation of squeeze.
+# Copyright (C) 2007 THE squeeze'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the squeeze package.
+# Bj�rn Martensen <bjoern.martensen@gmail.com>, 2007.
+# Jeff Bailes <thepizzaking@gmail.com>, 2007.
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-14 16:00+0200\n"
-"PO-Revision-Date: 2007-04-07 20:52+0300\n"
-"Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
-"Language-Team: Ukrainian <xfce-i18n@xfce.org>\n"
+"POT-Creation-Date: 2007-04-11 21:08+0200\n"
+"PO-Revision-Date: 2007-04-14 15:33+0200\n"
+"Last-Translator: Bj�rn Martensen <bjoern.martensen@gmail.com>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: ../libsqueeze/archive.c:268
 msgid "Name"
-msgstr "Назва"
+msgstr "Name"
 
 #: ../libsqueeze/archive.c:270
 msgid "Mime type"
-msgstr "Тип mime"
+msgstr "Mime-Typ"
 
 #: ../libsqueeze/command-builder.c:122
 msgid "Execute"
-msgstr "Виконуваний"
+msgstr "Ausf�hren"
 
 #: ../libsqueeze/command-builder-zip.c:107
 #: ../libsqueeze/command-builder-rar.c:127
 msgid "Compressed"
-msgstr "Стиснутий"
+msgstr "Komprimiert"
 
 #: ../libsqueeze/command-builder-zip.c:109
 #: ../libsqueeze/command-builder-rar.c:141
 msgid "Method"
-msgstr "Метод"
+msgstr "Methode"
 
 #: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:149
+#: ../libsqueeze/command-builder-gnu-tar.c:141
 #: ../libsqueeze/command-builder-rar.c:129
 msgid "Size"
-msgstr "Розмір"
+msgstr "Gr��e"
 
 #: ../libsqueeze/command-builder-zip.c:113
 #: ../libsqueeze/command-builder-rar.c:131
 msgid "Ratio"
-msgstr "Коефіцієнт"
+msgstr "Verh�ltnis"
 
 #: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:151
+#: ../libsqueeze/command-builder-gnu-tar.c:143
 #: ../libsqueeze/command-builder-rar.c:133
 msgid "Date"
-msgstr "Дата"
+msgstr "Datum"
 
 #: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:153
+#: ../libsqueeze/command-builder-gnu-tar.c:145
 #: ../libsqueeze/command-builder-rar.c:135
 msgid "Time"
-msgstr "Час"
+msgstr "Zeit"
 
 #: ../libsqueeze/command-builder-zip.c:155
 #: ../libsqueeze/command-builder-rar.c:181
 msgid "Adding"
-msgstr "Додавання"
+msgstr "F�ge hinzu"
 
 #: ../libsqueeze/command-builder-zip.c:172
 #: ../libsqueeze/command-builder-zip.c:174
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-gnu-tar.c:350
+#: ../libsqueeze/command-builder-gnu-tar.c:372
 #: ../libsqueeze/command-builder-rar.c:197
 #: ../libsqueeze/command-builder-rar.c:199
 msgid "Removing"
-msgstr "Видалення"
+msgstr "Entferne"
 
 #: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-gnu-tar.c:392
 #: ../libsqueeze/command-builder-rar.c:216
 msgid "Extracting"
-msgstr "Розпакування"
+msgstr "Entpacke"
 
 #: ../libsqueeze/command-builder-zip.c:203
-#: ../libsqueeze/command-builder-gnu-tar.c:428
-#: ../libsqueeze/command-builder-gnu-tar.c:430
+#: ../libsqueeze/command-builder-gnu-tar.c:403
 #: ../libsqueeze/command-builder-rar.c:226
 #: ../libsqueeze/command-builder-compr.c:253
 msgid "Refresh"
-msgstr "Поновлення"
+msgstr "Aktualisieren"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:145
+#: ../libsqueeze/command-builder-gnu-tar.c:137
 #: ../libsqueeze/command-builder-rar.c:137
 msgid "Rights"
-msgstr "Права"
+msgstr "Rechte"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:147
+#: ../libsqueeze/command-builder-gnu-tar.c:139
 msgid "Owner/Group"
-msgstr "Власник/Група"
+msgstr "Besitzer/Gruppe"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
+#: ../libsqueeze/command-builder-gnu-tar.c:228
+#: ../libsqueeze/command-builder-gnu-tar.c:336
 #: ../libsqueeze/command-builder-compr.c:198
 msgid "Compressing"
-msgstr "Стиснення"
+msgstr "Komprimiere"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
+#: ../libsqueeze/command-builder-gnu-tar.c:253
+#: ../libsqueeze/command-builder-gnu-tar.c:327
 #: ../libsqueeze/command-builder-compr.c:222
 msgid "Decompressing"
-msgstr "Розпакування"
+msgstr "Dekomprimiere"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:283
+#: ../libsqueeze/command-builder-gnu-tar.c:267
 msgid "Adding files"
-msgstr "Додавання файлів"
+msgstr "F�ge Dateien hinzu"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:303
-#: ../libsqueeze/command-builder-gnu-tar.c:374
+#: ../libsqueeze/command-builder-gnu-tar.c:287
+#: ../libsqueeze/command-builder-gnu-tar.c:354
 msgid "Cleanup"
-msgstr ""
+msgstr "Aufr�umen"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:334
+#: ../libsqueeze/command-builder-gnu-tar.c:318
 msgid "Removing files"
-msgstr "Видалення файлів"
+msgstr "Entferne Dateien"
 
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
-msgstr "Версія"
+msgstr "Version"
 
 #: ../libsqueeze/spawn-command.c:267
 #, c-format
 msgid "Command exited with status %d."
-msgstr "Команда завершилась зі статусом %d."
+msgstr "Befehl endete mit Status %d."
 
 #: ../libsqueeze/spawn-command.c:277
 msgid "Command interrupted by user"
-msgstr "Команду перервано користувачем"
+msgstr "Befehl vom Benutzer unterbrochen"
 
 #: ../libsqueeze/spawn-command.c:281
 msgid "Command received SIGSEGV"
-msgstr "Команда отримала SIGSEGV"
+msgstr "Befehl erhielt SIGSEGV"
 
 #: ../libsqueeze/spawn-command.c:286
 msgid "Command Terminated"
-msgstr "Команду завершено"
+msgstr "Befehl terminiert"
 
 #: ../src/main.c:51
 msgid "[destination path]"
-msgstr "[наступний шлях]"
+msgstr "[Ziel-Pfad]"
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr "[шлях архіву] [файл1] [файл2] ... [файлN]"
+msgstr "[Archiv-Pfad] [Datei1] [Datei2] ... [DateiN]"
 
 #: ../src/main.c:63
 msgid "[file1] [file2] ... [fileN]"
-msgstr "[файл1] [файл2] ... [файлN]"
+msgstr "[Datei1] [Datei2] ... [DateiN]"
 
 #: ../src/main.c:66
 msgid "Version information"
-msgstr "Інформація про версію"
+msgstr "Versions-Informationen"
 
 #: ../src/main.c:92
 msgid "[archive name]"
-msgstr "[назва архіву]"
+msgstr "[Archiv-Name]"
 
 #: ../src/main.c:96
 #, c-format
@@ -174,189 +171,185 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Спробуйте %s --help щоб переглянути повний список доступних опцій командного "
-"рядка.\n"
+"Versuche %s --help um eine komplette Liste der m�glichen Befehlszeilen-Optionen zu sehen .\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr "Вбудований стиль"
+msgstr "Interner Stil"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "Панель інструментів"
+msgstr "Werkzeugleisten-Stil"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "Панель шляху"
+msgstr "Adressleisten-Stil"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "Навігація"
+msgstr "Navigations-Stil"
 
 #: ../src/main_window.c:183
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
 msgstr ""
-"Стиль навігації\n"
-"Стиль навігації всередині архіву"
+"Navigations-Stil\n"
+"Der Stil um in dem Archiv zu navigieren"
 
 #. File menu
 #: ../src/main_window.c:283
 msgid "_File"
-msgstr "_Файл"
+msgstr "_Datei"
 
 #. Action menu: ref all the childs
 #: ../src/main_window.c:311
 msgid "_Action"
-msgstr "Д_ії"
+msgstr "_Aktion"
 
 #: ../src/main_window.c:316
 msgid "_Add"
-msgstr "_Додати"
+msgstr "_Hinzuf�gen"
 
 #: ../src/main_window.c:322
 msgid "_Extract"
-msgstr "_Розпакувати"
+msgstr "_Entpacken"
 
 #. View menu
 #: ../src/main_window.c:354
 msgid "_View"
-msgstr "_Переглянути"
+msgstr "_Ansicht"
 
 #. Help menu
 #: ../src/main_window.c:378
 msgid "_Help"
-msgstr "Д_овідка"
+msgstr "_Hilfe"
 
 #: ../src/main_window.c:424
 msgid "Add"
-msgstr "Додати"
+msgstr "Hinzuf�gen"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1126
+#: ../src/main_window.c:428 ../src/main_window.c:1125
 #: ../src/extract_dialog.c:100
 msgid "Extract"
-msgstr "Розпакувати"
+msgstr "Entpacken"
 
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
-msgstr "Відкрити архів у новому вікні"
+msgstr "Archiv in neuem Fenster �ffnen"
 
 #: ../src/main_window.c:695
 msgid "Open archive"
-msgstr "Відкрити архів"
+msgstr "Archiv �ffnen"
 
 #: ../src/main_window.c:707 ../src/new_dialog.c:80
 msgid "Archives"
-msgstr "Архіви"
+msgstr "Archive"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
+#: ../src/main_window.c:789 ../src/main_window.c:1166 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze не може встановити тип архіву,\n"
-"відсутня програма для пітримки цього архіву."
+"Squeeze kann diesen Archiv-Typ nicht entpacken,\n"
+"Die daf�r ben�tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:829 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze не може додати файли до архіву,\n"
-"відсутня програма для пітримки цього архіву."
+"Squeeze kann keine Dateien zu diesem Archiv-Typ hinzuf�gen,\n"
+"Die daf�r ben�tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:849
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Ви впевнені, що бажаєте видалити вибрані файли?"
+msgstr "Sind sie sicher, dass sie dieausgew�hlten Dateien entfernen m�chten?"
 
 #: ../src/main_window.c:862
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze не може видалити файли з цього архіву,\n"
-"відсутня програма для пітримки цього архіву."
+"Squeeze kann die Dateien nicht aus diesem Archiv-Typ entfernen,\n"
+"Die daf�r ben�tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:909
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
-"Ви впевнені, що бажаєте відмінити цю дію?\n"
-"Це може пошкодити архів."
+"Sind sie sicher, dass sie die Operation abbrechen m�chten?\n"
+"Das Archiv k�nnte dadurch besch�digt werden."
 
 #: ../src/main_window.c:991
 msgid "Lead developer:"
-msgstr "Головний розробник:"
+msgstr "Leitender Entwickler:"
 
 #: ../src/main_window.c:994
 msgid "Contributors:"
-msgstr "Помічники:"
+msgstr "Mitwirkende:"
 
 #: ../src/main_window.c:997
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr "Навіяно Xarchiver-ом, написаним Giuseppe Torelli"
+msgstr "Inspiriert von Xarchiver, geschrieben von Giuseppe Torelli"
 
 #: ../src/main_window.c:999
 msgid "Application Icon:"
-msgstr "Значок програми:"
+msgstr "Anwendungs Icon:"
 
 #: ../src/main_window.c:1002
 msgid "Add / Extract icons:"
-msgstr "Значки додавання / розпакування:"
+msgstr "Hinzuf�gen / Entpacken icons:"
 
 #: ../src/main_window.c:1003
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
-"Базується на оригінальному значку розпакування створеному Andreas Nilsson"
+msgstr "Basiert auf dem original Entpacken-icon erstellt von Andreas Nilsson"
 
 #: ../src/main_window.c:1010
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
-"Squeeze є легковісним і гнучким менеджером архівів для робочого середовища "
-"Xfce"
+"Squeeze ist ein leichtgewichtiger und felxibler Archivmanager f�r die Xfce Desktop Umgebung"
 
-#. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
+#: ../src/main_window.c:1017
 msgid "translator-credits"
-msgstr "Dmitry Nikitin <luckas_fb@mail.ru>"
+msgstr "Bj�rn Martensen <bjoern.martensen@gmail.com>"
 
-#: ../src/main_window.c:1047 ../src/main_window.c:1115
-#: ../src/main_window.c:1282
+#: ../src/main_window.c:1046 ../src/main_window.c:1114
+#: ../src/main_window.c:1281
 msgid "Done"
-msgstr "Завершено"
+msgstr "Fertig"
+
+#: ../src/main_window.c:1124
+msgid "Which action do you want to perform on the selected file(s)?"
+msgstr "Welche Aktion m�chten sie auf die ausgew�hlt(en) Datei(en) anwenden?"
 
 #: ../src/main_window.c:1125
-msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Яку дію ви хочете застосувати до вибраних файлів?"
-
-#: ../src/main_window.c:1126
 msgid "Open"
-msgstr "Відкрити"
+msgstr "�ffnen"
 
-#: ../src/main_window.c:1140
+#: ../src/main_window.c:1139
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze не може переглянути цей файл.\n"
-"відсутня програма для підтримки цього файлу."
+"Squeeze kann diese Datei nicht anzeigen,\n"
+"Die daf�r ben�tigte Anwendung ist nicht installiert."
+
+#: ../src/main_window.c:1207
+msgid "Failed to open file"
+msgstr "�ffnen der Datei fehlgeschlagen"
 
 #: ../src/main_window.c:1208
-msgid "Failed to open file"
-msgstr "Не вдалось відкрити файл"
-
-#: ../src/main_window.c:1209
 #, c-format
 msgid ""
 "'%s'\n"
 "Could not be opened"
 msgstr ""
 "'%s'\n"
-"Неможливо відкрити"
+"Konnte nicht ge�ffnet werden"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -364,134 +357,217 @@ msgstr ""
 #.
 #: ../src/application.c:162 ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Неможливо відкрити архів, тип MIME не підтримується або файл не існує"
+msgstr "Konnte das Archiv nicht �ffnen, MIME-Typ wird nicht unterst�tzt oder die Datei existiert nicht"
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
 #: ../src/application.c:235
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "Неможливо створити архів, тип MIME не підтримується"
+msgstr "Konnte das Archiv nicht erstellen, MIME-Typ wird nicht unterst�tzt"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
-msgstr "Тип архіву:"
+msgstr "Archiv-Typ:"
 
 #: ../src/new_dialog.c:107
 msgid "Create new archive"
-msgstr "Створити новий архів"
+msgstr "Neues Archiv erstellen"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
-msgstr "Файли і теки, що додаються"
+msgstr "Hinzuzuf�gende Dateien und Verzeichnisse"
 
 #: ../src/add_dialog.c:74
 msgid "Options:"
-msgstr "Параметри:"
+msgstr "Optionen:"
 
 #: ../src/add_dialog.c:107
 msgid "Files"
-msgstr "Файли"
+msgstr "Dateien"
 
 #: ../src/add_dialog.c:111
 msgid "Directories"
-msgstr "Теки"
+msgstr "Verzeichnisse"
 
 #: ../src/add_dialog.c:144
 msgid "Add file(s) to archive"
-msgstr "Додати файл (и) до архіву"
+msgstr "Datei(en) zum Archiv hinzuf�gen"
 
 #. Select Files Dialog
 #: ../src/add_dialog.c:164
 msgid "Select files"
-msgstr "Вибрати файли"
+msgstr "Dateien ausw�hlen"
 
 #. Select Folder Dialog
 #: ../src/add_dialog.c:170
 msgid "Select folders"
-msgstr "Вибрати теки"
+msgstr "Verzeichnisse ausw�hlen"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
-msgstr "<b>Розпакувати файли:</b>"
+msgstr "<b>Dateien entpacken:</b>"
 
 #: ../src/extract_dialog.c:77
 msgid "<b>Options:</b>"
-msgstr "<b>Параметри:</b>"
+msgstr "<b>Optionen:</b>"
 
 #: ../src/extract_dialog.c:87
 msgid "All files"
-msgstr "Всі файли"
+msgstr "Alle Dateien"
 
 #: ../src/extract_dialog.c:88
 msgid "Selected files"
-msgstr "Вибрані файли"
+msgstr "Ausgew�hlte Dateien"
 
 #: ../src/extract_dialog.c:110
 msgid "Extract archive"
-msgstr "Розпакувати архів"
+msgstr "Archiv entpacken"
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
-msgstr "Місцезнаходження:"
+msgstr "Ort:"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
-msgstr "Розділювач"
+msgstr "Abstand"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
-msgstr "Розмір розділювача між кнопками шляху"
+msgstr "Die Weite des Abstands zwischen den Pfad-Kn�pfen"
 
 #: ../src/notebook.c:179 ../src/archive_store.c:249
 msgid "Show full path"
-msgstr "Показати повний шлях"
+msgstr "Gesamten Pfad anzeigen"
 
 #: ../src/notebook.c:180 ../src/archive_store.c:250
 msgid "Show the full path strings for each entry"
-msgstr "Показувати повний рядок шляху для кожного елемента"
+msgstr "Den gesamten Pfad f�r jeden Eintrag anzeigen"
 
 #: ../src/notebook.c:186 ../src/archive_store.c:256
 msgid "Show mime icons"
-msgstr "Показувати значки типів mime"
+msgstr "Mime Icons anzeigen"
 
 #: ../src/notebook.c:187 ../src/archive_store.c:257
 msgid "Show the mime type icons for each entry"
-msgstr "Показувати значки типів mime для кожного елемента"
+msgstr "Mime-Typ Icons f�r jeden Eintrag anzeigen"
 
 #: ../src/notebook.c:193 ../src/archive_store.c:270
 msgid "Sort folders before files"
-msgstr "Теки перед файлами при сортуванні"
+msgstr "Verzeichnisse vor Dateien sortieren"
 
 #: ../src/notebook.c:194 ../src/archive_store.c:271
 msgid "The folders will be put at the top of the list"
-msgstr "Теки будуть відображатись у списку першими"
+msgstr "Verzeichnisse werden an den Anfang der Liste gesetzt"
 
 #: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
 #: ../src/archive_store.c:278
 msgid "Sort text case sensitive"
-msgstr "Сортування з урахуванням регістру"
+msgstr "Gro�buchstaben beim Sortieren beachten"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
-msgstr "Правила"
+msgstr "Zeilen andeuten"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
-msgstr "Відображати рядки різним кольором"
+msgstr "Alternierende Hintergrundfarben f�r Zeilen verwenden"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
-msgstr "Показувати значок батьківської теки"
+msgstr "�bergeordnetes Verzeichnis anzeigen"
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
-msgstr "Відображати '..' для переходу в батьківську теку"
+msgstr "Zeigt '..' an, um in das �bergeordnete Verzeichnis zu gelangen"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive manager"
-msgstr "Менеджер архівів"
+msgstr "Archivmanager"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
-msgstr "Менеджер архівів Xfce"
+msgstr "Xfce Archivmanager"
+
+#~ msgid "Artwork:"
+#~ msgstr "Artwork:"
+
+#, fuzzy
+#~ msgid "idle"
+#~ msgstr "_File"
+
+#, fuzzy
+#~ msgid "Owner"
+#~ msgstr "Owner/Group"
+
+#~ msgid "Overwrite existing files"
+#~ msgstr "Overwrite existing files"
+
+#~ msgid "Overwrite existing files on extraction"
+#~ msgstr "Overwrite existing files on extraction"
+
+#~ msgid "Touch files"
+#~ msgstr "Touch files"
+
+#~ msgid "Strip directories"
+#~ msgstr "Strip directories"
+
+#~ msgid "Keep newer files"
+#~ msgstr "Keep newer files"
+
+#~ msgid "Do not overwrite files newer than those in the archive"
+#~ msgstr "Do not overwrite files newer than those in the archive"
+
+#~ msgid "Override permissions"
+#~ msgstr "Override permissions"
+
+#~ msgid "View filesize"
+#~ msgstr "View filesize"
+
+#~ msgid "Permissions"
+#~ msgstr "Permissions"
+
+#~ msgid "View permissions"
+#~ msgstr "View permissions"
+
+#~ msgid "View date"
+#~ msgstr "View date"
+
+#~ msgid "View time"
+#~ msgstr "View time"
+
+#~ msgid "Password"
+#~ msgstr "Password"
+
+#~ msgid "View compressed filesize"
+#~ msgstr "View compressed filesize"
+
+#~ msgid "View ratio"
+#~ msgstr "View ratio"
+
+#~ msgid "View method"
+#~ msgstr "View method"
+
+#~ msgid "Checksum"
+#~ msgstr "Checksum"
+
+#~ msgid "View Checksum"
+#~ msgstr "View Checksum"
+
+#~ msgid "Compression version"
+#~ msgstr "Compression version"
+
+#~ msgid "View compression version"
+#~ msgstr "View compression version"
+
+#~ msgid "Append extension to filename"
+#~ msgstr "Append extension to filename"
+
+#~ msgid "Name:"
+#~ msgstr "Name:"
+
+#~ msgid "Kind:"
+#~ msgstr "Kind:"
+
+#~ msgid "Properties"
+#~ msgstr "Properties"

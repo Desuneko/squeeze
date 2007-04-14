@@ -1,3 +1,11 @@
+2007-04-14  Stephan Arts <stephan@xfce.org>
+
+	* de.po: Added german translation by Björn Martensen
+	<bjoern.martensen@gmail.com>
+	* *.po: Fixed the 'translator-credits' string, and added a comment
+	for translators so it will be clear to them they should not literally
+	translate this string.
+
 2007-04-14  Stavros Giannouris <stavrosg@hellug.gr>
 
 	* el.po: Added Greek translation.

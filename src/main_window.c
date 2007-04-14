@@ -1014,6 +1014,7 @@ cb_sq_main_about(GtkWidget *widget, gpointer userdata)
 
 	gtk_about_dialog_set_authors((GtkAboutDialog *)about_dialog, authors);
 
+	/* Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR */
 	gtk_about_dialog_set_translator_credits((GtkAboutDialog *)about_dialog, _("translator-credits"));
 
 	gtk_about_dialog_set_license((GtkAboutDialog *)about_dialog, xfce_get_license_text(XFCE_LICENSE_TEXT_GPL));

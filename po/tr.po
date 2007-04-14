@@ -6,15 +6,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: squeeze\n"
+"Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-06 15:12+0200\n"
+"POT-Creation-Date: 2007-04-14 16:00+0200\n"
 "PO-Revision-Date: 2007-04-14 11:52+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../libsqueeze/archive.c:268
 msgid "Name"
@@ -39,7 +39,7 @@ msgid "Method"
 msgstr "Metod"
 
 #: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:138
+#: ../libsqueeze/command-builder-gnu-tar.c:149
 #: ../libsqueeze/command-builder-rar.c:129
 msgid "Size"
 msgstr "Büyüklük"
@@ -50,70 +50,77 @@ msgid "Ratio"
 msgstr "Oran"
 
 #: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:140
+#: ../libsqueeze/command-builder-gnu-tar.c:151
 #: ../libsqueeze/command-builder-rar.c:133
 msgid "Date"
 msgstr "Tarih"
 
 #: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:142
+#: ../libsqueeze/command-builder-gnu-tar.c:153
 #: ../libsqueeze/command-builder-rar.c:135
 msgid "Time"
 msgstr "Zaman"
 
-#: ../libsqueeze/command-builder-zip.c:154
-#: ../libsqueeze/command-builder-rar.c:180
+#: ../libsqueeze/command-builder-zip.c:155
+#: ../libsqueeze/command-builder-rar.c:181
 msgid "Adding"
 msgstr "Ekleniyor"
 
-#: ../libsqueeze/command-builder-zip.c:164
-#: ../libsqueeze/command-builder-zip.c:166
-#: ../libsqueeze/command-builder-gnu-tar.c:340
-#: ../libsqueeze/command-builder-gnu-tar.c:357
-#: ../libsqueeze/command-builder-rar.c:190
-#: ../libsqueeze/command-builder-rar.c:192
+#: ../libsqueeze/command-builder-zip.c:172
+#: ../libsqueeze/command-builder-zip.c:174
+#: ../libsqueeze/command-builder-gnu-tar.c:370
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
 msgid "Removing"
 msgstr "Kaldırılıyor"
 
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-gnu-tar.c:376
-#: ../libsqueeze/command-builder-rar.c:209
+#: ../libsqueeze/command-builder-zip.c:192
+#: ../libsqueeze/command-builder-gnu-tar.c:413
+#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-rar.c:216
 msgid "Extracting"
 msgstr "Açılıyor"
 
-#: ../libsqueeze/command-builder-zip.c:193
-#: ../libsqueeze/command-builder-gnu-tar.c:386
-#: ../libsqueeze/command-builder-rar.c:219
-#: ../libsqueeze/command-builder-compr.c:241
+#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-gnu-tar.c:428
+#: ../libsqueeze/command-builder-gnu-tar.c:430
+#: ../libsqueeze/command-builder-rar.c:226
+#: ../libsqueeze/command-builder-compr.c:253
 msgid "Refresh"
 msgstr "Yenile"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:134
+#: ../libsqueeze/command-builder-gnu-tar.c:145
 #: ../libsqueeze/command-builder-rar.c:137
 msgid "Rights"
 msgstr "Haklar"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:136
+#: ../libsqueeze/command-builder-gnu-tar.c:147
 msgid "Owner/Group"
 msgstr "Sahibi/Grubu"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:225
-#: ../libsqueeze/command-builder-gnu-tar.c:326
+#: ../libsqueeze/command-builder-gnu-tar.c:236
+#: ../libsqueeze/command-builder-gnu-tar.c:356
 #: ../libsqueeze/command-builder-compr.c:198
 msgid "Compressing"
 msgstr "Sıkıştırılıyor"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:250
-#: ../libsqueeze/command-builder-gnu-tar.c:317
+#: ../libsqueeze/command-builder-gnu-tar.c:269
+#: ../libsqueeze/command-builder-gnu-tar.c:347
 #: ../libsqueeze/command-builder-compr.c:222
 msgid "Decompressing"
 msgstr "Sıkıştırma Açılıyor"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:264
+#: ../libsqueeze/command-builder-gnu-tar.c:283
 msgid "Adding files"
 msgstr "Dosyalar ekleniyor"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:308
+#: ../libsqueeze/command-builder-gnu-tar.c:303
+#: ../libsqueeze/command-builder-gnu-tar.c:374
+msgid "Cleanup"
+msgstr ""
+
+#: ../libsqueeze/command-builder-gnu-tar.c:334
 msgid "Removing files"
 msgstr "Dosyalar kaldırılıyor"
 
@@ -165,7 +172,8 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Kullanılabilir komutları ve parametreleri görmek için %s --help komutunu yazın.\n"
+"Kullanılabilir komutları ve parametreleri görmek için %s --help komutunu "
+"yazın.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -189,7 +197,8 @@ msgid ""
 "The style to navigate trough the archive"
 msgstr ""
 "Görüntüleme stili\n"
-"Arşiv yöneticisi içerisinde dosyaları görüntülemek için kullanılacak olan stil"
+"Arşiv yöneticisi içerisinde dosyaları görüntülemek için kullanılacak olan "
+"stil"
 
 #. File menu
 #: ../src/main_window.c:283
@@ -223,7 +232,7 @@ msgstr "_Yardım"
 msgid "Add"
 msgstr "Ekle"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1098
+#: ../src/main_window.c:428 ../src/main_window.c:1126
 #: ../src/extract_dialog.c:100
 msgid "Extract"
 msgstr "Dışa Aktar"
@@ -236,7 +245,11 @@ msgstr "Arşivi yeni pencerede aç"
 msgid "Open archive"
 msgstr "Arşivi aç"
 
-#: ../src/main_window.c:764 ../src/main_window.c:1139 ../src/application.c:193
+#: ../src/main_window.c:707 ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Arşivler"
+
+#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -244,7 +257,7 @@ msgstr ""
 "Squeeze bu arşiv türünü dışarı aktaramıyor,\n"
 "bunu destekleyen uygulama kayıp."
 
-#: ../src/main_window.c:804 ../src/application.c:267
+#: ../src/main_window.c:829 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -252,11 +265,11 @@ msgstr ""
 "Squeeze bu arşiv türüne dosya ekleyemiyor,\n"
 "bunu destekleyen uygulama kayıp."
 
-#: ../src/main_window.c:824
+#: ../src/main_window.c:849
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Seçilen dosyaları gerçekten silmek istiyor musunuz?"
 
-#: ../src/main_window.c:837
+#: ../src/main_window.c:862
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -264,7 +277,7 @@ msgstr ""
 "Squeeze dosyaları bu arşiv türünden silemiyor,\n"
 "bunu destekleyen uygulama kayıp"
 
-#: ../src/main_window.c:884
+#: ../src/main_window.c:909
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -272,55 +285,59 @@ msgstr ""
 "Bu işlemi gerçekten iptal etmek istiyor musunuz?\n"
 "Bu arşive zarar verebilir."
 
-#: ../src/main_window.c:966
+#: ../src/main_window.c:991
 msgid "Lead developer:"
 msgstr "Ana geliştirici:"
 
-#: ../src/main_window.c:969
+#: ../src/main_window.c:994
 msgid "Contributors:"
 msgstr "Katkıcılar:"
 
-#: ../src/main_window.c:972
+#: ../src/main_window.c:997
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Giuseppe Torelli tarafından yazılan Xarchiver'dan esinlenilmiştir."
 
-#: ../src/main_window.c:974
+#: ../src/main_window.c:999
 msgid "Application Icon:"
 msgstr "Uygulama Simgesi:"
 
-#: ../src/main_window.c:977
+#: ../src/main_window.c:1002
 msgid "Add / Extract icons:"
 msgstr "Simgeleri Ekle / Dışa Aktar:"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:1003
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Andreas Nilsson tarafından oluşturulan orijinal dışa aktarma simgesi tabanlıdır"
+msgstr ""
+"Andreas Nilsson tarafından oluşturulan orijinal dışa aktarma simgesi "
+"tabanlıdır"
 
-#: ../src/main_window.c:985
+#: ../src/main_window.c:1010
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
 "Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
 
-#: ../src/main_window.c:992
+#. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
+#: ../src/main_window.c:1018
 msgid "translator-credits"
-msgstr "çevirmenler"
+msgstr "Eren Türkay <turkay.eren@gmail.com>"
 
-#: ../src/main_window.c:1021 ../src/main_window.c:1087
-#: ../src/main_window.c:1254
+#: ../src/main_window.c:1047 ../src/main_window.c:1115
+#: ../src/main_window.c:1282
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: ../src/main_window.c:1097
+#: ../src/main_window.c:1125
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
+msgstr ""
+"Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
 
-#: ../src/main_window.c:1098
+#: ../src/main_window.c:1126
 msgid "Open"
 msgstr "Aç"
 
-#: ../src/main_window.c:1112
+#: ../src/main_window.c:1140
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -328,11 +345,11 @@ msgstr ""
 "Squeeze bu dosyayı görüntüleyemiyor,\n"
 "bunu destekleyen uygulama kayıp"
 
-#: ../src/main_window.c:1180
+#: ../src/main_window.c:1208
 msgid "Failed to open file"
 msgstr "Dosya açma başarısız"
 
-#: ../src/main_window.c:1181
+#: ../src/main_window.c:1209
 #, c-format
 msgid ""
 "'%s'\n"
@@ -359,10 +376,6 @@ msgstr "Arşiv oluşturulamadı, MIME türü desteklenmiyor"
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
 msgstr "Arşiv türü:"
-
-#: ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Arşivler"
 
 #: ../src/new_dialog.c:107
 msgid "Create new archive"
@@ -482,4 +495,3 @@ msgstr "Arşiv yöneticisi"
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
 msgstr "Xfce arşiv yöneticisi"
-
