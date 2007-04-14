@@ -1,7 +1,7 @@
 # German translation of squeeze.
 # Copyright (C) 2007 THE squeeze'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the squeeze package.
-# Björn Martensen <bjoern.martensen@gmail.com>, 2007.
+# BjÃ¶rn Martensen <bjoern.martensen@gmail.com>, 2007.
 # Jeff Bailes <thepizzaking@gmail.com>, 2007.
 # 
 # 
@@ -11,10 +11,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-11 21:08+0200\n"
 "PO-Revision-Date: 2007-04-14 15:33+0200\n"
-"Last-Translator: Björn Martensen <bjoern.martensen@gmail.com>\n"
+"Last-Translator: BjÃ¶rn Martensen <bjoern.martensen@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit"
 
 #: ../libsqueeze/archive.c:268
@@ -27,7 +27,7 @@ msgstr "Mime-Typ"
 
 #: ../libsqueeze/command-builder.c:122
 msgid "Execute"
-msgstr "Ausführen"
+msgstr "AusfÃ¼hren"
 
 #: ../libsqueeze/command-builder-zip.c:107
 #: ../libsqueeze/command-builder-rar.c:127
@@ -43,12 +43,12 @@ msgstr "Methode"
 #: ../libsqueeze/command-builder-gnu-tar.c:141
 #: ../libsqueeze/command-builder-rar.c:129
 msgid "Size"
-msgstr "Größe"
+msgstr "GrÃ¶ÃŸe"
 
 #: ../libsqueeze/command-builder-zip.c:113
 #: ../libsqueeze/command-builder-rar.c:131
 msgid "Ratio"
-msgstr "Verhältnis"
+msgstr "VerhÃ¤ltnis"
 
 #: ../libsqueeze/command-builder-zip.c:115
 #: ../libsqueeze/command-builder-gnu-tar.c:143
@@ -65,7 +65,7 @@ msgstr "Zeit"
 #: ../libsqueeze/command-builder-zip.c:155
 #: ../libsqueeze/command-builder-rar.c:181
 msgid "Adding"
-msgstr "Füge hinzu"
+msgstr "FÃ¼ge hinzu"
 
 #: ../libsqueeze/command-builder-zip.c:172
 #: ../libsqueeze/command-builder-zip.c:174
@@ -112,12 +112,12 @@ msgstr "Dekomprimiere"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:267
 msgid "Adding files"
-msgstr "Füge Dateien hinzu"
+msgstr "FÃ¼ge Dateien hinzu"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:287
 #: ../libsqueeze/command-builder-gnu-tar.c:354
 msgid "Cleanup"
-msgstr "Aufräumen"
+msgstr "AufrÃ¤umen"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:318
 msgid "Removing files"
@@ -171,7 +171,8 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Versuche %s --help um eine komplette Liste der möglichen Befehlszeilen-Optionen zu sehen .\n"
+"Versuche %s --help um eine komplette Liste der mÃ¶glichen Befehlszeilen-"
+"Optionen zu sehen .\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -209,7 +210,7 @@ msgstr "_Aktion"
 
 #: ../src/main_window.c:316
 msgid "_Add"
-msgstr "_Hinzufügen"
+msgstr "_HinzufÃ¼gen"
 
 #: ../src/main_window.c:322
 msgid "_Extract"
@@ -227,7 +228,7 @@ msgstr "_Hilfe"
 
 #: ../src/main_window.c:424
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: ../src/main_window.c:428 ../src/main_window.c:1125
 #: ../src/extract_dialog.c:100
@@ -236,11 +237,11 @@ msgstr "Entpacken"
 
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
-msgstr "Archiv in neuem Fenster öffnen"
+msgstr "Archiv in neuem Fenster Ã¶ffnen"
 
 #: ../src/main_window.c:695
 msgid "Open archive"
-msgstr "Archiv öffnen"
+msgstr "Archiv Ã¶ffnen"
 
 #: ../src/main_window.c:707 ../src/new_dialog.c:80
 msgid "Archives"
@@ -252,19 +253,19 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kann diesen Archiv-Typ nicht entpacken,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Die dafÃ¼r benÃ¶tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:829 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann keine Dateien zu diesem Archiv-Typ hinzufügen,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Squeeze kann keine Dateien zu diesem Archiv-Typ hinzufÃ¼gen,\n"
+"Die dafÃ¼r benÃ¶tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:849
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Sind sie sicher, dass sie dieausgewählten Dateien entfernen möchten?"
+msgstr "Sind sie sicher, dass sie dieausgewÃ¤hlten Dateien entfernen mÃ¶chten?"
 
 #: ../src/main_window.c:862
 msgid ""
@@ -272,15 +273,15 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kann die Dateien nicht aus diesem Archiv-Typ entfernen,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Die dafÃ¼r benÃ¶tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:909
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
-"Sind sie sicher, dass sie die Operation abbrechen möchten?\n"
-"Das Archiv könnte dadurch beschädigt werden."
+"Sind sie sicher, dass sie die Operation abbrechen mÃ¶chten?\n"
+"Das Archiv kÃ¶nnte dadurch beschÃ¤digt werden."
 
 #: ../src/main_window.c:991
 msgid "Lead developer:"
@@ -300,7 +301,7 @@ msgstr "Anwendungs Icon:"
 
 #: ../src/main_window.c:1002
 msgid "Add / Extract icons:"
-msgstr "Hinzufügen / Entpacken icons:"
+msgstr "HinzufÃ¼gen / Entpacken icons:"
 
 #: ../src/main_window.c:1003
 msgid "Based on the original extract icon created by Andreas Nilsson"
@@ -311,11 +312,12 @@ msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
-"Squeeze ist ein leichtgewichtiger und felxibler Archivmanager für die Xfce Desktop Umgebung"
+"Squeeze ist ein leichtgewichtiger und felxibler Archivmanager fÃ¼r die Xfce "
+"Desktop Umgebung"
 
 #: ../src/main_window.c:1017
 msgid "translator-credits"
-msgstr "Björn Martensen <bjoern.martensen@gmail.com>"
+msgstr "BjÃ¶rn Martensen <bjoern.martensen@gmail.com>"
 
 #: ../src/main_window.c:1046 ../src/main_window.c:1114
 #: ../src/main_window.c:1281
@@ -324,11 +326,11 @@ msgstr "Fertig"
 
 #: ../src/main_window.c:1124
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Welche Aktion möchten sie auf die ausgewählt(en) Datei(en) anwenden?"
+msgstr "Welche Aktion mÃ¶chten sie auf die ausgewÃ¤hlt(en) Datei(en) anwenden?"
 
 #: ../src/main_window.c:1125
 msgid "Open"
-msgstr "Öffnen"
+msgstr "Ã–ffnen"
 
 #: ../src/main_window.c:1139
 msgid ""
@@ -336,11 +338,11 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kann diese Datei nicht anzeigen,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Die dafÃ¼r benÃ¶tigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:1207
 msgid "Failed to open file"
-msgstr "Öffnen der Datei fehlgeschlagen"
+msgstr "Ã–ffnen der Datei fehlgeschlagen"
 
 #: ../src/main_window.c:1208
 #, c-format
@@ -349,7 +351,7 @@ msgid ""
 "Could not be opened"
 msgstr ""
 "'%s'\n"
-"Konnte nicht geöffnet werden"
+"Konnte nicht geÃ¶ffnet werden"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -357,14 +359,16 @@ msgstr ""
 #.
 #: ../src/application.c:162 ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Konnte das Archiv nicht öffnen, MIME-Typ wird nicht unterstützt oder die Datei existiert nicht"
+msgstr ""
+"Konnte das Archiv nicht Ã¶ffnen, MIME-Typ wird nicht unterstÃ¼tzt oder die "
+"Datei existiert nicht"
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
 #: ../src/application.c:235
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "Konnte das Archiv nicht erstellen, MIME-Typ wird nicht unterstützt"
+msgstr "Konnte das Archiv nicht erstellen, MIME-Typ wird nicht unterstÃ¼tzt"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -376,7 +380,7 @@ msgstr "Neues Archiv erstellen"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
-msgstr "Hinzuzufügende Dateien und Verzeichnisse"
+msgstr "HinzuzufÃ¼gende Dateien und Verzeichnisse"
 
 #: ../src/add_dialog.c:74
 msgid "Options:"
@@ -392,17 +396,17 @@ msgstr "Verzeichnisse"
 
 #: ../src/add_dialog.c:144
 msgid "Add file(s) to archive"
-msgstr "Datei(en) zum Archiv hinzufügen"
+msgstr "Datei(en) zum Archiv hinzufÃ¼gen"
 
 #. Select Files Dialog
 #: ../src/add_dialog.c:164
 msgid "Select files"
-msgstr "Dateien auswählen"
+msgstr "Dateien auswÃ¤hlen"
 
 #. Select Folder Dialog
 #: ../src/add_dialog.c:170
 msgid "Select folders"
-msgstr "Verzeichnisse auswählen"
+msgstr "Verzeichnisse auswÃ¤hlen"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -418,7 +422,7 @@ msgstr "Alle Dateien"
 
 #: ../src/extract_dialog.c:88
 msgid "Selected files"
-msgstr "Ausgewählte Dateien"
+msgstr "AusgewÃ¤hlte Dateien"
 
 #: ../src/extract_dialog.c:110
 msgid "Extract archive"
@@ -434,7 +438,7 @@ msgstr "Abstand"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
-msgstr "Die Weite des Abstands zwischen den Pfad-Knöpfen"
+msgstr "Die Weite des Abstands zwischen den Pfad-KnÃ¶pfen"
 
 #: ../src/notebook.c:179 ../src/archive_store.c:249
 msgid "Show full path"
@@ -442,7 +446,7 @@ msgstr "Gesamten Pfad anzeigen"
 
 #: ../src/notebook.c:180 ../src/archive_store.c:250
 msgid "Show the full path strings for each entry"
-msgstr "Den gesamten Pfad für jeden Eintrag anzeigen"
+msgstr "Den gesamten Pfad fÃ¼r jeden Eintrag anzeigen"
 
 #: ../src/notebook.c:186 ../src/archive_store.c:256
 msgid "Show mime icons"
@@ -450,7 +454,7 @@ msgstr "Mime Icons anzeigen"
 
 #: ../src/notebook.c:187 ../src/archive_store.c:257
 msgid "Show the mime type icons for each entry"
-msgstr "Mime-Typ Icons für jeden Eintrag anzeigen"
+msgstr "Mime-Typ Icons fÃ¼r jeden Eintrag anzeigen"
 
 #: ../src/notebook.c:193 ../src/archive_store.c:270
 msgid "Sort folders before files"
@@ -463,7 +467,7 @@ msgstr "Verzeichnisse werden an den Anfang der Liste gesetzt"
 #: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
 #: ../src/archive_store.c:278
 msgid "Sort text case sensitive"
-msgstr "Großbuchstaben beim Sortieren beachten"
+msgstr "GroÃŸbuchstaben beim Sortieren beachten"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
@@ -471,15 +475,15 @@ msgstr "Zeilen andeuten"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
-msgstr "Alternierende Hintergrundfarben für Zeilen verwenden"
+msgstr "Alternierende Hintergrundfarben fÃ¼r Zeilen verwenden"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
-msgstr "Übergeordnetes Verzeichnis anzeigen"
+msgstr "Ãœbergeordnetes Verzeichnis anzeigen"
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
-msgstr "Zeigt '..' an, um in das übergeordnete Verzeichnis zu gelangen"
+msgstr "Zeigt '..' an, um in das Ã¼bergeordnete Verzeichnis zu gelangen"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive manager"

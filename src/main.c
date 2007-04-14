@@ -99,7 +99,6 @@ int main(int argc, char **argv)
 		}
 	}
 	gchar *current_dir = g_get_current_dir();
-	g_debug(current_dir);
 
 	thunar_vfs_init();
 	lsq_init();

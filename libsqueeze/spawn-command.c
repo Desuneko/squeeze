@@ -214,7 +214,9 @@ lsq_spawn_command_execute(LSQArchiveCommand *command)
 	}
 	LSQ_ARCHIVE_COMMAND(command)->running = TRUE;
 
+#ifdef DEBUG
 	g_debug("executing: %s\n", cmd);
+#endif
 
 	g_child_watch_add(spawn_command->child_pid, lsq_spawn_command_child_watch_func, spawn_command);
 	g_object_ref(spawn_command);
