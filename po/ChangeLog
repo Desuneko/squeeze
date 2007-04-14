@@ -1,3 +1,8 @@
+2007-04-14  Maximilian Schleiss <maxschleiss@bluewin.ch>
+
+	* ca.po: Added the Catalan translation
+	* Updated LINGUAS file
+
 2007-04-13  Maximilian Schleiss <maxschleiss@bluewin.ch>
 
 	* fr.po: Updated the French translation
