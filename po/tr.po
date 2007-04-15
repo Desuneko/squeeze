@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-14 16:00+0200\n"
+"POT-Creation-Date: 2007-04-15 23:01+0200\n"
 "PO-Revision-Date: 2007-04-14 11:52+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -128,20 +128,20 @@ msgstr "Dosyalar kaldırılıyor"
 msgid "Version"
 msgstr "Sürüm"
 
-#: ../libsqueeze/spawn-command.c:267
+#: ../libsqueeze/spawn-command.c:269
 #, c-format
 msgid "Command exited with status %d."
 msgstr "Komut %d durumu ile sonlandı"
 
-#: ../libsqueeze/spawn-command.c:277
+#: ../libsqueeze/spawn-command.c:279
 msgid "Command interrupted by user"
 msgstr "Komut kullanıcı tarafından kesildi"
 
-#: ../libsqueeze/spawn-command.c:281
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command received SIGSEGV"
 msgstr "Komut SIGSEGV sinyali aldı"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:288
 msgid "Command Terminated"
 msgstr "Komut Tamamlandı"
 

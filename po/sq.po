@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-14 16:00+0200\n"
+"POT-Creation-Date: 2007-04-15 23:01+0200\n"
 "PO-Revision-Date: 2007-01-17 22:53+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -134,20 +134,20 @@ msgstr "Po heq kartelë(a) prej arkive"
 msgid "Version"
 msgstr "Version"
 
-#: ../libsqueeze/spawn-command.c:267
+#: ../libsqueeze/spawn-command.c:269
 #, c-format
 msgid "Command exited with status %d."
 msgstr ""
 
-#: ../libsqueeze/spawn-command.c:277
+#: ../libsqueeze/spawn-command.c:279
 msgid "Command interrupted by user"
 msgstr ""
 
-#: ../libsqueeze/spawn-command.c:281
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command received SIGSEGV"
 msgstr ""
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:288
 msgid "Command Terminated"
 msgstr ""
 

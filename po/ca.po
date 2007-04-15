@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-14 16:00+0200\n"
+"POT-Creation-Date: 2007-04-15 23:01+0200\n"
 "PO-Revision-Date: 2007-04-13 22:54+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
@@ -131,20 +131,20 @@ msgstr "S'està traient fitxers"
 msgid "Version"
 msgstr "Versió"
 
-#: ../libsqueeze/spawn-command.c:267
+#: ../libsqueeze/spawn-command.c:269
 #, c-format
 msgid "Command exited with status %d."
 msgstr "l'ordre ha finalitzat amb l'estat %d."
 
-#: ../libsqueeze/spawn-command.c:277
+#: ../libsqueeze/spawn-command.c:279
 msgid "Command interrupted by user"
 msgstr "L'usuari ha interromput l'ordre"
 
-#: ../libsqueeze/spawn-command.c:281
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command received SIGSEGV"
 msgstr "L'ordre ha rebut el senyal SIGSERV"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:288
 msgid "Command Terminated"
 msgstr "Ordre finalitzada"
 

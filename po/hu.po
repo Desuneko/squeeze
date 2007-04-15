@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-14 16:00+0200\n"
+"POT-Creation-Date: 2007-04-15 23:01+0200\n"
 "PO-Revision-Date: 2007-04-11 09:59+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -125,20 +125,20 @@ msgstr "Fájlok eltávolítása"
 msgid "Version"
 msgstr "Verzió"
 
-#: ../libsqueeze/spawn-command.c:267
+#: ../libsqueeze/spawn-command.c:269
 #, c-format
 msgid "Command exited with status %d."
 msgstr "A parancs %d állapottal kilépett."
 
-#: ../libsqueeze/spawn-command.c:277
+#: ../libsqueeze/spawn-command.c:279
 msgid "Command interrupted by user"
 msgstr "A parancsot a felhasználó megszakította"
 
-#: ../libsqueeze/spawn-command.c:281
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command received SIGSEGV"
 msgstr "A parancs SIGSEGV jelet kapott"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:288
 msgid "Command Terminated"
 msgstr "A parancs befejeződött"
 

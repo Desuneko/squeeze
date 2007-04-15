@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-14 16:00+0200\n"
+"POT-Creation-Date: 2007-04-15 23:01+0200\n"
 "PO-Revision-Date: 2007-04-11 20:10+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi <punjabi-l10n@lists.sf.net>\n"
@@ -129,20 +129,20 @@ msgstr "ਫਾਇਲਾਂ ਹਟਾਈਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
 msgid "Version"
 msgstr "ਵਰਜਨ"
 
-#: ../libsqueeze/spawn-command.c:267
+#: ../libsqueeze/spawn-command.c:269
 #, c-format
 msgid "Command exited with status %d."
 msgstr "ਕਮਾਂਡ %d ਹਾਲਤ ਨਾਲ ਬੰਦ ਹੋਈ।"
 
-#: ../libsqueeze/spawn-command.c:277
+#: ../libsqueeze/spawn-command.c:279
 msgid "Command interrupted by user"
 msgstr "ਉਪਭੋਗੀ ਨੇ ਕਮਾਂਡ ਚਲਾਈ"
 
-#: ../libsqueeze/spawn-command.c:281
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command received SIGSEGV"
 msgstr "ਕਮਾਂਡ ਨੂੰ SIGSEGV ਮਿਲਿਆ"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:288
 msgid "Command Terminated"
 msgstr "ਕਮਾਂਡ ਖਤਮ ਹੋਈ"
 
