@@ -364,7 +364,7 @@ static void
 cb_sq_tool_bar_refresh(GtkWidget *refresh_button, SQToolBar *tool_bar)
 {
 	LSQArchive *archive = sq_archive_store_get_archive(SQ_NAVIGATION_BAR(tool_bar)->store);
-	lsq_archive_refresh(archive);
+	lsq_archive_full_refresh(archive);
 }
 
 static void

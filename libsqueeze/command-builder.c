@@ -41,6 +41,8 @@ lsq_command_builder_finalize(GObject *object);
 
 static LSQArchiveCommand *
 lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, GSList *files);
+static LSQArchiveCommand *
+lsq_command_builder_build_full_refresh(LSQCommandBuilder *builder, LSQArchive *archive);
 
 static GObjectClass *parent_class;
 
@@ -87,6 +89,7 @@ lsq_command_builder_init(LSQCommandBuilder *command_builder)
 {
 	command_builder->settings = lsq_builder_settings_new();
 	command_builder->build_open = lsq_command_builder_build_open;
+	command_builder->build_full_refresh = lsq_command_builder_build_full_refresh;
 }
 
 /**
@@ -128,6 +131,29 @@ lsq_command_builder_build_open(LSQCommandBuilder *builder, LSQArchive *archive, 
 
 	g_object_unref(extract);
 	g_object_unref(launch);
+	return macro;
+}
+
+static LSQArchiveCommand *
+lsq_command_builder_build_full_refresh(LSQCommandBuilder *builder, LSQArchive *archive)
+{
+	GSList *file_iters = NULL;
+	LSQArchiveIter *root_iter = lsq_archive_get_iter(archive, NULL);
+	unsigned int i, size = lsq_archive_iter_n_children(root_iter);
+	for(i = 0; i < size; ++i)
+	{
+		file_iters = g_slist_append(file_iters, lsq_archive_iter_nth_child(root_iter, i));
+	}
+	LSQArchiveCommand *remove = lsq_remove_command_new(_("Removing"), archive, file_iters);
+	LSQArchiveCommand *refresh = builder->build_refresh(builder, archive);
+	LSQArchiveCommand *macro = lsq_macro_command_new(archive);
+
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), remove);
+	lsq_macro_command_append(LSQ_MACRO_COMMAND(macro), refresh);
+
+	g_slist_free(file_iters);
+	g_object_unref(remove);
+	g_object_unref(refresh);
 	return macro;
 }
 

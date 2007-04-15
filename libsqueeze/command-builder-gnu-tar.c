@@ -320,7 +320,7 @@ lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive 
 {
 	gchar *options = NULL;
 	gchar *tmp_file = NULL;
-	gchar *files = lsq_concat_iter_filenames(file_iters);
+	gchar *files = lsq_concat_iter_filenames(file_iters, TRUE);
 	const gchar *compress_skeleton = NULL;
 	const gchar *decompress_skeleton = NULL;
 	LSQArchiveCommand *remove_macro = NULL;
@@ -405,7 +405,7 @@ lsq_command_builder_gnu_tar_build_remove(LSQCommandBuilder *builder, LSQArchive 
 static LSQArchiveCommand *
 lsq_command_builder_gnu_tar_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *file_iters)
 {
-	gchar *files = lsq_concat_iter_filenames(file_iters);
+	gchar *files = lsq_concat_iter_filenames(file_iters, TRUE);
 	gchar *_dest_path = g_shell_quote(dest_path);
 	gchar *options = g_strconcat(" -C ", _dest_path, NULL);
 

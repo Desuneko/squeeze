@@ -57,24 +57,6 @@ lsq_concat_filenames(GSList *filenames)
 	return concat_str;
 }
 
-gchar *
-lsq_concat_iter_filenames(GSList *file_iters)
-{
-	GSList *_file_iters = file_iters;
-	gchar *concat_str = g_strdup(" "), *_concat_str;
-
-	while(_file_iters)
-	{
-		gchar *path = lsq_archive_iter_get_path(_file_iters->data);
-		_concat_str = concat_str;
-		concat_str = g_strconcat(_concat_str, " ", g_shell_quote(path) , NULL);
-		_file_iters = _file_iters->next;
-		g_free(_concat_str);
-		g_free(path);
-	}
-	return concat_str;
-}
-
 LSQArchive *
 lsq_opened_archive_get_archive(gchar *path)
 {

@@ -72,6 +72,7 @@ gboolean        lsq_archive_add(LSQArchive *, GSList *files);
 gboolean        lsq_archive_extract(LSQArchive *, const gchar *dest_path, GSList *files);
 gboolean        lsq_archive_remove(LSQArchive *, GSList *files);
 gboolean        lsq_archive_refresh(LSQArchive *);
+gboolean        lsq_archive_full_refresh(LSQArchive *);
 gboolean        lsq_archive_view(LSQArchive *, GSList *files);
 
 

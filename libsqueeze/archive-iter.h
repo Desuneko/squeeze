@@ -24,7 +24,7 @@ void     lsq_archive_free_iter(LSQArchive *);
 
 gboolean lsq_archive_remove_file(LSQArchive *, const gchar *);
 
-void     lsq_archive_iter_remove(LSQArchiveIter *);
+void     lsq_archive_iter_remove(LSQArchiveIter *, gboolean);
 
 G_END_DECLS
 

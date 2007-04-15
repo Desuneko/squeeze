@@ -29,7 +29,7 @@ ThunarVfsMimeDatabase  *lsq_mime_database;
 gchar *
 lsq_concat_filenames(GSList *filenames);
 gchar *
-lsq_concat_iter_filenames(GSList *file_iters);
+lsq_concat_iter_filenames(GSList *file_iters, gboolean);
 
 LSQArchive *
 lsq_opened_archive_get_archive(gchar *path);

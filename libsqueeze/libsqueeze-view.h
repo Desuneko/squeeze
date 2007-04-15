@@ -39,10 +39,13 @@ GType               lsq_archive_get_entry_property_type(const LSQArchive *archiv
 const gchar        *lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n);
 guint               lsq_archive_n_entry_properties(const LSQArchive *archive);
 
-gboolean        lsq_archive_can_stop(const LSQArchive *archive);
-gboolean        lsq_archive_stop(const LSQArchive *archive);
+gboolean            lsq_archive_can_stop(const LSQArchive *archive);
+gboolean            lsq_archive_stop(const LSQArchive *archive);
 
-const gchar    *lsq_archive_get_status(const LSQArchive *archive);
+const gchar        *lsq_archive_get_status(const LSQArchive *archive);
+
+GSList             *lsq_iter_slist_copy(GSList *);
+void                lsq_iter_slist_free(GSList *);
 
 G_END_DECLS
 

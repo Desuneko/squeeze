@@ -44,6 +44,8 @@ struct _LSQArchive
 LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
 void                lsq_archive_state_changed(const LSQArchive *archive) G_GNUC_INTERNAL;
 
+void                lsq_archive_add_children(GSList *files);
+
 G_END_DECLS
 
 #endif /* __ARCHIVE_H__ */

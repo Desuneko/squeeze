@@ -777,7 +777,7 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 		extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(SQ_EXTRACT_ARCHIVE_DIALOG(dialog)->all_files_radio)))
 		{
-			g_slist_free(filenames);
+			lsq_iter_slist_free(filenames);
 			filenames = NULL;
 		}
 		if(!lsq_archive_extract(lp_archive, extract_archive_path, filenames))
@@ -798,6 +798,7 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	}
 	gtk_widget_destroy (dialog);
 
+	lsq_iter_slist_free(filenames);
 }
 
 static void
@@ -865,6 +866,8 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 			}
 		}
 		gtk_widget_destroy (dialog);
+
+		lsq_iter_slist_free(filenames);
 	}
 }
 
@@ -888,7 +891,7 @@ cb_sq_main_refresh_archive(GtkWidget *widget, gpointer userdata)
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	SQArchiveStore *store = sq_notebook_get_active_store(SQ_NOTEBOOK(window->notebook));
 	LSQArchive *archive = sq_archive_store_get_archive(store);
-	lsq_archive_refresh(archive);
+	lsq_archive_full_refresh(archive);
 }
 
 static void

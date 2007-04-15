@@ -102,6 +102,10 @@ lsq_remove_command_init(LSQRemoveCommand *remove_command)
 static void
 lsq_remove_command_dispose(GObject *object)
 {
+	GSList *iters = g_object_get_data(object, "entries");
+	lsq_iter_slist_free(iters);
+	g_object_set_data(object, "entries", NULL);
+
 	parent_class->dispose(object);
 }
 
@@ -137,7 +141,7 @@ lsq_remove_command_new(const gchar *comment, LSQArchive *archive, GSList *iters)
 	if(comment)
 		archive_command->comment = g_strdup(comment);
 
-	g_object_set_data(G_OBJECT(archive_command), "entries", g_slist_copy(iters));
+	g_object_set_data(G_OBJECT(archive_command), "entries", lsq_iter_slist_copy(iters));
 
 	archive_command->execute = lsq_remove_command_execute;
 
@@ -148,10 +152,12 @@ static gboolean
 lsq_remove_command_execute(LSQArchiveCommand *command)
 {
 	GSList *iters = g_object_get_data(G_OBJECT(command), "entries");
+	GSList *iter;
 	
-	g_slist_foreach(iters, (GFunc)lsq_archive_iter_remove, NULL);
-
-	g_slist_free(iters);
+	for(iter = iters; iter; iter = iter->next)
+	{
+		lsq_archive_iter_remove(iter->data, TRUE);
+	}
 
 	return TRUE;
 }

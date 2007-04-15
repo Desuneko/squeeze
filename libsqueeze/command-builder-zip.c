@@ -167,7 +167,7 @@ lsq_command_builder_zip_build_add(LSQCommandBuilder *builder, LSQArchive *archiv
 static LSQArchiveCommand *
 lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *archive, GSList *file_iters)
 {
-	gchar *files = lsq_concat_iter_filenames(file_iters);
+	gchar *files = lsq_concat_iter_filenames(file_iters, TRUE);
 
 	LSQArchiveCommand *spawn = lsq_spawn_command_new(_("Removing"), archive, "zip -d %1$s %2$s", files, NULL, NULL);
 	LSQArchiveCommand *macro = lsq_macro_command_new(archive);
@@ -185,7 +185,7 @@ lsq_command_builder_zip_build_remove(LSQCommandBuilder *builder, LSQArchive *arc
 static LSQArchiveCommand *
 lsq_command_builder_zip_build_extract(LSQCommandBuilder *builder, LSQArchive *archive, const gchar *dest_path, GSList *file_iters)
 {
-	gchar *files = lsq_concat_iter_filenames(file_iters);
+	gchar *files = lsq_concat_iter_filenames(file_iters, TRUE);
 	gchar *_dest_path = g_shell_quote(dest_path);
 	gchar *options = g_strconcat(" -d ", _dest_path, NULL);
 

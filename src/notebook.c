@@ -571,7 +571,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 
 	if(new_archive == FALSE)
 	{
-		lsq_archive_refresh(archive);
+		lsq_archive_full_refresh(archive);
 	}
 
 }
@@ -802,7 +802,7 @@ sq_notebook_page_set_archive(SQNotebook *notebook, LSQArchive *archive, gint n)
 
 		g_signal_connect(G_OBJECT(archive), "refreshed", G_CALLBACK(cb_notebook_archive_refreshed), treeview);
 
-		if(lsq_archive_refresh(archive))
+		if(lsq_archive_full_refresh(archive))
 		{
 			/* FIXME: show warning dialog */
 		}

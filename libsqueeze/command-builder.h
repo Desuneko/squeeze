@@ -35,6 +35,7 @@ struct _LSQCommandBuilder
 	LSQArchiveCommand *(*build_extract)(LSQCommandBuilder *, LSQArchive *, const gchar *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
 	LSQArchiveCommand *(*build_remove) (LSQCommandBuilder *, LSQArchive *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
 	LSQArchiveCommand *(*build_refresh)(LSQCommandBuilder *, LSQArchive *) G_GNUC_WARN_UNUSED_RESULT;
+	LSQArchiveCommand *(*build_full_refresh)(LSQCommandBuilder *, LSQArchive *) G_GNUC_WARN_UNUSED_RESULT;
 	LSQArchiveCommand *(*build_open)   (LSQCommandBuilder *, LSQArchive *, GSList *) G_GNUC_WARN_UNUSED_RESULT;
 };
 

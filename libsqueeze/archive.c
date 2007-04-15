@@ -406,6 +406,19 @@ lsq_archive_extract(LSQArchive *archive, const gchar *dest_path, GSList *files)
 	return TRUE;
 }
 
+void lsq_archive_add_children(GSList *files)
+{
+	GSList *iter;
+	for(iter = files; iter; iter = iter->next)
+	{
+		unsigned int i, size = lsq_archive_iter_n_children(iter->data);
+		for(i = 0; i < size; ++i)
+		{
+			files = g_slist_append(iter, lsq_archive_iter_nth_child(iter->data, i));
+		}
+	}
+}
+
 gboolean
 lsq_archive_remove(LSQArchive *archive, GSList *files)
 {
@@ -413,6 +426,8 @@ lsq_archive_remove(LSQArchive *archive, GSList *files)
 	LSQCommandBuilder *builder = archive->builder;
 	if(archive->command)
 		return FALSE;
+
+	//lsq_archive_add_children(files);
 
 	archive->command = builder->build_remove(builder, archive, files);
 	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
@@ -437,6 +452,32 @@ lsq_archive_refresh(LSQArchive *archive)
 		return FALSE;
 
 	archive->command = builder->build_refresh(builder, archive);
+	if(archive->command)
+	{
+		g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
+		if(!lsq_archive_command_execute(archive->command))
+		{
+			g_object_unref(archive->command);
+			archive->command = NULL;
+			return FALSE;
+		}
+		else
+			g_object_unref(archive->command);
+		lsq_archive_state_changed(archive);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+gboolean
+lsq_archive_full_refresh(LSQArchive *archive)
+{
+	g_return_val_if_fail(archive->builder, FALSE);
+	LSQCommandBuilder *builder = archive->builder;
+	if(archive->command)
+		return FALSE;
+
+	archive->command = builder->build_full_refresh(builder, archive);
 	if(archive->command)
 	{
 		g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
