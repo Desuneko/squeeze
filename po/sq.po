@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-15 23:01+0200\n"
+"POT-Creation-Date: 2007-04-16 14:57+0200\n"
 "PO-Revision-Date: 2007-01-17 22:53+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -23,72 +23,24 @@ msgstr "Emër:"
 msgid "Mime type"
 msgstr "Tip MIME"
 
-#: ../libsqueeze/command-builder.c:122
-msgid "Execute"
-msgstr ""
-
-#: ../libsqueeze/command-builder-zip.c:107
-#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-compr.c:198
+#: ../libsqueeze/command-builder-gnu-tar.c:236
+#: ../libsqueeze/command-builder-gnu-tar.c:356
 #, fuzzy
-msgid "Compressed"
+msgid "Compressing"
 msgstr "Madhësi e Ngjeshur"
 
-#: ../libsqueeze/command-builder-zip.c:109
-#: ../libsqueeze/command-builder-rar.c:141
-msgid "Method"
-msgstr "Metodë"
-
-#: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-msgid "Size"
-msgstr "Madhësi"
-
-#: ../libsqueeze/command-builder-zip.c:113
-#: ../libsqueeze/command-builder-rar.c:131
-msgid "Ratio"
-msgstr "Përpjestim"
-
-#: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-msgid "Date"
-msgstr "Datë"
-
-#: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-msgid "Time"
-msgstr "Kohë"
-
-#: ../libsqueeze/command-builder-zip.c:155
-#: ../libsqueeze/command-builder-rar.c:181
-#, fuzzy
-msgid "Adding"
-msgstr "Shto"
-
-#: ../libsqueeze/command-builder-zip.c:172
-#: ../libsqueeze/command-builder-zip.c:174
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-msgid "Removing"
+#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-gnu-tar.c:269
+#: ../libsqueeze/command-builder-gnu-tar.c:347
+msgid "Decompressing"
 msgstr ""
 
-#: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-#, fuzzy
-msgid "Extracting"
-msgstr "Përfto"
-
-#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-compr.c:253
 #: ../libsqueeze/command-builder-gnu-tar.c:428
 #: ../libsqueeze/command-builder-gnu-tar.c:430
 #: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-compr.c:253
+#: ../libsqueeze/command-builder-zip.c:214
 msgid "Refresh"
 msgstr ""
 
@@ -102,18 +54,23 @@ msgstr ""
 msgid "Owner/Group"
 msgstr "Shihni zotërues/grup"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-#: ../libsqueeze/command-builder-compr.c:198
-#, fuzzy
-msgid "Compressing"
-msgstr "Madhësi e Ngjeshur"
+#: ../libsqueeze/command-builder-gnu-tar.c:149
+#: ../libsqueeze/command-builder-rar.c:129
+#: ../libsqueeze/command-builder-zip.c:120
+msgid "Size"
+msgstr "Madhësi"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-#: ../libsqueeze/command-builder-compr.c:222
-msgid "Decompressing"
-msgstr ""
+#: ../libsqueeze/command-builder-gnu-tar.c:151
+#: ../libsqueeze/command-builder-rar.c:133
+#: ../libsqueeze/command-builder-zip.c:124
+msgid "Date"
+msgstr "Datë"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:153
+#: ../libsqueeze/command-builder-rar.c:135
+#: ../libsqueeze/command-builder-zip.c:126
+msgid "Time"
+msgstr "Kohë"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:283
 #, fuzzy
@@ -130,26 +87,197 @@ msgstr ""
 msgid "Removing files"
 msgstr "Po heq kartelë(a) prej arkive"
 
+#: ../libsqueeze/command-builder-gnu-tar.c:370
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
+#: ../libsqueeze/command-builder-zip.c:183
+#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
+msgid "Removing"
+msgstr ""
+
+#: ../libsqueeze/command-builder-gnu-tar.c:413
+#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-rar.c:216
+#: ../libsqueeze/command-builder-zip.c:203
+#, fuzzy
+msgid "Extracting"
+msgstr "Përfto"
+
+#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-zip.c:116
+#, fuzzy
+msgid "Compressed"
+msgstr "Madhësi e Ngjeshur"
+
+#: ../libsqueeze/command-builder-rar.c:131
+#: ../libsqueeze/command-builder-zip.c:122
+msgid "Ratio"
+msgstr "Përpjestim"
+
+#: ../libsqueeze/command-builder-rar.c:141
+#: ../libsqueeze/command-builder-zip.c:118
+msgid "Method"
+msgstr "Metodë"
+
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
 msgstr "Version"
 
-#: ../libsqueeze/spawn-command.c:269
+#: ../libsqueeze/command-builder-rar.c:181
+#: ../libsqueeze/command-builder-zip.c:166
+#, fuzzy
+msgid "Adding"
+msgstr "Shto"
+
+#: ../libsqueeze/command-builder.c:125
+msgid "Execute"
+msgstr ""
+
+#: ../libsqueeze/spawn-command.c:272
 #, c-format
 msgid "Command exited with status %d."
 msgstr ""
 
-#: ../libsqueeze/spawn-command.c:279
+#: ../libsqueeze/spawn-command.c:282
 msgid "Command interrupted by user"
 msgstr ""
 
-#: ../libsqueeze/spawn-command.c:283
+#: ../libsqueeze/spawn-command.c:286
 msgid "Command received SIGSEGV"
 msgstr ""
 
-#: ../libsqueeze/spawn-command.c:288
+#: ../libsqueeze/spawn-command.c:291
 msgid "Command Terminated"
 msgstr ""
+
+#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Përgjegjës arkivash"
+
+#: ../squeeze.desktop.in.h:2
+msgid "Xfce archive manager"
+msgstr "Përgjegjësi Xfce arkivash"
+
+#: ../src/add_dialog.c:73
+msgid "Files and directories to add"
+msgstr "Kartela dhe drejtori për shtim"
+
+#: ../src/add_dialog.c:74
+msgid "Options:"
+msgstr "Mundësi:"
+
+#: ../src/add_dialog.c:107
+msgid "Files"
+msgstr "Kartela"
+
+#: ../src/add_dialog.c:111
+msgid "Directories"
+msgstr "Drejtori"
+
+#: ../src/add_dialog.c:144
+msgid "Add file(s) to archive"
+msgstr "Shto kartelë(a) te arkivë"
+
+#. Select Files Dialog
+#: ../src/add_dialog.c:164
+msgid "Select files"
+msgstr "Përzgjidhni kartela"
+
+#. Select Folder Dialog
+#: ../src/add_dialog.c:170
+msgid "Select folders"
+msgstr "Përzgjidhni dosje"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:162 ../src/application.c:252
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr "Nuk e hapa dot arkivën, tip MIME i pambuluar ose kartela nuk ekziston"
+
+#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:235
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "Nuk krijova dot arkivë, tip MIME i pambuluar"
+
+#: ../src/application.c:269 ../src/main_window.c:830
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/archive_store.c:249 ../src/notebook.c:179
+msgid "Show full path"
+msgstr ""
+
+#: ../src/archive_store.c:250 ../src/notebook.c:180
+#, fuzzy
+msgid "Show the full path strings for each entry"
+msgstr "Shfaq ikona tipesh mime për secilin zë"
+
+#: ../src/archive_store.c:256 ../src/notebook.c:186
+msgid "Show mime icons"
+msgstr "Shfaq ikona mime"
+
+#: ../src/archive_store.c:257 ../src/notebook.c:187
+msgid "Show the mime type icons for each entry"
+msgstr "Shfaq ikona tipesh mime për secilin zë"
+
+#: ../src/archive_store.c:263
+msgid "Show up dir entry"
+msgstr "Shfaq zëra drejtorie"
+
+#: ../src/archive_store.c:264
+msgid "Show '..' to go to the parent directory"
+msgstr "Shfaq '..' për të shkuar te drejtoria mëmë"
+
+#: ../src/archive_store.c:270 ../src/notebook.c:193
+msgid "Sort folders before files"
+msgstr "Rendit dosje përpara kartelash"
+
+#: ../src/archive_store.c:271 ../src/notebook.c:194
+msgid "The folders will be put at the top of the list"
+msgstr "Dosjet do të vendosen në krye të listës"
+
+#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/notebook.c:201
+msgid "Sort text case sensitive"
+msgstr "Rendit text siç është shkruajtur"
+
+#: ../src/extract_dialog.c:76
+msgid "<b>Extract files:</b>"
+msgstr "<b>Përfto kartela:</b>"
+
+#: ../src/extract_dialog.c:77
+msgid "<b>Options:</b>"
+msgstr "<b>Mundësi:</b>"
+
+#: ../src/extract_dialog.c:87
+msgid "All files"
+msgstr "Tërë kartelat"
+
+#: ../src/extract_dialog.c:88
+msgid "Selected files"
+msgstr "Kartela të przgjedhura"
+
+#: ../src/extract_dialog.c:100 ../src/main_window.c:428
+#: ../src/main_window.c:1129
+msgid "Extract"
+msgstr "Përfto"
+
+#: ../src/extract_dialog.c:110
+msgid "Extract archive"
+msgstr "Përfto arkivë"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -237,11 +365,6 @@ msgstr "_Ndihmë"
 msgid "Add"
 msgstr "Shto"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1126
-#: ../src/extract_dialog.c:100
-msgid "Extract"
-msgstr "Përfto"
-
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
 msgstr "Hap arkivë në dritare të re"
@@ -254,61 +377,49 @@ msgstr "Hap arkivë"
 msgid "Archives"
 msgstr "Arkiva"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
-msgid ""
-"Squeeze cannot extract this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-
-#: ../src/main_window.c:829 ../src/application.c:267
-msgid ""
-"Squeeze cannot add files to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-
-#: ../src/main_window.c:849
+#: ../src/main_window.c:850
 #, fuzzy
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Cilin veprim doni të kryhet mbi kartelën(at) e përzgjedhur?"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:863
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:909
+#: ../src/main_window.c:912
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
 
-#: ../src/main_window.c:991
+#: ../src/main_window.c:994
 msgid "Lead developer:"
 msgstr "Udhëheqës zhvillimi:"
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:997
 msgid "Contributors:"
 msgstr "Pjesëmarrësa:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1000
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Frymëzuar prej Xarchiver, shkruar nga Giuseppe Torelli"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1002
 msgid "Application Icon:"
 msgstr ""
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1005
 #, fuzzy
 msgid "Add / Extract icons:"
 msgstr "Përfto"
 
-#: ../src/main_window.c:1003
+#: ../src/main_window.c:1006
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 
-#: ../src/main_window.c:1010
+#: ../src/main_window.c:1013
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -317,34 +428,34 @@ msgstr ""
 "Mjedisin Desktop Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
+#: ../src/main_window.c:1021
 msgid "translator-credits"
 msgstr "Besnik Bleta <besnik@programeshqip.org>"
 
-#: ../src/main_window.c:1047 ../src/main_window.c:1115
-#: ../src/main_window.c:1282
+#: ../src/main_window.c:1050 ../src/main_window.c:1118
+#: ../src/main_window.c:1285
 msgid "Done"
 msgstr "Kryer"
 
-#: ../src/main_window.c:1125
+#: ../src/main_window.c:1128
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Cilin veprim doni të kryhet mbi kartelën(at) e përzgjedhur?"
 
-#: ../src/main_window.c:1126
+#: ../src/main_window.c:1129
 msgid "Open"
 msgstr ""
 
-#: ../src/main_window.c:1140
+#: ../src/main_window.c:1143
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
 
-#: ../src/main_window.c:1208
+#: ../src/main_window.c:1211
 msgid "Failed to open file"
 msgstr "Dështova në hapje kartel"
 
-#: ../src/main_window.c:1209
+#: ../src/main_window.c:1212
 #, c-format
 msgid ""
 "'%s'\n"
@@ -352,21 +463,6 @@ msgid ""
 msgstr ""
 "'%s'\n"
 "Nuk mund të hapej"
-
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:162 ../src/application.c:252
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Nuk e hapa dot arkivën, tip MIME i pambuluar ose kartela nuk ekziston"
-
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:235
-msgid "Could not create archive, MIME-type unsupported"
-msgstr "Nuk krijova dot arkivë, tip MIME i pambuluar"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -376,59 +472,13 @@ msgstr "Tip arkive:"
 msgid "Create new archive"
 msgstr "Krijo arkiv të ri"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Kartela dhe drejtori për shtim"
+#: ../src/notebook.c:207
+msgid "Rules hint"
+msgstr ""
 
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Mundësi:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Kartela"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Drejtori"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Shto kartelë(a) te arkivë"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Përzgjidhni kartela"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Përzgjidhni dosje"
-
-#: ../src/extract_dialog.c:76
-msgid "<b>Extract files:</b>"
-msgstr "<b>Përfto kartela:</b>"
-
-#: ../src/extract_dialog.c:77
-msgid "<b>Options:</b>"
-msgstr "<b>Mundësi:</b>"
-
-#: ../src/extract_dialog.c:87
-msgid "All files"
-msgstr "Tërë kartelat"
-
-#: ../src/extract_dialog.c:88
-msgid "Selected files"
-msgstr "Kartela të przgjedhura"
-
-#: ../src/extract_dialog.c:110
-msgid "Extract archive"
-msgstr "Përfto arkivë"
-
-#: ../src/tool_bar.c:167
-msgid "Location:"
-msgstr "Vendndodhje:"
+#: ../src/notebook.c:208
+msgid "Make the row background colors alternate"
+msgstr "Bëji ngjyrat e sfondit të rreshtit të zëvendësojnë njëra tjetrën"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
@@ -438,59 +488,9 @@ msgstr "Hapësirë"
 msgid "The amount of space between the path buttons"
 msgstr "Sasia e hapësirës midis butonave të shtegut"
 
-#: ../src/notebook.c:179 ../src/archive_store.c:249
-msgid "Show full path"
-msgstr ""
-
-#: ../src/notebook.c:180 ../src/archive_store.c:250
-#, fuzzy
-msgid "Show the full path strings for each entry"
-msgstr "Shfaq ikona tipesh mime për secilin zë"
-
-#: ../src/notebook.c:186 ../src/archive_store.c:256
-msgid "Show mime icons"
-msgstr "Shfaq ikona mime"
-
-#: ../src/notebook.c:187 ../src/archive_store.c:257
-msgid "Show the mime type icons for each entry"
-msgstr "Shfaq ikona tipesh mime për secilin zë"
-
-#: ../src/notebook.c:193 ../src/archive_store.c:270
-msgid "Sort folders before files"
-msgstr "Rendit dosje përpara kartelash"
-
-#: ../src/notebook.c:194 ../src/archive_store.c:271
-msgid "The folders will be put at the top of the list"
-msgstr "Dosjet do të vendosen në krye të listës"
-
-#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-msgid "Sort text case sensitive"
-msgstr "Rendit text siç është shkruajtur"
-
-#: ../src/notebook.c:207
-msgid "Rules hint"
-msgstr ""
-
-#: ../src/notebook.c:208
-msgid "Make the row background colors alternate"
-msgstr "Bëji ngjyrat e sfondit të rreshtit të zëvendësojnë njëra tjetrën"
-
-#: ../src/archive_store.c:263
-msgid "Show up dir entry"
-msgstr "Shfaq zëra drejtorie"
-
-#: ../src/archive_store.c:264
-msgid "Show '..' to go to the parent directory"
-msgstr "Shfaq '..' për të shkuar te drejtoria mëmë"
-
-#: ../squeeze.desktop.in.h:1
-msgid "Archive manager"
-msgstr "Përgjegjës arkivash"
-
-#: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Përgjegjësi Xfce arkivash"
+#: ../src/tool_bar.c:167
+msgid "Location:"
+msgstr "Vendndodhje:"
 
 #, fuzzy
 #~ msgid "idle"

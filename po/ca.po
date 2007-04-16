@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-15 23:01+0200\n"
+"POT-Creation-Date: 2007-04-16 14:57+0200\n"
 "PO-Revision-Date: 2007-04-13 22:54+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
@@ -27,69 +27,23 @@ msgstr "Nom"
 msgid "Mime type"
 msgstr "Tipus MIME"
 
-#: ../libsqueeze/command-builder.c:122
-msgid "Execute"
-msgstr "Executa"
+#: ../libsqueeze/command-builder-compr.c:198
+#: ../libsqueeze/command-builder-gnu-tar.c:236
+#: ../libsqueeze/command-builder-gnu-tar.c:356
+msgid "Compressing"
+msgstr "S'està comprimint"
 
-#: ../libsqueeze/command-builder-zip.c:107
-#: ../libsqueeze/command-builder-rar.c:127
-msgid "Compressed"
-msgstr "Comprimit"
+#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-gnu-tar.c:269
+#: ../libsqueeze/command-builder-gnu-tar.c:347
+msgid "Decompressing"
+msgstr "S'està descomprimint"
 
-#: ../libsqueeze/command-builder-zip.c:109
-#: ../libsqueeze/command-builder-rar.c:141
-msgid "Method"
-msgstr "Mètode"
-
-#: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-msgid "Size"
-msgstr "Mida"
-
-#: ../libsqueeze/command-builder-zip.c:113
-#: ../libsqueeze/command-builder-rar.c:131
-msgid "Ratio"
-msgstr "Proporció"
-
-#: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-msgid "Date"
-msgstr "Data"
-
-#: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-msgid "Time"
-msgstr "Hora"
-
-#: ../libsqueeze/command-builder-zip.c:155
-#: ../libsqueeze/command-builder-rar.c:181
-msgid "Adding"
-msgstr "S'està afegint"
-
-#: ../libsqueeze/command-builder-zip.c:172
-#: ../libsqueeze/command-builder-zip.c:174
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-msgid "Removing"
-msgstr "S'està eliminant"
-
-#: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-msgid "Extracting"
-msgstr "S'està extraient"
-
-#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-compr.c:253
 #: ../libsqueeze/command-builder-gnu-tar.c:428
 #: ../libsqueeze/command-builder-gnu-tar.c:430
 #: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-compr.c:253
+#: ../libsqueeze/command-builder-zip.c:214
 msgid "Refresh"
 msgstr "S'està actualitzant"
 
@@ -102,17 +56,23 @@ msgstr "Drets"
 msgid "Owner/Group"
 msgstr "Propietari/Grup"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-#: ../libsqueeze/command-builder-compr.c:198
-msgid "Compressing"
-msgstr "S'està comprimint"
+#: ../libsqueeze/command-builder-gnu-tar.c:149
+#: ../libsqueeze/command-builder-rar.c:129
+#: ../libsqueeze/command-builder-zip.c:120
+msgid "Size"
+msgstr "Mida"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-#: ../libsqueeze/command-builder-compr.c:222
-msgid "Decompressing"
-msgstr "S'està descomprimint"
+#: ../libsqueeze/command-builder-gnu-tar.c:151
+#: ../libsqueeze/command-builder-rar.c:133
+#: ../libsqueeze/command-builder-zip.c:124
+msgid "Date"
+msgstr "Data"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:153
+#: ../libsqueeze/command-builder-rar.c:135
+#: ../libsqueeze/command-builder-zip.c:126
+msgid "Time"
+msgstr "Hora"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:283
 msgid "Adding files"
@@ -127,26 +87,199 @@ msgstr "Neteja"
 msgid "Removing files"
 msgstr "S'està traient fitxers"
 
+#: ../libsqueeze/command-builder-gnu-tar.c:370
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
+#: ../libsqueeze/command-builder-zip.c:183
+#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
+msgid "Removing"
+msgstr "S'està eliminant"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:413
+#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-rar.c:216
+#: ../libsqueeze/command-builder-zip.c:203
+msgid "Extracting"
+msgstr "S'està extraient"
+
+#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-zip.c:116
+msgid "Compressed"
+msgstr "Comprimit"
+
+#: ../libsqueeze/command-builder-rar.c:131
+#: ../libsqueeze/command-builder-zip.c:122
+msgid "Ratio"
+msgstr "Proporció"
+
+#: ../libsqueeze/command-builder-rar.c:141
+#: ../libsqueeze/command-builder-zip.c:118
+msgid "Method"
+msgstr "Mètode"
+
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
 msgstr "Versió"
 
-#: ../libsqueeze/spawn-command.c:269
+#: ../libsqueeze/command-builder-rar.c:181
+#: ../libsqueeze/command-builder-zip.c:166
+msgid "Adding"
+msgstr "S'està afegint"
+
+#: ../libsqueeze/command-builder.c:125
+msgid "Execute"
+msgstr "Executa"
+
+#: ../libsqueeze/spawn-command.c:272
 #, c-format
 msgid "Command exited with status %d."
 msgstr "l'ordre ha finalitzat amb l'estat %d."
 
-#: ../libsqueeze/spawn-command.c:279
+#: ../libsqueeze/spawn-command.c:282
 msgid "Command interrupted by user"
 msgstr "L'usuari ha interromput l'ordre"
 
-#: ../libsqueeze/spawn-command.c:283
+#: ../libsqueeze/spawn-command.c:286
 msgid "Command received SIGSEGV"
 msgstr "L'ordre ha rebut el senyal SIGSERV"
 
-#: ../libsqueeze/spawn-command.c:288
+#: ../libsqueeze/spawn-command.c:291
 msgid "Command Terminated"
 msgstr "Ordre finalitzada"
+
+#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Gestor d'arxius"
+
+#: ../squeeze.desktop.in.h:2
+msgid "Xfce archive manager"
+msgstr "Gestor d'arxius d'Xfce"
+
+#: ../src/add_dialog.c:73
+msgid "Files and directories to add"
+msgstr "Fitxers i directoris a afegir"
+
+#: ../src/add_dialog.c:74
+msgid "Options:"
+msgstr "Opcions:"
+
+#: ../src/add_dialog.c:107
+msgid "Files"
+msgstr "Fitxers"
+
+#: ../src/add_dialog.c:111
+msgid "Directories"
+msgstr "Directoris"
+
+#: ../src/add_dialog.c:144
+msgid "Add file(s) to archive"
+msgstr "Afegeix fitxer(s) a l'arxiu"
+
+#. Select Files Dialog
+#: ../src/add_dialog.c:164
+msgid "Select files"
+msgstr "Seleccioneu fitxers"
+
+#. Select Folder Dialog
+#: ../src/add_dialog.c:170
+msgid "Select folders"
+msgstr "Seleccioneu carpetes"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:162 ../src/application.c:252
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+"No es pot obrir l'arxiu,El tipus MIME no està implementat o el fitxer no "
+"existeix"
+
+#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Squeeze no pot extreure d'aquest tipus de fitxer,\n"
+"l'aplicació que permet aquest ús no hi és."
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:235
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "No s'ha pogut crear l'arxiu, el tipus MIME no està implementat"
+
+#: ../src/application.c:269 ../src/main_window.c:830
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Squeeze no pot afegir fitxers a aquest tipus d'arxiu,\n"
+"l'aplicació que permet aquest ús no hi és."
+
+#: ../src/archive_store.c:249 ../src/notebook.c:179
+msgid "Show full path"
+msgstr "Mostra el camí sencer"
+
+#: ../src/archive_store.c:250 ../src/notebook.c:180
+msgid "Show the full path strings for each entry"
+msgstr "Per cadascuna de les entrades mostra la cadena sencera del camí"
+
+#: ../src/archive_store.c:256 ../src/notebook.c:186
+msgid "Show mime icons"
+msgstr "Mostra les icones MIME"
+
+#: ../src/archive_store.c:257 ../src/notebook.c:187
+msgid "Show the mime type icons for each entry"
+msgstr "Per cadascuna de les entrades mostra les icones dels tipus MIME"
+
+#: ../src/archive_store.c:263
+msgid "Show up dir entry"
+msgstr "Mostrar entrada de directori pare"
+
+#: ../src/archive_store.c:264
+msgid "Show '..' to go to the parent directory"
+msgstr "Mostra «..» per anar al directori pare"
+
+#: ../src/archive_store.c:270 ../src/notebook.c:193
+msgid "Sort folders before files"
+msgstr "Ordena carpetes abans que fitxers"
+
+#: ../src/archive_store.c:271 ../src/notebook.c:194
+msgid "The folders will be put at the top of the list"
+msgstr "Es mostraran les carpetes al principi de la llista"
+
+#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/notebook.c:201
+msgid "Sort text case sensitive"
+msgstr "L'ordenació distingeix majúscules/minúscules"
+
+#: ../src/extract_dialog.c:76
+msgid "<b>Extract files:</b>"
+msgstr "<b>Extreu fitxers:</b>"
+
+#: ../src/extract_dialog.c:77
+msgid "<b>Options:</b>"
+msgstr "<b>Opcions:</b>"
+
+#: ../src/extract_dialog.c:87
+msgid "All files"
+msgstr "Tots els fitxers"
+
+#: ../src/extract_dialog.c:88
+msgid "Selected files"
+msgstr "Fitxers seleccionats"
+
+#: ../src/extract_dialog.c:100 ../src/main_window.c:428
+#: ../src/main_window.c:1129
+msgid "Extract"
+msgstr "Extreu"
+
+#: ../src/extract_dialog.c:110
+msgid "Extract archive"
+msgstr "Extreu arxiu"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -234,11 +367,6 @@ msgstr "A_juda"
 msgid "Add"
 msgstr "Afegeix"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1126
-#: ../src/extract_dialog.c:100
-msgid "Extract"
-msgstr "Extreu"
-
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
 msgstr "Obre l'arxiu en una finestra nova"
@@ -251,27 +379,11 @@ msgstr "Obre un arxiu"
 msgid "Archives"
 msgstr "Arxius"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
-msgid ""
-"Squeeze cannot extract this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Squeeze no pot extreure d'aquest tipus de fitxer,\n"
-"l'aplicació que permet aquest ús no hi és."
-
-#: ../src/main_window.c:829 ../src/application.c:267
-msgid ""
-"Squeeze cannot add files to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Squeeze no pot afegir fitxers a aquest tipus d'arxiu,\n"
-"l'aplicació que permet aquest ús no hi és."
-
-#: ../src/main_window.c:849
+#: ../src/main_window.c:850
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Voleu suprimir els fitxers seleccionats?"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:863
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -279,7 +391,7 @@ msgstr ""
 "Squeeze no pot suprimir fitxers d'aquest tipus d'arxiu,\n"
 "l'aplicació que permet aquest ús no hi és."
 
-#: ../src/main_window.c:909
+#: ../src/main_window.c:912
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -287,31 +399,31 @@ msgstr ""
 "Voleu canceŀlar aquesta acció?\n"
 "Això podria malmetre l'arxiu."
 
-#: ../src/main_window.c:991
+#: ../src/main_window.c:994
 msgid "Lead developer:"
 msgstr "Desenvolupador principal:"
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:997
 msgid "Contributors:"
 msgstr "Contribuïdors:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1000
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Basat en Xarchiver, escrit per Giuseppe Torelli"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1002
 msgid "Application Icon:"
 msgstr "Icones de l'aplicació:"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1005
 msgid "Add / Extract icons:"
 msgstr "Afegir / extreure icones:"
 
-#: ../src/main_window.c:1003
+#: ../src/main_window.c:1006
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Basat en el extreure icones original d'Andreas Nilsson"
 
-#: ../src/main_window.c:1010
+#: ../src/main_window.c:1013
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -320,24 +432,24 @@ msgstr ""
 "Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
+#: ../src/main_window.c:1021
 msgid "translator-credits"
 msgstr "Carles Muñoz Gorriz <carlesmu@internautas.org>"
 
-#: ../src/main_window.c:1047 ../src/main_window.c:1115
-#: ../src/main_window.c:1282
+#: ../src/main_window.c:1050 ../src/main_window.c:1118
+#: ../src/main_window.c:1285
 msgid "Done"
 msgstr "Fet"
 
-#: ../src/main_window.c:1125
+#: ../src/main_window.c:1128
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Quina acció voleu realitzar amb el(s) fitxer(s) seleccionats?"
 
-#: ../src/main_window.c:1126
+#: ../src/main_window.c:1129
 msgid "Open"
 msgstr "Obre"
 
-#: ../src/main_window.c:1140
+#: ../src/main_window.c:1143
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -345,11 +457,11 @@ msgstr ""
 "Squeeze no pot mostrar aquest fitxer,\n"
 "l'aplicació que permet aquest ús no hi és."
 
-#: ../src/main_window.c:1208
+#: ../src/main_window.c:1211
 msgid "Failed to open file"
 msgstr "No s'ha pogut obrir el fitxer"
 
-#: ../src/main_window.c:1209
+#: ../src/main_window.c:1212
 #, c-format
 msgid ""
 "'%s'\n"
@@ -357,23 +469,6 @@ msgid ""
 msgstr ""
 "«%s»\n"
 "No s'ha pogut obrir"
-
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:162 ../src/application.c:252
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"No es pot obrir l'arxiu,El tipus MIME no està implementat o el fitxer no "
-"existeix"
-
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:235
-msgid "Could not create archive, MIME-type unsupported"
-msgstr "No s'ha pogut crear l'arxiu, el tipus MIME no està implementat"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -383,59 +478,13 @@ msgstr "Tipus d'arxiu:"
 msgid "Create new archive"
 msgstr "Crea un arxiu nou"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Fitxers i directoris a afegir"
+#: ../src/notebook.c:207
+msgid "Rules hint"
+msgstr "Alternança de fons"
 
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Opcions:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Fitxers"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Directoris"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Afegeix fitxer(s) a l'arxiu"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Seleccioneu fitxers"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Seleccioneu carpetes"
-
-#: ../src/extract_dialog.c:76
-msgid "<b>Extract files:</b>"
-msgstr "<b>Extreu fitxers:</b>"
-
-#: ../src/extract_dialog.c:77
-msgid "<b>Options:</b>"
-msgstr "<b>Opcions:</b>"
-
-#: ../src/extract_dialog.c:87
-msgid "All files"
-msgstr "Tots els fitxers"
-
-#: ../src/extract_dialog.c:88
-msgid "Selected files"
-msgstr "Fitxers seleccionats"
-
-#: ../src/extract_dialog.c:110
-msgid "Extract archive"
-msgstr "Extreu arxiu"
-
-#: ../src/tool_bar.c:167
-msgid "Location:"
-msgstr "Ubicació:"
+#: ../src/notebook.c:208
+msgid "Make the row background colors alternate"
+msgstr "Alterna el color de fons de les files"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
@@ -445,58 +494,9 @@ msgstr "Espaiat"
 msgid "The amount of space between the path buttons"
 msgstr "Estil de la barra de camins"
 
-#: ../src/notebook.c:179 ../src/archive_store.c:249
-msgid "Show full path"
-msgstr "Mostra el camí sencer"
-
-#: ../src/notebook.c:180 ../src/archive_store.c:250
-msgid "Show the full path strings for each entry"
-msgstr "Per cadascuna de les entrades mostra la cadena sencera del camí"
-
-#: ../src/notebook.c:186 ../src/archive_store.c:256
-msgid "Show mime icons"
-msgstr "Mostra les icones MIME"
-
-#: ../src/notebook.c:187 ../src/archive_store.c:257
-msgid "Show the mime type icons for each entry"
-msgstr "Per cadascuna de les entrades mostra les icones dels tipus MIME"
-
-#: ../src/notebook.c:193 ../src/archive_store.c:270
-msgid "Sort folders before files"
-msgstr "Ordena carpetes abans que fitxers"
-
-#: ../src/notebook.c:194 ../src/archive_store.c:271
-msgid "The folders will be put at the top of the list"
-msgstr "Es mostraran les carpetes al principi de la llista"
-
-#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-msgid "Sort text case sensitive"
-msgstr "L'ordenació distingeix majúscules/minúscules"
-
-#: ../src/notebook.c:207
-msgid "Rules hint"
-msgstr "Alternança de fons"
-
-#: ../src/notebook.c:208
-msgid "Make the row background colors alternate"
-msgstr "Alterna el color de fons de les files"
-
-#: ../src/archive_store.c:263
-msgid "Show up dir entry"
-msgstr "Mostrar entrada de directori pare"
-
-#: ../src/archive_store.c:264
-msgid "Show '..' to go to the parent directory"
-msgstr "Mostra «..» per anar al directori pare"
-
-#: ../squeeze.desktop.in.h:1
-msgid "Archive manager"
-msgstr "Gestor d'arxius"
-
-#: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Gestor d'arxius d'Xfce"
+#: ../src/tool_bar.c:167
+msgid "Location:"
+msgstr "Ubicació:"
 
 #~ msgid "Artwork:"
 #~ msgstr "Artwork:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-15 23:01+0200\n"
+"POT-Creation-Date: 2007-04-16 14:57+0200\n"
 "PO-Revision-Date: 2007-04-14 12:36+0200\n"
 "Last-Translator: Stavros Giannouris <stavrosg@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -24,69 +24,23 @@ msgstr "Όνομα"
 msgid "Mime type"
 msgstr "Τύπος αρχείου"
 
-#: ../libsqueeze/command-builder.c:122
-msgid "Execute"
-msgstr "Εκτέλεση"
+#: ../libsqueeze/command-builder-compr.c:198
+#: ../libsqueeze/command-builder-gnu-tar.c:236
+#: ../libsqueeze/command-builder-gnu-tar.c:356
+msgid "Compressing"
+msgstr "Συμπίεση"
 
-#: ../libsqueeze/command-builder-zip.c:107
-#: ../libsqueeze/command-builder-rar.c:127
-msgid "Compressed"
-msgstr "Συμπιεσμένο"
-
-#: ../libsqueeze/command-builder-zip.c:109
-#: ../libsqueeze/command-builder-rar.c:141
-msgid "Method"
-msgstr "Μέθοδος"
-
-#: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-msgid "Size"
-msgstr "Μέγεθος"
-
-#: ../libsqueeze/command-builder-zip.c:113
-#: ../libsqueeze/command-builder-rar.c:131
-msgid "Ratio"
-msgstr "Αναλογία"
-
-#: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-msgid "Date"
-msgstr "Ημερομηνία"
-
-#: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-msgid "Time"
-msgstr "Ώρα"
-
-#: ../libsqueeze/command-builder-zip.c:155
-#: ../libsqueeze/command-builder-rar.c:181
-msgid "Adding"
-msgstr "Προσθήκη"
-
-#: ../libsqueeze/command-builder-zip.c:172
-#: ../libsqueeze/command-builder-zip.c:174
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-msgid "Removing"
-msgstr "Αφαίρεση"
-
-#: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-msgid "Extracting"
+#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-gnu-tar.c:269
+#: ../libsqueeze/command-builder-gnu-tar.c:347
+msgid "Decompressing"
 msgstr "Αποσυμπίεση"
 
-#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-compr.c:253
 #: ../libsqueeze/command-builder-gnu-tar.c:428
 #: ../libsqueeze/command-builder-gnu-tar.c:430
 #: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-compr.c:253
+#: ../libsqueeze/command-builder-zip.c:214
 msgid "Refresh"
 msgstr "Ανανέωση"
 
@@ -99,17 +53,23 @@ msgstr "Δικαιώματα"
 msgid "Owner/Group"
 msgstr "Ιδιοκτήτης / Ομάδα"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-#: ../libsqueeze/command-builder-compr.c:198
-msgid "Compressing"
-msgstr "Συμπίεση"
+#: ../libsqueeze/command-builder-gnu-tar.c:149
+#: ../libsqueeze/command-builder-rar.c:129
+#: ../libsqueeze/command-builder-zip.c:120
+msgid "Size"
+msgstr "Μέγεθος"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-#: ../libsqueeze/command-builder-compr.c:222
-msgid "Decompressing"
-msgstr "Αποσυμπίεση"
+#: ../libsqueeze/command-builder-gnu-tar.c:151
+#: ../libsqueeze/command-builder-rar.c:133
+#: ../libsqueeze/command-builder-zip.c:124
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:153
+#: ../libsqueeze/command-builder-rar.c:135
+#: ../libsqueeze/command-builder-zip.c:126
+msgid "Time"
+msgstr "Ώρα"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:283
 msgid "Adding files"
@@ -124,26 +84,200 @@ msgstr "Εκκαθάριση"
 msgid "Removing files"
 msgstr "Αφαίρεση αρχείων"
 
+#: ../libsqueeze/command-builder-gnu-tar.c:370
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
+#: ../libsqueeze/command-builder-zip.c:183
+#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
+msgid "Removing"
+msgstr "Αφαίρεση"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:413
+#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-rar.c:216
+#: ../libsqueeze/command-builder-zip.c:203
+msgid "Extracting"
+msgstr "Αποσυμπίεση"
+
+#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-zip.c:116
+msgid "Compressed"
+msgstr "Συμπιεσμένο"
+
+#: ../libsqueeze/command-builder-rar.c:131
+#: ../libsqueeze/command-builder-zip.c:122
+msgid "Ratio"
+msgstr "Αναλογία"
+
+#: ../libsqueeze/command-builder-rar.c:141
+#: ../libsqueeze/command-builder-zip.c:118
+msgid "Method"
+msgstr "Μέθοδος"
+
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
 msgstr "Έκδοση"
 
-#: ../libsqueeze/spawn-command.c:269
+#: ../libsqueeze/command-builder-rar.c:181
+#: ../libsqueeze/command-builder-zip.c:166
+msgid "Adding"
+msgstr "Προσθήκη"
+
+#: ../libsqueeze/command-builder.c:125
+msgid "Execute"
+msgstr "Εκτέλεση"
+
+#: ../libsqueeze/spawn-command.c:272
 #, c-format
 msgid "Command exited with status %d."
 msgstr "Η εντολή τερματίστηκε με κατάσταση %d"
 
-#: ../libsqueeze/spawn-command.c:279
+#: ../libsqueeze/spawn-command.c:282
 msgid "Command interrupted by user"
 msgstr "Η εντολή διακόπηκε από τον χρήστη"
 
-#: ../libsqueeze/spawn-command.c:283
+#: ../libsqueeze/spawn-command.c:286
 msgid "Command received SIGSEGV"
 msgstr "Η εντολή έλαβε SIGSERV"
 
-#: ../libsqueeze/spawn-command.c:288
+#: ../libsqueeze/spawn-command.c:291
 msgid "Command Terminated"
 msgstr "Η εντολή τερματίστηκε"
+
+#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Διαχειριστής συμπιεσμένων αρχείων"
+
+#: ../squeeze.desktop.in.h:2
+msgid "Xfce archive manager"
+msgstr "Διαχειριστής συμπιεσμένων αρχείων για το Xfce"
+
+#: ../src/add_dialog.c:73
+msgid "Files and directories to add"
+msgstr "Προσθήκη αρχείων και καταλόγων"
+
+#: ../src/add_dialog.c:74
+msgid "Options:"
+msgstr "Επιλογές:"
+
+#: ../src/add_dialog.c:107
+msgid "Files"
+msgstr "Αρχεία"
+
+#: ../src/add_dialog.c:111
+msgid "Directories"
+msgstr "Κατάλογοι"
+
+#: ../src/add_dialog.c:144
+msgid "Add file(s) to archive"
+msgstr "Προσθήκη αρχείων στο συμπιεσμένο αρχείο"
+
+#. Select Files Dialog
+#: ../src/add_dialog.c:164
+msgid "Select files"
+msgstr "Επιλογή αρχείων"
+
+#. Select Folder Dialog
+#: ../src/add_dialog.c:170
+msgid "Select folders"
+msgstr "Επιλογή φακέλων"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:162 ../src/application.c:252
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+"Δεν είναι δυνατό το άνοιγμα αυτού του αρχείου. Ο τύπος αρχείου δεν "
+"υποστηρίζεται ή το αρχείο δεν υπάρχει."
+
+#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Το squeeze δε μπορεί να αποσυμπιέσει αυτό τον τύπο αρχείου.\n"
+"Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:235
+msgid "Could not create archive, MIME-type unsupported"
+msgstr ""
+"Δεν ήταν δυνατή η δημιουργία του αρχείου, ο τύπος MIME δεν υποστηρίζεται"
+
+#: ../src/application.c:269 ../src/main_window.c:830
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Το squeeze δε μπορεί να προσθέσει αρχεία σε αυτό τον τύπο αρχείου.\n"
+"Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
+
+#: ../src/archive_store.c:249 ../src/notebook.c:179
+msgid "Show full path"
+msgstr "Προβολή ολόκληρης της διαδρομής"
+
+#: ../src/archive_store.c:250 ../src/notebook.c:180
+msgid "Show the full path strings for each entry"
+msgstr "Εμφάνιση πλήρους διαδρομής σε κάθε εγγραφή"
+
+#: ../src/archive_store.c:256 ../src/notebook.c:186
+msgid "Show mime icons"
+msgstr "Προβολή εικονιδίων εφαρμογών"
+
+#: ../src/archive_store.c:257 ../src/notebook.c:187
+msgid "Show the mime type icons for each entry"
+msgstr "Εμφάνιση εικονιδίων εφαρμογών σε κάθε εγγραφή "
+
+#: ../src/archive_store.c:263
+msgid "Show up dir entry"
+msgstr "Προβολή εγγραφής καταλόγου"
+
+#: ../src/archive_store.c:264
+msgid "Show '..' to go to the parent directory"
+msgstr "Προβολή '..' για μετάβαση στο γονικό κατάλογο"
+
+#: ../src/archive_store.c:270 ../src/notebook.c:193
+msgid "Sort folders before files"
+msgstr "Ταξινόμηση φακέλων πριν τα αρχεία"
+
+#: ../src/archive_store.c:271 ../src/notebook.c:194
+msgid "The folders will be put at the top of the list"
+msgstr "Οι φάκελοι θα ταξινομηθούν στην κορυφή της λίστας"
+
+#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/notebook.c:201
+msgid "Sort text case sensitive"
+msgstr ""
+
+#: ../src/extract_dialog.c:76
+msgid "<b>Extract files:</b>"
+msgstr "<b>Αρχεία για εξαγωγή</b>"
+
+#: ../src/extract_dialog.c:77
+msgid "<b>Options:</b>"
+msgstr "<b>Επιλογές:</b>"
+
+#: ../src/extract_dialog.c:87
+msgid "All files"
+msgstr "Όλα τα αρχεία"
+
+#: ../src/extract_dialog.c:88
+msgid "Selected files"
+msgstr "Επιλεγμένα αρχεία"
+
+#: ../src/extract_dialog.c:100 ../src/main_window.c:428
+#: ../src/main_window.c:1129
+msgid "Extract"
+msgstr "Αποσυμπίεση"
+
+#: ../src/extract_dialog.c:110
+msgid "Extract archive"
+msgstr "Αποσυμπίεση αρχείου"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -231,11 +365,6 @@ msgstr "_Βοήθεια"
 msgid "Add"
 msgstr "Προσθήκη"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1126
-#: ../src/extract_dialog.c:100
-msgid "Extract"
-msgstr "Αποσυμπίεση"
-
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
 msgstr "Άνοιγμα του συμπιεσμένου αρχείου σε νέο παράθυρο"
@@ -248,27 +377,11 @@ msgstr "Άνοιγμα συμπιεσμένου αρχείου"
 msgid "Archives"
 msgstr "Συμπιεσμένα αρχεία"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
-msgid ""
-"Squeeze cannot extract this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Το squeeze δε μπορεί να αποσυμπιέσει αυτό τον τύπο αρχείου.\n"
-"Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
-
-#: ../src/main_window.c:829 ../src/application.c:267
-msgid ""
-"Squeeze cannot add files to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Το squeeze δε μπορεί να προσθέσει αρχεία σε αυτό τον τύπο αρχείου.\n"
-"Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
-
-#: ../src/main_window.c:849
+#: ../src/main_window.c:850
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Είσαστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα αρχεία;"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:863
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -276,7 +389,7 @@ msgstr ""
 "Το squeeze δε μπορεί να αφαιρέσει αρχεία από αυτό τον τύπο αρχείου.\n"
 "Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#: ../src/main_window.c:909
+#: ../src/main_window.c:912
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -284,31 +397,31 @@ msgstr ""
 "Θέλετε σίγουρα να ακυρώσετε αυτή τη λειτουργία;\n"
 "Αυτό μπορεί να χαλάσει το αρχείο."
 
-#: ../src/main_window.c:991
+#: ../src/main_window.c:994
 msgid "Lead developer:"
 msgstr "Βασικός προγραμματιστής:"
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:997
 msgid "Contributors:"
 msgstr "Συντελεστές:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1000
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Εμπνευσμένο από το Xarchiver, του Giuseppe Torelli"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1002
 msgid "Application Icon:"
 msgstr "Εικονίδιο εφαρμογής:"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1005
 msgid "Add / Extract icons:"
 msgstr "Προσθήκη / εξαγωγή εικονιδίων:"
 
-#: ../src/main_window.c:1003
+#: ../src/main_window.c:1006
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Βασισμένο στο εικονίδιο αποσυμπίεσης του Andreas Nilsson"
 
-#: ../src/main_window.c:1010
+#: ../src/main_window.c:1013
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -316,24 +429,24 @@ msgstr ""
 "Ένας ελαφρύς και ευέλικτος διαχειριστής συμπιεσμένων αρχείων για το Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
+#: ../src/main_window.c:1021
 msgid "translator-credits"
 msgstr "Stavros Giannouris <stavrosg@hellug.gr>"
 
-#: ../src/main_window.c:1047 ../src/main_window.c:1115
-#: ../src/main_window.c:1282
+#: ../src/main_window.c:1050 ../src/main_window.c:1118
+#: ../src/main_window.c:1285
 msgid "Done"
 msgstr "Τέλος"
 
-#: ../src/main_window.c:1125
+#: ../src/main_window.c:1128
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Τι εργασία θέλετε να εφαρμόσετε στα επιλεγμένα αρχεία;"
 
-#: ../src/main_window.c:1126
+#: ../src/main_window.c:1129
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: ../src/main_window.c:1140
+#: ../src/main_window.c:1143
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -341,11 +454,11 @@ msgstr ""
 "Το squeeze δε μπορεί να προβάλλει αυτό το αρχείο.\n"
 "Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#: ../src/main_window.c:1208
+#: ../src/main_window.c:1211
 msgid "Failed to open file"
 msgstr "Το άνοιγμα του αρχείου απέτυχε"
 
-#: ../src/main_window.c:1209
+#: ../src/main_window.c:1212
 #, c-format
 msgid ""
 "'%s'\n"
@@ -353,24 +466,6 @@ msgid ""
 msgstr ""
 "'%s'\n"
 "Δεν ήταν δυνατό να εκτελεστεί"
-
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:162 ../src/application.c:252
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Δεν είναι δυνατό το άνοιγμα αυτού του αρχείου. Ο τύπος αρχείου δεν "
-"υποστηρίζεται ή το αρχείο δεν υπάρχει."
-
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:235
-msgid "Could not create archive, MIME-type unsupported"
-msgstr ""
-"Δεν ήταν δυνατή η δημιουργία του αρχείου, ο τύπος MIME δεν υποστηρίζεται"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -380,59 +475,13 @@ msgstr "Τύπος συμπιεσμένου αρχείου:"
 msgid "Create new archive"
 msgstr "Δημιουργία νέου συμπιεσμένου αρχείου"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Προσθήκη αρχείων και καταλόγων"
+#: ../src/notebook.c:207
+msgid "Rules hint"
+msgstr ""
 
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Επιλογές:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Αρχεία"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Κατάλογοι"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Προσθήκη αρχείων στο συμπιεσμένο αρχείο"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Επιλογή αρχείων"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Επιλογή φακέλων"
-
-#: ../src/extract_dialog.c:76
-msgid "<b>Extract files:</b>"
-msgstr "<b>Αρχεία για εξαγωγή</b>"
-
-#: ../src/extract_dialog.c:77
-msgid "<b>Options:</b>"
-msgstr "<b>Επιλογές:</b>"
-
-#: ../src/extract_dialog.c:87
-msgid "All files"
-msgstr "Όλα τα αρχεία"
-
-#: ../src/extract_dialog.c:88
-msgid "Selected files"
-msgstr "Επιλεγμένα αρχεία"
-
-#: ../src/extract_dialog.c:110
-msgid "Extract archive"
-msgstr "Αποσυμπίεση αρχείου"
-
-#: ../src/tool_bar.c:167
-msgid "Location:"
-msgstr "Τοποθεσία:"
+#: ../src/notebook.c:208
+msgid "Make the row background colors alternate"
+msgstr "Εναλλασσόμενα χρώματα παρασκηνίου γραμμών"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
@@ -442,55 +491,6 @@ msgstr "Διάστιχο"
 msgid "The amount of space between the path buttons"
 msgstr "Το μέγεθος του διαστήματος μεταξύ κουμπιών διαδρομής"
 
-#: ../src/notebook.c:179 ../src/archive_store.c:249
-msgid "Show full path"
-msgstr "Προβολή ολόκληρης της διαδρομής"
-
-#: ../src/notebook.c:180 ../src/archive_store.c:250
-msgid "Show the full path strings for each entry"
-msgstr "Εμφάνιση πλήρους διαδρομής σε κάθε εγγραφή"
-
-#: ../src/notebook.c:186 ../src/archive_store.c:256
-msgid "Show mime icons"
-msgstr "Προβολή εικονιδίων εφαρμογών"
-
-#: ../src/notebook.c:187 ../src/archive_store.c:257
-msgid "Show the mime type icons for each entry"
-msgstr "Εμφάνιση εικονιδίων εφαρμογών σε κάθε εγγραφή "
-
-#: ../src/notebook.c:193 ../src/archive_store.c:270
-msgid "Sort folders before files"
-msgstr "Ταξινόμηση φακέλων πριν τα αρχεία"
-
-#: ../src/notebook.c:194 ../src/archive_store.c:271
-msgid "The folders will be put at the top of the list"
-msgstr "Οι φάκελοι θα ταξινομηθούν στην κορυφή της λίστας"
-
-#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-msgid "Sort text case sensitive"
-msgstr ""
-
-#: ../src/notebook.c:207
-msgid "Rules hint"
-msgstr ""
-
-#: ../src/notebook.c:208
-msgid "Make the row background colors alternate"
-msgstr "Εναλλασσόμενα χρώματα παρασκηνίου γραμμών"
-
-#: ../src/archive_store.c:263
-msgid "Show up dir entry"
-msgstr "Προβολή εγγραφής καταλόγου"
-
-#: ../src/archive_store.c:264
-msgid "Show '..' to go to the parent directory"
-msgstr "Προβολή '..' για μετάβαση στο γονικό κατάλογο"
-
-#: ../squeeze.desktop.in.h:1
-msgid "Archive manager"
-msgstr "Διαχειριστής συμπιεσμένων αρχείων"
-
-#: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Διαχειριστής συμπιεσμένων αρχείων για το Xfce"
+#: ../src/tool_bar.c:167
+msgid "Location:"
+msgstr "Τοποθεσία:"

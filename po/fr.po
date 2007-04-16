@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.0.2\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-15 23:01+0200\n"
+"POT-Creation-Date: 2007-04-16 14:57+0200\n"
 "PO-Revision-Date: 2007-04-13 22:50+0100\n"
 "Last-Translator: Maximilian Schleiss <maxschleiss@bluewin.ch>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
@@ -23,69 +23,23 @@ msgstr "Nom"
 msgid "Mime type"
 msgstr "Type MIME"
 
-#: ../libsqueeze/command-builder.c:122
-msgid "Execute"
-msgstr "Exécuter"
+#: ../libsqueeze/command-builder-compr.c:198
+#: ../libsqueeze/command-builder-gnu-tar.c:236
+#: ../libsqueeze/command-builder-gnu-tar.c:356
+msgid "Compressing"
+msgstr "Compression en cours"
 
-#: ../libsqueeze/command-builder-zip.c:107
-#: ../libsqueeze/command-builder-rar.c:127
-msgid "Compressed"
-msgstr "Compressé"
+#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-gnu-tar.c:269
+#: ../libsqueeze/command-builder-gnu-tar.c:347
+msgid "Decompressing"
+msgstr "Décompression"
 
-#: ../libsqueeze/command-builder-zip.c:109
-#: ../libsqueeze/command-builder-rar.c:141
-msgid "Method"
-msgstr "Méthode"
-
-#: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-msgid "Size"
-msgstr "Taille"
-
-#: ../libsqueeze/command-builder-zip.c:113
-#: ../libsqueeze/command-builder-rar.c:131
-msgid "Ratio"
-msgstr "Ratio"
-
-#: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-msgid "Date"
-msgstr "Date"
-
-#: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-msgid "Time"
-msgstr "Temps"
-
-#: ../libsqueeze/command-builder-zip.c:155
-#: ../libsqueeze/command-builder-rar.c:181
-msgid "Adding"
-msgstr "Ajout"
-
-#: ../libsqueeze/command-builder-zip.c:172
-#: ../libsqueeze/command-builder-zip.c:174
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-msgid "Removing"
-msgstr "Suppression"
-
-#: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-msgid "Extracting"
-msgstr "Extraction"
-
-#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-compr.c:253
 #: ../libsqueeze/command-builder-gnu-tar.c:428
 #: ../libsqueeze/command-builder-gnu-tar.c:430
 #: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-compr.c:253
+#: ../libsqueeze/command-builder-zip.c:214
 msgid "Refresh"
 msgstr "Rafraîchir"
 
@@ -98,17 +52,23 @@ msgstr "Droits"
 msgid "Owner/Group"
 msgstr "Propriétaire/Groupe"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-#: ../libsqueeze/command-builder-compr.c:198
-msgid "Compressing"
-msgstr "Compression en cours"
+#: ../libsqueeze/command-builder-gnu-tar.c:149
+#: ../libsqueeze/command-builder-rar.c:129
+#: ../libsqueeze/command-builder-zip.c:120
+msgid "Size"
+msgstr "Taille"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-#: ../libsqueeze/command-builder-compr.c:222
-msgid "Decompressing"
-msgstr "Décompression"
+#: ../libsqueeze/command-builder-gnu-tar.c:151
+#: ../libsqueeze/command-builder-rar.c:133
+#: ../libsqueeze/command-builder-zip.c:124
+msgid "Date"
+msgstr "Date"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:153
+#: ../libsqueeze/command-builder-rar.c:135
+#: ../libsqueeze/command-builder-zip.c:126
+msgid "Time"
+msgstr "Temps"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:283
 msgid "Adding files"
@@ -123,26 +83,199 @@ msgstr "Nettoyage"
 msgid "Removing files"
 msgstr "Suppression de fichiers"
 
+#: ../libsqueeze/command-builder-gnu-tar.c:370
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
+#: ../libsqueeze/command-builder-zip.c:183
+#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
+msgid "Removing"
+msgstr "Suppression"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:413
+#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-rar.c:216
+#: ../libsqueeze/command-builder-zip.c:203
+msgid "Extracting"
+msgstr "Extraction"
+
+#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-zip.c:116
+msgid "Compressed"
+msgstr "Compressé"
+
+#: ../libsqueeze/command-builder-rar.c:131
+#: ../libsqueeze/command-builder-zip.c:122
+msgid "Ratio"
+msgstr "Ratio"
+
+#: ../libsqueeze/command-builder-rar.c:141
+#: ../libsqueeze/command-builder-zip.c:118
+msgid "Method"
+msgstr "Méthode"
+
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
 msgstr "Version"
 
-#: ../libsqueeze/spawn-command.c:269
+#: ../libsqueeze/command-builder-rar.c:181
+#: ../libsqueeze/command-builder-zip.c:166
+msgid "Adding"
+msgstr "Ajout"
+
+#: ../libsqueeze/command-builder.c:125
+msgid "Execute"
+msgstr "Exécuter"
+
+#: ../libsqueeze/spawn-command.c:272
 #, c-format
 msgid "Command exited with status %d."
 msgstr "La commande s'est terminée avec un état %d."
 
-#: ../libsqueeze/spawn-command.c:279
+#: ../libsqueeze/spawn-command.c:282
 msgid "Command interrupted by user"
 msgstr "Commande interrompue par l'utilisateur"
 
-#: ../libsqueeze/spawn-command.c:283
+#: ../libsqueeze/spawn-command.c:286
 msgid "Command received SIGSEGV"
 msgstr "La commande a reçu un signal SIGSEGV"
 
-#: ../libsqueeze/spawn-command.c:288
+#: ../libsqueeze/spawn-command.c:291
 msgid "Command Terminated"
 msgstr "Commande terminée"
+
+#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Gestionnaire d'archives"
+
+#: ../squeeze.desktop.in.h:2
+msgid "Xfce archive manager"
+msgstr "Gestionnaire d'archives pour Xfce"
+
+#: ../src/add_dialog.c:73
+msgid "Files and directories to add"
+msgstr "Fichiers et répertoires à ajouter"
+
+#: ../src/add_dialog.c:74
+msgid "Options:"
+msgstr "Options :"
+
+#: ../src/add_dialog.c:107
+msgid "Files"
+msgstr "Fichiers"
+
+#: ../src/add_dialog.c:111
+msgid "Directories"
+msgstr "Répertoires"
+
+#: ../src/add_dialog.c:144
+msgid "Add file(s) to archive"
+msgstr "Ajouter un ou des fichiers à l'archive"
+
+#. Select Files Dialog
+#: ../src/add_dialog.c:164
+msgid "Select files"
+msgstr "Sélectionner les fichiers"
+
+#. Select Folder Dialog
+#: ../src/add_dialog.c:170
+msgid "Select folders"
+msgstr "Sélectionner les dossiers"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:162 ../src/application.c:252
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+"Échec à l'ouverture de l'archive, type MIME non supporté ou fichier "
+"inexistant"
+
+#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Squeeze ne peut pas extraire de fichier de ce type d'archive,\n"
+"l'application nécessaire n'est pas présente."
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:235
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "Échec à la création de l'archive, type MIME non supporté"
+
+#: ../src/application.c:269 ../src/main_window.c:830
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Squeeze ne peut pas ajouter de fichier dans ce type d'archive,\n"
+"l'application nécessaire n'est pas présente."
+
+#: ../src/archive_store.c:249 ../src/notebook.c:179
+msgid "Show full path"
+msgstr "Afficher le chemin complet"
+
+#: ../src/archive_store.c:250 ../src/notebook.c:180
+msgid "Show the full path strings for each entry"
+msgstr "Afficher le chemin complet pour chaque position"
+
+#: ../src/archive_store.c:256 ../src/notebook.c:186
+msgid "Show mime icons"
+msgstr "Afficher les icônes MIME"
+
+#: ../src/archive_store.c:257 ../src/notebook.c:187
+msgid "Show the mime type icons for each entry"
+msgstr "Afficher l'icône du type MIME pour chaque position"
+
+#: ../src/archive_store.c:263
+msgid "Show up dir entry"
+msgstr "Afficher dossier supérieur"
+
+#: ../src/archive_store.c:264
+msgid "Show '..' to go to the parent directory"
+msgstr "Afficher '..' pour remonter au dossier précédent"
+
+#: ../src/archive_store.c:270 ../src/notebook.c:193
+msgid "Sort folders before files"
+msgstr "Trier les dossiers avant les fichiers"
+
+#: ../src/archive_store.c:271 ../src/notebook.c:194
+msgid "The folders will be put at the top of the list"
+msgstr "Les dossiers s'afficheront en haut de la liste"
+
+#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/notebook.c:201
+msgid "Sort text case sensitive"
+msgstr "Classer le texte en fonction de la casse"
+
+#: ../src/extract_dialog.c:76
+msgid "<b>Extract files:</b>"
+msgstr "<b>Extraire les fichiers :</b>"
+
+#: ../src/extract_dialog.c:77
+msgid "<b>Options:</b>"
+msgstr "<b>Options :</b>"
+
+#: ../src/extract_dialog.c:87
+msgid "All files"
+msgstr "Tous les fichiers"
+
+#: ../src/extract_dialog.c:88
+msgid "Selected files"
+msgstr "Fichiers sélectionnés"
+
+#: ../src/extract_dialog.c:100 ../src/main_window.c:428
+#: ../src/main_window.c:1129
+msgid "Extract"
+msgstr "Extraire"
+
+#: ../src/extract_dialog.c:110
+msgid "Extract archive"
+msgstr "Extraire l'archive"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -229,11 +362,6 @@ msgstr "_Aide"
 msgid "Add"
 msgstr "Ajouter"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1126
-#: ../src/extract_dialog.c:100
-msgid "Extract"
-msgstr "Extraire"
-
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
 msgstr "Ouvrir l'archive dans une nouvelle fenêtre"
@@ -246,27 +374,11 @@ msgstr "Ouvrir l'archive"
 msgid "Archives"
 msgstr "Archives"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
-msgid ""
-"Squeeze cannot extract this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Squeeze ne peut pas extraire de fichier de ce type d'archive,\n"
-"l'application nécessaire n'est pas présente."
-
-#: ../src/main_window.c:829 ../src/application.c:267
-msgid ""
-"Squeeze cannot add files to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Squeeze ne peut pas ajouter de fichier dans ce type d'archive,\n"
-"l'application nécessaire n'est pas présente."
-
-#: ../src/main_window.c:849
+#: ../src/main_window.c:850
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Êtes-vous certain de vouloir supprimer les fichiers sélectionnés ?"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:863
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -274,7 +386,7 @@ msgstr ""
 "Squeeze ne peut pas supprimer de fichier dans ce type d'archive,\n"
 "l'application nécessaire n'est pas présente."
 
-#: ../src/main_window.c:909
+#: ../src/main_window.c:912
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -282,31 +394,31 @@ msgstr ""
 "Êtes-vous sûr de vouloir annuler cette opération ?\n"
 "Ceci pourrait endommager l'archive."
 
-#: ../src/main_window.c:991
+#: ../src/main_window.c:994
 msgid "Lead developer:"
 msgstr "Développeur principal :"
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:997
 msgid "Contributors:"
 msgstr "Contributeurs :"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1000
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiré de Xarchiver, écrit par Giuseppe Torelli"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1002
 msgid "Application Icon:"
 msgstr "Icône de l'application :"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1005
 msgid "Add / Extract icons:"
 msgstr "Icônes ajouter / extraire :"
 
-#: ../src/main_window.c:1003
+#: ../src/main_window.c:1006
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Basés sur les icônes d'extraction de Andreas Nilsson"
 
-#: ../src/main_window.c:1010
+#: ../src/main_window.c:1013
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -315,25 +427,25 @@ msgstr ""
 "l'environnement de bureau xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
+#: ../src/main_window.c:1021
 msgid "translator-credits"
 msgstr "Maximilian Schleiss <maxschleiss@solnet.ch>"
 
-#: ../src/main_window.c:1047 ../src/main_window.c:1115
-#: ../src/main_window.c:1282
+#: ../src/main_window.c:1050 ../src/main_window.c:1118
+#: ../src/main_window.c:1285
 msgid "Done"
 msgstr "Terminé"
 
-#: ../src/main_window.c:1125
+#: ../src/main_window.c:1128
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr ""
 "Quelle action voulez-vous effectuer sur le(s) fichier(s) sélectionné(s) ?"
 
-#: ../src/main_window.c:1126
+#: ../src/main_window.c:1129
 msgid "Open"
 msgstr "Ouvrir"
 
-#: ../src/main_window.c:1140
+#: ../src/main_window.c:1143
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -341,11 +453,11 @@ msgstr ""
 "Squeeze ne peut pas visionner ce fichier,\n"
 "l'application nécessaire n'est pas présente."
 
-#: ../src/main_window.c:1208
+#: ../src/main_window.c:1211
 msgid "Failed to open file"
 msgstr "Échec à l'ouverture du fichier"
 
-#: ../src/main_window.c:1209
+#: ../src/main_window.c:1212
 #, c-format
 msgid ""
 "'%s'\n"
@@ -353,23 +465,6 @@ msgid ""
 msgstr ""
 "%s\n"
 "N'a pas pu être ouvert"
-
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:162 ../src/application.c:252
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Échec à l'ouverture de l'archive, type MIME non supporté ou fichier "
-"inexistant"
-
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:235
-msgid "Could not create archive, MIME-type unsupported"
-msgstr "Échec à la création de l'archive, type MIME non supporté"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -379,59 +474,13 @@ msgstr "Type d'archive :"
 msgid "Create new archive"
 msgstr "Créer une archive"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Fichiers et répertoires à ajouter"
+#: ../src/notebook.c:207
+msgid "Rules hint"
+msgstr "Lignes colorées"
 
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Options :"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Fichiers"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Répertoires"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Ajouter un ou des fichiers à l'archive"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Sélectionner les fichiers"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Sélectionner les dossiers"
-
-#: ../src/extract_dialog.c:76
-msgid "<b>Extract files:</b>"
-msgstr "<b>Extraire les fichiers :</b>"
-
-#: ../src/extract_dialog.c:77
-msgid "<b>Options:</b>"
-msgstr "<b>Options :</b>"
-
-#: ../src/extract_dialog.c:87
-msgid "All files"
-msgstr "Tous les fichiers"
-
-#: ../src/extract_dialog.c:88
-msgid "Selected files"
-msgstr "Fichiers sélectionnés"
-
-#: ../src/extract_dialog.c:110
-msgid "Extract archive"
-msgstr "Extraire l'archive"
-
-#: ../src/tool_bar.c:167
-msgid "Location:"
-msgstr "Emplacement :"
+#: ../src/notebook.c:208
+msgid "Make the row background colors alternate"
+msgstr "Afficher les lignes d'arrière plan en alternant les couleurs"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
@@ -441,58 +490,9 @@ msgstr "Espacement"
 msgid "The amount of space between the path buttons"
 msgstr "L'espacement entre les boutons du chemin"
 
-#: ../src/notebook.c:179 ../src/archive_store.c:249
-msgid "Show full path"
-msgstr "Afficher le chemin complet"
-
-#: ../src/notebook.c:180 ../src/archive_store.c:250
-msgid "Show the full path strings for each entry"
-msgstr "Afficher le chemin complet pour chaque position"
-
-#: ../src/notebook.c:186 ../src/archive_store.c:256
-msgid "Show mime icons"
-msgstr "Afficher les icônes MIME"
-
-#: ../src/notebook.c:187 ../src/archive_store.c:257
-msgid "Show the mime type icons for each entry"
-msgstr "Afficher l'icône du type MIME pour chaque position"
-
-#: ../src/notebook.c:193 ../src/archive_store.c:270
-msgid "Sort folders before files"
-msgstr "Trier les dossiers avant les fichiers"
-
-#: ../src/notebook.c:194 ../src/archive_store.c:271
-msgid "The folders will be put at the top of the list"
-msgstr "Les dossiers s'afficheront en haut de la liste"
-
-#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-msgid "Sort text case sensitive"
-msgstr "Classer le texte en fonction de la casse"
-
-#: ../src/notebook.c:207
-msgid "Rules hint"
-msgstr "Lignes colorées"
-
-#: ../src/notebook.c:208
-msgid "Make the row background colors alternate"
-msgstr "Afficher les lignes d'arrière plan en alternant les couleurs"
-
-#: ../src/archive_store.c:263
-msgid "Show up dir entry"
-msgstr "Afficher dossier supérieur"
-
-#: ../src/archive_store.c:264
-msgid "Show '..' to go to the parent directory"
-msgstr "Afficher '..' pour remonter au dossier précédent"
-
-#: ../squeeze.desktop.in.h:1
-msgid "Archive manager"
-msgstr "Gestionnaire d'archives"
-
-#: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Gestionnaire d'archives pour Xfce"
+#: ../src/tool_bar.c:167
+msgid "Location:"
+msgstr "Emplacement :"
 
 #~ msgid "Artwork:"
 #~ msgstr "Images :"

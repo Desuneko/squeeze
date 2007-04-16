@@ -94,13 +94,22 @@ lsq_command_builder_zip_init(LSQCommandBuilderZip *command_builder_zip)
 {
 	LSQCommandBuilder *command_builder = LSQ_COMMAND_BUILDER(command_builder_zip);
 
-	command_builder->build_add = lsq_command_builder_zip_build_add;
-	command_builder->build_extract = lsq_command_builder_zip_build_extract;
-	command_builder->build_remove = lsq_command_builder_zip_build_remove;
-	command_builder->build_refresh = lsq_command_builder_zip_build_refresh;
+	gchar *zip_path = g_find_program_in_path("zip");
+	gchar *unzip_path = g_find_program_in_path("unzip");
+
+	if(zip_path)
+	{
+		command_builder->build_add = lsq_command_builder_zip_build_add;
+		command_builder->build_remove = lsq_command_builder_zip_build_remove;
+	}
+	if(unzip_path)
+	{
+		command_builder->build_extract = lsq_command_builder_zip_build_extract;
+		command_builder->build_refresh = lsq_command_builder_zip_build_refresh;
+	}
 
 	command_builder->mime_types = g_new0(gchar *, 2);
-	if(g_find_program_in_path("zip") && g_find_program_in_path("unzip"))
+	if(zip_path || unzip_path)
 		command_builder->mime_types[0] = "application/zip";
 
 	lsq_builder_settings_set_property_types(command_builder->settings, 
@@ -119,6 +128,8 @@ lsq_command_builder_zip_init(LSQCommandBuilderZip *command_builder_zip)
 	                                        "CRC-32", /* crc-32 */
 	                                        G_TYPE_STRING,
 											NULL);
+	g_free(unzip_path);
+	g_free(zip_path);
 }
 
 /**

@@ -1,8 +1,3 @@
-src/button_drag_box.c
-src/message_dialog.c
-src/preferences_dialog.c
-src/properties_dialog.c
-src/throbber.c
 libsqueeze/archive.c
 libsqueeze/command-builder-compr.c
 libsqueeze/command-builder-gnu-tar.c
@@ -21,3 +16,5 @@ src/new_dialog.c
 src/notebook.c
 src/path_bar.c
 src/tool_bar.c
+src/message_dialog.c
+src/throbber.c

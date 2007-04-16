@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-15 23:01+0200\n"
+"POT-Creation-Date: 2007-04-16 14:57+0200\n"
 "PO-Revision-Date: 2007-04-11 09:59+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -21,69 +21,23 @@ msgstr "Név"
 msgid "Mime type"
 msgstr "Mime típus"
 
-#: ../libsqueeze/command-builder.c:122
-msgid "Execute"
-msgstr "Futtat"
+#: ../libsqueeze/command-builder-compr.c:198
+#: ../libsqueeze/command-builder-gnu-tar.c:236
+#: ../libsqueeze/command-builder-gnu-tar.c:356
+msgid "Compressing"
+msgstr "Tömörítés"
 
-#: ../libsqueeze/command-builder-zip.c:107
-#: ../libsqueeze/command-builder-rar.c:127
-msgid "Compressed"
-msgstr "Tömörített"
+#: ../libsqueeze/command-builder-compr.c:222
+#: ../libsqueeze/command-builder-gnu-tar.c:269
+#: ../libsqueeze/command-builder-gnu-tar.c:347
+msgid "Decompressing"
+msgstr "Kitömörítés"
 
-#: ../libsqueeze/command-builder-zip.c:109
-#: ../libsqueeze/command-builder-rar.c:141
-msgid "Method"
-msgstr "Mód"
-
-#: ../libsqueeze/command-builder-zip.c:111
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-msgid "Size"
-msgstr "Méret"
-
-#: ../libsqueeze/command-builder-zip.c:113
-#: ../libsqueeze/command-builder-rar.c:131
-msgid "Ratio"
-msgstr "Arány"
-
-#: ../libsqueeze/command-builder-zip.c:115
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-msgid "Date"
-msgstr "Dátum"
-
-#: ../libsqueeze/command-builder-zip.c:117
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-msgid "Time"
-msgstr "Idő"
-
-#: ../libsqueeze/command-builder-zip.c:155
-#: ../libsqueeze/command-builder-rar.c:181
-msgid "Adding"
-msgstr "Hozzáadás"
-
-#: ../libsqueeze/command-builder-zip.c:172
-#: ../libsqueeze/command-builder-zip.c:174
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-msgid "Removing"
-msgstr "Eltávolítás"
-
-#: ../libsqueeze/command-builder-zip.c:192
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-msgid "Extracting"
-msgstr "Kibontás"
-
-#: ../libsqueeze/command-builder-zip.c:203
+#: ../libsqueeze/command-builder-compr.c:253
 #: ../libsqueeze/command-builder-gnu-tar.c:428
 #: ../libsqueeze/command-builder-gnu-tar.c:430
 #: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-compr.c:253
+#: ../libsqueeze/command-builder-zip.c:214
 msgid "Refresh"
 msgstr "Frissít"
 
@@ -96,17 +50,23 @@ msgstr "Jogok"
 msgid "Owner/Group"
 msgstr "Tulaj/Csoport"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-#: ../libsqueeze/command-builder-compr.c:198
-msgid "Compressing"
-msgstr "Tömörítés"
+#: ../libsqueeze/command-builder-gnu-tar.c:149
+#: ../libsqueeze/command-builder-rar.c:129
+#: ../libsqueeze/command-builder-zip.c:120
+msgid "Size"
+msgstr "Méret"
 
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-#: ../libsqueeze/command-builder-compr.c:222
-msgid "Decompressing"
-msgstr "Kitömörítés"
+#: ../libsqueeze/command-builder-gnu-tar.c:151
+#: ../libsqueeze/command-builder-rar.c:133
+#: ../libsqueeze/command-builder-zip.c:124
+msgid "Date"
+msgstr "Dátum"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:153
+#: ../libsqueeze/command-builder-rar.c:135
+#: ../libsqueeze/command-builder-zip.c:126
+msgid "Time"
+msgstr "Idő"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:283
 msgid "Adding files"
@@ -121,26 +81,199 @@ msgstr ""
 msgid "Removing files"
 msgstr "Fájlok eltávolítása"
 
+#: ../libsqueeze/command-builder-gnu-tar.c:370
+#: ../libsqueeze/command-builder-gnu-tar.c:392
+#: ../libsqueeze/command-builder-rar.c:197
+#: ../libsqueeze/command-builder-rar.c:199
+#: ../libsqueeze/command-builder-zip.c:183
+#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
+msgid "Removing"
+msgstr "Eltávolítás"
+
+#: ../libsqueeze/command-builder-gnu-tar.c:413
+#: ../libsqueeze/command-builder-gnu-tar.c:415
+#: ../libsqueeze/command-builder-rar.c:216
+#: ../libsqueeze/command-builder-zip.c:203
+msgid "Extracting"
+msgstr "Kibontás"
+
+#: ../libsqueeze/command-builder-rar.c:127
+#: ../libsqueeze/command-builder-zip.c:116
+msgid "Compressed"
+msgstr "Tömörített"
+
+#: ../libsqueeze/command-builder-rar.c:131
+#: ../libsqueeze/command-builder-zip.c:122
+msgid "Ratio"
+msgstr "Arány"
+
+#: ../libsqueeze/command-builder-rar.c:141
+#: ../libsqueeze/command-builder-zip.c:118
+msgid "Method"
+msgstr "Mód"
+
 #: ../libsqueeze/command-builder-rar.c:143
 msgid "Version"
 msgstr "Verzió"
 
-#: ../libsqueeze/spawn-command.c:269
+#: ../libsqueeze/command-builder-rar.c:181
+#: ../libsqueeze/command-builder-zip.c:166
+msgid "Adding"
+msgstr "Hozzáadás"
+
+#: ../libsqueeze/command-builder.c:125
+msgid "Execute"
+msgstr "Futtat"
+
+#: ../libsqueeze/spawn-command.c:272
 #, c-format
 msgid "Command exited with status %d."
 msgstr "A parancs %d állapottal kilépett."
 
-#: ../libsqueeze/spawn-command.c:279
+#: ../libsqueeze/spawn-command.c:282
 msgid "Command interrupted by user"
 msgstr "A parancsot a felhasználó megszakította"
 
-#: ../libsqueeze/spawn-command.c:283
+#: ../libsqueeze/spawn-command.c:286
 msgid "Command received SIGSEGV"
 msgstr "A parancs SIGSEGV jelet kapott"
 
-#: ../libsqueeze/spawn-command.c:288
+#: ../libsqueeze/spawn-command.c:291
 msgid "Command Terminated"
 msgstr "A parancs befejeződött"
+
+#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Archívum-kezelő"
+
+#: ../squeeze.desktop.in.h:2
+msgid "Xfce archive manager"
+msgstr "Xfce archívum-kezelő"
+
+#: ../src/add_dialog.c:73
+msgid "Files and directories to add"
+msgstr "Hozzáadandó fájlok és könyvtárak"
+
+#: ../src/add_dialog.c:74
+msgid "Options:"
+msgstr "Lehetőségek:"
+
+#: ../src/add_dialog.c:107
+msgid "Files"
+msgstr "Fájlok"
+
+#: ../src/add_dialog.c:111
+msgid "Directories"
+msgstr "Könyvtárak"
+
+#: ../src/add_dialog.c:144
+msgid "Add file(s) to archive"
+msgstr "Fájlok archívumhoz adása"
+
+#. Select Files Dialog
+#: ../src/add_dialog.c:164
+msgid "Select files"
+msgstr "Válassz fájlokat"
+
+#. Select Folder Dialog
+#: ../src/add_dialog.c:170
+msgid "Select folders"
+msgstr "Jelölj ki mappákat"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:162 ../src/application.c:252
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+"Nem tudtam megnyitni az archívumot, a MIME-típus nem támogatott, vagy a fájl "
+"nem létezik"
+
+#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"A Squeeze nem tud ilyen archívumot kibontani,\n"
+"a támogatáshoz szükséges alkalmazás nincs telepítve."
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:235
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "Nem tudtam létrehozni az archívumot, a MIME-típus nem támogatott"
+
+#: ../src/application.c:269 ../src/main_window.c:830
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"A Squeeze nem tud fájlokat adni ilyen archívumhoz,\n"
+"a támogatáshoz szükséges alkalmazás nincs telepítve."
+
+#: ../src/archive_store.c:249 ../src/notebook.c:179
+msgid "Show full path"
+msgstr "Teljes útvonal mutatása"
+
+#: ../src/archive_store.c:250 ../src/notebook.c:180
+msgid "Show the full path strings for each entry"
+msgstr "Bejegyzések teljes útvonala mutatása"
+
+#: ../src/archive_store.c:256 ../src/notebook.c:186
+msgid "Show mime icons"
+msgstr "Mime ikonok mutatása"
+
+#: ../src/archive_store.c:257 ../src/notebook.c:187
+msgid "Show the mime type icons for each entry"
+msgstr "Bejegyzések mime ikonjai mutatása"
+
+#: ../src/archive_store.c:263
+msgid "Show up dir entry"
+msgstr "Szülő mutatása"
+
+#: ../src/archive_store.c:264
+msgid "Show '..' to go to the parent directory"
+msgstr "'..' mutatása"
+
+#: ../src/archive_store.c:270 ../src/notebook.c:193
+msgid "Sort folders before files"
+msgstr "Előbb a mappák"
+
+#: ../src/archive_store.c:271 ../src/notebook.c:194
+msgid "The folders will be put at the top of the list"
+msgstr "A mappák a lista tetejére kerülnek"
+
+#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/notebook.c:201
+msgid "Sort text case sensitive"
+msgstr "Nagybetű-érzékeny rendezés"
+
+#: ../src/extract_dialog.c:76
+msgid "<b>Extract files:</b>"
+msgstr "<b>Fájlok kibontása:</b>"
+
+#: ../src/extract_dialog.c:77
+msgid "<b>Options:</b>"
+msgstr "<b>Lehetőségek:</b>"
+
+#: ../src/extract_dialog.c:87
+msgid "All files"
+msgstr "Minden fájl"
+
+#: ../src/extract_dialog.c:88
+msgid "Selected files"
+msgstr "Kijelölt fájlok"
+
+#: ../src/extract_dialog.c:100 ../src/main_window.c:428
+#: ../src/main_window.c:1129
+msgid "Extract"
+msgstr "Kibont"
+
+#: ../src/extract_dialog.c:110
+msgid "Extract archive"
+msgstr "Archívum kibontása"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -227,11 +360,6 @@ msgstr "_Súgó"
 msgid "Add"
 msgstr "Hozzáad"
 
-#: ../src/main_window.c:428 ../src/main_window.c:1126
-#: ../src/extract_dialog.c:100
-msgid "Extract"
-msgstr "Kibont"
-
 #: ../src/main_window.c:689
 msgid "Open archive in new window"
 msgstr "Archívum megnyitása új ablakban"
@@ -244,27 +372,11 @@ msgstr "Archívum megnyitása"
 msgid "Archives"
 msgstr "Archívumok"
 
-#: ../src/main_window.c:789 ../src/main_window.c:1167 ../src/application.c:193
-msgid ""
-"Squeeze cannot extract this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"A Squeeze nem tud ilyen archívumot kibontani,\n"
-"a támogatáshoz szükséges alkalmazás nincs telepítve."
-
-#: ../src/main_window.c:829 ../src/application.c:267
-msgid ""
-"Squeeze cannot add files to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"A Squeeze nem tud fájlokat adni ilyen archívumhoz,\n"
-"a támogatáshoz szükséges alkalmazás nincs telepítve."
-
-#: ../src/main_window.c:849
+#: ../src/main_window.c:850
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Biztos eltávolítod a kijelölt fájlokat?"
 
-#: ../src/main_window.c:862
+#: ../src/main_window.c:863
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -272,7 +384,7 @@ msgstr ""
 "A Squeeze nem tud eltávolítani fájlokat ilyen archívumból,\n"
 "a támogatáshoz szükséges alkalmazás nincs telepítve."
 
-#: ../src/main_window.c:909
+#: ../src/main_window.c:912
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -280,31 +392,31 @@ msgstr ""
 "Tényleg megszakítod e műveletet?\n"
 "Ez hibás archívumot okozhat."
 
-#: ../src/main_window.c:991
+#: ../src/main_window.c:994
 msgid "Lead developer:"
 msgstr "Fő fejlesztő"
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:997
 msgid "Contributors:"
 msgstr "Közreműködők:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1000
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Giuseppe Torelli Xarchiver alkalmazása alapján készült"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1002
 msgid "Application Icon:"
 msgstr "Alkalmazás ikon:"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1005
 msgid "Add / Extract icons:"
 msgstr "Ikonok hozzáadása / kibontása:"
 
-#: ../src/main_window.c:1003
+#: ../src/main_window.c:1006
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Andreas Nilsson eredeti ikon-kibontója alapján készült"
 
-#: ../src/main_window.c:1010
+#: ../src/main_window.c:1013
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -312,24 +424,24 @@ msgstr ""
 "A Squeeze egy könnyű, rugalmas archívum-kezelő az Xfce Munkakörnyezethez"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
+#: ../src/main_window.c:1021
 msgid "translator-credits"
 msgstr "fordította: SZERVÁC Attila"
 
-#: ../src/main_window.c:1047 ../src/main_window.c:1115
-#: ../src/main_window.c:1282
+#: ../src/main_window.c:1050 ../src/main_window.c:1118
+#: ../src/main_window.c:1285
 msgid "Done"
 msgstr "Kész"
 
-#: ../src/main_window.c:1125
+#: ../src/main_window.c:1128
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mit tegyünk a kijelölt fájlokkal?"
 
-#: ../src/main_window.c:1126
+#: ../src/main_window.c:1129
 msgid "Open"
 msgstr "Megnyit"
 
-#: ../src/main_window.c:1140
+#: ../src/main_window.c:1143
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -337,11 +449,11 @@ msgstr ""
 "A Squeeze nem tudja megnézni e fájlt,\n"
 "a támogatáshoz szükséges alkalmazás nincs telepítve."
 
-#: ../src/main_window.c:1208
+#: ../src/main_window.c:1211
 msgid "Failed to open file"
 msgstr "A fájl megnyitása meghiúsult"
 
-#: ../src/main_window.c:1209
+#: ../src/main_window.c:1212
 #, c-format
 msgid ""
 "'%s'\n"
@@ -349,23 +461,6 @@ msgid ""
 msgstr ""
 "'%s'\n"
 "megnyitása meghiúsult"
-
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:162 ../src/application.c:252
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Nem tudtam megnyitni az archívumot, a MIME-típus nem támogatott, vagy a fájl "
-"nem létezik"
-
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:235
-msgid "Could not create archive, MIME-type unsupported"
-msgstr "Nem tudtam létrehozni az archívumot, a MIME-típus nem támogatott"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
@@ -375,59 +470,13 @@ msgstr "Archívum típus:"
 msgid "Create new archive"
 msgstr "Új archívum készítése"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Hozzáadandó fájlok és könyvtárak"
+#: ../src/notebook.c:207
+msgid "Rules hint"
+msgstr "Tippek"
 
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Lehetőségek:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Fájlok"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Könyvtárak"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Fájlok archívumhoz adása"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Válassz fájlokat"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Jelölj ki mappákat"
-
-#: ../src/extract_dialog.c:76
-msgid "<b>Extract files:</b>"
-msgstr "<b>Fájlok kibontása:</b>"
-
-#: ../src/extract_dialog.c:77
-msgid "<b>Options:</b>"
-msgstr "<b>Lehetőségek:</b>"
-
-#: ../src/extract_dialog.c:87
-msgid "All files"
-msgstr "Minden fájl"
-
-#: ../src/extract_dialog.c:88
-msgid "Selected files"
-msgstr "Kijelölt fájlok"
-
-#: ../src/extract_dialog.c:110
-msgid "Extract archive"
-msgstr "Archívum kibontása"
-
-#: ../src/tool_bar.c:167
-msgid "Location:"
-msgstr "Hely:"
+#: ../src/notebook.c:208
+msgid "Make the row background colors alternate"
+msgstr "Eltérő háttér-színű sorok"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
@@ -437,55 +486,6 @@ msgstr "Térköz"
 msgid "The amount of space between the path buttons"
 msgstr "Útvonal-gombok közti hely"
 
-#: ../src/notebook.c:179 ../src/archive_store.c:249
-msgid "Show full path"
-msgstr "Teljes útvonal mutatása"
-
-#: ../src/notebook.c:180 ../src/archive_store.c:250
-msgid "Show the full path strings for each entry"
-msgstr "Bejegyzések teljes útvonala mutatása"
-
-#: ../src/notebook.c:186 ../src/archive_store.c:256
-msgid "Show mime icons"
-msgstr "Mime ikonok mutatása"
-
-#: ../src/notebook.c:187 ../src/archive_store.c:257
-msgid "Show the mime type icons for each entry"
-msgstr "Bejegyzések mime ikonjai mutatása"
-
-#: ../src/notebook.c:193 ../src/archive_store.c:270
-msgid "Sort folders before files"
-msgstr "Előbb a mappák"
-
-#: ../src/notebook.c:194 ../src/archive_store.c:271
-msgid "The folders will be put at the top of the list"
-msgstr "A mappák a lista tetejére kerülnek"
-
-#: ../src/notebook.c:200 ../src/notebook.c:201 ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-msgid "Sort text case sensitive"
-msgstr "Nagybetű-érzékeny rendezés"
-
-#: ../src/notebook.c:207
-msgid "Rules hint"
-msgstr "Tippek"
-
-#: ../src/notebook.c:208
-msgid "Make the row background colors alternate"
-msgstr "Eltérő háttér-színű sorok"
-
-#: ../src/archive_store.c:263
-msgid "Show up dir entry"
-msgstr "Szülő mutatása"
-
-#: ../src/archive_store.c:264
-msgid "Show '..' to go to the parent directory"
-msgstr "'..' mutatása"
-
-#: ../squeeze.desktop.in.h:1
-msgid "Archive manager"
-msgstr "Archívum-kezelő"
-
-#: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Xfce archívum-kezelő"
+#: ../src/tool_bar.c:167
+msgid "Location:"
+msgstr "Hely:"
