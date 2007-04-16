@@ -182,7 +182,7 @@ cb_macro_command_sub_command_terminated(LSQArchiveCommand *sub_command, GError *
 
 		lsq_archive_state_changed(LSQ_ARCHIVE_COMMAND(macro_command)->archive);
 
-		if(!lsq_archive_command_execute(command))
+		if(!lsq_archive_command_execute(command) || error)
 		{
 			g_signal_handlers_disconnect_by_func(command, cb_macro_command_sub_command_terminated, macro_command);
 			/* And here i kind of have no idea if this works */	

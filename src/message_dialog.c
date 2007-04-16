@@ -123,6 +123,9 @@ sq_message_dialog_dispose(GObject *dialog)
 
 		}
 		gtk_widget_destroy(warning_dialog);
+
+
+		g_timeout_add(200, (GSourceFunc)sq_message_dialog_progressbar_pulse, dialog);
 	}
 	else
 		parent_class->dispose(dialog);

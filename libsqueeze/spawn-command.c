@@ -241,7 +241,10 @@ lsq_spawn_command_stop(LSQArchiveCommand *command)
 	if(command->running)
 	{
 		if(spawn_command->child_pid != 0)
+		{
 			kill ( spawn_command->child_pid , SIGHUP);
+			//kill ( spawn_command->child_pid , SIGKILL);
+		}
 		else
 			return FALSE; /* command isn't running */
 	}

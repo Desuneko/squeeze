@@ -257,6 +257,8 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 		}
 	}
 	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
+	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
+	gtk_widget_show(message_dialog);
 	if(!lsq_archive_add(lp_archive, files))
 	{
 		/* FIXME: show warning dialog */
