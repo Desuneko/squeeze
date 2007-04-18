@@ -1,3 +1,8 @@
+2007-04-18  Piarres Beobide <pi@beobide.net>
+
+	* eu.po: Added basque translation
+	* LINGUAS: Add eu to LINGUAS file
+
 2007-04-14  Stephan Arts <stephan@xfce.org>
 
 	* de.po: Added german translation by Björn Martensen
