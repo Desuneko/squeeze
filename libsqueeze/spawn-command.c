@@ -175,6 +175,7 @@ lsq_spawn_command_new(const gchar *comment,
 	else
 		LSQ_SPAWN_COMMAND(archive_command)->archive_path = g_strdup(lsq_archive_get_path(archive));
 
+	g_object_ref(G_OBJECT(archive));
 	archive_command->archive = archive;
 	if(comment)
 		archive_command->comment = g_strdup(comment);

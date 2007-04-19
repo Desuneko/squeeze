@@ -153,10 +153,7 @@ lsq_archive_command_execute(LSQArchiveCommand *command)
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(command->archive), FALSE);
 #endif /* DEBUG */
 
-	gboolean ret_val = command->execute(command);
-	if(ret_val)
-		g_object_ref(command->archive);
-	return ret_val;
+	return command->execute(command);
 }
 
 /**
@@ -211,6 +208,7 @@ lsq_archive_command_new(const gchar *comment,
 
 	archive_command = g_object_new(LSQ_TYPE_ARCHIVE_COMMAND, NULL);
 
+	g_object_ref(G_OBJECT(archive));
 	archive_command->archive = archive;
 	if(comment)
 		archive_command->comment = g_strdup(comment);

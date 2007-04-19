@@ -141,6 +141,7 @@ lsq_xfce_launch_command_new(const gchar *comment, LSQArchive *archive, const gch
 	                                                       "/org/xfce/FileManager",
 	                                                       "org.xfce.FileManager");
 	
+	g_object_ref(G_OBJECT(archive));
 	archive_command->archive = archive;
 	if(comment)
 		archive_command->comment = g_strdup(comment);

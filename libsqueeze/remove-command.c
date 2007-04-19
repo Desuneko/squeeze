@@ -136,6 +136,7 @@ lsq_remove_command_new(const gchar *comment, LSQArchive *archive, GSList *iters)
 
 	archive_command = g_object_new(LSQ_TYPE_REMOVE_COMMAND, NULL);
 
+	g_object_ref(G_OBJECT(archive));
 	archive_command->archive = archive;
 
 	if(comment)
