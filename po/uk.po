@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-16 14:57+0200\n"
+"POT-Creation-Date: 2007-04-26 09:23+0200\n"
 "PO-Revision-Date: 2007-04-07 20:52+0300\n"
 "Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
 "Language-Team: Ukrainian <xfce-i18n@xfce.org>\n"
@@ -130,30 +130,36 @@ msgstr "Додавання"
 msgid "Execute"
 msgstr "Виконуваний"
 
-#: ../libsqueeze/spawn-command.c:272
+#: ../libsqueeze/spawn-command.c:273
 #, c-format
 msgid "Command exited with status %d."
 msgstr "Команда завершилась зі статусом %d."
 
-#: ../libsqueeze/spawn-command.c:282
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command interrupted by user"
 msgstr "Команду перервано користувачем"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:287
 msgid "Command received SIGSEGV"
 msgstr "Команда отримала SIGSEGV"
 
-#: ../libsqueeze/spawn-command.c:291
+#: ../libsqueeze/spawn-command.c:292
 msgid "Command Terminated"
 msgstr "Команду завершено"
 
-#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
-msgid "Archive manager"
+#: ../squeeze.desktop.in.h:1
+#, fuzzy
+msgid "Archive Manager"
 msgstr "Менеджер архівів"
 
 #: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Менеджер архівів Xfce"
+msgid "Create and manage archives with the archive manager"
+msgstr ""
+
+#: ../squeeze.desktop.in.h:3
+#, fuzzy
+msgid "Squeeze Archive Manager"
+msgstr "Менеджер архівів"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -495,3 +501,10 @@ msgstr "Розмір розділювача між кнопками шляху"
 #: ../src/tool_bar.c:167
 msgid "Location:"
 msgstr "Місцезнаходження:"
+
+#: ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Менеджер архівів"
+
+#~ msgid "Xfce archive manager"
+#~ msgstr "Менеджер архівів Xfce"

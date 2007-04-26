@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-16 14:57+0200\n"
+"POT-Creation-Date: 2007-04-26 09:23+0200\n"
 "PO-Revision-Date: 2006-11-28 22:52+0100\n"
 "Last-Translator: Stephan Arts <stephan@xfce.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -128,30 +128,34 @@ msgstr "Toevoegen"
 msgid "Execute"
 msgstr "Uitvoeren"
 
-#: ../libsqueeze/spawn-command.c:272
+#: ../libsqueeze/spawn-command.c:273
 #, c-format
 msgid "Command exited with status %d."
 msgstr "Commando afgesloten met status %d."
 
-#: ../libsqueeze/spawn-command.c:282
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command interrupted by user"
 msgstr "Commando onderbroken door gebruiker"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:287
 msgid "Command received SIGSEGV"
 msgstr "Commando kreeg SIGSEGV"
 
-#: ../libsqueeze/spawn-command.c:291
+#: ../libsqueeze/spawn-command.c:292
 msgid "Command Terminated"
 msgstr "Commando Beeindigd"
 
-#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
-msgid "Archive manager"
-msgstr "Archief beheerder"
+#: ../squeeze.desktop.in.h:1
+msgid "Archive Manager"
+msgstr "Archief Beheerder"
 
 #: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Xfce archief beheerder"
+msgid "Create and manage archives with the archive manager"
+msgstr "Maak en beheer archieven met de archief beheerder"
+
+#: ../squeeze.desktop.in.h:3
+msgid "Squeeze Archive Manager"
+msgstr "Squeeze Archief Beheerder"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -493,3 +497,10 @@ msgstr "De ruimte tussen de pad knoppen"
 #: ../src/tool_bar.c:167
 msgid "Location:"
 msgstr "Locatie:"
+
+#: ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Archief beheerder"
+
+#~ msgid "Xfce archive manager"
+#~ msgstr "Xfce archief beheerder"

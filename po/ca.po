@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-16 14:57+0200\n"
+"POT-Creation-Date: 2007-04-26 09:23+0200\n"
 "PO-Revision-Date: 2007-04-13 22:54+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
@@ -131,30 +131,36 @@ msgstr "S'està afegint"
 msgid "Execute"
 msgstr "Executa"
 
-#: ../libsqueeze/spawn-command.c:272
+#: ../libsqueeze/spawn-command.c:273
 #, c-format
 msgid "Command exited with status %d."
 msgstr "l'ordre ha finalitzat amb l'estat %d."
 
-#: ../libsqueeze/spawn-command.c:282
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command interrupted by user"
 msgstr "L'usuari ha interromput l'ordre"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:287
 msgid "Command received SIGSEGV"
 msgstr "L'ordre ha rebut el senyal SIGSERV"
 
-#: ../libsqueeze/spawn-command.c:291
+#: ../libsqueeze/spawn-command.c:292
 msgid "Command Terminated"
 msgstr "Ordre finalitzada"
 
-#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
-msgid "Archive manager"
+#: ../squeeze.desktop.in.h:1
+#, fuzzy
+msgid "Archive Manager"
 msgstr "Gestor d'arxius"
 
 #: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Gestor d'arxius d'Xfce"
+msgid "Create and manage archives with the archive manager"
+msgstr ""
+
+#: ../squeeze.desktop.in.h:3
+#, fuzzy
+msgid "Squeeze Archive Manager"
+msgstr "Gestor d'arxius"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -497,6 +503,13 @@ msgstr "Estil de la barra de camins"
 #: ../src/tool_bar.c:167
 msgid "Location:"
 msgstr "Ubicació:"
+
+#: ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Gestor d'arxius"
+
+#~ msgid "Xfce archive manager"
+#~ msgstr "Gestor d'arxius d'Xfce"
 
 #~ msgid "Artwork:"
 #~ msgstr "Artwork:"

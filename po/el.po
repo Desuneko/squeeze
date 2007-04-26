@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-16 14:57+0200\n"
+"POT-Creation-Date: 2007-04-26 09:23+0200\n"
 "PO-Revision-Date: 2007-04-14 12:36+0200\n"
 "Last-Translator: Stavros Giannouris <stavrosg@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -128,30 +128,36 @@ msgstr "Προσθήκη"
 msgid "Execute"
 msgstr "Εκτέλεση"
 
-#: ../libsqueeze/spawn-command.c:272
+#: ../libsqueeze/spawn-command.c:273
 #, c-format
 msgid "Command exited with status %d."
 msgstr "Η εντολή τερματίστηκε με κατάσταση %d"
 
-#: ../libsqueeze/spawn-command.c:282
+#: ../libsqueeze/spawn-command.c:283
 msgid "Command interrupted by user"
 msgstr "Η εντολή διακόπηκε από τον χρήστη"
 
-#: ../libsqueeze/spawn-command.c:286
+#: ../libsqueeze/spawn-command.c:287
 msgid "Command received SIGSEGV"
 msgstr "Η εντολή έλαβε SIGSERV"
 
-#: ../libsqueeze/spawn-command.c:291
+#: ../libsqueeze/spawn-command.c:292
 msgid "Command Terminated"
 msgstr "Η εντολή τερματίστηκε"
 
-#: ../squeeze.desktop.in.h:1 ../src/message_dialog.c:158
-msgid "Archive manager"
+#: ../squeeze.desktop.in.h:1
+#, fuzzy
+msgid "Archive Manager"
 msgstr "Διαχειριστής συμπιεσμένων αρχείων"
 
 #: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "Διαχειριστής συμπιεσμένων αρχείων για το Xfce"
+msgid "Create and manage archives with the archive manager"
+msgstr ""
+
+#: ../squeeze.desktop.in.h:3
+#, fuzzy
+msgid "Squeeze Archive Manager"
+msgstr "Διαχειριστής συμπιεσμένων αρχείων"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -494,3 +500,10 @@ msgstr "Το μέγεθος του διαστήματος μεταξύ κουμ�
 #: ../src/tool_bar.c:167
 msgid "Location:"
 msgstr "Τοποθεσία:"
+
+#: ../src/message_dialog.c:158
+msgid "Archive manager"
+msgstr "Διαχειριστής συμπιεσμένων αρχείων"
+
+#~ msgid "Xfce archive manager"
+#~ msgstr "Διαχειριστής συμπιεσμένων αρχείων για το Xfce"

@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Version=1.0
-Name=Squeeze
-_Comment=Xfce archive manager
-_GenericName=Archive manager
+_Name=Squeeze Archive Manager
+_Comment=Create and manage archives with the archive manager
+_GenericName=Archive Manager
 Exec=squeeze
 Icon=squeeze
 Terminal=false
