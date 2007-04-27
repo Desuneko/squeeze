@@ -3,14 +3,13 @@ msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-26 09:23+0200\n"
-"PO-Revision-Date: 2007-04-11 09:59+0100\n"
+"PO-Revision-Date: 2007-04-27 09:06+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
 
 #: ../libsqueeze/archive.c:268
@@ -75,7 +74,7 @@ msgstr "Fájlok hozzáadása"
 #: ../libsqueeze/command-builder-gnu-tar.c:303
 #: ../libsqueeze/command-builder-gnu-tar.c:374
 msgid "Cleanup"
-msgstr ""
+msgstr "Tisztít"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:334
 msgid "Removing files"
@@ -86,7 +85,8 @@ msgstr "Fájlok eltávolítása"
 #: ../libsqueeze/command-builder-rar.c:197
 #: ../libsqueeze/command-builder-rar.c:199
 #: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
+#: ../libsqueeze/command-builder-zip.c:185
+#: ../libsqueeze/command-builder.c:147
 msgid "Removing"
 msgstr "Eltávolítás"
 
@@ -143,18 +143,16 @@ msgid "Command Terminated"
 msgstr "A parancs befejeződött"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
 msgstr "Archívum-kezelő"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Készíts és kezelj archívumokat az archívum-kezelővel"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "Archívum-kezelő"
+msgstr "Squeeze Archívum-kezelő"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -190,13 +188,14 @@ msgstr "Jelölj ki mappákat"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:162 ../src/application.c:252
+#: ../src/application.c:162
+#: ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Nem tudtam megnyitni az archívumot, a MIME-típus nem támogatott, vagy a fájl "
-"nem létezik"
+msgstr "Nem tudtam megnyitni az archívumot, a MIME-típus nem támogatott, vagy a fájl nem létezik"
 
-#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+#: ../src/application.c:193
+#: ../src/main_window.c:789
+#: ../src/main_window.c:1170
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -211,7 +210,8 @@ msgstr ""
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Nem tudtam létrehozni az archívumot, a MIME-típus nem támogatott"
 
-#: ../src/application.c:269 ../src/main_window.c:830
+#: ../src/application.c:269
+#: ../src/main_window.c:830
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -219,19 +219,23 @@ msgstr ""
 "A Squeeze nem tud fájlokat adni ilyen archívumhoz,\n"
 "a támogatáshoz szükséges alkalmazás nincs telepítve."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:249
+#: ../src/notebook.c:179
 msgid "Show full path"
 msgstr "Teljes útvonal mutatása"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
 msgstr "Bejegyzések teljes útvonala mutatása"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:256
+#: ../src/notebook.c:186
 msgid "Show mime icons"
 msgstr "Mime ikonok mutatása"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
 msgstr "Bejegyzések mime ikonjai mutatása"
 
@@ -243,15 +247,19 @@ msgstr "Szülő mutatása"
 msgid "Show '..' to go to the parent directory"
 msgstr "'..' mutatása"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:270
+#: ../src/notebook.c:193
 msgid "Sort folders before files"
 msgstr "Előbb a mappák"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
 msgstr "A mappák a lista tetejére kerülnek"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/archive_store.c:277
+#: ../src/archive_store.c:278
+#: ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "Nagybetű-érzékeny rendezés"
@@ -272,7 +280,8 @@ msgstr "Minden fájl"
 msgid "Selected files"
 msgstr "Kijelölt fájlok"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:428
+#: ../src/extract_dialog.c:100
+#: ../src/main_window.c:428
 #: ../src/main_window.c:1129
 msgid "Extract"
 msgstr "Kibont"
@@ -374,7 +383,8 @@ msgstr "Archívum megnyitása új ablakban"
 msgid "Open archive"
 msgstr "Archívum megnyitása"
 
-#: ../src/main_window.c:707 ../src/new_dialog.c:80
+#: ../src/main_window.c:707
+#: ../src/new_dialog.c:80
 msgid "Archives"
 msgstr "Archívumok"
 
@@ -423,18 +433,16 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Andreas Nilsson eredeti ikon-kibontója alapján készült"
 
 #: ../src/main_window.c:1013
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"A Squeeze egy könnyű, rugalmas archívum-kezelő az Xfce Munkakörnyezethez"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "A Squeeze egy könnyű, rugalmas archívum-kezelő az Xfce Munkakörnyezethez"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1021
 msgid "translator-credits"
 msgstr "fordította: SZERVÁC Attila"
 
-#: ../src/main_window.c:1050 ../src/main_window.c:1118
+#: ../src/main_window.c:1050
+#: ../src/main_window.c:1118
 #: ../src/main_window.c:1285
 msgid "Done"
 msgstr "Kész"
@@ -502,3 +510,4 @@ msgstr "Archívum-kezelő"
 
 #~ msgid "Xfce archive manager"
 #~ msgstr "Xfce archívum-kezelő"
+
