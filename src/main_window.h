@@ -90,7 +90,8 @@ struct _SQMainWindow
 		GtkWidget *menu_item_action;
 		GtkWidget *menu_action;
 		/* contents of 'action' menu */
-			GtkWidget *menu_item_add;
+			GtkWidget *menu_item_add_files;
+			GtkWidget *menu_item_add_folders;
 			GtkWidget *menu_item_extract;
 			GtkWidget *menu_item_remove;
 			GtkWidget *menu_item_refresh;
@@ -116,7 +117,8 @@ struct _SQMainWindow
 		GtkToolItem *tool_item_open;
 
 		/* contents of 'action' pane */
-		GtkToolItem *tool_item_add;
+		GtkToolItem *tool_item_add_files;
+		GtkToolItem *tool_item_add_folders;
 		GtkToolItem *tool_item_extract;
 		GtkToolItem *tool_item_remove;
 		GtkToolItem *tool_item_stop;

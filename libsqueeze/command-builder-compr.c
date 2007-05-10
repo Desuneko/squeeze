@@ -99,6 +99,8 @@ lsq_command_builder_compr_init(LSQCommandBuilderCompr *command_builder_compr)
 {
 	LSQCommandBuilder *command_builder = LSQ_COMMAND_BUILDER(command_builder_compr);
 
+	command_builder->support_mask = LSQ_SUPPORT_FILES;
+
 	command_builder->build_add = lsq_command_builder_compr_build_add;
 	command_builder->build_extract = lsq_command_builder_compr_build_extract;
 	command_builder->build_remove = lsq_command_builder_compr_build_remove;

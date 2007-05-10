@@ -27,7 +27,6 @@ squeeze_SOURCES = \
 	throbber-fallback.c	throbber-fallback.h \
 	throbber.c	throbber.h \
 	new_dialog.c new_dialog.h \
-	add_dialog.c add_dialog.h \
 	extract_dialog.c extract_dialog.h \
 	widget_factory.c widget_factory.h 
 #	location_entry.c location_entry.h

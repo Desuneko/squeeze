@@ -60,7 +60,6 @@
 
 #include "new_dialog.h"
 #include "extract_dialog.h"
-#include "add_dialog.h"
 
 #include "main.h"
 
@@ -86,7 +85,8 @@ static gboolean show_toolbar = TRUE;
 static void cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata);
-static void cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_add_files_to_archive(GtkWidget *widget, gpointer userdata);
+static void cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_close_archive(GtkWidget *widget, gpointer userdata);
 static void cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata);
@@ -313,10 +313,16 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(window->menubar.menu_item_action), window->menubar.menu_action);
 
 		tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_MENU);
-		window->menubar.menu_item_add = g_object_ref(gtk_image_menu_item_new_with_mnemonic(_("_Add")));
-		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_add), tmp_image);
-		gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
-		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add);
+		window->menubar.menu_item_add_files = g_object_ref(gtk_image_menu_item_new_with_mnemonic(_("_Add files")));
+		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_add_files), tmp_image);
+		gtk_widget_set_sensitive(window->menubar.menu_item_add_files, FALSE);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add_files);
+
+		tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_MENU);
+		window->menubar.menu_item_add_folders = g_object_ref(gtk_image_menu_item_new_with_mnemonic(_("_Add _folders")));
+		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(window->menubar.menu_item_add_folders), tmp_image);
+		gtk_widget_set_sensitive(window->menubar.menu_item_add_folders, FALSE);
+		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_add_folders);
 
 		tmp_image = sq_main_window_find_image("archive-extract.png", GTK_ICON_SIZE_MENU);
 		window->menubar.menu_item_extract = g_object_ref(gtk_image_menu_item_new_with_mnemonic(_("_Extract")));
@@ -332,7 +338,8 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
 		gtk_container_add(GTK_CONTAINER(window->menubar.menu_action), window->menubar.menu_item_refresh);
 
-		g_signal_connect(G_OBJECT(window->menubar.menu_item_add), "activate", G_CALLBACK(cb_sq_main_add_to_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_add_files), "activate", G_CALLBACK(cb_sq_main_add_files_to_archive), window);
+		g_signal_connect(G_OBJECT(window->menubar.menu_item_add_folders), "activate", G_CALLBACK(cb_sq_main_add_folders_to_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_extract), "activate", G_CALLBACK(cb_sq_main_extract_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_remove), "activate", G_CALLBACK(cb_sq_main_remove_from_archive), window);
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_refresh), "activate", G_CALLBACK(cb_sq_main_refresh_archive), window);
@@ -421,8 +428,12 @@ sq_main_window_init(SQMainWindow *window)
 
 	/* Action pane */
 		tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
-		window->toolbar.tool_item_add = gtk_tool_button_new(tmp_image, _("Add"));
-		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+		window->toolbar.tool_item_add_files = gtk_tool_button_new(tmp_image, _("Add files"));
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_files), FALSE);
+
+		tmp_image = sq_main_window_find_image("archive-add.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
+		window->toolbar.tool_item_add_folders = gtk_tool_button_new(tmp_image, _("Add folders"));
+		gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_folders), FALSE);
 
 		tmp_image = sq_main_window_find_image("archive-extract.png", GTK_ICON_SIZE_LARGE_TOOLBAR);
 		window->toolbar.tool_item_extract = gtk_tool_button_new(tmp_image, _("Extract"));
@@ -433,12 +444,14 @@ sq_main_window_init(SQMainWindow *window)
 
 		tool_separator = gtk_separator_tool_item_new ();
 
-		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_add));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_add_files));
+		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_add_folders));
 		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_extract));
 		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(window->toolbar.tool_item_remove));
 		gtk_container_add(GTK_CONTAINER(window->tool_bar), GTK_WIDGET(tool_separator));
 
-		g_signal_connect(G_OBJECT(window->toolbar.tool_item_add), "clicked", G_CALLBACK(cb_sq_main_add_to_archive), window);
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_add_files), "clicked", G_CALLBACK(cb_sq_main_add_files_to_archive), window);
+		g_signal_connect(G_OBJECT(window->toolbar.tool_item_add_folders), "clicked", G_CALLBACK(cb_sq_main_add_folders_to_archive), window);
 		g_signal_connect(G_OBJECT(window->toolbar.tool_item_extract), "clicked", G_CALLBACK(cb_sq_main_extract_archive), window);
 		g_signal_connect(G_OBJECT(window->toolbar.tool_item_remove), "clicked", G_CALLBACK(cb_sq_main_remove_from_archive), window);
 
@@ -633,6 +646,7 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 	gchar *archive_path = NULL;
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	LSQArchive *archive = NULL;
+	LSQSupportType support_mask = 0;
 	gint result = 0;
 
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
@@ -647,15 +661,24 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		
 		if(!lsq_new_archive(archive_path, TRUE, NULL, &archive))
 		{
+			support_mask = lsq_archive_get_support_mask(archive);
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, TRUE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			if(support_mask & LSQ_SUPPORT_FILES)
+				gtk_widget_set_sensitive(window->menubar.menu_item_add_files, TRUE);
+			if(support_mask & LSQ_SUPPORT_FOLDERS)
+				gtk_widget_set_sensitive(window->menubar.menu_item_add_folders, TRUE);
+
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
 
 			if(window->tool_bar)
 			{
-				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+				if(support_mask & LSQ_SUPPORT_FILES)
+					gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_files), TRUE);
+				if(support_mask & LSQ_SUPPORT_FOLDERS)
+					gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_folders), TRUE);
+
 				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
 				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
 
@@ -802,7 +825,7 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 }
 
 static void
-cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
+cb_sq_main_add_files_to_archive(GtkWidget *widget, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
@@ -812,13 +835,20 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 	gint result;
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
 
-	dialog = sq_add_dialog_new();
+	dialog = gtk_file_chooser_dialog_new(_("Add files"), 
+	                                     GTK_WINDOW(window),
+	                                     GTK_FILE_CHOOSER_ACTION_OPEN,
+	                                     GTK_STOCK_CANCEL,
+	                                     GTK_RESPONSE_CANCEL,
+	                                     GTK_STOCK_OPEN,
+	                                     GTK_RESPONSE_OK,
+	                                     NULL);
 
 	result = gtk_dialog_run (GTK_DIALOG(dialog));
 	if(result == GTK_RESPONSE_OK)
 	{
 		gtk_widget_hide(dialog);
-		filenames = sq_add_dialog_get_filenames(SQ_ADD_DIALOG(dialog));
+		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 		if(filenames)
 		{
 			if(!lsq_archive_add(lp_archive, filenames))
@@ -828,6 +858,49 @@ cb_sq_main_add_to_archive(GtkWidget *widget, gpointer userdata)
 																													 GTK_MESSAGE_WARNING,
 																													 GTK_BUTTONS_CLOSE,
 																													 _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
+				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
+				gtk_widget_destroy(warning_dialog);
+			}
+		}
+	}
+	gtk_widget_destroy (dialog);
+}
+
+static void
+cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata)
+{
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+
+	LSQArchive        *lp_archive = NULL;
+	GtkWidget         *dialog = NULL;
+	GSList            *filenames = NULL;
+	gint result;
+	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
+
+	dialog = gtk_file_chooser_dialog_new(_("Add folders"),
+	                                     GTK_WINDOW(window),
+	                                     GTK_FILE_CHOOSER_ACTION_OPEN,
+	                                     GTK_STOCK_CANCEL,
+	                                     GTK_RESPONSE_CANCEL,
+	                                     GTK_STOCK_OPEN,
+	                                     GTK_RESPONSE_OK,
+	                                     NULL);
+
+	result = gtk_dialog_run (GTK_DIALOG(dialog));
+	if(result == GTK_RESPONSE_OK)
+	{
+		gtk_widget_hide(dialog);
+		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+		if(filenames)
+		{
+			if(!lsq_archive_add(lp_archive, filenames))
+			{
+				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+				                      GTK_DIALOG_DESTROY_WITH_PARENT, 
+				                      GTK_MESSAGE_WARNING,
+				                      GTK_BUTTONS_CLOSE,
+				                      _("Squeeze cannot add folders to this archive type,\n"
+				                        "the application to support this is missing."));
 				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 				gtk_widget_destroy(warning_dialog);
 			}
@@ -1051,14 +1124,15 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 		if(window->menu_bar)
 		{
 			sq_throbber_set_animated(SQ_THROBBER(window->throbber), FALSE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			/* FIXME: */
+			/* gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE); */
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
 		}
 		if(window->tool_bar)
 		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			/* gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE); */
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
@@ -1069,7 +1143,8 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 		if(window->menu_bar)
 		{
 			sq_throbber_set_animated(SQ_THROBBER(window->throbber), TRUE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+			/* FIXME: */
+			/* gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE); */
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
@@ -1077,7 +1152,7 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 
 		if(window->tool_bar)
 		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			/* gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE); */
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), TRUE);
@@ -1099,7 +1174,8 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 			gtk_widget_set_sensitive(window->menubar.menu_item_close, FALSE);
 			/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, FALSE);*/
 
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+			/* FIXME: */
+			/*gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);*/
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
@@ -1107,7 +1183,7 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 
 		if(window->tool_bar)
 		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			/* gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE); */
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_stop), FALSE);
@@ -1276,6 +1352,7 @@ static void
 cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	LSQSupportType support_mask = lsq_archive_get_support_mask(archive);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
 	const gchar *message = lsq_archive_get_status(archive);
@@ -1285,7 +1362,10 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 		message = _("Done");
 		if(window->menu_bar)
 		{
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, TRUE);
+			if(support_mask & LSQ_SUPPORT_FILES)
+				gtk_widget_set_sensitive(window->menubar.menu_item_add_files, TRUE);
+			if(support_mask & LSQ_SUPPORT_FOLDERS)
+				gtk_widget_set_sensitive(window->menubar.menu_item_add_folders, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, TRUE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, TRUE);
@@ -1293,7 +1373,10 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 
 		if(window->tool_bar)
 		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), TRUE);
+			if(support_mask & LSQ_SUPPORT_FILES)
+				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_files), TRUE);
+			if(support_mask & LSQ_SUPPORT_FOLDERS)
+				gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_folders), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), TRUE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), TRUE);
 
@@ -1306,7 +1389,8 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 		if(window->menu_bar)
 		{
 			sq_throbber_set_animated(SQ_THROBBER(window->throbber), TRUE);
-			gtk_widget_set_sensitive(window->menubar.menu_item_add, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add_files, FALSE);
+			gtk_widget_set_sensitive(window->menubar.menu_item_add_folders, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_extract, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_remove, FALSE);
 			gtk_widget_set_sensitive(window->menubar.menu_item_refresh, FALSE);
@@ -1314,7 +1398,8 @@ cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archi
 
 		if(window->tool_bar)
 		{
-			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_files), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_add_folders), FALSE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_extract), FALSE);
 			gtk_widget_set_sensitive(GTK_WIDGET(window->toolbar.tool_item_remove), FALSE);
 

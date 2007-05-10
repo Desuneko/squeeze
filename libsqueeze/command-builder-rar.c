@@ -105,6 +105,10 @@ lsq_command_builder_rar_init(LSQCommandBuilderRar *command_builder_rar)
 {
 	LSQCommandBuilder *command_builder = LSQ_COMMAND_BUILDER(command_builder_rar);
 
+	command_builder->support_mask = LSQ_SUPPORT_FILES | 
+	                                LSQ_SUPPORT_FOLDERS |
+	                                LSQ_SUPPORT_MANY;
+
 	gchar *rar_path = g_find_program_in_path("rar");
 	gchar *unrar_path = g_find_program_in_path("unrar");
 

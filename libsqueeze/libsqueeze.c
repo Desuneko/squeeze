@@ -131,10 +131,10 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 
 
 GSList *
-lsq_get_supported_mime_types(LSQSupportTypes types)
+lsq_get_supported_mime_types(LSQOperationSupportType types)
 {
 	GSList *m_types = g_slist_copy(lsq_mime_info_list);
-	if(types &= LSQ_SUPPORT_ADD)
+	if(types &= LSQ_OPERATION_SUPPORT_ADD)
 	{
 		GSList *_types = m_types;
 		while(_types)

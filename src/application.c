@@ -22,7 +22,6 @@
 #include <libsqueeze/libsqueeze.h>
 
 #include "new_dialog.h"
-#include "add_dialog.h"
 #include "message_dialog.h"
 #include "extract_dialog.h"
 

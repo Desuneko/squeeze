@@ -356,6 +356,15 @@ lsq_archive_get_status(const LSQArchive *archive)
 		return NULL;
 }
 
+LSQSupportType
+lsq_archive_get_support_mask(const LSQArchive *archive)
+{
+	if(archive->builder)
+		return archive->builder->support_mask;
+	else
+		return 0;
+}
+
 void
 lsq_archive_refreshed(const LSQArchive *archive)
 {

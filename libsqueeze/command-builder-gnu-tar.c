@@ -110,6 +110,10 @@ lsq_command_builder_gnu_tar_init(LSQCommandBuilderGnuTar *command_builder_gnu_ta
 {
 	LSQCommandBuilder *command_builder = LSQ_COMMAND_BUILDER(command_builder_gnu_tar);
 
+	command_builder->support_mask = LSQ_SUPPORT_FILES | 
+	                                LSQ_SUPPORT_FOLDERS |
+	                                LSQ_SUPPORT_MANY;
+
 	command_builder->build_add = lsq_command_builder_gnu_tar_build_add;
 	command_builder->build_extract = lsq_command_builder_gnu_tar_build_extract;
 	command_builder->build_remove = lsq_command_builder_gnu_tar_build_remove;

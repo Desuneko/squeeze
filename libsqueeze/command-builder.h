@@ -21,13 +21,16 @@
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
 			LSQ_TYPE_COMMAND_BUILDER))
 
+
+
 typedef struct _LSQCommandBuilder LSQCommandBuilder;
 
 struct _LSQCommandBuilder
 {
-	GObject       parent;
-	gchar        *id;
-	gchar       **mime_types;
+	GObject          parent;
+	gchar           *id;
+	gchar          **mime_types;
+	LSQSupportType   support_mask;
 
 	LSQBuilderSettings *settings;
 

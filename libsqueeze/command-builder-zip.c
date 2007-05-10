@@ -94,6 +94,10 @@ lsq_command_builder_zip_init(LSQCommandBuilderZip *command_builder_zip)
 {
 	LSQCommandBuilder *command_builder = LSQ_COMMAND_BUILDER(command_builder_zip);
 
+	command_builder->support_mask = LSQ_SUPPORT_FILES | 
+	                                LSQ_SUPPORT_FOLDERS |
+	                                LSQ_SUPPORT_MANY;
+
 	gchar *zip_path = g_find_program_in_path("zip");
 	gchar *unzip_path = g_find_program_in_path("unzip");
 

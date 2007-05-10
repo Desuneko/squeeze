@@ -73,7 +73,7 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 
 	gtk_widget_show_all(hbox);
 
-	dialog->supported_mime_types = lsq_get_supported_mime_types(LSQ_SUPPORT_ADD);
+	dialog->supported_mime_types = lsq_get_supported_mime_types(LSQ_OPERATION_SUPPORT_ADD);
 	GSList *_supported_mime_types = dialog->supported_mime_types;
 
 	dialog->file_filter = gtk_file_filter_new();

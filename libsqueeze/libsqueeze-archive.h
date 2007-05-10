@@ -24,6 +24,13 @@ enum
 	LSQ_ARCHIVE_PROP_USER
 };
 
+typedef enum
+{
+	LSQ_SUPPORT_FILES    = 1 << 0x0,
+	LSQ_SUPPORT_FOLDERS  = 1 << 0x1,
+	LSQ_SUPPORT_MANY     = 1 << 0x2
+} LSQSupportType;
+
 typedef struct _LSQArchiveIter LSQArchiveIter;
 
 #define LSQ_TYPE_ARCHIVE lsq_archive_get_type()
@@ -55,6 +62,7 @@ const gchar    *lsq_archive_get_path(const LSQArchive *archive);
 gchar          *lsq_archive_get_filename(const LSQArchive *archive);
 const gchar    *lsq_archive_get_mimetype(const LSQArchive *archive);
 gboolean        lsq_archive_exists(const LSQArchive *archive);
+LSQSupportType  lsq_archive_get_support_mask(const LSQArchive *archive);
 
 #ifdef DEBUG
 LSQArchiveIter *_lsq_archive_iter_ref(LSQArchiveIter *iter, const gchar*, int);
@@ -64,6 +72,7 @@ void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int)
 #define lsq_archive_iter_unref(iter) _lsq_archive_iter_unref(iter, __FILE__, __LINE__)
 */
 #endif
+
 
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void            lsq_archive_iter_unref(LSQArchiveIter *iter);
