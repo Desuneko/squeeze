@@ -194,6 +194,7 @@ static void
 sq_main_window_dispose(GObject *object)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(object);
+	gint width, height;
 
 	if(window->main_vbox && window->notebook)
 	{
@@ -235,6 +236,13 @@ sq_main_window_dispose(GObject *object)
 			sq_settings_write_entry(window->settings, "NavigationBar", "None");
 		}
 
+		if(&window->parent != NULL)
+		{
+			gtk_window_get_size(&window->parent, &width, &height);
+			sq_settings_write_int_entry(window->settings, "LastWindowWidth", width);
+			sq_settings_write_int_entry(window->settings, "LastWindowHeight", height);
+		}
+
 		sq_settings_save(window->settings);
 
 		g_object_unref(G_OBJECT(window->settings));
@@ -274,6 +282,10 @@ sq_main_window_init(SQMainWindow *window)
 	window->widget_factory = sq_widget_factory_new();
 
 	show_menubar = sq_settings_read_bool_entry(window->settings, "MenuBar", TRUE);
+
+	gtk_window_set_default_size (GTK_WINDOW(window), 
+	                             sq_settings_read_int_entry(window->settings, "LastWindowWidth", 500),
+	                             sq_settings_read_int_entry(window->settings, "LastWindowHeight", 300));
 
 	if(show_menubar)
 	{

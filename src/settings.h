@@ -62,9 +62,11 @@ gboolean      sq_settings_save(SQSettings *);
 
 const gchar  *sq_settings_read_entry(SQSettings *settings, const gchar *key, const gchar *fallback);
 gboolean      sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboolean fallback);
+gint          sq_settings_read_int_entry(SQSettings *settings, const gchar *key, const gint fallback);
 
 void          sq_settings_write_entry(SQSettings *settings, const gchar *key, const gchar *value);
 void          sq_settings_write_bool_entry(SQSettings *settings, const gchar *key, const gboolean value);
+void          sq_settings_write_int_entry(SQSettings *settings, const gchar *key, const gint value);
 
 void          sq_settings_set_group(SQSettings *settings, const gchar *group);
 

@@ -137,6 +137,16 @@ sq_settings_write_bool_entry(SQSettings *settings, const gchar *key, const gbool
 #endif /* HAVE_LIBXFCE4UTIL */
 }
 
+void
+sq_settings_write_int_entry(SQSettings *settings, const gchar *key, const gint value)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	xfce_rc_write_int_entry(XFCE_RC(settings->xfce_rc), key, value);
+#else
+
+#endif /* HAVE_LIBXFCE4UTIL */
+}
+
 const gchar *
 sq_settings_read_entry(SQSettings *settings, const gchar *key, const gchar *fallback)
 {
@@ -152,6 +162,16 @@ sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboole
 {
 #ifdef HAVE_LIBXFCE4UTIL
 	return xfce_rc_read_bool_entry(XFCE_RC(settings->xfce_rc), key, fallback);
+#else
+	return fallback;
+#endif /* HAVE_LIBXFCE4UTIL */
+}
+
+gboolean
+sq_settings_read_int_entry(SQSettings *settings, const gchar *key, const gint fallback)
+{
+#ifdef HAVE_LIBXFCE4UTIL
+	return xfce_rc_read_int_entry(XFCE_RC(settings->xfce_rc), key, fallback);
 #else
 	return fallback;
 #endif /* HAVE_LIBXFCE4UTIL */

@@ -143,7 +143,6 @@ GtkWidget *
 sq_application_new_window(SQApplication *app)
 {
 	GtkWidget *window = sq_main_window_new(app, app->icon_theme);
-	gtk_widget_set_size_request(window, 500, 300);
 	return window;
 }
 
