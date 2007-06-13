@@ -1,9 +1,7 @@
-# English/GB translation of squeeze.
-# Copyright (C) 2007 THE squeeze'S COPYRIGHT HOLDER
+# British English translation of the squeeze package.
+# Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 # Jeff Bailes <thepizzaking@gmail.com>, 2007.
-# , fuzzy
-# 
 # 
 msgid ""
 msgstr ""
@@ -11,10 +9,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-26 09:23+0200\n"
 "PO-Revision-Date: 2007-04-11 08:07+1000\n"
-"Last-Translator: Jeff Bailes <thepizzaking@gmail.com>\n"
+"Last-Translator: Jeff Bailes <xfce-i18n@xfce.org>\n"
 "Language-Team: English/GB\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../libsqueeze/archive.c:268

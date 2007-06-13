@@ -1,8 +1,7 @@
-# Catalan translation of squeeze.
-# Copyright (C) 2007 THE squeeze'S COPYRIGHT HOLDER
+# Catalan translation of the squeeze package.
+# Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 # Carles Muñoz Gorriz <carlesmu@internautas.org>, 2007.
-#
 #
 msgid ""
 msgstr ""
