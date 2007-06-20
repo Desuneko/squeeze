@@ -24,46 +24,16 @@
 #include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze-module.h"
+#include "libsqueeze-archive.h"
 #include "libsqueeze-vfs-mime.h"
 #include "vfs-mime.h"
 
 #include "internals.h"
 
-static void
-lsq_archive_mime_add_builder(LSQArchiveMime *mime_info, const LSQCommandBuilder *builder);
-
 gint
 lsq_archive_mime_lookup(gconstpointer mime_info, gconstpointer mime)
 {
 	return strcmp(thunar_vfs_mime_info_get_name(((LSQArchiveMime *)mime_info)->mime_info), mime);
-}
-
-LSQArchiveMime *
-lsq_archive_mime_register_command_builder(const LSQCommandBuilder *builder, const gchar *mime)
-{
-	LSQArchiveMime *mime_info = NULL;
-	GSList *result = g_slist_find_custom(lsq_mime_info_list, mime, lsq_archive_mime_lookup);
-	if(!result)
-	{
-		mime_info = lsq_archive_mime_new(mime);
-		lsq_mime_info_list = g_slist_prepend(lsq_mime_info_list, mime_info);
-	}
-	else
-	{
-		mime_info = result->data;
-	}
-	
-	lsq_archive_mime_add_builder(mime_info, builder);
-	return mime_info;
-}
-
-void
-lsq_command_builder_register(const LSQCommandBuilder *builder)
-{
-	int i = 1;
-	for(i = 0; builder->mime_types[i]; ++i)
-		lsq_archive_mime_register_command_builder(builder, builder->mime_types[i]);
 }
 
 LSQArchiveMime *
@@ -74,26 +44,6 @@ lsq_archive_mime_new(const gchar *mime)
 	archive_mime->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
 
 	return archive_mime;
-}
-
-static void
-lsq_archive_mime_add_builder(LSQArchiveMime *mime_info, const LSQCommandBuilder *builder)
-{
-	mime_info->command_builders = g_slist_prepend(mime_info->command_builders, (LSQCommandBuilder *)builder);
-}
-
-LSQCommandBuilder *
-lsq_archive_mime_get_default_builder(const gchar *mime)
-{
-	LSQArchiveMime *mime_info = NULL;
-	GSList *result = g_slist_find_custom(lsq_mime_info_list, mime, lsq_archive_mime_lookup);
-	if(result)
-	{
-		mime_info = result->data;
-		if(mime_info->command_builders)
-			return mime_info->command_builders->data;
-	}
-	return NULL;	
 }
 
 const gchar *

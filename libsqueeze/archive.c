@@ -25,12 +25,10 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze-module.h"
 #include "libsqueeze-vfs-mime.h"
 #include "archive-iter.h"
-#include "archive-command.h"
+#include "support-factory.h"
 #include "archive.h"
-#include "command-builder.h"
 #include "slist.h"
 #include "archive-tempfs.h"
 
@@ -60,8 +58,6 @@ lsq_archive_init(LSQArchive *archive);
 static void
 lsq_archive_finalize(GObject *object);
 
-static void
-cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error, LSQArchive *archive);
 
 enum
 {
@@ -105,17 +101,6 @@ lsq_archive_class_init(LSQArchiveClass *archive_class)
 	GObjectClass *object_class = G_OBJECT_CLASS(archive_class);
 
 	object_class->finalize = lsq_archive_finalize;
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED] = g_signal_new("command-terminated",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE,
-			1,
-			G_TYPE_POINTER,
-			NULL);
 	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED] = g_signal_new("state-changed",
 			G_TYPE_FROM_CLASS(archive_class),
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
@@ -204,16 +189,6 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->mime_info));
 #endif
 
-	archive->builder = lsq_archive_mime_get_default_builder(thunar_vfs_mime_info_get_name(archive->mime_info));
-
-	if(!archive->builder) /* Then it is not supported */
-	{
-		g_object_unref(archive);
-		archive = NULL;
-	}
-	else
-		archive->settings = lsq_command_builder_get_settings(archive->builder);
-	
 	return archive;
 }
 
@@ -229,7 +204,7 @@ lsq_archive_n_entry_properties(const LSQArchive *archive)
 #ifdef DEBUG
 	g_return_val_if_fail(archive, 0);
 #endif
-	return lsq_builder_settings_get_n_properties(archive->settings) + LSQ_ARCHIVE_PROP_USER;
+	return LSQ_ARCHIVE_PROP_USER;//lsq_builder_settings_get_n_properties(archive->settings) + LSQ_ARCHIVE_PROP_USER;
 }
 
 /*
@@ -248,7 +223,7 @@ lsq_archive_get_entry_property_type(const LSQArchive *archive, guint n)
 			return G_TYPE_STRING;
 			break;
 		default:
-			return lsq_builder_settings_get_property_type(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
+			return G_TYPE_NONE; //lsq_builder_settings_get_property_type(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
 			break;
 	}
 }
@@ -270,7 +245,7 @@ lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
 			return _("Mime type");
 			break;
 		default:
-			return lsq_builder_settings_get_property_name(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
+			return NULL; //lsq_builder_settings_get_property_name(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
 			break;
 	}
 }
@@ -329,90 +304,10 @@ lsq_archive_exists(const LSQArchive *archive)
 	return FALSE;
 }
 
-gboolean
-lsq_archive_can_stop(const LSQArchive *archive)
-{
-	if(archive->command)
-		return archive->command->safe;
-	else
-		return TRUE;
-}
-
-gboolean
-lsq_archive_stop(const LSQArchive *archive)
-{
-	if(archive->command)
-		return lsq_archive_command_stop(archive->command);
-	else
-		return FALSE;
-}
-
-const gchar *
-lsq_archive_get_status(const LSQArchive *archive)
-{
-	if(archive->command)
-		return lsq_archive_command_get_comment(archive->command);
-	else
-		return NULL;
-}
-
-LSQSupportType
-lsq_archive_get_support_mask(const LSQArchive *archive)
-{
-	if(archive->builder)
-		return archive->builder->support_mask;
-	else
-		return 0;
-}
-
 void
 lsq_archive_refreshed(const LSQArchive *archive)
 {
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
-}
-
-gboolean
-lsq_archive_add(LSQArchive *archive, GSList *files)
-{
-	g_return_val_if_fail(archive->builder, FALSE);
-	LSQCommandBuilder *builder = archive->builder;
-	if(archive->command)
-		return FALSE;
-
-	archive->command = builder->build_add(builder, archive, files);
-	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-	if(!lsq_archive_command_execute(archive->command))
-	{
-		g_object_unref(archive->command);
-		archive->command = NULL;
-		return FALSE;
-	}
-	else
-		g_object_unref(archive->command);
-	lsq_archive_state_changed(archive);
-	return TRUE;
-}
-
-gboolean
-lsq_archive_extract(LSQArchive *archive, const gchar *dest_path, GSList *files)
-{
-	g_return_val_if_fail(archive->builder, FALSE);
-	LSQCommandBuilder *builder = archive->builder;
-	if(archive->command)
-		return FALSE;
-	
-	archive->command = builder->build_extract(builder, archive, dest_path, files);
-	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-	if(!lsq_archive_command_execute(archive->command))
-	{
-		g_object_unref(archive->command);
-		archive->command = NULL;
-		return FALSE;
-	}
-	else
-		g_object_unref(archive->command);
-	lsq_archive_state_changed(archive);
-	return TRUE;
 }
 
 void lsq_archive_add_children(GSList *files)
@@ -428,114 +323,6 @@ void lsq_archive_add_children(GSList *files)
 	}
 }
 
-gboolean
-lsq_archive_remove(LSQArchive *archive, GSList *files)
-{
-	g_return_val_if_fail(archive->builder, FALSE);
-	LSQCommandBuilder *builder = archive->builder;
-	if(archive->command)
-		return FALSE;
-
-	//lsq_archive_add_children(files);
-
-	archive->command = builder->build_remove(builder, archive, files);
-	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-	if(!lsq_archive_command_execute(archive->command))
-	{
-		g_object_unref(archive->command);
-		archive->command = NULL;
-		return FALSE;
-	}
-	else
-		g_object_unref(archive->command);
-	lsq_archive_state_changed(archive);
-	return TRUE;
-}
-
-gboolean
-lsq_archive_refresh(LSQArchive *archive)
-{
-	g_return_val_if_fail(archive->builder, FALSE);
-	LSQCommandBuilder *builder = archive->builder;
-	if(archive->command)
-		return FALSE;
-
-	archive->command = builder->build_refresh(builder, archive);
-	if(archive->command)
-	{
-		g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-		if(!lsq_archive_command_execute(archive->command))
-		{
-			g_object_unref(archive->command);
-			archive->command = NULL;
-			return FALSE;
-		}
-		else
-			g_object_unref(archive->command);
-		lsq_archive_state_changed(archive);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-gboolean
-lsq_archive_full_refresh(LSQArchive *archive)
-{
-	g_return_val_if_fail(archive->builder, FALSE);
-	LSQCommandBuilder *builder = archive->builder;
-	if(archive->command)
-		return FALSE;
-
-	archive->command = builder->build_full_refresh(builder, archive);
-	if(archive->command)
-	{
-		g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-		if(!lsq_archive_command_execute(archive->command))
-		{
-			g_object_unref(archive->command);
-			archive->command = NULL;
-			return FALSE;
-		}
-		else
-			g_object_unref(archive->command);
-		lsq_archive_state_changed(archive);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-gboolean
-lsq_archive_view(LSQArchive *archive, GSList *files)
-{
-	g_return_val_if_fail(archive->builder, FALSE);
-	LSQCommandBuilder *builder = archive->builder;
-	if(archive->command)
-		return FALSE;
-
-	archive->command = builder->build_open(builder, archive, files);
-	g_signal_connect(archive->command, "terminated", G_CALLBACK(cb_archive_archive_command_terminated), archive);
-	if(!lsq_archive_command_execute(archive->command))
-	{
-		g_object_unref(archive->command);
-		archive->command = NULL;
-	}
-	else
-		g_object_unref(archive->command);
-	return FALSE;
-}
-
-static void
-cb_archive_archive_command_terminated(LSQArchiveCommand *command, GError *error, LSQArchive *archive)
-{
-	archive->command = NULL;
-#ifdef DEBUG
-	g_debug("COMMAND TERMINATED");
-#endif
-	lsq_archive_state_changed(archive);
-	lsq_archive_refreshed(archive);
-	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED], 0, error, NULL);
-}
-
 void
 lsq_archive_state_changed(const LSQArchive *archive)
 {
@@ -546,8 +333,6 @@ void
 lsq_close_archive(LSQArchive *archive)
 {
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
-	if(archive->command)
-		g_signal_handlers_disconnect_by_func(archive->command, cb_archive_archive_command_terminated, archive);
 
 	if(archive->path)
 		g_free(archive->path);
@@ -560,4 +345,35 @@ lsq_close_archive(LSQArchive *archive)
 
 	lsq_archive_stop(archive);
 	g_object_unref(archive);
+}
+
+gboolean
+lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar *dest_path, GSList *files, GError **error)
+{
+	return FALSE;
+}
+
+
+LSQSupportType
+lsq_archive_get_support_mask(const LSQArchive *archive)
+{
+	return archive->support->support_mask;
+}
+
+gboolean
+lsq_archive_can_stop(const LSQArchive *archive)
+{
+	return FALSE;
+}
+
+gboolean
+lsq_archive_stop(const LSQArchive *archive)
+{
+	return FALSE;
+}
+
+const gchar *
+lsq_archive_get_status(const LSQArchive *archive)
+{
+	return NULL;
 }

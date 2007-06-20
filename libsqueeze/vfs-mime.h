@@ -28,12 +28,6 @@ LSQArchiveMime *
 lsq_archive_mime_new(const gchar *mime);
 
 
-void
-lsq_command_builder_register(const LSQCommandBuilder *builder);
-
-LSQCommandBuilder *
-lsq_archive_mime_get_default_builder(const gchar *mime);
-
 
 #endif /* __ARCHIVE_MIME_H__ */
 

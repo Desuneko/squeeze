@@ -27,15 +27,13 @@ struct _LSQArchive
 	ThunarVfsInfo      *file_info;
 	ThunarVfsMimeInfo  *mime_info;
 	LSQArchiveEntry    *root_entry;
-	LSQArchiveCommand  *command;
+	LSQMimeSupport     *support;
 	struct {
 		guint64 archive_size;
 		guint64 content_size;
 		guint64 n_files;
 		guint64 n_directories;
 	} props;
-	LSQCommandBuilder  *builder;
-	LSQBuilderSettings *settings;
 	gchar *temp_dir;
 	GSList *monitor_list;
 	LSQArchiveIterPool *pool;

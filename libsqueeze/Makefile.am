@@ -12,18 +12,15 @@ libsqueeze_1_la_SOURCES =  \
 	vfs-mime.c vfs-mime.h \
 	archive.c archive.h \
 	archive-iter.c archive-iter.h \
-	archive-command.c archive-command.h \
-	spawn-command.c spawn-command.h \
-	macro-command.c macro-command.h \
-	remove-command.c remove-command.h \
-	xfce-launch-command.c xfce-launch-command.h \
 	archive-tempfs.c archive-tempfs.h \
-	builder-settings.c builder-settings.h \
-	command-builder.c command-builder.h \
-	command-builder-zip.c command-builder-zip.h \
-	command-builder-rar.c command-builder-rar.h \
-	command-builder-compr.c command-builder-compr.h \
-	command-builder-gnu-tar.c command-builder-gnu-tar.h
+	support-factory.c support-factory.h \
+	support-reader.c support-reader.h
+
+# archive-command.c archive-command.h
+# spawn-command.c spawn-command.h
+# macro-command.c macro-command.h
+# remove-command.c remove-command.h
+# xfce-launch-command.c xfce-launch-command.h
 
 libsqueeze_1_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \

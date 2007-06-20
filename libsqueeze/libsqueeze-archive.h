@@ -53,6 +53,16 @@ typedef struct _LSQArchiveIter LSQArchiveIter;
 		G_TYPE_CHECK_CLASS_TYPE ((class),        \
 			LSQ_TYPE_ARCHIVE))
 
+typedef enum
+{
+	LSQ_COMMAND_TYPE_ADD,
+	LSQ_COMMAND_TYPE_REMOVE,
+	LSQ_COMMAND_TYPE_EXTRACT,
+	LSQ_COMMAND_TYPE_REFRESH,
+	LSQ_COMMAND_TYPE_OPEN,
+	LSQ_COMMAND_TYPE_TEST
+} LSQCommandType;
+
 typedef struct _LSQArchive LSQArchive;
 typedef struct _LSQArchiveClass LSQArchiveClass;
 
@@ -77,12 +87,7 @@ void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int)
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void            lsq_archive_iter_unref(LSQArchiveIter *iter);
 
-gboolean        lsq_archive_add(LSQArchive *, GSList *files);
-gboolean        lsq_archive_extract(LSQArchive *, const gchar *dest_path, GSList *files);
-gboolean        lsq_archive_remove(LSQArchive *, GSList *files);
-gboolean        lsq_archive_refresh(LSQArchive *);
-gboolean        lsq_archive_full_refresh(LSQArchive *);
-gboolean        lsq_archive_view(LSQArchive *, GSList *files);
+gboolean        lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar *dest_path, GSList *files, GError **error);
 
 
 G_END_DECLS

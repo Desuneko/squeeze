@@ -22,9 +22,10 @@
 
 #include "libsqueeze-archive.h"
 #include "libsqueeze-view.h"
-#include "libsqueeze-module.h"
+#include "libsqueeze-command.h"
 #include "archive-iter.h"
 #include "archive-command.h"
+#include "support-factory.h"
 #include "archive.h"
 #include "slist.h"
 

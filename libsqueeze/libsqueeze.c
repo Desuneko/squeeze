@@ -23,16 +23,12 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze/libsqueeze-module.h"
+#include "libsqueeze/libsqueeze-command.h"
 #include "libsqueeze/libsqueeze-vfs-mime.h"
+#include "libsqueeze/support-factory.h"
 #include "libsqueeze/archive-iter.h"
 #include "libsqueeze/archive-command.h"
 #include "libsqueeze/archive.h"
-#include "libsqueeze/command-builder.h"
-#include "libsqueeze/command-builder-zip.h"
-#include "libsqueeze/command-builder-rar.h"
-#include "libsqueeze/command-builder-compr.h"
-#include "libsqueeze/command-builder-gnu-tar.h"
 
 #include "vfs-mime.h"
 
@@ -44,30 +40,20 @@ lsq_lookup_mime(gconstpointer a, gconstpointer b);
 void
 lsq_init()
 {
-	LSQCommandBuilder *builder = NULL;
 	gchar *current_dir = g_get_current_dir();
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 
-	builder = lsq_command_builder_zip_new();
-	if(builder)
-		lsq_command_builder_register(builder);
-
-	builder = lsq_command_builder_gnu_tar_new();
-	if(builder)
-		lsq_command_builder_register(builder);
-
-	builder = lsq_command_builder_rar_new();
-	if(builder)
-		lsq_command_builder_register(builder);
-
-	builder = lsq_command_builder_compr_new();
-	if(builder)
-		lsq_command_builder_register(builder);
-
 	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
 	lsq_opened_archive_list = NULL;
 	g_free(current_dir);
+
+	const gchar *data_home = g_getenv("XDG_DATA_HOME");
+	gchar *data_squeeze = g_strconcat(data_home, "/squeeze", NULL);
+	GDir *data_home_dir = g_dir_open(data_squeeze, 0, NULL);
+
+	if(data_home_dir)
+		g_dir_close(data_home_dir);
 }
 
 void
@@ -139,10 +125,6 @@ lsq_get_supported_mime_types(LSQOperationSupportType types)
 		GSList *_types = m_types;
 		while(_types)
 		{
-			LSQArchiveMime *mime = _types->data;
-			LSQCommandBuilder *builder = mime->command_builders->data;
-			if(!builder->build_add)
-				m_types = g_slist_remove(m_types, mime);
 			_types = g_slist_next(_types);
 		}
 	}
