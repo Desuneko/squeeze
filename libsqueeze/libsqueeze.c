@@ -23,12 +23,13 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze/libsqueeze-command.h"
-#include "libsqueeze/libsqueeze-vfs-mime.h"
-#include "libsqueeze/support-factory.h"
-#include "libsqueeze/archive-iter.h"
-#include "libsqueeze/archive-command.h"
-#include "libsqueeze/archive.h"
+#include "libsqueeze-command.h"
+#include "libsqueeze-vfs-mime.h"
+#include "support-factory.h"
+#include "support-reader.h"
+#include "archive-iter.h"
+#include "archive-command.h"
+#include "archive.h"
 
 #include "vfs-mime.h"
 
@@ -40,7 +41,14 @@ lsq_lookup_mime(gconstpointer a, gconstpointer b);
 void
 lsq_init()
 {
+	support_factory_list = NULL;
+
+	const gchar *filename = NULL;
 	gchar *current_dir = g_get_current_dir();
+
+	const gchar *data_home;
+   	GDir *data_home_dir;
+   	gchar *data_squeeze;
 
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 
@@ -48,12 +56,63 @@ lsq_init()
 	lsq_opened_archive_list = NULL;
 	g_free(current_dir);
 
-	const gchar *data_home = g_getenv("XDG_DATA_HOME");
-	gchar *data_squeeze = g_strconcat(data_home, "/squeeze", NULL);
-	GDir *data_home_dir = g_dir_open(data_squeeze, 0, NULL);
+	data_home = g_getenv("XDG_DATA_HOME");
+	data_squeeze = g_strconcat(data_home, "/squeeze", NULL);
+	data_home_dir = g_dir_open(data_squeeze, 0, NULL);
 
 	if(data_home_dir)
+	{
+		while((filename = g_dir_read_name(data_home_dir)) != NULL)
+		{
+
+			if(g_str_has_suffix(filename, ".squeeze"))
+			{
+				gchar *path = g_strconcat(data_squeeze, "/", filename, NULL);
+				LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
+				if(factory)
+				{
+					g_debug("factory found");
+					support_factory_list = g_slist_append(support_factory_list, factory);
+				}
+				g_free(path);
+			}
+		}
+
 		g_dir_close(data_home_dir);
+	}
+
+	g_free(data_squeeze);
+
+	const gchar *data_dirs = g_getenv("XDG_DATA_DIRS");
+
+	gchar **data_dir = g_strsplit(data_dirs, ":", 0);
+	gchar **_data_dir_iter = data_dir;
+	while(*_data_dir_iter)
+	{
+		data_squeeze = g_strconcat(*_data_dir_iter, "/squeeze", NULL);
+		data_home_dir = g_dir_open(data_squeeze, 0, NULL);
+		if(data_home_dir)
+		{
+			while((filename = g_dir_read_name(data_home_dir)) != NULL)
+			{
+
+				if(g_str_has_suffix(filename, ".squeeze"))
+				{
+					gchar *path = g_strconcat(data_squeeze, "/", filename, NULL);
+					LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
+					if(factory)
+					{
+						g_debug("factory found");
+						support_factory_list = g_slist_append(support_factory_list, factory);
+					}
+					g_free(path);
+				}
+			}
+
+			g_dir_close(data_home_dir);
+		}
+		_data_dir_iter++;
+	}
 }
 
 void

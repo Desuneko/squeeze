@@ -145,7 +145,7 @@ lsq_support_reader_parse_file(const gchar *filename)
 		mime_support->required_apps = xfce_rc_read_list_entry(rc, "X-Squeeze-Requires", ";");
 		gchar **_iter = mime_support->required_apps;
 		mime_support->supported = TRUE;
-		while(_iter)
+		while(*_iter)
 		{
 			gchar *path = g_find_program_in_path(*_iter);
 			if(path)
