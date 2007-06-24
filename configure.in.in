@@ -134,6 +134,7 @@ icons/16x16/Makefile
 icons/48x48/Makefile
 icons/scalable/Makefile
 pixmaps/Makefile
+data/Makefile
 docs/Makefile
 docs/reference/Makefile
 docs/reference/libsqueeze/Makefile

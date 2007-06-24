@@ -7,9 +7,9 @@ libsqueeze_1_la_SOURCES =  \
 	libsqueeze-view.h \
 	libsqueeze-command.h \
 	libsqueeze-module.h \
-	libsqueeze-vfs-mime.h \
+	libsqueeze-mime-support.h \
 	slist.c slist.h \
-	vfs-mime.c vfs-mime.h \
+	mime-support.c mime-support.h \
 	archive.c archive.h \
 	archive-iter.c archive-iter.h \
 	archive-tempfs.c archive-tempfs.h \

@@ -21,23 +21,6 @@
 		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
 			LSQ_TYPE_SUPPORT_FACTORY))
 
-typedef struct _LSQMimeSupport LSQMimeSupport;
-
-struct _LSQMimeSupport
-{
-	gchar *mime;
-	gchar **required_apps;
-	gboolean supported;
-
-	gchar **new_cmd_queue;
-	gchar **add_cmd_queue;
-	gchar **remove_cmd_queue;
-	gchar **extract_cmd_queue;
-	gchar **refresh_cmd_queue;
-	LSQSupportType   support_mask;
-};
-
-
 
 typedef struct _LSQSupportFactory LSQSupportFactory;
 
@@ -57,5 +40,6 @@ struct _LSQSupportFactoryClass
 
 GType                lsq_support_factory_get_type(void);
 void                 lsq_support_factory_init_archive(LSQSupportFactory *builder, LSQArchive *archive);
+void                 lsq_support_factory_add_mime(LSQSupportFactory *factory, LSQMimeSupport *mime_support);
 
 #endif /* __LIBSQUEEZE_SUPPORT_FACTORY_H__ */

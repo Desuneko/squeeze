@@ -14,19 +14,14 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __LIBSQUEEZE_ARCHIVE_MIME_H__
-#define __LIBSQUEEZE_ARCHIVE_MIME_H__
+#ifndef __LIBSQUEEZE_MIME_SUPPORT_H__
+#define __LIBSQUEEZE_MIME_SUPPORT_H__
 
-typedef struct _LSQArchiveMime LSQArchiveMime;
+typedef struct _LSQMimeSupport LSQMimeSupport;
 
-gboolean
-lsq_archive_mime_set_default_builder(const gchar *mime, const gchar *id);
+const gchar * lsq_mime_support_get_comment(LSQMimeSupport *);
 
-const gchar *
-lsq_archive_mime_get_comment(LSQArchiveMime *);
-
-const gchar *
-lsq_archive_mime_get_name(LSQArchiveMime *);
+const gchar * lsq_mime_support_get_name(LSQMimeSupport *);
 
 
-#endif /* __LIBSQUEEZE_ARCHIVE_MIME_H__ */
+#endif /* __LIBSQUEEZE_MIME_SUPPORT_H__ */

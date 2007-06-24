@@ -21,6 +21,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze-archive.h"
+#include "libsqueeze-mime-support.h"
 #include "libsqueeze-view.h"
 #include "libsqueeze-command.h"
 #include "support-factory.h"

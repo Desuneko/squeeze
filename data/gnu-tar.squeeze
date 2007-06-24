@@ -1,0 +1,67 @@
+[Desktop Entry]
+Name=Gnu Tar
+Version=1.0
+Type=X-Squeeze-Archiver
+MimeType=application/x-tar;application/x-tarz;application/x-tzo;application/x-compressed-tar;application/x-bzip2-compressed-tar
+
+[application/x-tar]
+X-Squeeze-Requires=tar
+X-Squeeze-New=tar -cf %f %Files
+X-Squeeze-Add=tar -rf %f %Files
+X-Squeeze-Remove=tar -f %f --delete %Files
+X-Squeeze-Extract=tar -C %path -xf %f %Files
+X-Squeeze-Refresh=tar -tvvf %f
+
+[application/x-compressed-tar]
+X-Squeeze-Requires=tar;gzip;gunzip
+X-Squeeze-New=tar -zcf %f %Files
+X-Squeeze-Add=gunzip -c %f >> %1t;tar -rf %f %Files;gzip -c %1t >> %f
+X-Squeeze-Remove=gunzip -c %f >> %1t;tar -f %1t --delete %Files; gzip -c %1t >> %f
+X-Squeeze-Extract=tar -C %path -xf %f %Files
+X-Squeeze-Refresh=tar -tvvf %f
+
+[application/x-bzip2-compressed-tar]
+X-Squeeze-Requires=tar;bzip2;bunzip2
+X-Squeeze-New=tar -jcf %f %Files
+X-Squeeze-Add=bunzip2 -c %f >> %1t;tar -rf %f %Files;bzip2 -c %1t >> %f
+X-Squeeze-Remove=bunzip2 -c %f >> %1t;tar -f %1t --delete %Files; bzip2 -c %1t >> %f
+X-Squeeze-Extract=tar -C %path -xf %f %Files
+X-Squeeze-Refresh=tar -tvvf %f
+
+[application/x-tarz]
+X-Squeeze-Requires=tar;compress;uncompress
+X-Squeeze-New=tar -Zcf %f %Files
+X-Squeeze-Add=lzop -dc %f >> %1t;tar -rf %1t %Files;lzop -c %1t >> %f
+X-Squeeze-Remove=uncompress -c %f >> %1t;tar -f %1t --delete %Files; compress -c %1t >> %f
+X-Squeeze-Extract=tar -C %path -xf %f %Files
+X-Squeeze-Refresh=tar -tvvf %f
+
+[application/x-tzo]
+X-Squeeze-Requires=tar;lzop
+X-Squeeze-New=tar -cf --use-compress-program=lzop %f %Files
+X-Squeeze-Add=uncompress -c %f >> %1t;tar -rf %1t %Files;compress -c %1t >> %f
+X-Squeeze-Remove=lzop -dc %f >> %1t;tar -f %1t --delete %Files; lzop -c %1t >> %f
+X-Squeeze-Extract=tar -C %path -xf %f %Files
+X-Squeeze-Refresh=tar -tvvf %f
+
+[Refresh]
+X-Squeeze-Name=Refresh
+X-Squeeze-Name[nl]=Vernieuwen
+X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
+X-Squeeze-Headers[nl]=Rechten;Eigenaar/Groep;Grootte;Datum;Tijd;Naam
+X-Squeeze-Parse=%s %s %i %i %d %f
+X-Squeeze-Options=Password
+
+[Extract]
+X-Squeeze-Name=Extract
+X-Squeeze-Name[nl]=Uitpakken
+X-Squeeze-Options=Password;Overwrite
+
+[Option-Password]
+X-Squeeze-Flag=-p%s
+
+[Option-Overwrite]
+X-Squeeze-Flag=-f
+X-Squeeze-Type=Bool
+X-Squeeze-Nick=Overwrite files
+X-Squeeze-Default=FALSE

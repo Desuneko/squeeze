@@ -24,11 +24,16 @@
 #include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include "libsqueeze.h"
 #include "libsqueeze-archive.h"
 #include "archive-iter.h"
 #include "archive-tempfs.h"
 #include "support-factory.h"
 #include "archive.h"
+#include "internals.h"
+
+/* fixme: */
+#include "mime-support.h"
 
 static void
 lsq_support_factory_class_init(LSQSupportFactoryClass *);
@@ -108,3 +113,23 @@ lsq_support_factory_finalize(GObject *object)
 {
 	parent_class->finalize(object);
 }
+
+static gint
+lsq_lookup_mime_support(gconstpointer a, gconstpointer b)
+{
+	return !((thunar_vfs_mime_info_equal((((LSQMimeSupport *)a)->mime_info), ((LSQMimeSupport *)b)->mime_info)) &&
+	(!strcmp((((LSQMimeSupport *)a)->id), ((LSQMimeSupport *)b)->id)));
+}
+
+void
+lsq_support_factory_add_mime(LSQSupportFactory *factory, LSQMimeSupport *mime_support)
+{
+	GSList *result = g_slist_find_custom(lsq_mime_support_list, mime_support, lsq_lookup_mime_support);
+	if(!result)
+	{
+		factory->mime_support = g_slist_prepend(factory->mime_support, mime_support);
+		lsq_mime_support_list = g_slist_prepend(lsq_mime_support_list, mime_support);
+	}
+
+}
+

@@ -26,6 +26,7 @@
 #include <errno.h>
 #include <thunar-vfs/thunar-vfs.h>
 
+#include "libsqueeze.h"
 #include "libsqueeze-archive.h"
 #include "archive-iter.h"
 #include "support-factory.h"

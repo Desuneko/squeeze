@@ -18,20 +18,11 @@
 #define __LIBSQUEEZE_H__
 
 #include <libsqueeze/libsqueeze-archive.h>
-#include <libsqueeze/libsqueeze-vfs-mime.h>
+#include <libsqueeze/libsqueeze-mime-support.h>
 #include <libsqueeze/libsqueeze-view.h>
 
 
 G_BEGIN_DECLS
-
-typedef enum
-{
-	LSQ_OPERATION_SUPPORT_ADD = 1 << 0x0,
-	LSQ_OPERATION_SUPPORT_REMOVE = 1 << 0x1,
-	LSQ_OPERATION_SUPPORT_EXTRACT = 1 << 0x2,
-	LSQ_OPERATION_SUPPORT_SHOW = 1 << 0x3
-} LSQOperationSupportType;
-
 
 /*
  * void
@@ -82,7 +73,7 @@ void
 lsq_close_archive( LSQArchive *archive );
 
 GSList *
-lsq_get_supported_mime_types(LSQOperationSupportType types);
+lsq_get_supported_mime_types(LSQCommandType type);
 
 gboolean
 lsq_is_supported(const gchar *filename);

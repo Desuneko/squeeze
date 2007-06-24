@@ -14,20 +14,31 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __ARCHIVE_MIME_H__
-#define __ARCHIVE_MIME_H__
+#include <config.h>
+#include <string.h>
+#include <glib.h>
+#include <glib/gstdio.h>
+#include <glib-object.h> 
+#include <signal.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <thunar-vfs/thunar-vfs.h>
 
-struct _LSQArchiveMime
+#include "libsqueeze-archive.h"
+#include "libsqueeze-mime.h"
+#include "mime-support.h"
+
+#include "internals.h"
+
+
+const gchar *
+lsq_mime_support_get_comment(LSQMimeSupport *mime_s)
 {
-	ThunarVfsMimeInfo *mime_info;
-	GSList            *command_builders;
-};
+	return thunar_vfs_mime_info_get_comment(mime_s->mime_info);
+}
 
-
-LSQArchiveMime *
-lsq_archive_mime_new(const gchar *mime);
-
-
-
-#endif /* __ARCHIVE_MIME_H__ */
-
+const gchar *
+lsq_mime_support_get_name(LSQMimeSupport *mime_s)
+{
+	return thunar_vfs_mime_info_get_name(mime_s->mime_info);
+}

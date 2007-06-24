@@ -25,14 +25,13 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze-vfs-mime.h"
 #include "archive-iter.h"
 #include "support-factory.h"
 #include "archive.h"
 #include "slist.h"
 #include "archive-tempfs.h"
 
-#include "vfs-mime.h"
+#include "mime-support.h"
 
 #include "internals.h"
 

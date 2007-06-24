@@ -25,11 +25,15 @@
 #include <thunar-vfs/thunar-vfs.h>
 #include <libxfce4util/libxfce4util.h>
 
+#include "libsqueeze.h"
 #include "libsqueeze-archive.h"
 #include "support-factory.h"
 #include "archive-iter.h"
 #include "archive.h"
 #include "support-reader.h"
+#include "mime-support.h"
+
+#include "internals.h"
 
 static void
 lsq_support_reader_class_init(LSQSupportReaderClass *);
@@ -158,7 +162,8 @@ lsq_support_reader_parse_file(const gchar *filename)
 			_iter++;
 		}
 
-		mime_support->mime = g_strdup(_mime_types[i]);
+		mime_support->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, _mime_types[i]);
+		mime_support->id = (const gchar *)factory->id;
 
 		mime_support->new_cmd_queue     = xfce_rc_read_list_entry(rc, "X-Squeeze-New", ";");
 		mime_support->add_cmd_queue     = xfce_rc_read_list_entry(rc, "X-Squeeze-Add", ";");
@@ -166,7 +171,7 @@ lsq_support_reader_parse_file(const gchar *filename)
 		mime_support->extract_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Extract", ";");
 		mime_support->refresh_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Refresh", ";");
 
-		factory->mime_support = g_slist_prepend(factory->mime_support, mime_support);
+		lsq_support_factory_add_mime(factory, mime_support);
 	}
 	 
 	return factory;
