@@ -1,22 +1,21 @@
 # Ukrainian translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-# Dmitry Nikitin <luckas_fb@mail.ru>, 2007.
 #
+# Dmitry Nikitin <luckas_fb@mail.ru>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-26 09:23+0200\n"
-"PO-Revision-Date: 2007-04-07 20:52+0300\n"
+"PO-Revision-Date: 2007-06-19 16:36+0300\n"
 "Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
 "Language-Team: Ukrainian <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../libsqueeze/archive.c:268
 msgid "Name"
@@ -80,7 +79,7 @@ msgstr "Додавання файлів"
 #: ../libsqueeze/command-builder-gnu-tar.c:303
 #: ../libsqueeze/command-builder-gnu-tar.c:374
 msgid "Cleanup"
-msgstr ""
+msgstr "Очистка"
 
 #: ../libsqueeze/command-builder-gnu-tar.c:334
 msgid "Removing files"
@@ -148,18 +147,16 @@ msgid "Command Terminated"
 msgstr "Команду завершено"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
 msgstr "Менеджер архівів"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Створення і керування архівами з допомогою Менеджера архівів"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "Менеджер архівів"
+msgstr "Менеджер архівів Squeeze"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -220,7 +217,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze не може додати файли до архіву,\n"
-"відсутня програма для пітримки цього архіву."
+"відсутня програма для пітримки цього типу архіву."
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
@@ -228,7 +225,7 @@ msgstr "Показати повний шлях"
 
 #: ../src/archive_store.c:250 ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr "Показувати повний рядок шляху для кожного елемента"
+msgstr "Показувати повний шляху для кожного елемента"
 
 #: ../src/archive_store.c:256 ../src/notebook.c:186
 msgid "Show mime icons"
@@ -286,7 +283,7 @@ msgstr "Розпакувати архів"
 
 #: ../src/main.c:51
 msgid "[destination path]"
-msgstr "[наступний шлях]"
+msgstr "[шлях призначення]"
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
@@ -320,15 +317,15 @@ msgstr "Вбудований стиль"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "Панель інструментів"
+msgstr "Стиль Панелі інструментів"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "Панель шляху"
+msgstr "Стиль Панелі шляху"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "Навігація"
+msgstr "Стиль Навігації"
 
 #: ../src/main_window.c:183
 msgid ""
@@ -424,8 +421,7 @@ msgstr "Значки додавання / розпакування:"
 
 #: ../src/main_window.c:1006
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
-"Базується на оригінальному значку розпакування створеному Andreas Nilsson"
+msgstr "Базується на оригінальному значку розпакування створеному Andreas Nilsson"
 
 #: ../src/main_window.c:1013
 msgid ""
@@ -506,5 +502,3 @@ msgstr "Місцезнаходження:"
 msgid "Archive manager"
 msgstr "Менеджер архівів"
 
-#~ msgid "Xfce archive manager"
-#~ msgstr "Менеджер архівів Xfce"
