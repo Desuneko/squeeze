@@ -2,66 +2,75 @@
 Name=Gnu Tar
 Version=1.0
 Type=X-Squeeze-Archiver
-MimeType=application/x-tar;application/x-tarz;application/x-tzo;application/x-compressed-tar;application/x-bzip2-compressed-tar
+MimeType=application/x-tar;application/x-tarz;application/x-tzo;application/x-compressed-tar;application/x-bzip-compressed-tar
+X-Squeeze-Version=0.3
 
 [application/x-tar]
 X-Squeeze-Requires=tar
-X-Squeeze-New=tar -cf %f %Files
-X-Squeeze-Add=tar -rf %f %Files
-X-Squeeze-Remove=tar -f %f --delete %Files
-X-Squeeze-Extract=tar -C %path -xf %f %Files
-X-Squeeze-Refresh=tar -tvvf %f
+X-Squeeze-New=tar -cf %a %F
+X-Squeeze-Add=tar -rf %a %F
+X-Squeeze-Remove=tar -f %a --delete %F
+X-Squeeze-Extract=tar -C %d -xf %a %F
+X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-compressed-tar]
 X-Squeeze-Requires=tar;gzip;gunzip
-X-Squeeze-New=tar -zcf %f %Files
-X-Squeeze-Add=gunzip -c %f >> %1t;tar -rf %f %Files;gzip -c %1t >> %f
-X-Squeeze-Remove=gunzip -c %f >> %1t;tar -f %1t --delete %Files; gzip -c %1t >> %f
-X-Squeeze-Extract=tar -C %path -xf %f %Files
-X-Squeeze-Refresh=tar -tvvf %f
+X-Squeeze-New=tar -zcf %a %F
+X-Squeeze-Add=gunzip -c %a >> %t;tar -rf %a %F;gzip -c %t >> %a
+X-Squeeze-Remove=gunzip -c %a >> %t;tar -f %t --delete %F; gzip -c %t >> %a
+X-Squeeze-Extract=tar -C %d -xf %a %F
+X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-bzip2-compressed-tar]
 X-Squeeze-Requires=tar;bzip2;bunzip2
-X-Squeeze-New=tar -jcf %f %Files
-X-Squeeze-Add=bunzip2 -c %f >> %1t;tar -rf %f %Files;bzip2 -c %1t >> %f
-X-Squeeze-Remove=bunzip2 -c %f >> %1t;tar -f %1t --delete %Files; bzip2 -c %1t >> %f
-X-Squeeze-Extract=tar -C %path -xf %f %Files
-X-Squeeze-Refresh=tar -tvvf %f
+X-Squeeze-New=tar -jcf %a %F
+X-Squeeze-Add=bunzip2 -c %a >> %t;tar -rf %t %F;bzip2 -c %t >> %a
+X-Squeeze-Remove=bunzip2 -c %a >> %t;tar -f %t --delete %F; bzip2 -c %t >> %a
+X-Squeeze-Extract=tar -C %d -xf %a %F
+X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-tarz]
 X-Squeeze-Requires=tar;compress;uncompress
-X-Squeeze-New=tar -Zcf %f %Files
-X-Squeeze-Add=lzop -dc %f >> %1t;tar -rf %1t %Files;lzop -c %1t >> %f
-X-Squeeze-Remove=uncompress -c %f >> %1t;tar -f %1t --delete %Files; compress -c %1t >> %f
-X-Squeeze-Extract=tar -C %path -xf %f %Files
-X-Squeeze-Refresh=tar -tvvf %f
+X-Squeeze-New=tar -Zcf %a %F
+X-Squeeze-Add=lzop -dc %a >> %t;tar -rf %t %F;lzop -c %t >> %a
+X-Squeeze-Remove=uncompress -c %a >> %t;tar -f %t --delete %F; compress -c %t >> %a
+X-Squeeze-Extract=tar -C %d -xf %a %F
+X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-tzo]
 X-Squeeze-Requires=tar;lzop
-X-Squeeze-New=tar -cf --use-compress-program=lzop %f %Files
-X-Squeeze-Add=uncompress -c %f >> %1t;tar -rf %1t %Files;compress -c %1t >> %f
-X-Squeeze-Remove=lzop -dc %f >> %1t;tar -f %1t --delete %Files; lzop -c %1t >> %f
-X-Squeeze-Extract=tar -C %path -xf %f %Files
-X-Squeeze-Refresh=tar -tvvf %f
+X-Squeeze-New=tar -cf --use-compress-program=lzop %a %F
+X-Squeeze-Add=uncompress -c %a >> %t;tar -rf %t %F;compress -c %t >> %a
+X-Squeeze-Remove=lzop -dc %a >> %t;tar -f %t --delete %F; lzop -c %t >> %a
+X-Squeeze-Extract=tar -C %d -xf %a %F
+X-Squeeze-Refresh=tar -tvvf %a
 
-[Refresh]
-X-Squeeze-Name=Refresh
-X-Squeeze-Name[nl]=Vernieuwen
-X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
-X-Squeeze-Headers[nl]=Rechten;Eigenaar/Groep;Grootte;Datum;Tijd;Naam
-X-Squeeze-Parse=%s %s %i %i %d %f
-X-Squeeze-Options=Password
-
-[Extract]
-X-Squeeze-Name=Extract
-X-Squeeze-Name[nl]=Uitpakken
+[Squeeze-Add]
+[Squeeze-Remove]
+[Squeeze-Extract]
+# Tar does not support passwords, this is just for illustrative purposes
 X-Squeeze-Options=Password;Overwrite
 
-[Option-Password]
-X-Squeeze-Flag=-p%s
+[Squeeze-Refresh]
+X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
+X-Squeeze-Headers[nl]=Rechten;Eigenaar/Groep;Grootte;Datum;Tijd;Naam
+# Tar does not support passwords, this is just for illustrative purposes
+X-Squeeze-Options=Password
 
-[Option-Overwrite]
+# I wonder if this will be enough...
+X-Squeeze-Parse=%s %s %i %s %s %f
+X-Squeeze-Separator=space
+
+[Squeeze-Option-Password]
+X-Squeeze-Flag=-p %s
+X-Squeeze-Type=String
+X-Squeeze-Value=
+X-Squeeze-Description=Password
+X-Squeeze-Description[nl]=Wachtwoord
+
+[Squeeze-Option-Overwrite]
 X-Squeeze-Flag=-f
 X-Squeeze-Type=Bool
-X-Squeeze-Nick=Overwrite files
-X-Squeeze-Default=FALSE
+X-Squeeze-Value=FALSE
+X-Squeeze-Description=Overwrite files
+X-Squeeze-Description[nl]=Bestanden overschrijven
