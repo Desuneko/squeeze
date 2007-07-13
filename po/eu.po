@@ -1,19 +1,21 @@
+# translation of eu.po to Euskara
 # Basque translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-# Piarres Beobide <pi@beobide.net>, 2007.
 #
+# Piarres Beobide <pi@beobide.net>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: Squeeze 0.2.0\n"
+"Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-26 09:23+0200\n"
-"PO-Revision-Date: 2007-04-17 13:00+0200\n"
+"PO-Revision-Date: 2007-07-13 13:28+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
-"Language-Team: Librezale <xfce-i18n@xfce.org>\n"
+"Language-Team: Euskara <Librezale@librezale.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../libsqueeze/archive.c:268
 msgid "Name"
@@ -145,18 +147,16 @@ msgid "Command Terminated"
 msgstr "Komandoa Amaiturik"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
-msgstr "Pakete kudeatzaileak"
+msgstr "Pakete kudeatzailea"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Pakete kudeatzailearekin paketeak kudeatu eta sortu"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "Pakete kudeatzaileak"
+msgstr "Squeeze Pakete kudeatzailea"
 
 #: ../src/add_dialog.c:73
 msgid "Files and directories to add"
@@ -194,8 +194,7 @@ msgstr "Karpetak hautatu"
 #.
 #: ../src/application.c:162 ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
+msgstr "Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
 
 #: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
 msgid ""
@@ -427,8 +426,7 @@ msgstr "Andreas Nilsson-ek sorturiko atera ikonoan oinarriturik"
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
-"Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
+msgstr "Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1021
@@ -501,5 +499,3 @@ msgstr "Kokalekua:"
 msgid "Archive manager"
 msgstr "Pakete kudeatzaileak"
 
-#~ msgid "Xfce archive manager"
-#~ msgstr "Xfce pakete kudeatzailea"
