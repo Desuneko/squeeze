@@ -23,18 +23,12 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze-command.h"
 #include "support-factory.h"
 #include "support-reader.h"
 #include "archive-iter.h"
-#include "archive-command.h"
 #include "archive.h"
-#include "mime-support.h"
 
 #include "internals.h"
-
-static gint
-lsq_lookup_mime(gconstpointer a, gconstpointer b);
 
 void
 lsq_init()
@@ -170,48 +164,14 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 	return 0;
 }
 
+gboolean
+lsq_is_supported(const gchar *filename)
+{
+    return FALSE;
+}
 
 GSList *
 lsq_get_supported_mime_types(LSQCommandType type)
 {
-	GSList *m_types = g_slist_copy(lsq_mime_support_list);
-	GSList *_types = m_types;
-	switch(type)
-	{
-		case LSQ_COMMAND_TYPE_ADD:
-			while(_types)
-			{
-				if(((LSQMimeSupport *)(_types->data))->new_cmd_queue == NULL)
-				{
-					m_types = g_slist_remove(m_types, _types);
-				}
-				_types = g_slist_next(_types);
-			}
-			break;
-		default:
-			break;
-	}
-	
-	return m_types;
+    return NULL;
 }
-
-static gint
-lsq_lookup_mime(gconstpointer a, gconstpointer b)
-{
-	return !thunar_vfs_mime_info_equal((((LSQMimeSupport *)a)->mime_info), b);
-}
-
-
-gboolean
-lsq_is_supported(const gchar *filename)
-{
-	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, filename);
-	GSList *result = g_slist_find_custom(lsq_mime_support_list, mime_info, lsq_lookup_mime);
-	thunar_vfs_mime_info_unref(mime_info);
-	if(result)
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
-

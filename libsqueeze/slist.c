@@ -20,10 +20,7 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze-archive.h"
 #include "support-factory.h"
-#include "archive-iter.h"
-#include "archive.h"
 #include "internals.h"
 #include "slist.h"
 

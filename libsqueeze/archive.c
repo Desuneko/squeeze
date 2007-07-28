@@ -25,13 +25,13 @@
 #include <thunar-vfs/thunar-vfs.h>
 
 #include "libsqueeze.h"
-#include "archive-iter.h"
+#include "libsqueeze-view.h"
+#include "support-template.h"
 #include "support-factory.h"
-#include "archive.h"
+
 #include "slist.h"
 #include "archive-tempfs.h"
 
-#include "mime-support.h"
 
 #include "internals.h"
 
@@ -42,11 +42,6 @@
 #ifndef LSQ_MIME_DIRECTORY
 #define LSQ_MIME_DIRECTORY "inode/directory"
 #endif
-
-struct _LSQArchiveClass
-{
-	GObjectClass parent;
-};
 
 static void
 lsq_archive_class_init(LSQArchiveClass *archive_class);
@@ -158,34 +153,33 @@ lsq_archive_new(gchar *path, const gchar *mime)
 	if(path)
 	{
 		if(g_path_is_absolute(path))
-			archive->path_info = thunar_vfs_path_new(path, NULL);
+			archive->priv->path_info = thunar_vfs_path_new(path, NULL);
 		else
-			archive->path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
-		archive->path = thunar_vfs_path_dup_string(archive->path_info);
+			archive->priv->path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
 	}
 	else
-		archive->path_info = NULL;
+		archive->priv->path_info = NULL;
 
 
-	archive->file_info = thunar_vfs_info_new_for_path(archive->path_info, NULL);
-	if(archive->file_info)
+	archive->priv->file_info = thunar_vfs_info_new_for_path(archive->priv->path_info, NULL);
+	if(archive->priv->file_info)
 	{
-		archive->mime_info = archive->file_info->mime_info;
-		thunar_vfs_mime_info_ref(archive->mime_info);
+		archive->priv->mime_info = archive->priv->file_info->mime_info;
+		thunar_vfs_mime_info_ref(archive->priv->mime_info);
 	}
 	else
 	{
 		if(mime)
-			archive->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
+			archive->priv->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
 		else
 		{
 			base = g_path_get_basename(path);
-			archive->mime_info = thunar_vfs_mime_database_get_info_for_file(lsq_mime_database, path, base);
+			archive->priv->mime_info = thunar_vfs_mime_database_get_info_for_file(lsq_mime_database, path, base);
 			g_free(base);
 		}
 	}
 #ifdef DEBUG
-	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->mime_info));
+	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->priv->mime_info));
 #endif
 
 	return archive;
@@ -251,24 +245,26 @@ lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
 
 /*
  * lsq_archive_get_filename:
- *
  * @archive: LSQArchive object
+ *
+ * Return value: filename string
  */
-gchar *
+const gchar *
 lsq_archive_get_filename(const LSQArchive *archive)
 {
-	return g_path_get_basename(archive->path);
+	return thunar_vfs_path_get_name(archive->priv->path_info);
 }
 
 /*
  * lsq_archive_get_path:
- *
  * @archive: LSQArchive object
+ *
+ * Return value: newly allocated path string
  */
-const gchar *
+gchar *
 lsq_archive_get_path(const LSQArchive *archive)
 {
-	return archive->path;
+	return thunar_vfs_path_dup_string(archive->priv->path_info);
 }
 
 /*
@@ -279,7 +275,7 @@ lsq_archive_get_path(const LSQArchive *archive)
 const gchar *
 lsq_archive_get_mimetype(const LSQArchive *archive)
 {
-	return thunar_vfs_mime_info_get_name(archive->mime_info);
+	return thunar_vfs_mime_info_get_name(archive->priv->mime_info);
 }
 
 /*
@@ -290,15 +286,11 @@ lsq_archive_get_mimetype(const LSQArchive *archive)
 gboolean
 lsq_archive_exists(const LSQArchive *archive)
 {
-	if(archive->file_info)
+	if(!archive->priv->file_info)
+        archive->priv->file_info = thunar_vfs_info_new_for_path(archive->priv->path_info, NULL);
+
+    if(archive->priv->file_info)
 		return TRUE;
-	
-	if(g_file_test(archive->path, G_FILE_TEST_EXISTS))
-	{
-		if(!g_file_test(archive->path, G_FILE_TEST_IS_DIR))
-			return TRUE;
-			/* TODO: should file_info be created */
-	}
 
 	return FALSE;
 }
@@ -333,30 +325,15 @@ lsq_close_archive(LSQArchive *archive)
 {
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
 
-	if(archive->path)
-		g_free(archive->path);
-	if(archive->path_info)
-		thunar_vfs_path_unref(archive->path_info);
-	if(archive->file_info)
-		thunar_vfs_info_unref(archive->file_info);
-	if(archive->mime_info)
-		thunar_vfs_mime_info_unref(archive->mime_info);
+	if(archive->priv->path_info)
+		thunar_vfs_path_unref(archive->priv->path_info);
+	if(archive->priv->file_info)
+		thunar_vfs_info_unref(archive->priv->file_info);
+	if(archive->priv->mime_info)
+		thunar_vfs_mime_info_unref(archive->priv->mime_info);
 
 	lsq_archive_stop(archive);
 	g_object_unref(archive);
-}
-
-gboolean
-lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar *dest_path, GSList *files, GError **error)
-{
-	return FALSE;
-}
-
-
-LSQSupportType
-lsq_archive_get_support_mask(const LSQArchive *archive)
-{
-	return archive->support->support_mask;
 }
 
 gboolean
@@ -375,4 +352,28 @@ const gchar *
 lsq_archive_get_status(const LSQArchive *archive)
 {
 	return NULL;
+}
+
+/**
+ * lsq_archive_get_path_info:
+ * @archive: the archive
+ *
+ * Return value: the ThunarVfsPath information of the archive.
+ */
+ThunarVfsPath *
+lsq_archive_get_path_info(LSQArchive *archive)
+{
+    return archive->priv->path_info;
+}
+
+LSQSupportType
+lsq_archive_get_support_mask(const LSQArchive *archive)
+{
+    return archive->priv->s_template->support_mask;
+}
+
+gboolean
+lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
+{
+    return FALSE;
 }

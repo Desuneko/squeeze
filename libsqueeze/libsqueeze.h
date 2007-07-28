@@ -17,10 +17,12 @@
 #ifndef __LIBSQUEEZE_H__
 #define __LIBSQUEEZE_H__
 
-#include <libsqueeze/libsqueeze-archive.h>
-#include <libsqueeze/libsqueeze-mime-support.h>
-#include <libsqueeze/libsqueeze-view.h>
+#include <libsqueeze/support-template.h>
+#include <libsqueeze/archive-iter-pool.h>
+#include <libsqueeze/archive.h>
+#include <libsqueeze/archive-iter.h>
 
+#include <libsqueeze/libsqueeze-view.h>
 
 G_BEGIN_DECLS
 

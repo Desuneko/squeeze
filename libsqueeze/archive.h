@@ -17,32 +17,93 @@
 #define __ARCHIVE_H__ 
 G_BEGIN_DECLS
 
-typedef struct _LSQArchiveEntry LSQArchiveEntry;
+#define LSQ_TYPE_ARCHIVE lsq_archive_get_type()
+
+#define LSQ_ARCHIVE(obj)         ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
+			LSQ_TYPE_ARCHIVE,      \
+			LSQArchive))
+
+#define LSQ_IS_ARCHIVE(obj)      ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+			LSQ_TYPE_ARCHIVE))
+
+#define LSQ_ARCHIVE_CLASS(class) ( \
+		G_TYPE_CHECK_CLASS_CAST ((class),     \
+			LSQ_TYPE_ARCHIVE,      \
+			LSQArchiveClass))
+
+#define LSQ_IS_ARCHIVE_CLASS(class) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+			LSQ_TYPE_ARCHIVE))
+
+enum
+{
+	LSQ_ARCHIVE_PROP_FILENAME = 0,
+	LSQ_ARCHIVE_PROP_MIME_TYPE,
+	LSQ_ARCHIVE_PROP_USER
+};
+
+typedef struct _LSQArchivePrivate LSQArchivePrivate;
+
+struct _LSQArchivePrivate
+{
+	ThunarVfsPath      *path_info;
+	ThunarVfsInfo      *file_info;
+	ThunarVfsMimeInfo  *mime_info;
+
+	LSQSupportTemplate *s_template;
+
+};
+
+
+typedef struct _LSQArchive LSQArchive;
 
 struct _LSQArchive
 {
 	GObject parent;
-	gchar              *path;
-	ThunarVfsPath      *path_info;
-	ThunarVfsInfo      *file_info;
-	ThunarVfsMimeInfo  *mime_info;
+    LSQArchivePrivate  *priv;
 	LSQArchiveEntry    *root_entry;
-	LSQMimeSupport     *support;
+	LSQArchiveIterPool *pool;
+	gchar *temp_dir;
+	GSList *monitor_list;
 	struct {
 		guint64 archive_size;
 		guint64 content_size;
 		guint64 n_files;
 		guint64 n_directories;
 	} props;
-	gchar *temp_dir;
-	GSList *monitor_list;
-	LSQArchiveIterPool *pool;
 };
+
+
+typedef struct _LSQArchiveClass LSQArchiveClass;
+
+struct _LSQArchiveClass
+{
+	GObjectClass parent;
+};
+
+
+GType           lsq_archive_get_type(void);
+
+gchar          *lsq_archive_get_path(const LSQArchive *archive);
+const gchar    *lsq_archive_get_filename(const LSQArchive *archive);
+const gchar    *lsq_archive_get_mimetype(const LSQArchive *archive);
+const gchar    *lsq_archive_get_status(const LSQArchive *archive);
+gboolean        lsq_archive_exists(const LSQArchive *archive);
+LSQSupportType  lsq_archive_get_support_mask(const LSQArchive *archive);
+
 
 LSQArchive         *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
 void                lsq_archive_state_changed(const LSQArchive *archive) G_GNUC_INTERNAL;
-
 void                lsq_archive_add_children(GSList *files);
+gboolean            lsq_archive_remove_file(LSQArchive *, const gchar *);
+
+ThunarVfsPath      *lsq_archive_get_path_info(LSQArchive *);
+
+gboolean        lsq_archive_operate(LSQArchive *archive, LSQCommandType type);
+
+
 
 G_END_DECLS
 

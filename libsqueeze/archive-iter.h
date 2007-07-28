@@ -1,4 +1,5 @@
 /*
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -17,14 +18,33 @@
 #define __LIBSQUEEZE_ARCHIVE_ITER_H__ 
 G_BEGIN_DECLS
 
-typedef struct _LSQArchiveIterPool LSQArchiveIterPool;
+
+struct _LSQArchiveIter
+{
+	LSQArchive *archive;
+	LSQArchiveEntry *entry;
+	LSQArchiveIter *parent;
+	guint ref_count;
+};
 
 void     lsq_archive_init_iter(LSQArchive *);
 void     lsq_archive_free_iter(LSQArchive *);
 
-gboolean lsq_archive_remove_file(LSQArchive *, const gchar *);
 
 void     lsq_archive_iter_remove(LSQArchiveIter *, gboolean);
+
+#ifdef DEBUG
+LSQArchiveIter *_lsq_archive_iter_ref(LSQArchiveIter *iter, const gchar*, int);
+void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int);
+/*
+#define lsq_archive_iter_ref(iter) _lsq_archive_iter_ref(iter, __FILE__, __LINE__)
+#define lsq_archive_iter_unref(iter) _lsq_archive_iter_unref(iter, __FILE__, __LINE__)
+*/
+#endif
+
+LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
+void            lsq_archive_iter_unref(LSQArchiveIter *iter);
+
 
 G_END_DECLS
 

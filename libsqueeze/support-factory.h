@@ -40,6 +40,6 @@ struct _LSQSupportFactoryClass
 
 GType                lsq_support_factory_get_type(void);
 void                 lsq_support_factory_init_archive(LSQSupportFactory *builder, LSQArchive *archive);
-void                 lsq_support_factory_add_mime(LSQSupportFactory *factory, LSQMimeSupport *mime_support);
+void                 lsq_support_factory_add_template(LSQSupportFactory *factory, LSQSupportTemplate *s_template);
 
 #endif /* __LIBSQUEEZE_SUPPORT_FACTORY_H__ */

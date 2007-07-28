@@ -26,12 +26,10 @@
 #include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
-#include "libsqueeze-archive.h"
 #include "support-factory.h"
 #include "archive-iter.h"
 #include "archive.h"
 #include "support-reader.h"
-#include "mime-support.h"
 
 #include "internals.h"
 
@@ -142,13 +140,13 @@ lsq_support_reader_parse_file(const gchar *filename)
 	gchar **_mime_types = mime_types;
 	for(i = 0; _mime_types[i]; ++i)
 	{
-		LSQMimeSupport *mime_support = g_new(LSQMimeSupport, 1);
+		LSQSupportTemplate *s_template = g_new(LSQSupportTemplate, 1);
 
 		xfce_rc_set_group(rc, _mime_types[i]);
 		/* only add to builder->mime_types if all req. apps are found */
-		mime_support->required_apps = xfce_rc_read_list_entry(rc, "X-Squeeze-Requires", ";");
-		gchar **_iter = mime_support->required_apps;
-		mime_support->supported = TRUE;
+		s_template->required_apps = xfce_rc_read_list_entry(rc, "X-Squeeze-Requires", ";");
+		gchar **_iter = s_template->required_apps;
+		s_template->supported = TRUE;
 		while(*_iter)
 		{
 			gchar *path = g_find_program_in_path(*_iter);
@@ -156,22 +154,22 @@ lsq_support_reader_parse_file(const gchar *filename)
 				g_free(path);
 			else
 			{
-				mime_support->supported = FALSE;
+				s_template->supported = FALSE;
 				break;
 			}
 			_iter++;
 		}
 
-		mime_support->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, _mime_types[i]);
-		mime_support->id = (const gchar *)factory->id;
+		s_template->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, _mime_types[i]);
+		s_template->id = (const gchar *)factory->id;
 
-		mime_support->new_cmd_queue     = xfce_rc_read_list_entry(rc, "X-Squeeze-New", ";");
-		mime_support->add_cmd_queue     = xfce_rc_read_list_entry(rc, "X-Squeeze-Add", ";");
-		mime_support->remove_cmd_queue  = xfce_rc_read_list_entry(rc, "X-Squeeze-Remove", ";");
-		mime_support->extract_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Extract", ";");
-		mime_support->refresh_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Refresh", ";");
+		s_template->new_cmd_queue     = xfce_rc_read_list_entry(rc, "X-Squeeze-New", ";");
+		s_template->add_cmd_queue     = xfce_rc_read_list_entry(rc, "X-Squeeze-Add", ";");
+		s_template->remove_cmd_queue  = xfce_rc_read_list_entry(rc, "X-Squeeze-Remove", ";");
+		s_template->extract_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Extract", ";");
+		s_template->refresh_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Refresh", ";");
 
-		lsq_support_factory_add_mime(factory, mime_support);
+		lsq_support_factory_add_template(factory, s_template);
 	}
 	 
 	return factory;

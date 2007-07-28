@@ -3,15 +3,11 @@ lib_LTLIBRARIES = libsqueeze-1.la
 libsqueeze_1_la_SOURCES =  \
 	internals.c internals.h \
 	libsqueeze.c libsqueeze.h \
-	libsqueeze-archive.h \
-	libsqueeze-view.h \
-	libsqueeze-command.h \
-	libsqueeze-module.h \
-	libsqueeze-mime-support.h \
 	slist.c slist.h \
-	mime-support.c mime-support.h \
+	support-template.c support-template.h \
 	archive.c archive.h \
 	archive-iter.c archive-iter.h \
+	archive-iter-pool.c archive-iter-pool.h \
 	archive-tempfs.c archive-tempfs.h \
 	support-factory.c support-factory.h \
 	support-reader.c support-reader.h

@@ -19,26 +19,6 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h> 
-#include <signal.h>
-#include <sys/wait.h>
-#include <sys/types.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze-archive.h"
-#include "libsqueeze-mime.h"
-#include "mime-support.h"
-
-#include "internals.h"
-
-
-const gchar *
-lsq_mime_support_get_comment(LSQMimeSupport *mime_s)
-{
-	return thunar_vfs_mime_info_get_comment(mime_s->mime_info);
-}
-
-const gchar *
-lsq_mime_support_get_name(LSQMimeSupport *mime_s)
-{
-	return thunar_vfs_mime_info_get_name(mime_s->mime_info);
-}
+#include "support-template.h"

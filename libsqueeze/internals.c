@@ -20,14 +20,13 @@
 #include <glib-object.h>
 #include <thunar-vfs/thunar-vfs.h>
 
-#include "libsqueeze-archive.h"
-#include "libsqueeze-mime-support.h"
-#include "libsqueeze-view.h"
-#include "libsqueeze-command.h"
-#include "support-factory.h"
-#include "archive-iter.h"
-#include "archive-command.h"
+#include "libsqueeze.h"
+#include "support-template.h"
 #include "archive.h"
+#include "archive-iter.h"
+#include "support-factory.h"
+
+#include "libsqueeze-view.h"
 
 #include "internals.h"
 
@@ -83,7 +82,7 @@ lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer pat
 	else
 		path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
 
-	if(thunar_vfs_path_equal(((LSQArchive *)open_archive)->path_info, path_info))
+	if(thunar_vfs_path_equal(lsq_archive_get_path_info(LSQ_ARCHIVE(open_archive)), path_info))
 	{
 		if(path_info)
 			thunar_vfs_path_unref(path_info);

@@ -14,11 +14,29 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __MIME_SUPPORT_H__
-#define __MIME_SUPPORT_H__
+#ifndef __SUPPORT_TEMPLATE_H__
+#define __SUPPORT_TEMPLATE_H__
 
+typedef enum
+{
+	LSQ_SUPPORT_FILES    = 1 << 0x0,
+	LSQ_SUPPORT_FOLDERS  = 1 << 0x1,
+	LSQ_SUPPORT_MANY     = 1 << 0x2
+} LSQSupportType;
 
-struct _LSQMimeSupport
+typedef enum
+{
+	LSQ_COMMAND_TYPE_ADD,
+	LSQ_COMMAND_TYPE_REMOVE,
+	LSQ_COMMAND_TYPE_EXTRACT,
+	LSQ_COMMAND_TYPE_REFRESH,
+	LSQ_COMMAND_TYPE_OPEN,
+	LSQ_COMMAND_TYPE_TEST
+} LSQCommandType;
+
+typedef struct _LSQSupportTemplate LSQSupportTemplate;
+
+struct _LSQSupportTemplate
 {
 	const gchar *id;
 	ThunarVfsMimeInfo *mime_info;
@@ -34,5 +52,5 @@ struct _LSQMimeSupport
 };
 
 
-#endif /* __MIME_SUPPORT_H__ */
+#endif /* __SUPPORT_TEMPLATE_H__ */
 
