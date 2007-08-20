@@ -19,6 +19,7 @@ libsqueeze_1_la_SOURCES =  \
 # xfce-launch-command.c xfce-launch-command.h
 
 libsqueeze_1_la_CFLAGS = \
+	-DDATADIR=\"$(datadir)\" \
 	$(GLIB_CFLAGS)  \
 	$(DBUS_CFLAGS)  \
 	$(THUNAR_VFS_CFLAGS)

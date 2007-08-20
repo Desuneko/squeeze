@@ -196,8 +196,8 @@ lsq_archive_command_get_comment(LSQArchiveCommand *archive_command)
 
 LSQArchiveCommand *
 lsq_archive_command_new(const gchar *comment,
-                        LSQArchive *archive,
-                        LSQCommandFunc exec_command)
+						LSQArchive *archive,
+						LSQCommandFunc exec_command)
 {
 	LSQArchiveCommand *archive_command;
 

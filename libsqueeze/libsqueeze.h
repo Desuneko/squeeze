@@ -41,30 +41,30 @@ void lsq_shutdown();
 /*
  * gint
  * lsq_new_archive(gchar *path,
- *                 LSQArchiveType type,
- *                 gboolean overwrite,
- *                 LSQArchive &&lp_archive)
+ *				 LSQArchiveType type,
+ *				 gboolean overwrite,
+ *				 LSQArchive &&lp_archive)
  *
  * returns:
  * 0 -- success
  */
 gint
 lsq_new_archive( gchar *path,
-                 gboolean overwrite,
-                 gchar *mime,
-                 LSQArchive **lp_archive);
+				 gboolean overwrite,
+				 gchar *mime,
+				 LSQArchive **lp_archive);
 
 /*
  * gint 
  * lsq_open_archive(gchar *path,
- *                  LSQArchive **lp_archive)
+ *				  LSQArchive **lp_archive)
  *
  * returns:
  * 0 -- success
  */
 gint
 lsq_open_archive( gchar *path, 
-                  LSQArchive **lp_archive);
+				  LSQArchive **lp_archive);
 
 /*
  * void 

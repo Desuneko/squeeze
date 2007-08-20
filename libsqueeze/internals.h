@@ -14,10 +14,10 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-GSList                 *support_factory_list;
-GSList                 *lsq_mime_support_list;
-GSList                 *lsq_opened_archive_list;
-ThunarVfsPath          *lsq_relative_base_path;
+GSList				 *support_factory_list;
+GSList				 *lsq_mime_support_list;
+GSList				 *lsq_opened_archive_list;
+ThunarVfsPath		  *lsq_relative_base_path;
 
 /*
  * gint

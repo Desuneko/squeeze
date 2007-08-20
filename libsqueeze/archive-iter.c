@@ -123,7 +123,7 @@ lsq_archive_iter_new(LSQArchiveEntry *entry, LSQArchiveIter *parent, LSQArchive 
 #ifdef USE_LSQITER_SLICES
 	/* Lets see if there is an iter we can use */
 	if(lsq_archive_iter_pool_get_size(archive->pool) >= lsq_archive_iter_pool_get_reserved(archive->pool) || 
-       !(iter = lsq_archive_iter_pool_get_iter(archive->pool, lsq_archive_iter_pool_get_size(archive->pool))))
+	   !(iter = lsq_archive_iter_pool_get_iter(archive->pool, lsq_archive_iter_pool_get_size(archive->pool))))
 	{
 		/* No iter found, make a new one */
 #ifdef USE_GSLICES

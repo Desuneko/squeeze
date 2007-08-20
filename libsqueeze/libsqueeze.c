@@ -38,23 +38,17 @@ lsq_init()
 	const gchar *filename = NULL;
 	gchar *current_dir = g_get_current_dir();
 
-	const gchar *data_home;
-   	GDir *data_home_dir;
-   	gchar *data_squeeze;
-
 	lsq_mime_database = thunar_vfs_mime_database_get_default();
 
 	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
 	lsq_opened_archive_list = NULL;
 	g_free(current_dir);
 
-	data_home = g_getenv("XDG_DATA_HOME");
-	data_squeeze = g_strconcat(data_home, "/squeeze", NULL);
-	data_home_dir = g_dir_open(data_squeeze, 0, NULL);
-
-	if(data_home_dir)
+	gchar *data_squeeze = g_strconcat(DATADIR, "/squeeze", NULL);
+	GDir *data_dir = g_dir_open(data_squeeze, 0, NULL);
+	if(data_dir)
 	{
-		while((filename = g_dir_read_name(data_home_dir)) != NULL)
+		while((filename = g_dir_read_name(data_dir)) != NULL)
 		{
 
 			if(g_str_has_suffix(filename, ".squeeze"))
@@ -69,39 +63,7 @@ lsq_init()
 			}
 		}
 
-		g_dir_close(data_home_dir);
-	}
-
-	g_free(data_squeeze);
-
-	const gchar *data_dirs = g_getenv("XDG_DATA_DIRS");
-
-	gchar **data_dir = g_strsplit(data_dirs, ":", 0);
-	gchar **_data_dir_iter = data_dir;
-	while(*_data_dir_iter)
-	{
-		data_squeeze = g_strconcat(*_data_dir_iter, "/squeeze", NULL);
-		data_home_dir = g_dir_open(data_squeeze, 0, NULL);
-		if(data_home_dir)
-		{
-			while((filename = g_dir_read_name(data_home_dir)) != NULL)
-			{
-
-				if(g_str_has_suffix(filename, ".squeeze"))
-				{
-					gchar *path = g_strconcat(data_squeeze, "/", filename, NULL);
-					LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
-					if(factory)
-					{
-						support_factory_list = g_slist_append(support_factory_list, factory);
-					}
-					g_free(path);
-				}
-			}
-
-			g_dir_close(data_home_dir);
-		}
-		_data_dir_iter++;
+		g_dir_close(data_dir);
 	}
 }
 
@@ -167,11 +129,11 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 gboolean
 lsq_is_supported(const gchar *filename)
 {
-    return FALSE;
+	return FALSE;
 }
 
 GSList *
 lsq_get_supported_mime_types(LSQCommandType type)
 {
-    return NULL;
+	return NULL;
 }

@@ -146,11 +146,11 @@ lsq_spawn_command_finalize(GObject *object)
  */
 LSQArchiveCommand *
 lsq_spawn_command_new(const gchar *comment, 
-                      LSQArchive *archive, 
-                      const gchar *command, 
-                      const gchar *files, 
-                      const gchar *options, 
-                      const gchar *archive_path)
+					  LSQArchive *archive, 
+					  const gchar *command, 
+					  const gchar *files, 
+					  const gchar *options, 
+					  const gchar *archive_path)
 {
 	LSQArchiveCommand *archive_command;
 

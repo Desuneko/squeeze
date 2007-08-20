@@ -287,9 +287,9 @@ gboolean
 lsq_archive_exists(const LSQArchive *archive)
 {
 	if(!archive->priv->file_info)
-        archive->priv->file_info = thunar_vfs_info_new_for_path(archive->priv->path_info, NULL);
+		archive->priv->file_info = thunar_vfs_info_new_for_path(archive->priv->path_info, NULL);
 
-    if(archive->priv->file_info)
+	if(archive->priv->file_info)
 		return TRUE;
 
 	return FALSE;
@@ -363,17 +363,17 @@ lsq_archive_get_status(const LSQArchive *archive)
 ThunarVfsPath *
 lsq_archive_get_path_info(LSQArchive *archive)
 {
-    return archive->priv->path_info;
+	return archive->priv->path_info;
 }
 
 LSQSupportType
 lsq_archive_get_support_mask(const LSQArchive *archive)
 {
-    return archive->priv->s_template->support_mask;
+	return archive->priv->s_template->support_mask;
 }
 
 gboolean
 lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
 {
-    return FALSE;
+	return FALSE;
 }

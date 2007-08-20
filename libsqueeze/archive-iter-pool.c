@@ -34,7 +34,7 @@ struct _LSQArchiveIterPool
 LSQArchiveIterPool *
 lsq_archive_iter_pool_new()
 {
-    return g_new0(LSQArchiveIterPool, 1);
+	return g_new0(LSQArchiveIterPool, 1);
 }
 
 void
@@ -148,7 +148,7 @@ lsq_archive_iter_pool_insert_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
 		g_free(old_pool);
 #ifdef USE_LSQITER_SLICES
 		/* We need to know if there are still allocations left */
-		/* Make all unallocated NULL                           */
+		/* Make all unallocated NULL						   */
 		for(i = ipool->size; i < ipool->reserved; ++i)
 		{
 			pool[i] = NULL;
@@ -177,7 +177,7 @@ lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
 		}
 #ifdef USE_LSQITER_SLICES
 		/* We don't free the pointer so move it */
-		/* Place it at the end om the pool      */
+		/* Place it at the end om the pool	  */
 		pool[ipool->size] = iter;
 #endif
 	}
@@ -186,17 +186,17 @@ lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *ite
 gint
 lsq_archive_iter_pool_get_size(LSQArchiveIterPool *pool)
 {
-    return pool->size;
+	return pool->size;
 }
 
 gint
 lsq_archive_iter_pool_get_reserved(LSQArchiveIterPool *pool)
 {
-    return pool->reserved;
+	return pool->reserved;
 }
 
 LSQArchiveIter *
 lsq_archive_iter_pool_get_iter(LSQArchiveIterPool *pool, gint index)
 {
-    return pool->pool[index];
+	return pool->pool[index];
 }

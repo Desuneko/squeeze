@@ -132,14 +132,14 @@ lsq_xfce_launch_command_new(const gchar *comment, LSQArchive *archive, const gch
 
 	archive_command = g_object_new(lsq_xfce_launch_command_get_type(), NULL);
 
-	LSQXfceLaunchCommand    *xfce_launch_command = LSQ_XFCE_LAUNCH_COMMAND(archive_command);
+	LSQXfceLaunchCommand	*xfce_launch_command = LSQ_XFCE_LAUNCH_COMMAND(archive_command);
 
 	xfce_launch_command->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
 
 	xfce_launch_command->proxy = dbus_g_proxy_new_for_name(xfce_launch_command->connection, 
-	                                                       "org.xfce.FileManager",
-	                                                       "/org/xfce/FileManager",
-	                                                       "org.xfce.FileManager");
+														   "org.xfce.FileManager",
+														   "/org/xfce/FileManager",
+														   "org.xfce.FileManager");
 	
 	g_object_ref(G_OBJECT(archive));
 	archive_command->archive = archive;

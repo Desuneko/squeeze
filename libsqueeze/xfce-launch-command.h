@@ -19,22 +19,22 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_XFCE_LAUNCH_COMMAND lsq_xfce_launch_command_get_type()
 
-#define LSQ_XFCE_LAUNCH_COMMAND(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LSQ_TYPE_XFCE_LAUNCH_COMMAND,      \
+#define LSQ_XFCE_LAUNCH_COMMAND(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			LSQ_TYPE_XFCE_LAUNCH_COMMAND,	  \
 			LSQXfceLaunchCommand))
 
-#define LSQ_IS_XFCE_LAUNCH_COMMAND(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define LSQ_IS_XFCE_LAUNCH_COMMAND(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			LSQ_TYPE_XFCE_LAUNCH_COMMAND))
 
 #define LSQ_XFCE_LAUNCH_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			LSQ_TYPE_XFCE_LAUNCH_COMMAND,      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			LSQ_TYPE_XFCE_LAUNCH_COMMAND,	  \
 			LSQXfceLaunchCommandClass))
 
 #define LSQ_IS_XFCE_LAUNCH_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			LSQ_TYPE_XFCE_LAUNCH_COMMAND))
 
 typedef struct _LSQXfceLaunchCommand LSQXfceLaunchCommand;
@@ -43,7 +43,7 @@ struct _LSQXfceLaunchCommand
 {
 	LSQArchiveCommand  parent;
 	DBusGConnection *connection;
-	DBusGProxy      *proxy;
+	DBusGProxy	  *proxy;
 	gchar *files;
 };
 
@@ -54,9 +54,9 @@ struct _LSQXfceLaunchCommandClass
 	LSQArchiveCommandClass parent;
 }; 
 
-GType               lsq_xfce_launch_command_get_type();
+GType			   lsq_xfce_launch_command_get_type();
 LSQArchiveCommand  *lsq_xfce_launch_command_new(const gchar *comment, LSQArchive *archive, const gchar *, GSList *files);
-void                lsq_xfce_launch_command_set_args(LSQXfceLaunchCommand *command);
+void				lsq_xfce_launch_command_set_args(LSQXfceLaunchCommand *command);
 
 G_END_DECLS
 #endif /* __LIBSQUEEZE_XFCE_LAUNCH_COMMAND_H__ */

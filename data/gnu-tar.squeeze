@@ -21,7 +21,7 @@ X-Squeeze-Remove=gunzip -c %a >> %t;tar -f %t --delete %F; gzip -c %t >> %a
 X-Squeeze-Extract=tar -C %d -xf %a %F
 X-Squeeze-Refresh=tar -tvvf %a
 
-[application/x-bzip2-compressed-tar]
+[application/x-bzip-compressed-tar]
 X-Squeeze-Requires=tar;bzip2;bunzip2
 X-Squeeze-New=tar -jcf %a %F
 X-Squeeze-Add=bunzip2 -c %a >> %t;tar -rf %t %F;bzip2 -c %t >> %a

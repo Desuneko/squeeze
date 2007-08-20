@@ -19,9 +19,9 @@
 
 typedef enum
 {
-	LSQ_SUPPORT_FILES    = 1 << 0x0,
+	LSQ_SUPPORT_FILES	= 1 << 0x0,
 	LSQ_SUPPORT_FOLDERS  = 1 << 0x1,
-	LSQ_SUPPORT_MANY     = 1 << 0x2
+	LSQ_SUPPORT_MANY	 = 1 << 0x2
 } LSQSupportType;
 
 typedef enum

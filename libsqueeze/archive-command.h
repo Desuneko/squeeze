@@ -22,14 +22,14 @@ G_BEGIN_DECLS
 
 struct _LSQArchiveCommand
 {
-	GObject        parent;
-	GQuark         domain;
-	gchar         *comment;
-	LSQArchive    *archive;
-	GError        *error;
-	gboolean       running;
-	gboolean       safe;
-	gpointer       user_data;
+	GObject		parent;
+	GQuark		 domain;
+	gchar		 *comment;
+	LSQArchive	*archive;
+	GError		*error;
+	gboolean	   running;
+	gboolean	   safe;
+	gpointer	   user_data;
 	LSQCommandFunc execute;
 	LSQCommandFunc stop;
 };
@@ -48,12 +48,12 @@ lsq_archive_command_get_comment(LSQArchiveCommand *archive_command);
 
 LSQArchiveCommand *
 lsq_archive_command_new(const gchar *comment,
-                        LSQArchive *archive,
-                        LSQCommandFunc exec_command);
+						LSQArchive *archive,
+						LSQCommandFunc exec_command);
 
 LSQArchiveCommand *
 lsq_archive_command_new_remove(const gchar *comment,
-                        LSQArchive *archive,
+						LSQArchive *archive,
 						GSList *iters);
 
 G_END_DECLS

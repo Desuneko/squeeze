@@ -27,15 +27,15 @@ struct _LSQArchiveIter
 	guint ref_count;
 };
 
-void     lsq_archive_init_iter(LSQArchive *);
-void     lsq_archive_free_iter(LSQArchive *);
+void	 lsq_archive_init_iter(LSQArchive *);
+void	 lsq_archive_free_iter(LSQArchive *);
 
 
-void     lsq_archive_iter_remove(LSQArchiveIter *, gboolean);
+void	 lsq_archive_iter_remove(LSQArchiveIter *, gboolean);
 
 #ifdef DEBUG
 LSQArchiveIter *_lsq_archive_iter_ref(LSQArchiveIter *iter, const gchar*, int);
-void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int);
+void			_lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int);
 /*
 #define lsq_archive_iter_ref(iter) _lsq_archive_iter_ref(iter, __FILE__, __LINE__)
 #define lsq_archive_iter_unref(iter) _lsq_archive_iter_unref(iter, __FILE__, __LINE__)
@@ -43,7 +43,7 @@ void            _lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int)
 #endif
 
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
-void            lsq_archive_iter_unref(LSQArchiveIter *iter);
+void			lsq_archive_iter_unref(LSQArchiveIter *iter);
 
 
 G_END_DECLS

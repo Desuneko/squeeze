@@ -19,22 +19,22 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_MACRO_COMMAND lsq_macro_command_get_type()
 
-#define LSQ_MACRO_COMMAND(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LSQ_TYPE_MACRO_COMMAND,      \
+#define LSQ_MACRO_COMMAND(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			LSQ_TYPE_MACRO_COMMAND,	  \
 			LSQMacroCommand))
 
-#define LSQ_IS_MACRO_COMMAND(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define LSQ_IS_MACRO_COMMAND(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			LSQ_TYPE_MACRO_COMMAND))
 
 #define LSQ_MACRO_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			LSQ_TYPE_MACRO_COMMAND,      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			LSQ_TYPE_MACRO_COMMAND,	  \
 			LSQMacroCommandClass))
 
 #define LSQ_IS_MACRO_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			LSQ_TYPE_MACRO_COMMAND))
 
 typedef struct _LSQMacroCommand LSQMacroCommand;

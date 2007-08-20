@@ -19,22 +19,22 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_REMOVE_COMMAND lsq_remove_command_get_type()
 
-#define LSQ_REMOVE_COMMAND(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LSQ_TYPE_REMOVE_COMMAND,      \
+#define LSQ_REMOVE_COMMAND(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			LSQ_TYPE_REMOVE_COMMAND,	  \
 			LSQRemoveCommand))
 
-#define LSQ_IS_REMOVE_COMMAND(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define LSQ_IS_REMOVE_COMMAND(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			LSQ_TYPE_REMOVE_COMMAND))
 
 #define LSQ_REMOVE_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			LSQ_TYPE_REMOVE_COMMAND,      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			LSQ_TYPE_REMOVE_COMMAND,	  \
 			LSQRemoveCommandClass))
 
 #define LSQ_IS_REMOVE_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			LSQ_TYPE_REMOVE_COMMAND))
 
 typedef struct _LSQRemoveCommand LSQRemoveCommand;

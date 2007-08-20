@@ -19,22 +19,22 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_SPAWN_COMMAND lsq_spawn_command_get_type()
 
-#define LSQ_SPAWN_COMMAND(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			LSQ_TYPE_SPAWN_COMMAND,      \
+#define LSQ_SPAWN_COMMAND(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			LSQ_TYPE_SPAWN_COMMAND,	  \
 			LSQSpawnCommand))
 
-#define LSQ_IS_SPAWN_COMMAND(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define LSQ_IS_SPAWN_COMMAND(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			LSQ_TYPE_SPAWN_COMMAND))
 
 #define LSQ_SPAWN_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			LSQ_TYPE_SPAWN_COMMAND,      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			LSQ_TYPE_SPAWN_COMMAND,	  \
 			LSQSpawnCommandClass))
 
 #define LSQ_IS_SPAWN_COMMAND_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			LSQ_TYPE_SPAWN_COMMAND))
 
 
@@ -45,18 +45,18 @@ typedef gboolean (*LSQParseFunc) (LSQSpawnCommand *, gpointer user_data);
 struct _LSQSpawnCommand
 {
 	LSQArchiveCommand parent;
-	gchar            *command;
-	GPid              child_pid;
-	GIOChannel       *ioc_in;
-	GIOChannel       *ioc_out;
-	GIOChannel       *ioc_err;
+	gchar			*command;
+	GPid			  child_pid;
+	GIOChannel	   *ioc_in;
+	GIOChannel	   *ioc_out;
+	GIOChannel	   *ioc_err;
 
-	gchar            *files;
-	gchar            *options;
-	gchar            *archive_path;
+	gchar			*files;
+	gchar			*options;
+	gchar			*archive_path;
 
-	LSQParseFunc      parse_stdout;
-	LSQParseFunc      parse_stderr;
+	LSQParseFunc	  parse_stdout;
+	LSQParseFunc	  parse_stderr;
 };
 
 typedef struct _LSQSpawnCommandClass LSQSpawnCommandClass;
@@ -71,28 +71,28 @@ lsq_spawn_command_get_type();
 
 LSQArchiveCommand *
 lsq_spawn_command_new(const gchar *comment, 
-                      LSQArchive *archive, 
-                      const gchar *command, 
-                      const gchar *files, 
-                      const gchar *options, 
-                      const gchar *archive_path);
+					  LSQArchive *archive, 
+					  const gchar *command, 
+					  const gchar *files, 
+					  const gchar *options, 
+					  const gchar *archive_path);
 gboolean
 lsq_spawn_command_set_parse_func(LSQSpawnCommand *spawn_command, guint fd, LSQParseFunc func, gpointer user_data);
 
 GIOStatus
 lsq_spawn_command_read_line(LSQSpawnCommand *spawn_command,
-                      guint fd,
-                      gchar **lines,
-                      gsize *length,
-                      GError **error);
+					  guint fd,
+					  gchar **lines,
+					  gsize *length,
+					  GError **error);
 
 GIOStatus
 lsq_spawn_command_read_bytes(LSQSpawnCommand *spawn_command, 
-                      guint fd,
-                      gchar *buf,
-                      gsize max_length,
-                      gsize *length,
-                      GError **error);
+					  guint fd,
+					  gchar *buf,
+					  gsize max_length,
+					  gsize *length,
+					  GError **error);
 
 
 G_END_DECLS
