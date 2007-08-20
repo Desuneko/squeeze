@@ -1,7 +1,5 @@
 squeezedir = $(datadir)/squeeze
-squeeze_DATA =         \
-    gnu-tar.squeeze
-	
+squeeze_DATA = gnu-tar.squeeze
 
-EXTRA_DIST = $(squeeze_DATA)
+DISCLEANFILES = $(squeeze_DATA)
 

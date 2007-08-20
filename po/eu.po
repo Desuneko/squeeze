@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-26 09:23+0200\n"
+"POT-Creation-Date: 2007-08-21 00:30+0200\n"
 "PO-Revision-Date: 2007-07-13 13:28+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <Librezale@librezale.org>\n"
@@ -17,134 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../libsqueeze/archive.c:268
+#: ../libsqueeze/archive.c:236
 msgid "Name"
 msgstr "Izena"
 
-#: ../libsqueeze/archive.c:270
+#: ../libsqueeze/archive.c:238
 msgid "Mime type"
 msgstr "Mime mota"
-
-#: ../libsqueeze/command-builder-compr.c:198
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-msgid "Compressing"
-msgstr "Konprimitzen"
-
-#: ../libsqueeze/command-builder-compr.c:222
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-msgid "Decompressing"
-msgstr "Deskonprimitzen"
-
-#: ../libsqueeze/command-builder-compr.c:253
-#: ../libsqueeze/command-builder-gnu-tar.c:428
-#: ../libsqueeze/command-builder-gnu-tar.c:430
-#: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-zip.c:214
-msgid "Refresh"
-msgstr "Berritu"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:145
-#: ../libsqueeze/command-builder-rar.c:137
-msgid "Rights"
-msgstr "Baimenak"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:147
-msgid "Owner/Group"
-msgstr "Jabea/Taldea"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-#: ../libsqueeze/command-builder-zip.c:120
-msgid "Size"
-msgstr "Tamaina"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-#: ../libsqueeze/command-builder-zip.c:124
-msgid "Date"
-msgstr "Data"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-#: ../libsqueeze/command-builder-zip.c:126
-msgid "Time"
-msgstr "Ordua"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:283
-msgid "Adding files"
-msgstr "Fitxategiak gehitzen"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:303
-#: ../libsqueeze/command-builder-gnu-tar.c:374
-msgid "Cleanup"
-msgstr "Garbitu"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:334
-msgid "Removing files"
-msgstr "Fitxategiak kentzen"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
-msgid "Removing"
-msgstr "Kentzen"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-#: ../libsqueeze/command-builder-zip.c:203
-msgid "Extracting"
-msgstr "Ateratzen"
-
-#: ../libsqueeze/command-builder-rar.c:127
-#: ../libsqueeze/command-builder-zip.c:116
-msgid "Compressed"
-msgstr "Konprimiturik"
-
-#: ../libsqueeze/command-builder-rar.c:131
-#: ../libsqueeze/command-builder-zip.c:122
-msgid "Ratio"
-msgstr "Erlazioa"
-
-#: ../libsqueeze/command-builder-rar.c:141
-#: ../libsqueeze/command-builder-zip.c:118
-msgid "Method"
-msgstr "Metodoa"
-
-#: ../libsqueeze/command-builder-rar.c:143
-msgid "Version"
-msgstr "Bertsioa"
-
-#: ../libsqueeze/command-builder-rar.c:181
-#: ../libsqueeze/command-builder-zip.c:166
-msgid "Adding"
-msgstr "Gehitzen"
-
-#: ../libsqueeze/command-builder.c:125
-msgid "Execute"
-msgstr "Exekutatu"
-
-#: ../libsqueeze/spawn-command.c:273
-#, c-format
-msgid "Command exited with status %d."
-msgstr "Komandoa %d egoerarekin irten da."
-
-#: ../libsqueeze/spawn-command.c:283
-msgid "Command interrupted by user"
-msgstr "Komandoa erabiltzaileak gelditurik"
-
-#: ../libsqueeze/spawn-command.c:287
-msgid "Command received SIGSEGV"
-msgstr "Komandoak SIGSEGV jaso du"
-
-#: ../libsqueeze/spawn-command.c:292
-msgid "Command Terminated"
-msgstr "Komandoa Amaiturik"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
@@ -158,45 +37,16 @@ msgstr "Pakete kudeatzailearekin paketeak kudeatu eta sortu"
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze Pakete kudeatzailea"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Gehitzeko fitxategi eta direktorioak"
-
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Aukerak:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Fitxategiak"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Direktorioak"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Paketera fitxategia(k) gehitu"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Fitxategiak hautatu"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Karpetak hautatu"
-
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:162 ../src/application.c:252
+#: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
+msgstr ""
+"Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
 
-#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -207,11 +57,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:235
+#: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Ezinda paketea sortu, ez da MIME-mota onartzen"
 
-#: ../src/application.c:269 ../src/main_window.c:830
+#: ../src/application.c:268 ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -272,8 +122,8 @@ msgstr "Fitxategi Denak"
 msgid "Selected files"
 msgstr "Hautatutako fitxategiak"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:428
-#: ../src/main_window.c:1129
+#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Atera"
 
@@ -335,54 +185,71 @@ msgstr ""
 "Paketean zehar nabigatzeko erabiliko den estiloa"
 
 #. File menu
-#: ../src/main_window.c:283
+#: ../src/main_window.c:295
 msgid "_File"
 msgstr "_Fitxategia"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:311
+#: ../src/main_window.c:323
 msgid "_Action"
 msgstr "_Ekintza"
 
-#: ../src/main_window.c:316
-msgid "_Add"
-msgstr "_Gehitu"
+#: ../src/main_window.c:328
+#, fuzzy
+msgid "_Add files"
+msgstr "Fitxategiak gehitzen"
 
-#: ../src/main_window.c:322
+#: ../src/main_window.c:334
+#, fuzzy
+msgid "_Add _folders"
+msgstr "Fitxategiak gehitzen"
+
+#: ../src/main_window.c:340
 msgid "_Extract"
 msgstr "_Atera"
 
 #. View menu
-#: ../src/main_window.c:354
+#: ../src/main_window.c:373
 msgid "_View"
 msgstr "_Ikusi"
 
 #. Help menu
-#: ../src/main_window.c:378
+#: ../src/main_window.c:397
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: ../src/main_window.c:424
-msgid "Add"
-msgstr "Gehitu"
+#: ../src/main_window.c:443 ../src/main_window.c:852
+#, fuzzy
+msgid "Add files"
+msgstr "Fitxategiak gehitzen"
 
-#: ../src/main_window.c:689
+#: ../src/main_window.c:447 ../src/main_window.c:894
+#, fuzzy
+msgid "Add folders"
+msgstr "Fitxategiak gehitzen"
+
+#: ../src/main_window.c:724
 msgid "Open archive in new window"
 msgstr "Paketea leiho berrian ireki"
 
-#: ../src/main_window.c:695
+#: ../src/main_window.c:730
 msgid "Open archive"
 msgstr "Paketea ireki"
 
-#: ../src/main_window.c:707 ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Paketeak"
+#: ../src/main_window.c:916
+#, fuzzy
+msgid ""
+"Squeeze cannot add folders to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Squeeze ez da pakete mota honetara fitxategiak gehitzeko gai,\n"
+"hau onartzeko aplikazioa ez da aurkitzen."
 
-#: ../src/main_window.c:850
+#: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Ziur zaude hautaturiko fitxategiak kendu nahi dituzula?"
 
-#: ../src/main_window.c:863
+#: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -390,7 +257,7 @@ msgstr ""
 "Squeeze ez da pakete mota honetatik fitxategiak kentzeko gai,\n"
 "hau onartzeko aplikazioa falta da."
 
-#: ../src/main_window.c:912
+#: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -398,55 +265,56 @@ msgstr ""
 "Ziur zaude ekintza hau ezeztatu nahi duzula?\n"
 "Honek paketea apurtu dezake."
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:1081
 msgid "Lead developer:"
 msgstr "Garapen buru:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1084
 msgid "Contributors:"
 msgstr "Laguntzaileak:"
 
-#: ../src/main_window.c:1000
+#: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Xarchiver-en oinarritua, Giuseppe Torelli-k idatzia"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1089
 msgid "Application Icon:"
 msgstr "Aplikazioa Ikonoa:"
 
-#: ../src/main_window.c:1005
+#: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
 msgstr "Gehitu / Atera ikonoak:"
 
-#: ../src/main_window.c:1006
+#: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Andreas Nilsson-ek sorturiko atera ikonoan oinarriturik"
 
-#: ../src/main_window.c:1013
+#: ../src/main_window.c:1100
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr "Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
+msgstr ""
+"Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1021
+#: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr "Piarres Beobide <pi@beobide.net> 2007"
 
-#: ../src/main_window.c:1050 ../src/main_window.c:1118
-#: ../src/main_window.c:1285
+#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Eginda"
 
-#: ../src/main_window.c:1128
+#: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Zein ekintza egin nahi duzu hautaturiko fitxategiekin"
 
-#: ../src/main_window.c:1129
+#: ../src/main_window.c:1219
 msgid "Open"
 msgstr "Ireki"
 
-#: ../src/main_window.c:1143
+#: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -454,11 +322,11 @@ msgstr ""
 "Squezze ez da fitxategi mota hau bistaratzeko gai.\n"
 "hau onartzeko aplikazioa falta da."
 
-#: ../src/main_window.c:1211
+#: ../src/main_window.c:1301
 msgid "Failed to open file"
 msgstr "Huts fitxategia irekitzerakoan"
 
-#: ../src/main_window.c:1212
+#: ../src/main_window.c:1302
 #, c-format
 msgid ""
 "'%s'\n"
@@ -471,7 +339,11 @@ msgstr ""
 msgid "Archive type:"
 msgstr "Pakete mota:"
 
-#: ../src/new_dialog.c:107
+#: ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Paketeak"
+
+#: ../src/new_dialog.c:108
 msgid "Create new archive"
 msgstr "Pakete berria sortu"
 
@@ -499,3 +371,95 @@ msgstr "Kokalekua:"
 msgid "Archive manager"
 msgstr "Pakete kudeatzaileak"
 
+#~ msgid "Compressing"
+#~ msgstr "Konprimitzen"
+
+#~ msgid "Decompressing"
+#~ msgstr "Deskonprimitzen"
+
+#~ msgid "Refresh"
+#~ msgstr "Berritu"
+
+#~ msgid "Rights"
+#~ msgstr "Baimenak"
+
+#~ msgid "Owner/Group"
+#~ msgstr "Jabea/Taldea"
+
+#~ msgid "Size"
+#~ msgstr "Tamaina"
+
+#~ msgid "Date"
+#~ msgstr "Data"
+
+#~ msgid "Time"
+#~ msgstr "Ordua"
+
+#~ msgid "Cleanup"
+#~ msgstr "Garbitu"
+
+#~ msgid "Removing files"
+#~ msgstr "Fitxategiak kentzen"
+
+#~ msgid "Removing"
+#~ msgstr "Kentzen"
+
+#~ msgid "Extracting"
+#~ msgstr "Ateratzen"
+
+#~ msgid "Compressed"
+#~ msgstr "Konprimiturik"
+
+#~ msgid "Ratio"
+#~ msgstr "Erlazioa"
+
+#~ msgid "Method"
+#~ msgstr "Metodoa"
+
+#~ msgid "Version"
+#~ msgstr "Bertsioa"
+
+#~ msgid "Adding"
+#~ msgstr "Gehitzen"
+
+#~ msgid "Execute"
+#~ msgstr "Exekutatu"
+
+#~ msgid "Command exited with status %d."
+#~ msgstr "Komandoa %d egoerarekin irten da."
+
+#~ msgid "Command interrupted by user"
+#~ msgstr "Komandoa erabiltzaileak gelditurik"
+
+#~ msgid "Command received SIGSEGV"
+#~ msgstr "Komandoak SIGSEGV jaso du"
+
+#~ msgid "Command Terminated"
+#~ msgstr "Komandoa Amaiturik"
+
+#~ msgid "Files and directories to add"
+#~ msgstr "Gehitzeko fitxategi eta direktorioak"
+
+#~ msgid "Options:"
+#~ msgstr "Aukerak:"
+
+#~ msgid "Files"
+#~ msgstr "Fitxategiak"
+
+#~ msgid "Directories"
+#~ msgstr "Direktorioak"
+
+#~ msgid "Add file(s) to archive"
+#~ msgstr "Paketera fitxategia(k) gehitu"
+
+#~ msgid "Select files"
+#~ msgstr "Fitxategiak hautatu"
+
+#~ msgid "Select folders"
+#~ msgstr "Karpetak hautatu"
+
+#~ msgid "_Add"
+#~ msgstr "_Gehitu"
+
+#~ msgid "Add"
+#~ msgstr "Gehitu"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-26 09:23+0200\n"
+"POT-Creation-Date: 2007-08-21 00:30+0200\n"
 "PO-Revision-Date: 2007-06-19 16:36+0300\n"
 "Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
 "Language-Team: Ukrainian <xfce-i18n@xfce.org>\n"
@@ -15,136 +15,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../libsqueeze/archive.c:268
+#: ../libsqueeze/archive.c:236
 msgid "Name"
 msgstr "Назва"
 
-#: ../libsqueeze/archive.c:270
+#: ../libsqueeze/archive.c:238
 msgid "Mime type"
 msgstr "Тип mime"
-
-#: ../libsqueeze/command-builder-compr.c:198
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-msgid "Compressing"
-msgstr "Стиснення"
-
-#: ../libsqueeze/command-builder-compr.c:222
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-msgid "Decompressing"
-msgstr "Розпакування"
-
-#: ../libsqueeze/command-builder-compr.c:253
-#: ../libsqueeze/command-builder-gnu-tar.c:428
-#: ../libsqueeze/command-builder-gnu-tar.c:430
-#: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-zip.c:214
-msgid "Refresh"
-msgstr "Поновлення"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:145
-#: ../libsqueeze/command-builder-rar.c:137
-msgid "Rights"
-msgstr "Права"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:147
-msgid "Owner/Group"
-msgstr "Власник/Група"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-#: ../libsqueeze/command-builder-zip.c:120
-msgid "Size"
-msgstr "Розмір"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-#: ../libsqueeze/command-builder-zip.c:124
-msgid "Date"
-msgstr "Дата"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-#: ../libsqueeze/command-builder-zip.c:126
-msgid "Time"
-msgstr "Час"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:283
-msgid "Adding files"
-msgstr "Додавання файлів"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:303
-#: ../libsqueeze/command-builder-gnu-tar.c:374
-msgid "Cleanup"
-msgstr "Очистка"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:334
-msgid "Removing files"
-msgstr "Видалення файлів"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
-msgid "Removing"
-msgstr "Видалення"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-#: ../libsqueeze/command-builder-zip.c:203
-msgid "Extracting"
-msgstr "Розпакування"
-
-#: ../libsqueeze/command-builder-rar.c:127
-#: ../libsqueeze/command-builder-zip.c:116
-msgid "Compressed"
-msgstr "Стиснутий"
-
-#: ../libsqueeze/command-builder-rar.c:131
-#: ../libsqueeze/command-builder-zip.c:122
-msgid "Ratio"
-msgstr "Коефіцієнт"
-
-#: ../libsqueeze/command-builder-rar.c:141
-#: ../libsqueeze/command-builder-zip.c:118
-msgid "Method"
-msgstr "Метод"
-
-#: ../libsqueeze/command-builder-rar.c:143
-msgid "Version"
-msgstr "Версія"
-
-#: ../libsqueeze/command-builder-rar.c:181
-#: ../libsqueeze/command-builder-zip.c:166
-msgid "Adding"
-msgstr "Додавання"
-
-#: ../libsqueeze/command-builder.c:125
-msgid "Execute"
-msgstr "Виконуваний"
-
-#: ../libsqueeze/spawn-command.c:273
-#, c-format
-msgid "Command exited with status %d."
-msgstr "Команда завершилась зі статусом %d."
-
-#: ../libsqueeze/spawn-command.c:283
-msgid "Command interrupted by user"
-msgstr "Команду перервано користувачем"
-
-#: ../libsqueeze/spawn-command.c:287
-msgid "Command received SIGSEGV"
-msgstr "Команда отримала SIGSEGV"
-
-#: ../libsqueeze/spawn-command.c:292
-msgid "Command Terminated"
-msgstr "Команду завершено"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
@@ -158,45 +38,15 @@ msgstr "Створення і керування архівами з допом�
 msgid "Squeeze Archive Manager"
 msgstr "Менеджер архівів Squeeze"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Файли і теки, що додаються"
-
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Параметри:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Файли"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Теки"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Додати файл (и) до архіву"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Вибрати файли"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Вибрати теки"
-
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:162 ../src/application.c:252
+#: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Неможливо відкрити архів, тип MIME не підтримується або файл не існує"
 
-#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -207,11 +57,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:235
+#: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Неможливо створити архів, тип MIME не підтримується"
 
-#: ../src/application.c:269 ../src/main_window.c:830
+#: ../src/application.c:268 ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -272,8 +122,8 @@ msgstr "Всі файли"
 msgid "Selected files"
 msgstr "Вибрані файли"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:428
-#: ../src/main_window.c:1129
+#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Розпакувати"
 
@@ -336,54 +186,71 @@ msgstr ""
 "Стиль навігації всередині архіву"
 
 #. File menu
-#: ../src/main_window.c:283
+#: ../src/main_window.c:295
 msgid "_File"
 msgstr "_Файл"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:311
+#: ../src/main_window.c:323
 msgid "_Action"
 msgstr "Д_ії"
 
-#: ../src/main_window.c:316
-msgid "_Add"
-msgstr "_Додати"
+#: ../src/main_window.c:328
+#, fuzzy
+msgid "_Add files"
+msgstr "Додавання файлів"
 
-#: ../src/main_window.c:322
+#: ../src/main_window.c:334
+#, fuzzy
+msgid "_Add _folders"
+msgstr "Додавання файлів"
+
+#: ../src/main_window.c:340
 msgid "_Extract"
 msgstr "_Розпакувати"
 
 #. View menu
-#: ../src/main_window.c:354
+#: ../src/main_window.c:373
 msgid "_View"
 msgstr "_Переглянути"
 
 #. Help menu
-#: ../src/main_window.c:378
+#: ../src/main_window.c:397
 msgid "_Help"
 msgstr "Д_овідка"
 
-#: ../src/main_window.c:424
-msgid "Add"
-msgstr "Додати"
+#: ../src/main_window.c:443 ../src/main_window.c:852
+#, fuzzy
+msgid "Add files"
+msgstr "Додавання файлів"
 
-#: ../src/main_window.c:689
+#: ../src/main_window.c:447 ../src/main_window.c:894
+#, fuzzy
+msgid "Add folders"
+msgstr "Додавання файлів"
+
+#: ../src/main_window.c:724
 msgid "Open archive in new window"
 msgstr "Відкрити архів у новому вікні"
 
-#: ../src/main_window.c:695
+#: ../src/main_window.c:730
 msgid "Open archive"
 msgstr "Відкрити архів"
 
-#: ../src/main_window.c:707 ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Архіви"
+#: ../src/main_window.c:916
+#, fuzzy
+msgid ""
+"Squeeze cannot add folders to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Squeeze не може додати файли до архіву,\n"
+"відсутня програма для пітримки цього типу архіву."
 
-#: ../src/main_window.c:850
+#: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Ви впевнені, що бажаєте видалити вибрані файли?"
 
-#: ../src/main_window.c:863
+#: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -391,7 +258,7 @@ msgstr ""
 "Squeeze не може видалити файли з цього архіву,\n"
 "відсутня програма для пітримки цього архіву."
 
-#: ../src/main_window.c:912
+#: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -399,31 +266,32 @@ msgstr ""
 "Ви впевнені, що бажаєте відмінити цю дію?\n"
 "Це може пошкодити архів."
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:1081
 msgid "Lead developer:"
 msgstr "Головний розробник:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1084
 msgid "Contributors:"
 msgstr "Помічники:"
 
-#: ../src/main_window.c:1000
+#: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Навіяно Xarchiver-ом, написаним Giuseppe Torelli"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1089
 msgid "Application Icon:"
 msgstr "Значок програми:"
 
-#: ../src/main_window.c:1005
+#: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
 msgstr "Значки додавання / розпакування:"
 
-#: ../src/main_window.c:1006
+#: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Базується на оригінальному значку розпакування створеному Andreas Nilsson"
+msgstr ""
+"Базується на оригінальному значку розпакування створеному Andreas Nilsson"
 
-#: ../src/main_window.c:1013
+#: ../src/main_window.c:1100
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -432,24 +300,24 @@ msgstr ""
 "Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1021
+#: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr "Dmitry Nikitin <luckas_fb@mail.ru>"
 
-#: ../src/main_window.c:1050 ../src/main_window.c:1118
-#: ../src/main_window.c:1285
+#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Завершено"
 
-#: ../src/main_window.c:1128
+#: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Яку дію ви хочете застосувати до вибраних файлів?"
 
-#: ../src/main_window.c:1129
+#: ../src/main_window.c:1219
 msgid "Open"
 msgstr "Відкрити"
 
-#: ../src/main_window.c:1143
+#: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -457,11 +325,11 @@ msgstr ""
 "Squeeze не може переглянути цей файл.\n"
 "відсутня програма для підтримки цього файлу."
 
-#: ../src/main_window.c:1211
+#: ../src/main_window.c:1301
 msgid "Failed to open file"
 msgstr "Не вдалось відкрити файл"
 
-#: ../src/main_window.c:1212
+#: ../src/main_window.c:1302
 #, c-format
 msgid ""
 "'%s'\n"
@@ -474,7 +342,11 @@ msgstr ""
 msgid "Archive type:"
 msgstr "Тип архіву:"
 
-#: ../src/new_dialog.c:107
+#: ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Архіви"
+
+#: ../src/new_dialog.c:108
 msgid "Create new archive"
 msgstr "Створити новий архів"
 
@@ -502,3 +374,95 @@ msgstr "Місцезнаходження:"
 msgid "Archive manager"
 msgstr "Менеджер архівів"
 
+#~ msgid "Compressing"
+#~ msgstr "Стиснення"
+
+#~ msgid "Decompressing"
+#~ msgstr "Розпакування"
+
+#~ msgid "Refresh"
+#~ msgstr "Поновлення"
+
+#~ msgid "Rights"
+#~ msgstr "Права"
+
+#~ msgid "Owner/Group"
+#~ msgstr "Власник/Група"
+
+#~ msgid "Size"
+#~ msgstr "Розмір"
+
+#~ msgid "Date"
+#~ msgstr "Дата"
+
+#~ msgid "Time"
+#~ msgstr "Час"
+
+#~ msgid "Cleanup"
+#~ msgstr "Очистка"
+
+#~ msgid "Removing files"
+#~ msgstr "Видалення файлів"
+
+#~ msgid "Removing"
+#~ msgstr "Видалення"
+
+#~ msgid "Extracting"
+#~ msgstr "Розпакування"
+
+#~ msgid "Compressed"
+#~ msgstr "Стиснутий"
+
+#~ msgid "Ratio"
+#~ msgstr "Коефіцієнт"
+
+#~ msgid "Method"
+#~ msgstr "Метод"
+
+#~ msgid "Version"
+#~ msgstr "Версія"
+
+#~ msgid "Adding"
+#~ msgstr "Додавання"
+
+#~ msgid "Execute"
+#~ msgstr "Виконуваний"
+
+#~ msgid "Command exited with status %d."
+#~ msgstr "Команда завершилась зі статусом %d."
+
+#~ msgid "Command interrupted by user"
+#~ msgstr "Команду перервано користувачем"
+
+#~ msgid "Command received SIGSEGV"
+#~ msgstr "Команда отримала SIGSEGV"
+
+#~ msgid "Command Terminated"
+#~ msgstr "Команду завершено"
+
+#~ msgid "Files and directories to add"
+#~ msgstr "Файли і теки, що додаються"
+
+#~ msgid "Options:"
+#~ msgstr "Параметри:"
+
+#~ msgid "Files"
+#~ msgstr "Файли"
+
+#~ msgid "Directories"
+#~ msgstr "Теки"
+
+#~ msgid "Add file(s) to archive"
+#~ msgstr "Додати файл (и) до архіву"
+
+#~ msgid "Select files"
+#~ msgstr "Вибрати файли"
+
+#~ msgid "Select folders"
+#~ msgstr "Вибрати теки"
+
+#~ msgid "_Add"
+#~ msgstr "_Додати"
+
+#~ msgid "Add"
+#~ msgstr "Додати"

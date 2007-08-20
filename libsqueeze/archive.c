@@ -124,6 +124,7 @@ lsq_archive_init(LSQArchive *archive)
 #ifdef LSQ_THREADSAFE
 	g_static_rw_lock_init(&archive->rw_lock);
 #endif /* LSQ_THREADSAFE */
+    archive->priv = g_new0(LSQArchivePrivate, 1);
 }
 
 /** static void

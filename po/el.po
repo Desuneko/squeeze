@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-26 09:23+0200\n"
+"POT-Creation-Date: 2007-08-21 00:30+0200\n"
 "PO-Revision-Date: 2007-04-14 12:36+0200\n"
 "Last-Translator: Stavros Giannouris <stavrosg@hellug.gr>\n"
 "Language-Team: Greek <xfce-i18n@xfce.org>\n"
@@ -16,134 +16,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:268
+#: ../libsqueeze/archive.c:236
 msgid "Name"
 msgstr "Όνομα"
 
-#: ../libsqueeze/archive.c:270
+#: ../libsqueeze/archive.c:238
 msgid "Mime type"
 msgstr "Τύπος αρχείου"
-
-#: ../libsqueeze/command-builder-compr.c:198
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-msgid "Compressing"
-msgstr "Συμπίεση"
-
-#: ../libsqueeze/command-builder-compr.c:222
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-msgid "Decompressing"
-msgstr "Αποσυμπίεση"
-
-#: ../libsqueeze/command-builder-compr.c:253
-#: ../libsqueeze/command-builder-gnu-tar.c:428
-#: ../libsqueeze/command-builder-gnu-tar.c:430
-#: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-zip.c:214
-msgid "Refresh"
-msgstr "Ανανέωση"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:145
-#: ../libsqueeze/command-builder-rar.c:137
-msgid "Rights"
-msgstr "Δικαιώματα"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:147
-msgid "Owner/Group"
-msgstr "Ιδιοκτήτης / Ομάδα"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-#: ../libsqueeze/command-builder-zip.c:120
-msgid "Size"
-msgstr "Μέγεθος"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-#: ../libsqueeze/command-builder-zip.c:124
-msgid "Date"
-msgstr "Ημερομηνία"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-#: ../libsqueeze/command-builder-zip.c:126
-msgid "Time"
-msgstr "Ώρα"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:283
-msgid "Adding files"
-msgstr "Προσθήκη αρχείων"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:303
-#: ../libsqueeze/command-builder-gnu-tar.c:374
-msgid "Cleanup"
-msgstr "Εκκαθάριση"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:334
-msgid "Removing files"
-msgstr "Αφαίρεση αρχείων"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
-msgid "Removing"
-msgstr "Αφαίρεση"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-#: ../libsqueeze/command-builder-zip.c:203
-msgid "Extracting"
-msgstr "Αποσυμπίεση"
-
-#: ../libsqueeze/command-builder-rar.c:127
-#: ../libsqueeze/command-builder-zip.c:116
-msgid "Compressed"
-msgstr "Συμπιεσμένο"
-
-#: ../libsqueeze/command-builder-rar.c:131
-#: ../libsqueeze/command-builder-zip.c:122
-msgid "Ratio"
-msgstr "Αναλογία"
-
-#: ../libsqueeze/command-builder-rar.c:141
-#: ../libsqueeze/command-builder-zip.c:118
-msgid "Method"
-msgstr "Μέθοδος"
-
-#: ../libsqueeze/command-builder-rar.c:143
-msgid "Version"
-msgstr "Έκδοση"
-
-#: ../libsqueeze/command-builder-rar.c:181
-#: ../libsqueeze/command-builder-zip.c:166
-msgid "Adding"
-msgstr "Προσθήκη"
-
-#: ../libsqueeze/command-builder.c:125
-msgid "Execute"
-msgstr "Εκτέλεση"
-
-#: ../libsqueeze/spawn-command.c:273
-#, c-format
-msgid "Command exited with status %d."
-msgstr "Η εντολή τερματίστηκε με κατάσταση %d"
-
-#: ../libsqueeze/spawn-command.c:283
-msgid "Command interrupted by user"
-msgstr "Η εντολή διακόπηκε από τον χρήστη"
-
-#: ../libsqueeze/spawn-command.c:287
-msgid "Command received SIGSEGV"
-msgstr "Η εντολή έλαβε SIGSERV"
-
-#: ../libsqueeze/spawn-command.c:292
-msgid "Command Terminated"
-msgstr "Η εντολή τερματίστηκε"
 
 #: ../squeeze.desktop.in.h:1
 #, fuzzy
@@ -159,47 +38,17 @@ msgstr ""
 msgid "Squeeze Archive Manager"
 msgstr "Διαχειριστής συμπιεσμένων αρχείων"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "Προσθήκη αρχείων και καταλόγων"
-
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "Επιλογές:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "Αρχεία"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "Κατάλογοι"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "Προσθήκη αρχείων στο συμπιεσμένο αρχείο"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "Επιλογή αρχείων"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "Επιλογή φακέλων"
-
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:162 ../src/application.c:252
+#: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Δεν είναι δυνατό το άνοιγμα αυτού του αρχείου. Ο τύπος αρχείου δεν "
 "υποστηρίζεται ή το αρχείο δεν υπάρχει."
 
-#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -210,12 +59,12 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:235
+#: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr ""
 "Δεν ήταν δυνατή η δημιουργία του αρχείου, ο τύπος MIME δεν υποστηρίζεται"
 
-#: ../src/application.c:269 ../src/main_window.c:830
+#: ../src/application.c:268 ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -276,8 +125,8 @@ msgstr "Όλα τα αρχεία"
 msgid "Selected files"
 msgstr "Επιλεγμένα αρχεία"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:428
-#: ../src/main_window.c:1129
+#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Αποσυμπίεση"
 
@@ -340,54 +189,71 @@ msgstr ""
 "Πως θα μετακινήστε μέσα στο συμπιεσμένο αρχείο"
 
 #. File menu
-#: ../src/main_window.c:283
+#: ../src/main_window.c:295
 msgid "_File"
 msgstr "_Αρχείο"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:311
+#: ../src/main_window.c:323
 msgid "_Action"
 msgstr "_Ενέργεια"
 
-#: ../src/main_window.c:316
-msgid "_Add"
-msgstr "_Προσθήκη"
+#: ../src/main_window.c:328
+#, fuzzy
+msgid "_Add files"
+msgstr "Προσθήκη αρχείων"
 
-#: ../src/main_window.c:322
+#: ../src/main_window.c:334
+#, fuzzy
+msgid "_Add _folders"
+msgstr "Προσθήκη αρχείων"
+
+#: ../src/main_window.c:340
 msgid "_Extract"
 msgstr "_Αποσυμπίεση"
 
 #. View menu
-#: ../src/main_window.c:354
+#: ../src/main_window.c:373
 msgid "_View"
 msgstr "_Προβολή"
 
 #. Help menu
-#: ../src/main_window.c:378
+#: ../src/main_window.c:397
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: ../src/main_window.c:424
-msgid "Add"
-msgstr "Προσθήκη"
+#: ../src/main_window.c:443 ../src/main_window.c:852
+#, fuzzy
+msgid "Add files"
+msgstr "Προσθήκη αρχείων"
 
-#: ../src/main_window.c:689
+#: ../src/main_window.c:447 ../src/main_window.c:894
+#, fuzzy
+msgid "Add folders"
+msgstr "Προσθήκη αρχείων"
+
+#: ../src/main_window.c:724
 msgid "Open archive in new window"
 msgstr "Άνοιγμα του συμπιεσμένου αρχείου σε νέο παράθυρο"
 
-#: ../src/main_window.c:695
+#: ../src/main_window.c:730
 msgid "Open archive"
 msgstr "Άνοιγμα συμπιεσμένου αρχείου"
 
-#: ../src/main_window.c:707 ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "Συμπιεσμένα αρχεία"
+#: ../src/main_window.c:916
+#, fuzzy
+msgid ""
+"Squeeze cannot add folders to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"Το squeeze δε μπορεί να προσθέσει αρχεία σε αυτό τον τύπο αρχείου.\n"
+"Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#: ../src/main_window.c:850
+#: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Είσαστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα αρχεία;"
 
-#: ../src/main_window.c:863
+#: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -395,7 +261,7 @@ msgstr ""
 "Το squeeze δε μπορεί να αφαιρέσει αρχεία από αυτό τον τύπο αρχείου.\n"
 "Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#: ../src/main_window.c:912
+#: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -403,31 +269,31 @@ msgstr ""
 "Θέλετε σίγουρα να ακυρώσετε αυτή τη λειτουργία;\n"
 "Αυτό μπορεί να χαλάσει το αρχείο."
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:1081
 msgid "Lead developer:"
 msgstr "Βασικός προγραμματιστής:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1084
 msgid "Contributors:"
 msgstr "Συντελεστές:"
 
-#: ../src/main_window.c:1000
+#: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Εμπνευσμένο από το Xarchiver, του Giuseppe Torelli"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1089
 msgid "Application Icon:"
 msgstr "Εικονίδιο εφαρμογής:"
 
-#: ../src/main_window.c:1005
+#: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
 msgstr "Προσθήκη / εξαγωγή εικονιδίων:"
 
-#: ../src/main_window.c:1006
+#: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Βασισμένο στο εικονίδιο αποσυμπίεσης του Andreas Nilsson"
 
-#: ../src/main_window.c:1013
+#: ../src/main_window.c:1100
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -435,24 +301,24 @@ msgstr ""
 "Ένας ελαφρύς και ευέλικτος διαχειριστής συμπιεσμένων αρχείων για το Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1021
+#: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr "Stavros Giannouris <stavrosg@hellug.gr>"
 
-#: ../src/main_window.c:1050 ../src/main_window.c:1118
-#: ../src/main_window.c:1285
+#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Τέλος"
 
-#: ../src/main_window.c:1128
+#: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Τι εργασία θέλετε να εφαρμόσετε στα επιλεγμένα αρχεία;"
 
-#: ../src/main_window.c:1129
+#: ../src/main_window.c:1219
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: ../src/main_window.c:1143
+#: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -460,11 +326,11 @@ msgstr ""
 "Το squeeze δε μπορεί να προβάλλει αυτό το αρχείο.\n"
 "Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#: ../src/main_window.c:1211
+#: ../src/main_window.c:1301
 msgid "Failed to open file"
 msgstr "Το άνοιγμα του αρχείου απέτυχε"
 
-#: ../src/main_window.c:1212
+#: ../src/main_window.c:1302
 #, c-format
 msgid ""
 "'%s'\n"
@@ -477,7 +343,11 @@ msgstr ""
 msgid "Archive type:"
 msgstr "Τύπος συμπιεσμένου αρχείου:"
 
-#: ../src/new_dialog.c:107
+#: ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "Συμπιεσμένα αρχεία"
+
+#: ../src/new_dialog.c:108
 msgid "Create new archive"
 msgstr "Δημιουργία νέου συμπιεσμένου αρχείου"
 
@@ -504,6 +374,99 @@ msgstr "Τοποθεσία:"
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "Διαχειριστής συμπιεσμένων αρχείων"
+
+#~ msgid "Compressing"
+#~ msgstr "Συμπίεση"
+
+#~ msgid "Decompressing"
+#~ msgstr "Αποσυμπίεση"
+
+#~ msgid "Refresh"
+#~ msgstr "Ανανέωση"
+
+#~ msgid "Rights"
+#~ msgstr "Δικαιώματα"
+
+#~ msgid "Owner/Group"
+#~ msgstr "Ιδιοκτήτης / Ομάδα"
+
+#~ msgid "Size"
+#~ msgstr "Μέγεθος"
+
+#~ msgid "Date"
+#~ msgstr "Ημερομηνία"
+
+#~ msgid "Time"
+#~ msgstr "Ώρα"
+
+#~ msgid "Cleanup"
+#~ msgstr "Εκκαθάριση"
+
+#~ msgid "Removing files"
+#~ msgstr "Αφαίρεση αρχείων"
+
+#~ msgid "Removing"
+#~ msgstr "Αφαίρεση"
+
+#~ msgid "Extracting"
+#~ msgstr "Αποσυμπίεση"
+
+#~ msgid "Compressed"
+#~ msgstr "Συμπιεσμένο"
+
+#~ msgid "Ratio"
+#~ msgstr "Αναλογία"
+
+#~ msgid "Method"
+#~ msgstr "Μέθοδος"
+
+#~ msgid "Version"
+#~ msgstr "Έκδοση"
+
+#~ msgid "Adding"
+#~ msgstr "Προσθήκη"
+
+#~ msgid "Execute"
+#~ msgstr "Εκτέλεση"
+
+#~ msgid "Command exited with status %d."
+#~ msgstr "Η εντολή τερματίστηκε με κατάσταση %d"
+
+#~ msgid "Command interrupted by user"
+#~ msgstr "Η εντολή διακόπηκε από τον χρήστη"
+
+#~ msgid "Command received SIGSEGV"
+#~ msgstr "Η εντολή έλαβε SIGSERV"
+
+#~ msgid "Command Terminated"
+#~ msgstr "Η εντολή τερματίστηκε"
+
+#~ msgid "Files and directories to add"
+#~ msgstr "Προσθήκη αρχείων και καταλόγων"
+
+#~ msgid "Options:"
+#~ msgstr "Επιλογές:"
+
+#~ msgid "Files"
+#~ msgstr "Αρχεία"
+
+#~ msgid "Directories"
+#~ msgstr "Κατάλογοι"
+
+#~ msgid "Add file(s) to archive"
+#~ msgstr "Προσθήκη αρχείων στο συμπιεσμένο αρχείο"
+
+#~ msgid "Select files"
+#~ msgstr "Επιλογή αρχείων"
+
+#~ msgid "Select folders"
+#~ msgstr "Επιλογή φακέλων"
+
+#~ msgid "_Add"
+#~ msgstr "_Προσθήκη"
+
+#~ msgid "Add"
+#~ msgstr "Προσθήκη"
 
 #~ msgid "Xfce archive manager"
 #~ msgstr "Διαχειριστής συμπιεσμένων αρχείων για το Xfce"

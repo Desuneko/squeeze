@@ -1,12 +1,5 @@
 libsqueeze/archive.c
-libsqueeze/command-builder-compr.c
-libsqueeze/command-builder-gnu-tar.c
-libsqueeze/command-builder-rar.c
-libsqueeze/command-builder-zip.c
-libsqueeze/command-builder.c
-libsqueeze/spawn-command.c
 squeeze.desktop.in
-src/add_dialog.c
 src/application.c
 src/archive_store.c
 src/extract_dialog.c

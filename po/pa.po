@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-26 09:23+0200\n"
+"POT-Creation-Date: 2007-08-21 00:30+0200\n"
 "PO-Revision-Date: 2007-04-11 20:10+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi <xfce-i18n@xfce.org>\n"
@@ -17,134 +17,13 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../libsqueeze/archive.c:268
+#: ../libsqueeze/archive.c:236
 msgid "Name"
 msgstr "ਨਾਂ"
 
-#: ../libsqueeze/archive.c:270
+#: ../libsqueeze/archive.c:238
 msgid "Mime type"
 msgstr "ਮਾਈਮ ਕਿਸਮ"
-
-#: ../libsqueeze/command-builder-compr.c:198
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-msgid "Compressing"
-msgstr "ਕੰਪਰੈਸਿੰਗ"
-
-#: ../libsqueeze/command-builder-compr.c:222
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-msgid "Decompressing"
-msgstr "ਡੀ-ਕੰਪਰੈਸਿੰਗ"
-
-#: ../libsqueeze/command-builder-compr.c:253
-#: ../libsqueeze/command-builder-gnu-tar.c:428
-#: ../libsqueeze/command-builder-gnu-tar.c:430
-#: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-zip.c:214
-msgid "Refresh"
-msgstr "ਤਾਜ਼ਾ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:145
-#: ../libsqueeze/command-builder-rar.c:137
-msgid "Rights"
-msgstr "ਰਾਈਟ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:147
-msgid "Owner/Group"
-msgstr "ਓਨਰ/ਗਰੁੱਪ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-#: ../libsqueeze/command-builder-zip.c:120
-msgid "Size"
-msgstr "ਆਕਾਰ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-#: ../libsqueeze/command-builder-zip.c:124
-msgid "Date"
-msgstr "ਤਾਰੀਖ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-#: ../libsqueeze/command-builder-zip.c:126
-msgid "Time"
-msgstr "ਟਾਈਮ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:283
-msgid "Adding files"
-msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:303
-#: ../libsqueeze/command-builder-gnu-tar.c:374
-msgid "Cleanup"
-msgstr ""
-
-#: ../libsqueeze/command-builder-gnu-tar.c:334
-msgid "Removing files"
-msgstr "ਫਾਇਲਾਂ ਹਟਾਈਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-zip.c:185 ../libsqueeze/command-builder.c:147
-msgid "Removing"
-msgstr "ਹਟਾਇਆ ਜਾ ਰਿਹਾ ਹੈ"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-#: ../libsqueeze/command-builder-zip.c:203
-msgid "Extracting"
-msgstr "ਖੋਲ੍ਹਿਆ ਜਾ ਰਿਹਾ ਹੈ"
-
-#: ../libsqueeze/command-builder-rar.c:127
-#: ../libsqueeze/command-builder-zip.c:116
-msgid "Compressed"
-msgstr "ਕੰਪਰੈਸਡ"
-
-#: ../libsqueeze/command-builder-rar.c:131
-#: ../libsqueeze/command-builder-zip.c:122
-msgid "Ratio"
-msgstr "ਅਨੁਪਾਤ"
-
-#: ../libsqueeze/command-builder-rar.c:141
-#: ../libsqueeze/command-builder-zip.c:118
-msgid "Method"
-msgstr "ਢੰਗ"
-
-#: ../libsqueeze/command-builder-rar.c:143
-msgid "Version"
-msgstr "ਵਰਜਨ"
-
-#: ../libsqueeze/command-builder-rar.c:181
-#: ../libsqueeze/command-builder-zip.c:166
-msgid "Adding"
-msgstr "ਸ਼ਾਮਲ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
-
-#: ../libsqueeze/command-builder.c:125
-msgid "Execute"
-msgstr "ਚਲਾਓ"
-
-#: ../libsqueeze/spawn-command.c:273
-#, c-format
-msgid "Command exited with status %d."
-msgstr "ਕਮਾਂਡ %d ਹਾਲਤ ਨਾਲ ਬੰਦ ਹੋਈ।"
-
-#: ../libsqueeze/spawn-command.c:283
-msgid "Command interrupted by user"
-msgstr "ਉਪਭੋਗੀ ਨੇ ਕਮਾਂਡ ਚਲਾਈ"
-
-#: ../libsqueeze/spawn-command.c:287
-msgid "Command received SIGSEGV"
-msgstr "ਕਮਾਂਡ ਨੂੰ SIGSEGV ਮਿਲਿਆ"
-
-#: ../libsqueeze/spawn-command.c:292
-msgid "Command Terminated"
-msgstr "ਕਮਾਂਡ ਖਤਮ ਹੋਈ"
 
 #: ../squeeze.desktop.in.h:1
 #, fuzzy
@@ -160,45 +39,15 @@ msgstr ""
 msgid "Squeeze Archive Manager"
 msgstr "ਅਕਾਈਵ ਮੈਨੇਜਰ"
 
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "ਫਾਇਲਾਂ ਅਤੇ ਫੋਲਡਰ ਸ਼ਾਮਲ ਕਰੋ"
-
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "ਚੋਣਾਂ:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "ਫਾਇਲਾਂ"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "ਡਾਇਰੈਕਟਰੀਆਂ"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "ਅਕਾਈਵ ਵਿੱਚ ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕਰੋ"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "ਫਾਇਲਾਂ ਚੁਣੋ"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "ਫੋਲਡਰ ਚੁਣੋ"
-
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:162 ../src/application.c:252
+#: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "ਆਕਾਈਵ ਖੋਲ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ, MIME-ਕਿਸਮ ਸਹਾਇਕ ਨਹੀਂ ਜਾਂ ਫਾਇਲ ਮੌਜੂਦ ਨਹੀਂ"
 
-#: ../src/application.c:193 ../src/main_window.c:789 ../src/main_window.c:1170
+#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -209,11 +58,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:235
+#: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "ਆਕਾਈਵ ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ, MIME-ਕਿਸਮ ਸਹਾਇਕ ਨਹੀਂ"
 
-#: ../src/application.c:269 ../src/main_window.c:830
+#: ../src/application.c:268 ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -274,8 +123,8 @@ msgstr "ਸਭ ਫਾਇਲਾਂ"
 msgid "Selected files"
 msgstr "ਚੁਣੀਆਂ ਫਾਇਲਾਂ"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:428
-#: ../src/main_window.c:1129
+#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "ਖੋਲ੍ਹੋ"
 
@@ -337,54 +186,71 @@ msgstr ""
 "ਆਕਾਈਵ ਵਿੱਚ ਨੇਵੀਗੇਸ਼ਨ ਦਾ ਸਟਾਇਲ ਹੈ"
 
 #. File menu
-#: ../src/main_window.c:283
+#: ../src/main_window.c:295
 msgid "_File"
 msgstr "ਫਾਇਲ(_F)"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:311
+#: ../src/main_window.c:323
 msgid "_Action"
 msgstr "ਐਕਸ਼ਨ(_A)"
 
-#: ../src/main_window.c:316
-msgid "_Add"
-msgstr "ਸ਼ਾਮਲ(_A)"
+#: ../src/main_window.c:328
+#, fuzzy
+msgid "_Add files"
+msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
 
-#: ../src/main_window.c:322
+#: ../src/main_window.c:334
+#, fuzzy
+msgid "_Add _folders"
+msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+
+#: ../src/main_window.c:340
 msgid "_Extract"
 msgstr "ਖਿਲਾਰੋ(_E)"
 
 #. View menu
-#: ../src/main_window.c:354
+#: ../src/main_window.c:373
 msgid "_View"
 msgstr "ਵੇਖੋ(_V)"
 
 #. Help menu
-#: ../src/main_window.c:378
+#: ../src/main_window.c:397
 msgid "_Help"
 msgstr "ਸਹਾਇਤਾ(_H)"
 
-#: ../src/main_window.c:424
-msgid "Add"
-msgstr "ਸ਼ਾਮਲ"
+#: ../src/main_window.c:443 ../src/main_window.c:852
+#, fuzzy
+msgid "Add files"
+msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
 
-#: ../src/main_window.c:689
+#: ../src/main_window.c:447 ../src/main_window.c:894
+#, fuzzy
+msgid "Add folders"
+msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+
+#: ../src/main_window.c:724
 msgid "Open archive in new window"
 msgstr "ਨਵੇਂ ਝਰੋਖੇ ਵਿੱਚ ਆਕਾਈਵ ਖੋਲ੍ਹੋ"
 
-#: ../src/main_window.c:695
+#: ../src/main_window.c:730
 msgid "Open archive"
 msgstr "ਆਕਾਈਵ ਖੋਲ੍ਹੋ"
 
-#: ../src/main_window.c:707 ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "ਅਕਾਈਵ"
+#: ../src/main_window.c:916
+#, fuzzy
+msgid ""
+"Squeeze cannot add folders to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"ਸਕਿਊਜ਼ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
+"ਇਹ ਸਹਿਯੋਗ ਲਈ ਐਪਲੀਕੇਸ਼ਨ ਗੁੰਮ ਹੈ।"
 
-#: ../src/main_window.c:850
+#: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
 msgstr "ਕੀ ਤੁਸੀਂ ਚੁਣੀਆਂ ਫਾਇਲਾਂ ਹਟਾਉਣੀਆਂ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: ../src/main_window.c:863
+#: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -392,7 +258,7 @@ msgstr ""
 "ਸਕਿਊਜ਼ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਹਟਾ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
 "ਇਹ ਸਹਿਯੋਗ ਲਈ ਐਪਲੀਕੇਸ਼ਨ ਗੁੰਮ ਹੈ।"
 
-#: ../src/main_window.c:912
+#: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -400,58 +266,58 @@ msgstr ""
 "ਕੀ ਤੁਸੀਂ ਇਹ ਐਕਸ਼ਨ ਰੋਕਣਾ ਚਾਹੁੰਦੇ ਹੋ?\n"
 "ਇਹ ਆਕਾਈਵ ਨੂੰ ਖਰਾਬ ਕਰ ਸਕਦੀ ਹੈ।"
 
-#: ../src/main_window.c:994
+#: ../src/main_window.c:1081
 msgid "Lead developer:"
 msgstr "ਲੀਡ ਡੀਵੈਲਪਰ:"
 
-#: ../src/main_window.c:997
+#: ../src/main_window.c:1084
 msgid "Contributors:"
 msgstr "ਯੋਗਦਾਨ:"
 
-#: ../src/main_window.c:1000
+#: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Xarchiver ਤੋਂ ਪਰਭਾਵਿਤ ਹੋਕੇ ਗੀਉਜ਼ੱਪੀ ਟੋਰਿੱਲੀ ਵਲੋਂ ਲਿਖਿਆ"
 
-#: ../src/main_window.c:1002
+#: ../src/main_window.c:1089
 msgid "Application Icon:"
 msgstr "ਕਾਰਜ ਆਈਕਾਨ:"
 
-#: ../src/main_window.c:1005
+#: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
 msgstr "ਸ਼ਾਮਲ / ਖੋਲ੍ਹਣ ਆਈਕਾਨ:"
 
-#: ../src/main_window.c:1006
+#: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "ਐਂਡਰਿਸ ਨੀਲਸਨ ਵਲੋਂ ਅਸਲੀ ਖੋਲ੍ਹਣ ਆਈਕਾਨ ਉੱਤੇ ਆਧਾਰਿਤ"
 
-#: ../src/main_window.c:1013
+#: ../src/main_window.c:1100
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr "ਸਕਿਊਜ਼ੀ Xfce ਡੈਸਕਟਾਪ ਇੰਵਾਇਰਮਿੰਟ ਲਈ ਹਲਕਾ ਅਤੇ ਲਚਕਦਾਰ ਆਕਾਈਵ ਮੈਨੇਜਰ ਹੈ।"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1021
+#: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr ""
 "ਅਮਨਪਰੀਤ ਸਿੰਘ ਆਲਮ\n"
 "Punjabi OpenSource Team\n"
 "http://punjabi.sf.net"
 
-#: ../src/main_window.c:1050 ../src/main_window.c:1118
-#: ../src/main_window.c:1285
+#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1376
 msgid "Done"
 msgstr "ਸਮਾਪਤ"
 
-#: ../src/main_window.c:1128
+#: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "ਚੁਣੀਆਂ ਫਾਇਲਾਂ ਉੱਤੇ ਤੁਸੀਂ ਕੀ ਕਾਰਵਾਈ ਕਰਨੀ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: ../src/main_window.c:1129
+#: ../src/main_window.c:1219
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../src/main_window.c:1143
+#: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -459,11 +325,11 @@ msgstr ""
 "ਸਕਿਊਜ਼ੀ ਇਹ ਫਾਇਲ ਨਹੀਂ ਵੇਖਾ ਸਕਦਾ ਹੈ।\n"
 "ਇਹ ਕਾਰਜ ਲਈ ਸਹਿਯੋਗ ਕਾਰਜ ਨਹੀਂ ਹੈ।"
 
-#: ../src/main_window.c:1211
+#: ../src/main_window.c:1301
 msgid "Failed to open file"
 msgstr "ਫਾਇਲ ਖੋਲ੍ਹਣ ਲਈ ਫੇਲ੍ਹ ਹੋਇਆ"
 
-#: ../src/main_window.c:1212
+#: ../src/main_window.c:1302
 #, c-format
 msgid ""
 "'%s'\n"
@@ -476,7 +342,11 @@ msgstr ""
 msgid "Archive type:"
 msgstr "ਆਕਾਈਵ ਕਿਸਮ:"
 
-#: ../src/new_dialog.c:107
+#: ../src/new_dialog.c:80
+msgid "Archives"
+msgstr "ਅਕਾਈਵ"
+
+#: ../src/new_dialog.c:108
 msgid "Create new archive"
 msgstr "ਨਵਾਂ ਆਕਾਈਵ ਬਣਾਓ"
 
@@ -503,6 +373,96 @@ msgstr "ਟਿਕਾਣਾ:"
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "ਅਕਾਈਵ ਮੈਨੇਜਰ"
+
+#~ msgid "Compressing"
+#~ msgstr "ਕੰਪਰੈਸਿੰਗ"
+
+#~ msgid "Decompressing"
+#~ msgstr "ਡੀ-ਕੰਪਰੈਸਿੰਗ"
+
+#~ msgid "Refresh"
+#~ msgstr "ਤਾਜ਼ਾ"
+
+#~ msgid "Rights"
+#~ msgstr "ਰਾਈਟ"
+
+#~ msgid "Owner/Group"
+#~ msgstr "ਓਨਰ/ਗਰੁੱਪ"
+
+#~ msgid "Size"
+#~ msgstr "ਆਕਾਰ"
+
+#~ msgid "Date"
+#~ msgstr "ਤਾਰੀਖ"
+
+#~ msgid "Time"
+#~ msgstr "ਟਾਈਮ"
+
+#~ msgid "Removing files"
+#~ msgstr "ਫਾਇਲਾਂ ਹਟਾਈਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+
+#~ msgid "Removing"
+#~ msgstr "ਹਟਾਇਆ ਜਾ ਰਿਹਾ ਹੈ"
+
+#~ msgid "Extracting"
+#~ msgstr "ਖੋਲ੍ਹਿਆ ਜਾ ਰਿਹਾ ਹੈ"
+
+#~ msgid "Compressed"
+#~ msgstr "ਕੰਪਰੈਸਡ"
+
+#~ msgid "Ratio"
+#~ msgstr "ਅਨੁਪਾਤ"
+
+#~ msgid "Method"
+#~ msgstr "ਢੰਗ"
+
+#~ msgid "Version"
+#~ msgstr "ਵਰਜਨ"
+
+#~ msgid "Adding"
+#~ msgstr "ਸ਼ਾਮਲ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#~ msgid "Execute"
+#~ msgstr "ਚਲਾਓ"
+
+#~ msgid "Command exited with status %d."
+#~ msgstr "ਕਮਾਂਡ %d ਹਾਲਤ ਨਾਲ ਬੰਦ ਹੋਈ।"
+
+#~ msgid "Command interrupted by user"
+#~ msgstr "ਉਪਭੋਗੀ ਨੇ ਕਮਾਂਡ ਚਲਾਈ"
+
+#~ msgid "Command received SIGSEGV"
+#~ msgstr "ਕਮਾਂਡ ਨੂੰ SIGSEGV ਮਿਲਿਆ"
+
+#~ msgid "Command Terminated"
+#~ msgstr "ਕਮਾਂਡ ਖਤਮ ਹੋਈ"
+
+#~ msgid "Files and directories to add"
+#~ msgstr "ਫਾਇਲਾਂ ਅਤੇ ਫੋਲਡਰ ਸ਼ਾਮਲ ਕਰੋ"
+
+#~ msgid "Options:"
+#~ msgstr "ਚੋਣਾਂ:"
+
+#~ msgid "Files"
+#~ msgstr "ਫਾਇਲਾਂ"
+
+#~ msgid "Directories"
+#~ msgstr "ਡਾਇਰੈਕਟਰੀਆਂ"
+
+#~ msgid "Add file(s) to archive"
+#~ msgstr "ਅਕਾਈਵ ਵਿੱਚ ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕਰੋ"
+
+#~ msgid "Select files"
+#~ msgstr "ਫਾਇਲਾਂ ਚੁਣੋ"
+
+#~ msgid "Select folders"
+#~ msgstr "ਫੋਲਡਰ ਚੁਣੋ"
+
+#~ msgid "_Add"
+#~ msgstr "ਸ਼ਾਮਲ(_A)"
+
+#~ msgid "Add"
+#~ msgstr "ਸ਼ਾਮਲ"
 
 #~ msgid "Xfce archive manager"
 #~ msgstr "Xfce ਅਕਾਈਵ ਮੈਨੇਜਰ"

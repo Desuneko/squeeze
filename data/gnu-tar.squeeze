@@ -53,7 +53,6 @@ X-Squeeze-Options=Password;Overwrite
 
 [Squeeze-Refresh]
 X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
-X-Squeeze-Headers[nl]=Rechten;Eigenaar/Groep;Grootte;Datum;Tijd;Naam
 # Tar does not support passwords, this is just for illustrative purposes
 X-Squeeze-Options=Password
 
@@ -66,11 +65,9 @@ X-Squeeze-Flag=-p %s
 X-Squeeze-Type=String
 X-Squeeze-Value=
 X-Squeeze-Description=Password
-X-Squeeze-Description[nl]=Wachtwoord
 
 [Squeeze-Option-Overwrite]
 X-Squeeze-Flag=-f
 X-Squeeze-Type=Bool
 X-Squeeze-Value=FALSE
 X-Squeeze-Description=Overwrite files
-X-Squeeze-Description[nl]=Bestanden overschrijven
