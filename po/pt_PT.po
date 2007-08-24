@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-07-04 16:03+0100\n"
+"PO-Revision-Date: 2007-08-22 11:12+0100\n"
 "Last-Translator: Nuno Miguel <nunis@netcabo.pt>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,12 +39,14 @@ msgstr "Gestor de Arquivos Squeeze"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Incapaz de abrir o arquivo, MIME-type não suportado ou ficheiro inexistente."
+msgstr "Incapaz de abrir o arquivo, MIME-type não suportado ou ficheiro inexistente."
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:191
+#: ../src/main_window.c:826
+#: ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -59,7 +61,8 @@ msgstr ""
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Incapaz de criar arquivo,  MIME-type não suportado"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:268
+#: ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -67,19 +70,23 @@ msgstr ""
 "Squeeze não pode adicionar ficheiros ao arquivo,\n"
 "a aplicação de suporte está em falta."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:249
+#: ../src/notebook.c:179
 msgid "Show full path"
 msgstr "Mostrar caminho completo"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
 msgstr "Mostrar o caminho completo de strings para cada entrada"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:256
+#: ../src/notebook.c:186
 msgid "Show mime icons"
 msgstr "Mostrar ícones mime"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
 msgstr "Mostrar os ícones tipo mime para cada entrada"
 
@@ -91,15 +98,19 @@ msgstr "Mostrar a entrada de pasta"
 msgid "Show '..' to go to the parent directory"
 msgstr "Mostrar '..' para ir para a pasta pai"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:270
+#: ../src/notebook.c:193
 msgid "Sort folders before files"
 msgstr "Ordenar pastas antes dos ficheiros"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
 msgstr "As pastas serão colocadas no topo da lista"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/archive_store.c:277
+#: ../src/archive_store.c:278
+#: ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "Ordenar texto case sensitive"
@@ -120,7 +131,8 @@ msgstr "Todos os ficheiros"
 msgid "Selected files"
 msgstr "Ficheiros seleccionados"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/extract_dialog.c:100
+#: ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Extrair"
@@ -193,14 +205,12 @@ msgid "_Action"
 msgstr "Açã_o"
 
 #: ../src/main_window.c:328
-#, fuzzy
 msgid "_Add files"
-msgstr "Adicionando ficheiros"
+msgstr "_Adicionar ficheiros"
 
 #: ../src/main_window.c:334
-#, fuzzy
 msgid "_Add _folders"
-msgstr "Adicionando ficheiros"
+msgstr "_Adicionar _pastas"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -216,15 +226,15 @@ msgstr "_Ver"
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
+#: ../src/main_window.c:443
+#: ../src/main_window.c:852
 msgid "Add files"
-msgstr "Adicionando ficheiros"
+msgstr "Adicionar ficheiros"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
+#: ../src/main_window.c:447
+#: ../src/main_window.c:894
 msgid "Add folders"
-msgstr "Adicionando ficheiros"
+msgstr "Adicionar pastas"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -235,12 +245,11 @@ msgid "Open archive"
 msgstr "Abrir arquivo"
 
 #: ../src/main_window.c:916
-#, fuzzy
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze não pode adicionar ficheiros ao arquivo,\n"
+"Squeeze não pode adicionar ficheiros a este arquivo,\n"
 "a aplicação de suporte está em falta."
 
 #: ../src/main_window.c:937
@@ -288,18 +297,16 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Baseado no ícone original de extracção criado por Andreas Nilsson"
 
 #: ../src/main_window.c:1100
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze é um gestor de arquivos leve e flexível para o Ambiente Xfce Desktop"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze é um gestor de arquivos leve e flexível para o Ambiente Xfce Desktop"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr "Nuno Miguel <nunis@netcabo.pt>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1137
+#: ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Feito"
@@ -371,93 +378,64 @@ msgstr "Gestor de Arquivos"
 
 #~ msgid "Compressing"
 #~ msgstr "Comprimindo"
-
 #~ msgid "Decompressing"
 #~ msgstr "Descomprimindo"
-
 #~ msgid "Refresh"
 #~ msgstr "Actualizar"
-
 #~ msgid "Rights"
 #~ msgstr "Direitos"
-
 #~ msgid "Owner/Group"
 #~ msgstr "Dono/Grupo"
-
 #~ msgid "Size"
 #~ msgstr "Tamanho"
-
 #~ msgid "Date"
 #~ msgstr "Data"
-
 #~ msgid "Time"
 #~ msgstr "Hora"
-
 #~ msgid "Cleanup"
 #~ msgstr "Limpeza"
-
 #~ msgid "Removing files"
 #~ msgstr "Removendo ficheiros"
-
 #~ msgid "Removing"
 #~ msgstr "Removendo"
-
 #~ msgid "Extracting"
 #~ msgstr "Extraindo"
-
 #~ msgid "Compressed"
 #~ msgstr "Comprimido"
-
 #~ msgid "Ratio"
 #~ msgstr "Razão"
-
 #~ msgid "Method"
 #~ msgstr "Método"
-
 #~ msgid "Version"
 #~ msgstr "Versão"
-
 #~ msgid "Adding"
 #~ msgstr "Adicionando"
-
 #~ msgid "Execute"
 #~ msgstr "Executar"
-
 #~ msgid "Command exited with status %d."
 #~ msgstr "Comando saiu com estado %d."
-
 #~ msgid "Command interrupted by user"
 #~ msgstr "Comando interrompido pelo utilizador"
-
 #~ msgid "Command received SIGSEGV"
 #~ msgstr "Comando recebeu SIGSEGV"
-
 #~ msgid "Command Terminated"
 #~ msgstr "Comando Terminado"
-
 #~ msgid "Files and directories to add"
 #~ msgstr "Ficheiros e pastas a adicionar"
-
 #~ msgid "Options:"
 #~ msgstr "Opções:"
-
 #~ msgid "Files"
 #~ msgstr "Ficheiros"
-
 #~ msgid "Directories"
 #~ msgstr "Pastas"
-
 #~ msgid "Add file(s) to archive"
 #~ msgstr "Adicionar ficheiro(s) ao arquivo"
-
 #~ msgid "Select files"
 #~ msgstr "Seleccionar ficheiros"
-
 #~ msgid "Select folders"
 #~ msgstr "Seleccionar pastas"
-
 #~ msgid "_Add"
 #~ msgstr "_Adicionar"
-
 #~ msgid "Add"
 #~ msgstr "Adicionar"
+
