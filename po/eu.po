@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-07-13 13:28+0200\n"
+"PO-Revision-Date: 2007-09-12 22:06+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <Librezale@librezale.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,8 +43,7 @@ msgstr "Squeeze Pakete kudeatzailea"
 #.
 #: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
+msgstr "Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
 
 #: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
@@ -195,14 +194,12 @@ msgid "_Action"
 msgstr "_Ekintza"
 
 #: ../src/main_window.c:328
-#, fuzzy
 msgid "_Add files"
-msgstr "Fitxategiak gehitzen"
+msgstr "_Gehitu fitxategiak"
 
 #: ../src/main_window.c:334
-#, fuzzy
 msgid "_Add _folders"
-msgstr "Fitxategiak gehitzen"
+msgstr "_Gehitu_karpetak"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -219,14 +216,12 @@ msgid "_Help"
 msgstr "_Laguntza"
 
 #: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
 msgid "Add files"
-msgstr "Fitxategiak gehitzen"
+msgstr "Gehitu fitxategiak"
 
 #: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
 msgid "Add folders"
-msgstr "Fitxategiak gehitzen"
+msgstr "Gehitu karpetak"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -237,12 +232,11 @@ msgid "Open archive"
 msgstr "Paketea ireki"
 
 #: ../src/main_window.c:916
-#, fuzzy
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze ez da pakete mota honetara fitxategiak gehitzeko gai,\n"
+"Squeeze ez da pakete mota honetara karpetak gehitzeko gai,\n"
 "hau onartzeko aplikazioa ez da aurkitzen."
 
 #: ../src/main_window.c:937
@@ -293,8 +287,7 @@ msgstr "Andreas Nilsson-ek sorturiko atera ikonoan oinarriturik"
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
-"Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
+msgstr "Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
@@ -371,95 +364,3 @@ msgstr "Kokalekua:"
 msgid "Archive manager"
 msgstr "Pakete kudeatzaileak"
 
-#~ msgid "Compressing"
-#~ msgstr "Konprimitzen"
-
-#~ msgid "Decompressing"
-#~ msgstr "Deskonprimitzen"
-
-#~ msgid "Refresh"
-#~ msgstr "Berritu"
-
-#~ msgid "Rights"
-#~ msgstr "Baimenak"
-
-#~ msgid "Owner/Group"
-#~ msgstr "Jabea/Taldea"
-
-#~ msgid "Size"
-#~ msgstr "Tamaina"
-
-#~ msgid "Date"
-#~ msgstr "Data"
-
-#~ msgid "Time"
-#~ msgstr "Ordua"
-
-#~ msgid "Cleanup"
-#~ msgstr "Garbitu"
-
-#~ msgid "Removing files"
-#~ msgstr "Fitxategiak kentzen"
-
-#~ msgid "Removing"
-#~ msgstr "Kentzen"
-
-#~ msgid "Extracting"
-#~ msgstr "Ateratzen"
-
-#~ msgid "Compressed"
-#~ msgstr "Konprimiturik"
-
-#~ msgid "Ratio"
-#~ msgstr "Erlazioa"
-
-#~ msgid "Method"
-#~ msgstr "Metodoa"
-
-#~ msgid "Version"
-#~ msgstr "Bertsioa"
-
-#~ msgid "Adding"
-#~ msgstr "Gehitzen"
-
-#~ msgid "Execute"
-#~ msgstr "Exekutatu"
-
-#~ msgid "Command exited with status %d."
-#~ msgstr "Komandoa %d egoerarekin irten da."
-
-#~ msgid "Command interrupted by user"
-#~ msgstr "Komandoa erabiltzaileak gelditurik"
-
-#~ msgid "Command received SIGSEGV"
-#~ msgstr "Komandoak SIGSEGV jaso du"
-
-#~ msgid "Command Terminated"
-#~ msgstr "Komandoa Amaiturik"
-
-#~ msgid "Files and directories to add"
-#~ msgstr "Gehitzeko fitxategi eta direktorioak"
-
-#~ msgid "Options:"
-#~ msgstr "Aukerak:"
-
-#~ msgid "Files"
-#~ msgstr "Fitxategiak"
-
-#~ msgid "Directories"
-#~ msgstr "Direktorioak"
-
-#~ msgid "Add file(s) to archive"
-#~ msgstr "Paketera fitxategia(k) gehitu"
-
-#~ msgid "Select files"
-#~ msgstr "Fitxategiak hautatu"
-
-#~ msgid "Select folders"
-#~ msgstr "Karpetak hautatu"
-
-#~ msgid "_Add"
-#~ msgstr "_Gehitu"
-
-#~ msgid "Add"
-#~ msgstr "Gehitu"
