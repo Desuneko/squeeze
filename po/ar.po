@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Mohamed Magdy <alnokta@yahoo.com>\n"
 "Language-Team: Arabeyes Translation & Documentation <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -345,3 +345,48 @@ msgstr ""
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr ""
+
+msgid "Compressing"
+msgstr "Стиснення"
+
+msgid "Decompressing"
+msgstr "Розпакування"
+
+msgid "Refresh"
+msgstr "Поновлення"
+
+msgid "Rights"
+msgstr "Права"
+
+msgid "Cleanup"
+msgstr "Очистка"
+
+msgid "Removing files"
+msgstr "Видалення файлів"
+
+msgid "Removing"
+msgstr "Видалення"
+
+msgid "Extracting"
+msgstr "Розпакування"
+
+msgid "Compressed"
+msgstr "Стиснутий"
+
+msgid "Adding"
+msgstr "Додавання"
+
+msgid "Execute"
+msgstr "Виконуваний"
+
+msgid "Command exited with status %d."
+msgstr "Команда завершилась зі статусом %d."
+
+msgid "Command interrupted by user"
+msgstr "Команду перервано користувачем"
+
+msgid "Command received SIGSEGV"
+msgstr "Команда отримала SIGSEGV"
+
+msgid "Command Terminated"
+msgstr "Команду завершено"
