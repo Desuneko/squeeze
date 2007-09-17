@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-01-20 04:24+0300\n"
+"PO-Revision-Date: 2007-09-17 04:23+0300\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,27 +16,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../libsqueeze/archive.c:236
-#, fuzzy
 msgid "Name"
-msgstr "Назва:"
+msgstr "Назва"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
 msgstr "Тып MIME"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
 msgstr "Кіраўнік архіваў"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Стварэньне й кірваньне архівамі"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "Кіраўнік архіваў"
+msgstr "Кіраўнік архіваў Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -52,6 +49,8 @@ msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze ня можа распакоўваць архівы гэтага тыпу,\n"
+"адсутнічае дастасаваньне для яго падтрымкі."
 
 #.
 #. * Could not create archive (mime type unsupported)
@@ -65,15 +64,16 @@ msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze ня можа дадаць файлы ў архіў гэтага тыпу:\n"
+"адсутнічае дастасаваньня для яго падтрымкі."
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
-msgstr ""
+msgstr "Паказаць поўны шлях"
 
 #: ../src/archive_store.c:250 ../src/notebook.c:180
-#, fuzzy
 msgid "Show the full path strings for each entry"
-msgstr "Паказваць значку MIME-тыпу для кожнага файла"
+msgstr "Паказваць радок поўнага шляху для кожнага пункта"
 
 #: ../src/archive_store.c:256 ../src/notebook.c:186
 msgid "Show mime icons"
@@ -193,14 +193,12 @@ msgid "_Action"
 msgstr "_Дзеяньне"
 
 #: ../src/main_window.c:328
-#, fuzzy
 msgid "_Add files"
-msgstr "Усе файлы"
+msgstr "Дадаць _файлы"
 
 #: ../src/main_window.c:334
-#, fuzzy
 msgid "_Add _folders"
-msgstr "Усе файлы"
+msgstr "Дадаць _тэчкі"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -217,14 +215,12 @@ msgid "_Help"
 msgstr "_Даведка"
 
 #: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
 msgid "Add files"
-msgstr "Усе файлы"
+msgstr "Дадаць файлы"
 
 #: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
 msgid "Add folders"
-msgstr "Усе файлы"
+msgstr "Дадаць тэчкі"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -239,23 +235,28 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze ня можа дадаць тэчкі ў архіў гэтага тыпу:\n"
+"адсутнічае дастасаваньне для яго падтрымкі."
 
 #: ../src/main_window.c:937
-#, fuzzy
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
+msgstr "Вы насамрэч жадаеце выдаліць вылучаныя файлы?"
 
 #: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze ня можа выдаліць файлы з архіву гэтага тыпу:\n"
+"адсутнічае дастасаваньне для яго падтрымкі."
 
 #: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
+"Вы насамрэч жадаеце скасаваць дзеяньне?\n"
+"Гэта можа пашкодзіць архіў."
 
 #: ../src/main_window.c:1081
 msgid "Lead developer:"
@@ -271,16 +272,15 @@ msgstr "У натхненьні ад Xarchiver, напісана Giuseppe Torell
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr ""
+msgstr "Значка дастасаваньня:"
 
 #: ../src/main_window.c:1092
-#, fuzzy
 msgid "Add / Extract icons:"
-msgstr "Распакаваць"
+msgstr "Дадаць / Распакаваць значкі:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
+msgstr "Заснаваны на арыгінальнай значцы распакоўкі, створанай Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid ""
@@ -304,13 +304,16 @@ msgstr "Якое дзеяньне вы жадаеце выканаць над в
 
 #: ../src/main_window.c:1219
 msgid "Open"
-msgstr ""
+msgstr "Адкрыць"
 
 #: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze ня можа паказаць гэты файл:\n"
+"адсутнічае дастасаваньне для яго падтрымкі."
+
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
