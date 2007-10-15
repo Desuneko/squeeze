@@ -327,16 +327,16 @@ lsq_archive_iter_is_real(const LSQArchiveIter *iter)
 #endif
 	/* reverse the parent list */
 	const LSQArchiveIter *parent = iter->parent;
-	if(!parent)
+	if(G_UNLIKELY(!parent))
 	{
 		/* the root entry is archive root entry */
-		if(iter->entry != iter->archive->root_entry)
+		if(G_UNLIKELY(iter->entry != iter->archive->root_entry))
 			return FALSE;
 	}
 	else
 	{
 		/* find the childeren */
-		if(iter->entry != lsq_archive_entry_get_child(parent->entry, lsq_archive_entry_get_filename(iter->entry)))
+		if(G_UNLIKELY(iter->entry != lsq_archive_entry_get_child(parent->entry, lsq_archive_entry_get_filename(iter->entry))))
 			return FALSE;
 	}
 	return TRUE;
