@@ -20,19 +20,20 @@
 #include <glib/gstdio.h>
 #include <glib-object.h> 
 
-#include "libsqueeze-archive.h"
+#include <thunar-vfs/thunar-vfs.h>
+#include "libsqueeze.h"
 #include "archive-iter.h"
 #include "scanf-parser.h"
 #include "archive.h"
 
 typedef struct _parse_part parse_part;
 
-typedef guint (*)(gchar*, guint, parse_part*) parse_func;
+typedef guint (*LSQParseFunc)(gchar*, guint, parse_part*);
 
 struct _parse_part
 {
 	gchar *delimiter;
-	parse_func function;
+	LSQParseFunc function;
 	guint index;
 	guint width;
 	//gtype
@@ -73,26 +74,26 @@ guint skip_qword(gchar *str, guint lng, parse_part *part)
 
 guint skip_char(gchar *str, guint lng, parse_part *part)
 {
-	const gchar ptr;
+	const gchar *ptr;
 
 	if(!lng)
 		return 0;
 
-	if(!part->delim[0])
+	if(!part->delimiter[0])
 		return 1;
 
 	//for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-	ptr = g_strstr_len(str, lng, part->delim);
+	ptr = g_strstr_len(str, lng, part->delimiter);
 	
 	return ptr - str;
 }
 
 guint skip_decimal(gchar *str, guint lng, parse_part *part)
 {
-	gchar ptr;
+	gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
-	gchar ptr2;
+	gchar *ptr2;
 #endif
 
 	if(!lng)
@@ -118,9 +119,9 @@ guint skip_decimal(gchar *str, guint lng, parse_part *part)
 
 guint skip_floatingpoint(gchar *str, guint lng, parse_part *part)
 {
-	gchar ptr;
+	gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
-	gchar ptr2;
+	gchar *ptr2;
 #endif
 
 	if(!lng)
@@ -146,9 +147,9 @@ guint skip_floatingpoint(gchar *str, guint lng, parse_part *part)
 
 guint skip_octal(gchar *str, guint lng, parse_part *part)
 {
-	gchar ptr;
+	gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
-	gchar ptr2;
+	gchar *ptr2;
 #endif
 
 	if(!lng)
@@ -174,7 +175,7 @@ guint skip_octal(gchar *str, guint lng, parse_part *part)
 
 guint skip_string(gchar *str, guint lng, parse_part *part)
 {
-	gchar ptr;
+	gchar *ptr;
 
 	if(!lng)
 		return 0;
@@ -191,9 +192,9 @@ guint skip_string(gchar *str, guint lng, parse_part *part)
 
 guint skip_unsigned(gchar *str, guint lng, parse_part *part)
 {
-	gchar ptr;
+	gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
-	gchar ptr2;
+	gchar *ptr2;
 #endif
 
 	if(!lng)
@@ -217,9 +218,9 @@ guint skip_unsigned(gchar *str, guint lng, parse_part *part)
 
 guint skip_hexadecimal(gchar *str, guint lng, parse_part *part)
 {
-	gchar ptr;
+	gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
-	gchar ptr2;
+	gchar *ptr2;
 #endif
 
 	if(!lng)
@@ -248,7 +249,7 @@ guint parse_byte(gchar *str, guint lng, parse_part *part)
 	if(lng < 1)
 		return 0;
 	
-	*part->
+	/*part->*/
 
 	return 1;
 }
@@ -309,7 +310,7 @@ gchar* strdup_escaped(const gchar *str, guint lng)/*{{{*/
 		size++;
 	}
 
-	new_str = g_new(gchar, size+1)
+	new_str = g_new(gchar, size+1);
 	new_str[size] = '\0';
 
 	size = 0;
@@ -401,6 +402,7 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 	gboolean skip_flag;
 	guint width_flag;
 	guint index_flag;
+	guint index;
 
 	parse_part *part = g_new0(parse_part, 1);
 	GSList *parts = g_slist_prepend(NULL, part);
@@ -457,7 +459,7 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 			if(g_ascii_isdigit(ch))
 			{
 				width_flag = strtoul(ptr-1, &ptr, 10);
-				cp = *ptr;
+				ch = *ptr;
 			}
 			/*}}}*/
 
@@ -516,15 +518,18 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_SHORT:
-								part->function = parse_word;
+                                /* TODO: write parse_word func */
+								/* part->function = parse_word; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_LONG:
-								part->function = parse_dword;
+                                /* TODO: write parse_dword func */
+								/* part->function = parse_dword; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_ULONG);
 							break;
 							case SIZE_LONGLONG:
-								part->function = parse_qword;
+                                /* TODO: write parse_qword func */
+								/* part->function = parse_qword; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT64);
 							break;
 						}
@@ -545,7 +550,8 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 					{
 						part_count++;
 						part->index = index;
-						part->function = parse_char;
+                        /* TODO: write parse_char func */
+						/* part->function = parse_char; */
 						lsq_archive_set_property_type(archive, index, G_TYPE_CHAR);
 					}
 					g_slist_prepend(parts, part);
@@ -567,19 +573,23 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 						switch(size_flag)
 						{
 							case SIZE_NORMAL:
-								part->function = parse_decimal;
+                                /* TODO: write parse_decimal func */
+								/* part->function = parse_decimal; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_INT);
 							break;
 							case SIZE_SHORT:
-								part->function = parse_decimal16;
+                                /* TODO: write parse_decimal16 func */
+								/* part->function = parse_decimal16; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_INT);
 							break;
 							case SIZE_LONG:
-								part->function = parse_decimal32;
+                                /* TODO: write parse_decimal32 func */
+								/* part->function = parse_decimal32; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_LONG);
 							break;
 							case SIZE_LONGLONG:
-								part->function = parse_decimal64;
+                                /* TODO: write parse_decimal64 func */
+								/* part->function = parse_decimal64; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_INT64);
 							break;
 						}
@@ -604,11 +614,13 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 						switch(size_flag)
 						{
 							case SIZE_NORMAL:
-								part->function = parse_floatingpoint;
+                                /* TODO: write parse_floatingpoint func */
+								/* part->function = parse_floatingpoint; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_FLOAT);
 							break;
 							case SIZE_LONGLONG:
-								part->function = parse_double;
+                                /* TODO: write parse_double func */
+								/* part->function = parse_double; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_DOUBLE);
 							break;
 						}
@@ -631,19 +643,23 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 						switch(size_flag)
 						{
 							case SIZE_NORMAL:
-								part->function = parse_octal;
+                                /* TODO: write parse_octal func */
+								/* part->function = parse_octal; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_SHORT:
-								part->function = parse_octal16;
+                                /* TODO: write parse_octal16 func */
+								/* part->function = parse_octal16; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_LONG:
-								part->function = parse_octal32;
+                                /* TODO: write parse_octal32 func */
+								/* part->function = parse_octal32; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_ULONG);
 							break;
 							case SIZE_LONGLONG:
-								part->function = parse_octal64;
+                                /* TODO: write parse_octal64 func */
+								/* part->function = parse_octal64; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT64);
 							break;
 						}
@@ -665,7 +681,8 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 					{
 						part_count++;
 						part->index = index;
-						part->function = parse_string;
+                        /* TODO: write parse_string func */
+						/* part->function = parse_string; */
 						lsq_archive_set_property_type(archive, index, G_TYPE_STRING);
 					}
 					g_slist_prepend(parts, part);
@@ -686,19 +703,23 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 						switch(size_flag)
 						{
 							case SIZE_NORMAL:
-								part->function = parse_unsigned;
+                                /* TODO: write parse_unsigned func */
+								/* part->function = parse_unsigned; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_SHORT:
-								part->function = parse_unsigned16;
+                                /* TODO: write parse_unsigned16 func */
+								/* part->function = parse_unsigned16; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_LONG:
-								part->function = parse_unsigned32;
+                                /* TODO: write parse_unsigned32 func */
+								/* part->function = parse_unsigned32; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_ULONG);
 							break;
 							case SIZE_LONGLONG:
-								part->function = parse_unsigned64;
+                                /* TODO: write parse_unsigned64 func */
+								/* part->function = parse_unsigned64; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT64);
 							break;
 						}
@@ -722,19 +743,23 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 						switch(size_flag)
 						{
 							case SIZE_NORMAL:
-								part->function = parse_hexadecimal;
+                                /* TODO: write parse_hexadecimal func */
+								/* part->function = parse_hexadecimal; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_SHORT:
-								part->function = parse_hexadecimal16;
+                                /* TODO: write parse_hexadecimal16 func */
+								/* part->function = parse_hexadecimal16; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT);
 							break;
 							case SIZE_LONG:
-								part->function = parse_hexadecimal32;
+                                /* TODO: write parse_hexadecimal32 func */
+								/* part->function = parse_hexadecimal32; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_ULONG);
 							break;
 							case SIZE_LONGLONG:
-								part->function = parse_hexadecimal64;
+                                /* TODO: write parse_hexadecimal64 func */
+								/* part->function = parse_hexadecimal64; */
 								lsq_archive_set_property_type(archive, index, G_TYPE_UINT64);
 							break;
 						}
@@ -747,7 +772,8 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 					if(skip_flag || size_flag || width_flag)
 						return;
 					part = g_new0(parse_part, 1);
-					part->function = parse_filename;
+                    /* TODO: write parse_filename func */
+					/*part->function = parse_filename; */
 					g_slist_prepend(parts, part);
 				break;
 				/*}}}*/
@@ -758,7 +784,6 @@ build_parser(LSQArchive *archive, const gchar *parse_string)
 		}
 	}
 
-	lsq_archive archive
 }
 
 parse()

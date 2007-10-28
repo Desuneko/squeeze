@@ -19,8 +19,10 @@
 #include <glib-object.h> 
 #include <signal.h>
 
+#include <thunar-vfs/thunar-vfs.h>
 #include "libsqueeze.h"
 
+#include "archive.h"
 #include "parser-context.h"
 
 enum {
@@ -33,13 +35,13 @@ static void lsq_parser_context_get_property(GObject*, guint, GValue*, GParamSpec
 G_DEFINE_TYPE(LSQParserContext, lsq_parser_context, G_TYPE_OBJECT);
 
 static void
-lsq_parser_context_init(LSQParser *self)
+lsq_parser_context_init(LSQParserContext *self)
 {
 	self->archive = NULL;
 }
 
 static void
-lsq_parser_context_class_init(LSQParserClass *klass)
+lsq_parser_context_class_init(LSQParserContextClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS(klass);
 	GParamSpec *pspec;
@@ -48,7 +50,7 @@ lsq_parser_context_class_init(LSQParserClass *klass)
 	object_class->get_property = lsq_parser_context_get_property;
 
 	pspec = g_param_spec_object("archive", NULL, NULL, LSQ_TYPE_ARCHIVE, G_PARAM_READABLE|G_PARAM_CONSTRUCT_ONLY);
-	g_object_class_install_property(object_clas, LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE, pspec);
+	g_object_class_install_property(object_class, LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE, pspec);
 }
 
 static void
@@ -76,7 +78,7 @@ lsq_parser_context_get_property(GObject *object, guint property_id, GValue *valu
 LSQParserContext*
 lsq_parser_context_new(LSQArchive *archive)
 {
-	LSQParserContext *ctx
+	LSQParserContext *ctx;
 	
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), NULL);
 
@@ -90,5 +92,5 @@ lsq_parser_context_get_line(LSQParserContext *ctx, gchar **line, gsize *length)
 {
 	GIOStatus stat;
 
-	stat = g_io_channel_read_line
+	/*stat = g_io_channel_read_line;*/
 }

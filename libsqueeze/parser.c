@@ -19,6 +19,7 @@
 #include <glib-object.h> 
 #include <signal.h>
 
+#include <thunar-vfs/thunar-vfs.h>
 #include "libsqueeze.h"
 
 #include "parser-context.h"

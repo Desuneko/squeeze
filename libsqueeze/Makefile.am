@@ -1,16 +1,11 @@
 lib_LTLIBRARIES = libsqueeze-1.la
 
 libsqueeze_1_la_SOURCES =  \
-	internals.c internals.h \
 	libsqueeze.c libsqueeze.h \
-	slist.c slist.h \
-	support-template.c support-template.h \
-	archive.c archive.h \
-	archive-iter.c archive-iter.h \
-	archive-iter-pool.c archive-iter-pool.h \
-	archive-tempfs.c archive-tempfs.h \
-	support-factory.c support-factory.h \
-	support-reader.c support-reader.h
+	parser-context.c parser-context.h \
+	parser.c parser.h \
+	scanf-parser.c scanf-parser.h \
+	archive.c archive.h
 
 # archive-command.c archive-command.h
 # spawn-command.c spawn-command.h

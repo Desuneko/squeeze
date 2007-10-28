@@ -18,25 +18,25 @@
 
 G_BEGIN_DECLS
 
-#define LSQ_TYPE_PARSER_CONTEXT lsq_parser_context_get_type()
+#define LSQ_PARSER_CONTEXT_TYPE lsq_parser_context_get_type()
 
 #define LSQ_PARSER_CONTEXT(obj) (               \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			LSQ_TYPE_PARSER_CONTEXT,                  \
+			LSQ_PARSER_CONTEXT_TYPE,                  \
 			LSQParserContext))
 
 #define LSQ_IS_PARSER_CONTEXT(obj) (            \
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
-			LSQ_TYPE_PARSER_CONTEXT))
+			LSQ_PARSER_CONTEXT_TYPE))
 
 #define LSQ_PARSER_CONTEXT_CLASS(class) (      \
 		G_TYPE_CHECK_CLASS_CAST ((class),  \
-			LSQ_TYPE_PARSER_CONTEXT,                 \
+			LSQ_PARSER_CONTEXT_TYPE,                 \
 			LSQParserContextClass))
 
 #define LSQ_IS_PARSER_CONTEXT_CLASS(class) (   \
 		G_TYPE_CHECK_CLASS_TYPE ((class),  \
-			LSQ_TYPE_PARSER_CONTEXT))
+			LSQ_PARSER_CONTEXT_TYPE))
 
 typedef struct _LSQParserContext LSQParserContext;
 
