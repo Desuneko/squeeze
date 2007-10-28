@@ -38,6 +38,11 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_CLASS_TYPE ((class),  \
 			LSQ_TYPE_PARSER))
 
+#define LSQ_PARSER_GET_CLASS(obj) (    \
+		G_TYPE_INSTANCE_GET_CLASS ((obj),  \
+			LSQ_TYPE_PARSER,                 \
+      LSQParserClass))
+
 
 typedef struct _LSQParser LSQParser;
 

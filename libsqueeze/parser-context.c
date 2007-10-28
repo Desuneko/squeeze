@@ -38,6 +38,8 @@ static void
 lsq_parser_context_init(LSQParserContext *self)
 {
 	self->archive = NULL;
+  self->channel = NULL;
+  self->last_stat = G_IO_STATUS_AGAIN;
 }
 
 static void
@@ -87,10 +89,28 @@ lsq_parser_context_new(LSQArchive *archive)
 	return ctx;
 }
 
+void
+lsq_parser_context_set_channel(LSQParserContext *ctx, GIOChannel *channel)
+{
+  ctx->channel = channel;
+  ctx->last_stat = G_IO_STATUS_AGAIN;
+}
+
 gboolean
 lsq_parser_context_get_line(LSQParserContext *ctx, gchar **line, gsize *length)
 {
 	GIOStatus stat;
 
-	/*stat = g_io_channel_read_line;*/
+	stat = g_io_channel_read_line(ctx->channel, line, length, NULL, NULL);
+
+  ctx->last_stat = stat;
+
+  return stat == G_IO_STATUS_NORMAL;
 }
+
+gboolean
+lsq_parser_context_is_good(LSQParserContext *ctx)
+{
+  return ctx->last_stat == G_IO_STATUS_NORMAL || ctx->last_stat == G_IO_STATUS_AGAIN;
+}
+

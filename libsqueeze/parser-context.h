@@ -45,6 +45,9 @@ struct _LSQParserContext
 	GObject parent;
 
 	LSQArchive *archive;
+
+  GIOChannel *channel;
+  GIOStatus last_stat;
 };
 
 typedef struct _LSQParserContextClass LSQParserContextClass;
