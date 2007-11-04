@@ -43,6 +43,10 @@ struct _LSQSupportTemplate
 	gchar **required_apps;
 	gboolean supported;
 
+    guint n_properties;
+    GType *property_types;
+    gchar **property_names;
+
 	gchar **new_cmd_queue;
 	gchar **add_cmd_queue;
 	gchar **remove_cmd_queue;
@@ -50,6 +54,16 @@ struct _LSQSupportTemplate
 	gchar **refresh_cmd_queue;
 	LSQSupportType   support_mask;
 };
+
+GType
+lsq_support_template_get_property_type(LSQSupportTemplate *s_template, guint n);
+const gchar *
+lsq_support_template_get_property_name(LSQSupportTemplate *s_template, guint n);
+guint
+lsq_support_template_get_n_properties (LSQSupportTemplate *s_template);
+
+void
+lsq_support_template_set_property_type(LSQSupportTemplate *s_template, guint n, GType type);
 
 
 #endif /* __SUPPORT_TEMPLATE_H__ */

@@ -113,7 +113,7 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 		return 1;
 	}
 
-	LSQArchive *archive = lsq_opened_archive_get_archive(path);
+	LSQArchive *archive = NULL; /*lsq_opened_archive_get_archive(path); */
 	if(!archive)
 	{
 		archive = lsq_archive_new(path, NULL);

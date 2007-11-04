@@ -198,7 +198,7 @@ lsq_archive_n_entry_properties(const LSQArchive *archive)
 #ifdef DEBUG
 	g_return_val_if_fail(archive, 0);
 #endif
-	return LSQ_ARCHIVE_PROP_USER;//lsq_builder_settings_get_n_properties(archive->settings) + LSQ_ARCHIVE_PROP_USER;
+	return lsq_support_template_get_n_properties(archive->priv->s_template) + LSQ_ARCHIVE_PROP_USER;
 }
 
 /*
@@ -217,7 +217,7 @@ lsq_archive_get_entry_property_type(const LSQArchive *archive, guint n)
 			return G_TYPE_STRING;
 			break;
 		default:
-			return G_TYPE_NONE; //lsq_builder_settings_get_property_type(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
+			return lsq_support_template_get_property_type(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
 			break;
 	}
 }
@@ -239,7 +239,7 @@ lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
 			return _("Mime type");
 			break;
 		default:
-			return NULL; //lsq_builder_settings_get_property_name(archive->settings, n - LSQ_ARCHIVE_PROP_USER);
+			return lsq_support_template_get_property_name(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
 			break;
 	}
 }
@@ -377,4 +377,13 @@ gboolean
 lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
 {
 	return FALSE;
+}
+
+void
+lsq_archive_set_property_type(LSQArchive *archive, guint n, GType type)
+{
+  if (n >= LSQ_ARCHIVE_PROP_USER)
+  {
+        lsq_support_template_set_property_type(archive->priv->s_template, n, type);
+  }
 }

@@ -8,6 +8,10 @@ libsqueeze_1_la_SOURCES =  \
 	slist.c slist.h \
 	archive-iter-pool.c archive-iter-pool.h \
 	archive-iter.c archive-iter.h \
+	archive-tempfs.c archive-tempfs.h \
+	support-reader.c support-reader.h \
+	support-template.c support-template.h \
+	support-factory.c support-factory.h \
 	archive.c archive.h
 
 # archive-command.c archive-command.h
