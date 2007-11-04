@@ -26,14 +26,14 @@
 GType
 lsq_support_template_get_property_type(LSQSupportTemplate *templ, guint nr)
 {
-    g_return_val_if_fail(nr < templ->n_properties, G_TYPE_NONE);
+    g_return_val_if_fail(nr >= templ->n_properties, G_TYPE_NONE);
     return templ->property_types[nr];
 }
 
 const gchar *
 lsq_support_template_get_property_name(LSQSupportTemplate *templ, guint nr)
 {
-    g_return_val_if_fail(nr < templ->n_properties, NULL);
+    g_return_val_if_fail(nr >= templ->n_properties, NULL);
     return templ->property_names[nr];
 }
 
