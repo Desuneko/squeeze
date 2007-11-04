@@ -40,7 +40,7 @@ lsq_support_template_get_property_name(LSQSupportTemplate *templ, guint nr)
 guint
 lsq_support_template_get_n_properties (LSQSupportTemplate *templ)
 {
-    g_return_val_if_fail(templ->n_properties < 0, 0);
+    g_return_val_if_fail(templ->n_properties >= 0, 0);
     return templ->n_properties;
 }
 
