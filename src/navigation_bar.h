@@ -20,22 +20,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_NAVIGATION_BAR sq_navigation_bar_get_type()
 
-#define SQ_NAVIGATION_BAR(obj)(                \
+#define SQ_NAVIGATION_BAR(obj)(				\
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			SQ_TYPE_NAVIGATION_BAR,                  \
+			SQ_TYPE_NAVIGATION_BAR,				  \
 			SQNavigationBar))
 
-#define SQ_IS_NAVIGATION_BAR(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_NAVIGATION_BAR(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_NAVIGATION_BAR))
 
 #define SQ_NAVIGATION_BAR_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			SQ_TYPE_NAVIGATION_BAR,      \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
+			SQ_TYPE_NAVIGATION_BAR,	  \
 			SQNavigationBarClass))
 
 #define SQ_IS_NAVIGATION_BAR_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			SQ_TYPE_NAVIGATION_BAR()))	
 
 typedef struct _SQNavigationBar SQNavigationBar;
@@ -56,9 +56,9 @@ struct _SQNavigationBarClass
 	GtkToolbarClass parent_class;
 };
 
-GType      sq_navigation_bar_get_type();
+GType	  sq_navigation_bar_get_type();
 SQNavigationBar *sq_navigation_bar_new();
-void       sq_navigation_bar_set_store(SQNavigationBar *navigation_bar, SQArchiveStore *store);
+void	   sq_navigation_bar_set_store(SQNavigationBar *navigation_bar, SQArchiveStore *store);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_NAVIGATION_BAR_H__*/

@@ -136,7 +136,7 @@ sq_archive_store_refresh(SQArchiveStore *store);
 
 static void
 cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data);
-/* static void                                                                                           */
+/* static void																						   */
 /* cb_sq_archive_store_archive_path_changed(LSQArchive *archive, const gchar *path, gpointer user_data); */
 
 GType
@@ -189,26 +189,26 @@ sq_archive_store_get_type()
 static void
 sq_archive_tree_model_init(GtkTreeModelIface *iface)
 {
-	iface->get_flags       = sq_archive_store_get_flags;
+	iface->get_flags	   = sq_archive_store_get_flags;
 	iface->get_n_columns   = sq_archive_store_get_n_columns;
 	iface->get_column_type = sq_archive_store_get_column_type;
-	iface->get_iter        = sq_archive_store_get_iter;
-	iface->get_path        = sq_archive_store_get_path;
-	iface->get_value       = sq_archive_store_get_value;
-	iface->iter_next       = sq_archive_store_iter_next;
+	iface->get_iter		= sq_archive_store_get_iter;
+	iface->get_path		= sq_archive_store_get_path;
+	iface->get_value	   = sq_archive_store_get_value;
+	iface->iter_next	   = sq_archive_store_iter_next;
 	iface->iter_children   = sq_archive_store_iter_children;
 	iface->iter_has_child  = sq_archive_store_iter_has_child;
 	iface->iter_n_children = sq_archive_store_iter_n_children;
 	iface->iter_nth_child  = sq_archive_store_iter_nth_child;
-	iface->iter_parent     = sq_archive_store_iter_parent;
+	iface->iter_parent	 = sq_archive_store_iter_parent;
 }
 
 static void
 sq_archive_tree_sortable_init(GtkTreeSortableIface *iface)
 {
-	iface->get_sort_column_id    = sq_archive_store_get_sort_column_id;
-	iface->set_sort_column_id    = sq_archive_store_set_sort_column_id;
-	iface->set_sort_func         = sq_archive_store_set_sort_func;        	/*NOT SUPPORTED*/
+	iface->get_sort_column_id	= sq_archive_store_get_sort_column_id;
+	iface->set_sort_column_id	= sq_archive_store_set_sort_column_id;
+	iface->set_sort_func		 = sq_archive_store_set_sort_func;			/*NOT SUPPORTED*/
 	iface->set_default_sort_func = sq_archive_store_set_default_sort_func;	/*NOT SUPPORTED*/
 	iface->has_default_sort_func = sq_archive_store_has_default_sort_func;
 }

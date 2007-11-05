@@ -20,22 +20,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_SETTINGS sq_settings_get_type()
 
-#define SQ_SETTINGS(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			sq_settings_get_type(),      \
+#define SQ_SETTINGS(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			sq_settings_get_type(),	  \
 			SQSettings))
 
-#define SQ_IS_SETTINGS(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_SETTINGS(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_settings_get_type()))
 
 #define SQ_SETTINGS_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			sq_settings_get_type(),      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			sq_settings_get_type(),	  \
 			SQSettingsClass))
 
 #define SQ_IS_SETTINGS_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			sq_settings_get_type()))
 
 typedef struct _SQSettings SQSettings;
@@ -55,20 +55,20 @@ struct _SQSettingsClass
 };
 
 SQSettings   *sq_settings_new();
-GType         sq_settings_get_type ();
+GType		 sq_settings_get_type ();
 
-gboolean      sq_settings_load(SQSettings *);
-gboolean      sq_settings_save(SQSettings *);
+gboolean	  sq_settings_load(SQSettings *);
+gboolean	  sq_settings_save(SQSettings *);
 
 const gchar  *sq_settings_read_entry(SQSettings *settings, const gchar *key, const gchar *fallback);
-gboolean      sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboolean fallback);
-gint          sq_settings_read_int_entry(SQSettings *settings, const gchar *key, const gint fallback);
+gboolean	  sq_settings_read_bool_entry(SQSettings *settings, const gchar *key, const gboolean fallback);
+gint		  sq_settings_read_int_entry(SQSettings *settings, const gchar *key, const gint fallback);
 
-void          sq_settings_write_entry(SQSettings *settings, const gchar *key, const gchar *value);
-void          sq_settings_write_bool_entry(SQSettings *settings, const gchar *key, const gboolean value);
-void          sq_settings_write_int_entry(SQSettings *settings, const gchar *key, const gint value);
+void		  sq_settings_write_entry(SQSettings *settings, const gchar *key, const gchar *value);
+void		  sq_settings_write_bool_entry(SQSettings *settings, const gchar *key, const gboolean value);
+void		  sq_settings_write_int_entry(SQSettings *settings, const gchar *key, const gint value);
 
-void          sq_settings_set_group(SQSettings *settings, const gchar *group);
+void		  sq_settings_set_group(SQSettings *settings, const gchar *group);
 
 G_END_DECLS
 

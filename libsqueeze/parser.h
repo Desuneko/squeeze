@@ -20,28 +20,28 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_PARSER lsq_parser_get_type()
 
-#define LSQ_PARSER(obj) (               \
+#define LSQ_PARSER(obj) (			   \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			LSQ_TYPE_PARSER,                  \
+			LSQ_TYPE_PARSER,				  \
 			LSQParser))
 
-#define LSQ_IS_PARSER(obj) (            \
+#define LSQ_IS_PARSER(obj) (			\
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
 			LSQ_TYPE_PARSER))
 
-#define LSQ_PARSER_CLASS(class) (      \
+#define LSQ_PARSER_CLASS(class) (	  \
 		G_TYPE_CHECK_CLASS_CAST ((class),  \
-			LSQ_TYPE_PARSER,                 \
+			LSQ_TYPE_PARSER,				 \
 			LSQParserClass))
 
 #define LSQ_IS_PARSER_CLASS(class) (   \
 		G_TYPE_CHECK_CLASS_TYPE ((class),  \
 			LSQ_TYPE_PARSER))
 
-#define LSQ_PARSER_GET_CLASS(obj) (    \
+#define LSQ_PARSER_GET_CLASS(obj) (	\
 		G_TYPE_INSTANCE_GET_CLASS ((obj),  \
-			LSQ_TYPE_PARSER,                 \
-      LSQParserClass))
+			LSQ_TYPE_PARSER,				 \
+	  LSQParserClass))
 
 
 typedef struct _LSQParser LSQParser;

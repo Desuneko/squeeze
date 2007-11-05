@@ -83,8 +83,8 @@ static void
 sq_application_class_init(SQApplicationClass *application_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (application_class);
-	object_class->finalize     = sq_application_finalize;
-	object_class->dispose      = sq_application_dispose;
+	object_class->finalize	 = sq_application_finalize;
+	object_class->dispose	  = sq_application_dispose;
 
 	sq_application_signals[SQ_APPLICATION_SIGNAL_DESTROY] = g_signal_new("destroy",
 			G_TYPE_FROM_CLASS(application_class),
@@ -185,10 +185,10 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT))
 	{
 		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-		                                                   GTK_DIALOG_DESTROY_WITH_PARENT, 
-		                                                   GTK_MESSAGE_WARNING,
-		                                                   GTK_BUTTONS_CLOSE,
-		                                                   _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
+														   GTK_DIALOG_DESTROY_WITH_PARENT, 
+														   GTK_MESSAGE_WARNING,
+														   GTK_BUTTONS_CLOSE,
+														   _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
 		if(warning_dialog)
 		{
 			gtk_dialog_run (GTK_DIALOG (warning_dialog) );

@@ -26,22 +26,22 @@
 GType
 lsq_support_template_get_property_type(LSQSupportTemplate *templ, guint nr)
 {
-    g_return_val_if_fail(nr >= templ->n_properties, G_TYPE_NONE);
-    return templ->property_types[nr];
+	g_return_val_if_fail(nr >= templ->n_properties, G_TYPE_NONE);
+	return templ->property_types[nr];
 }
 
 const gchar *
 lsq_support_template_get_property_name(LSQSupportTemplate *templ, guint nr)
 {
-    g_return_val_if_fail(nr >= templ->n_properties, NULL);
-    return templ->property_names[nr];
+	g_return_val_if_fail(nr >= templ->n_properties, NULL);
+	return templ->property_names[nr];
 }
 
 guint
 lsq_support_template_get_n_properties (LSQSupportTemplate *templ)
 {
-    g_return_val_if_fail(templ->n_properties >= 0, 0);
-    return templ->n_properties;
+	g_return_val_if_fail(templ->n_properties >= 0, 0);
+	return templ->n_properties;
 }
 
 

@@ -20,22 +20,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_NOTEBOOK sq_notebook_get_type()
 
-#define SQ_NOTEBOOK(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			sq_notebook_get_type(),      \
+#define SQ_NOTEBOOK(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			sq_notebook_get_type(),	  \
 			SQNotebook))
 
-#define SQ_IS_NOTEBOOK(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_NOTEBOOK(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_notebook_get_type()))
 
 #define SQ_NOTEBOOK_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			sq_notebook_get_type(),      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			sq_notebook_get_type(),	  \
 			SQNotebookClass))
 
 #define SQ_IS_NOTEBOOK_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			sq_notebook_get_type()))
 
 typedef struct _SQNotebook SQNotebook;
@@ -69,22 +69,22 @@ struct _SQNotebookClass
 };
 
 GtkWidget  *sq_notebook_new (SQNavigationBar *, gboolean , GtkAccelGroup *);
-GType       sq_notebook_get_type ();
+GType	   sq_notebook_get_type ();
 
-void        sq_notebook_set_navigation_bar(SQNotebook *, SQNavigationBar *);
-void        sq_notebook_add_archive(SQNotebook *, LSQArchive *, gboolean);
-void        sq_notebook_page_set_archive(SQNotebook *, LSQArchive *, gint n);
-void        sq_notebook_page_get_archive(SQNotebook *, LSQArchive **, gint n);
-void        sq_notebook_set_icon_theme(SQNotebook *, GtkIconTheme *);
-void        sq_notebook_get_active_archive(SQNotebook *, LSQArchive **);
-gboolean    sq_notebook_is_active_archive(SQNotebook *, LSQArchive *);
+void		sq_notebook_set_navigation_bar(SQNotebook *, SQNavigationBar *);
+void		sq_notebook_add_archive(SQNotebook *, LSQArchive *, gboolean);
+void		sq_notebook_page_set_archive(SQNotebook *, LSQArchive *, gint n);
+void		sq_notebook_page_get_archive(SQNotebook *, LSQArchive **, gint n);
+void		sq_notebook_set_icon_theme(SQNotebook *, GtkIconTheme *);
+void		sq_notebook_get_active_archive(SQNotebook *, LSQArchive **);
+gboolean	sq_notebook_is_active_archive(SQNotebook *, LSQArchive *);
 GtkWidget  *sq_notebook_get_active_child(SQNotebook *notebook);
 SQArchiveStore *sq_notebook_get_active_store(SQNotebook *notebook);
 GtkTreeView *sq_notebook_get_active_tree_view(SQNotebook *notebook);
-gboolean    sq_notebook_get_multi_tab(SQNotebook *notebook);
-void        sq_notebook_close_active_archive(SQNotebook *);
+gboolean	sq_notebook_get_multi_tab(SQNotebook *notebook);
+void		sq_notebook_close_active_archive(SQNotebook *);
 
-GSList     *sq_notebook_get_selected_items(SQNotebook *notebook);
+GSList	 *sq_notebook_get_selected_items(SQNotebook *notebook);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_NOTEBOOK_H__ */

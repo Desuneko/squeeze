@@ -20,22 +20,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_TOOL_BAR sq_tool_bar_get_type()
 
-#define SQ_TOOL_BAR(obj)(                \
+#define SQ_TOOL_BAR(obj)(				\
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			SQ_TYPE_TOOL_BAR,                  \
+			SQ_TYPE_TOOL_BAR,				  \
 			SQToolBar))
 
-#define SQ_IS_TOOL_BAR(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_TOOL_BAR(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_TOOL_BAR))
 
 #define SQ_TOOL_BAR_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			SQ_TYPE_TOOL_BAR,      \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
+			SQ_TYPE_TOOL_BAR,	  \
 			SQToolBarClass))
 
 #define SQ_IS_TOOL_BAR_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			SQ_TYPE_TOOL_BAR()))	
 
 typedef struct _SQToolBar SQToolBar;
@@ -60,7 +60,7 @@ struct _SQToolBarClass
 	SQNavigationBarClass parent_class;
 };
 
-GType            sq_tool_bar_get_type();
+GType			sq_tool_bar_get_type();
 SQNavigationBar *sq_tool_bar_new();
 
 G_END_DECLS

@@ -146,3 +146,13 @@ LSQArchive
 @Returns: 
 
 
+<!-- ##### FUNCTION lsq_archive_set_property_type ##### -->
+<para>
+
+</para>
+
+@archive: 
+@n: 
+@type: 
+
+

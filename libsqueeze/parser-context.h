@@ -20,18 +20,18 @@ G_BEGIN_DECLS
 
 #define LSQ_PARSER_CONTEXT_TYPE lsq_parser_context_get_type()
 
-#define LSQ_PARSER_CONTEXT(obj) (               \
+#define LSQ_PARSER_CONTEXT(obj) (			   \
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			LSQ_PARSER_CONTEXT_TYPE,                  \
+			LSQ_PARSER_CONTEXT_TYPE,				  \
 			LSQParserContext))
 
-#define LSQ_IS_PARSER_CONTEXT(obj) (            \
+#define LSQ_IS_PARSER_CONTEXT(obj) (			\
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
 			LSQ_PARSER_CONTEXT_TYPE))
 
-#define LSQ_PARSER_CONTEXT_CLASS(class) (      \
+#define LSQ_PARSER_CONTEXT_CLASS(class) (	  \
 		G_TYPE_CHECK_CLASS_CAST ((class),  \
-			LSQ_PARSER_CONTEXT_TYPE,                 \
+			LSQ_PARSER_CONTEXT_TYPE,				 \
 			LSQParserContextClass))
 
 #define LSQ_IS_PARSER_CONTEXT_CLASS(class) (   \
@@ -57,11 +57,11 @@ struct _LSQParserContextClass
 	GObjectClass parent;
 };
 
-GType             lsq_parser_context_get_type (void);
+GType			 lsq_parser_context_get_type (void);
 
-LSQParserContext *lsq_parser_context_new      (LSQArchive *archive);
+LSQParserContext *lsq_parser_context_new	  (LSQArchive *archive);
 
-gboolean          lsq_parser_context_get_line (LSQParserContext *, gchar **, gsize *);
+gboolean		  lsq_parser_context_get_line (LSQParserContext *, gchar **, gsize *);
 
 G_END_DECLS
 

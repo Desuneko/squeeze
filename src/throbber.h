@@ -26,7 +26,7 @@
 G_BEGIN_DECLS;
 
 typedef struct _SQThrobberClass SQThrobberClass;
-typedef struct _SQThrobber      SQThrobber;
+typedef struct _SQThrobber	  SQThrobber;
 
 #define SQ_TYPE_THROBBER (sq_throbber_get_type ())
 #define SQ_THROBBER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), SQ_TYPE_THROBBER, SQThrobber))
@@ -41,7 +41,7 @@ GtkWidget *sq_throbber_new (void) G_GNUC_MALLOC;
 
 gboolean sq_throbber_get_animated (const SQThrobber *throbber);
 void sq_throbber_set_animated(SQThrobber *throbber,
-                              gboolean    animated);
+							  gboolean	animated);
 
 G_END_DECLS;
 

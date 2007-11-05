@@ -18,22 +18,22 @@
 
 #define SQ_TYPE_ARCHIVE_STORE sq_archive_store_get_type()
 
-#define SQ_ARCHIVE_STORE(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			SQ_TYPE_ARCHIVE_STORE,      \
+#define SQ_ARCHIVE_STORE(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			SQ_TYPE_ARCHIVE_STORE,	  \
 			SQArchiveStore))
 
-#define SQ_IS_ARCHIVE_STORE(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_ARCHIVE_STORE(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_ARCHIVE_STORE))
 
 #define SQ_ARCHIVE_STORE_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			SQ_TYPE_ARCHIVE_STORE,      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			SQ_TYPE_ARCHIVE_STORE,	  \
 			SQArchiveStoreClass))
 
 #define SQ_IS_ARCHIVE_STORE_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			SQ_TYPE_ARCHIVE_STORE))
 
 typedef struct _SQArchiveStore SQArchiveStore;

@@ -43,9 +43,9 @@ struct _LSQSupportTemplate
 	gchar **required_apps;
 	gboolean supported;
 
-    guint n_properties;
-    GType *property_types;
-    gchar **property_names;
+	guint n_properties;
+	GType *property_types;
+	gchar **property_names;
 
 	gchar **new_cmd_queue;
 	gchar **add_cmd_queue;

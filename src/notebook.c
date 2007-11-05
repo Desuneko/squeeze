@@ -128,7 +128,7 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 
 	object_class->set_property = sq_notebook_set_property;
 	object_class->get_property = sq_notebook_get_property;
-	object_class->dispose      = sq_notebook_dispose;
+	object_class->dispose	  = sq_notebook_dispose;
 
 	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_ARCHIVE_REMOVED] = g_signal_new("archive-removed",
 			G_TYPE_FROM_CLASS(notebook_class),

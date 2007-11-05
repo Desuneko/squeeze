@@ -106,7 +106,7 @@ sq_properties_dialog_init(SQPropertiesDialog *dialog)
 
 
 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
-	    GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
+		GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
 			NULL);
 }
 

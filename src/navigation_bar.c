@@ -78,7 +78,7 @@ sq_navigation_bar_class_init(SQNavigationBarClass *navigation_bar_class)
 
 	parent_class = gtk_type_class (GTK_TYPE_CONTAINER);
 
-	object_class->dispose     = sq_navigation_bar_dispose;
+	object_class->dispose	 = sq_navigation_bar_dispose;
 }
 
 static void

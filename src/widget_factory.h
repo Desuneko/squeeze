@@ -18,22 +18,22 @@
 
 G_BEGIN_DECLS
 
-#define SQ_WIDGET_FACTORY(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			sq_widget_factory_get_type(),      \
+#define SQ_WIDGET_FACTORY(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			sq_widget_factory_get_type(),	  \
 			LSQArchive))
 
-#define LSQ_IS_WIDGET_FACTORY(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define LSQ_IS_WIDGET_FACTORY(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_widget_factory_get_type()))
 
 #define SQ_WIDGET_FACTORY_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			sq_widget_factory_get_type(),      \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
+			sq_widget_factory_get_type(),	  \
 			LSQArchiveClass))
 
 #define LSQ_IS_WIDGET_FACTORY_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((klass),        \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			sq_widget_factory_get_type()))
 
 typedef struct
@@ -48,15 +48,15 @@ typedef struct
 	GObjectClass parent;
 } SQWidgetFactoryClass;
 
-GType               sq_widget_factory_get_type(void);
-SQWidgetFactory    *sq_widget_factory_new();
+GType			   sq_widget_factory_get_type(void);
+SQWidgetFactory	*sq_widget_factory_new();
 
-GtkWidget          *sq_widget_factory_create_property_widget(SQWidgetFactory *, GObject *, const gchar *);
-GSList             *sq_widget_factory_create_property_menu(SQWidgetFactory *, GObject *, const gchar *);
-// GtkWidget          *sq_widget_factory_create_action_widget(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
-// GtkWidget          *sq_widget_factory_create_action_menu_item(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
-// GtkToolItem        *sq_widget_factory_create_action_bar(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
-// GSList             *sq_widget_factory_create_action_menu(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *);
+GtkWidget		  *sq_widget_factory_create_property_widget(SQWidgetFactory *, GObject *, const gchar *);
+GSList			 *sq_widget_factory_create_property_menu(SQWidgetFactory *, GObject *, const gchar *);
+// GtkWidget		  *sq_widget_factory_create_action_widget(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+// GtkWidget		  *sq_widget_factory_create_action_menu_item(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+// GtkToolItem		*sq_widget_factory_create_action_bar(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *, const gchar *);
+// GSList			 *sq_widget_factory_create_action_menu(SQWidgetFactory *, LSQArchiveSupport *, LSQArchive *);
 
 #endif /*__SQ_WIDGET_FACTORY_H__*/
 

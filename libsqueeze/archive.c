@@ -124,7 +124,7 @@ lsq_archive_init(LSQArchive *archive)
 #ifdef LSQ_THREADSAFE
 	g_static_rw_lock_init(&archive->rw_lock);
 #endif /* LSQ_THREADSAFE */
-    archive->priv = g_new0(LSQArchivePrivate, 1);
+	archive->priv = g_new0(LSQArchivePrivate, 1);
 }
 
 /** static void
@@ -384,6 +384,6 @@ lsq_archive_set_property_type(LSQArchive *archive, guint n, GType type)
 {
   if (n >= LSQ_ARCHIVE_PROP_USER)
   {
-        lsq_support_template_set_property_type(archive->priv->s_template, n, type);
+		lsq_support_template_set_property_type(archive->priv->s_template, n, type);
   }
 }

@@ -23,22 +23,22 @@
 #define __SQ_PROPERTIES_DIALOG_H__
 G_BEGIN_DECLS
 
-#define SQ_PROPERTIES_DIALOG(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			sq_properties_dialog_get_type(),      \
+#define SQ_PROPERTIES_DIALOG(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			sq_properties_dialog_get_type(),	  \
 			SQPropertiesDialog))
 
-#define SQ_IS_PROPERTIES_DIALOG(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_PROPERTIES_DIALOG(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_properties_dialog_get_type()))
 
 #define SQ_PROPERTIES_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			sq_properties_dialog_get_type(),      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			sq_properties_dialog_get_type(),	  \
 			SQPropertiesDialogClass))
 
 #define SQ_IS_PROPERTIES_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			sq_properties_dialog_get_type()))
 
 typedef struct _SQPropertiesDialog SQPropertiesDialog;

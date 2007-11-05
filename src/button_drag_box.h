@@ -22,22 +22,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_BUTTON_DRAG_BOX sq_button_drag_box_get_type()
 
-#define SQ_BUTTON_DRAG_BOX(obj)(                \
+#define SQ_BUTTON_DRAG_BOX(obj)(				\
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			SQ_TYPE_BUTTON_DRAG_BOX,                  \
+			SQ_TYPE_BUTTON_DRAG_BOX,				  \
 			SQButtonDragBox))
 
-#define SQ_IS_BUTTON_DRAG_BOX(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_BUTTON_DRAG_BOX(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_BUTTON_DRAG_BOX))
 
 #define SQ_BUTTON_DRAG_BOX_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			SQ_TYPE_BUTTON_DRAG_BOX,      \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
+			SQ_TYPE_BUTTON_DRAG_BOX,	  \
 			SQButtonDragBoxClass))
 
 #define SQ_IS_BUTTON_DRAG_BOX_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			SQ_TYPE_BUTTON_DRAG_BOX()))	
 
 typedef struct _SQButtonDragBox SQButtonDragBox;
@@ -59,15 +59,15 @@ struct _SQButtonDragBoxClass
 	GtkVBoxClass parent_class;
 };
 
-GType      sq_button_drag_box_get_type();
+GType	  sq_button_drag_box_get_type();
 GtkWidget *sq_button_drag_box_new();
 
-void       sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons);
-void       sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label, gpointer user_data);
-void       sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible, gpointer user_data);
+void	   sq_button_drag_box_lock_buttons(SQButtonDragBox *box, guint buttons);
+void	   sq_button_drag_box_add_fixed_button(SQButtonDragBox *box, const gchar *label, gpointer user_data);
+void	   sq_button_drag_box_add_button(SQButtonDragBox *box, const gchar *label, gboolean visible, gpointer user_data);
 
-GSList    *sq_button_drag_box_get_visible(SQButtonDragBox *box);
-GSList    *sq_button_drag_box_get_hidden(SQButtonDragBox *box);
+GSList	*sq_button_drag_box_get_visible(SQButtonDragBox *box);
+GSList	*sq_button_drag_box_get_hidden(SQButtonDragBox *box);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_BUTTON_DRAG_BOX_H__*/

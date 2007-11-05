@@ -80,15 +80,15 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 	gtk_file_filter_set_name(dialog->file_filter, _("Archives"));
 	while(_supported_mime_types)
 	{
-        /*
+		/*
 		gtk_combo_box_append_text(GTK_COMBO_BOX(dialog->archive_types_combo),
-		        lsq_mime_support_get_comment((LSQMimeSupport *)(_supported_mime_types->data)));
+				lsq_mime_support_get_comment((LSQMimeSupport *)(_supported_mime_types->data)));
 
 		gtk_file_filter_add_mime_type(dialog->file_filter,
-		        lsq_mime_support_get_name((LSQMimeSupport *)(_supported_mime_types->data)));
+				lsq_mime_support_get_name((LSQMimeSupport *)(_supported_mime_types->data)));
 
 		_supported_mime_types = g_slist_next(_supported_mime_types);
-        */
+		*/
 	}
 
 	gtk_box_pack_end(GTK_BOX(GTK_DIALOG(dialog)->vbox), hbox, FALSE, TRUE, 0);

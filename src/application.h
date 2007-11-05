@@ -20,22 +20,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_APPLICATION sq_application_get_type()
 
-#define SQ_APPLICATION(obj)(                \
+#define SQ_APPLICATION(obj)(				\
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			SQ_TYPE_APPLICATION,                  \
+			SQ_TYPE_APPLICATION,				  \
 			SQApplication))
 
-#define SQ_IS_APPLICATION(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_APPLICATION(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_APPLICATION))
 
 #define SQ_APPLICATION_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			SQ_TYPE_APPLICATION,      \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
+			SQ_TYPE_APPLICATION,	  \
 			SQApplicationClass))
 
 #define SQ_IS_APPLICATION_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			SQ_TYPE_APPLICATION()))	
 
 typedef struct _SQApplication SQApplication;
@@ -57,7 +57,7 @@ struct _SQApplicationClass
 	GObjectClass parent_class;
 };
 
-GType      sq_application_get_type();
+GType	  sq_application_get_type();
 SQApplication *sq_application_new(GtkIconTheme *icon_theme);
 
 GtkWidget *sq_application_new_window(SQApplication *);

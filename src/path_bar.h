@@ -20,22 +20,22 @@ G_BEGIN_DECLS
 
 #define SQ_TYPE_PATH_BAR sq_path_bar_get_type()
 
-#define SQ_PATH_BAR(obj)(                \
+#define SQ_PATH_BAR(obj)(				\
 		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			SQ_TYPE_PATH_BAR,                  \
+			SQ_TYPE_PATH_BAR,				  \
 			SQPathBar))
 
-#define SQ_IS_PATH_BAR(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_PATH_BAR(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_PATH_BAR))
 
 #define SQ_PATH_BAR_CLASS(klass) ( \
-		G_TYPE_CHECK_CLASS_CAST ((klass),     \
-			SQ_TYPE_PATH_BAR,      \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
+			SQ_TYPE_PATH_BAR,	  \
 			SQPathBarClass))
 
 #define SQ_IS_PATH_BAR_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			SQ_TYPE_PATH_BAR()))	
 
 typedef struct _SQPathBar SQPathBar;
@@ -62,7 +62,7 @@ struct _SQPathBarClass
 	SQNavigationBarClass parent_class;
 };
 
-GType      sq_path_bar_get_type();
+GType	  sq_path_bar_get_type();
 SQNavigationBar *sq_path_bar_new(SQArchiveStore *);
 
 G_END_DECLS

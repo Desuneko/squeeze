@@ -70,10 +70,10 @@ cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data);
 static void
 cb_sq_widget_factory_object_destroyed(GtkObject *obj, gpointer user_data);
 
-/* static void                                                                   */
+/* static void																   */
 /* cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data); */
 
-/* static void                                                              */
+/* static void															  */
 /* sq_widget_factory_notify(LSQCustomAction *action, const gchar *message); */
 
 GType
@@ -112,7 +112,7 @@ static void
 sq_widget_factory_init(SQWidgetFactory *factory)
 {
 	factory->tips = gtk_tooltips_new();
-	/* factory->custom_callback = g_new(LSQCustomActionCallback, 1);                                */
+	/* factory->custom_callback = g_new(LSQCustomActionCallback, 1);								*/
 	/* factory->custom_callback->notify_func = (LSQCustomActionNotifyFunc)sq_widget_factory_notify; */
 }
 
@@ -935,119 +935,119 @@ cb_sq_widget_factory_property_notify(GObject *obj, GParamSpec *pspec, gpointer u
 	g_value_unset(&value);
 }
 
-/* GtkWidget*                                                                                                                          */
+/* GtkWidget*																														  */
 /* sq_widget_factory_create_action_widget(SQWidgetFactory *factory, LSQArchiveSupport *support, LSQArchive *archive, const gchar *act) */
-/* {                                                                                                                                   */
-	/* GtkWidget *widget = NULL;                                                                                                         */
-	/* LSQCustomAction *action = lsq_archive_support_find_action(support, act);                                                          */
+/* {																																   */
+	/* GtkWidget *widget = NULL;																										 */
+	/* LSQCustomAction *action = lsq_archive_support_find_action(support, act);														  */
 
-	/* if(!action)                                                                                                                       */
-		/* return NULL;                                                                                                                    */
+	/* if(!action)																													   */
+		/* return NULL;																													*/
 
-	/* widget = gtk_button_new_with_label(lsq_custom_action_get_nick(action));                                                           */
-	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA, action);                                                               */
-	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);                                           */
-	/* g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);                        */
+	/* widget = gtk_button_new_with_label(lsq_custom_action_get_nick(action));														   */
+	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA, action);															   */
+	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);										   */
+	/* g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);						*/
 
-	/* const gchar *large_tip = lsq_custom_action_get_blurb(action);                                                                     */
-	/* gchar *small_tip = NULL;                                                                                                          */
-	/* if(strchr(large_tip, '\n'))                                                                                                       */
-	/* {                                                                                                                                 */
-		/* small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);                                                          */
-		/* large_tip = strchr(large_tip, '\n') + 1;                                                                                        */
-	/* }                                                                                                                                 */
+	/* const gchar *large_tip = lsq_custom_action_get_blurb(action);																	 */
+	/* gchar *small_tip = NULL;																										  */
+	/* if(strchr(large_tip, '\n'))																									   */
+	/* {																																 */
+		/* small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);														  */
+		/* large_tip = strchr(large_tip, '\n') + 1;																						*/
+	/* }																																 */
 
-	/* gtk_tooltips_set_tip(factory->tips, widget, small_tip?small_tip:large_tip, large_tip);                                            */
+	/* gtk_tooltips_set_tip(factory->tips, widget, small_tip?small_tip:large_tip, large_tip);											*/
 
-	/* g_free(small_tip);                                                                                                                */
+	/* g_free(small_tip);																												*/
 
-	/* gtk_widget_show(widget);                                                                                                          */
+	/* gtk_widget_show(widget);																										  */
 
-	/* return widget;                                                                                                                    */
-/* }                                                                                                                                   */
+	/* return widget;																													*/
+/* }																																   */
 
-/* GtkWidget*                                                                                                                             */
+/* GtkWidget*																															 */
 /* sq_widget_factory_create_action_menu_item(SQWidgetFactory *factory, LSQArchiveSupport *support, LSQArchive *archive, const gchar *act) */
-/* {                                                                                                                                      */
-	/* GtkWidget *menu;                                                                                                                     */
-	/* LSQCustomAction *action = lsq_archive_support_find_action(support, act);                                                             */
+/* {																																	  */
+	/* GtkWidget *menu;																													 */
+	/* LSQCustomAction *action = lsq_archive_support_find_action(support, act);															 */
 
-	/* if(!action)                                                                                                                          */
-		/* return NULL;                                                                                                                       */
+	/* if(!action)																														  */
+		/* return NULL;																													   */
 
-	/* menu = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action));                                                             */
-	/* g_object_set_data(G_OBJECT(menu), SQ_ACTION_CUSTOM_DATA, action);                                                                    */
-	/* g_object_set_data(G_OBJECT(menu), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);                                                */
-	/* g_signal_connect(G_OBJECT(menu), "activate", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);                            */
-	/* gtk_widget_show(menu);                                                                                                               */
+	/* menu = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action));															 */
+	/* g_object_set_data(G_OBJECT(menu), SQ_ACTION_CUSTOM_DATA, action);																	*/
+	/* g_object_set_data(G_OBJECT(menu), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);												*/
+	/* g_signal_connect(G_OBJECT(menu), "activate", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);							*/
+	/* gtk_widget_show(menu);																											   */
 
-	/* return menu;                                                                                                                         */
-/* }                                                                                                                                      */
+	/* return menu;																														 */
+/* }																																	  */
 
-/* GtkToolItem*                                                                                                                     */
+/* GtkToolItem*																													 */
 /* sq_widget_factory_create_action_bar(SQWidgetFactory *factory, LSQArchiveSupport *support, LSQArchive *archive, const gchar *act) */
-/* {                                                                                                                                */
-	/* GtkToolItem *widget;                                                                                                           */
-	/* LSQCustomAction *action = lsq_archive_support_find_action(support, act);                                                       */
+/* {																																*/
+	/* GtkToolItem *widget;																										   */
+	/* LSQCustomAction *action = lsq_archive_support_find_action(support, act);													   */
 
-	/* if(!action)                                                                                                                    */
-		/* return NULL;                                                                                                                 */
+	/* if(!action)																													*/
+		/* return NULL;																												 */
 
-	/* widget = gtk_tool_button_new(NULL, lsq_custom_action_get_nick(action));                                                        */
-	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA, action);                                                            */
-	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);                                        */
-	/* g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);                     */
+	/* widget = gtk_tool_button_new(NULL, lsq_custom_action_get_nick(action));														*/
+	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA, action);															*/
+	/* g_object_set_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);										*/
+	/* g_signal_connect(G_OBJECT(widget), "clicked", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive);					 */
 
-	/* const gchar *large_tip = lsq_custom_action_get_blurb(action);                                                                  */
-	/* gchar *small_tip = NULL;                                                                                                       */
-	/* if(strchr(large_tip, '\n'))                                                                                                    */
-	/* {                                                                                                                              */
-		/* small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);                                                       */
-		/* large_tip = strchr(large_tip, '\n') + 1;                                                                                     */
-	/* }                                                                                                                              */
+	/* const gchar *large_tip = lsq_custom_action_get_blurb(action);																  */
+	/* gchar *small_tip = NULL;																									   */
+	/* if(strchr(large_tip, '\n'))																									*/
+	/* {																															  */
+		/* small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);													   */
+		/* large_tip = strchr(large_tip, '\n') + 1;																					 */
+	/* }																															  */
 
-	/* gtk_tooltips_set_tip(factory->tips, GTK_WIDGET(widget), small_tip?small_tip:large_tip, large_tip);                             */
+	/* gtk_tooltips_set_tip(factory->tips, GTK_WIDGET(widget), small_tip?small_tip:large_tip, large_tip);							 */
 
-	/* g_free(small_tip);                                                                                                             */
+	/* g_free(small_tip);																											 */
 
-	/* gtk_widget_show(GTK_WIDGET(widget));                                                                                           */
+	/* gtk_widget_show(GTK_WIDGET(widget));																						   */
 
-	/* return widget;                                                                                                                 */
-/* }                                                                                                                                */
+	/* return widget;																												 */
+/* }																																*/
 
-/* GSList*                                                                                                         */
+/* GSList*																										 */
 /* sq_widget_factory_create_action_menu(SQWidgetFactory *factory, LSQArchiveSupport *support, LSQArchive *archive) */
-/* {                                                                                                               */
-	/* GSList *menu = NULL;                                                                                          */
-	/* GtkWidget *item;                                                                                              */
-	/* guint n_act, i;                                                                                               */
-	/* LSQCustomAction **action = lsq_archive_support_list_actions(support, &n_act);                                 */
+/* {																											   */
+	/* GSList *menu = NULL;																						  */
+	/* GtkWidget *item;																							  */
+	/* guint n_act, i;																							   */
+	/* LSQCustomAction **action = lsq_archive_support_list_actions(support, &n_act);								 */
 
-	/* for(i = 0; i < n_act; ++i)                                                                                    */
-	/* {                                                                                                             */
-		/* if(strncmp("menu", lsq_custom_action_get_name(action[i]), 4) == 0)                                          */
-		/* {                                                                                                           */
-			/* item = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action[i]));                               */
-			/* g_object_set_data(G_OBJECT(item), SQ_ACTION_CUSTOM_DATA, action[i]);                                      */
-			/* g_object_set_data(G_OBJECT(item), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);                     */
+	/* for(i = 0; i < n_act; ++i)																					*/
+	/* {																											 */
+		/* if(strncmp("menu", lsq_custom_action_get_name(action[i]), 4) == 0)										  */
+		/* {																										   */
+			/* item = gtk_menu_item_new_with_label(lsq_custom_action_get_nick(action[i]));							   */
+			/* g_object_set_data(G_OBJECT(item), SQ_ACTION_CUSTOM_DATA, action[i]);									  */
+			/* g_object_set_data(G_OBJECT(item), SQ_ACTION_CALLBACK_DATA, factory->custom_callback);					 */
 			/* g_signal_connect(G_OBJECT(item), "activate", G_CALLBACK(cb_sq_widget_factory_action_triggered), archive); */
-			/* menu = g_slist_append(menu, item);                                                                        */
-			/* gtk_widget_show(item);                                                                                    */
-		/* }                                                                                                           */
-	/* }                                                                                                             */
+			/* menu = g_slist_append(menu, item);																		*/
+			/* gtk_widget_show(item);																					*/
+		/* }																										   */
+	/* }																											 */
 
-	/* g_free(action);                                                                                               */
+	/* g_free(action);																							   */
 
-	/* return menu;                                                                                                  */
-/* }                                                                                                               */
+	/* return menu;																								  */
+/* }																											   */
 
-/* static void                                                                                                                                                     */
-/* cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data)                                                                                    */
-/* {                                                                                                                                                               */
-	/* LSQArchive *archive = LSQ_ARCHIVE(user_data);                                                                                                                 */
+/* static void																																					 */
+/* cb_sq_widget_factory_action_triggered(GtkWidget *widget, gpointer user_data)																					*/
+/* {																																							   */
+	/* LSQArchive *archive = LSQ_ARCHIVE(user_data);																												 */
 
 	/* lsq_custom_action_execute(g_object_get_data(G_OBJECT(widget), SQ_ACTION_CUSTOM_DATA), archive, g_object_get_data(G_OBJECT(widget), SQ_ACTION_CALLBACK_DATA)); */
-/* }                                                                                                                                                               */
+/* }																																							   */
 
 static void
 cb_sq_widget_factory_widget_destroyed(GtkObject *obj, gpointer user_data)
@@ -1069,10 +1069,10 @@ cb_sq_widget_factory_object_destroyed(GtkObject *obj, gpointer user_data)
 	}
 }
 
-/* static void                                                                                                                                                      */
-/* sq_widget_factory_notify(LSQCustomAction *action, const gchar *message)                                                                                          */
-/* {                                                                                                                                                                */
+/* static void																																					  */
+/* sq_widget_factory_notify(LSQCustomAction *action, const gchar *message)																						  */
+/* {																																								*/
 	/* GtkWidget *dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s: %s", action->support->id, message); */
-	/* gtk_dialog_run(GTK_DIALOG(dialog));                                                                                                                            */
-	/* gtk_widget_destroy(dialog);                                                                                                                                    */
-/* }                                                                                                                                                                */
+	/* gtk_dialog_run(GTK_DIALOG(dialog));																															*/
+	/* gtk_widget_destroy(dialog);																																	*/
+/* }																																								*/

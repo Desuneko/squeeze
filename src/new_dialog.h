@@ -20,22 +20,22 @@
 #define __SQRCHIVER_NEW_ARCHIVE_DIALOG_H__
 G_BEGIN_DECLS
 
-#define SQ_NEW_ARCHIVE_DIALOG(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			sq_new_archive_dialog_get_type(),      \
+#define SQ_NEW_ARCHIVE_DIALOG(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			sq_new_archive_dialog_get_type(),	  \
 			SQNewArchiveDialog))
 
-#define SQ_IS_NEW_ARCHIVE_DIALOG(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_NEW_ARCHIVE_DIALOG(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_new_archive_dialog_get_type()))
 
 #define SQ_NEW_ARCHIVE_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			sq_new_archive_dialog_get_type(),      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			sq_new_archive_dialog_get_type(),	  \
 			SQNewArchiveDialogClass))
 
 #define SQ_IS_NEW_ARCHIVE_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			sq_new_archive_dialog_get_type()))
 
 typedef struct _SQNewArchiveDialog SQNewArchiveDialog;

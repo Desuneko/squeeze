@@ -176,7 +176,7 @@ sq_main_window_class_init(SQMainWindowClass *window_class)
 
 	object_class->set_property = sq_main_window_set_property;
 	object_class->get_property = sq_main_window_get_property;
-	object_class->dispose      = sq_main_window_dispose;
+	object_class->dispose	  = sq_main_window_dispose;
 
 	pspec = g_param_spec_enum("navigation-style",
 		_("Navigation Style"),
@@ -262,10 +262,10 @@ static void
 sq_main_window_init(SQMainWindow *window)
 {
 	GtkToolItem   *tool_separator;
-	GtkWidget     *menu_separator;
-	GtkWidget     *tmp_image;
+	GtkWidget	 *menu_separator;
+	GtkWidget	 *tmp_image;
 	const gchar   *nav_bar;
-	GSList        *list, *iter;
+	GSList		*list, *iter;
 	gboolean up_dir = TRUE;
 	gboolean use_tabs = TRUE;
 	gboolean show_menubar = TRUE;
@@ -284,8 +284,8 @@ sq_main_window_init(SQMainWindow *window)
 	show_menubar = sq_settings_read_bool_entry(window->settings, "MenuBar", TRUE);
 
 	gtk_window_set_default_size (GTK_WINDOW(window), 
-	                             sq_settings_read_int_entry(window->settings, "LastWindowWidth", 500),
-	                             sq_settings_read_int_entry(window->settings, "LastWindowHeight", 300));
+								 sq_settings_read_int_entry(window->settings, "LastWindowWidth", 500),
+								 sq_settings_read_int_entry(window->settings, "LastWindowHeight", 300));
 
 	if(show_menubar)
 	{
@@ -357,17 +357,17 @@ sq_main_window_init(SQMainWindow *window)
 		g_signal_connect(G_OBJECT(window->menubar.menu_item_refresh), "activate", G_CALLBACK(cb_sq_main_refresh_archive), window);
 
 		gtk_widget_add_accelerator (window->menubar.menu_item_refresh,
-		                            "activate",
-		                            window->accel_group,
-		                            GDK_F5,
-		                            0,
-		                            GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
+									"activate",
+									window->accel_group,
+									GDK_F5,
+									0,
+									GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
 		gtk_widget_add_accelerator (window->menubar.menu_item_refresh,
-		                            "activate",
-		                            window->accel_group,
-		                            GDK_r,
-		                            GDK_CONTROL_MASK,
-		                            GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
+									"activate",
+									window->accel_group,
+									GDK_r,
+									GDK_CONTROL_MASK,
+									GTK_ACCEL_LOCKED | GTK_ACCEL_MASK);
 
 		/* View menu */
 		window->menubar.menu_item_view = gtk_menu_item_new_with_mnemonic(_("_View"));
@@ -722,20 +722,20 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 	
 	if(mod_type & GDK_SHIFT_MASK)
 		dialog = gtk_file_chooser_dialog_new(_("Open archive in new window"), 
-		                                     GTK_WINDOW(window),
-		                                     GTK_FILE_CHOOSER_ACTION_OPEN,
-		                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-		                                     GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+											 GTK_WINDOW(window),
+											 GTK_FILE_CHOOSER_ACTION_OPEN,
+											 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+											 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
 	else
 		dialog = gtk_file_chooser_dialog_new(_("Open archive"), 
-		                                     GTK_WINDOW(window),
-		                                     GTK_FILE_CHOOSER_ACTION_OPEN,
-		                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-		                                     GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
+											 GTK_WINDOW(window),
+											 GTK_FILE_CHOOSER_ACTION_OPEN,
+											 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+											 GTK_STOCK_OPEN, GTK_RESPONSE_OK, NULL);
 
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
 
-    /*
+	/*
 	GSList *supported_mime_types = lsq_get_supported_mime_types(0);
 	GSList *_supported_mime_types = supported_mime_types;
 	
@@ -745,20 +745,20 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 	{
 		GtkFileFilter *filter = gtk_file_filter_new();
 		gtk_file_filter_add_mime_type(filter,
-		        lsq_mime_support_get_name((LSQMimeSupport *)(_supported_mime_types->data)));
+				lsq_mime_support_get_name((LSQMimeSupport *)(_supported_mime_types->data)));
 
 		gtk_file_filter_set_name(filter, lsq_mime_support_get_comment((LSQMimeSupport *)(_supported_mime_types->data)));
 		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
 
 		gtk_file_filter_add_mime_type(filter_all,
-		        lsq_mime_support_get_name((LSQMimeSupport *)(_supported_mime_types->data)));
+				lsq_mime_support_get_name((LSQMimeSupport *)(_supported_mime_types->data)));
 		_supported_mime_types = g_slist_next(_supported_mime_types);
 	}
 	g_slist_free(supported_mime_types);
 
 	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_all);
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(dialog), filter_all);
-    */
+	*/
 	
 
 	result = gtk_dialog_run (GTK_DIALOG (dialog) );
@@ -800,7 +800,7 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 	gint result = 0;
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LSQArchive        *lp_archive = NULL;
+	LSQArchive		*lp_archive = NULL;
 
 	GSList *filenames = sq_notebook_get_selected_items(SQ_NOTEBOOK(window->notebook));
 
@@ -820,7 +820,7 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 		if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT))
 		{
 			GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
-			                                                   GTK_DIALOG_DESTROY_WITH_PARENT, 
+															   GTK_DIALOG_DESTROY_WITH_PARENT, 
 																												 GTK_MESSAGE_WARNING,
 																												 GTK_BUTTONS_CLOSE,
 																												 _("Squeeze cannot extract this archive type,\nthe application to support this is missing."));
@@ -843,20 +843,20 @@ cb_sq_main_add_files_to_archive(GtkWidget *widget, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LSQArchive        *lp_archive = NULL;
-	GtkWidget         *dialog = NULL;
-	GSList            *filenames = NULL;
+	LSQArchive		*lp_archive = NULL;
+	GtkWidget		 *dialog = NULL;
+	GSList			*filenames = NULL;
 	gint result;
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
 
 	dialog = gtk_file_chooser_dialog_new(_("Add files"), 
-	                                     GTK_WINDOW(window),
-	                                     GTK_FILE_CHOOSER_ACTION_OPEN,
-	                                     GTK_STOCK_CANCEL,
-	                                     GTK_RESPONSE_CANCEL,
-	                                     GTK_STOCK_OPEN,
-	                                     GTK_RESPONSE_OK,
-	                                     NULL);
+										 GTK_WINDOW(window),
+										 GTK_FILE_CHOOSER_ACTION_OPEN,
+										 GTK_STOCK_CANCEL,
+										 GTK_RESPONSE_CANCEL,
+										 GTK_STOCK_OPEN,
+										 GTK_RESPONSE_OK,
+										 NULL);
 
 	result = gtk_dialog_run (GTK_DIALOG(dialog));
 	if(result == GTK_RESPONSE_OK)
@@ -885,20 +885,20 @@ cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LSQArchive        *lp_archive = NULL;
-	GtkWidget         *dialog = NULL;
-	GSList            *filenames = NULL;
+	LSQArchive		*lp_archive = NULL;
+	GtkWidget		 *dialog = NULL;
+	GSList			*filenames = NULL;
 	gint result;
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
 
 	dialog = gtk_file_chooser_dialog_new(_("Add folders"),
-	                                     GTK_WINDOW(window),
-	                                     GTK_FILE_CHOOSER_ACTION_OPEN,
-	                                     GTK_STOCK_CANCEL,
-	                                     GTK_RESPONSE_CANCEL,
-	                                     GTK_STOCK_OPEN,
-	                                     GTK_RESPONSE_OK,
-	                                     NULL);
+										 GTK_WINDOW(window),
+										 GTK_FILE_CHOOSER_ACTION_OPEN,
+										 GTK_STOCK_CANCEL,
+										 GTK_RESPONSE_CANCEL,
+										 GTK_STOCK_OPEN,
+										 GTK_RESPONSE_OK,
+										 NULL);
 
 	result = gtk_dialog_run (GTK_DIALOG(dialog));
 	if(result == GTK_RESPONSE_OK)
@@ -910,11 +910,11 @@ cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata)
 			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window),
-				                      GTK_DIALOG_DESTROY_WITH_PARENT, 
-				                      GTK_MESSAGE_WARNING,
-				                      GTK_BUTTONS_CLOSE,
-				                      _("Squeeze cannot add folders to this archive type,\n"
-				                        "the application to support this is missing."));
+									  GTK_DIALOG_DESTROY_WITH_PARENT, 
+									  GTK_MESSAGE_WARNING,
+									  GTK_BUTTONS_CLOSE,
+									  _("Squeeze cannot add folders to this archive type,\n"
+										"the application to support this is missing."));
 				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 				gtk_widget_destroy(warning_dialog);
 			}
@@ -927,7 +927,7 @@ static void
 cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
-	LSQArchive        *lp_archive = NULL;
+	LSQArchive		*lp_archive = NULL;
 	GtkWidget *dialog = NULL;
 	gint result = 0;
 	GSList *filenames = sq_notebook_get_selected_items(SQ_NOTEBOOK(window->notebook));
@@ -986,8 +986,8 @@ cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 
-	LSQArchive        *lp_archive = NULL;
-	GtkWidget         *dialog = NULL;
+	LSQArchive		*lp_archive = NULL;
+	GtkWidget		 *dialog = NULL;
 	gint result = 0;
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
 	
@@ -996,7 +996,7 @@ cb_sq_main_stop_archive(GtkWidget *widget, gpointer userdata)
 	else
 	{
 		dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, 
-		                                _("Are you sure you want to cancel this operation?\nThis could damage the archive."));
+										_("Are you sure you want to cancel this operation?\nThis could damage the archive."));
 		result = gtk_dialog_run(GTK_DIALOG(dialog));
 		if(result == GTK_RESPONSE_YES)
 		{

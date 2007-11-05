@@ -18,22 +18,22 @@
 #define __SQRCHIVER_PREFERENCES_DIALOG_H__
 G_BEGIN_DECLS
 
-#define SQ_PREFERENCES_DIALOG(obj)         ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),    \
-			sq_preferences_dialog_get_type(),      \
+#define SQ_PREFERENCES_DIALOG(obj)		 ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
+			sq_preferences_dialog_get_type(),	  \
 			SQPreferencesDialog))
 
-#define SQ_IS_PREFERENCES_DIALOG(obj)      ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),    \
+#define SQ_IS_PREFERENCES_DIALOG(obj)	  ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_preferences_dialog_get_type()))
 
 #define SQ_PREFERENCES_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),     \
-			sq_preferences_dialog_get_type(),      \
+		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+			sq_preferences_dialog_get_type(),	  \
 			SQPreferencesDialogClass))
 
 #define SQ_IS_PREFERENCES_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),        \
+		G_TYPE_CHECK_CLASS_TYPE ((class),		\
 			sq_preferences_dialog_get_type()))
 
 typedef struct
@@ -71,7 +71,7 @@ struct _SQPreferencesDialogClass
 	GtkDialogClass parent;
 };
 
-GType      sq_preferences_dialog_get_type ();
+GType	  sq_preferences_dialog_get_type ();
 GtkWidget *sq_preferences_dialog_new();
 
 G_END_DECLS

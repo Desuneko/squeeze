@@ -42,19 +42,19 @@ static void	sq_throbber_class_init(SQThrobberClass *klass);
 static void	sq_throbber_init(SQThrobber *throbber);
 static void	sq_throbber_dispose(GObject *object);
 static void	sq_throbber_get_property(GObject *object,
-                                          guint prop_id,
-                                          GValue *value,
-                                          GParamSpec *pspec);
+										  guint prop_id,
+										  GValue *value,
+										  GParamSpec *pspec);
 static void	sq_throbber_set_property(GObject *object,
-                                          guint prop_id,
-                                          const GValue *value,
-                                          GParamSpec *pspec);
+										  guint prop_id,
+										  const GValue *value,
+										  GParamSpec *pspec);
 static void	sq_throbber_realize(GtkWidget *widget);
 static void	sq_throbber_unrealize(GtkWidget *widget);
 static void	sq_throbber_size_request(GtkWidget *widget,
-                                          GtkRequisition *requisition);
+										  GtkRequisition *requisition);
 static gboolean sq_throbber_expose_event(GtkWidget *widget,
-                                         GdkEventExpose *event);
+										 GdkEventExpose *event);
 static gboolean sq_throbber_timer(gpointer user_data);
 static void	sq_throbber_timer_destroy(gpointer user_data);
 
@@ -72,8 +72,8 @@ struct _SQThrobber
 	GdkPixbuf *icon;
 
 	gboolean   animated;
-	gint       index;
-	gint       timer_id;
+	gint	   index;
+	gint	   timer_id;
 };
 
 
@@ -116,7 +116,7 @@ sq_throbber_class_init (SQThrobberClass *klass)
 {
 	GtkWidgetClass *gtkwidget_class;
 	GObjectClass   *gobject_class;
-	GdkPixbuf      *icon;
+	GdkPixbuf	  *icon;
 
 	/* determine the parent type class */
 	sq_throbber_parent_class = g_type_class_peek_parent (klass);
@@ -138,10 +138,10 @@ sq_throbber_class_init (SQThrobberClass *klass)
 	 * Whether the throbber should display an animation.
 	 **/
 	g_object_class_install_property (gobject_class,
-	                                 PROP_ANIMATED,
-	                                 g_param_spec_boolean ("animated",
-	                                 "animated", "animated", \
-	                                 FALSE, EXO_PARAM_READWRITE));
+									 PROP_ANIMATED,
+									 g_param_spec_boolean ("animated",
+									 "animated", "animated", \
+									 FALSE, EXO_PARAM_READWRITE));
 
 	/* register the "process-working" fallback icon */
 	icon = gdk_pixbuf_new_from_inline (-1, sq_throbber_fallback, FALSE, NULL);
@@ -176,9 +176,9 @@ sq_throbber_dispose (GObject *object)
 
 static void
 sq_throbber_get_property (GObject *object,
-                          guint prop_id,
-                          GValue *value,
-                          GParamSpec *pspec)
+						  guint prop_id,
+						  GValue *value,
+						  GParamSpec *pspec)
 {
 	SQThrobber *throbber = SQ_THROBBER (object);
 
@@ -198,9 +198,9 @@ sq_throbber_get_property (GObject *object,
 
 static void
 sq_throbber_set_property (GObject *object,
-                          guint prop_id,
-                          const GValue *value,
-                          GParamSpec *pspec)
+						  guint prop_id,
+						  const GValue *value,
+						  GParamSpec *pspec)
 {
 	SQThrobber *throbber = SQ_THROBBER (object);
 
@@ -256,7 +256,7 @@ sq_throbber_unrealize (GtkWidget *widget)
 
 static void
 sq_throbber_size_request (GtkWidget *widget,
-                          GtkRequisition *requisition)
+						  GtkRequisition *requisition)
 {
 	requisition->width = 16;
 	requisition->height = 16;
@@ -266,7 +266,7 @@ sq_throbber_size_request (GtkWidget *widget,
 
 static gboolean
 sq_throbber_expose_event (GtkWidget *widget,
-                          GdkEventExpose *event)
+						  GdkEventExpose *event)
 {
 	SQThrobber *throbber = SQ_THROBBER (widget);
 	gint icon_index;
@@ -373,7 +373,7 @@ sq_throbber_get_animated (const SQThrobber *throbber)
  **/
 void
 sq_throbber_set_animated (SQThrobber *throbber,
-                          gboolean animated)
+						  gboolean animated)
 {
 	g_return_if_fail (SQ_IS_THROBBER (throbber));
 
@@ -389,7 +389,7 @@ sq_throbber_set_animated (SQThrobber *throbber,
 	{
 		/* start the animation */
 		throbber->timer_id = g_timeout_add_full (G_PRIORITY_LOW, 25, sq_throbber_timer,
-		                                         throbber, sq_throbber_timer_destroy);
+												 throbber, sq_throbber_timer_destroy);
 	}
 
 	/* schedule a redraw with the new animation state */

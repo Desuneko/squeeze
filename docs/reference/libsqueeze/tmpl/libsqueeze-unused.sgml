@@ -257,16 +257,6 @@
 @archive: 
 @Returns: 
 
-<!-- ##### FUNCTION lsq_archive_set_property_type ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-@Param3: 
-@Param4: 
-
 <!-- ##### FUNCTION lsq_archive_set_property_typesv ##### -->
 <para>
 
