@@ -22,6 +22,10 @@ LSQArchive
 
 </para>
 
+@archive: 
+@entry: 
+@parent: 
+@ref_count: 
 
 <!-- ##### STRUCT LSQArchive ##### -->
 <para>
@@ -29,17 +33,11 @@ LSQArchive
 </para>
 
 @parent: 
-@path: 
-@path_info: 
-@file_info: 
-@mime_info: 
+@priv: 
 @root_entry: 
-@command: 
-@builder: 
-@settings: 
+@pool: 
 @temp_dir: 
 @monitor_list: 
-@pool: 
 
 <!-- ##### FUNCTION lsq_archive_new ##### -->
 <para>
@@ -107,15 +105,6 @@ LSQArchive
 @Returns: 
 
 
-<!-- ##### FUNCTION lsq_archive_iter_set_propsv ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
-
-
 <!-- ##### FUNCTION lsq_archive_iter_get_prop_value ##### -->
 <para>
 
@@ -124,16 +113,6 @@ LSQArchive
 @iter: 
 @n: 
 @value: 
-@Returns: 
-
-
-<!-- ##### FUNCTION lsq_archive_add_file ##### -->
-<para>
-
-</para>
-
-@Param1: 
-@Param2: 
 @Returns: 
 
 

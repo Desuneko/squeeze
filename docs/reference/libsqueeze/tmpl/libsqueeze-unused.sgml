@@ -120,6 +120,15 @@
 @entry: 
 @next: 
 
+<!-- ##### FUNCTION lsq_archive_add_file ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
+@Returns: 
+
 <!-- ##### FUNCTION lsq_archive_command_run ##### -->
 <para>
 
@@ -231,6 +240,14 @@
 @Param1: 
 @Param2: 
 @Varargs: 
+
+<!-- ##### FUNCTION lsq_archive_iter_set_propsv ##### -->
+<para>
+
+</para>
+
+@Param1: 
+@Param2: 
 
 <!-- ##### FUNCTION lsq_archive_n_property ##### -->
 <para>

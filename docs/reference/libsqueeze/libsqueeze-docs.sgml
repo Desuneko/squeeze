@@ -51,8 +51,6 @@
   <part id="archiving">
     <title>Archiving</title>
     &archive;
-    &archive-support;
-    &archive-command;
   </part>
 
   <index>

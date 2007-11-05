@@ -2,6 +2,8 @@ lib_LTLIBRARIES = libsqueeze-1.la
 
 libsqueeze_1_la_SOURCES =  \
 	libsqueeze.c libsqueeze.h \
+	libsqueeze-view.h \
+	internals.c internals.h \
 	parser-context.c parser-context.h \
 	parser.c parser.h \
 	scanf-parser.c scanf-parser.h \

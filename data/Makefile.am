@@ -3,5 +3,6 @@ squeeze_DATA = gnu-tar.squeeze \
                zip.squeeze     \
 			   unzip.squeeze
 
-DISCLEANFILES = $(squeeze_DATA)
+EXTRA_DIST = $(squeeze_DATA)
 
+# DISCLEANFILES = $(squeeze_DATA)
