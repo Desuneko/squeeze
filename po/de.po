@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the squeeze package.
 # Björn Martensen <bjoern.martensen@gmail.com>, 2007.
 # Jeff Bailes <thepizzaking@gmail.com>, 2007.
+# Fabian Nowak <timstery@arcor.de>, 2007.
 # 
 # 
 msgid ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-04-11 21:08+0200\n"
 "PO-Revision-Date: 2007-04-14 15:33+0200\n"
-"Last-Translator: Björn Martensen <bjoern.martensen@gmail.com>\n"
+"Last-Translator: Fabian Nowak <timstery@arcor.de>\n"
 "Language-Team: German <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -196,7 +197,7 @@ msgid ""
 "The style to navigate trough the archive"
 msgstr ""
 "Navigations-Stil\n"
-"Der Stil um in dem Archiv zu navigieren"
+"Der Stil, mit dem im Archiv navigiert werden kann"
 
 #. File menu
 #: ../src/main_window.c:283
@@ -252,28 +253,28 @@ msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann diesen Archiv-Typ nicht entpacken,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Squeeze kann diesen Archivtyp nicht entpacken,\n"
+"die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:829 ../src/application.c:267
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann keine Dateien zu diesem Archiv-Typ hinzufügen,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Squeeze kann keine Dateien zu diesem Archivityp hinzufügen,\n"
+"die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:849
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Sind sie sicher, dass sie dieausgewählten Dateien entfernen möchten?"
+msgstr "Sind sie sicher, dass sie die ausgewählten Dateien entfernen möchten?"
 
 #: ../src/main_window.c:862
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann die Dateien nicht aus diesem Archiv-Typ entfernen,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"Squeeze kann die Dateien nicht aus diesem Archivtyp entfernen,\n"
+"die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:909
 msgid ""
@@ -297,27 +298,30 @@ msgstr "Inspiriert von Xarchiver, geschrieben von Giuseppe Torelli"
 
 #: ../src/main_window.c:999
 msgid "Application Icon:"
-msgstr "Anwendungs Icon:"
+msgstr "Anwendungssymbol:"
 
 #: ../src/main_window.c:1002
 msgid "Add / Extract icons:"
-msgstr "Hinzufügen / Entpacken icons:"
+msgstr "Symbole fürs Hinzufügen/Entpacken:"
 
 #: ../src/main_window.c:1003
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Basiert auf dem original Entpacken-icon erstellt von Andreas Nilsson"
+msgstr ""
+"Basiert auf dem originalen Entpacken-Symbol (erstellt von Andreas Nilsson)"
 
 #: ../src/main_window.c:1010
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
-"Squeeze ist ein leichtgewichtiger und felxibler Archivmanager für die Xfce "
-"Desktop Umgebung"
+"Squeeze ist ein schlanker und flexibler Archivmanager für die Xfce-"
+"Arbeitsumgebung"
 
 #: ../src/main_window.c:1017
 msgid "translator-credits"
-msgstr "Björn Martensen <bjoern.martensen@gmail.com>"
+msgstr ""
+"Björn Martensen <bjoern.martensen@gmail.com>\nFabian Nowak "
+"<timystery@arcor.de>"
 
 #: ../src/main_window.c:1046 ../src/main_window.c:1114
 #: ../src/main_window.c:1281
@@ -326,7 +330,7 @@ msgstr "Fertig"
 
 #: ../src/main_window.c:1124
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Welche Aktion möchten sie auf die ausgewählt(en) Datei(en) anwenden?"
+msgstr "Welche Aktion möchten sie auf die ausgewählte(n) Datei(en) anwenden?"
 
 #: ../src/main_window.c:1125
 msgid "Open"
@@ -338,7 +342,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kann diese Datei nicht anzeigen,\n"
-"Die dafür benötigte Anwendung ist nicht installiert."
+"die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:1207
 msgid "Failed to open file"
@@ -350,8 +354,7 @@ msgid ""
 "'%s'\n"
 "Could not be opened"
 msgstr ""
-"'%s'\n"
-"Konnte nicht geöffnet werden"
+"Die Datei »%s« konnte nicht geöffnet werden"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -360,19 +363,20 @@ msgstr ""
 #: ../src/application.c:162 ../src/application.c:252
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
-"Konnte das Archiv nicht öffnen, MIME-Typ wird nicht unterstützt oder die "
-"Datei existiert nicht"
+"Konnte das Archiv nicht öffnen, da der MIME-Typ nicht unterstützt wird oder "
+"die Datei nicht existiert."
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
 #: ../src/application.c:235
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "Konnte das Archiv nicht erstellen, MIME-Typ wird nicht unterstützt"
+msgstr ""
+"Konnte das Archiv nicht erstellen, da der MIME-Typ nicht unterstützt wird."
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
-msgstr "Archiv-Typ:"
+msgstr "Archivtyp:"
 
 #: ../src/new_dialog.c:107
 msgid "Create new archive"
@@ -438,7 +442,7 @@ msgstr "Abstand"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
-msgstr "Die Weite des Abstands zwischen den Pfad-Knöpfen"
+msgstr "Der Abstand zwischen den Pfadknöpfen"
 
 #: ../src/notebook.c:179 ../src/archive_store.c:249
 msgid "Show full path"
@@ -450,11 +454,11 @@ msgstr "Den gesamten Pfad für jeden Eintrag anzeigen"
 
 #: ../src/notebook.c:186 ../src/archive_store.c:256
 msgid "Show mime icons"
-msgstr "Mime Icons anzeigen"
+msgstr "MIME-Symbole anzeigen"
 
 #: ../src/notebook.c:187 ../src/archive_store.c:257
 msgid "Show the mime type icons for each entry"
-msgstr "Mime-Typ Icons für jeden Eintrag anzeigen"
+msgstr "MIME-Symbole für jeden Eintrag anzeigen"
 
 #: ../src/notebook.c:193 ../src/archive_store.c:270
 msgid "Sort folders before files"
@@ -470,12 +474,13 @@ msgid "Sort text case sensitive"
 msgstr "Großbuchstaben beim Sortieren beachten"
 
 #: ../src/notebook.c:207
+#, fuzzy
 msgid "Rules hint"
 msgstr "Zeilen andeuten"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
-msgstr "Alternierende Hintergrundfarben für Zeilen verwenden"
+msgstr "Hintergrundfarben in Zeilen abwechseln"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
@@ -491,7 +496,7 @@ msgstr "Archivmanager"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Xfce archive manager"
-msgstr "Xfce Archivmanager"
+msgstr "Xfce-Archivmanager"
 
 #~ msgid "Artwork:"
 #~ msgstr "Artwork:"
