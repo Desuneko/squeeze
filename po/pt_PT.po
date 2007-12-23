@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-08-22 11:12+0100\n"
+"PO-Revision-Date: 2007-12-18 21:35+0100\n"
 "Last-Translator: Nuno Miguel <nunis@netcabo.pt>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -202,7 +202,7 @@ msgstr "_Ficheiro"
 #. Action menu: ref all the childs
 #: ../src/main_window.c:323
 msgid "_Action"
-msgstr "Açã_o"
+msgstr "A_cção"
 
 #: ../src/main_window.c:328
 msgid "_Add files"
@@ -274,7 +274,7 @@ msgstr ""
 
 #: ../src/main_window.c:1081
 msgid "Lead developer:"
-msgstr "Líder de Projecto"
+msgstr "Líder de Projecto:"
 
 #: ../src/main_window.c:1084
 msgid "Contributors:"
@@ -286,11 +286,11 @@ msgstr "Inspirado por Xarchiver, escrito por Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr "Ícone de Aplicação"
+msgstr "Ícone de Aplicação:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr "Adicionar / Extrair ícones"
+msgstr "Adicionar / Extrair ícones:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
