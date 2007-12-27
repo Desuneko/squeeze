@@ -59,12 +59,15 @@ struct _LSQParserClass
 	GObjectClass parent;
 
 	LSQParserContext*(*get_context)(LSQParser *, LSQArchive *);
+  void(*parse)(LSQParser *, LSQParserContext *);
 };
 
 
 GType		   lsq_parser_get_type(void);
 
 LSQParserContext* lsq_parser_get_context(LSQParser *, LSQArchive *);
+
+void              lsq_parser_parse(LSQParser *, LSQParserContext *);
 
 G_END_DECLS
 

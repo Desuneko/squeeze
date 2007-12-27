@@ -18,7 +18,39 @@
 
 G_BEGIN_DECLS
 
+#define LSQ_TYPE_SCANF_PARSER lsq_scanf_parser_get_type()
 
+#define LSQ_SCANF_PARSER(obj) (			   \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
+			LSQ_TYPE_SCANF_PARSER,				  \
+			LSQScanfParser))
+
+#define LSQ_IS_SCANF_PARSER(obj) (			\
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
+			LSQ_TYPE_SCANF_PARSER))
+
+#define LSQ_SCANF_PARSER_CLASS(class) (	  \
+		G_TYPE_CHECK_CLASS_CAST ((class),  \
+			LSQ_TYPE_SCANF_PARSER,				 \
+			LSQScanfParserClass))
+
+#define LSQ_IS_SCANF_PARSER_CLASS(class) (   \
+		G_TYPE_CHECK_CLASS_TYPE ((class),  \
+			LSQ_TYPE_SCANF_PARSER))
+
+#define LSQ_SCANF_PARSER_GET_CLASS(obj) (	\
+		G_TYPE_INSTANCE_GET_CLASS ((obj),  \
+			LSQ_TYPE_SCANF_PARSER,				 \
+	  LSQScanfParserClass))
+
+
+typedef struct _LSQScanfParser LSQScanfParser;
+
+typedef struct _LSQScanfParserClass LSQScanfParserClass;
+
+GType		   lsq_scanf_parser_get_type(void);
+
+LSQParser *lsq_scanf_parser_new(const gchar *, const gchar *);
 
 G_END_DECLS
 

@@ -84,7 +84,7 @@ lsq_parser_context_new(LSQArchive *archive)
 	
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), NULL);
 
-	ctx = g_object_new(LSQ_PARSER_CONTEXT_TYPE, "archive", archive);
+	ctx = g_object_new(LSQ_TYPE_PARSER_CONTEXT, "archive", archive);
 
 	return ctx;
 }

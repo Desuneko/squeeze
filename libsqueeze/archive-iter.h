@@ -45,6 +45,7 @@ void			_lsq_archive_iter_unref(LSQArchiveIter *iter, const gchar*, int);
 LSQArchiveIter *lsq_archive_iter_ref(LSQArchiveIter *iter);
 void			lsq_archive_iter_unref(LSQArchiveIter *iter);
 
+LSQArchiveIter *lsq_archive_add_file(LSQArchive *archive, const gchar *path);
 
 G_END_DECLS
 

@@ -48,3 +48,13 @@ lsq_parser_get_context(LSQParser *self, LSQArchive *archive)
 	return klass->get_context(self, archive);
 }
 
+void
+lsq_parser_parse(LSQParser *self, LSQParserContext *ctx)
+{
+	LSQParserClass *klass = LSQ_PARSER_GET_CLASS(self);
+
+	g_return_if_fail(klass->parse);
+
+	klass->parse(self, ctx);
+}
+

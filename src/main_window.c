@@ -117,6 +117,7 @@ GType
 sq_main_window_navigation_style_get_type()
 {
 	static GType nav_style_type = 0;
+	guint i = 0;
 
 	if(!nav_style_type)
 	{
@@ -131,8 +132,12 @@ sq_main_window_navigation_style_get_type()
 			{0, NULL, NULL}
 		};
 		style_types[0].value_nick = _("Internal Style");
-		style_types[1].value_nick = _("Tool Bar Style");
-		style_types[2].value_nick = _("Path Bar Style");
+#ifdef ENABLE_TOOLBAR
+		style_types[++i].value_nick = _("Tool Bar Style");
+#endif
+#ifdef ENABLE_PATHBAR
+		style_types[++i].value_nick = _("Path Bar Style");
+#endif
 
 		nav_style_type = g_enum_register_static("SQMainWindowNavigationStyle", style_types);
 	}
