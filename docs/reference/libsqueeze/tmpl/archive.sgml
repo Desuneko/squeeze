@@ -116,6 +116,16 @@ LSQArchive
 @Returns: 
 
 
+<!-- ##### FUNCTION lsq_archive_add_file ##### -->
+<para>
+
+</para>
+
+@archive: 
+@path: 
+@Returns: 
+
+
 <!-- ##### FUNCTION lsq_archive_get_iter ##### -->
 <para>
 

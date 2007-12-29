@@ -72,11 +72,7 @@ struct _LSQScanfParser
 {
   LSQParser parent;
 
-  guint   num_props;
-  gchar **prop_names;
-  GType  *prop_types;
   parse_part *parser;
-
 };
 
 struct _LSQScanfParserClass
@@ -102,15 +98,14 @@ static LSQParserContext *lsq_scanf_parser_context_new(LSQScanfParser *parser, LS
 
 	ctx = g_object_new(lsq_scanf_parser_context_get_type(), "archive", archive);
 
-  ctx->data_store = g_new0(union _data_store, parser->num_props);
-  ctx->props_store = g_new0(gpointer, parser->num_props);
-
-  lsq_archive_set_properties(archive, parser->num_props, parser->prop_names, parser->prop_types);
+  guint n_props = lsq_parser_n_properties(LSQ_PARSER(parser));
+  ctx->data_store = g_new0(union _data_store, n_props);
+  ctx->props_store = g_new0(gpointer, n_props);
 
   return LSQ_PARSER_CONTEXT(ctx);
 }
 
-static void build_parser(LSQScanfParser *, const gchar *, const gchar *);
+static void build_parser(LSQScanfParser *, const gchar *);
 
 static void lsq_scanf_parser_parse(LSQScanfParser *, LSQScanfParserContext *);
 
@@ -131,13 +126,13 @@ lsq_scanf_parser_class_init(LSQScanfParserClass *klass)
   parser_class->parse = (void(*)(LSQParser*,LSQParserContext*))lsq_scanf_parser_parse;
 }
 
-LSQParser *lsq_scanf_parser_new(const gchar *names_string, const gchar *parser_string)
+LSQParser *lsq_scanf_parser_new(const gchar *parser_string)
 {
   LSQScanfParser *parser;
 
   parser = g_object_new(LSQ_TYPE_SCANF_PARSER, NULL);
 
-  build_parser(parser, names_string, parser_string);
+  build_parser(parser, parser_string);
 
   return LSQ_PARSER(parser);
 }
@@ -653,7 +648,7 @@ gchar* strdup_escaped(const gchar *str, guint lng)/*{{{*/
   return new_str;
 }/*}}}*/
 
-static void build_parser(LSQScanfParser *parser, const gchar *names_string, const gchar *parser_string)
+static void build_parser(LSQScanfParser *parser, const gchar *parser_string)
 {
   const gchar *ptr;
   const gchar *cur;
@@ -669,11 +664,6 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
   guint width_flag;
   guint index_flag;
   guint index;
-
-  gchar **names = g_strsplit(names_string, "|", -1);
-  g_return_if_fail(names);
-  guint num_props = g_strv_length(names);
-  GType *prop_types = g_new0(GType, num_props);
 
   parse_part *part = g_new0(parse_part, 1);
   parse_part *parts = part;
@@ -704,7 +694,7 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
       if(ch == '%')
         continue;
 
-      part->delimiter = strdup_escaped(cur, ptr-cur-1);
+      part->delimiter = strdup_escaped(cur, ptr-cur-2);
 
       /*{{{ check differend index %.$*/
       if(g_ascii_isdigit(ch))
@@ -719,9 +709,6 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
         }
       }
       /*}}}*/
-
-      //FIXME: should be done neat
-      g_return_if_fail(index < num_props);
 
       /*{{{ check skip flag %*.*/
       if(ch == '*')
@@ -759,16 +746,15 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
           ch = *ptr++;
         break;
       }
-    if(!ch)
-    break;
+      if(!ch)
+        break;
       /*}}}*/
 
       switch(ch)
       {
         /*{{{ byte %b*/
         case 'b':
-          if(width_flag)
-            return;
+          g_return_if_fail(!width_flag);
           part->next = g_new0(parse_part, 1);
           part = part->next;
           if(skip_flag)
@@ -797,19 +783,19 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             {
               case SIZE_NORMAL:
                 part->function = parse_byte;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_SHORT:
                 part->function = parse_word;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_LONG:
                 part->function = parse_dword;
-                prop_types[index] = G_TYPE_ULONG;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_ULONG);
               break;
               case SIZE_LONGLONG:
                 part->function = parse_qword;
-                prop_types[index] = G_TYPE_UINT64;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT64);
               break;
             }
           }
@@ -817,8 +803,7 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
         /*}}}*/
         /*{{{ character %c*/
         case 'c':
-          if(size_flag || width_flag)
-            return;
+          g_return_if_fail(!size_flag && !width_flag);
           part->next = g_new0(parse_part, 1);
           part = part->next;
           if(skip_flag)
@@ -830,13 +815,13 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             part_count++;
             part->index = index;
             part->function = parse_char;
-            prop_types[index] = G_TYPE_CHAR;
+            lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_CHAR);
           }
         break;
         /*}}}*/
         /*{{{ decimal %d*/
         case 'd':
-        //case 'i':
+        case 'i':
           part->next = g_new0(parse_part, 1);
           part = part->next;
           part->width = width_flag;
@@ -852,19 +837,19 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             {
               case SIZE_NORMAL:
                 part->function = parse_decimal;
-                prop_types[index] = G_TYPE_INT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_INT);
               break;
               case SIZE_SHORT:
                 part->function = parse_decimal16;
-                prop_types[index] = G_TYPE_INT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_INT);
               break;
               case SIZE_LONG:
                 part->function = parse_decimal32;
-                prop_types[index] = G_TYPE_LONG;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_LONG);
               break;
               case SIZE_LONGLONG:
                 part->function = parse_decimal64;
-                prop_types[index] = G_TYPE_INT64;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_INT64);
               break;
             }
           }
@@ -872,8 +857,7 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
         /*}}}*/
         /*{{{ floating point %d*/
         case 'f':
-          if(size_flag && size_flag != SIZE_LONGLONG)
-            return;
+          g_return_if_fail(!size_flag || size_flag == SIZE_LONGLONG);
           part->next = g_new0(parse_part, 1);
           part = part->next;
           part->width = width_flag;
@@ -889,11 +873,11 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             {
               case SIZE_NORMAL:
                 part->function = parse_floatingpoint;
-                prop_types[index] = G_TYPE_FLOAT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_FLOAT);
               break;
               case SIZE_LONGLONG:
                 part->function = parse_double;
-                prop_types[index] = G_TYPE_DOUBLE;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_DOUBLE);
               break;
               default:
               break;
@@ -918,19 +902,19 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             {
               case SIZE_NORMAL:
                 part->function = parse_octal;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_SHORT:
                 part->function = parse_octal16;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_LONG:
                 part->function = parse_octal32;
-                prop_types[index] = G_TYPE_ULONG;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_ULONG);
               break;
               case SIZE_LONGLONG:
                 part->function = parse_octal64;
-                prop_types[index] = G_TYPE_UINT64;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT64);
               break;
             }
           }
@@ -938,8 +922,7 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
         /*}}}*/
         /*{{{ string %s*/
         case 's':
-          if(size_flag)
-            return;
+          g_return_if_fail(!size_flag);
           part->next = g_new0(parse_part, 1);
           part = part->next;
           part->width = width_flag;
@@ -952,7 +935,7 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             part_count++;
             part->index = index;
             part->function = parse_string;
-            prop_types[index] = G_TYPE_STRING;
+            lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_STRING);
           }
         break;
         /*}}}*/
@@ -973,19 +956,19 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             {
               case SIZE_NORMAL:
                 part->function = parse_unsigned;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_SHORT:
                 part->function = parse_unsigned16;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_LONG:
                 part->function = parse_unsigned32;
-                prop_types[index] = G_TYPE_ULONG;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_ULONG);
               break;
               case SIZE_LONGLONG:
                 part->function = parse_unsigned64;
-                prop_types[index] = G_TYPE_UINT64;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT64);
               break;
             }
           }
@@ -1009,19 +992,19 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
             {
               case SIZE_NORMAL:
                 part->function = parse_hexadecimal;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_SHORT:
                 part->function = parse_hexadecimal16;
-                prop_types[index] = G_TYPE_UINT;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT);
               break;
               case SIZE_LONG:
                 part->function = parse_hexadecimal32;
-                prop_types[index] = G_TYPE_ULONG;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_ULONG);
               break;
               case SIZE_LONGLONG:
                 part->function = parse_hexadecimal64;
-                prop_types[index] = G_TYPE_UINT64;
+                lsq_parser_set_property_type(LSQ_PARSER(parser), index, G_TYPE_UINT64);
               break;
             }
           }
@@ -1029,27 +1012,20 @@ static void build_parser(LSQScanfParser *parser, const gchar *names_string, cons
         /*}}}*/
         /*{{{ filename %F*/
         case 'F':
-          if(skip_flag || size_flag || width_flag)
-            return;
+          g_return_if_fail(!skip_flag && !size_flag && !width_flag);
           part->next = g_new0(parse_part, 1);
           part = part->next;
           part->function = parse_filename;
         break;
         /*}}}*/
         default:
-          return;
+          g_return_if_reached();
       }
       cur = ptr;
     }
   }
 
-  //FIXME: should be done neat
-  g_return_if_fail(part_count == num_props);
-
   parser->parser = parts;
-  parser->num_props = num_props;
-  parser->prop_names = names;
-  parser->prop_types = prop_types;
 }
 
 static void lsq_scanf_parser_parse(LSQScanfParser *parser, LSQScanfParserContext *ctx)

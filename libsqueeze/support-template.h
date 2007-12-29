@@ -34,6 +34,10 @@ typedef enum
 	LSQ_COMMAND_TYPE_TEST
 } LSQCommandType;
 
+#ifndef LSQParser
+typedef struct _LSQParser LSQParser;
+#endif
+
 typedef struct _LSQSupportTemplate LSQSupportTemplate;
 
 struct _LSQSupportTemplate
@@ -44,8 +48,8 @@ struct _LSQSupportTemplate
 	gboolean supported;
 
 	guint n_properties;
-	GType *property_types;
 	gchar **property_names;
+  LSQParser *parser;
 
 	gchar **new_cmd_queue;
 	gchar **add_cmd_queue;
@@ -61,9 +65,6 @@ const gchar *
 lsq_support_template_get_property_name(LSQSupportTemplate *s_template, guint n);
 guint
 lsq_support_template_get_n_properties (LSQSupportTemplate *s_template);
-
-void
-lsq_support_template_set_property_type(LSQSupportTemplate *s_template, guint n, GType type);
 
 
 #endif /* __SUPPORT_TEMPLATE_H__ */

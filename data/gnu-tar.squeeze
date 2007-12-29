@@ -57,7 +57,7 @@ X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
 X-Squeeze-Options=Password
 
 # I wonder if this will be enough...
-X-Squeeze-Parse=%s %s %i %s %s %f
+X-Squeeze-Parse=%s %s %u %s %s %F
 X-Squeeze-Separator=space
 
 [Squeeze-Option-Password]

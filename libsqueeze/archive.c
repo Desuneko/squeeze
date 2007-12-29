@@ -379,11 +379,3 @@ lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
 	return FALSE;
 }
 
-void
-lsq_archive_set_property_type(LSQArchive *archive, guint n, GType type)
-{
-  if (n >= LSQ_ARCHIVE_PROP_USER)
-  {
-		lsq_support_template_set_property_type(archive->priv->s_template, n, type);
-  }
-}

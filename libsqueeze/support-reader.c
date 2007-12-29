@@ -29,6 +29,9 @@
 #include "support-factory.h"
 #include "archive-iter.h"
 #include "archive.h"
+#include "parser-context.h"
+#include "parser.h"
+#include "scanf-parser.h"
 #include "support-reader.h"
 
 #include "internals.h"
@@ -137,6 +140,15 @@ lsq_support_reader_parse_file(const gchar *filename)
 
 	gchar **mime_types = xfce_rc_read_list_entry(rc, "MimeType", ";");
 
+	xfce_rc_set_group(rc, "Squeeze-Refresh");
+  gchar **column_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Headers", ";");
+  LSQParser *parser = NULL;
+  const gchar *parser_string = xfce_rc_read_entry(rc, "X-Squeeze-Parse", NULL);
+  if(parser_string)
+  {
+    parser = lsq_scanf_parser_new(parser_string);
+  }
+
 	gchar **_mime_types = mime_types;
 	for(i = 0; _mime_types[i]; ++i)
 	{
@@ -175,7 +187,11 @@ lsq_support_reader_parse_file(const gchar *filename)
 		s_template->remove_cmd_queue  = xfce_rc_read_list_entry(rc, "X-Squeeze-Remove", ";");
 		s_template->extract_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Extract", ";");
 		s_template->refresh_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Refresh", ";");
-		
+
+    s_template->n_properties = g_strv_length(column_names);
+    s_template->property_names = column_names;
+    s_template->parser = parser;
+
 		if (s_template->supported)
 			g_debug("%s supported\n", _mime_types[i]);
 		else

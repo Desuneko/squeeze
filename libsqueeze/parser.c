@@ -58,3 +58,38 @@ lsq_parser_parse(LSQParser *self, LSQParserContext *ctx)
 	klass->parse(self, ctx);
 }
 
+guint
+lsq_parser_n_properties(LSQParser *parser)
+{
+  return parser->n_properties;
+}
+
+GType
+lsq_parser_get_property_type(LSQParser *parser, guint nr)
+{
+  g_return_val_if_fail(nr < parser->n_properties, G_TYPE_NONE);
+  return parser->property_types[nr];
+}
+
+void
+lsq_parser_set_property_type(LSQParser *parser, guint nr, GType type)
+{
+  if(nr >= parser->n_properties)
+  {
+    GType *new_list = g_new(GType, nr+1);
+    guint i;
+    for(i=0; i < parser->n_properties; i++)
+    {
+      new_list[i] = parser->property_types[i];
+    }
+    while(i<nr)
+    {
+      new_list[i++] = G_TYPE_NONE;
+    }
+    g_free(parser->property_types);
+    parser->property_types = new_list;
+    parser->n_properties = nr+1;
+  }
+  parser->property_types[nr] = type;
+}
+

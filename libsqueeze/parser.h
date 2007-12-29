@@ -44,11 +44,16 @@ G_BEGIN_DECLS
 	  LSQParserClass))
 
 
+#if 0
 typedef struct _LSQParser LSQParser;
+#endif
 
 struct _LSQParser
 {
 	GObject parent;
+
+  guint n_properties;
+  GType *property_types;
 };
 
 
@@ -68,6 +73,10 @@ GType		   lsq_parser_get_type(void);
 LSQParserContext* lsq_parser_get_context(LSQParser *, LSQArchive *);
 
 void              lsq_parser_parse(LSQParser *, LSQParserContext *);
+
+guint             lsq_parser_n_properties(LSQParser *);
+GType             lsq_parser_get_property_type(LSQParser *, guint);
+void              lsq_parser_set_property_type(LSQParser *, guint, GType);
 
 G_END_DECLS
 
