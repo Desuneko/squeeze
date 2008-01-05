@@ -78,7 +78,7 @@ lsq_archive_entry_set_prop_uint(const LSQArchive *, LSQArchiveEntry *, guint, gu
 static void
 lsq_archive_entry_set_prop_uint64(const LSQArchive *, LSQArchiveEntry *, guint, guint64);
 static void
-lsq_archive_entry_set_propsv(const LSQArchive *, LSQArchiveEntry *, gconstpointer *);
+lsq_archive_entry_set_propsv(const LSQArchive *, LSQArchiveEntry *, gpointer *);
 static void
 lsq_archive_entry_set_propsva(const LSQArchive *, LSQArchiveEntry *, va_list);
 
@@ -668,7 +668,7 @@ lsq_archive_iter_set_props(LSQArchiveIter *iter, ...)
 }
 
 void
-lsq_archive_iter_set_propsv(LSQArchiveIter *iter, gconstpointer *props)
+lsq_archive_iter_set_propsv(LSQArchiveIter *iter, gpointer *props)
 {
 #ifdef DEBUG
 	g_return_if_fail(iter);
@@ -1432,7 +1432,7 @@ lsq_archive_entry_set_prop_uint64(const LSQArchive *archive, LSQArchiveEntry *en
 }
 
 static void
-lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, gconstpointer *props)
+lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, gpointer *props)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
 	guint i;
@@ -1443,7 +1443,8 @@ lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, 
 		{
 			case G_TYPE_STRING:
 				g_free(*((gchar **)props_iter));
-				(*((gchar **)props_iter)) = g_strdup((const gchar*)props[i]);
+				//(*((gchar **)props_iter)) = g_strdup((const gchar*)props[i]);
+				(*((gchar **)props_iter)) = (gchar*)props[i];
 				props_iter += sizeof(gchar *);
 				break;
 			case G_TYPE_UINT:

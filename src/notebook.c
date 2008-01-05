@@ -555,6 +555,9 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree_view), tree_model);
 	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tree_view), notebook->props._rules_hint);
 
+  //FIXME: for now it's here, should it be?
+	sq_notebook_treeview_reset_columns(archive, GTK_TREE_VIEW(tree_view));
+
 	if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), TRUE);
 	else
@@ -706,11 +709,24 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 		{
 			switch(lsq_archive_get_entry_property_type(archive, x))
 			{
+        case(G_TYPE_CHAR):
+				case(G_TYPE_DOUBLE):
+				case(G_TYPE_FLOAT):
+				case(G_TYPE_INT):
+				case(G_TYPE_INT64):
+				case(G_TYPE_LONG):
 				case(G_TYPE_STRING):
+				case(G_TYPE_UINT):
 				case(G_TYPE_UINT64):
+				case(G_TYPE_ULONG):
 					renderer = gtk_cell_renderer_text_new();
 					column = gtk_tree_view_column_new_with_attributes(lsq_archive_get_entry_property_name(archive, x), renderer, "text", x+SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT, NULL);
 					break;
+        default:
+#ifdef DEBUG
+          g_debug("Should not be reached");
+#endif
+          continue;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
 			gtk_tree_view_column_set_sort_column_id(column, x+SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);

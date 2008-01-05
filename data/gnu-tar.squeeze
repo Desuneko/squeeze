@@ -52,7 +52,7 @@ X-Squeeze-Refresh=tar -tvvf %a
 X-Squeeze-Options=Password;Overwrite
 
 [Squeeze-Refresh]
-X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
+X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time
 # Tar does not support passwords, this is just for illustrative purposes
 X-Squeeze-Options=Password
 

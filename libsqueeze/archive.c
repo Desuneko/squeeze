@@ -180,8 +180,21 @@ lsq_archive_new(gchar *path, const gchar *mime)
 		}
 	}
 #ifdef DEBUG
-	g_debug("%s\n", thunar_vfs_mime_info_get_name(archive->priv->mime_info));
+	g_debug("mime: %s\n", thunar_vfs_mime_info_get_name(archive->priv->mime_info));
 #endif
+
+  GSList *iter;
+  for(iter = lsq_mime_support_list; iter; iter = iter->next)
+  {
+    if(((LSQSupportTemplate*)iter->data)->mime_info == archive->priv->mime_info)
+    {
+#ifdef DEBUG
+      g_debug("found template");
+#endif
+      archive->priv->s_template = iter->data;
+      break;
+    }
+  }
 
 	return archive;
 }

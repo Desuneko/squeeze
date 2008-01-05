@@ -980,10 +980,10 @@ cb_sq_main_close_window(GtkWidget *widget, gpointer userdata)
 static void 
 cb_sq_main_refresh_archive(GtkWidget *widget, gpointer userdata)
 {
-	//SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
-	//SQArchiveStore *store = sq_notebook_get_active_store(SQ_NOTEBOOK(window->notebook));
-	//LSQArchive *archive = sq_archive_store_get_archive(store);
-	//lsq_archive_full_refresh(archive);
+	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
+	SQArchiveStore *store = sq_notebook_get_active_store(SQ_NOTEBOOK(window->notebook));
+	LSQArchive *archive = sq_archive_store_get_archive(store);
+	lsq_archive_operate(archive, LSQ_COMMAND_TYPE_REFRESH);
 }
 
 static void

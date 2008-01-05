@@ -47,6 +47,8 @@ void			lsq_archive_iter_unref(LSQArchiveIter *iter);
 
 LSQArchiveIter *lsq_archive_add_file(LSQArchive *archive, const gchar *path);
 
+void  lsq_archive_iter_set_propsv(LSQArchiveIter *iter, gpointer *props);
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_ARCHIVE_ITER_H__ */

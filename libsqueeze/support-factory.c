@@ -113,7 +113,7 @@ lsq_support_factory_finalize(GObject *object)
 static gint
 lsq_lookup_mime_support(gconstpointer a, gconstpointer b)
 {
-	return 0;
+	return 1;
 }
 
 void

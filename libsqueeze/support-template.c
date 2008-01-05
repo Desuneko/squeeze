@@ -20,26 +20,31 @@
 #include <glib/gstdio.h>
 #include <glib-object.h> 
 #include <thunar-vfs/thunar-vfs.h>
-
+#include "libsqueeze.h"
+#include "parser-context.h"
+#include "parser.h"
 #include "support-template.h"
 
 GType
 lsq_support_template_get_property_type(LSQSupportTemplate *templ, guint nr)
 {
   g_return_val_if_fail(templ->parser, G_TYPE_NONE);
-	return lsq_parser_get_property_type(templ->parser);
+	return lsq_parser_get_property_type(templ->parser, nr);
 }
 
 const gchar *
 lsq_support_template_get_property_name(LSQSupportTemplate *templ, guint nr)
 {
-	g_return_val_if_fail(nr >= templ->n_properties, NULL);
+	g_return_val_if_fail(nr < templ->n_properties, NULL);
 	return templ->property_names[nr];
 }
 
 guint
 lsq_support_template_get_n_properties (LSQSupportTemplate *templ)
 {
+#ifdef DEBUG
+	g_return_val_if_fail(templ, 0);
+#endif
   guint n_props = lsq_parser_n_properties(templ->parser);
   if(templ->n_properties > n_props)
     n_props = templ->n_properties;

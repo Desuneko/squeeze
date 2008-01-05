@@ -109,8 +109,6 @@ static void build_parser(LSQScanfParser *, const gchar *);
 
 static void lsq_scanf_parser_parse(LSQScanfParser *, LSQScanfParserContext *);
 
-static LSQParserContext *lsq_scanf_parser_get_context(LSQScanfParser *, LSQArchive *);
-
 G_DEFINE_TYPE(LSQScanfParser, lsq_scanf_parser, LSQ_TYPE_PARSER);
 
 static void
