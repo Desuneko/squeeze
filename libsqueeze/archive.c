@@ -143,6 +143,15 @@ lsq_archive_finalize(GObject *object)
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, object);
 }
 
+/**
+ * lsq_archive_new:
+ *
+ * @path: path to archive
+ * @mime: mime-type (or NULL)
+ *
+ * Return value: LSQArchive object
+ *
+ */
 LSQArchive *
 lsq_archive_new(gchar *path, const gchar *mime)
 {
@@ -389,6 +398,19 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
 gboolean
 lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
 {
-	return FALSE;
+    switch (type)
+    {
+        case LSQ_COMMAND_TYPE_ADD:
+        case LSQ_COMMAND_TYPE_REMOVE:
+        case LSQ_COMMAND_TYPE_EXTRACT:
+        case LSQ_COMMAND_TYPE_REFRESH:
+        case LSQ_COMMAND_TYPE_OPEN:
+        case LSQ_COMMAND_TYPE_TEST:
+	        return FALSE;
+            break;
+        default:
+            return FALSE;
+            break;
+    }
 }
 
