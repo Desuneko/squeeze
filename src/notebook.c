@@ -574,7 +574,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 
 	if(new_archive == FALSE)
 	{
-		//lsq_archive_full_refresh(archive);
+		lsq_archive_operate(archive, LSQ_COMMAND_TYPE_REFRESH);
 	}
 
 }
@@ -653,17 +653,18 @@ static void
 cb_notebook_tab_archive_state_changed(LSQArchive *archive, GtkContainer *widget)
 {
 	GList *children = gtk_container_get_children(widget);
-	if(lsq_archive_get_status(archive))
+	switch(lsq_archive_get_state(archive))
 	{
-		gtk_widget_hide(GTK_WIDGET(children->data));
-		sq_throbber_set_animated(SQ_THROBBER(gtk_bin_get_child(GTK_BIN(children->next->data))), TRUE);
-		gtk_widget_show(GTK_WIDGET(children->next->data));
-	}
-	else
-	{
-		gtk_widget_show(GTK_WIDGET(children->data));
-		sq_throbber_set_animated(SQ_THROBBER(gtk_bin_get_child(GTK_BIN(children->next->data))), FALSE);
-		gtk_widget_hide(GTK_WIDGET(children->next->data));
+        case LSQ_ARCHIVE_STATE_IDLE:
+            gtk_widget_show(GTK_WIDGET(children->data));
+            sq_throbber_set_animated(SQ_THROBBER(gtk_bin_get_child(GTK_BIN(children->next->data))), FALSE);
+            gtk_widget_hide(GTK_WIDGET(children->next->data));
+            break;
+        default:
+            gtk_widget_hide(GTK_WIDGET(children->data));
+            sq_throbber_set_animated(SQ_THROBBER(gtk_bin_get_child(GTK_BIN(children->next->data))), TRUE);
+            gtk_widget_show(GTK_WIDGET(children->next->data));
+            break;
 	}
 
 	g_list_free(children);

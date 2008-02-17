@@ -94,7 +94,6 @@ static void cb_sq_main_refresh_archive(GtkWidget *widget, gpointer userdata);
 
 static void cb_sq_main_close_window(GtkWidget *widget, gpointer userdata);
 
-static void cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata);
 /*static void cb_sq_main_properties(GtkWidget *widget, gpointer userdata);*/
 /*static void cb_sq_main_preferences(GtkWidget *widget, gpointer userdata);*/
 
@@ -1136,7 +1135,7 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	sq_main_window_new_action_menu(window, lp_archive);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	const gchar *message = lsq_archive_get_status(lp_archive);
+	const gchar *message = lsq_archive_get_state_msg(lp_archive);
 	if(!message)
 	{
 		message = _("Done");
@@ -1294,7 +1293,6 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 		gtk_widget_set_sensitive(window->menubar.menu_item_close, TRUE);
 
 		/*gtk_widget_set_sensitive(window->menubar.menu_item_properties, TRUE);*/
-		g_signal_connect(G_OBJECT(archive), "command-terminated", G_CALLBACK(cb_sq_main_window_archive_command_terminated), window);
 		return 0;
 	}
 	else
@@ -1355,26 +1353,13 @@ sq_main_window_set_navigation(SQMainWindow *window)
 }
 
 static void
-cb_sq_main_window_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata)
-{
-	SQMainWindow *window = userdata;
-
-	if(error)
-	{
-		GtkWidget *error_dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, error->message);
-		gtk_dialog_run(GTK_DIALOG(error_dialog));
-		gtk_widget_destroy(error_dialog);
-	}
-}
-
-static void
 cb_sq_main_window_notebook_state_changed(SQNotebook *notebook, LSQArchive *archive, gpointer userdata)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	LSQSupportType support_mask = lsq_archive_get_support_mask(archive);
 
 	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	const gchar *message = lsq_archive_get_status(archive);
+	const gchar *message = lsq_archive_get_state_msg(archive);
 	if(!message)
 	{
 		sq_throbber_set_animated(SQ_THROBBER(window->throbber), FALSE);

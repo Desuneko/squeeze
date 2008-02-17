@@ -137,7 +137,7 @@ sq_message_dialog_progressbar_pulse(SQMessageDialog *dialog)
 	if(dialog->archive)
 	{
 		gtk_progress_bar_pulse(GTK_PROGRESS_BAR(dialog->progress_bar));
-		gtk_progress_bar_set_text(GTK_PROGRESS_BAR(dialog->progress_bar), lsq_archive_get_status(dialog->archive));
+		gtk_progress_bar_set_text(GTK_PROGRESS_BAR(dialog->progress_bar), lsq_archive_get_state_msg(dialog->archive));
 		return TRUE;
 	}
 	return FALSE;

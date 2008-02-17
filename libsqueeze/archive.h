@@ -44,6 +44,12 @@ enum
 	LSQ_ARCHIVE_PROP_USER
 };
 
+typedef enum
+{
+    LSQ_ARCHIVE_STATE_IDLE,
+    LSQ_ARCHIVE_STATE_BUSY
+} LSQArchiveState;
+
 typedef struct _LSQArchivePrivate LSQArchivePrivate;
 
 struct _LSQArchivePrivate
@@ -54,6 +60,8 @@ struct _LSQArchivePrivate
 
 	LSQSupportTemplate *s_template;
 
+    LSQArchiveState state;
+    const gchar *state_msg;
 };
 
 
@@ -89,7 +97,6 @@ GType		   lsq_archive_get_type(void);
 gchar		  *lsq_archive_get_path(const LSQArchive *archive);
 const gchar	*lsq_archive_get_filename(const LSQArchive *archive);
 const gchar	*lsq_archive_get_mimetype(const LSQArchive *archive);
-const gchar	*lsq_archive_get_status(const LSQArchive *archive);
 gboolean		lsq_archive_exists(const LSQArchive *archive);
 LSQSupportType  lsq_archive_get_support_mask(const LSQArchive *archive);
 
@@ -102,6 +109,12 @@ gboolean			lsq_archive_remove_file(LSQArchive *, const gchar *);
 ThunarVfsPath	  *lsq_archive_get_path_info(LSQArchive *);
 
 gboolean		lsq_archive_operate(LSQArchive *archive, LSQCommandType type);
+
+const gchar	*
+lsq_archive_get_state_msg(const LSQArchive *archive);
+
+LSQArchiveState
+lsq_archive_get_state(const LSQArchive *archive);
 
 
 G_END_DECLS

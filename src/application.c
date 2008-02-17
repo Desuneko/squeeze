@@ -42,9 +42,6 @@ sq_application_finalize(GObject *);
 static void
 sq_application_dispose(GObject *object);
 
-static void
-cb_sq_application_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata);
-
 enum
 {
 	SQ_APPLICATION_SIGNAL_DESTROY = 0,
@@ -179,7 +176,6 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 		lsq_close_archive(lp_archive);
 		return 1;
 	}
-	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
 	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
 	gtk_widget_show(message_dialog);
 	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT))
@@ -254,7 +250,6 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			return 1;
 		}
 	}
-	g_signal_connect(G_OBJECT(lp_archive), "command-terminated", G_CALLBACK(cb_sq_application_archive_command_terminated), app);
 	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
 	gtk_widget_show(message_dialog);
 
@@ -292,12 +287,4 @@ sq_application_open_archive(SQApplication *app, GtkWidget *window, gchar *path)
 	}
 	gtk_widget_show(window);
 	return retval;
-}
-
-static void
-cb_sq_application_archive_command_terminated(LSQArchive *archive, GError *error, gpointer userdata)
-{
-	SQApplication *app = userdata;
-	lsq_close_archive(archive);
-	g_object_unref(app);
 }

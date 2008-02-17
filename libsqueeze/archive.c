@@ -372,9 +372,15 @@ lsq_archive_stop(const LSQArchive *archive)
 }
 
 const gchar *
-lsq_archive_get_status(const LSQArchive *archive)
+lsq_archive_get_state_msg(const LSQArchive *archive)
 {
-	return NULL;
+	return archive->priv->state_msg;
+}
+
+LSQArchiveState
+lsq_archive_get_state(const LSQArchive *archive)
+{
+    return archive->priv->state;
 }
 
 /**
@@ -395,18 +401,30 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
 	return archive->priv->s_template->support_mask;
 }
 
+/**
+ * lsq_archive_operate:
+ * @archive: the archive
+ * @type: The command-type to be executed
+ *
+ * Return value: TRUE on success
+ */
 gboolean
 lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
 {
+    g_debug("%s", __FUNCTION__);
+    LSQSupportTemplate *s_template = archive->priv->s_template;
+
     switch (type)
     {
         case LSQ_COMMAND_TYPE_ADD:
         case LSQ_COMMAND_TYPE_REMOVE:
         case LSQ_COMMAND_TYPE_EXTRACT:
-        case LSQ_COMMAND_TYPE_REFRESH:
         case LSQ_COMMAND_TYPE_OPEN:
         case LSQ_COMMAND_TYPE_TEST:
 	        return FALSE;
+            break;
+        case LSQ_COMMAND_TYPE_REFRESH:
+            return FALSE;
             break;
         default:
             return FALSE;
