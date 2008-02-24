@@ -18,17 +18,21 @@
     <copyright>
       <year>2006</year>
       <year>2007</year>
+      <year>2008</year>
       <holder>Stephan Arts</holder>
     </copyright>
 
     <legalnotice id="legalnotice">
       <para>
         Permission is granted to copy, distribute and/or modify this document
-        under the terms of the GNU Free Documentation License, Version 1.1 or
-        any later version published by the Free Software Foundation; with no
-        Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
-        Texts. The complete license text is available from the <ulink
-        type="http" url="http://www.gnu.org/">Free Software Foundation</ulink>.
+        under the terms of the GNU General Public License as published by the
+        Free Software Foundation; either Version 2 of the License, or
+        (at your option) any later version. 
+      </para>
+      <para>
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
       </para>
     </legalnotice>
 

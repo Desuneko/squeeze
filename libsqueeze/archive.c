@@ -409,7 +409,7 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
  * Return value: TRUE on success
  */
 gboolean
-lsq_archive_operate(LSQArchive *archive, LSQCommandType type)
+lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **files)
 {
     g_debug("%s", __FUNCTION__);
     LSQSupportTemplate *s_template = archive->priv->s_template;

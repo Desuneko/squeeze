@@ -53,6 +53,9 @@ lsq_init()
 
 			if(g_str_has_suffix(filename, ".squeeze"))
 			{
+                /**
+                 * FIXME: factories should be per-mime-type, not per-template
+                 */
 				gchar *path = g_strconcat(data_squeeze, "/", filename, NULL);
 				LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
 				if(factory)
