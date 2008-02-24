@@ -514,7 +514,7 @@ guint parse_filename(gchar *str, guint lng, parse_part *part, LSQScanfParserCont
 }
 /*}}}*/
 
-gchar* strdup_escaped(const gchar *str, guint lng)/*{{{*/
+static gchar* strdup_escaped(const gchar *str, guint lng)/*{{{*/
 {
   guint i;
   gchar *new_str;

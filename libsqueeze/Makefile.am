@@ -7,6 +7,7 @@ libsqueeze_1_la_SOURCES =  \
 	parser-context.c parser-context.h \
 	parser.c parser.h \
 	scanf-parser.c scanf-parser.h \
+	command-queue.c command-queue.h \
 	slist.c slist.h \
 	archive-iter-pool.c archive-iter-pool.h \
 	archive-iter.c archive-iter.h \
