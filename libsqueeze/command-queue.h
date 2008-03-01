@@ -43,14 +43,20 @@ G_BEGIN_DECLS
 			LSQ_TYPE_COMMAND_QUEUE,				 \
 	  LSQCommandQueueClass))
 
-
+#if 0
 typedef struct _LSQCommandQueue LSQCommandQueue;
-
+#endif
 
 typedef struct _LSQCommandQueueClass LSQCommandQueueClass;
 
+typedef struct _LSQExecuteContext LSQExecuteContext;
+
 
 GType		   lsq_command_queue_get_type(void);
+
+LSQCommandQueue *lsq_command_queue_new(const gchar *command_string);
+
+LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, LSQParser *parser);
 
 
 G_END_DECLS

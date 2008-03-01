@@ -21,6 +21,9 @@
 
 #include <thunar-vfs/thunar-vfs.h>
 #include "libsqueeze.h"
+#include "archive-tempfs.h"
+#include "parser-context.h"
+#include "parser.h"
 
 #include "command-queue.h"
 
@@ -47,6 +50,20 @@ struct _LSQCommandQueueClass
 	GObjectClass parent;
 };
 
+struct _LSQExecuteContext
+{
+  LSQCommandEntry *queue;
+  LSQParser *parser;
+  LSQArchive *archive;
+  gchar **files;
+  gchar *tempfile;
+  LSQParserContext *ctx;
+  enum {
+    LSQ_EXEC_CTX_STATE_RUNNING = 1<<0,
+    LSQ_EXEC_CTX_STATE_PARSING = 1<<1
+  } state;
+};
+
 static void build_queue(LSQCommandQueue *queue, const gchar *commant_string);
 
 G_DEFINE_TYPE(LSQCommandQueue, lsq_command_queue, G_TYPE_OBJECT);
@@ -65,11 +82,254 @@ LSQCommandQueue *lsq_command_queue_new(const gchar *command_string)
 {
   LSQCommandQueue *queue;
 
+  g_return_val_if_fail(command_string, NULL);
+
   queue = g_object_new(LSQ_TYPE_COMMAND_QUEUE, NULL);
 
   build_queue(queue, command_string);
 
   return LSQ_COMMAND_QUEUE(queue);
+}
+
+static const gchar *lsq_execute_context_get_temp_file(LSQExecuteContext *ctx)
+{
+  if(!ctx->tempfile)
+  {
+    ctx->tempfile = lsq_archive_request_temp_file(ctx->archive, NULL);
+  }
+
+  return ctx->tempfile;
+}
+
+static gchar *format_get_filename(const gchar *format, LSQExecuteContext *ctx)
+{
+  if((format[0] == '%') && (format[2] == '\0'))
+  {
+    switch(format[1])
+    {
+      case 'a':
+        return lsq_archive_get_path(ctx->archive);
+      case 't':
+        return g_strdup(lsq_execute_context_get_temp_file(ctx));
+    }
+  }
+  return NULL;
+}
+
+static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteContext *ctx)
+{
+  gchar **argv, **argi;
+  guint size;
+  GSList *iter;
+  gchar **filei;
+  
+  size = 2;
+
+  for(iter = entry->args; iter; iter = iter->next)
+  {
+    if(0==strcmp((const gchar*)iter->data, "%F"))
+    {
+      size += g_strv_length(ctx->files);
+    }
+    else
+      size++;
+  }
+
+  argv = g_new(gchar *, size);
+
+  argi = argv;
+
+  *argi++ = g_strdup(entry->command);
+
+  for(iter = entry->args; iter; iter = iter->next)
+  {
+    const gchar *arg = (const gchar*)iter->data;
+    if((arg[0] == '%') && (arg[2] == '\0'))
+    {
+      switch(arg[1])
+      {
+        case 'F':
+          for(filei = ctx->files; *filei; filei++)
+          {
+            *argi++ = g_strdup(*filei);
+          }
+          break;
+        case 'a':
+          *argi++ = lsq_archive_get_path(ctx->archive);
+          break;
+        case 't':
+          *argi++ = g_strdup(lsq_execute_context_get_temp_file(ctx));
+          break;
+        default:
+          //...
+          break;
+      }
+    }
+    else
+      *argi++ = g_strdup(arg);
+  }
+
+  *argi = NULL;
+
+  return argv;
+}
+
+static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *ctx);
+
+static void child_exit(GPid pid, gint status, LSQExecuteContext *ctx)
+{
+  g_spawn_close_pid(pid);
+  ctx->state &= ~LSQ_EXEC_CTX_STATE_RUNNING;
+  if(!ctx->state)
+  {
+    if((ctx->queue = ctx->queue->next))
+      lsq_command_entry_start(ctx->queue, ctx);
+    //else
+      //...//done
+  }
+}
+
+static void in_channel(GIOChannel *source, GIOCondition condition, GIOChannel *dest)
+{
+	GIOStatus stat = G_IO_STATUS_NORMAL;
+  static gchar buffer[1024];
+
+  if(condition & G_IO_IN)
+  {
+    gsize n;
+    stat = g_io_channel_read_chars(source, buffer, 1024, &n, NULL);
+    if(stat == G_IO_STATUS_NORMAL)
+      g_io_channel_write_chars(dest, buffer, n, NULL, NULL);
+  }
+
+  if(condition & G_IO_HUP || (stat != G_IO_STATUS_NORMAL && stat != G_IO_STATUS_AGAIN))
+  {
+    g_io_channel_unref(source);
+    g_io_channel_flush(dest, NULL);
+    g_io_channel_unref(dest);
+  }
+}
+
+static void out_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
+{
+	GIOStatus stat = G_IO_STATUS_NORMAL;
+  static gchar buffer[1024];
+
+  if(condition & G_IO_IN)
+  {
+    gsize n;
+    stat = g_io_channel_read_chars(source, buffer, 1024, &n, NULL);
+    //if(stat == G_IO_STATUS_NORMAL)
+      //g_io_channel_write_chars(dest, buffer, n, NULL, NULL);
+  }
+
+  if(condition & G_IO_HUP || (stat != G_IO_STATUS_NORMAL && stat != G_IO_STATUS_AGAIN))
+  {
+    g_io_channel_unref(source);
+    //g_io_channel_flush(dest);
+    //g_io_channel_unref(dest);
+    ctx->state &= ~LSQ_EXEC_CTX_STATE_PARSING;
+    if(!ctx->state)
+    {
+      if((ctx->queue = ctx->queue->next))
+        lsq_command_entry_start(ctx->queue, ctx);
+      //else
+        //...//done
+    }
+  }
+}
+
+static void parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
+{
+  if(condition & G_IO_IN)
+    lsq_parser_parse(ctx->parser, ctx->ctx);
+  if(condition & G_IO_HUP || !lsq_parser_context_is_good(ctx->ctx))
+  {
+    lsq_parser_context_set_channel(ctx->ctx, NULL);
+    g_io_channel_unref(source);
+    ctx->state &= ~LSQ_EXEC_CTX_STATE_PARSING;
+    if(!ctx->state)
+    {
+      if((ctx->queue = ctx->queue->next))
+        lsq_command_entry_start(ctx->queue, ctx);
+      //else
+        //...//done
+    }
+  }
+}
+
+static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *ctx)
+{
+  gint fd_in = FALSE;
+  gint fd_out = TRUE;
+  GIOChannel *redir_in;
+  GIOChannel *chan_in;
+  GIOChannel *redir_out;
+  GIOChannel *chan_out;
+  gchar **argv;
+  GPid pid;
+  GSpawnFlags flags = G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL;
+  if(entry->redirect_out)
+  {
+    gchar *file = format_get_filename(entry->redirect_out, ctx);
+    redir_in = g_io_channel_new_file(file, "w", NULL);
+    g_free(file);
+  }
+  else if(!ctx->ctx)
+  {
+    flags |= G_SPAWN_STDOUT_TO_DEV_NULL;
+    fd_out = FALSE;
+  }
+  if(entry->redirect_in)
+  {
+    gchar *file = format_get_filename(entry->redirect_in, ctx);
+    redir_in = g_io_channel_new_file(file, "r", NULL);
+    g_free(file);
+    fd_in = TRUE;
+  }
+
+  argv = lsq_command_entry_to_argv(entry, ctx);
+
+  g_spawn_async_with_pipes(NULL, argv, NULL, flags, NULL, NULL, &pid, fd_in?&fd_in:NULL, fd_out?&fd_out:NULL, NULL, NULL);
+
+  g_child_watch_add(pid, (GChildWatchFunc)child_exit, ctx);
+  ctx->state |= LSQ_EXEC_CTX_STATE_RUNNING;
+
+  if(entry->redirect_in)
+  {
+    chan_in = g_io_channel_unix_new(fd_in);
+    g_io_add_watch(redir_in, G_IO_IN|G_IO_HUP, (GIOFunc)in_channel, chan_in);
+  }
+  if(entry->redirect_out)
+  {
+    chan_out = g_io_channel_unix_new(fd_out);
+    g_io_add_watch(chan_out, G_IO_IN|G_IO_HUP, (GIOFunc)out_channel, ctx);
+    ctx->state |= LSQ_EXEC_CTX_STATE_PARSING;
+  }
+  else if(ctx->ctx)
+  {
+    chan_out = g_io_channel_unix_new(fd_out);
+    lsq_parser_context_set_channel(ctx->ctx, chan_out);
+    g_io_add_watch(chan_out, G_IO_IN|G_IO_HUP, (GIOFunc)parse_channel, ctx);
+    ctx->state |= LSQ_EXEC_CTX_STATE_PARSING;
+  }
+}
+
+LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, LSQParser *parser)
+{
+  LSQExecuteContext *ctx;
+
+  ctx = g_new(LSQExecuteContext, 1);
+
+  ctx->queue = queue->queue;
+  ctx->archive = archive;
+  ctx->files = g_strdupv((gchar**)files);
+  ctx->parser = parser;
+  ctx->ctx = parser?lsq_parser_get_context(parser, archive):NULL;
+
+  lsq_command_entry_start(ctx->queue, ctx);
+
+  return ctx;
 }
 
 static gchar* strdup_escaped(const gchar *str, guint lng)/*{{{*/

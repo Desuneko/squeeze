@@ -178,7 +178,7 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 	}
 	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
 	gtk_widget_show(message_dialog);
-	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT))
+	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, NULL))
 	{
 		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
 														   GTK_DIALOG_DESTROY_WITH_PARENT, 
@@ -253,7 +253,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
 	gtk_widget_show(message_dialog);
 
-	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD))
+	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, NULL))
 	{
 		/* FIXME: show warning dialog */
 		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 

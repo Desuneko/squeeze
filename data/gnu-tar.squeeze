@@ -16,32 +16,32 @@ X-Squeeze-Refresh=tar -tvvf %a
 [application/x-compressed-tar]
 X-Squeeze-Requires=tar;gzip;gunzip
 X-Squeeze-New=tar -zcf %a %F
-X-Squeeze-Add=gunzip -c %a >> %t;tar -rf %a %F;gzip -c %t >> %a
-X-Squeeze-Remove=gunzip -c %a >> %t;tar -f %t --delete %F; gzip -c %t >> %a
+X-Squeeze-Add=gunzip -c %a > %t;tar -rf %a %F;gzip -c %t > %a
+X-Squeeze-Remove=gunzip -c %a > %t;tar -f %t --delete %F; gzip -c %t > %a
 X-Squeeze-Extract=tar -C %d -xf %a %F
 X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-bzip-compressed-tar]
 X-Squeeze-Requires=tar;bzip2;bunzip2
 X-Squeeze-New=tar -jcf %a %F
-X-Squeeze-Add=bunzip2 -c %a >> %t;tar -rf %t %F;bzip2 -c %t >> %a
-X-Squeeze-Remove=bunzip2 -c %a >> %t;tar -f %t --delete %F; bzip2 -c %t >> %a
+X-Squeeze-Add=bunzip2 -c %a > %t;tar -rf %t %F;bzip2 -c %t > %a
+X-Squeeze-Remove=bunzip2 -c %a > %t;tar -f %t --delete %F; bzip2 -c %t > %a
 X-Squeeze-Extract=tar -C %d -xf %a %F
 X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-tarz]
 X-Squeeze-Requires=tar;compress;uncompress
 X-Squeeze-New=tar -Zcf %a %F
-X-Squeeze-Add=lzop -dc %a >> %t;tar -rf %t %F;lzop -c %t >> %a
-X-Squeeze-Remove=uncompress -c %a >> %t;tar -f %t --delete %F; compress -c %t >> %a
+X-Squeeze-Add=lzop -dc %a > %t;tar -rf %t %F;lzop -c %t > %a
+X-Squeeze-Remove=uncompress -c %a > %t;tar -f %t --delete %F; compress -c %t > %a
 X-Squeeze-Extract=tar -C %d -xf %a %F
 X-Squeeze-Refresh=tar -tvvf %a
 
 [application/x-tzo]
 X-Squeeze-Requires=tar;lzop
 X-Squeeze-New=tar -cf --use-compress-program=lzop %a %F
-X-Squeeze-Add=uncompress -c %a >> %t;tar -rf %t %F;compress -c %t >> %a
-X-Squeeze-Remove=lzop -dc %a >> %t;tar -f %t --delete %F; lzop -c %t >> %a
+X-Squeeze-Add=uncompress -c %a > %t;tar -rf %t %F;compress -c %t > %a
+X-Squeeze-Remove=lzop -dc %a > %t;tar -f %t --delete %F; lzop -c %t > %a
 X-Squeeze-Extract=tar -C %d -xf %a %F
 X-Squeeze-Refresh=tar -tvvf %a
 

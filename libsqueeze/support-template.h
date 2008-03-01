@@ -37,6 +37,9 @@ typedef enum
 #ifndef LSQParser
 typedef struct _LSQParser LSQParser;
 #endif
+#ifndef LSQCommandQueue
+typedef struct _LSQCommandQueue LSQCommandQueue;
+#endif
 
 typedef struct _LSQSupportTemplate LSQSupportTemplate;
 
@@ -51,11 +54,11 @@ struct _LSQSupportTemplate
 	gchar **property_names;
   LSQParser *parser;
 
-	gchar **new_cmd_queue;
-	gchar **add_cmd_queue;
-	gchar **remove_cmd_queue;
-	gchar **extract_cmd_queue;
-	gchar **refresh_cmd_queue;
+	LSQCommandQueue *new_cmd_queue;
+	LSQCommandQueue *add_cmd_queue;
+	LSQCommandQueue *remove_cmd_queue;
+	LSQCommandQueue *extract_cmd_queue;
+	LSQCommandQueue *refresh_cmd_queue;
 	LSQSupportType   support_mask;
 };
 

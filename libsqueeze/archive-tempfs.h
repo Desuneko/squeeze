@@ -38,3 +38,5 @@ lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
 gboolean
 lsq_tempfs_changed_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
 
+gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *suffix);
+

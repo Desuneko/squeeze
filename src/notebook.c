@@ -574,7 +574,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 
 	if(new_archive == FALSE)
 	{
-		lsq_archive_operate(archive, LSQ_COMMAND_TYPE_REFRESH);
+		lsq_archive_operate(archive, LSQ_COMMAND_TYPE_REFRESH, NULL);
 	}
 
 }

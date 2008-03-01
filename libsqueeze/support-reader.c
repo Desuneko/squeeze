@@ -32,6 +32,7 @@
 #include "parser-context.h"
 #include "parser.h"
 #include "scanf-parser.h"
+#include "command-queue.h"
 #include "support-reader.h"
 
 #include "internals.h"
@@ -182,11 +183,11 @@ lsq_support_reader_parse_file(const gchar *filename)
 		s_template->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, _mime_types[i]);
 		s_template->id = (const gchar *)factory->id;
 
-		s_template->new_cmd_queue	 = xfce_rc_read_list_entry(rc, "X-Squeeze-New", ";");
-		s_template->add_cmd_queue	 = xfce_rc_read_list_entry(rc, "X-Squeeze-Add", ";");
-		s_template->remove_cmd_queue  = xfce_rc_read_list_entry(rc, "X-Squeeze-Remove", ";");
-		s_template->extract_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Extract", ";");
-		s_template->refresh_cmd_queue = xfce_rc_read_list_entry(rc, "X-Squeeze-Refresh", ";");
+		s_template->new_cmd_queue	 = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-New", NULL));
+		s_template->add_cmd_queue	 = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Add", NULL));
+		s_template->remove_cmd_queue  = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Remove", NULL));
+		s_template->extract_cmd_queue = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Extract", NULL));
+		s_template->refresh_cmd_queue = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Refresh", NULL));
 
     s_template->n_properties = g_strv_length(column_names);
     s_template->property_names = column_names;
