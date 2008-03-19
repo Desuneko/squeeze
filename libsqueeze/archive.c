@@ -422,10 +422,10 @@ lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **file
             lsq_command_queue_execute(s_template->add_cmd_queue, archive, files, s_template->parser);
             break;
         case LSQ_COMMAND_TYPE_REMOVE:
+            lsq_command_queue_execute(s_template->remove_cmd_queue, archive, files, s_template->parser);
+            break;
         case LSQ_COMMAND_TYPE_EXTRACT:
-        case LSQ_COMMAND_TYPE_OPEN:
-        case LSQ_COMMAND_TYPE_TEST:
-	        return FALSE;
+            lsq_command_queue_execute(s_template->extract_cmd_queue, archive, files, s_template->parser);
             break;
         case LSQ_COMMAND_TYPE_REFRESH:
             lsq_command_queue_execute(s_template->refresh_cmd_queue, archive, files, s_template->parser);

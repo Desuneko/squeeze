@@ -1585,6 +1585,7 @@ sq_archive_store_dispose(GObject *object)
 static void
 cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 {
+    g_debug("%s", __FUNCTION__);
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(user_data);
 	GList *iter;
 	LSQArchiveIter *aIter;
