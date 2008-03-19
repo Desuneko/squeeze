@@ -321,6 +321,7 @@ lsq_archive_exists(const LSQArchive *archive)
 void
 lsq_archive_refreshed(const LSQArchive *archive)
 {
+    g_debug("%s", __FUNCTION__);
 	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
 }
 

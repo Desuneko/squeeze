@@ -184,8 +184,16 @@ static void child_exit(GPid pid, gint status, LSQExecuteContext *ctx)
   {
     if((ctx->queue = ctx->queue->next))
       lsq_command_entry_start(ctx->queue, ctx);
-    //else
-      //...//done
+    else
+    {
+        /* HACK */
+      lsq_archive_refreshed(ctx->archive);
+    }
+  }
+  else
+  {
+        /* HACK */
+      lsq_archive_refreshed(ctx->archive);
   }
 }
 
@@ -239,7 +247,8 @@ static void out_channel(GIOChannel *source, GIOCondition condition, LSQExecuteCo
   }
 }
 
-static void parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
+static gboolean
+parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
 {
   if(condition & G_IO_IN)
     lsq_parser_parse(ctx->parser, ctx->ctx);
@@ -255,7 +264,9 @@ static void parse_channel(GIOChannel *source, GIOCondition condition, LSQExecute
       //else
         //...//done
     }
+    return FALSE;
   }
+  return TRUE;
 }
 
 static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *ctx)

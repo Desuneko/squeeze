@@ -174,7 +174,7 @@ guint skip_char(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  if(!part->delimiter)
     return 1;
 
   //for(ptr = str; g_ascii_isspace(*ptr); ptr++);
@@ -502,8 +502,8 @@ guint parse_filename(gchar *str, guint lng, parse_part *part, LSQScanfParserCont
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
-    return 0;
+  if(!part->delimiter)
+    return 1;
 
   ptr = g_strstr_len(str, lng, part->delimiter);
 
@@ -1064,33 +1064,39 @@ static void lsq_scanf_parser_parse(LSQScanfParser *parser, LSQScanfParserContext
       lng -= size;
     }
 
-    if(!g_str_has_prefix(ptr, part->delimiter))
+    if(part->delimiter)
     {
-      //no match
-      if(line_nr)
-      {
-        ptr = line;
-        lng = line_length;
-        part = parser->parser;
-        line_nr = 0;
-        continue;
-      }
-      ctx->parse_loc = parser->parser;
-      ctx->parse_line = 0;
-      g_free(line);
-      return;
+        if(!g_str_has_prefix(ptr, part->delimiter))
+        {
+          //no match
+          if(line_nr)
+          {
+            ptr = line;
+            lng = line_length;
+            part = parser->parser;
+            line_nr = 0;
+            continue;
+          }
+          ctx->parse_loc = parser->parser;
+          ctx->parse_line = 0;
+          g_free(line);
+          return;
+        }
     }
 
-    if(g_str_has_suffix(part->delimiter, "\n"))
+    if(part->delimiter)
     {
-      //next line
-      if(part->next)
-      {
-        ctx->parse_loc = part->next;
-        ctx->parse_line = line_nr+1;
-        g_free(line);
-        return;
-      }
+        if(g_str_has_suffix(part->delimiter, "\n"))
+        {
+          //next line
+          if(part->next)
+          {
+            ctx->parse_loc = part->next;
+            ctx->parse_line = line_nr+1;
+            g_free(line);
+            return;
+          }
+        }
     }
     
     part = part->next;

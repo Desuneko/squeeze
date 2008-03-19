@@ -101,6 +101,8 @@ lsq_parser_context_get_line(LSQParserContext *ctx, gchar **line, gsize *length)
 {
 	GIOStatus stat;
 
+    g_return_val_if_fail(ctx->channel, FALSE);
+
 	stat = g_io_channel_read_line(ctx->channel, line, length, NULL, NULL);
 
   ctx->last_stat = stat;
