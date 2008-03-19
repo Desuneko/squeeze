@@ -96,8 +96,7 @@ static LSQParserContext *lsq_scanf_parser_context_new(LSQScanfParser *parser, LS
 {
   LSQScanfParserContext *ctx;
 
-	ctx = g_object_new(lsq_scanf_parser_context_get_type(), "archive", archive);
-
+	ctx = g_object_new(lsq_scanf_parser_context_get_type(), "archive", archive, NULL);
   guint n_props = lsq_parser_n_properties(LSQ_PARSER(parser));
   ctx->data_store = g_new0(union _data_store, n_props);
   ctx->props_store = g_new0(gpointer, n_props);

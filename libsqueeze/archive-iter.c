@@ -1439,6 +1439,7 @@ lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, 
 
 	for(i=0; i < (lsq_archive_n_entry_properties(archive) - LSQ_ARCHIVE_PROP_USER); ++i)
 	{
+        g_debug("i: %d", i);
 		switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
 		{
 			case G_TYPE_STRING:

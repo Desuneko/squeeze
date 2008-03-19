@@ -411,12 +411,15 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
 gboolean
 lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **files)
 {
-    g_debug("%s", __FUNCTION__);
+    g_return_val_if_fail(archive, FALSE);
+
     LSQSupportTemplate *s_template = archive->priv->s_template;
 
     switch (type)
     {
         case LSQ_COMMAND_TYPE_ADD:
+            lsq_command_queue_execute(s_template->add_cmd_queue, archive, files, s_template->parser);
+            break;
         case LSQ_COMMAND_TYPE_REMOVE:
         case LSQ_COMMAND_TYPE_EXTRACT:
         case LSQ_COMMAND_TYPE_OPEN:
@@ -424,11 +427,12 @@ lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **file
 	        return FALSE;
             break;
         case LSQ_COMMAND_TYPE_REFRESH:
-            return FALSE;
+            lsq_command_queue_execute(s_template->refresh_cmd_queue, archive, files, s_template->parser);
             break;
         default:
             return FALSE;
             break;
     }
+    return TRUE;
 }
 

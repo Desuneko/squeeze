@@ -64,7 +64,7 @@ struct _LSQExecuteContext
   } state;
 };
 
-static void build_queue(LSQCommandQueue *queue, const gchar *commant_string);
+static void build_queue(LSQCommandQueue *queue, const gchar *command_string);
 
 G_DEFINE_TYPE(LSQCommandQueue, lsq_command_queue, G_TYPE_OBJECT);
 

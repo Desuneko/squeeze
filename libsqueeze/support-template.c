@@ -50,4 +50,3 @@ lsq_support_template_get_n_properties (LSQSupportTemplate *templ)
     n_props = templ->n_properties;
 	return n_props;
 }
-

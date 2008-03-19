@@ -183,11 +183,23 @@ lsq_support_reader_parse_file(const gchar *filename)
 		s_template->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, _mime_types[i]);
 		s_template->id = (const gchar *)factory->id;
 
-		s_template->new_cmd_queue	 = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-New", NULL));
-		s_template->add_cmd_queue	 = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Add", NULL));
-		s_template->remove_cmd_queue  = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Remove", NULL));
-		s_template->extract_cmd_queue = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Extract", NULL));
-		s_template->refresh_cmd_queue = lsq_command_queue_new(xfce_rc_read_entry(rc, "X-Squeeze-Refresh", NULL));
+        const gchar *new_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-New", NULL);
+        const gchar *add_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Add", NULL);
+        const gchar *remove_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Remove", NULL);
+        const gchar *extract_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Extract", NULL);
+        const gchar *refresh_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Refresh", NULL);
+
+	
+        if (new_str_queue)    
+            s_template->new_cmd_queue     = lsq_command_queue_new(new_str_queue);
+        if (add_str_queue)
+		    s_template->add_cmd_queue     = lsq_command_queue_new(add_str_queue);
+        if (remove_str_queue)
+		    s_template->remove_cmd_queue  = lsq_command_queue_new(remove_str_queue);
+        if (extract_str_queue)
+		    s_template->extract_cmd_queue = lsq_command_queue_new(extract_str_queue);
+        if (refresh_str_queue)
+		    s_template->refresh_cmd_queue = lsq_command_queue_new(refresh_str_queue);
 
     s_template->n_properties = g_strv_length(column_names);
     s_template->property_names = column_names;

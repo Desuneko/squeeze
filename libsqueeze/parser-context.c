@@ -51,7 +51,7 @@ lsq_parser_context_class_init(LSQParserContextClass *klass)
 	object_class->set_property = lsq_parser_context_set_property;
 	object_class->get_property = lsq_parser_context_get_property;
 
-	pspec = g_param_spec_object("archive", NULL, NULL, LSQ_TYPE_ARCHIVE, G_PARAM_READABLE|G_PARAM_CONSTRUCT_ONLY);
+	pspec = g_param_spec_object("archive", NULL, NULL, LSQ_TYPE_ARCHIVE, G_PARAM_READABLE|G_PARAM_WRITABLE|G_PARAM_CONSTRUCT_ONLY);
 	g_object_class_install_property(object_class, LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE, pspec);
 }
 
@@ -84,8 +84,8 @@ lsq_parser_context_new(LSQArchive *archive)
 	
 	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), NULL);
 
-	ctx = g_object_new(LSQ_TYPE_PARSER_CONTEXT, "archive", archive);
-
+	ctx = g_object_new(LSQ_TYPE_PARSER_CONTEXT, "archive", archive, NULL);
+    
 	return ctx;
 }
 

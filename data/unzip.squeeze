@@ -7,8 +7,8 @@ X-Squeeze-Version=0.3
 
 [application/x-zip]
 X-Squeeze-Requires=unzip
-X-Squeeze-Refresh=unzip
-X-Squeeze-Extract=unzip
+X-Squeeze-Refresh=unzip %a
+X-Squeeze-Extract=unzip %a %F
 
 [Squeeze-Extract]
 X-Squeeze-Options=Password;Overwrite
