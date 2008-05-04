@@ -27,15 +27,15 @@ msgstr "Tipo mime"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Gerente de Pacotes"
+msgstr "Gerenciador de Pacotes"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr "Crie e gerencie pacotes com o gerente de pacotes"
+msgstr "Crie e gerencie pacotes com o gerenciador de pacotes"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Gerente de Pacotes Squeeze"
+msgstr "Gerenciador de Pacotes Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -300,7 +300,7 @@ msgstr "Baseado no ícone de extração original criado por Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "o Squeeze é um gerente de pacotes leve e flexível para o Ambiente de Trabalho Xfce"
+msgstr "o Squeeze é um gerenciador de pacotes leve e flexível para o Ambiente de Trabalho Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
@@ -378,7 +378,7 @@ msgstr "Localização:"
 
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
-msgstr "Gerente de pacotes"
+msgstr "Gerenciador de pacotes"
 
 #~ msgid "Compressing"
 #~ msgstr "Comprimindo"
