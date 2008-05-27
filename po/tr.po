@@ -1,19 +1,21 @@
+# translation of tr.po to Turkish
 # Turkish translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-# Eren Türkay <turkay.eren@gmail.com>, 2007.
 #
+# Eren Türkay <turkay.eren@gmail.com>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-04-14 11:52+0300\n"
+"PO-Revision-Date: 2008-05-27 09:24+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
-"Language-Team: Turkish <xfce-i18n@xfce.org>\n"
+"Language-Team: Turkish <turkce@pardus.org.tr>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../libsqueeze/archive.c:236
 msgid "Name"
@@ -24,18 +26,16 @@ msgid "Mime type"
 msgstr "Mime türü"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
-msgstr "Arşiv yöneticisi"
+msgstr "Arşiv Yöneticisi"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Arşiv yöneticisi ile arşivlerinizi oluşturun ve yönetin"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "Arşiv yöneticisi"
+msgstr "Squeeze Arşiv Yöneticisi"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -196,14 +196,12 @@ msgid "_Action"
 msgstr "_Eylem"
 
 #: ../src/main_window.c:328
-#, fuzzy
 msgid "_Add files"
-msgstr "Dosyalar ekleniyor"
+msgstr "_Dosya Ekle"
 
 #: ../src/main_window.c:334
-#, fuzzy
 msgid "_Add _folders"
-msgstr "Dosyalar ekleniyor"
+msgstr "Dizin _ekle"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -220,14 +218,12 @@ msgid "_Help"
 msgstr "_Yardım"
 
 #: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
 msgid "Add files"
-msgstr "Dosyalar ekleniyor"
+msgstr "Dosya ekle"
 
 #: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
 msgid "Add folders"
-msgstr "Dosyalar ekleniyor"
+msgstr "Dizin ekle"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -238,12 +234,11 @@ msgid "Open archive"
 msgstr "Arşivi aç"
 
 #: ../src/main_window.c:916
-#, fuzzy
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze bu arşiv türüne dosya ekleyemiyor,\n"
+"Squeeze bu arşiv türüne dizin ekleyemiyor,\n"
 "bunu destekleyen uygulama kayıp."
 
 #: ../src/main_window.c:937
@@ -296,8 +291,7 @@ msgstr ""
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
-"Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
+msgstr "Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
@@ -311,8 +305,7 @@ msgstr "Tamamlandı"
 
 #: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr ""
-"Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
+msgstr "Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
 
 #: ../src/main_window.c:1219
 msgid "Open"
@@ -375,95 +368,3 @@ msgstr "Konum:"
 msgid "Archive manager"
 msgstr "Arşiv yöneticisi"
 
-#~ msgid "Compressing"
-#~ msgstr "Sıkıştırılıyor"
-
-#~ msgid "Decompressing"
-#~ msgstr "Sıkıştırma Açılıyor"
-
-#~ msgid "Refresh"
-#~ msgstr "Yenile"
-
-#~ msgid "Rights"
-#~ msgstr "Haklar"
-
-#~ msgid "Owner/Group"
-#~ msgstr "Sahibi/Grubu"
-
-#~ msgid "Size"
-#~ msgstr "Büyüklük"
-
-#~ msgid "Date"
-#~ msgstr "Tarih"
-
-#~ msgid "Time"
-#~ msgstr "Zaman"
-
-#~ msgid "Removing files"
-#~ msgstr "Dosyalar kaldırılıyor"
-
-#~ msgid "Removing"
-#~ msgstr "Kaldırılıyor"
-
-#~ msgid "Extracting"
-#~ msgstr "Açılıyor"
-
-#~ msgid "Compressed"
-#~ msgstr "Sıkıştırıldı"
-
-#~ msgid "Ratio"
-#~ msgstr "Oran"
-
-#~ msgid "Method"
-#~ msgstr "Metod"
-
-#~ msgid "Version"
-#~ msgstr "Sürüm"
-
-#~ msgid "Adding"
-#~ msgstr "Ekleniyor"
-
-#~ msgid "Execute"
-#~ msgstr "Çalıştır"
-
-#~ msgid "Command exited with status %d."
-#~ msgstr "Komut %d durumu ile sonlandı"
-
-#~ msgid "Command interrupted by user"
-#~ msgstr "Komut kullanıcı tarafından kesildi"
-
-#~ msgid "Command received SIGSEGV"
-#~ msgstr "Komut SIGSEGV sinyali aldı"
-
-#~ msgid "Command Terminated"
-#~ msgstr "Komut Tamamlandı"
-
-#~ msgid "Files and directories to add"
-#~ msgstr "Eklemek için dosya ve dizinler"
-
-#~ msgid "Options:"
-#~ msgstr "Seçenekler:"
-
-#~ msgid "Files"
-#~ msgstr "Dosyalar"
-
-#~ msgid "Directories"
-#~ msgstr "Dizinler"
-
-#~ msgid "Add file(s) to archive"
-#~ msgstr "Arşive dosya ekle"
-
-#~ msgid "Select files"
-#~ msgstr "Dosya seç"
-
-#~ msgid "Select folders"
-#~ msgstr "Dizin seç"
-
-#~ msgid "_Add"
-#~ msgstr "E_kle"
-
-#~ msgid "Add"
-#~ msgstr "Ekle"
-
-#~ msgid "Xfce archive manager"
-#~ msgstr "Xfce arşiv yöneticisi"
