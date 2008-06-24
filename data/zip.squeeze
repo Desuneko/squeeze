@@ -15,7 +15,7 @@ X-Squeeze-Remove=zip
 [Squeeze-Remove]
 [Squeeze-Extract]
 # Tar does not support passwords, this is just for illustrative purposes
-X-Squeeze-Options=Password;Overwrite
+X-Squeeze-Options=Password;Overwrite;w00t
 
 [Squeeze-Refresh]
 X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
