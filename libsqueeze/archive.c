@@ -31,7 +31,7 @@
 
 #include "slist.h"
 #include "archive-tempfs.h"
-
+#include "command-queue.h"
 
 #include "internals.h"
 

@@ -99,7 +99,7 @@ static LSQParserContext *lsq_scanf_parser_context_new(LSQScanfParser *parser, LS
 	ctx = g_object_new(lsq_scanf_parser_context_get_type(), "archive", archive, NULL);
   guint n_props = lsq_parser_n_properties(LSQ_PARSER(parser));
   ctx->data_store = g_new0(union _data_store, n_props);
-  ctx->props_store = g_new0(gpointer, n_props);
+  ctx->props_store = g_new0(gpointer, n_props+1);
 
   return LSQ_PARSER_CONTEXT(ctx);
 }
@@ -170,16 +170,24 @@ guint skip_qword(gchar *str, guint lng, parse_part *part, LSQScanfParserContext 
 guint skip_char(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx)
 {
   const gchar *ptr;
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter)
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim)
     return 1;
 
   //for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-  ptr = g_strstr_len(str, lng, part->delimiter);
+  ptr = g_strstr_len(str, lng, delim);
+
+  if(!ptr)
+    return 0;
   
   return ptr - str;
 }
@@ -190,11 +198,16 @@ guint skip_decimal(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
 #ifdef DO_EXSTENSIVE_CHECKING
   gchar *ptr2;
 #endif
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
   {
     g_ascii_strtoll(str, &ptr, 10);
     return ptr - str;
@@ -202,7 +215,10 @@ guint skip_decimal(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
 
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-  ptr = g_strstr_len(ptr, lng, part->delimiter);
+  ptr = g_strstr_len(ptr, lng, delim);
+
+  if(!ptr)
+    return 0;
 #ifdef DO_EXSTENSIVE_CHECKING
   g_ascii_strtoll(str, &ptr2, 10);
   if(ptr > ptr2)
@@ -218,11 +234,16 @@ guint skip_floatingpoint(gchar *str, guint lng, parse_part *part, LSQScanfParser
 #ifdef DO_EXSTENSIVE_CHECKING
   gchar *ptr2;
 #endif
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
   {
     g_ascii_strtod(str, &ptr);
     return ptr - str;
@@ -230,7 +251,10 @@ guint skip_floatingpoint(gchar *str, guint lng, parse_part *part, LSQScanfParser
 
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-  ptr = g_strstr_len(ptr, lng, part->delimiter);
+  ptr = g_strstr_len(ptr, lng, delim);
+
+  if(!ptr)
+    return 0;
 #ifdef DO_EXSTENSIVE_CHECKING
   g_ascii_strtod(str, &ptr2);
   if(ptr > ptr2)
@@ -246,11 +270,16 @@ guint skip_octal(gchar *str, guint lng, parse_part *part, LSQScanfParserContext 
 #ifdef DO_EXSTENSIVE_CHECKING
   gchar *ptr2;
 #endif
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
   {
     g_ascii_strtoll(str, &ptr, 010);
     return ptr - str;
@@ -258,7 +287,10 @@ guint skip_octal(gchar *str, guint lng, parse_part *part, LSQScanfParserContext 
 
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-  ptr = g_strstr_len(ptr, lng, part->delimiter);
+  ptr = g_strstr_len(ptr, lng, delim);
+
+  if(!ptr)
+    return 0;
 #ifdef DO_EXSTENSIVE_CHECKING
   g_ascii_strtoll(str, &ptr2, 010);
   if(ptr > ptr2)
@@ -271,16 +303,24 @@ guint skip_octal(gchar *str, guint lng, parse_part *part, LSQScanfParserContext 
 guint skip_string(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx)
 {
   gchar *ptr;
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
     return 0;
 
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-  ptr = g_strstr_len(ptr, lng, part->delimiter);
+  ptr = g_strstr_len(ptr, lng, delim);
+
+  if(!ptr)
+    return 0;
   
   return ptr - str;
 }
@@ -291,17 +331,25 @@ guint skip_unsigned(gchar *str, guint lng, parse_part *part, LSQScanfParserConte
 #ifdef DO_EXSTENSIVE_CHECKING
   gchar *ptr2;
 #endif
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
   {
     g_ascii_strtoull(str, &ptr, 10);
     return ptr - str;
   }
 
-  ptr = g_strstr_len(str, lng, part->delimiter);
+  ptr = g_strstr_len(str, lng, delim);
+
+  if(!ptr)
+    return 0;
 #ifdef DO_EXSTENSIVE_CHECKING
   g_ascii_strtoull(str, &ptr2, 10);
   if(ptr > ptr2)
@@ -317,17 +365,25 @@ guint skip_hexadecimal(gchar *str, guint lng, parse_part *part, LSQScanfParserCo
 #ifdef DO_EXSTENSIVE_CHECKING
   gchar *ptr2;
 #endif
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
   {
     g_ascii_strtoll(str, &ptr, 0x10);
     return ptr - str;
   }
 
-  ptr = g_strstr_len(str, lng, part->delimiter);
+  ptr = g_strstr_len(str, lng, delim);
+
+  if(!ptr)
+    return 0;
 #ifdef DO_EXSTENSIVE_CHECKING
   g_ascii_strtoll(str, &ptr2, 0x10);
   if(ptr > ptr2)
@@ -357,16 +413,20 @@ guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
   gchar *ptr2;  \
   type  val;  \
   ptype *pval;  \
+  const gchar *delim; \
   if(!lng) return 0;  \
+  delim = part->delimiter; \
+  if(!delim && !part->next) delim = "\n"; \
   pval = &ctx->data_store[part->index].pname; \
   ctx->props_store[part->index] = pval; \
-  if(!part->delimiter[0]) { \
+  if(!delim[0]) { \
     val = g_ascii_strtoll(str, &ptr, base); \
-  *pval = val;  \
+    *pval = val;  \
     return ptr - str; \
   } \
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);   \
-  ptr = g_strstr_len(ptr, lng, part->delimiter);  \
+  ptr = g_strstr_len(ptr, lng, delim);  \
+  if(!ptr) return 0; \
   val = g_ascii_strtoll(str, &ptr2, base);  \
   *pval = val;  \
   if(ptr > ptr2) return 0;  \
@@ -379,16 +439,20 @@ guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
   gchar *ptr2;  \
   type  val;  \
   type  *pval;  \
+  const gchar *delim; \
   if(!lng) return 0;  \
+  delim = part->delimiter; \
+  if(!delim && !part->next) delim = "\n"; \
   pval = &ctx->data_store[part->index].pname; \
   ctx->props_store[part->index] = pval; \
-  if(!part->delimiter[0]) { \
+  if(!delim[0]) { \
     val = g_ascii_strtod(str, &ptr);  \
-  *pval = val;  \
+    *pval = val;  \
     return ptr - str; \
   } \
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);   \
-  ptr = g_strstr_len(ptr, lng, part->delimiter);  \
+  ptr = g_strstr_len(ptr, lng, delim);  \
+  if(!ptr) return 0; \
   val = g_ascii_strtod(str, &ptr2); \
   *pval = val;  \
   if(ptr > ptr2) return 0;  \
@@ -401,16 +465,20 @@ guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
   gchar *ptr2;  \
   type  val;  \
   ptype *pval;  \
+  const gchar *delim; \
   if(!lng) return 0;  \
+  delim = part->delimiter; \
+  if(!delim && !part->next) delim = "\n"; \
   pval = &ctx->data_store[part->index].pname; \
   ctx->props_store[part->index] = pval; \
-  if(!part->delimiter[0]) { \
+  if(!delim[0]) { \
     val = g_ascii_strtoull(str, &ptr, base); \
-  *pval = val;  \
+    *pval = val;  \
     return ptr - str; \
   } \
   for(ptr = str; g_ascii_isspace(*ptr); ptr++);   \
-  ptr = g_strstr_len(ptr, lng, part->delimiter);  \
+  ptr = g_strstr_len(ptr, lng, delim);  \
+  if(!ptr) return 0; \
   val = g_ascii_strtoull(str, &ptr2, base);  \
   *pval = val;  \
   if(ptr > ptr2) return 0;  \
@@ -427,23 +495,31 @@ guint parse_char(gchar *str, guint lng, parse_part *part, LSQScanfParserContext 
   const gchar *ptr;
   gchar val;
   gchar *pval;
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
   pval = &ctx->data_store[part->index].c;
   ctx->props_store[part->index] = pval;
 
-  if(!part->delimiter[0])
+  if(!delim[0])
   {
-  val = *str;
-  *pval = val;
+    val = *str;
+    *pval = val;
     return 1;
   }
 
   //for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-  ptr = g_strstr_len(str, lng, part->delimiter);
+  ptr = g_strstr_len(str, lng, delim);
+
+  if(!ptr)
+    return 0;
 
   //FIXME?
   val = *(ptr-1);
@@ -469,18 +545,26 @@ guint parse_string(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
 {
   gchar *ptr;
   gchar *cur;
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter[0])
+  delim = part->delimiter;
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
     return 0;
 
   for(cur = str; g_ascii_isspace(*cur); cur++);
 
-  ptr = g_strstr_len(cur, lng, part->delimiter);
+  ptr = g_strstr_len(cur, lng, delim);
 
-  ctx->props_store[part->index] = g_strndup(cur, ptr-cur);
+  if(!ptr)
+    return 0;
+
+  g_debug("string: %s", (gchar*)(ctx->props_store[part->index] = g_strndup(cur, ptr-cur)));
 
   return ptr - str;
 }
@@ -498,14 +582,23 @@ DEF_PARSE_UNS(hexadecimal64, 0x10, guint64, guint64, ull)
 guint parse_filename(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx)
 {
   gchar *ptr;
+  const gchar *delim;
 
   if(!lng)
     return 0;
 
-  if(!part->delimiter)
-    return 1;
+  delim = part->delimiter;
 
-  ptr = g_strstr_len(str, lng, part->delimiter);
+  if(!delim && !part->next)
+    delim = "\n";
+
+  if(!delim[0])
+    return 0;
+
+  ptr = g_strstr_len(str, lng, delim);
+
+  if(!ptr)
+    return 0;
 
   ctx->filename = g_strndup(str, ptr-str);
 
@@ -1030,14 +1123,22 @@ static void lsq_scanf_parser_parse(LSQScanfParser *parser, LSQScanfParserContext
   gchar *line, *ptr;
   gsize line_length, lng;
   guint size, line_nr;
+  parse_part *part;
   if(!lsq_parser_context_get_line(LSQ_PARSER_CONTEXT(ctx), &line, &line_length))
     return;
+
 
   ptr = line;
   lng = line_length;
   line_nr = ctx->parse_line;
+  part = ctx->parse_loc;
 
-  parse_part *part = ctx->parse_loc;
+  if(!part)
+  {
+    ctx->parse_loc = part = parser->parser;
+    ctx->parse_line = line_nr = 0;
+  }
+
   while(part)
   {
     //parse
@@ -1066,37 +1167,43 @@ static void lsq_scanf_parser_parse(LSQScanfParser *parser, LSQScanfParserContext
 
     if(part->delimiter)
     {
-        if(!g_str_has_prefix(ptr, part->delimiter))
+      if(!g_str_has_prefix(ptr, part->delimiter))
+      {
+        //no match
+        if(line_nr)
         {
-          //no match
-          if(line_nr)
-          {
-            ptr = line;
-            lng = line_length;
-            part = parser->parser;
-            line_nr = 0;
-            continue;
-          }
-          ctx->parse_loc = parser->parser;
-          ctx->parse_line = 0;
-          g_free(line);
-          return;
+          ptr = line;
+          lng = line_length;
+          part = parser->parser;
+          line_nr = 0;
+          continue;
         }
+        ctx->parse_loc = parser->parser;
+        ctx->parse_line = 0;
+        g_free(line);
+        return;
+      }
+
+      size = strlen(part->delimiter);
+      if(size > lng)
+        size = lng;
+      ptr += size;
+      lng -= size;
     }
 
     if(part->delimiter)
     {
-        if(g_str_has_suffix(part->delimiter, "\n"))
+      if(g_str_has_suffix(part->delimiter, "\n"))
+      {
+        //next line
+        if(part->next)
         {
-          //next line
-          if(part->next)
-          {
-            ctx->parse_loc = part->next;
-            ctx->parse_line = line_nr+1;
-            g_free(line);
-            return;
-          }
+          ctx->parse_loc = part->next;
+          ctx->parse_line = line_nr+1;
+          g_free(line);
+          return;
         }
+      }
     }
     
     part = part->next;
@@ -1106,6 +1213,7 @@ static void lsq_scanf_parser_parse(LSQScanfParser *parser, LSQScanfParserContext
 
   if(!part)
   {
+    g_debug("file: %s", ctx->filename);
     LSQArchiveIter *iter = lsq_archive_add_file(LSQ_PARSER_CONTEXT(ctx)->archive, ctx->filename);
     lsq_archive_iter_set_propsv(iter, ctx->props_store);
     lsq_archive_iter_unref(iter);

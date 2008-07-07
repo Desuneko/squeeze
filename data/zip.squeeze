@@ -2,14 +2,24 @@
 Name=Zip
 Version=1.0
 Type=X-Squeeze-Archiver
-MimeType=application/x-zip
+MimeType=application/zip;application/x-zip
 X-Squeeze-Version=0.3
 
-[application/x-zip]
-X-Squeeze-Requires=zip
+[application/zip]
+X-Squeeze-Requires=zip;unzip
 X-Squeeze-New=zip
 X-Squeeze-Add=zip
 X-Squeeze-Remove=zip
+X-Squeeze-Extract=zip
+X-Squeeze-Refresh=unzip -lv -qq %a
+
+[application/x-zip]
+X-Squeeze-Requires=zip;unzip
+X-Squeeze-New=zip
+X-Squeeze-Add=zip
+X-Squeeze-Remove=zip
+X-Squeeze-Extract=zip
+X-Squeeze-Refresh=unzip -lv -qq %a
 
 [Squeeze-Add]
 [Squeeze-Remove]
@@ -18,12 +28,12 @@ X-Squeeze-Remove=zip
 X-Squeeze-Options=Password;Overwrite;w00t
 
 [Squeeze-Refresh]
-X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time;Name
+X-Squeeze-Headers=Size;Method;Compressed;Ratio;Date;Time;CRC-32
 # Tar does not support passwords, this is just for illustrative purposes
 X-Squeeze-Options=Password
 
 # I wonder if this will be enough...
-X-Squeeze-Parse=%s %s %u %s %s %F
+X-Squeeze-Parse=%u %s %u %s %s %s %s  %F
 X-Squeeze-Separator=space
 
 [Squeeze-Option-Password]

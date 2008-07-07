@@ -18,6 +18,7 @@
 #include <glib.h>
 #include <glib-object.h> 
 #include <signal.h>
+#include <string.h>
 
 #include <thunar-vfs/thunar-vfs.h>
 #include "libsqueeze.h"
@@ -63,6 +64,8 @@ struct _LSQExecuteContext
     LSQ_EXEC_CTX_STATE_PARSING = 1<<1
   } state;
 };
+
+static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *ctx);
 
 static void build_queue(LSQCommandQueue *queue, const gchar *command_string);
 
@@ -174,8 +177,6 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
   return argv;
 }
 
-static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *ctx);
-
 static void child_exit(GPid pid, gint status, LSQExecuteContext *ctx)
 {
   g_spawn_close_pid(pid);
@@ -251,7 +252,9 @@ static gboolean
 parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
 {
   if(condition & G_IO_IN)
-    lsq_parser_parse(ctx->parser, ctx->ctx);
+    do {
+      lsq_parser_parse(ctx->parser, ctx->ctx);
+    } while(lsq_parser_context_read_again(ctx->ctx));
   if(condition & G_IO_HUP || !lsq_parser_context_is_good(ctx->ctx))
   {
     lsq_parser_context_set_channel(ctx->ctx, NULL);
@@ -271,11 +274,12 @@ parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx
 
 static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *ctx)
 {
+  GError *error = NULL;
   gint fd_in = FALSE;
   gint fd_out = TRUE;
-  GIOChannel *redir_in;
+  GIOChannel *redir_in = NULL;
   GIOChannel *chan_in;
-  GIOChannel *redir_out;
+  //GIOChannel *redir_out;
   GIOChannel *chan_out;
   gchar **argv;
   GPid pid;
@@ -294,14 +298,30 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
   if(entry->redirect_in)
   {
     gchar *file = format_get_filename(entry->redirect_in, ctx);
-    redir_in = g_io_channel_new_file(file, "r", NULL);
+    //redir_in = g_io_channel_new_file(file, "r", NULL);
     g_free(file);
     fd_in = TRUE;
   }
 
   argv = lsq_command_entry_to_argv(entry, ctx);
 
-  g_spawn_async_with_pipes(NULL, argv, NULL, flags, NULL, NULL, &pid, fd_in?&fd_in:NULL, fd_out?&fd_out:NULL, NULL, NULL);
+  g_debug("command: %s", argv[0]);
+
+  gchar **argvi = argv;
+  while (argvi[1])
+  {
+    g_debug("arg: '%s'", argvi[1]);
+    argvi++;
+  }
+
+  if(!g_spawn_async_with_pipes(NULL, argv, NULL, flags, NULL, NULL, &pid, fd_in?&fd_in:NULL, fd_out?&fd_out:NULL, NULL, &error))
+  {
+    g_debug("spawn failed: %s", error->message);
+    g_error_free(error);
+    return;
+  }
+
+  g_strfreev(argv);
 
   g_child_watch_add(pid, (GChildWatchFunc)child_exit, ctx);
   ctx->state |= LSQ_EXEC_CTX_STATE_RUNNING;

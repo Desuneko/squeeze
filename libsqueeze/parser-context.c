@@ -116,3 +116,9 @@ lsq_parser_context_is_good(LSQParserContext *ctx)
   return ctx->last_stat == G_IO_STATUS_NORMAL || ctx->last_stat == G_IO_STATUS_AGAIN;
 }
 
+gboolean
+lsq_parser_context_read_again(LSQParserContext *ctx)
+{
+  return ctx->last_stat == G_IO_STATUS_NORMAL;
+}
+

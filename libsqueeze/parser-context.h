@@ -63,6 +63,12 @@ LSQParserContext *lsq_parser_context_new	  (LSQArchive *archive);
 
 gboolean		  lsq_parser_context_get_line (LSQParserContext *, gchar **, gsize *);
 
+gboolean      lsq_parser_context_is_good  (LSQParserContext *);
+
+gboolean      lsq_parser_context_read_again(LSQParserContext *);
+
+void          lsq_parser_context_set_channel(LSQParserContext *, GIOChannel *);
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_PARSER_CONTEXT_H__ */

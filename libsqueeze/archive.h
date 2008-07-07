@@ -116,6 +116,9 @@ lsq_archive_get_state_msg(const LSQArchive *archive);
 LSQArchiveState
 lsq_archive_get_state(const LSQArchive *archive);
 
+void
+lsq_archive_refreshed(const LSQArchive *archive);
+
 
 G_END_DECLS
 

@@ -1448,11 +1448,11 @@ lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, 
 				props_iter += sizeof(gchar *);
 				break;
 			case G_TYPE_UINT:
-				(*((guint *)props_iter)) = ((const guint)props[i]);
+				(*((guint *)props_iter)) = *((const guint *)props[i]);
 				props_iter += sizeof(guint);
 				break;
 			case G_TYPE_UINT64:
-				(*((guint64 *)props_iter)) = (*(const guint64 *)props[i]);
+				(*((guint64 *)props_iter)) = *((const guint64 *)props[i]);
 				props_iter += sizeof(guint64);
 				break;
 		}
