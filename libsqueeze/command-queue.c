@@ -187,14 +187,12 @@ static void child_exit(GPid pid, gint status, LSQExecuteContext *ctx)
       lsq_command_entry_start(ctx->queue, ctx);
     else
     {
-        /* HACK */
-      lsq_archive_refreshed(ctx->archive);
+        //...ERROR | DONE//
     }
   }
   else
   {
-        /* HACK */
-      lsq_archive_refreshed(ctx->archive);
+        //...ERROR | DONE//
   }
 }
 
@@ -245,6 +243,7 @@ static void out_channel(GIOChannel *source, GIOCondition condition, LSQExecuteCo
       //else
         //...//done
     }
+    lsq_archive_refreshed(ctx->archive);
   }
 }
 
@@ -267,6 +266,7 @@ parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx
       //else
         //...//done
     }
+    lsq_archive_refreshed(ctx->archive);
     return FALSE;
   }
   return TRUE;
