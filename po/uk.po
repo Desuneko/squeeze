@@ -1,16 +1,16 @@
-# Ukrainian translation of the squeeze package.
+# Ukrainian translation of squeeze.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 #
-# Dmitry Nikitin <luckas_fb@mail.ru>, 2007.
+# Dmitry Nikitin <luckas_fb@mail.ru>, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: squeeze 0.2.0\n"
+"Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-06-19 16:36+0300\n"
+"POT-Creation-Date: 2008-07-09 12:17+0000\n"
+"PO-Revision-Date: 2008-06-30 18:15+0300\n"
 "Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
-"Language-Team: Ukrainian <xfce-i18n@xfce.org>\n"
+"Language-Team: Ukrainian <xfce4-dev@xfce.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../libsqueeze/archive.c:236
+#: ../libsqueeze/archive.c:259
 msgid "Name"
 msgstr "Назва"
 
-#: ../libsqueeze/archive.c:238
+#: ../libsqueeze/archive.c:261
 msgid "Mime type"
 msgstr "Тип mime"
 
@@ -42,32 +42,32 @@ msgstr "Менеджер архівів Squeeze"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:157 ../src/application.c:246
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Неможливо відкрити архів, тип MIME не підтримується або файл не існує"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:187 ../src/main_window.c:830 ../src/main_window.c:1264
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 "Squeeze не може встановити тип архіву,\n"
-"відсутня програма для пітримки цього архіву."
+"відсутня програма для підтримки цього архіву."
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:229
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Неможливо створити архів, тип MIME не підтримується"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:263 ../src/main_window.c:878
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 "Squeeze не може додати файли до архіву,\n"
-"відсутня програма для пітримки цього типу архіву."
+"відсутня програма для підтримки цього типу архіву."
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
@@ -122,8 +122,8 @@ msgstr "Всі файли"
 msgid "Selected files"
 msgstr "Вибрані файли"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
-#: ../src/main_window.c:1219
+#: ../src/extract_dialog.c:100 ../src/main_window.c:455
+#: ../src/main_window.c:1223
 msgid "Extract"
 msgstr "Розпакувати"
 
@@ -165,19 +165,19 @@ msgstr ""
 msgid "Internal Style"
 msgstr "Вбудований стиль"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:135
 msgid "Tool Bar Style"
 msgstr "Стиль Панелі інструментів"
 
-#: ../src/main_window.c:135
+#: ../src/main_window.c:138
 msgid "Path Bar Style"
 msgstr "Стиль Панелі шляху"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:186
 msgid "Navigation Style"
 msgstr "Стиль Навігації"
 
-#: ../src/main_window.c:183
+#: ../src/main_window.c:187
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -186,138 +186,132 @@ msgstr ""
 "Стиль навігації всередині архіву"
 
 #. File menu
-#: ../src/main_window.c:295
+#: ../src/main_window.c:299
 msgid "_File"
 msgstr "_Файл"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:323
+#: ../src/main_window.c:327
 msgid "_Action"
 msgstr "Д_ії"
 
-#: ../src/main_window.c:328
-#, fuzzy
+#: ../src/main_window.c:332
 msgid "_Add files"
-msgstr "Додавання файлів"
+msgstr "_Додати файли"
 
-#: ../src/main_window.c:334
-#, fuzzy
+#: ../src/main_window.c:338
 msgid "_Add _folders"
-msgstr "Додавання файлів"
+msgstr "Додати _теки"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:344
 msgid "_Extract"
 msgstr "_Розпакувати"
 
 #. View menu
-#: ../src/main_window.c:373
+#: ../src/main_window.c:377
 msgid "_View"
 msgstr "_Переглянути"
 
 #. Help menu
-#: ../src/main_window.c:397
+#: ../src/main_window.c:401
 msgid "_Help"
 msgstr "Д_овідка"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
+#: ../src/main_window.c:447 ../src/main_window.c:856
 msgid "Add files"
-msgstr "Додавання файлів"
+msgstr "Додати файли"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
+#: ../src/main_window.c:451 ../src/main_window.c:898
 msgid "Add folders"
-msgstr "Додавання файлів"
+msgstr "Додати теки"
 
-#: ../src/main_window.c:724
+#: ../src/main_window.c:728
 msgid "Open archive in new window"
 msgstr "Відкрити архів у новому вікні"
 
-#: ../src/main_window.c:730
+#: ../src/main_window.c:734
 msgid "Open archive"
 msgstr "Відкрити архів"
 
-#: ../src/main_window.c:916
-#, fuzzy
+#: ../src/main_window.c:920
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze не може додати файли до архіву,\n"
-"відсутня програма для пітримки цього типу архіву."
+"Squeeze не може додати теки до архіву,\n"
+"відсутня програма для підтримки цього типу архіву."
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:941
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Ви впевнені, що бажаєте видалити вибрані файли?"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:954
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
 "Squeeze не може видалити файли з цього архіву,\n"
-"відсутня програма для пітримки цього архіву."
+"відсутня програма для підтримки цього архіву."
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1003
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
-"Ви впевнені, що бажаєте відмінити цю дію?\n"
+"Ви впевнені, що бажаєте скасувати цю дію?\n"
 "Це може пошкодити архів."
 
-#: ../src/main_window.c:1081
+#: ../src/main_window.c:1085
 msgid "Lead developer:"
 msgstr "Головний розробник:"
 
-#: ../src/main_window.c:1084
+#: ../src/main_window.c:1088
 msgid "Contributors:"
 msgstr "Помічники:"
 
-#: ../src/main_window.c:1087
+#: ../src/main_window.c:1091
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Навіяно Xarchiver-ом, написаним Giuseppe Torelli"
 
-#: ../src/main_window.c:1089
+#: ../src/main_window.c:1093
 msgid "Application Icon:"
 msgstr "Значок програми:"
 
-#: ../src/main_window.c:1092
+#: ../src/main_window.c:1096
 msgid "Add / Extract icons:"
 msgstr "Значки додавання / розпакування:"
 
-#: ../src/main_window.c:1093
+#: ../src/main_window.c:1097
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 "Базується на оригінальному значку розпакування створеному Andreas Nilsson"
 
-#: ../src/main_window.c:1100
+#: ../src/main_window.c:1104
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
-"Squeeze є легковісним і гнучким менеджером архівів для робочого середовища "
-"Xfce"
+"Squeeze є легким та гнучким менеджером архівів для робочого середовища Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1108
+#: ../src/main_window.c:1112
 msgid "translator-credits"
 msgstr "Dmitry Nikitin <luckas_fb@mail.ru>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
-#: ../src/main_window.c:1376
+#: ../src/main_window.c:1141 ../src/main_window.c:1212
+#: ../src/main_window.c:1366
 msgid "Done"
 msgstr "Завершено"
 
-#: ../src/main_window.c:1218
+#: ../src/main_window.c:1222
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Яку дію ви хочете застосувати до вибраних файлів?"
 
-#: ../src/main_window.c:1219
+#: ../src/main_window.c:1223
 msgid "Open"
 msgstr "Відкрити"
 
-#: ../src/main_window.c:1233
+#: ../src/main_window.c:1237
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -325,11 +319,11 @@ msgstr ""
 "Squeeze не може переглянути цей файл.\n"
 "відсутня програма для підтримки цього файлу."
 
-#: ../src/main_window.c:1301
+#: ../src/main_window.c:1304
 msgid "Failed to open file"
 msgstr "Не вдалось відкрити файл"
 
-#: ../src/main_window.c:1302
+#: ../src/main_window.c:1305
 #, c-format
 msgid ""
 "'%s'\n"
@@ -373,96 +367,3 @@ msgstr "Місцезнаходження:"
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "Менеджер архівів"
-
-#~ msgid "Compressing"
-#~ msgstr "Стиснення"
-
-#~ msgid "Decompressing"
-#~ msgstr "Розпакування"
-
-#~ msgid "Refresh"
-#~ msgstr "Поновлення"
-
-#~ msgid "Rights"
-#~ msgstr "Права"
-
-#~ msgid "Owner/Group"
-#~ msgstr "Власник/Група"
-
-#~ msgid "Size"
-#~ msgstr "Розмір"
-
-#~ msgid "Date"
-#~ msgstr "Дата"
-
-#~ msgid "Time"
-#~ msgstr "Час"
-
-#~ msgid "Cleanup"
-#~ msgstr "Очистка"
-
-#~ msgid "Removing files"
-#~ msgstr "Видалення файлів"
-
-#~ msgid "Removing"
-#~ msgstr "Видалення"
-
-#~ msgid "Extracting"
-#~ msgstr "Розпакування"
-
-#~ msgid "Compressed"
-#~ msgstr "Стиснутий"
-
-#~ msgid "Ratio"
-#~ msgstr "Коефіцієнт"
-
-#~ msgid "Method"
-#~ msgstr "Метод"
-
-#~ msgid "Version"
-#~ msgstr "Версія"
-
-#~ msgid "Adding"
-#~ msgstr "Додавання"
-
-#~ msgid "Execute"
-#~ msgstr "Виконуваний"
-
-#~ msgid "Command exited with status %d."
-#~ msgstr "Команда завершилась зі статусом %d."
-
-#~ msgid "Command interrupted by user"
-#~ msgstr "Команду перервано користувачем"
-
-#~ msgid "Command received SIGSEGV"
-#~ msgstr "Команда отримала SIGSEGV"
-
-#~ msgid "Command Terminated"
-#~ msgstr "Команду завершено"
-
-#~ msgid "Files and directories to add"
-#~ msgstr "Файли і теки, що додаються"
-
-#~ msgid "Options:"
-#~ msgstr "Параметри:"
-
-#~ msgid "Files"
-#~ msgstr "Файли"
-
-#~ msgid "Directories"
-#~ msgstr "Теки"
-
-#~ msgid "Add file(s) to archive"
-#~ msgstr "Додати файл (и) до архіву"
-
-#~ msgid "Select files"
-#~ msgstr "Вибрати файли"
-
-#~ msgid "Select folders"
-#~ msgstr "Вибрати теки"
-
-#~ msgid "_Add"
-#~ msgstr "_Додати"
-
-#~ msgid "Add"
-#~ msgstr "Додати"
