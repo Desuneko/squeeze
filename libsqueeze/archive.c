@@ -410,7 +410,7 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
  * Return value: TRUE on success
  */
 gboolean
-lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **files)
+lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **files, const gchar *directory)
 {
     g_return_val_if_fail(archive, FALSE);
 
@@ -419,16 +419,16 @@ lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **file
     switch (type)
     {
         case LSQ_COMMAND_TYPE_ADD:
-            lsq_command_queue_execute(s_template->add_cmd_queue, archive, files, s_template->parser);
+            lsq_command_queue_execute(s_template->add_cmd_queue, archive, files, NULL, NULL);
             break;
         case LSQ_COMMAND_TYPE_REMOVE:
-            lsq_command_queue_execute(s_template->remove_cmd_queue, archive, files, s_template->parser);
+            lsq_command_queue_execute(s_template->remove_cmd_queue, archive, files, NULL, NULL);
             break;
         case LSQ_COMMAND_TYPE_EXTRACT:
-            lsq_command_queue_execute(s_template->extract_cmd_queue, archive, files, s_template->parser);
+            lsq_command_queue_execute(s_template->extract_cmd_queue, archive, files, directory, NULL);
             break;
         case LSQ_COMMAND_TYPE_REFRESH:
-            lsq_command_queue_execute(s_template->refresh_cmd_queue, archive, files, s_template->parser);
+            lsq_command_queue_execute(s_template->refresh_cmd_queue, archive, files, NULL, s_template->parser);
             break;
         default:
             return FALSE;

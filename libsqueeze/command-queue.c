@@ -57,8 +57,10 @@ struct _LSQExecuteContext
   LSQParser *parser;
   LSQArchive *archive;
   gchar **files;
+  gchar *directory;
   gchar *tempfile;
   LSQParserContext *ctx;
+  GIOChannel *redir_out;
   enum {
     LSQ_EXEC_CTX_STATE_RUNNING = 1<<0,
     LSQ_EXEC_CTX_STATE_PARSING = 1<<1
@@ -132,7 +134,8 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
   {
     if(0==strcmp((const gchar*)iter->data, "%F"))
     {
-      size += g_strv_length(ctx->files);
+      if(ctx->files)
+        size += g_strv_length(ctx->files);
     }
     else
       size++;
@@ -152,9 +155,12 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
       switch(arg[1])
       {
         case 'F':
-          for(filei = ctx->files; *filei; filei++)
+          if(ctx->files)
           {
-            *argi++ = g_strdup(*filei);
+            for(filei = ctx->files; *filei; filei++)
+            {
+              *argi++ = g_strdup(*filei);
+            }
           }
           break;
         case 'a':
@@ -162,6 +168,9 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
           break;
         case 't':
           *argi++ = g_strdup(lsq_execute_context_get_temp_file(ctx));
+          break;
+        case 'd':
+          *argi++ = g_strdup(ctx->directory);
           break;
         default:
           //...
@@ -220,21 +229,23 @@ static void in_channel(GIOChannel *source, GIOCondition condition, GIOChannel *d
 static void out_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
 {
 	GIOStatus stat = G_IO_STATUS_NORMAL;
+  GIOChannel *dest = ctx->redir_out;
   static gchar buffer[1024];
 
   if(condition & G_IO_IN)
   {
     gsize n;
     stat = g_io_channel_read_chars(source, buffer, 1024, &n, NULL);
-    //if(stat == G_IO_STATUS_NORMAL)
-      //g_io_channel_write_chars(dest, buffer, n, NULL, NULL);
+    if(stat == G_IO_STATUS_NORMAL)
+      g_io_channel_write_chars(dest, buffer, n, NULL, NULL);
   }
 
   if(condition & G_IO_HUP || (stat != G_IO_STATUS_NORMAL && stat != G_IO_STATUS_AGAIN))
   {
     g_io_channel_unref(source);
-    //g_io_channel_flush(dest);
-    //g_io_channel_unref(dest);
+    g_io_channel_flush(dest, NULL);
+    g_io_channel_unref(dest);
+    ctx->redir_out = NULL;
     ctx->state &= ~LSQ_EXEC_CTX_STATE_PARSING;
     if(!ctx->state)
     {
@@ -243,7 +254,6 @@ static void out_channel(GIOChannel *source, GIOCondition condition, LSQExecuteCo
       //else
         //...//done
     }
-    lsq_archive_refreshed(ctx->archive);
   }
 }
 
@@ -251,9 +261,12 @@ static gboolean
 parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx)
 {
   if(condition & G_IO_IN)
+  {
     do {
       lsq_parser_parse(ctx->parser, ctx->ctx);
     } while(lsq_parser_context_read_again(ctx->ctx));
+  }
+
   if(condition & G_IO_HUP || !lsq_parser_context_is_good(ctx->ctx))
   {
     lsq_parser_context_set_channel(ctx->ctx, NULL);
@@ -266,6 +279,7 @@ parse_channel(GIOChannel *source, GIOCondition condition, LSQExecuteContext *ctx
       //else
         //...//done
     }
+    //FIXME: this is not entirely the correct place, or is it?
     lsq_archive_refreshed(ctx->archive);
     return FALSE;
   }
@@ -279,7 +293,6 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
   gint fd_out = TRUE;
   GIOChannel *redir_in = NULL;
   GIOChannel *chan_in;
-  //GIOChannel *redir_out;
   GIOChannel *chan_out;
   gchar **argv;
   GPid pid;
@@ -287,7 +300,7 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
   if(entry->redirect_out)
   {
     gchar *file = format_get_filename(entry->redirect_out, ctx);
-    redir_in = g_io_channel_new_file(file, "w", NULL);
+    ctx->redir_out = g_io_channel_new_file(file, "w", NULL);
     g_free(file);
   }
   else if(!ctx->ctx)
@@ -298,7 +311,7 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
   if(entry->redirect_in)
   {
     gchar *file = format_get_filename(entry->redirect_in, ctx);
-    //redir_in = g_io_channel_new_file(file, "r", NULL);
+    redir_in = g_io_channel_new_file(file, "r", NULL);
     g_free(file);
     fd_in = TRUE;
   }
@@ -346,7 +359,7 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
   }
 }
 
-LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, LSQParser *parser)
+LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, const gchar *directory, LSQParser *parser)
 {
   LSQExecuteContext *ctx;
 
@@ -355,6 +368,7 @@ LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive 
   ctx->queue = queue->queue;
   ctx->archive = archive;
   ctx->files = g_strdupv((gchar**)files);
+  ctx->directory = g_strdup(directory);
   ctx->parser = parser;
   ctx->ctx = parser?lsq_parser_get_context(parser, archive):NULL;
 

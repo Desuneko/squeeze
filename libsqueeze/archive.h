@@ -108,7 +108,7 @@ gboolean			lsq_archive_remove_file(LSQArchive *, const gchar *);
 
 ThunarVfsPath	  *lsq_archive_get_path_info(LSQArchive *);
 
-gboolean		lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **);
+gboolean		lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **, const gchar *);
 
 const gchar	*
 lsq_archive_get_state_msg(const LSQArchive *archive);

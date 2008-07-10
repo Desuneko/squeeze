@@ -56,7 +56,7 @@ GType		   lsq_command_queue_get_type(void);
 
 LSQCommandQueue *lsq_command_queue_new(const gchar *command_string);
 
-LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, LSQParser *parser);
+LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, const gchar *direcotry, LSQParser *parser);
 
 
 G_END_DECLS
