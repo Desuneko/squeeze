@@ -363,8 +363,8 @@ cb_sq_tool_bar_home(GtkWidget *home_button, SQToolBar *tool_bar)
 static void
 cb_sq_tool_bar_refresh(GtkWidget *refresh_button, SQToolBar *tool_bar)
 {
-	//LSQArchive *archive = sq_archive_store_get_archive(SQ_NAVIGATION_BAR(tool_bar)->store);
-	//lsq_archive_full_refresh(archive);
+	LSQArchive *archive = sq_archive_store_get_archive(SQ_NAVIGATION_BAR(tool_bar)->store);
+	lsq_archive_operate(archive, LSQ_COMMAND_TYPE_REFRESH, NULL, NULL);
 }
 
 static void

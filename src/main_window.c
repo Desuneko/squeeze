@@ -806,6 +806,8 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 
 	LSQArchive		*lp_archive = NULL;
 
+  const gchar **strv;
+
 	GSList *filenames = sq_notebook_get_selected_items(SQ_NOTEBOOK(window->notebook));
 
 	sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
@@ -821,8 +823,10 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 			lsq_iter_slist_free(filenames);
 			filenames = NULL;
 		}
-		if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, NULL, extract_archive_path))
+    strv = lsq_iter_list_to_strv(filenames);
+		if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, strv, extract_archive_path))
 		{
+      g_free(strv);
 			GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 															   GTK_DIALOG_DESTROY_WITH_PARENT, 
 																												 GTK_MESSAGE_WARNING,
@@ -834,6 +838,8 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
 				gtk_widget_destroy(warning_dialog);
 			}
 		}
+    else
+      g_free(strv);
 		g_free(extract_archive_path);
 		extract_archive_path = NULL;
 	}
@@ -869,8 +875,10 @@ cb_sq_main_add_files_to_archive(GtkWidget *widget, gpointer userdata)
 		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 		if(filenames)
 		{
-			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, NULL, NULL))
+      const gchar **strv = lsq_iter_list_to_strv(filenames);
+			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, strv, NULL))
 			{
+        g_free(strv);
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																													 GTK_MESSAGE_WARNING,
@@ -879,6 +887,8 @@ cb_sq_main_add_files_to_archive(GtkWidget *widget, gpointer userdata)
 				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 				gtk_widget_destroy(warning_dialog);
 			}
+      else
+        g_free(strv);
 		}
 	}
 	gtk_widget_destroy (dialog);
@@ -911,8 +921,10 @@ cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata)
 		filenames = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
 		if(filenames)
 		{
-			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, NULL, NULL))
+      const gchar **strv = lsq_iter_list_to_strv(filenames);
+			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, strv, NULL))
 			{
+        g_free(strv);
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 									  GTK_DIALOG_DESTROY_WITH_PARENT, 
 									  GTK_MESSAGE_WARNING,
@@ -922,6 +934,8 @@ cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata)
 				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 				gtk_widget_destroy(warning_dialog);
 			}
+      else
+        g_free(strv);
 		}
 	}
 	gtk_widget_destroy (dialog);
@@ -934,6 +948,7 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 	LSQArchive		*lp_archive = NULL;
 	GtkWidget *dialog = NULL;
 	gint result = 0;
+  const gchar **strv;
 	GSList *filenames = sq_notebook_get_selected_items(SQ_NOTEBOOK(window->notebook));
 
 	if(filenames)
@@ -945,8 +960,10 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 			gtk_widget_hide(dialog);
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(window->notebook), &lp_archive);
 			/* gtk_tree_view_set_model(sq_notebook_get_active_tree_view(SQ_NOTEBOOK(window->notebook)), NULL); */
-			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_REMOVE, NULL, NULL))
+      strv = lsq_iter_list_to_strv(filenames);
+			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_REMOVE, strv, NULL))
 			{
+        g_free(strv);
 				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																													 GTK_MESSAGE_WARNING,
@@ -955,6 +972,8 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
 				gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 				gtk_widget_destroy(warning_dialog);
 			}
+      else
+        g_free(strv);
 		}
 		gtk_widget_destroy (dialog);
 
@@ -1227,12 +1246,15 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, LSQArchiveIter *
 	gint result = gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_hide(dialog);
 
-	GSList *files = g_slist_prepend(NULL, iter);
+	const gchar **strv = g_new(const gchar*, 2);
+  strv[0] = lsq_archive_iter_get_filename(iter);
+  strv[1] = NULL;
+
 	switch(result)
 	{
 		case GTK_RESPONSE_OK: /* VIEW */
 			sq_notebook_get_active_archive(SQ_NOTEBOOK(notebook), &lp_archive);
-			if(lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_OPEN, NULL, NULL))
+			if(lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_OPEN, strv, NULL))
 			{
 				GtkWidget *warning_dialog = gtk_message_dialog_new(window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE, _("Squeeze cannot view this file.\nthe application to support this is missing."));
 				if(warning_dialog)
@@ -1252,10 +1274,10 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, LSQArchiveIter *
 				extract_archive_path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(extr_dialog));
 				if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(SQ_EXTRACT_ARCHIVE_DIALOG(extr_dialog)->all_files_radio)))
 				{
-					g_slist_free(files);
-					files = NULL;
+					g_free(strv);
+					strv = NULL;
 				}
-				if(lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, NULL, extract_archive_path))
+				if(lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, strv, extract_archive_path))
 				{
 					GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																	 GTK_DIALOG_DESTROY_WITH_PARENT, 
@@ -1275,7 +1297,7 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, LSQArchiveIter *
 		case GTK_RESPONSE_CANCEL: /* CANCEL */
 			break;
 	}
-	g_slist_free(files);
+	g_free(strv);
 	gtk_widget_destroy(dialog);
 }
 

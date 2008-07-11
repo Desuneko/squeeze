@@ -80,6 +80,9 @@ lsq_get_supported_mime_types(LSQCommandType type);
 gboolean
 lsq_is_supported(const gchar *filename);
 
+const gchar **
+lsq_iter_list_to_strv(GSList *list);
+
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_H__ */

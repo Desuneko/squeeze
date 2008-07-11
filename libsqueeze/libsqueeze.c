@@ -140,3 +140,30 @@ lsq_get_supported_mime_types(LSQCommandType type)
 {
 	return NULL;
 }
+
+const gchar **
+lsq_iter_list_to_strv(GSList *list)
+{
+  guint i;
+
+  const gchar **strv;
+
+  if(!list)
+    return NULL;
+
+  strv = g_new(const gchar *, g_slist_length(list)+1);
+
+  i = 0;
+
+  while(list)
+  {
+    g_debug(list->data);
+    strv[i++] = lsq_archive_iter_get_filename(list->data);
+    list = g_slist_next(list);
+  }
+
+  strv[i] = NULL;
+
+  return strv;
+}
+
