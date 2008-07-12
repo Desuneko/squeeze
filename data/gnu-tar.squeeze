@@ -48,13 +48,17 @@ X-Squeeze-Refresh=tar -tvvf %a
 [Squeeze-Add]
 [Squeeze-Remove]
 [Squeeze-Extract]
+########################################################################
 # Tar does not support passwords, this is just for illustrative purposes
-X-Squeeze-Options=Password;Overwrite
+########################################################################
+# X-Squeeze-Options=Password;Overwrite
 
 [Squeeze-Refresh]
 X-Squeeze-Headers=Rights;Owner/Group;Size;Date;Time
+########################################################################
 # Tar does not support passwords, this is just for illustrative purposes
-X-Squeeze-Options=Password
+########################################################################
+# X-Squeeze-Options=Password
 
 # I wonder if this will be enough...
 X-Squeeze-Parse=%s %s %u %s %s %F

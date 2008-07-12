@@ -7,29 +7,25 @@ X-Squeeze-Version=0.3
 
 [application/zip]
 X-Squeeze-Requires=zip;unzip
-X-Squeeze-New=zip
-X-Squeeze-Add=zip
+X-Squeeze-Add=zip -r %a %F
 X-Squeeze-Remove=zip -d %a %F
-X-Squeeze-Extract=zip
+X-Squeeze-Extract=unzip %a %F
 X-Squeeze-Refresh=unzip -lv -qq %a
 
 [application/x-zip]
 X-Squeeze-Requires=zip;unzip
-X-Squeeze-New=zip
-X-Squeeze-Add=zip
-X-Squeeze-Remove=zip
-X-Squeeze-Extract=zip
+X-Squeeze-Add=zip -r %a %F
+X-Squeeze-Remove=zip -d %a %F
+X-Squeeze-Extract=unzip %a %F
 X-Squeeze-Refresh=unzip -lv -qq %a
 
 [Squeeze-Add]
 [Squeeze-Remove]
 [Squeeze-Extract]
-# Tar does not support passwords, this is just for illustrative purposes
-X-Squeeze-Options=Password;Overwrite;w00t
+X-Squeeze-Options=Password;Overwrite
 
 [Squeeze-Refresh]
 X-Squeeze-Headers=Size;Method;Compressed;Ratio;Date;Time;CRC-32
-# Tar does not support passwords, this is just for illustrative purposes
 X-Squeeze-Options=Password
 
 # I wonder if this will be enough...
