@@ -9,7 +9,7 @@ X-Squeeze-Version=0.3
 X-Squeeze-Requires=zip;unzip
 X-Squeeze-New=zip
 X-Squeeze-Add=zip
-X-Squeeze-Remove=zip
+X-Squeeze-Remove=zip -d %a %F
 X-Squeeze-Extract=zip
 X-Squeeze-Refresh=unzip -lv -qq %a
 
