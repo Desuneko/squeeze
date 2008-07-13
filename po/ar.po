@@ -270,9 +270,7 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 
 #: ../src/main_window.c:1100
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr ""
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
@@ -346,47 +344,47 @@ msgstr ""
 msgid "Archive manager"
 msgstr ""
 
-msgid "Compressing"
-msgstr "Стиснення"
+#~ msgid "Compressing"
+#~ msgstr "Стиснення"
 
-msgid "Decompressing"
-msgstr "Розпакування"
+#~ msgid "Decompressing"
+#~ msgstr "Розпакування"
 
-msgid "Refresh"
-msgstr "Поновлення"
+#~ msgid "Refresh"
+#~ msgstr "Поновлення"
 
-msgid "Rights"
-msgstr "Права"
+#~ msgid "Rights"
+#~ msgstr "Права"
 
-msgid "Cleanup"
-msgstr "Очистка"
+#~ msgid "Cleanup"
+#~ msgstr "Очистка"
 
-msgid "Removing files"
-msgstr "Видалення файлів"
+#~ msgid "Removing files"
+#~ msgstr "Видалення файлів"
 
-msgid "Removing"
-msgstr "Видалення"
+#~ msgid "Removing"
+#~ msgstr "Видалення"
 
-msgid "Extracting"
-msgstr "Розпакування"
+#~ msgid "Extracting"
+#~ msgstr "Розпакування"
 
-msgid "Compressed"
-msgstr "Стиснутий"
+#~ msgid "Compressed"
+#~ msgstr "Стиснутий"
 
-msgid "Adding"
-msgstr "Додавання"
+#~ msgid "Adding"
+#~ msgstr "Додавання"
 
-msgid "Execute"
-msgstr "Виконуваний"
+#~ msgid "Execute"
+#~ msgstr "Виконуваний"
 
-msgid "Command exited with status %d."
-msgstr "Команда завершилась зі статусом %d."
+#~ msgid "Command exited with status %d."
+#~ msgstr "Команда завершилась зі статусом %d."
 
-msgid "Command interrupted by user"
-msgstr "Команду перервано користувачем"
+#~ msgid "Command interrupted by user"
+#~ msgstr "Команду перервано користувачем"
 
-msgid "Command received SIGSEGV"
-msgstr "Команда отримала SIGSEGV"
+#~ msgid "Command received SIGSEGV"
+#~ msgstr "Команда отримала SIGSEGV"
 
-msgid "Command Terminated"
-msgstr "Команду завершено"
+#~ msgid "Command Terminated"
+#~ msgstr "Команду завершено"
