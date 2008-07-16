@@ -270,7 +270,9 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 
 #: ../src/main_window.c:1100
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
 msgstr ""
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
