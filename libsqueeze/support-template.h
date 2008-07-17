@@ -56,8 +56,11 @@ struct _LSQSupportTemplate
 
 	LSQCommandQueue *new_cmd_queue;
 	LSQCommandQueue *add_cmd_queue;
+  LSQCommandOption **add_options;
 	LSQCommandQueue *remove_cmd_queue;
+  LSQCommandOption **remove_options;
 	LSQCommandQueue *extract_cmd_queue;
+  LSQCommandOption **extract_options;
 	LSQCommandQueue *refresh_cmd_queue;
 	LSQSupportType   support_mask;
 };

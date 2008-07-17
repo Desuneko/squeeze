@@ -110,6 +110,9 @@ ThunarVfsPath	  *lsq_archive_get_path_info(LSQArchive *);
 
 gboolean		lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **, const gchar *);
 
+LSQCommandOptionPair **
+lsq_archive_get_command_options(LSQArchive *archive, LSQCommandType type);
+
 const gchar	*
 lsq_archive_get_state_msg(const LSQArchive *archive);
 

@@ -17,6 +17,7 @@
 #ifndef __LIBSQUEEZE_H__
 #define __LIBSQUEEZE_H__
 
+#include <libsqueeze/command-option.h>
 #include <libsqueeze/support-template.h>
 #include <libsqueeze/archive-iter-pool.h>
 #include <libsqueeze/archive.h>

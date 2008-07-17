@@ -437,3 +437,28 @@ lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **file
     return TRUE;
 }
 
+LSQCommandOptionPair **
+lsq_archive_get_command_options(LSQArchive *archive, LSQCommandType type)
+{
+    LSQCommandOptionPair **option_list = NULL;
+
+    LSQSupportTemplate *s_template = archive->priv->s_template;
+
+    switch (type)
+    {
+        case LSQ_COMMAND_TYPE_ADD:
+            option_list = lsq_command_option_create_pair(s_template->add_options);
+            break;
+        case LSQ_COMMAND_TYPE_REMOVE:
+            option_list = lsq_command_option_create_pair(s_template->remove_options);
+            break;
+        case LSQ_COMMAND_TYPE_EXTRACT:
+            option_list = lsq_command_option_create_pair(s_template->extract_options);
+            break;
+        default:
+            break;
+    }
+
+    return option_list;
+}
+

@@ -17,26 +17,6 @@
 #define __ARCHIVE_ITER_POOL_H__ 
 G_BEGIN_DECLS
 
-#define LSQ_TYPE_ARCHIVE lsq_archive_get_type()
-
-#define LSQ_ARCHIVE(obj)		 ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
-			LSQ_TYPE_ARCHIVE,	  \
-			LSQArchive))
-
-#define LSQ_IS_ARCHIVE(obj)	  ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
-			LSQ_TYPE_ARCHIVE))
-
-#define LSQ_ARCHIVE_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
-			LSQ_TYPE_ARCHIVE,	  \
-			LSQArchiveClass))
-
-#define LSQ_IS_ARCHIVE_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
-			LSQ_TYPE_ARCHIVE))
-
 typedef struct _LSQArchiveIter LSQArchiveIter;
 typedef struct _LSQArchiveEntry LSQArchiveEntry;
 typedef struct _LSQArchiveIterPool LSQArchiveIterPool;

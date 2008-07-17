@@ -141,6 +141,36 @@ lsq_support_reader_parse_file(const gchar *filename)
 
 	gchar **mime_types = xfce_rc_read_list_entry(rc, "MimeType", ";");
 
+	xfce_rc_set_group(rc, "Squeeze-Add");
+
+  LSQCommandOption **add_options = NULL;
+  gchar **option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
+  if(option_names)
+  {
+    add_options = lsq_command_option_create_list(rc, option_names);
+    g_strfreev(option_names);
+  }
+
+	xfce_rc_set_group(rc, "Squeeze-Remove");
+
+  LSQCommandOption **remove_options = NULL;
+  option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
+  if(option_names)
+  {
+    remove_options = lsq_command_option_create_list(rc, option_names);
+    g_strfreev(option_names);
+  }
+
+	xfce_rc_set_group(rc, "Squeeze-Extract");
+
+  LSQCommandOption **extract_options = NULL;
+  option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
+  if(option_names)
+  {
+    extract_options = lsq_command_option_create_list(rc, option_names);
+    g_strfreev(option_names);
+  }
+
 	xfce_rc_set_group(rc, "Squeeze-Refresh");
   gchar **column_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Headers", ";");
   LSQParser *parser = NULL;
@@ -193,13 +223,18 @@ lsq_support_reader_parse_file(const gchar *filename)
         if (new_str_queue)    
             s_template->new_cmd_queue     = lsq_command_queue_new(new_str_queue);
         if (add_str_queue)
-		    s_template->add_cmd_queue     = lsq_command_queue_new(add_str_queue);
+            s_template->add_cmd_queue     = lsq_command_queue_new(add_str_queue);
         if (remove_str_queue)
-		    s_template->remove_cmd_queue  = lsq_command_queue_new(remove_str_queue);
+            s_template->remove_cmd_queue  = lsq_command_queue_new(remove_str_queue);
         if (extract_str_queue)
-		    s_template->extract_cmd_queue = lsq_command_queue_new(extract_str_queue);
+            s_template->extract_cmd_queue = lsq_command_queue_new(extract_str_queue);
         if (refresh_str_queue)
-		    s_template->refresh_cmd_queue = lsq_command_queue_new(refresh_str_queue);
+            s_template->refresh_cmd_queue = lsq_command_queue_new(refresh_str_queue);
+
+        s_template->add_options = add_options;
+        s_template->remove_options = remove_options;
+        s_template->extract_options = extract_options;
+
 
     s_template->n_properties = g_strv_length(column_names);
     s_template->property_names = column_names;
@@ -215,3 +250,4 @@ lsq_support_reader_parse_file(const gchar *filename)
 	 
 	return factory;
 }
+

@@ -363,7 +363,7 @@ LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive 
 {
   LSQExecuteContext *ctx;
 
-  ctx = g_new(LSQExecuteContext, 1);
+  ctx = g_new0(LSQExecuteContext, 1);
 
   ctx->queue = queue->queue;
   ctx->archive = archive;

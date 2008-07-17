@@ -6,6 +6,7 @@ libsqueeze_1_la_SOURCES =  \
 	archive-iter.c archive-iter.h \
 	archive-tempfs.c archive-tempfs.h \
 	command-queue.c command-queue.h \
+	command-option.c command-option.h \
 	internals.c internals.h \
 	libsqueeze.c libsqueeze.h \
 	libsqueeze-view.h \
