@@ -1,16 +1,11 @@
-# Arabic translation of the squeeze package.
-# Copyright (C) 2006-2007 Stephan Arts.
-# This file is distributed under the same license as the squeeze package.
-# Mohamed Magdy <alnokta@yahoo.com>, 2007.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: Squeeze 0.2.0\n"
+"Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
 "PO-Revision-Date: 2007-01-24 09:48+0200\n"
 "Last-Translator: Mohamed Magdy <alnokta@yahoo.com>\n"
-"Language-Team: Arabeyes Translation & Documentation <xfce-i18n@xfce.org>\n"
+"Language-Team: Arabeyes Translation & Documentation <admin@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +14,7 @@ msgstr ""
 
 #: ../libsqueeze/archive.c:236
 msgid "Name"
-msgstr ""
+msgstr "Назва"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
@@ -27,15 +22,15 @@ msgstr ""
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr ""
+msgstr "Менеджер архівів"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Створення і керування архівами з допомогою Менеджера архівів"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr ""
+msgstr "Менеджер архівів Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -66,11 +61,11 @@ msgstr ""
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
-msgstr ""
+msgstr "Показати повний шлях"
 
 #: ../src/archive_store.c:250 ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr ""
+msgstr "Показувати повний шляху для кожного елемента"
 
 #: ../src/archive_store.c:256 ../src/notebook.c:186
 msgid "Show mime icons"
@@ -186,12 +181,14 @@ msgid "_Action"
 msgstr ""
 
 #: ../src/main_window.c:328
+#, fuzzy
 msgid "_Add files"
-msgstr ""
+msgstr "Додавання файлів"
 
 #: ../src/main_window.c:334
+#, fuzzy
 msgid "_Add _folders"
-msgstr ""
+msgstr "Додавання файлів"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -208,12 +205,14 @@ msgid "_Help"
 msgstr ""
 
 #: ../src/main_window.c:443 ../src/main_window.c:852
+#, fuzzy
 msgid "Add files"
-msgstr ""
+msgstr "Додавання файлів"
 
 #: ../src/main_window.c:447 ../src/main_window.c:894
+#, fuzzy
 msgid "Add folders"
-msgstr ""
+msgstr "Додавання файлів"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -259,15 +258,16 @@ msgstr ""
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr ""
+msgstr "Значок програми:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr ""
+msgstr "Значки додавання / розпакування:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
+"Базується на оригінальному значку розпакування створеному Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid ""
@@ -291,7 +291,7 @@ msgstr ""
 
 #: ../src/main_window.c:1219
 msgid "Open"
-msgstr ""
+msgstr "Відкрити"
 
 #: ../src/main_window.c:1233
 msgid ""
