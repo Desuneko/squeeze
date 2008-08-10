@@ -115,6 +115,17 @@ sq_extract_archive_dialog_new(LSQArchive *archive, gboolean sel_option)
 	GtkWidget *r_vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(dialog->r_frame), r_vbox);
 
+  if((dialog->command_options = lsq_archive_get_command_options(archive, LSQ_COMMAND_TYPE_EXTRACT)))
+  {
+    LSQCommandOptionPair **options_iter;
+    for(options_iter = dialog->command_options; *options_iter; options_iter++)
+    {
+      GtkWidget *widget;
+      widget = gtk_check_button_new_with_label((*options_iter)->option->blurb);
+      gtk_box_pack_start(GTK_BOX(r_vbox), widget, FALSE, FALSE, 0);
+    }
+  }
+
 	/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
 	gchar **filename_components = g_strsplit(g_path_get_basename(lsq_archive_get_filename(archive)), ".", 2);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);

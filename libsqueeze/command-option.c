@@ -27,7 +27,7 @@
 			LSQ_TYPE_COMMAND_OPTION,				 \
 	  LSQCommandOptionClass))
 
-typedef void (*LSQCommandOptionGetDefaultFunc)(LSQCommandOption*, GValue*);
+typedef void (*LSQCommandOptionGetDefaultFunc)(const LSQCommandOption*, GValue*);
 
 typedef struct _LSQCommandOptionClass LSQCommandOptionClass;
 
@@ -119,7 +119,7 @@ lsq_command_option_get_type(gint type_idx)
       }
     };
 
-		lsq_command_option_type[0] = g_type_register_fundamental (G_TYPE_GTYPE, "LSQCommandOption", &lsq_command_option[0], &lsq_command_option_fund, 0);
+		lsq_command_option_type[0] = g_type_register_fundamental(g_type_fundamental_next(), "LSQCommandOption", &lsq_command_option[0], &lsq_command_option_fund, 0);
 		lsq_command_option_type[1] = g_type_register_static (lsq_command_option_type[0], "LSQCommandOptionBool", &lsq_command_option[1], 0);
 		lsq_command_option_type[2] = g_type_register_static (lsq_command_option_type[0], "LSQCommandOptionString", &lsq_command_option[2], 0);
 		lsq_command_option_type[3] = g_type_register_static (lsq_command_option_type[0], "LSQCommandOptionInt", &lsq_command_option[3], 0);
@@ -214,29 +214,62 @@ lsq_command_option_create_pair(LSQCommandOption **option_list)
   return option_pair;
 }
 
+gchar **
+lsq_command_option_pair_get_args(LSQCommandOptionPair **pair)
+{
+  int length = 0;
+  LSQCommandOptionPair **option_iter;
+  gchar **argv, **argi;
+
+  for(option_iter = pair; *option_iter; option_iter++)
+  {
+    length += lsq_command_option_get_args((*option_iter)->option, &(*option_iter)->value, NULL);
+  }
+
+  argv = g_new0(gchar*, length+1);
+  argi = argv;
+
+  for(option_iter = pair; *option_iter; option_iter++)
+  {
+    argi += lsq_command_option_get_args((*option_iter)->option, &(*option_iter)->value, argi);
+  }
+
+  return argv;
+}
+
+gint
+lsq_command_option_get_args(const LSQCommandOption *option, GValue *value, gchar **argv)
+{
+  //TODO
+  return 0;
+}
+
 void
-lsq_command_option_get_default(LSQCommandOption *option, GValue *value)
+lsq_command_option_get_default(const LSQCommandOption *option, GValue *value)
 {
   g_return_if_fail(LSQ_COMMAND_OPTION_GET_CLASS(option)->get_default);
   LSQ_COMMAND_OPTION_GET_CLASS(option)->get_default(option, value);
 }
 
-static void lsq_command_option_bool_get_default(LSQCommandOptionBool *option, GValue *value)
+static void lsq_command_option_bool_get_default(const LSQCommandOptionBool *option, GValue *value)
 {
   g_value_set_boolean(value, option->default_value);
 }
 
-static void lsq_command_option_string_get_default(LSQCommandOptionString *option, GValue *value)
+static void lsq_command_option_string_get_default(const LSQCommandOptionString *option, GValue *value)
 {
-  g_value_set_string(value, option->default_value);
+  if(option->default_value)
+    g_value_set_string(value, option->default_value);
+//  else
+//    g_value_unset(value);
 }
 
-static void lsq_command_option_int_get_default(LSQCommandOptionInt *option, GValue *value)
+static void lsq_command_option_int_get_default(const LSQCommandOptionInt *option, GValue *value)
 {
   g_value_set_int(value, option->default_value);
 }
 
-static void lsq_command_option_uint_get_default(LSQCommandOptionUint *option, GValue *value)
+static void lsq_command_option_uint_get_default(const LSQCommandOptionUint *option, GValue *value)
 {
   g_value_set_uint(value, option->default_value);
 }

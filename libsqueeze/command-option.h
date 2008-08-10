@@ -54,8 +54,14 @@ lsq_command_option_create_pair(LSQCommandOption **option_list);
 LSQCommandOption **
 lsq_command_option_create_list(XfceRc *rc, gchar **option_names);
 
+gchar **
+lsq_command_option_pair_get_args(LSQCommandOptionPair **pair);
+
 void
-lsq_command_option_get_default(LSQCommandOption *option, GValue *value);
+lsq_command_option_get_default(const LSQCommandOption *option, GValue *value);
+
+gint
+lsq_command_option_get_args(const LSQCommandOption *option, GValue *value, gchar **argv);
 
 struct _LSQCommandOptionPair {
   GValue value;

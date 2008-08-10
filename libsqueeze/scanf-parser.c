@@ -564,8 +564,6 @@ guint parse_string(gchar *str, guint lng, parse_part *part, LSQScanfParserContex
   if(!ptr)
     return 0;
 
-  g_debug("string: %s", (gchar*)(ctx->props_store[part->index] = g_strndup(cur, ptr-cur)));
-
   return ptr - str;
 }
 
@@ -1213,7 +1211,6 @@ static void lsq_scanf_parser_parse(LSQScanfParser *parser, LSQScanfParserContext
 
   if(!part)
   {
-    g_debug("file: %s", ctx->filename);
     LSQArchiveIter *iter = lsq_archive_add_file(LSQ_PARSER_CONTEXT(ctx)->archive, ctx->filename);
     lsq_archive_iter_set_propsv(iter, ctx->props_store);
     lsq_archive_iter_unref(iter);

@@ -46,6 +46,7 @@ struct _SQExtractArchiveDialog
 	GtkWidget *all_files_radio;
 	GtkWidget *sel_files_radio;
 	LSQArchive *archive;
+  LSQCommandOptionPair **command_options;
 };
 
 typedef struct _SQExtractArchiveDialogClass SQExtractArchiveDialogClass;
