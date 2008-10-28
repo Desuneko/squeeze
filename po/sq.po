@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-01-17 22:53+0200\n"
+"PO-Revision-Date: 2008-10-22 00:33+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,41 +16,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../libsqueeze/archive.c:236
-#, fuzzy
 msgid "Name"
-msgstr "Emër:"
+msgstr "Emër"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
 msgstr "Tip MIME"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
-msgstr "Përgjegjës arkivash"
+msgstr "Përgjegjës Arkivash"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "Krijoni dhe administroni arkiva me përgjegjësin e arkivave"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "Përgjegjës arkivash"
+msgstr "Përgjegjësi i Arkivave Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Nuk e hapa dot arkivën, tip MIME i pambuluar ose kartela nuk ekziston"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:191
+#: ../src/main_window.c:826
+#: ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze-i nuk mund të përftojë këtë lloj arkivash,\n"
+"zbatimi që mbulon këtë gjë mungon."
 
 #.
 #. * Could not create archive (mime type unsupported)
@@ -59,26 +61,32 @@ msgstr ""
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Nuk krijova dot arkivë, tip MIME i pambuluar"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:268
+#: ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze-i nuk mund të shtojë kartela te ky lloj arkivash,\n"
+"zbatimi që mbulon këtë gjë mungon."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:249
+#: ../src/notebook.c:179
 msgid "Show full path"
-msgstr ""
+msgstr "Shfaq shteg të plotë"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
-#, fuzzy
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr "Shfaq ikona tipesh mime për secilin zë"
+msgstr "Shfaq varg të plotë shtegu secilin zë"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:256
+#: ../src/notebook.c:186
 msgid "Show mime icons"
 msgstr "Shfaq ikona mime"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
 msgstr "Shfaq ikona tipesh mime për secilin zë"
 
@@ -90,15 +98,19 @@ msgstr "Shfaq zëra drejtorie"
 msgid "Show '..' to go to the parent directory"
 msgstr "Shfaq '..' për të shkuar te drejtoria mëmë"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:270
+#: ../src/notebook.c:193
 msgid "Sort folders before files"
 msgstr "Rendit dosje përpara kartelash"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
 msgstr "Dosjet do të vendosen në krye të listës"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/archive_store.c:277
+#: ../src/archive_store.c:278
+#: ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "Rendit text siç është shkruajtur"
@@ -119,7 +131,8 @@ msgstr "Tërë kartelat"
 msgid "Selected files"
 msgstr "Kartela të przgjedhura"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/extract_dialog.c:100
+#: ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Përfto"
@@ -155,8 +168,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Provoni %s --help për të parë një listë të plotë të mundësive të passhme për "
-"rresht urdhërash.\n"
+"Provoni %s --help për të parë një listë të plotë të mundësive të passhme për rresht urdhërash.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -193,14 +205,12 @@ msgid "_Action"
 msgstr "_Veprim"
 
 #: ../src/main_window.c:328
-#, fuzzy
 msgid "_Add files"
-msgstr "Tërë kartelat"
+msgstr "_Shto kartela"
 
 #: ../src/main_window.c:334
-#, fuzzy
 msgid "_Add _folders"
-msgstr "Tërë kartelat"
+msgstr "_Shto _dosje"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -216,15 +226,15 @@ msgstr "_Parje"
 msgid "_Help"
 msgstr "_Ndihmë"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
+#: ../src/main_window.c:443
+#: ../src/main_window.c:852
 msgid "Add files"
-msgstr "Tërë kartelat"
+msgstr "Shto kartela"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
+#: ../src/main_window.c:447
+#: ../src/main_window.c:894
 msgid "Add folders"
-msgstr "Tërë kartelat"
+msgstr "Shto dosje"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -239,23 +249,28 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze-i nuk mund të shtojë dosje te ky lloj arkivash,\n"
+"zbatimi që mbulon këtë gjë mungon."
 
 #: ../src/main_window.c:937
-#, fuzzy
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Cilin veprim doni të kryhet mbi kartelën(at) e përzgjedhur?"
+msgstr "Jeni i sigurt se doni të hiqne kartelat e përzgjedhura?"
 
 #: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze-i nuk mund të heqë kartela prej këtij lloji arkivash,\n"
+"zbatimi që mbulon këtë gjë mungon."
 
 #: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
+"Jeni i sigurt se doni të anulohet ky veprim?\n"
+"Kjo mund të dëmtonte arkivën."
 
 #: ../src/main_window.c:1081
 msgid "Lead developer:"
@@ -271,31 +286,27 @@ msgstr "Frymëzuar prej Xarchiver, shkruar nga Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr ""
+msgstr "Ikonë Zbatimi:"
 
 #: ../src/main_window.c:1092
-#, fuzzy
 msgid "Add / Extract icons:"
-msgstr "Përfto"
+msgstr "Shto / Përfto ikona:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
+msgstr "Bazuar në ikonën origjinale të përftimit nga Andrea Nilsson"
 
 #: ../src/main_window.c:1100
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze është një përgjegjës arkivash i peshës së lehtë dhe i epshëm për "
-"Mjedisin Desktop Xfce"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze është një përgjegjës arkivash i peshës së lehtë dhe i epshëm për Mjedisin Desktop Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr "Besnik Bleta <besnik@programeshqip.org>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1137
+#: ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Kryer"
@@ -306,13 +317,15 @@ msgstr "Cilin veprim doni të kryhet mbi kartelën(at) e përzgjedhur?"
 
 #: ../src/main_window.c:1219
 msgid "Open"
-msgstr ""
+msgstr "Hap"
 
 #: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze-i nuk mund ta hapë këtë kartelë,\n"
+"zbatimi që mbulon këtë gjë mungon."
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
@@ -341,7 +354,7 @@ msgstr "Krijo arkiv të ri"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
-msgstr ""
+msgstr "Ndihmëz rregullash"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
@@ -363,195 +376,3 @@ msgstr "Vendndodhje:"
 msgid "Archive manager"
 msgstr "Përgjegjës arkivash"
 
-#, fuzzy
-#~ msgid "Compressing"
-#~ msgstr "Madhësi e Ngjeshur"
-
-#, fuzzy
-#~ msgid "Owner/Group"
-#~ msgstr "Shihni zotërues/grup"
-
-#~ msgid "Size"
-#~ msgstr "Madhësi"
-
-#~ msgid "Date"
-#~ msgstr "Datë"
-
-#~ msgid "Time"
-#~ msgstr "Kohë"
-
-#, fuzzy
-#~ msgid "Removing files"
-#~ msgstr "Po heq kartelë(a) prej arkive"
-
-#, fuzzy
-#~ msgid "Extracting"
-#~ msgstr "Përfto"
-
-#, fuzzy
-#~ msgid "Compressed"
-#~ msgstr "Madhësi e Ngjeshur"
-
-#~ msgid "Ratio"
-#~ msgstr "Përpjestim"
-
-#~ msgid "Method"
-#~ msgstr "Metodë"
-
-#~ msgid "Version"
-#~ msgstr "Version"
-
-#, fuzzy
-#~ msgid "Adding"
-#~ msgstr "Shto"
-
-#~ msgid "Files and directories to add"
-#~ msgstr "Kartela dhe drejtori për shtim"
-
-#~ msgid "Options:"
-#~ msgstr "Mundësi:"
-
-#~ msgid "Files"
-#~ msgstr "Kartela"
-
-#~ msgid "Directories"
-#~ msgstr "Drejtori"
-
-#~ msgid "Add file(s) to archive"
-#~ msgstr "Shto kartelë(a) te arkivë"
-
-#~ msgid "Select files"
-#~ msgstr "Përzgjidhni kartela"
-
-#~ msgid "Select folders"
-#~ msgstr "Përzgjidhni dosje"
-
-#~ msgid "_Add"
-#~ msgstr "_Shto"
-
-#~ msgid "Add"
-#~ msgstr "Shto"
-
-#~ msgid "Xfce archive manager"
-#~ msgstr "Përgjegjësi Xfce arkivash"
-
-#, fuzzy
-#~ msgid "idle"
-#~ msgstr "_Kartelë"
-
-#, fuzzy
-#~ msgid "Owner"
-#~ msgstr "Pronar/Grup"
-
-#~ msgid "Overwrite existing files"
-#~ msgstr "Mbishkruaj kartela ekzistuese"
-
-#~ msgid "Overwrite existing files on extraction"
-#~ msgstr "Mbishkruaj kartela ekzistuese në përftim e sipër"
-
-#~ msgid "Touch files"
-#~ msgstr "Prek kartela"
-
-#~ msgid "Keep newer files"
-#~ msgstr "Mbaj kartelat më të reja"
-
-#, fuzzy
-#~ msgid "Do not overwrite files newer than those in the archive"
-#~ msgstr "Mos mbi shkruaj kartela më të reja se ato në arkiv"
-
-#~ msgid "Override permissions"
-#~ msgstr "Leje anashkalimi"
-
-#~ msgid "View filesize"
-#~ msgstr "Shihni madhësi kartele"
-
-#~ msgid "Permissions"
-#~ msgstr "Leje"
-
-#~ msgid "View permissions"
-#~ msgstr "Shihni lejet"
-
-#~ msgid "View date"
-#~ msgstr "Shih datë"
-
-#~ msgid "View time"
-#~ msgstr "Shihni kohën"
-
-#~ msgid "Password"
-#~ msgstr "Fjalëkalim"
-
-#~ msgid "View compressed filesize"
-#~ msgstr "Shihni madhisë kartele të ngjeshur"
-
-#~ msgid "View ratio"
-#~ msgstr "Shihni përpjestim"
-
-#~ msgid "View method"
-#~ msgstr "Shihni metodë"
-
-#~ msgid "Checksum"
-#~ msgstr "Përmbledhje kontrolli"
-
-#~ msgid "View Checksum"
-#~ msgstr "Shihni përmbledhje kontrolli"
-
-#~ msgid "Compression version"
-#~ msgstr "Version ngjeshjeje"
-
-#~ msgid "View compression version"
-#~ msgstr "Shihni version ngjeshjeje"
-
-#~ msgid "Append extension to filename"
-#~ msgstr "Shtoji zgjerim emrit të kartelës"
-
-#~ msgid "Name:"
-#~ msgstr "Emër:"
-
-#~ msgid "Kind:"
-#~ msgstr "Lloj:"
-
-#~ msgid "Properties"
-#~ msgstr "Veti"
-
-#~ msgid "Filename"
-#~ msgstr "Emër kartele"
-
-#~ msgid "Initializing archive"
-#~ msgstr "Po gatis arkiv"
-
-#~ msgid "Refreshing archive contents"
-#~ msgstr "Po rifreskoj përmbajtje arkive"
-
-#~ msgid "Adding file(s) to archive"
-#~ msgstr "Po shtoj kartelë(a) te arkiva"
-
-#~ msgid "Extracting file(s) from archive"
-#~ msgstr "Po përftoj kartelë(a) prej arkive"
-
-#~ msgid "Performing an extended action"
-#~ msgstr "Po kryej një veprim të zgjeruar"
-
-#~ msgid "Cancelled"
-#~ msgstr "Anuluar"
-
-#~ msgid "Error"
-#~ msgstr "Gabim"
-
-#~ msgid "Test"
-#~ msgstr "Provo"
-
-#~ msgid ""
-#~ "Test archive integrity\n"
-#~ "Test the integrity of the archive"
-#~ msgstr ""
-#~ "Provo integritet arkive\n"
-#~ "Provo integritetin e arkivës"
-
-#~ msgid "View"
-#~ msgstr "Shihni"
-
-#~ msgid "Failed to open archive '%s'."
-#~ msgstr "Dështova në hapjen e arkivës '%s'."
-
-#~ msgid "Failed to extract contents of archive '%s'."
-#~ msgstr "Dështova në përftimin e përmbajtjes së arkivës '%s'."
