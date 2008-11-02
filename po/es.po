@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2008-09-29 21:20+0100\n"
+"PO-Revision-Date: 2008-11-02 13:19+0100\n"
 "Last-Translator: Abel Martín <abel.martin.ruiz@gmail.com>\n"
 "Language-Team: Spanish/ES\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "Tipo MIME"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Gestor de Archivos Comprimidos"
+msgstr "Gestor de archivos comprimidos"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
@@ -35,7 +35,7 @@ msgstr "Cree y administre archivos comprimidos con el gestor de archivos comprim
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Gestor de Archivos Comprimidos Squeeze"
+msgstr "Gestor de archivos comprimidos Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -174,19 +174,19 @@ msgstr ""
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr "Estilo Interno"
+msgstr "Estilo interno"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "Estilo de Barra de Herramientas"
+msgstr "Estilo de barra de herramientas"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "Estilo de Barra de Direcciones"
+msgstr "Estilo de barra de direcciones"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "Estilo de Navegación"
+msgstr "Estilo de navegación"
 
 #: ../src/main_window.c:183
 msgid ""
@@ -208,7 +208,7 @@ msgstr "A_cción"
 
 #: ../src/main_window.c:328
 msgid "_Add files"
-msgstr "Añadir _ficheros"
+msgstr "Añadir a_rchivos"
 
 #: ../src/main_window.c:334
 msgid "_Add _folders"
@@ -231,7 +231,7 @@ msgstr "A_yuda"
 #: ../src/main_window.c:443
 #: ../src/main_window.c:852
 msgid "Add files"
-msgstr "Añadir ficheros"
+msgstr "Añadir archivos"
 
 #: ../src/main_window.c:447
 #: ../src/main_window.c:894
@@ -292,7 +292,7 @@ msgstr "Icono de Aplicación:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr "Añadir / Extraer icons:"
+msgstr "Añadir / Extraer iconos:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
@@ -300,7 +300,7 @@ msgstr "Basado en el icono original de extracción creado por Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "Squeeze es un gestor de archivos comprimidos ligero y flexible para Xfce Desktop Environment"
+msgstr "Squeeze es un gestor de archivos comprimidos ligero y flexible para el entorno de escritorio Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
