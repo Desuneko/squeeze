@@ -1,14 +1,14 @@
 # Czech translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-# Michal Várady <miko.vaji@gmail.com>, 2006-2007.
+# Michal Várady <miko.vaji@gmail.com>, 2006-2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-09-09 12:25+0100\n"
+"PO-Revision-Date: 2008-12-22 21:30+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Typ MIME"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Archive Manager"
+msgstr "Správce archivů"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
@@ -102,12 +102,12 @@ msgstr "Zobrazit '..' pro přechod do adresáře vyšší úrovně"
 #: ../src/archive_store.c:270
 #: ../src/notebook.c:193
 msgid "Sort folders before files"
-msgstr "Zařadit adresáře před soubory"
+msgstr "Zařadit složky před soubory"
 
 #: ../src/archive_store.c:271
 #: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
-msgstr "Adresáře budou umístěny na začátku seznamu"
+msgstr "Složky budou umístěny na začátku seznamu"
 
 #: ../src/archive_store.c:277
 #: ../src/archive_store.c:278
@@ -169,7 +169,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Příkazem %s --help zobrazíte kompletní seznam dostupných voleb z příkazové řádky.\n"
+"Úplný seznam dostupných voleb příkazové řádky získáte příkazem %s --help.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -250,19 +250,19 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Aplikace Squeeze nemůže přidat soubory do archivu\n"
-" tohoto typu, potřebná aplikace není dostupná."
+"Aplikace Squeeze nemůže přidat složky do archivu\n"
+"tohoto typu, potřebná aplikace není dostupná."
 
 #: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Jste si jisti, že chcete odebrat vybrané soubory?"
+msgstr "Opravdu chcete odstranit vybrané soubory?"
 
 #: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Aplikace Squeeze nemůže odebrat soubory z archivu tohoto typu,\n"
+"Aplikace Squeeze nemůže odstranit soubory z archivu tohoto typu,\n"
 "potřebná aplikace není dostupná."
 
 #: ../src/main_window.c:999
@@ -270,7 +270,7 @@ msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
-"Jste si jisti, že chcete zrušit tuto operaci?\n"
+"Opravdu chcete zrušit tuto operaci?\n"
 "Tímto můžete poškodit archiv."
 
 #: ../src/main_window.c:1081
@@ -367,7 +367,7 @@ msgstr "Rozestupy"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
-msgstr "Prostor mezi tlačítky cesty"
+msgstr "Velikost rozestupů mezi tlačítky cesty"
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
