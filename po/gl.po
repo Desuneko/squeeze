@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2008-06-28 13:07+0100\n"
+"PO-Revision-Date: 2008-12-06 14:47+0100\n"
 "Last-Translator: Leandro Regueiro <leandro DOT regueiro AT gmail DOT com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr "Tipo Mime"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Xestor de Arquivos"
+msgstr "Xestor de arquivos"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
@@ -38,7 +38,7 @@ msgstr "Cree e xestione arquivos co xestor de arquivos"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Xestor de Arquivos Squeeze"
+msgstr "Xestor de arquivos Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -47,7 +47,7 @@ msgstr "Xestor de Arquivos Squeeze"
 #: ../src/application.c:160
 #: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
+msgstr "Non se puido abrir o arquivo, ten un tipo MIME non soportado ou o ficheiro non existe"
 
 #: ../src/application.c:191
 #: ../src/main_window.c:826
@@ -56,13 +56,15 @@ msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze non pode extraer este tipo de\n"
+"arquivo, falta a aplicación que soporta isto."
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
 #: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
-msgstr ""
+msgstr "Non se puido crear o arquivo, tipo MIME non soportado"
 
 #: ../src/application.c:268
 #: ../src/main_window.c:874
@@ -70,46 +72,46 @@ msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze non pode engadir ficheiros a este tipo\n"
+"de arquivo, falta a aplicación que soporta isto."
 
 #: ../src/archive_store.c:249
 #: ../src/notebook.c:179
 msgid "Show full path"
-msgstr ""
+msgstr "Mostrar a ruta completa"
 
 #: ../src/archive_store.c:250
 #: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr ""
+msgstr "Mostrar a ruta completa de cada entrada"
 
 #: ../src/archive_store.c:256
 #: ../src/notebook.c:186
 msgid "Show mime icons"
-msgstr ""
+msgstr "Mostrar iconas mime"
 
 #: ../src/archive_store.c:257
 #: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
-msgstr ""
+msgstr "Mostrar as iconas do tipo mime de cada entrada"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
-msgstr ""
+msgstr "Mostrar a entrada do directorio superior"
 
-# revisar
 #: ../src/archive_store.c:264
-#, fuzzy
 msgid "Show '..' to go to the parent directory"
 msgstr "Mostrar '..' para ir ó directorio superior"
 
 #: ../src/archive_store.c:270
 #: ../src/notebook.c:193
 msgid "Sort folders before files"
-msgstr ""
+msgstr "Mostrar os cartafoles antes dos ficheiros"
 
 #: ../src/archive_store.c:271
 #: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
-msgstr ""
+msgstr "Os cartafoles póñense na cima da lista"
 
 #: ../src/archive_store.c:277
 #: ../src/archive_store.c:278
@@ -120,7 +122,7 @@ msgstr ""
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
-msgstr ""
+msgstr "<b>Extraer os ficheiros:</b>"
 
 #: ../src/extract_dialog.c:77
 msgid "<b>Options:</b>"
@@ -132,7 +134,7 @@ msgstr "Tódolos ficheiros"
 
 #: ../src/extract_dialog.c:88
 msgid "Selected files"
-msgstr ""
+msgstr "Ficheiros seleccionados"
 
 #: ../src/extract_dialog.c:100
 #: ../src/main_window.c:451
@@ -142,7 +144,7 @@ msgstr "Extraer"
 
 #: ../src/extract_dialog.c:110
 msgid "Extract archive"
-msgstr ""
+msgstr "Extraer arquivo"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -150,11 +152,11 @@ msgstr ""
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr ""
+msgstr "[ruta arquivo] [ficheiro1] [ficheiro2] ... [ficheiroN]"
 
 #: ../src/main.c:63
 msgid "[file1] [file2] ... [fileN]"
-msgstr ""
+msgstr "[ficheiro1] [ficheiro2] ... [ficheiroN]"
 
 #: ../src/main.c:66
 msgid "Version information"
@@ -162,7 +164,7 @@ msgstr "Información de versión"
 
 #: ../src/main.c:92
 msgid "[archive name]"
-msgstr ""
+msgstr "[nome arquivo]"
 
 #: ../src/main.c:96
 #, c-format
@@ -170,28 +172,32 @@ msgid ""
 "%s: %s\n"
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
+"%s: %s\n"
+"Use %s --help para ver unha lista completa das opcións de liña de comandos dispoñibles.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr ""
+msgstr "Estilo interno"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr ""
+msgstr "Estilo da barra de ferramentas"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr ""
+msgstr "Estilo da barra de localización"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr ""
+msgstr "Estilo de navegación"
 
 #: ../src/main_window.c:183
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
 msgstr ""
+"Estilo de navegación\n"
+"O estilo para navegar polo arquivo"
 
 #. File menu
 #: ../src/main_window.c:295
@@ -285,11 +291,11 @@ msgstr "Inspirado en Xarchiver, escrito por Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr ""
+msgstr "Icona da aplicación:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr ""
+msgstr "Iconas de Engadir/Extraer:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
@@ -302,7 +308,10 @@ msgstr "Squeeze é un xestor de arquivos lixeiro e flexible para o Ambiente de E
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
-msgstr "Leandro Regueiro <leandro.regueiro@gmail.com>, 2008."
+msgstr ""
+"Leandro Regueiro <leandro.regueiro@gmail.com>, 2008.\n"
+"\n"
+"Proxecto Trasno http://trasno.net"
 
 #: ../src/main_window.c:1137
 #: ../src/main_window.c:1208
@@ -312,7 +321,7 @@ msgstr "Feito"
 
 #: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr ""
+msgstr "Que acción desexa realizar nos ficheiros seleccionados?"
 
 #: ../src/main_window.c:1219
 msgid "Open"
@@ -323,6 +332,8 @@ msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze non pode ver este ficheiro.\n"
+"Falta a aplicación para soportar isto."
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
@@ -355,7 +366,7 @@ msgstr ""
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
-msgstr ""
+msgstr "Facer que as cores de fondo das filas se alternen"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
@@ -367,7 +378,7 @@ msgstr ""
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
-msgstr ""
+msgstr "Localización:"
 
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
