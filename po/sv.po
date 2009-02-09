@@ -1,14 +1,14 @@
 # Swedish translation for squeeze.
-# Copyright (C) 2008 Free Software Foundation, Inc.
+# Copyright (C) 2008, 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the squeeze package.
-# Daniel Nylander <po@danielnylander.se>, 2008.
+# Daniel Nylander <po@danielnylander.se>, 2008, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2008-12-08 20:47+0100\n"
-"PO-Revision-Date: 2008-12-09 10:24+0100\n"
+"POT-Creation-Date: 2009-02-09 00:15+0100\n"
+"PO-Revision-Date: 2009-02-09 00:22+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -384,4 +384,72 @@ msgstr "Plats:"
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "Arkivhanterare"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr "Synlig:"
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr "Tillgänglig:"
+
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr "A_llmänt"
+
+#: ../src/preferences_dialog.c:88
+msgid "Archive viewer:"
+msgstr "Arkivvisare:"
+
+#: ../src/preferences_dialog.c:97
+msgid "_Show Icons"
+msgstr "_Visa ikoner"
+
+#: ../src/preferences_dialog.c:100
+msgid "_Rules Hint"
+msgstr "_Regeltips"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr "Sortering:"
+
+#: ../src/preferences_dialog.c:112
+msgid "Sort _Case Sensitive "
+msgstr "Sortera texten skiftl_ägeskänsligt"
+
+#: ../src/preferences_dialog.c:115
+msgid "Sort _Folders First"
+msgstr "Sortera _mappar först"
+
+#: ../src/preferences_dialog.c:118
+msgid "Navigation bar:"
+msgstr "Navigeringsrad:"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr "_Beteende"
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr "Inställningar"
+
+#: ../src/preferences_dialog.c:204
+msgid "_Archivers"
+msgstr "Ar_kiverare"
+
+#: ../src/preferences_dialog.c:281
+msgid "Filename"
+msgstr "Filnamn"
+
+#: ../src/properties_dialog.c:85
+msgid "Name:"
+msgstr "Namn:"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr "Typ:"
+
+#: ../src/properties_dialog.c:119
+msgid "Properties"
+msgstr "Egenskaper"
 
