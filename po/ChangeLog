@@ -1,3 +1,8 @@
+2009-02-13 Og Maciel <ogmaciel@gnome.org>
+
+	* POTFILES.in: Added missing files.
+	* pt_BR.po: Updated Brazilian Portuguese translation.
+
 2009-02-09  Alexander Toresson <eulex@xfce.org>
 
 	* sv.po: Swedish translation update (Daniel Nylander)
@@ -110,7 +115,7 @@
 
 2008-05-04  Og Maciel <ogmaciel@gnome.org>
 
-    * pt_BR.po: Updated Brazilian Portuguese translation
+	* pt_BR.po: Updated Brazilian Portuguese translation
 
 2008-03-18	Mike Massonnet <mmassonnet@xfce.org>
 
