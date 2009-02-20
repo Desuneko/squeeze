@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2008-12-06 14:47+0100\n"
+"PO-Revision-Date: 2009-02-11 17:37+0100\n"
 "Last-Translator: Leandro Regueiro <leandro DOT regueiro AT gmail DOT com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -148,7 +148,7 @@ msgstr "Extraer arquivo"
 
 #: ../src/main.c:51
 msgid "[destination path]"
-msgstr ""
+msgstr "[ruta destino]"
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
@@ -211,11 +211,11 @@ msgstr "_Acción"
 
 #: ../src/main_window.c:328
 msgid "_Add files"
-msgstr ""
+msgstr "_Engadir ficheiros"
 
 #: ../src/main_window.c:334
 msgid "_Add _folders"
-msgstr ""
+msgstr "Engadir _cartafoles"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -361,16 +361,18 @@ msgid "Create new archive"
 msgstr "Crear novo arquivo"
 
 #: ../src/notebook.c:207
+#, fuzzy
 msgid "Rules hint"
-msgstr ""
+msgstr "Hint da _caixa de ferramentas:"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
 msgstr "Facer que as cores de fondo das filas se alternen"
 
 #: ../src/path_bar.c:141
+#, fuzzy
 msgid "Spacing"
-msgstr ""
+msgstr "Espazamento"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
