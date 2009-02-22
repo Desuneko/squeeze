@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2008-12-02 22:04+0900\n"
-"PO-Revision-Date: 2008-12-03 14:13+0900\n"
+"POT-Creation-Date: 2009-02-14 15:45+0900\n"
+"PO-Revision-Date: 2009-02-14 15:58+0900\n"
 "Last-Translator: Masato Hashimoto <cabezon.hashimoto@gmail.com>\n"
 "Language-Team: Japanese <xfce-users-jp@ml.fdiary.net>\n"
 "MIME-Version: 1.0\n"
@@ -115,6 +115,14 @@ msgstr "フォルダはリストの先頭に置かれます"
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "大文字と小文字を区別して並び替え"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr "表示:"
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr "有効:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -377,6 +385,66 @@ msgstr "間隔"
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
 msgstr "パスボタン間のスペースの合計"
+
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr "一般(_G)"
+
+#: ../src/preferences_dialog.c:88
+msgid "Archive viewer:"
+msgstr "アーカイブビューア:"
+
+#: ../src/preferences_dialog.c:97
+msgid "_Show Icons"
+msgstr "アイコンを表示する(_S)"
+
+#: ../src/preferences_dialog.c:100
+msgid "_Rules Hint"
+msgstr "行の色を交互に色分ける(_R)"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr "並び替え:"
+
+#: ../src/preferences_dialog.c:112
+msgid "Sort _Case Sensitive "
+msgstr "大文字と小文字を区別して並び替える(_C)"
+
+#: ../src/preferences_dialog.c:115
+msgid "Sort _Folders First"
+msgstr "ファイルの前にフォルダを表示する(_F)"
+
+#: ../src/preferences_dialog.c:118
+msgid "Navigation bar:"
+msgstr "ナビゲーション方式:"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr "振る舞い(_B)"
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr "設定"
+
+#: ../src/preferences_dialog.c:204
+msgid "_Archivers"
+msgstr "アーカイバ(_A)"
+
+#: ../src/preferences_dialog.c:281
+msgid "Filename"
+msgstr "ファイル名"
+
+#: ../src/properties_dialog.c:85
+msgid "Name:"
+msgstr "名前:"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr "種類:"
+
+#: ../src/properties_dialog.c:119
+msgid "Properties"
+msgstr "プロパティ"
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
