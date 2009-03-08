@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-28 19:01+0100\n"
-"PO-Revision-Date: 2007-01-20 23:10+0200\n"
-"Last-Translator: Piotr Maliński <riklaunim@gmail.com>\n"
+"PO-Revision-Date: 2009-03-02 16:11+0100\n"
+"Last-Translator: Piotr Sokół <piotr.sokol@10g.pl>\n"
 "Language-Team: Polish <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,62 +25,70 @@ msgstr "Typ mime"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Menedżer Archiwów"
+msgstr "Menedżer archiwów"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr "Twórz i zarządzaj archiwami z menedżerem archiwów"
+msgstr "Tworzy i zarządza archiwami"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Menedżer Archiwów Squeeze"
+msgstr "Menedżer archiwów Squeeze"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Nie można otworzyć archiwum. Niewspierane MIME lub plik nie istnieje"
+msgstr "Nie można otworzyć archiwum. Nieobsługiwany typ MIME lub plik nie istnieje."
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:191
+#: ../src/main_window.c:826
+#: ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze nie może rozpakować tego typu archiwum.\n"
-"Brakuje aplikacji do jego obsługi."
+"Nie można rozpakować archiwum tego typu.\n"
+"Brak programu do obsługi operacji."
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
 #: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "Nie można stworzyć archiwum. MIME niewspierane"
+msgstr "Nie można utworzyć archiwum. Nieobsługiwany typ MIME."
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:268
+#: ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze nie może dodać plików do tego typu archiwum.\n"
-"Brakuje aplikacji do jego obsługi."
+"Nie można dodać plików do archiwum tego typu.\n"
+"Brak programu do obsługi operacji."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:249
+#: ../src/notebook.c:179
 msgid "Show full path"
-msgstr "Pokaż pełną ścieżkę"
+msgstr "Pełna ścieżka"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr "Pokazuj pełną ścieżkę dla każdego wpisu"
+msgstr "Wyświetla pełną ścieżkę dla każdego wpisu"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:256
+#: ../src/notebook.c:186
 msgid "Show mime icons"
-msgstr "Pokazuj ikony mime"
+msgstr "Ikony MIME"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
-msgstr "Pokazuj ikony dla każdego typu mime"
+msgstr "Wyświetla ikony typów MIME"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
@@ -90,18 +98,22 @@ msgstr "Pokazuj przejścia do nadrzędnych katalogów"
 msgid "Show '..' to go to the parent directory"
 msgstr "Pokazuje '..' do przechodzenia do nadrzędnych katalogów"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:270
+#: ../src/notebook.c:193
 msgid "Sort folders before files"
-msgstr "Foldery przed plikami"
+msgstr "Sortowanie katalogów przed plikami"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
-msgstr "Foldery zostaną umieszczone na początku listy"
+msgstr "Wyświetla katalogi na początku listy"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/archive_store.c:277
+#: ../src/archive_store.c:278
+#: ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
-msgstr "Uwzględniaj wielkość liter"
+msgstr "Uwzględnianie wielkości liter"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -119,7 +131,8 @@ msgstr "Wszystkie pliki"
 msgid "Selected files"
 msgstr "Zaznaczone pliki"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/extract_dialog.c:100
+#: ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Rozpakuj"
@@ -134,19 +147,19 @@ msgstr "[ścieżka docelowa]"
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr "[ścieżka do archiwum] [pli1] [plik2] ... [plikN]"
+msgstr "[ŚCIEŻKA] [PLIKI]"
 
 #: ../src/main.c:63
 msgid "[file1] [file2] ... [fileN]"
-msgstr "[pli1] [plik2] ... [plikN]"
+msgstr "[PLIKI]"
 
 #: ../src/main.c:66
 msgid "Version information"
-msgstr "Informacje o wersji"
+msgstr "Wypisuje informacje o wersji i kończy"
 
 #: ../src/main.c:92
 msgid "[archive name]"
-msgstr "[nazwa archiwum]"
+msgstr "[NAZWA]"
 
 #: ../src/main.c:96
 #, c-format
@@ -155,23 +168,23 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Użyj %s --help by zobaczyć pełną listę komend.\n"
+"Proszę wpisać „%s --help” aby wypisać pełną listę opcji wiersza poleceń.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr "Styl wewnętrzny"
+msgstr "Wewnętrzny"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "Styl paska narzędziowego"
+msgstr "Przyciski nawigacji"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "Styl paska ścieżki"
+msgstr "Przyciski katalogów"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "Styl paska nawigacji"
+msgstr "Pasek położenia"
 
 #: ../src/main_window.c:183
 msgid ""
@@ -197,7 +210,7 @@ msgstr "_Dodaj pliki"
 
 #: ../src/main_window.c:334
 msgid "_Add _folders"
-msgstr "_Dodaj _foldery"
+msgstr "_Dodaj _katalogi"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -211,15 +224,17 @@ msgstr "_Widok"
 #. Help menu
 #: ../src/main_window.c:397
 msgid "_Help"
-msgstr "_Pomoc"
+msgstr "Pomo_c"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
+#: ../src/main_window.c:443
+#: ../src/main_window.c:852
 msgid "Add files"
 msgstr "Dodaj pliki"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
+#: ../src/main_window.c:447
+#: ../src/main_window.c:894
 msgid "Add folders"
-msgstr "Dodaj foldery"
+msgstr "Dodaj katalogi"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
@@ -234,29 +249,28 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze nie może dodać folderów do tego typu archiwum.\n"
-"Brak aplikacji do obsługi tej operacji."
+"Nie można dodać katalogów do archiwum tego typu.\n"
+"Brak programu do obsługi operacji."
 
 #: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Czy naprawdę chcesz usunąć wskazane pliki?"
+msgstr "Usunąć zaznaczone pliki?"
 
 #: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze nie może usunąć plików z tego typu archiwum.\n"
-"Brak aplikacji do obsługi tej operacji."
-
+"Nie można usunąć plików z archiwum tego typu.\n"
+"Brak programu do obsługi operacji."
 
 #: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
-"Czy na pewno chcesz anulować tą operację?\n"
-"To może uszkodzić archiwum."
+"Anulować operację?\n"
+"Archiwum może ulec uszkodzeniu."
 
 #: ../src/main_window.c:1081
 msgid "Lead developer:"
@@ -268,33 +282,33 @@ msgstr "Pomoc:"
 
 #: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr "Zainspirowane przez Xarchiver, napisany przez Giuseppe Torelli"
+msgstr "Zainspirowany przez Xarchiver, stworzony przez Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr "Ikona Aplikacji:"
+msgstr "Ikona programu:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr "Ikony Dodaj / Rozpakuj:"
+msgstr "Ikony dodaj / rozpakuj:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Na bazie ikon Andreasa Nilssona"
 
 #: ../src/main_window.c:1100
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze to lekki i prosty menedżer archiwów dla Xfce"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Menedżer archiwów dla Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
-msgstr "Piotr Maliński <riklaunim@gmail.com> 2008"
+msgstr ""
+"Piotr Maliński <riklaunim@gmail.com>\n"
+"Piotr Sokół <piotr.sokol@10g.pl>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1137
+#: ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Zrobione"
@@ -317,7 +331,7 @@ msgstr ""
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
-msgstr "Błąd otwierania pliku"
+msgstr "Nie udało się otworzyć pliku"
 
 #: ../src/main_window.c:1302
 #, c-format
@@ -338,7 +352,7 @@ msgstr "Archiwa"
 
 #: ../src/new_dialog.c:108
 msgid "Create new archive"
-msgstr "Stwórz nowe archiwum"
+msgstr "Nowe archiwum"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
@@ -358,8 +372,9 @@ msgstr "Odstęp pomiędzy przyciskami ścieżek"
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
-msgstr "Lokacja:"
+msgstr "Położenie:"
 
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "Menedżer archiwów"
+
