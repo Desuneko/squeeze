@@ -1,8 +1,8 @@
 # Galician translation of squeeze
-# Copyright (C) 2008 Leandro Regueiro
+# Copyright (C) 2008, 2009 Leandro Regueiro
 # This file is distributed under the same license as the xfce package.
 #
-# Leandro Regueiro <leandro.regueiro@gmail.com>, 2008.
+# Leandro Regueiro <leandro.regueiro@gmail.com>, 2008, 2009.
 #
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en <http://trasno.net>
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2009-02-11 17:37+0100\n"
+"PO-Revision-Date: 2009-03-07 23:58+0100\n"
 "Last-Translator: Leandro Regueiro <leandro DOT regueiro AT gmail DOT com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -363,20 +363,19 @@ msgstr "Crear novo arquivo"
 #: ../src/notebook.c:207
 #, fuzzy
 msgid "Rules hint"
-msgstr "Hint da _caixa de ferramentas:"
+msgstr "Suxestión das regras"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
 msgstr "Facer que as cores de fondo das filas se alternen"
 
 #: ../src/path_bar.c:141
-#, fuzzy
 msgid "Spacing"
 msgstr "Espazamento"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
-msgstr ""
+msgstr "A cantidade de espazo entre os botóns da ruta"
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
