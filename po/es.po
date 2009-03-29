@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2009-02-24 13:39+0100\n"
+"PO-Revision-Date: 2009-03-19 12:28+0100\n"
 "Last-Translator: Abel Martín <abel.martin.ruiz@gmail.com>\n"
 "Language-Team: Spanish/ES <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
@@ -170,7 +170,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Intente %s --help para ver una lista completa de opciones de línea de comando.\n"
+"Pruebe %s --help para ver una lista completa de opciones de línea de comando.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -311,7 +311,7 @@ msgstr "Abel Martín <abel.martin.ruiz@gmail.com>"
 #: ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
-msgstr "Hecho"
+msgstr "Terminado"
 
 #: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
