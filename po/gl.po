@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2009-04-18 14:57+0100\n"
+"PO-Revision-Date: 2009-05-02 16:24+0100\n"
 "Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -309,7 +309,7 @@ msgstr "Squeeze é un xestor de arquivos lixeiro e flexible para o Ambiente de E
 #: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr ""
-"Leandro Regueiro <leandro.regueiro@gmail.com>, 2008.\n"
+"Leandro Regueiro <leandro.regueiro@gmail.com>, 2008, 2009.\n"
 "\n"
 "Proxecto Trasno http://trasno.net"
 
@@ -362,7 +362,7 @@ msgstr "Crear novo arquivo"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
-msgstr ""
+msgstr "Consello sobre as regras"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
