@@ -40,11 +40,14 @@ msgstr "Squeeze архивтерді басқарушысы"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Архивті ашу мүмкін емес, MIME түріне қолдау жоқ не файл табылмады"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:191
+#: ../src/main_window.c:826
+#: ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -59,7 +62,8 @@ msgstr ""
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Архивті жасау мүмкін емес, MIME түріне қолдау жоқ"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:268
+#: ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -67,19 +71,23 @@ msgstr ""
 "Squeeze архивтердің осы түріне файлдарды қоса алмайды,\n"
 "оған қолдау көрсететін қолданба жоқ болып тұр."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:249
+#: ../src/notebook.c:179
 msgid "Show full path"
 msgstr "Толық жолын көрсету"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
 msgstr "Толық жолды әр элемент үшін көрсету"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:256
+#: ../src/notebook.c:186
 msgid "Show mime icons"
 msgstr "MIME таңбашаларын көрсету"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
 msgstr "MIME таңбашаларын әр элемент үшін көрсету"
 
@@ -91,15 +99,19 @@ msgstr "Жоғарғы буманы көрсету"
 msgid "Show '..' to go to the parent directory"
 msgstr "Жоғарғы бумаға өту үшін '..' көрсету"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:270
+#: ../src/notebook.c:193
 msgid "Sort folders before files"
 msgstr "Бумаларды файлдар алдында сұрыптау"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
 msgstr "Бумалар тізімнің басында орналасады"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/archive_store.c:277
+#: ../src/archive_store.c:278
+#: ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "Мәтінді регистрді ескеріп сұрыптау"
@@ -120,7 +132,8 @@ msgstr "Барлық файлдар"
 msgid "Selected files"
 msgstr "Таңдалған файлдар"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/extract_dialog.c:100
+#: ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Тарқату"
@@ -214,11 +227,13 @@ msgstr "Тү_рі"
 msgid "_Help"
 msgstr "_Көмек"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
+#: ../src/main_window.c:443
+#: ../src/main_window.c:852
 msgid "Add files"
 msgstr "Файлдарды қосу"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
+#: ../src/main_window.c:447
+#: ../src/main_window.c:894
 msgid "Add folders"
 msgstr "Бумаларды қосу"
 
@@ -283,19 +298,16 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Andreas Nilsson жасаған Тарқату таңбашасы негізінде жасалған"
 
 #: ../src/main_window.c:1100
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze - Xfce жұмыс үстелінің ортасы үшін жеңіл және икемді архивтерді "
-"басқарушысы"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze - Xfce жұмыс үстелінің ортасы үшін жеңіл және икемді архивтерді басқарушысы"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr "Бауржан Муфтахидинов <baurthefirst@gmail.com> 2009"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1137
+#: ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Болды"
@@ -364,3 +376,4 @@ msgstr "Орналасуы:"
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "Архивтерді басқарушысы"
+
