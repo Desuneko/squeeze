@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2010-01-05 18:15+0300\n"
+"PO-Revision-Date: 2010-01-26 20:40+0300\n"
 "Last-Translator: dima <info@cnc-parts.info>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr "Имя"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
-msgstr "Тип mime"
+msgstr "Тип файла"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
@@ -247,6 +247,8 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze не может добавить папки в архив этого типа,\n"
+"приложение для этого отсутствует."
 
 #: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
@@ -257,6 +259,8 @@ msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"Squeeze не может удалить файлы из архива этого типа,\n"
+"приложение для этого отсутствует."
 
 #: ../src/main_window.c:999
 msgid ""
@@ -268,15 +272,15 @@ msgstr ""
 
 #: ../src/main_window.c:1081
 msgid "Lead developer:"
-msgstr ""
+msgstr "Разработчик:"
 
 #: ../src/main_window.c:1084
 msgid "Contributors:"
-msgstr ""
+msgstr "Контрибьюторы:"
 
 #: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr ""
+msgstr "Вдохновленные программой Xarchiver, написанной Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
@@ -288,16 +292,16 @@ msgstr "Добавить / Извлечь иконки:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
+msgstr "Основано на оригинальной иконке, созданной Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr ""
+msgstr "Squeeze простой и быстрый менеджер архивов для рабочего окружения Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
-msgstr ""
+msgstr "Команда переводчиков"
 
 #: ../src/main_window.c:1137
 #: ../src/main_window.c:1208
@@ -354,7 +358,7 @@ msgstr ""
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
-msgstr ""
+msgstr "Место"
 
 #: ../src/path_bar.c:142
 msgid "The amount of space between the path buttons"
