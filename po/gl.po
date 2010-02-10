@@ -1,8 +1,8 @@
 # Galician translation of squeeze
-# Copyright (C) 2008, 2009 Leandro Regueiro
+# Copyright (C) 2008, 2009, 2010 Leandro Regueiro
 # This file is distributed under the same license as the xfce package.
 #
-# Leandro Regueiro <leandro.regueiro@gmail.com>, 2008, 2009.
+# Leandro Regueiro <leandro.regueiro@gmail.com>, 2008, 2009, 2010.
 #
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en <http://trasno.net>
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2010-01-07 20:45+0100\n"
+"PO-Revision-Date: 2010-02-08 21:43+0100\n"
 "Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze non pode extraer este tipo de\n"
-"arquivo, falta a aplicación que soporta isto."
+"arquivo, falta o aplicativo que soporta isto."
 
 #.
 #. * Could not create archive (mime type unsupported)
@@ -73,7 +73,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze non pode engadir ficheiros a este tipo\n"
-"de arquivo, falta a aplicación que soporta isto."
+"de arquivo, falta o aplicativo que soporta isto."
 
 #: ../src/archive_store.c:249
 #: ../src/notebook.c:179
@@ -101,12 +101,12 @@ msgstr "Mostrar a entrada do directorio superior"
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
-msgstr "Mostrar '..' para ir ó directorio superior"
+msgstr "Mostrar '..' para ir ao directorio superior"
 
 #: ../src/archive_store.c:270
 #: ../src/notebook.c:193
 msgid "Sort folders before files"
-msgstr "Mostrar os cartafoles antes dos ficheiros"
+msgstr "Mostrar os cartafoles antes que os ficheiros"
 
 #: ../src/archive_store.c:271
 #: ../src/notebook.c:194
@@ -130,7 +130,7 @@ msgstr "<b>Opcións:</b>"
 
 #: ../src/extract_dialog.c:87
 msgid "All files"
-msgstr "Tódolos ficheiros"
+msgstr "Todos os ficheiros"
 
 #: ../src/extract_dialog.c:88
 msgid "Selected files"
@@ -144,15 +144,15 @@ msgstr "Extraer"
 
 #: ../src/extract_dialog.c:110
 msgid "Extract archive"
-msgstr "Extraer arquivo"
+msgstr "Extraer o arquivo"
 
 #: ../src/main.c:51
 msgid "[destination path]"
-msgstr "[ruta destino]"
+msgstr "[ruta do destino]"
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr "[ruta arquivo] [ficheiro1] [ficheiro2] ... [ficheiroN]"
+msgstr "[ruta do arquivo] [ficheiro1] [ficheiro2] ... [ficheiroN]"
 
 #: ../src/main.c:63
 msgid "[file1] [file2] ... [fileN]"
@@ -164,7 +164,7 @@ msgstr "Información de versión"
 
 #: ../src/main.c:92
 msgid "[archive name]"
-msgstr "[nome arquivo]"
+msgstr "[nome do arquivo]"
 
 #: ../src/main.c:96
 #, c-format
@@ -173,7 +173,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Use %s --help para ver unha lista completa das opcións de liña de comandos dispoñibles.\n"
+"Execute %s --help para ver unha lista completa das opcións de liña de comandos dispoñibles.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -254,8 +254,8 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze non pode engadir cartafoles a este tipo de arquivo,\n"
-"falta a aplicación para soportar isto."
+"Squeeze non pode engadir cartafoles a este tipo\n"
+"de arquivo, falta o aplicativo para soportar isto."
 
 #: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
@@ -266,8 +266,8 @@ msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze non pode eliminar ficheiros deste tipo de arquivo,\n"
-"falta a aplicación para soportar isto."
+"Squeeze non pode eliminar ficheiros deste tipo de\n"
+"arquivo, falta o aplicativo para soportar isto."
 
 #: ../src/main_window.c:999
 msgid ""
@@ -283,7 +283,7 @@ msgstr "Desenvolvedor principal:"
 
 #: ../src/main_window.c:1084
 msgid "Contributors:"
-msgstr "Contribuintes:"
+msgstr "Contribuíntes:"
 
 #: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
@@ -291,11 +291,11 @@ msgstr "Inspirado en Xarchiver, escrito por Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr "Icona da aplicación:"
+msgstr "Icona do aplicativo:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr "Iconas de Engadir/Extraer:"
+msgstr "Iconas de engadir/extraer:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
@@ -303,13 +303,13 @@ msgstr "Baseada na icona de extracción orixinal creada por Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "Squeeze é un xestor de arquivos lixeiro e flexible para o Ambiente de Escritorio Xfce"
+msgstr "Squeeze é un xestor de arquivos lixeiro e flexible para o ambiente de escritorio Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
 msgstr ""
-"Leandro Regueiro <leandro.regueiro@gmail.com>, 2008, 2009.\n"
+"Leandro Regueiro <leandro.regueiro@gmail.com>, 2008, 2009, 2010.\n"
 "\n"
 "Proxecto Trasno http://trasno.net"
 
@@ -333,11 +333,11 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze non pode ver este ficheiro.\n"
-"Falta a aplicación para soportar isto."
+"Falta o aplicativo para soportar isto."
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
-msgstr "Fallo ó abrir o ficheiro"
+msgstr "Produciuse un erro ao abrir o ficheiro"
 
 #: ../src/main_window.c:1302
 #, c-format
@@ -358,7 +358,7 @@ msgstr "Arquivos"
 
 #: ../src/new_dialog.c:108
 msgid "Create new archive"
-msgstr "Crear novo arquivo"
+msgstr "Crear un novo arquivo"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
