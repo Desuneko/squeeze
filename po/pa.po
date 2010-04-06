@@ -1,20 +1,20 @@
 # Punjabi translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-# A S Alam <aalam@users.sf.net>, 2007.
 #
+# A S Alam <aalam@users.sf.net>, 2007, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2007-04-11 20:10+0530\n"
+"PO-Revision-Date: 2010-04-06 07:36+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi <xfce-i18n@xfce.org>\n"
+"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libsqueeze/archive.c:236
@@ -26,18 +26,16 @@ msgid "Mime type"
 msgstr "ਮਾਈਮ ਕਿਸਮ"
 
 #: ../squeeze.desktop.in.h:1
-#, fuzzy
 msgid "Archive Manager"
-msgstr "ਅਕਾਈਵ ਮੈਨੇਜਰ"
+msgstr "ਅਕਾਇਵ ਮੈਨੇਜਰ"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "ਅਕਾਇਵ ਮੈਨੇਜਰ ਨਾਲ ਅਕਾਇਵ ਬਣਾਓ ਅਤੇ ਸੰਭਾਲੋ"
 
 #: ../squeeze.desktop.in.h:3
-#, fuzzy
 msgid "Squeeze Archive Manager"
-msgstr "ਅਕਾਈਵ ਮੈਨੇਜਰ"
+msgstr "ਸਕਿਊਜ਼ੀ ਅਕਾਈਵ ਮੈਨੇਜਰ"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -52,7 +50,7 @@ msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"ਸਕਿਊਜ਼ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਖੋਲ੍ਹ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
+"ਸਕਿਊਜ਼ੀ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਖੋਲ੍ਹ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
 "ਇਹ ਸਹਿਯੋਗ ਲਈ ਐਪਲੀਕੇਸ਼ਨ ਗੁੰਮ ਹੈ।"
 
 #.
@@ -67,32 +65,32 @@ msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"ਸਕਿਊਜ਼ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
+"ਸਕਿਊਜ਼ੀ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
 "ਇਹ ਸਹਿਯੋਗ ਲਈ ਐਪਲੀਕੇਸ਼ਨ ਗੁੰਮ ਹੈ।"
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
-msgstr "ਪੂਰਾ ਪਾਥ ਵੇਖਾਓ"
+msgstr "ਪੂਰਾ ਪਾਥ ਵੇਖੋ"
 
 #: ../src/archive_store.c:250 ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr "ਹਰੇਕ ਇੰਦਰਾਜ਼ ਲਈ ਪੂਰੀ ਪਾਥ ਲਾਈਨ ਵੇਖਾਓ"
+msgstr "ਹਰੇਕ ਐਂਟਰੀ ਲਈ ਪੂਰੀ ਪਾਥ ਲਾਈਨ ਵੇਖੋ"
 
 #: ../src/archive_store.c:256 ../src/notebook.c:186
 msgid "Show mime icons"
-msgstr "ਮਾਈਮ ਆਈਕਾਨ ਵੇਖਾਓ"
+msgstr "ਮਾਈਮ ਆਈਕਾਨ ਵੇਖੋ"
 
 #: ../src/archive_store.c:257 ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
-msgstr "ਹਰੇਕ ਇੰਦਰਾਜ਼ ਲਈ ਮਾਈਮ ਕਿਸਮ ਆਈਕਾਨ ਵੇਖਾਓ"
+msgstr "ਹਰੇਕ ਐਂਟਰੀ ਲਈ ਮਾਈਮ ਕਿਸਮ ਆਈਕਾਨ ਵੇਖੋ"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
-msgstr "ਉੱਤਲੀ ਡਾਇਰੈਕਟਰੀ ਵੇਖਾਓ"
+msgstr "ਉੱਤਲੀ ਡਾਇਰੈਕਟਰੀ ਵੇਖੋ"
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
-msgstr "ਮੁੱਢਲੀ ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਜਾਣ ਲਈ '..' ਵੇਖਾਓ"
+msgstr "ਮੁੱਢਲੀ ਡਾਇਰੈਕਟਰੀ ਉੱਤੇ ਜਾਣ ਲਈ '..' ਵੇਖੋ"
 
 #: ../src/archive_store.c:270 ../src/notebook.c:193
 msgid "Sort folders before files"
@@ -130,7 +128,7 @@ msgstr "ਖੋਲ੍ਹੋ"
 
 #: ../src/extract_dialog.c:110
 msgid "Extract archive"
-msgstr "ਆਕਾਈਵ ਖਿਲਾਰੋ"
+msgstr "ਆਕਾਇਵ ਐਕਸਟਰੈਕਟ"
 
 #: ../src/main.c:51
 msgid "[destination path]"
@@ -150,7 +148,7 @@ msgstr "ਵਰਜਨ ਜਾਣਕਾਰੀ"
 
 #: ../src/main.c:92
 msgid "[archive name]"
-msgstr "[ਆਕਾਈਵ ਨਾਂ]"
+msgstr "[ਆਕਾਇਵ ਨਾਂ]"
 
 #: ../src/main.c:96
 #, c-format
@@ -163,27 +161,27 @@ msgstr ""
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr "ਇੰਟਰਨਲ ਸ਼ੈਲੀ"
+msgstr "ਇੰਟਰਨਲ ਸਟਾਈਲ"
 
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "ਟੂਲ ਪੱਟੀ ਸਟਾਇਲ"
+msgstr "ਟੂਲ ਬਾਰ ਸਟਾਈਲ"
 
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "ਪਾਥ ਪੱਟੀ ਸਟਾਇਲ"
+msgstr "ਪਾਥ ਬਾਰ ਸਟਾਈਲ"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "ਨੇਵੀਗੇਸ਼ਨ ਸਟਾਇਲ"
+msgstr "ਨੇਵੀਗੇਸ਼ਨ ਸਟਾਈਲ"
 
 #: ../src/main_window.c:183
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
 msgstr ""
-"ਨੇਵੀਗੇਸ਼ਨ ਦਾ ਸਟਾਇਲ\n"
-"ਆਕਾਈਵ ਵਿੱਚ ਨੇਵੀਗੇਸ਼ਨ ਦਾ ਸਟਾਇਲ ਹੈ"
+"ਨੇਵੀਗੇਸ਼ਨ ਦਾ ਸਟਾਈਲ\n"
+"ਆਕਾਈਵ ਵਿੱਚ ਨੇਵੀਗੇਸ਼ਨ ਦਾ ਸਟਾਈਲ ਹੈ"
 
 #. File menu
 #: ../src/main_window.c:295
@@ -196,18 +194,16 @@ msgid "_Action"
 msgstr "ਐਕਸ਼ਨ(_A)"
 
 #: ../src/main_window.c:328
-#, fuzzy
 msgid "_Add files"
-msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ(_A)"
 
 #: ../src/main_window.c:334
-#, fuzzy
 msgid "_Add _folders"
-msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+msgstr "ਫੋਲਡਰ ਸ਼ਾਮਲ(_A)"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
-msgstr "ਖਿਲਾਰੋ(_E)"
+msgstr "ਐਕਸਟਰੈਕਟ(_E)"
 
 #. View menu
 #: ../src/main_window.c:373
@@ -217,33 +213,30 @@ msgstr "ਵੇਖੋ(_V)"
 #. Help menu
 #: ../src/main_window.c:397
 msgid "_Help"
-msgstr "ਸਹਾਇਤਾ(_H)"
+msgstr "ਮੱਦਦ(_H)"
 
 #: ../src/main_window.c:443 ../src/main_window.c:852
-#, fuzzy
 msgid "Add files"
-msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ"
 
 #: ../src/main_window.c:447 ../src/main_window.c:894
-#, fuzzy
 msgid "Add folders"
-msgstr "ਫਾਇਲਾਂ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
+msgstr "ਫੋਲਡਰ ਸ਼ਾਮਲ"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
-msgstr "ਨਵੇਂ ਝਰੋਖੇ ਵਿੱਚ ਆਕਾਈਵ ਖੋਲ੍ਹੋ"
+msgstr "ਨਵੀਂ ਵਿੰਡੋ ਵਿੱਚ ਆਕਾਈਵ ਖੋਲ੍ਹੋ"
 
 #: ../src/main_window.c:730
 msgid "Open archive"
 msgstr "ਆਕਾਈਵ ਖੋਲ੍ਹੋ"
 
 #: ../src/main_window.c:916
-#, fuzzy
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"ਸਕਿਊਜ਼ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
+"ਸਕਿਊਜ਼ੀ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫੋਲਡਰ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
 "ਇਹ ਸਹਿਯੋਗ ਲਈ ਐਪਲੀਕੇਸ਼ਨ ਗੁੰਮ ਹੈ।"
 
 #: ../src/main_window.c:937
@@ -255,7 +248,7 @@ msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"ਸਕਿਊਜ਼ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਹਟਾ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
+"ਸਕਿਊਜ਼ੀ ਇਹ ਆਕਾਈਵ ਕਿਸਮ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਹਟਾ ਨਹੀਂ ਸਕਦਾ ਹੈ,\n"
 "ਇਹ ਸਹਿਯੋਗ ਲਈ ਐਪਲੀਕੇਸ਼ਨ ਗੁੰਮ ਹੈ।"
 
 #: ../src/main_window.c:999
@@ -280,7 +273,7 @@ msgstr "Xarchiver ਤੋਂ ਪਰਭਾਵਿਤ ਹੋਕੇ ਗੀਉਜ਼�
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr "ਕਾਰਜ ਆਈਕਾਨ:"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਆਈਕਾਨ:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
@@ -323,7 +316,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "ਸਕਿਊਜ਼ੀ ਇਹ ਫਾਇਲ ਨਹੀਂ ਵੇਖਾ ਸਕਦਾ ਹੈ।\n"
-"ਇਹ ਕਾਰਜ ਲਈ ਸਹਿਯੋਗ ਕਾਰਜ ਨਹੀਂ ਹੈ।"
+"ਇਸ ਲਈ ਸਹਿਯੋਗ ਐਪਲੀਕੇਸ਼ਨ ਨਹੀਂ ਹੈ।"
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
@@ -340,7 +333,7 @@ msgstr ""
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
-msgstr "ਆਕਾਈਵ ਕਿਸਮ:"
+msgstr "ਆਕਾਈਵ ਟਾਈਪ:"
 
 #: ../src/new_dialog.c:80
 msgid "Archives"
@@ -356,7 +349,7 @@ msgstr "ਰੂਲ ਹਿੰਟ"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
-msgstr "ਕਤਾਰ ਬੈਕਗਰਾਊਂਡ ਰੰਗ ਬਦਲਵੇਂ ਰੰਗ ਨਾਲ ਵੇਖਾਓ"
+msgstr "ਕਤਾਰ ਬੈਕਗਰਾਊਂਡ ਰੰਗ ਬਦਲਵੇਂ ਰੰਗ ਨਾਲ ਵੇਖੋ"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
