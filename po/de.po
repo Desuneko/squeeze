@@ -50,7 +50,7 @@ msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann diesen Archivtyp nicht entpacken,\n"
+"Squeeze kann Archive dieses Archivtyps nicht entpacken,\n"
 "die dafür benötigte Anwendung ist nicht installiert."
 
 #. * Could not create archive (mime type unsupported)
@@ -64,7 +64,7 @@ msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann keine Dateien zu diesem Archivtyp hinzufügen,\n"
+"Squeeze kann keine Dateien zu Archiven von diesem Archivtyp hinzufügen,\n"
 "die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
@@ -235,7 +235,7 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann keine Ordner zu diesem Archivityp hinzufügen,\n"
+"Squeeze kann keine Ordner zu Archiven dieses Archivityps hinzufügen,\n"
 "die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:937
@@ -247,7 +247,7 @@ msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kann die Dateien nicht aus diesem Archivtyp entfernen,\n"
+"Squeeze kann keine Dateien aus Archiven dieses Archivtyps entfernen,\n"
 "die dafür benötigte Anwendung ist nicht installiert."
 
 #: ../src/main_window.c:999
