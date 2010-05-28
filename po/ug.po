@@ -22,19 +22,19 @@ msgstr "ئاتى"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
-msgstr ""
+msgstr "Mime تىپى"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr ""
+msgstr "ئارخىپ باشقۇرغۇ"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
+msgstr "ئارخىپ باشقۇرغۇدا ئارخىپلارنى قۇرۇش ۋە باشقۇرۇش"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr ""
+msgstr "Squeeze ئارخىپ باشقۇرغۇ"
 
 #.
 #. * Could not open archive (mime type not supported or file did not exist)
@@ -42,42 +42,44 @@ msgstr ""
 #.
 #: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
+msgstr "ئارخىپنى ئاچقىلى بولمىدى، MIME تىپىنى قوللىمايدۇ ياكى ھۆججەت مەۋجۇت ئەمەس"
 
 #: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "Squeeze بۇ تىپتىكى ئارخىپنى يايالمىدى،\n"
+"بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #.
 #. * Could not create archive (mime type unsupported)
 #.
 #: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
-msgstr ""
+msgstr "ئارخىپنى ئاچقىلى بولمىدى، MIME تىپىنى قوللىمايدۇ"
 
 #: ../src/application.c:268 ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "Squeeze بۇ ھۆججەتنى ئارخىپقا قوشالمىدى،\n"
+"بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
-msgstr ""
+msgstr "تولۇق يولىنى كۆرسەت"
 
 #: ../src/archive_store.c:250 ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr ""
+msgstr "ھەر بىر entry نىڭ تولۇق يولىنى كۆرسەت"
 
 #: ../src/archive_store.c:256 ../src/notebook.c:186
 msgid "Show mime icons"
-msgstr ""
+msgstr "mime سىن بەلگىسىنى كۆرسەت"
 
 #: ../src/archive_store.c:257 ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
-msgstr ""
+msgstr "ھەر بىر entry نىڭ mime تىپى سىنبەلگىسىنى كۆرسەت"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
@@ -85,7 +87,7 @@ msgstr ""
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
-msgstr ""
+msgstr "ئاتا مۇندەرىجە بارىدىغان '..' نى كۆرسەت"
 
 #: ../src/archive_store.c:270 ../src/notebook.c:193
 msgid "Sort folders before files"
@@ -93,20 +95,20 @@ msgstr "تەرتىپلىگەندە مۇندەرىجە ھۆججەتنىڭ ئال�
 
 #: ../src/archive_store.c:271 ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
-msgstr ""
+msgstr "مۇندەرىجە تىزىملىكنىڭ باش قىسمىغا قويۇلىدۇ"
 
 #: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
-msgstr ""
+msgstr "تېكىستتىكى ھەرپنىڭ چوڭ كىچىك يېزىلىشىنى ئويلىشىپ تەرتىپلەيدۇ"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
-msgstr ""
+msgstr "<b>ھۆججەتلەرنى ياي:</b>"
 
 #: ../src/extract_dialog.c:77
 msgid "<b>Options:</b>"
-msgstr ""
+msgstr "<b>تاللانمىلار:</b>"
 
 #: ../src/extract_dialog.c:87
 msgid "All files"
@@ -114,28 +116,28 @@ msgstr "ھەممە ھۆججەتلەر"
 
 #: ../src/extract_dialog.c:88
 msgid "Selected files"
-msgstr ""
+msgstr "تاللانغان ھۆججەتلەر"
 
 #: ../src/extract_dialog.c:100 ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
-msgstr ""
+msgstr "ياي"
 
 #: ../src/extract_dialog.c:110
 msgid "Extract archive"
-msgstr ""
+msgstr "ئارخىپنى ياي"
 
 #: ../src/main.c:51
 msgid "[destination path]"
-msgstr ""
+msgstr "[نىشان يول]"
 
 #: ../src/main.c:59
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr ""
+msgstr "[ئارخىپ يولى] [file1] [file2] ... [fileN]"
 
 #: ../src/main.c:63
 msgid "[file1] [file2] ... [fileN]"
-msgstr ""
+msgstr "[file1] [file2] ... [fileN]"
 
 #: ../src/main.c:66
 msgid "Version information"
@@ -143,7 +145,7 @@ msgstr "نەشر ئۇچۇرى"
 
 #: ../src/main.c:92
 msgid "[archive name]"
-msgstr ""
+msgstr "[ئارخىپ ئاتى]"
 
 #: ../src/main.c:96
 #, c-format
@@ -156,21 +158,21 @@ msgstr "%s: %s\n"
 # Navigation Style
 #: ../src/main_window.c:133
 msgid "Internal Style"
-msgstr ""
+msgstr "ئىچكى ئۇسلۇب"
 
 # Navigation style: Should be coordinated with Thunar's location selector
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr ""
+msgstr "قورال تاياقچىسى ئۇسلۇبى"
 
 # Navigation style: Should be coordinated with Thunar's location selector
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr ""
+msgstr "يول تاياقچىسى ئۇسلۇبى"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr ""
+msgstr "Navigation ئۇسلۇبى"
 
 #: ../src/main_window.c:183
 msgid ""
@@ -186,19 +188,19 @@ msgstr "ھۆججەت(_F)"
 #. Action menu: ref all the childs
 #: ../src/main_window.c:323
 msgid "_Action"
-msgstr ""
+msgstr "ھەرىكەت(_A)"
 
 #: ../src/main_window.c:328
 msgid "_Add files"
-msgstr ""
+msgstr "ھۆججەت قوش(_A)"
 
 #: ../src/main_window.c:334
 msgid "_Add _folders"
-msgstr ""
+msgstr "مۇندەرىجە قوش(_F)"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
-msgstr ""
+msgstr "ياي(_E)"
 
 #. View menu
 #: ../src/main_window.c:373
@@ -212,72 +214,75 @@ msgstr "ياردەم(_H)"
 
 #: ../src/main_window.c:443 ../src/main_window.c:852
 msgid "Add files"
-msgstr ""
+msgstr "ھۆججەت قوشىدۇ"
 
 #: ../src/main_window.c:447 ../src/main_window.c:894
 msgid "Add folders"
-msgstr ""
+msgstr "مۇندەرىجە قوشىدۇ"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
-msgstr ""
+msgstr "ئارخىپنى يېڭى كۆزنەكتە ئاچىدۇ"
 
 #: ../src/main_window.c:730
 msgid "Open archive"
-msgstr ""
+msgstr "پرېس ئاچ"
 
 #: ../src/main_window.c:916
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "Squeeze بۇ مۇندەرىجىنى ئارخىپقا قوشالمىدى،\n"
+"بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
-msgstr ""
+msgstr "تاللانغان ھۆججەتلەرنى ئۆچۈرەمسىز؟"
 
 #: ../src/main_window.c:950
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "Squeeze بۇ خىل ئارخىپ تىپىدىن ھۆججەتلەرنى ئۆچۈرەلمىدى،\n"
+"بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/main_window.c:999
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
-msgstr ""
+msgstr "مەشغۇلاتنى توختىتامسىز؟\n"
+"بۇنداقتا ئارخىپ بۇزۇلۇپ كېتىدۇ."
 
 #: ../src/main_window.c:1081
 msgid "Lead developer:"
-msgstr ""
+msgstr "باش ئىجادىيەتچى:"
 
 #: ../src/main_window.c:1084
 msgid "Contributors:"
-msgstr ""
+msgstr "تۆھپىكارلار:"
 
 #: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr ""
+msgstr "Giuseppe Torelli يازغان Xarchiver دىن ئىلھام ئالغان"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr ""
+msgstr "پروگرامما سىنبەلگىسى:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr ""
+msgstr "قوشۇش/يېيىش سىنبەلگىلىرى:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
+msgstr "Andreas Nilsson ياسىغان يېيىش سىنبەلگىلىرىنى ئاساس قىلغان"
 
 # In ja translation: broke the line for looks.
 #: ../src/main_window.c:1100
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
+msgstr "Squeeze بولسا Xfce ئۈستەل يۈزى مۇھىتىدىكى يېنىك ۋە ئەپچىل بولغان ئارخىپ باشقۇرغۇدۇر"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
@@ -287,45 +292,47 @@ msgstr "Gheyret T.Kenji <gheyret@gmail.com> 2010"
 #: ../src/main_window.c:1137 ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
-msgstr ""
+msgstr "تامام"
 
 #: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr ""
+msgstr "تاللانغان ھۆججەتكە نىسبەتەن قانداق مەشغۇلات ئېلىپ بارماقچى؟"
 
 #: ../src/main_window.c:1219
 msgid "Open"
-msgstr ""
+msgstr "ئاچ"
 
 #: ../src/main_window.c:1233
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "Squeeze بۇ ھۆججەتنى كۆرسىتەلمىدى،\n"
+"بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
-msgstr ""
+msgstr "ھۆججەت ئېچىش مەغلۇپ بولدى"
 
 #: ../src/main_window.c:1302
 #, c-format
 msgid ""
 "'%s'\n"
 "Could not be opened"
-msgstr ""
+msgstr "'%s'\n"
+"ئېچىش مۇمكىن بولمىدى"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
-msgstr ""
+msgstr "ئارخىپ تىپى"
 
 #: ../src/new_dialog.c:80
 msgid "Archives"
-msgstr ""
+msgstr "ئارخىپلار"
 
 # Dialog title
 #: ../src/new_dialog.c:108
 msgid "Create new archive"
-msgstr ""
+msgstr "يېڭى ئارخىپ قۇر"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
@@ -345,8 +352,8 @@ msgstr "يول توپچىلىرى ئارىسىدىكى بوشلۇق سانى"
 
 #: ../src/tool_bar.c:167
 msgid "Location:"
-msgstr ""
+msgstr "ئورنى:"
 
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
-msgstr ""
+msgstr "ئارخىپ باشقۇرغۇ"
