@@ -117,7 +117,7 @@ msgstr "<b>オプション:</b>"
 
 #: ../src/extract_dialog.c:87
 msgid "All files"
-msgstr "全てのファイル"
+msgstr "すべてのファイル"
 
 #: ../src/extract_dialog.c:88
 msgid "Selected files"
@@ -159,7 +159,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s : %s\n"
-"%s --help で使用可能な全てのコマンドラインオプションが表示されます。\n"
+"%s --help で使用可能なすべてのコマンドラインオプションが表示されます。\n"
 
 # Navigation Style
 #: ../src/main_window.c:133
