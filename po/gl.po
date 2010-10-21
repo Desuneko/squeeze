@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2010-02-08 21:43+0100\n"
+"PO-Revision-Date: 2010-10-20 09:51+0100\n"
 "Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Nome"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
-msgstr "Tipo Mime"
+msgstr "Tipo MIME"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
@@ -173,7 +173,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Execute %s --help para ver unha lista completa das opcións de liña de comandos dispoñibles.\n"
+"Execute %s --help para ver unha lista completa das opcións de liña de ordes dispoñibles.\n"
 
 #: ../src/main_window.c:133
 msgid "Internal Style"
@@ -243,7 +243,7 @@ msgstr "Engadir cartafoles"
 
 #: ../src/main_window.c:724
 msgid "Open archive in new window"
-msgstr "Abrir o arquivo nunha nova fiestra"
+msgstr "Abrir o arquivo nunha nova xanela"
 
 #: ../src/main_window.c:730
 msgid "Open archive"
