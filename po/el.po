@@ -2,7 +2,7 @@
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 # Stavros Giannouris <stavrosg@hellug.gr>, 2007.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze git\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Greek\n"
-"X-Poedit-Country: GREECE\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: GREECE\n"
 
 #: ../libsqueeze/archive.c:236
 msgid "Name"
@@ -39,18 +39,14 @@ msgstr "Δημιουργία και διαχείριση συμπιεσμένω�
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze διαχειριστής συμπιεσμένων αρχείων"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
-#: ../src/application.c:160
-#: ../src/application.c:250
+#. 
+#: ../src/application.c:160 ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Δεν είναι δυνατό το άνοιγμα αυτού του αρχείου. Ο τύπος αρχείου δεν υποστηρίζεται ή το αρχείο δεν υπάρχει."
 
-#: ../src/application.c:191
-#: ../src/main_window.c:826
-#: ../src/main_window.c:1260
+#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -58,15 +54,13 @@ msgstr ""
 "Το squeeze δε μπορεί να αποσυμπιέσει αυτό τον τύπο αρχείου.\n"
 "Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Δεν ήταν δυνατή η δημιουργία του αρχείου, ο τύπος MIME δεν υποστηρίζεται"
 
-#: ../src/application.c:268
-#: ../src/main_window.c:874
+#: ../src/application.c:268 ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -74,23 +68,19 @@ msgstr ""
 "Το squeeze δε μπορεί να προσθέσει αρχεία σε αυτό τον τύπο αρχείου.\n"
 "Η εφαρμογή που τον υποστηρίζει δεν είναι διαθέσιμη."
 
-#: ../src/archive_store.c:249
-#: ../src/notebook.c:179
+#: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
 msgstr "Προβολή ολόκληρης της διαδρομής"
 
-#: ../src/archive_store.c:250
-#: ../src/notebook.c:180
+#: ../src/archive_store.c:250 ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
 msgstr "Εμφάνιση πλήρους διαδρομής σε κάθε εγγραφή"
 
-#: ../src/archive_store.c:256
-#: ../src/notebook.c:186
+#: ../src/archive_store.c:256 ../src/notebook.c:186
 msgid "Show mime icons"
 msgstr "Προβολή εικονιδίων εφαρμογών"
 
-#: ../src/archive_store.c:257
-#: ../src/notebook.c:187
+#: ../src/archive_store.c:257 ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
 msgstr "Εμφάνιση εικονιδίων εφαρμογών σε κάθε εγγραφή "
 
@@ -102,19 +92,15 @@ msgstr "Προβολή εγγραφής καταλόγου"
 msgid "Show '..' to go to the parent directory"
 msgstr "Προβολή '..' για μετάβαση στο γονικό κατάλογο"
 
-#: ../src/archive_store.c:270
-#: ../src/notebook.c:193
+#: ../src/archive_store.c:270 ../src/notebook.c:193
 msgid "Sort folders before files"
 msgstr "Ταξινόμηση φακέλων πριν τα αρχεία"
 
-#: ../src/archive_store.c:271
-#: ../src/notebook.c:194
+#: ../src/archive_store.c:271 ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
 msgstr "Οι φάκελοι θα ταξινομηθούν στην κορυφή της λίστας"
 
-#: ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-#: ../src/notebook.c:200
+#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "Ταξινόμηση με βάση το κείμενο"
@@ -135,8 +121,7 @@ msgstr "Όλα τα αρχεία"
 msgid "Selected files"
 msgstr "Επιλεγμένα αρχεία"
 
-#: ../src/extract_dialog.c:100
-#: ../src/main_window.c:451
+#: ../src/extract_dialog.c:100 ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "Αποσυμπίεση"
@@ -230,13 +215,11 @@ msgstr "_Προβολή"
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: ../src/main_window.c:443
-#: ../src/main_window.c:852
+#: ../src/main_window.c:443 ../src/main_window.c:852
 msgid "Add files"
 msgstr "Προσθήκη αρχείων"
 
-#: ../src/main_window.c:447
-#: ../src/main_window.c:894
+#: ../src/main_window.c:447 ../src/main_window.c:894
 msgid "Add folders"
 msgstr "Προσθήκη καταλόγων"
 
@@ -311,8 +294,7 @@ msgstr ""
 "Stavros Giannouris <stavrosg@hellug.gr>\n"
 "Evaggelos Balaskas <ebalaskas@ebalaskas.gr>"
 
-#: ../src/main_window.c:1137
-#: ../src/main_window.c:1208
+#: ../src/main_window.c:1137 ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
 msgstr "Τέλος"
@@ -360,7 +342,7 @@ msgstr "Δημιουργία νέου συμπιεσμένου αρχείου"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
-msgstr ""
+msgstr "Υπόδειξη κανόνων"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
@@ -381,4 +363,3 @@ msgstr "Τοποθεσία:"
 #: ../src/message_dialog.c:158
 msgid "Archive manager"
 msgstr "Διαχειριστής συμπιεσμένων αρχείων"
-
