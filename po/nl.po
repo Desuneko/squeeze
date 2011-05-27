@@ -1,11 +1,12 @@
 # Dutch translation of the squeeze package.
-# Copyright (C) 2006-2007 Stephan Arts.
+# Copyright (C) The Xfce development team.
 # This file is distributed under the same license as the squeeze package.
 # Stephan Arts <stephan@xfce.org>, 2006.
+# Pjotr, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Squeeze 0.2.0\n"
+"Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
 "PO-Revision-Date: 2009-08-15 14:53-0800\n"
