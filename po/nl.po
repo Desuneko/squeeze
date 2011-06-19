@@ -1,7 +1,7 @@
-# Dutch translation of the squeeze package.
+# Dutch translation for the squeeze package.
 # Copyright (C) The Xfce development team.
 # This file is distributed under the same license as the squeeze package.
-# Stephan Arts <stephan@xfce.org>, 2006.
+# Stephan Arts, 2006.
 # Pjotr, 2011.
 #
 msgid ""
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
+"Language: nl (Dutch)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libsqueeze/archive.c:236
@@ -53,7 +53,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kan dit archieftype niet uitpakken,\n"
-"de toepassing om dit te ondersteunen ontbreekt."
+"want de toepassing om dit te ondersteunen ontbreekt."
 
 #.
 #. * Could not create archive (mime type unsupported)
@@ -201,7 +201,7 @@ msgstr "_Bestanden toevoegen"
 
 #: ../src/main_window.c:334
 msgid "_Add _folders"
-msgstr "Mappen toevoegen"
+msgstr "_Mappen toevoegen"
 
 #: ../src/main_window.c:340
 msgid "_Extract"
@@ -251,7 +251,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kan vanuit dit archieftype geen bestanden verwijderen,\n"
-"de toepassing om dit te ondersteunen ontbreekt."
+"want de toepassing om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:999
 msgid ""
@@ -275,7 +275,7 @@ msgstr "Geinspireerd door Xarchiver, geschreven door Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr "Toepassingspictogram:"
+msgstr "Toepassingpictogram:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
@@ -291,13 +291,14 @@ msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr ""
-"Squeeze is een lichtgewicht en flexibele archiefbeheerder voor de Xfce "
+"Squeeze is een lichtgewicht flexibele archiefbeheerder voor de Xfce "
 "Werkomgeving"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
-msgstr "Stephan Arts <stephan@xfce.org> Pjotr"
+msgstr "Stephan Arts <stephan@xfce.org>\n"
+"Pjotr"
 
 #: ../src/main_window.c:1137 ../src/main_window.c:1208
 #: ../src/main_window.c:1376
@@ -318,7 +319,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "Squeeze kan dit bestand niet weergeven.\n"
-"de toepassing om dit te ondersteunen ontbreekt."
+"De toepassing om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:1301
 msgid "Failed to open file"
@@ -370,10 +371,10 @@ msgid "Archive manager"
 msgstr "Archiefbeheerder"
 
 #~ msgid "Compressing"
-#~ msgstr "Aan het comprimeren"
+#~ msgstr "Comprimeren"
 
 #~ msgid "Decompressing"
-#~ msgstr "Aan het decomprimeren"
+#~ msgstr "Decomprimeren"
 
 #~ msgid "Refresh"
 #~ msgstr "Vernieuwen"
@@ -400,10 +401,10 @@ msgstr "Archiefbeheerder"
 #~ msgstr "Bestand(en) verwijderen"
 
 #~ msgid "Removing"
-#~ msgstr "Aan het verwijderen"
+#~ msgstr "Verwijderen"
 
 #~ msgid "Extracting"
-#~ msgstr "Aan het uitpakken"
+#~ msgstr "Uitpakken"
 
 #~ msgid "Compressed"
 #~ msgstr "Gecomprimeerd"
@@ -418,7 +419,7 @@ msgstr "Archiefbeheerder"
 #~ msgstr "Versie"
 
 #~ msgid "Adding"
-#~ msgstr "Aan het toevoegen"
+#~ msgstr "Toevoegen"
 
 #~ msgid "Execute"
 #~ msgstr "Uitvoeren"
