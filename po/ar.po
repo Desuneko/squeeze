@@ -37,12 +37,10 @@ msgstr "Менеджер архівів Squeeze"
 #. * Should be a more specific error message.
 #. 
 #: ../src/application.c:160 ../src/application.c:250
-#, fuzzy
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "تعذر فتح الأرشيف ، MIME نوع ملف غير معتمد أو غير موجود"
 
 #: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
-#, fuzzy
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -53,12 +51,10 @@ msgstr ""
 #. * Could not create archive (mime type unsupported)
 #. 
 #: ../src/application.c:233
-#, fuzzy
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "تعذر إنشاء أرشيف ، MIME من نوع غير معتمد"
 
 #: ../src/application.c:268 ../src/main_window.c:874
-#, fuzzy
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -77,43 +73,35 @@ msgid "Show mime icons"
 msgstr "أظهر أيقونات MIME"
 
 #: ../src/archive_store.c:257 ../src/notebook.c:187
-#, fuzzy
 msgid "Show the mime type icons for each entry"
 msgstr "تظهر الرموز نوع mime لكل إدخال"
 
 #: ../src/archive_store.c:263
-#, fuzzy
 msgid "Show up dir entry"
 msgstr "اظهر إدخالات dir"
 
 #: ../src/archive_store.c:264
-#, fuzzy
 msgid "Show '..' to go to the parent directory"
 msgstr "تظهر '..' للانتقال إلى الدليل الأصلي"
 
 #: ../src/archive_store.c:270 ../src/notebook.c:193
-#, fuzzy
 msgid "Sort folders before files"
 msgstr "فرز المجلدات قبل الملفات"
 
 #: ../src/archive_store.c:271 ../src/notebook.c:194
-#, fuzzy
 msgid "The folders will be put at the top of the list"
-msgstr "وسيتم وضع المجلدات في الجزء العلوي من القائمة"
+msgstr "ستوضع المجلدات في الجزء العلوي من القائمة"
 
 #: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
 #: ../src/notebook.c:201
-#, fuzzy
 msgid "Sort text case sensitive"
-msgstr "فرز النص بتحسس حالة الأحرف"
+msgstr "فرز النص وتحسس حالة الأحرف"
 
 #: ../src/extract_dialog.c:76
-#, fuzzy
 msgid "<b>Extract files:</b>"
 msgstr "<b>استخراج الملفات :</b>"
 
 #: ../src/extract_dialog.c:77
-#, fuzzy
 msgid "<b>Options:</b>"
 msgstr "<b>خيارات :</b>"
 
@@ -122,48 +110,40 @@ msgid "All files"
 msgstr "كل الملفات"
 
 #: ../src/extract_dialog.c:88
-#, fuzzy
 msgid "Selected files"
 msgstr "ملفات مختارة"
 
 #: ../src/extract_dialog.c:100 ../src/main_window.c:451
 #: ../src/main_window.c:1219
-#, fuzzy
 msgid "Extract"
-msgstr "مستخرج"
+msgstr "استخرج"
 
 #: ../src/extract_dialog.c:110
-#, fuzzy
 msgid "Extract archive"
 msgstr "استخراج أرشيف"
 
 #: ../src/main.c:51
-#, fuzzy
 msgid "[destination path]"
 msgstr "[مسار الوجهة]"
 
 #: ../src/main.c:59
-#, fuzzy
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[مسار الأرشيف] [ملف1] [ملف2]... [ملفN]"
 
 #: ../src/main.c:63
-#, fuzzy
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[ملف1] [ملف2]... [ملفN]"
 
 #: ../src/main.c:66
-#, fuzzy
 msgid "Version information"
 msgstr "معلومات الإصدار"
 
 #: ../src/main.c:92
-#, fuzzy
 msgid "[archive name]"
 msgstr "[اسم الأرشيف]"
 
 #: ../src/main.c:96
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "%s: %s\n"
 "Try %s --help to see a full list of available command line options.\n"
@@ -172,22 +152,18 @@ msgstr ""
 "جرب %s --يساعد لمشاهدة قائمة كاملة من الخيارات المتاحة سطر الأوامر.\n"
 
 #: ../src/main_window.c:133
-#, fuzzy
 msgid "Internal Style"
 msgstr "نمط داخلي"
 
 #: ../src/main_window.c:134
-#, fuzzy
 msgid "Tool Bar Style"
-msgstr "نمط شريط أداة"
+msgstr "نمط شريط الأدوات"
 
 #: ../src/main_window.c:135
-#, fuzzy
 msgid "Path Bar Style"
 msgstr "نمط شريط المسار"
 
 #: ../src/main_window.c:182
-#, fuzzy
 msgid "Navigation Style"
 msgstr "نمط الملاحة"
 
@@ -322,7 +298,6 @@ msgid ""
 msgstr "لا يمكن الضغط على عرض هذا الملف. \\ n سيتم تحديد التطبيق لدعم هذا مفقود."
 
 #: ../src/main_window.c:1301
-#, fuzzy
 msgid "Failed to open file"
 msgstr "فشل في فتح الملف"
 
@@ -339,7 +314,6 @@ msgid "Archive type:"
 msgstr "أرشيف اكتب :"
 
 #: ../src/new_dialog.c:80
-#, fuzzy
 msgid "Archives"
 msgstr "أرشيف"
 
@@ -358,22 +332,18 @@ msgid "Make the row background colors alternate"
 msgstr "جعل ألوان الخلفية صف بديل"
 
 #: ../src/path_bar.c:141
-#, fuzzy
 msgid "Spacing"
 msgstr "تباعد"
 
 #: ../src/path_bar.c:142
-#, fuzzy
 msgid "The amount of space between the path buttons"
 msgstr "مقدار المسافة بين الأزرار المسار"
 
 #: ../src/tool_bar.c:167
-#, fuzzy
 msgid "Location:"
 msgstr "الموقع :"
 
 #: ../src/message_dialog.c:158
-#, fuzzy
 msgid "Archive manager"
 msgstr "مدير الأرشيف"
 
