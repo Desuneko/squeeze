@@ -168,7 +168,6 @@ msgid "Navigation Style"
 msgstr "نمط الملاحة"
 
 #: ../src/main_window.c:183
-#, fuzzy
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -195,7 +194,6 @@ msgid "_Add _folders"
 msgstr "_أضف _مجلدات"
 
 #: ../src/main_window.c:340
-#, fuzzy
 msgid "_Extract"
 msgstr "استخرج"
 
@@ -226,7 +224,6 @@ msgid "Open archive"
 msgstr "افتح الأرشيف"
 
 #: ../src/main_window.c:916
-#, fuzzy
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -235,12 +232,10 @@ msgstr ""
 "التطبيق الذي يدعم هذا مفقود."
 
 #: ../src/main_window.c:937
-#, fuzzy
 msgid "Are you sure you want to remove the selected files?"
 msgstr "هل أنت متأكد أنك تريد إزالة الملفات المختارة؟"
 
 #: ../src/main_window.c:950
-#, fuzzy
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -249,7 +244,6 @@ msgstr ""
 "التطبيق الذي يدعم هذا مفقود."
 
 #: ../src/main_window.c:999
-#, fuzzy
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -258,7 +252,6 @@ msgstr ""
 "هذا يمكن ان يلحق الضرر بالأرشيف."
 
 #: ../src/main_window.c:1081
-#, fuzzy
 msgid "Lead developer:"
 msgstr "قيادة المطور:"
 
@@ -267,7 +260,6 @@ msgid "Contributors:"
 msgstr "المساهمون :"
 
 #: ../src/main_window.c:1087
-#, fuzzy
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "مستوحاة من Xarchiver, الذي كتبه Giuseppe Torelli"
 
@@ -284,7 +276,6 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Базується на оригінальному значку розпакування створеному Andreas Nilsson"
 
 #: ../src/main_window.c:1100
-#, fuzzy
 msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr "سكويز  مدير أرشيف خفيف الوزن ومرن لبيئة سطح المكتب إكسفيس"
 
@@ -307,7 +298,6 @@ msgid "Open"
 msgstr "Відкрити"
 
 #: ../src/main_window.c:1233
-#, fuzzy
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -320,7 +310,7 @@ msgid "Failed to open file"
 msgstr "فشل في فتح الملف"
 
 #: ../src/main_window.c:1302
-#, c-format, fuzzy
+#, c-format
 msgid ""
 "'%s'\n"
 "Could not be opened"
@@ -329,7 +319,6 @@ msgstr ""
 "لا يمكن فتحه"
 
 #: ../src/new_dialog.c:69
-#, fuzzy
 msgid "Archive type:"
 msgstr "نوع الأرشيف :"
 
@@ -342,12 +331,10 @@ msgid "Create new archive"
 msgstr "إنشاء أرشيف جديد"
 
 #: ../src/notebook.c:207
-#, fuzzy
 msgid "Rules hint"
 msgstr "تلميح القواعد"
 
 #: ../src/notebook.c:208
-#, fuzzy
 msgid "Make the row background colors alternate"
 msgstr "جعل ألوان الخلفية صفوف متعاقبة"
 
