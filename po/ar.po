@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
@@ -32,32 +33,36 @@ msgstr "Створення і керування архівами з допом�
 msgid "Squeeze Archive Manager"
 msgstr "Менеджер архівів Squeeze"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:250
+#, fuzzy
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
+msgstr "تعذر فتح الأرشيف ، MIME نوع ملف غير معتمد أو غير موجود"
 
 #: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#, fuzzy
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
 msgstr ""
+"الضغط لا يمكن استخراج نوع الأرشيف.\n"
+"هذا التطبيق لداعم لهذا مفقود."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:233
+#, fuzzy
 msgid "Could not create archive, MIME-type unsupported"
-msgstr ""
+msgstr "تعذر إنشاء أرشيف ، MIME من نوع غير معتمد"
 
 #: ../src/application.c:268 ../src/main_window.c:874
+#, fuzzy
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "تعذر إنشاء أرشيف ، MIME نوع غير معتمد"
 
 #: ../src/archive_store.c:249 ../src/notebook.c:179
 msgid "Show full path"
@@ -72,97 +77,119 @@ msgid "Show mime icons"
 msgstr "أظهر أيقونات MIME"
 
 #: ../src/archive_store.c:257 ../src/notebook.c:187
+#, fuzzy
 msgid "Show the mime type icons for each entry"
-msgstr ""
+msgstr "تظهر الرموز نوع mime لكل إدخال"
 
 #: ../src/archive_store.c:263
+#, fuzzy
 msgid "Show up dir entry"
-msgstr ""
+msgstr "اظهر إدخالات dir"
 
 #: ../src/archive_store.c:264
+#, fuzzy
 msgid "Show '..' to go to the parent directory"
-msgstr ""
+msgstr "تظهر '..' للانتقال إلى الدليل الأصلي"
 
 #: ../src/archive_store.c:270 ../src/notebook.c:193
+#, fuzzy
 msgid "Sort folders before files"
-msgstr ""
+msgstr "فرز المجلدات قبل الملفات"
 
 #: ../src/archive_store.c:271 ../src/notebook.c:194
+#, fuzzy
 msgid "The folders will be put at the top of the list"
-msgstr ""
+msgstr "وسيتم وضع المجلدات في الجزء العلوي من القائمة"
 
 #: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
 #: ../src/notebook.c:201
+#, fuzzy
 msgid "Sort text case sensitive"
-msgstr ""
+msgstr "فرز النص بتحسس حالة الأحرف"
 
 #: ../src/extract_dialog.c:76
+#, fuzzy
 msgid "<b>Extract files:</b>"
-msgstr ""
+msgstr "<b>استخراج الملفات :</b>"
 
 #: ../src/extract_dialog.c:77
+#, fuzzy
 msgid "<b>Options:</b>"
-msgstr ""
+msgstr "<b>خيارات :</b>"
 
 #: ../src/extract_dialog.c:87
 msgid "All files"
 msgstr "كل الملفات"
 
 #: ../src/extract_dialog.c:88
+#, fuzzy
 msgid "Selected files"
-msgstr ""
+msgstr "ملفات مختارة"
 
 #: ../src/extract_dialog.c:100 ../src/main_window.c:451
 #: ../src/main_window.c:1219
+#, fuzzy
 msgid "Extract"
-msgstr ""
+msgstr "مستخرج"
 
 #: ../src/extract_dialog.c:110
+#, fuzzy
 msgid "Extract archive"
-msgstr ""
+msgstr "استخراج أرشيف"
 
 #: ../src/main.c:51
+#, fuzzy
 msgid "[destination path]"
-msgstr ""
+msgstr "[مسار الوجهة]"
 
 #: ../src/main.c:59
+#, fuzzy
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr ""
+msgstr "[مسار الأرشيف] [ملف1] [ملف2]... [ملفN]"
 
 #: ../src/main.c:63
+#, fuzzy
 msgid "[file1] [file2] ... [fileN]"
-msgstr ""
+msgstr "[ملف1] [ملف2]... [ملفN]"
 
 #: ../src/main.c:66
+#, fuzzy
 msgid "Version information"
-msgstr ""
+msgstr "معلومات الإصدار"
 
 #: ../src/main.c:92
+#, fuzzy
 msgid "[archive name]"
-msgstr ""
+msgstr "[اسم الأرشيف]"
 
 #: ../src/main.c:96
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "%s: %s\n"
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
+"%s: %s\n"
+"جرب %s --يساعد لمشاهدة قائمة كاملة من الخيارات المتاحة سطر الأوامر.\n"
 
 #: ../src/main_window.c:133
+#, fuzzy
 msgid "Internal Style"
-msgstr ""
+msgstr "نمط داخلي"
 
 #: ../src/main_window.c:134
+#, fuzzy
 msgid "Tool Bar Style"
-msgstr ""
+msgstr "نمط شريط أداة"
 
 #: ../src/main_window.c:135
+#, fuzzy
 msgid "Path Bar Style"
-msgstr ""
+msgstr "نمط شريط المسار"
 
 #: ../src/main_window.c:182
+#, fuzzy
 msgid "Navigation Style"
-msgstr ""
+msgstr "نمط الملاحة"
 
 #: ../src/main_window.c:183
 msgid ""
@@ -241,12 +268,13 @@ msgid ""
 msgstr ""
 
 #: ../src/main_window.c:1081
+#, fuzzy
 msgid "Lead developer:"
-msgstr ""
+msgstr "يؤدي المطور :"
 
 #: ../src/main_window.c:1084
 msgid "Contributors:"
-msgstr ""
+msgstr "المساهمون :"
 
 #: ../src/main_window.c:1087
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
@@ -262,19 +290,16 @@ msgstr "Значки додавання / розпакування:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
-"Базується на оригінальному значку розпакування створеному Andreas Nilsson"
+msgstr "Базується на оригінальному значку розпакування створеному Andreas Nilsson"
 
 #: ../src/main_window.c:1100
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr ""
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
-msgstr ""
+msgstr "المترجم - الاعتمادات"
 
 #: ../src/main_window.c:1137 ../src/main_window.c:1208
 #: ../src/main_window.c:1376
@@ -283,21 +308,23 @@ msgstr "تم"
 
 #: ../src/main_window.c:1218
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr ""
+msgstr "ما العمل الذ تريد تنفيذه على الملف المحدد ()؟"
 
 #: ../src/main_window.c:1219
 msgid "Open"
 msgstr "Відкрити"
 
 #: ../src/main_window.c:1233
+#, fuzzy
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
-msgstr ""
+msgstr "لا يمكن الضغط على عرض هذا الملف. \\ n سيتم تحديد التطبيق لدعم هذا مفقود."
 
 #: ../src/main_window.c:1301
+#, fuzzy
 msgid "Failed to open file"
-msgstr ""
+msgstr "فشل في فتح الملف"
 
 #: ../src/main_window.c:1302
 #, c-format
@@ -307,40 +334,48 @@ msgid ""
 msgstr ""
 
 #: ../src/new_dialog.c:69
+#, fuzzy
 msgid "Archive type:"
-msgstr ""
+msgstr "أرشيف اكتب :"
 
 #: ../src/new_dialog.c:80
+#, fuzzy
 msgid "Archives"
-msgstr ""
+msgstr "أرشيف"
 
 #: ../src/new_dialog.c:108
 msgid "Create new archive"
-msgstr ""
+msgstr "إنشاء أرشيف جديد"
 
 #: ../src/notebook.c:207
+#, fuzzy
 msgid "Rules hint"
-msgstr ""
+msgstr "قواعد تلميح"
 
 #: ../src/notebook.c:208
+#, fuzzy
 msgid "Make the row background colors alternate"
-msgstr ""
+msgstr "جعل ألوان الخلفية صف بديل"
 
 #: ../src/path_bar.c:141
+#, fuzzy
 msgid "Spacing"
-msgstr ""
+msgstr "تباعد"
 
 #: ../src/path_bar.c:142
+#, fuzzy
 msgid "The amount of space between the path buttons"
-msgstr ""
+msgstr "مقدار المسافة بين الأزرار المسار"
 
 #: ../src/tool_bar.c:167
+#, fuzzy
 msgid "Location:"
-msgstr ""
+msgstr "الموقع :"
 
 #: ../src/message_dialog.c:158
+#, fuzzy
 msgid "Archive manager"
-msgstr ""
+msgstr "مدير الأرشيف"
 
 #~ msgid "Compressing"
 #~ msgstr "Стиснення"
