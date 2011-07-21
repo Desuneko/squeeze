@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2011-06-16 12:22+0200\n"
+"PO-Revision-Date: 2011-07-20 12:22+0200\n"
 "Last-Translator: Pjotr\n"
 "Language-Team: Dutch (Flemish)\n"
 "MIME-Version: 1.0\n"
@@ -100,7 +100,7 @@ msgstr "Mappen voor bestanden sorteren"
 
 #: ../src/archive_store.c:271 ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
-msgstr "De mappen zullen boven aan de lijst geplaatst worden"
+msgstr "De mappen zullen bovenaan de lijst geplaatst worden"
 
 #: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
 #: ../src/notebook.c:201
@@ -183,7 +183,7 @@ msgid ""
 "The style to navigate trough the archive"
 msgstr ""
 "Navigatie stijl\n"
-"De stijl om te navigeren door het archief"
+"De stijl om te navigeren door het archiefbestand"
 
 #. File menu
 #: ../src/main_window.c:295
@@ -238,12 +238,12 @@ msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
 msgstr ""
-"Squeeze kan aan dit archief type geen mappen toevoegen,\n"
+"Squeeze kan aan dit archieftype geen mappen toevoegen,\n"
 "de toepassing om dit te ondersteunen ontbreekt."
 
 #: ../src/main_window.c:937
 msgid "Are you sure you want to remove the selected files?"
-msgstr "Weet u zeker dat u de geselecteerde bestanden wil verwijderen?"
+msgstr "Weet u zeker dat u de gekozen bestanden wil verwijderen?"
 
 #: ../src/main_window.c:950
 msgid ""
@@ -279,7 +279,7 @@ msgstr "Toepassingpictogram:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr "Toevoegen / Uitpakken pictogrammen"
+msgstr "Pictogrammen voor Toevoegen / Uitpakken:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
@@ -398,7 +398,7 @@ msgstr "Archiefbeheerder"
 #~ msgstr "Opruimen"
 
 #~ msgid "Removing files"
-#~ msgstr "Bestand(en) verwijderen"
+#~ msgstr "Bestanden verwijderen"
 
 #~ msgid "Removing"
 #~ msgstr "Verwijderen"
@@ -434,7 +434,7 @@ msgstr "Archiefbeheerder"
 #~ msgstr "Opdracht kreeg SIGSEGV"
 
 #~ msgid "Command Terminated"
-#~ msgstr "Opdracht Beëindigd"
+#~ msgstr "Opdracht beëindigd"
 
 #~ msgid "Files and directories to add"
 #~ msgstr "Bestanden en mappen om toe te voegen"
