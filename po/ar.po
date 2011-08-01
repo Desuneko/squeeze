@@ -4,18 +4,19 @@ msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
 "POT-Creation-Date: 2007-08-21 00:30+0200\n"
-"PO-Revision-Date: 2008-07-18 20:29+0200\n"
-"Last-Translator: Mohamed Magdy <mohamedmk@gmail.com>\n"
-"Language-Team: Arabeyes Translation & Documentation <admin@arabeyes.org>\n"
+"PO-Revision-Date: 2011-08-01 17:14-0000\n"
+"Last-Translator: كريم اولاد الشلحة <herr.linux88@gmail.com>\n"
+"Language-Team: Arabic Xfce Translation Team <herr.linux88@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: Morocco\n"
 
 #: ../libsqueeze/archive.c:236
 msgid "Name"
-msgstr "Назва"
+msgstr "إسم"
 
 #: ../libsqueeze/archive.c:238
 msgid "Mime type"
@@ -23,24 +24,27 @@ msgstr "نوع MIME"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Менеджер архівів"
+msgstr "مدير الأرشيف"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr "Створення і керування архівами з допомогою Менеджера архівів"
+msgstr "إنشاء و إدارة الأرشيفات بمدير الارشيفات"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Менеджер архівів Squeeze"
+msgstr "مدير الأرشيفات سكويز"
 
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#. 
-#: ../src/application.c:160 ../src/application.c:250
+#.
+#: ../src/application.c:160
+#: ../src/application.c:250
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "تعذر فتح الأرشيف ، MIME نوع ملف غير معتمد أو غير موجود"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:191
+#: ../src/main_window.c:826
+#: ../src/main_window.c:1260
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -49,50 +53,59 @@ msgstr ""
 "هذا التطبيق لداعم لهذا مفقود."
 
 #. * Could not create archive (mime type unsupported)
-#. 
+#.
 #: ../src/application.c:233
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "تعذر إنشاء أرشيف ، MIME من نوع غير معتمد"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:268
+#: ../src/main_window.c:874
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
 msgstr "تعذر إنشاء أرشيف ، MIME نوع غير معتمد"
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:249
+#: ../src/notebook.c:179
 msgid "Show full path"
-msgstr "Показати повний шлях"
+msgstr "عرض كامل المسار"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:180
 msgid "Show the full path strings for each entry"
-msgstr "Показувати повний шляху для кожного елемента"
+msgstr "عرض كل المسار لكل إدخال"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:256
+#: ../src/notebook.c:186
 msgid "Show mime icons"
 msgstr "أظهر أيقونات MIME"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:187
 msgid "Show the mime type icons for each entry"
 msgstr "تظهر الرموز نوع mime لكل إدخال"
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
-msgstr "اظهر إدخالات dir"
+msgstr "اظهر دليل إدخالات"
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
 msgstr "تظهر '..' للانتقال إلى الدليل الأصلي"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:270
+#: ../src/notebook.c:193
 msgid "Sort folders before files"
 msgstr "فرز المجلدات قبل الملفات"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:194
 msgid "The folders will be put at the top of the list"
 msgstr "ستوضع المجلدات في الجزء العلوي من القائمة"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
+#: ../src/archive_store.c:277
+#: ../src/archive_store.c:278
+#: ../src/notebook.c:200
 #: ../src/notebook.c:201
 msgid "Sort text case sensitive"
 msgstr "فرز النص وتحسس حالة الأحرف"
@@ -113,7 +126,8 @@ msgstr "كل الملفات"
 msgid "Selected files"
 msgstr "ملفات مختارة"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
+#: ../src/extract_dialog.c:100
+#: ../src/main_window.c:451
 #: ../src/main_window.c:1219
 msgid "Extract"
 msgstr "استخرج"
@@ -207,11 +221,13 @@ msgstr "_عرض"
 msgid "_Help"
 msgstr "_مساعدة"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
+#: ../src/main_window.c:443
+#: ../src/main_window.c:852
 msgid "Add files"
 msgstr "أضف ملفات"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
+#: ../src/main_window.c:447
+#: ../src/main_window.c:894
 msgid "Add folders"
 msgstr "أضف مجلدات"
 
@@ -265,15 +281,15 @@ msgstr "مستوحاة من Xarchiver, الذي كتبه Giuseppe Torelli"
 
 #: ../src/main_window.c:1089
 msgid "Application Icon:"
-msgstr "Значок програми:"
+msgstr "أيقونة التطبيق:"
 
 #: ../src/main_window.c:1092
 msgid "Add / Extract icons:"
-msgstr "Значки додавання / розпакування:"
+msgstr "أضف/ أيقونات الإستخراج:"
 
 #: ../src/main_window.c:1093
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Базується на оригінальному значку розпакування створеному Andreas Nilsson"
+msgstr "مبني على أيقونة إستخراج الأصلي لـ Andreas Nilsson"
 
 #: ../src/main_window.c:1100
 msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
@@ -282,9 +298,13 @@ msgstr "سكويز  مدير أرشيف خفيف الوزن ومرن لبيئة 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1108
 msgid "translator-credits"
-msgstr "المترجم - الاعتمادات"
+msgstr ""
+"Arabic Xfce Translation Team (فريق تعريب إكسفس)\n"
+"   Karim Oulad Chalha(كريم أولاد الشلحة)  <herr.linux88@gmail.com>\n"
+"   Mohamed Al Hargan(محمد الحرقان)  <malham1@gmail.com>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
+#: ../src/main_window.c:1137
+#: ../src/main_window.c:1208
 #: ../src/main_window.c:1376
 msgid "Done"
 msgstr "تم"
@@ -295,7 +315,7 @@ msgstr "ما العمل الذ تريد تنفيذه على الملف المح�
 
 #: ../src/main_window.c:1219
 msgid "Open"
-msgstr "Відкрити"
+msgstr "فتح"
 
 #: ../src/main_window.c:1233
 msgid ""
