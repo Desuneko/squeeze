@@ -19,7 +19,9 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+#include <libxfce4util/libxfce4util.h>
+
 #include <libsqueeze/libsqueeze.h>
 
 #include "archive_store.h"
@@ -953,15 +955,16 @@ sq_archive_insertionsort(SQArchiveStore *store, gint left, gint right)
 static const gchar *
 sq_archive_store_get_icon_name_for_iter(SQArchiveStore *store, LSQArchiveIter *iter)
 {
-	ThunarVfsMimeDatabase *mimedb = thunar_vfs_mime_database_get_default();
+    /*
 	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(mimedb, lsq_archive_iter_get_mime(iter));
 	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, store->icon_theme);
 	if(icon_name && !gtk_icon_theme_has_icon(store->icon_theme, icon_name))
 		icon_name = NULL;
-	/* may we do this? */
 	thunar_vfs_mime_info_unref(mime_info);
 	g_object_unref(mimedb);
 	return icon_name;
+    */
+    return NULL;
 }
 
 GtkTreeModel *

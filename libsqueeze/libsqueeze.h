@@ -17,6 +17,8 @@
 #ifndef __LIBSQUEEZE_H__
 #define __LIBSQUEEZE_H__
 
+#include <libxfce4util/libxfce4util.h>
+
 #include <libsqueeze/command-option.h>
 #include <libsqueeze/support-template.h>
 #include <libsqueeze/archive-iter-pool.h>

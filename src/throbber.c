@@ -22,8 +22,6 @@
 #include <config.h>
 #endif
 
-#include <exo/exo.h>
-
 #include "throbber.h"
 #include "throbber-fallback.h"
 
@@ -103,7 +101,7 @@ sq_throbber_get_type (void)
 			NULL,
 		};
 
-		type = g_type_register_static (GTK_TYPE_WIDGET, I_("SQThrobber"), &info, 0);
+		type = g_type_register_static (GTK_TYPE_WIDGET, "SQThrobber", &info, 0);
 	}
 
 	return type;
@@ -141,7 +139,7 @@ sq_throbber_class_init (SQThrobberClass *klass)
 									 PROP_ANIMATED,
 									 g_param_spec_boolean ("animated",
 									 "animated", "animated", \
-									 FALSE, EXO_PARAM_READWRITE));
+									 FALSE, G_PARAM_READWRITE));
 
 	/* register the "process-working" fallback icon */
 	icon = gdk_pixbuf_new_from_inline (-1, sq_throbber_fallback, FALSE, NULL);

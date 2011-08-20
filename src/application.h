@@ -62,10 +62,10 @@ SQApplication *sq_application_new(GtkIconTheme *icon_theme);
 
 GtkWidget *sq_application_new_window(SQApplication *);
 
-gint sq_application_extract_archive(SQApplication *, gchar *, gchar *);
-gint sq_application_new_archive(SQApplication *, gchar *, GSList *);
+gint sq_application_extract_archive(SQApplication *, GFile *, gchar *);
+gint sq_application_new_archive(SQApplication *, GFile *, GSList *);
 
-gint sq_application_open_archive(SQApplication *, GtkWidget *, gchar *);
+gint sq_application_open_archive(SQApplication *, GtkWidget *, GFile *);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_APPLICATION_H__*/

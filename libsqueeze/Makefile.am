@@ -1,6 +1,6 @@
-lib_LTLIBRARIES = libsqueeze-1.la
+lib_LTLIBRARIES = libsqueeze-2.la
 
-libsqueeze_1_la_SOURCES =  \
+libsqueeze_2_la_SOURCES =  \
 	archive.c archive.h \
 	archive-iter-pool.c archive-iter-pool.h \
 	archive-iter.c archive-iter.h \
@@ -24,16 +24,20 @@ libsqueeze_1_la_SOURCES =  \
 # remove-command.c remove-command.h
 # xfce-launch-command.c xfce-launch-command.h
 
-libsqueeze_1_la_CFLAGS = \
+libsqueeze_2_la_CFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	$(GLIB_CFLAGS)  \
 	$(DBUS_CFLAGS)  \
 	$(GIO_CFLAGS)   \
     $(LIBXFCE4UTIL_CFLAGS)
 
-libsqueeze_1_la_LIBADD =
+libsqueeze_2_la_LIBADD = \
+	$(GLIB_LIBS)  \
+	$(DBUS_LIBS)  \
+	$(GIO_LIBS)   \
+    $(LIBXFCE4UTIL_LIBS)
 
-libsqueeze_1_la_LDFLAGS = \
+libsqueeze_2_la_LDFLAGS = \
   -version-info $(SQUEEZE_VERINFO)
 
 libsqueeze_includedir= \

@@ -93,8 +93,6 @@ struct _LSQArchiveClass
 
 GType		   lsq_archive_get_type(void);
 
-gchar		  *lsq_archive_get_path(const LSQArchive *archive);
-const gchar	*lsq_archive_get_filename(const LSQArchive *archive);
 const gchar	*lsq_archive_get_mimetype(const LSQArchive *archive);
 gboolean		lsq_archive_exists(const LSQArchive *archive);
 LSQSupportType  lsq_archive_get_support_mask(const LSQArchive *archive);

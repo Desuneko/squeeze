@@ -32,7 +32,8 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+#include <libxfce4util/libxfce4util.h>
 #include <libsqueeze/libsqueeze.h>
 
 #ifdef HAVE_LIBXFCE4UTIL
@@ -659,7 +660,7 @@ static void
 cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 {
 	GtkWidget *dialog = sq_new_archive_dialog_new();
-	gchar *archive_path = NULL;
+	GFile *file = NULL;
 	SQMainWindow *window = SQ_MAIN_WINDOW(userdata);
 	LSQArchive *archive = NULL;
 	LSQSupportType support_mask = 0;
@@ -673,9 +674,9 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 	}
 	if(result == GTK_RESPONSE_OK)
 	{
-		archive_path = sq_new_archive_dialog_get_filename(SQ_NEW_ARCHIVE_DIALOG(dialog));
+		file = sq_new_archive_dialog_get_file(SQ_NEW_ARCHIVE_DIALOG(dialog));
 		
-		if(!lsq_new_archive(archive_path, TRUE, NULL, &archive))
+		if(!lsq_new_archive(file, TRUE, &archive))
 		{
 			support_mask = lsq_archive_get_support_mask(archive);
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, TRUE);
@@ -705,7 +706,7 @@ cb_sq_main_new_archive(GtkWidget *widget, gpointer userdata)
 		{
 
 		}
-		g_free(archive_path);
+        g_object_unref (file);
 		gtk_widget_destroy (dialog );
 	}
 
@@ -1149,7 +1150,10 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	sq_notebook_page_get_archive(notebook, &lp_archive, page_nr);
 	SQMainWindow *window = SQ_MAIN_WINDOW(data);
 
-	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", lsq_archive_get_filename(lp_archive), NULL));
+    GFile *file = lsq_archive_get_file(lp_archive);
+    gchar *filename = g_file_get_basename (file);
+	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", filename , NULL));
+    g_free (filename);
 
 	sq_main_window_new_action_menu(window, lp_archive);
 
@@ -1302,11 +1306,11 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, LSQArchiveIter *
 }
 
 gint
-sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
+sq_main_window_open_archive(SQMainWindow *window, GFile *file, gint replace)
 {
 	LSQArchive *archive = NULL;
 
-	if(!lsq_open_archive(path, &archive))
+	if(!lsq_open_archive(file, &archive))
 	{
 		if(replace < 0)
 			sq_notebook_add_archive(SQ_NOTEBOOK(window->notebook), archive, FALSE);
@@ -1324,7 +1328,7 @@ sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace)
 				GTK_MESSAGE_ERROR, 
 				GTK_BUTTONS_OK,
 				_("Failed to open file"));
-		gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(dialog), _("'%s'\nCould not be opened"), path);
+		gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(dialog), _("'%s'\nCould not be opened"), g_file_get_path (file));
 		gtk_dialog_run(GTK_DIALOG(dialog));
 		gtk_widget_destroy(dialog);
 	}

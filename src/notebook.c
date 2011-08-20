@@ -18,7 +18,9 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+#include <libxfce4util/libxfce4util.h>
+
 #include <libsqueeze/libsqueeze.h>
 #include "settings.h"
 #include "archive_store.h"
@@ -496,7 +498,9 @@ void
 sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_archive)
 {
 	GtkWidget *lbl_hbox = gtk_hbox_new(FALSE, 0);
-	GtkWidget *label = gtk_label_new(lsq_archive_get_filename(archive));
+    GFile *file = lsq_archive_get_file(archive);
+    gchar *filename = g_file_get_basename(file);
+	GtkWidget *label = gtk_label_new(filename);
 	GtkWidget *archive_image = gtk_image_new_from_icon_name("unknown", GTK_ICON_SIZE_MENU);
 	GtkWidget *throbber = sq_throbber_new();
 	GtkWidget *alignment = gtk_alignment_new(0.5,0.5,1,1);
@@ -519,7 +523,8 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 
 	gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_MIDDLE);
 	gtk_label_set_max_width_chars(GTK_LABEL(label), 20);
-	gtk_tooltips_set_tip(notebook->tool_tips, label, lsq_archive_get_filename(archive), NULL);
+    
+	gtk_tooltips_set_tip(notebook->tool_tips, label, g_file_get_basename(lsq_archive_get_file(archive)), NULL);
 
 	GtkWidget *tree_view = gtk_tree_view_new();
 	g_signal_connect(G_OBJECT(tree_view), "notify", G_CALLBACK(cb_sq_notebook_notify_proxy), notebook);
@@ -576,6 +581,7 @@ sq_notebook_add_archive(SQNotebook *notebook, LSQArchive *archive, gboolean new_
 	{
 		lsq_archive_operate(archive, LSQ_COMMAND_TYPE_REFRESH, NULL, NULL);
 	}
+    g_free(filename);
 
 }
 

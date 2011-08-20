@@ -111,12 +111,13 @@ static const gchar *lsq_execute_context_get_temp_file(LSQExecuteContext *ctx)
 
 static gchar *format_get_filename(const gchar *format, LSQExecuteContext *ctx)
 {
+  GFile *file = lsq_archive_get_file (ctx->archive);
   if((format[0] == '%') && (format[2] == '\0'))
   {
     switch(format[1])
     {
       case 'a':
-        return lsq_archive_get_path(ctx->archive);
+        return g_file_get_basename (file);
       case 't':
         return g_strdup(lsq_execute_context_get_temp_file(ctx));
     }
@@ -130,6 +131,7 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
   guint size;
   GSList *iter;
   gchar **filei;
+  GFile *file;
   
   size = 2;
 
@@ -152,6 +154,7 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
 
   for(iter = entry->args; iter; iter = iter->next)
   {
+    file = lsq_archive_get_file(ctx->archive);
     const gchar *arg = (const gchar*)iter->data;
     if((arg[0] == '%') && (arg[2] == '\0'))
     {
@@ -167,7 +170,7 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
           }
           break;
         case 'a':
-          *argi++ = lsq_archive_get_path(ctx->archive);
+          *argi++ = g_file_get_path(file);
           break;
         case 't':
           *argi++ = g_strdup(lsq_execute_context_get_temp_file(ctx));

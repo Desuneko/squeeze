@@ -19,7 +19,9 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+#include <libxfce4util/libxfce4util.h>
+
 #include <libsqueeze/libsqueeze.h>
 
 #include "settings.h"
@@ -82,6 +84,7 @@ int main(int argc, char **argv)
 	SQApplication *sq_app = NULL;
 	GError *cli_error = NULL;
 	gint i = 0;
+    GFile *file = NULL;
 
 	#ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -100,7 +103,6 @@ int main(int argc, char **argv)
 	}
 	gchar *current_dir = g_get_current_dir();
 
-	thunar_vfs_init();
 	lsq_init();
 
 	sq_icon_theme = gtk_icon_theme_get_default();
@@ -126,8 +128,13 @@ int main(int argc, char **argv)
 		}
 		for(i = 1; i < argc; i++)
 		{
-			if(sq_application_extract_archive(sq_app, argv[i], extract_archive_path))
-				err++;
+            file = g_file_new_for_path(argv[i]);
+            if (file)
+            {
+                if(sq_application_extract_archive(sq_app, file, extract_archive_path))
+                    err++;
+                g_object_unref(file);
+            }
 		}
 		if(err)
 			return 1;
@@ -166,7 +173,7 @@ int main(int argc, char **argv)
 			files = g_slist_prepend(files, filename);
 		}
 
-		if(sq_application_new_archive(sq_app, add_archive_path, files))
+		if(sq_application_new_archive(sq_app, file, files))
 			return 1;
 	}
 
@@ -178,7 +185,11 @@ int main(int argc, char **argv)
 				main_window = sq_application_new_window(sq_app);
 			for(i = 1; i < argc; i++)
 			{
-				sq_application_open_archive(sq_app, main_window, argv[i]);
+                file = g_file_new_for_path (argv[i]);
+                if (file)
+                {
+				    sq_application_open_archive(sq_app, main_window, file);
+                }
 			}
 		} else
 		{
@@ -191,7 +202,6 @@ int main(int argc, char **argv)
 	g_object_unref(sq_app);
 	gtk_main();
 	lsq_shutdown();
-	thunar_vfs_shutdown();
 
 	return 0;
 }

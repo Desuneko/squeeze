@@ -20,7 +20,8 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+#include <libxfce4util/libxfce4util.h>
 #include <libsqueeze/libsqueeze.h>
 
 #include "new_dialog.h"
@@ -114,20 +115,13 @@ sq_new_archive_dialog_new()
 	return dialog;
 }
 
-gchar *
-sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
+GFile *
+sq_new_archive_dialog_get_file(SQNewArchiveDialog *dialog)
 {
-	gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+	GFile *file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER(dialog));
 
-	gchar *base = g_path_get_basename(filename);
-	if(lsq_is_supported(base))
+    if (file)
 	{
-		g_free(base);
-		return filename;
-	}
-	else
-	{
-		g_free(base);
 		gint i;
 		GSList *_supported_mime_types = dialog->supported_mime_types;
 		for(i = 0; i < gtk_combo_box_get_active(GTK_COMBO_BOX(dialog->archive_types_combo)); i++)
@@ -151,9 +145,6 @@ sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog)
 		if(!strcmp(mime_type, "application/x-bzip"))  suffix = ".bz2";
 		if(!strcmp(mime_type, "application/x-lzop"))  suffix = ".lzo";
 		if(!strcmp(mime_type, "application/x-compress"))  suffix = ".Z";
-		base = filename;
-		filename = g_strconcat(base, suffix, NULL);
-		g_free(base);
-		return filename;
 	}
+    return file;
 }

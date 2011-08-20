@@ -18,7 +18,9 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 #include <libsqueeze/libsqueeze.h>
 
 #include "new_dialog.h"
@@ -144,11 +146,11 @@ sq_application_new_window(SQApplication *app)
 }
 
 gint
-sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *dest_path)
+sq_application_extract_archive(SQApplication *app, GFile *file, gchar *dest_path)
 {
 	GtkWidget *dialog = NULL;
 	LSQArchive *lp_archive = NULL;
-	if(lsq_open_archive(archive_path, &lp_archive))
+	if(lsq_open_archive(file, &lp_archive))
 	{
 		/*
 		 * Could not open archive (mime type not supported or file did not exist)
@@ -197,13 +199,13 @@ sq_application_extract_archive(SQApplication *app, gchar *archive_path, gchar *d
 }
 
 gint
-sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *files)
+sq_application_new_archive(SQApplication *app, GFile *file, GSList *files)
 {
 	GtkWidget *dialog = NULL;
 	gint result = 0;
 	LSQArchive *lp_archive = NULL;
 
-	if(!archive_path)
+	if(!file)
 	{
 		dialog = sq_new_archive_dialog_new();
 		/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
@@ -218,10 +220,10 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 		}
 		if(result == GTK_RESPONSE_OK)
 		{
-			archive_path = sq_new_archive_dialog_get_filename(SQ_NEW_ARCHIVE_DIALOG(dialog));
+			file = sq_new_archive_dialog_get_file(SQ_NEW_ARCHIVE_DIALOG(dialog));
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
 		}
-		if(lsq_new_archive(archive_path, TRUE, NULL, &lp_archive))
+		if(lsq_new_archive(file, TRUE, &lp_archive))
 		{
 			/* 
 			 * Could not create archive (mime type unsupported) 
@@ -232,12 +234,12 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 			gtk_widget_destroy (GTK_WIDGET (dialog) );
 			return 1;
 		}
-		g_free(archive_path);
-		archive_path = NULL;
+		g_object_unref(file);
+        file = NULL;
 	}
 	else
 	{
-		if(lsq_open_archive(archive_path, &lp_archive))
+		if(lsq_open_archive(file, &lp_archive))
 		{
 			/*
 			 * Could not open archive (mime type not supported or file did not exist)
@@ -256,11 +258,12 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, NULL, NULL))
 	{
 		/* FIXME: show warning dialog */
-		GtkWidget *warning_dialog = gtk_message_dialog_new(NULL, 
-																											 GTK_DIALOG_DESTROY_WITH_PARENT, 
-																											 GTK_MESSAGE_WARNING,
-																											 GTK_BUTTONS_CLOSE,
-																											 _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
+		GtkWidget *warning_dialog = gtk_message_dialog_new(
+                NULL, 
+                GTK_DIALOG_DESTROY_WITH_PARENT, 
+                GTK_MESSAGE_WARNING,
+                GTK_BUTTONS_CLOSE,
+                _("Squeeze cannot add files to this archive type,\nthe application to support this is missing."));
 		gtk_dialog_run (GTK_DIALOG (warning_dialog) );
 		gtk_widget_destroy(warning_dialog);
 	}
@@ -269,7 +272,7 @@ sq_application_new_archive(SQApplication *app, gchar *archive_path, GSList *file
 }
 
 gint
-sq_application_open_archive(SQApplication *app, GtkWidget *window, gchar *path)
+sq_application_open_archive(SQApplication *app, GtkWidget *window, GFile *file)
 {
 	gint retval = 0;
 
@@ -279,11 +282,11 @@ sq_application_open_archive(SQApplication *app, GtkWidget *window, gchar *path)
 	}
 	if(app->props._tabs)
 	{
-		retval = sq_main_window_open_archive(SQ_MAIN_WINDOW(window), path, -1);
+		retval = sq_main_window_open_archive(SQ_MAIN_WINDOW(window), file, -1);
 	}
 	else
 	{
-		retval = sq_main_window_open_archive(SQ_MAIN_WINDOW(window), path, 0);
+		retval = sq_main_window_open_archive(SQ_MAIN_WINDOW(window), file, 0);
 	}
 	gtk_widget_show(window);
 	return retval;

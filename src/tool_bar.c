@@ -19,7 +19,9 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 #include <libsqueeze/libsqueeze.h>
 #include "archive_store.h"
 #include "navigation_bar.h"

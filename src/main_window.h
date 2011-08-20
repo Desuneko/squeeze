@@ -144,7 +144,7 @@ GtkWidget *sq_main_window_new(SQApplication *, GtkIconTheme *icon_theme);
 GtkWidget *sq_main_window_find_image(gchar *, GtkIconSize);
 GType	  sq_main_window_get_type ();
 
-gint sq_main_window_open_archive(SQMainWindow *window, gchar *path, gint replace);
+gint sq_main_window_open_archive(SQMainWindow *window, GFile *file, gint replace);
 
 
 G_END_DECLS

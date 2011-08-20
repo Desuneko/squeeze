@@ -21,7 +21,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
 #include <libsqueeze/libsqueeze.h>
 
 #include "extract_dialog.h"
@@ -127,7 +127,7 @@ sq_extract_archive_dialog_new(LSQArchive *archive, gboolean sel_option)
   }
 
 	/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
-	gchar **filename_components = g_strsplit(g_path_get_basename(lsq_archive_get_filename(archive)), ".", 2);
+	gchar **filename_components = g_strsplit(g_file_get_basename(lsq_archive_get_file(archive)), ".", 2);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
 	g_strfreev(filename_components);
 

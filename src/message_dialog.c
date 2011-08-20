@@ -17,7 +17,8 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+#include <libxfce4util/libxfce4util.h>
 #include <libsqueeze/libsqueeze.h>
 
 #include "message_dialog.h"
@@ -168,7 +169,7 @@ sq_message_dialog_new(GtkWindowType type, LSQArchive *archive)
 
 	g_timeout_add(200, (GSourceFunc)sq_message_dialog_progressbar_pulse, dialog);
 
-	gtk_label_set_text(GTK_LABEL(dialog->message_label), lsq_archive_get_path(archive));
+	gtk_label_set_text(GTK_LABEL(dialog->message_label), g_file_get_path(lsq_archive_get_file(archive)));
 
 	return (GtkWidget*)dialog;
 }

@@ -78,7 +78,7 @@ lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer uri
 #endif
     GFile *file = g_file_new_for_path (uri);
     
-	if(g_file_is_equal (lsq_archive_get_file(LSQ_ARCHIVE(open_archive)), file))
+	if(g_file_equal (lsq_archive_get_file(LSQ_ARCHIVE(open_archive)), file))
 	{
         g_object_unref (file);
 		return 0;

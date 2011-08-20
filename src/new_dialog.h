@@ -57,7 +57,7 @@ struct _SQNewArchiveDialogClass
 
 GType sq_new_archive_dialog_get_type();
 GtkWidget *sq_new_archive_dialog_new();
-gchar *sq_new_archive_dialog_get_filename(SQNewArchiveDialog *dialog);
+GFile *sq_new_archive_dialog_get_file(SQNewArchiveDialog *dialog);
 
 G_END_DECLS
 #endif /* __SQRCHIVER_NEW_ARCHIVE_DIALOG_H__ */

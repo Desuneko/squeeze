@@ -82,10 +82,10 @@ lsq_new_archive(GFile *file, gboolean overwrite, LSQArchive **lp_archive)
 {
 	if(overwrite)
     {
-        g_file_unlink (file);
+        g_file_trash (file, NULL, NULL);
     }
 
-	if(g_file_exists(file, NULL))
+	if(g_file_query_exists(file, NULL))
 	{
 		(*lp_archive) = NULL;
 		return 1;
@@ -106,7 +106,7 @@ lsq_new_archive(GFile *file, gboolean overwrite, LSQArchive **lp_archive)
 gint
 lsq_open_archive(GFile *file, LSQArchive **lp_archive)
 {
-	if(!g_file_exists (file, NULL))
+	if(!g_file_query_exists (file, NULL))
 	{
 		(*lp_archive) = NULL;
 		return 1;

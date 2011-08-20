@@ -17,7 +17,7 @@
 #include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
 #include <libsqueeze/libsqueeze.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 

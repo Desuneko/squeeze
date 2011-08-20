@@ -20,7 +20,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
 #include <libsqueeze/libsqueeze.h>
 #include "archive_store.h"
 #include "button_drag_box.h"
