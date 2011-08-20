@@ -15,14 +15,14 @@ m4_define([squeeze_version_major], [0])
 m4_define([squeeze_version_minor], [4])
 m4_define([squeeze_version_micro], [90])
 m4_define([squeeze_version_nano], []) # Leave empty for no nano version
-m4_define([squeeze_version_build], [r@REVISION@])
-m4_define([squeeze_version_tag], [svn]) # Leave empty for releases
-m4_define([squeeze_version], [ifelse(squeeze_version_branch(), [], [squeeze_version_major().squeeze_version_minor().squeeze_version_micro()ifelse(squeeze_version_nano(), [], [], [.squeeze_version_nano()])], [squeeze_version_branch()])ifelse(squeeze_version_tag(),[],[], [-ifelse(squeeze_version_tag(), [dev], [squeeze_version_tag()-squeeze_version_build()], [squeeze_version_tag()])])])
+m4_define([squeeze_version_build], [@REVISION@])
+m4_define([squeeze_version_tag], [git]) # Leave empty for releases
+m4_define([squeeze_version], [squeeze_version_major().squeeze_version_minor().squeeze_version_micro()ifelse(squeeze_version_tag(), [], [], [squeeze_version_tag()-squeeze_version_build()])])
 
 dnl *******************************************
-dnl *** Debugging support for SVN snapshots ***
+dnl *** Debugging support for GIT snapshots ***
 dnl *******************************************
-m4_define([squeeze_debug_default], [ifelse(squeeze_version_tag(), [svn], [full], [no])])
+m4_define([squeeze_debug_default], [ifelse(squeeze_version_tag(), [git], [yes], [])])
 
 AC_COPYRIGHT([Copyright (c) 2006
         The Xfce development team. All rights reserved.
@@ -137,7 +137,9 @@ if test "$lsq_gslices" = "yes"; then
 fi
 
 dnl check for debugging support
-XDT_FEATURE_DEBUG
+XDT_FEATURE_DEBUG([squeeze_debug_default])
+
+XDT_FEATURE_LINKER_OPTS
 
 AC_OUTPUT([
 Makefile
