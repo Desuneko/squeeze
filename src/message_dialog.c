@@ -41,7 +41,7 @@ cb_sq_message_dialog_close(GtkButton *button, SQMessageDialog *dialog);
 static GObjectClass *parent_class = NULL;
 
 GType
-sq_message_dialog_get_type ()
+sq_message_dialog_get_type (void)
 {
 	static GType sq_message_dialog_type = 0;
 
@@ -80,13 +80,16 @@ static void
 sq_message_dialog_init(SQMessageDialog *dialog)
 {
 	GtkWidget *vbox = gtk_vbox_new(FALSE, 3);
+	GtkWidget *separator;
+	GtkWidget *button_box;
+	GtkWidget *cancel_button;
 	dialog->message_label = gtk_label_new("being silly here");
 	dialog->progress_bar = gtk_progress_bar_new();
 
 	gtk_label_set_ellipsize(GTK_LABEL(dialog->message_label), PANGO_ELLIPSIZE_MIDDLE);
 
-	GtkWidget *separator = gtk_hseparator_new();
-	GtkWidget *button_box= gtk_hbutton_box_new();
+	separator = gtk_hseparator_new();
+	button_box = gtk_hbutton_box_new();
 
 	gtk_box_pack_end(GTK_BOX(vbox), button_box, FALSE, FALSE, 0);
 	gtk_box_pack_end(GTK_BOX(vbox), separator, FALSE, FALSE, 0);
@@ -96,7 +99,7 @@ sq_message_dialog_init(SQMessageDialog *dialog)
 
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_END);
 
-	GtkWidget *cancel_button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
+	cancel_button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
 
 	g_signal_connect(cancel_button, "clicked", G_CALLBACK(cb_sq_message_dialog_close), dialog);
 

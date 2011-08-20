@@ -76,7 +76,7 @@ sq_archive_store_get_flags(GtkTreeModel *tree_model);
 static gint
 sq_archive_store_get_n_columns(GtkTreeModel *tree_model);
 static GType
-sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index);
+sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index_);
 static gboolean
 sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePath *path);
 static GtkTreePath *
@@ -142,8 +142,20 @@ cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data);
 /* cb_sq_archive_store_archive_path_changed(LSQArchive *archive, const gchar *path, gpointer user_data); */
 
 GType
-sq_archive_store_get_type()
+sq_archive_store_get_type(void)
 {
+	static const GInterfaceInfo tree_model_info =
+	{
+		(GInterfaceInitFunc) sq_archive_tree_model_init,
+			NULL,
+			NULL
+	};
+	static const GInterfaceInfo tree_sort_info =
+	{
+		(GInterfaceInitFunc) sq_archive_tree_sortable_init,
+			NULL,
+			NULL
+	};
 	static GType sq_archive_store_type= 0;
 
 	if(sq_archive_store_type)
@@ -167,21 +179,8 @@ sq_archive_store_get_type()
 
 		sq_archive_store_type = g_type_register_static (G_TYPE_OBJECT, "SQArchiveStore", &sq_archive_store_info, 0);
 	}
-	static const GInterfaceInfo tree_model_info =
-	{
-		(GInterfaceInitFunc) sq_archive_tree_model_init,
-			NULL,
-			NULL
-	};
 
 	g_type_add_interface_static (sq_archive_store_type, GTK_TYPE_TREE_MODEL, &tree_model_info);
-
-	static const GInterfaceInfo tree_sort_info =
-	{
-		(GInterfaceInitFunc) sq_archive_tree_sortable_init,
-			NULL,
-			NULL
-	};
 
 	g_type_add_interface_static (sq_archive_store_type, GTK_TYPE_TREE_SORTABLE, &tree_sort_info);
 
@@ -380,10 +379,13 @@ sq_archive_store_get_flags(GtkTreeModel *tree_model)
 static gint
 sq_archive_store_get_n_columns(GtkTreeModel *tree_model)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), 0);
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
 
 	if(!archive)
 		return 0;
@@ -392,35 +394,45 @@ sq_archive_store_get_n_columns(GtkTreeModel *tree_model)
 }
 
 static GType
-sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index)
+sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index_)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), G_TYPE_INVALID);	
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
-	g_return_val_if_fail(index < lsq_archive_n_entry_properties(archive), G_TYPE_INVALID);
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
+	g_return_val_if_fail(index_ < (gint)lsq_archive_n_entry_properties(archive), G_TYPE_INVALID);
 
 	if(!archive)
 		return G_TYPE_INVALID;
 
-	switch(index)
+	switch(index_)
 	{
 		case SQ_ARCHIVE_STORE_EXTRA_PROP_PATH:
 		case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
 			return G_TYPE_STRING; 
 		default:
-			return lsq_archive_get_entry_property_type(archive, index - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
+			return lsq_archive_get_entry_property_type(archive, index_ - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
 	}
 }
 
 static gboolean
 sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePath *path)
 {
+	SQArchiveStore *store;
+	LSQArchiveIter *entry;
+	gint *indices;
+	gint depth;
+	gint index_;
+
+
 #ifdef DEBUG
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), FALSE);	
 #endif
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
+	store = SQ_ARCHIVE_STORE(tree_model);
 
 	if(!store->navigation.present)
 		return FALSE;
@@ -429,21 +441,21 @@ sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 #endif
 
 	/* get the present history */
-	LSQArchiveIter *entry = store->navigation.present->data;
+	entry = store->navigation.present->data;
 
-	gint *indices = gtk_tree_path_get_indices(path);
-	gint depth = gtk_tree_path_get_depth(path) - 1;
+	indices = gtk_tree_path_get_indices(path);
+	depth = gtk_tree_path_get_depth(path) - 1;
 
 	/* only support list: depth is always 0 */
 	g_return_val_if_fail(depth == 0, FALSE);
 
-	gint index = indices[depth];
+	index_ = indices[depth];
 
 	/* if this is the root entry we don't need the ".." */
 	if(store->props._show_up_dir && lsq_archive_iter_has_parent(entry))
-		index--;
+		index_--;
 
-	if(index == -1)
+	if(index_ == -1)
 	{
 		/* it is the ".." */
 		entry = NULL;
@@ -452,7 +464,7 @@ sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 	{
 		/* as long as it is a list depth is 0 other wise current_entry should be synced ? */
 		if(store->sort_list)
-			entry = store->sort_list[index];
+			entry = store->sort_list[index_];
 		else
 			entry = NULL;
 
@@ -462,8 +474,8 @@ sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 
 	iter->stamp = store->stamp;
 	iter->user_data = entry;
-	/* the index in the child list */
-	iter->user_data3 = GINT_TO_POINTER(index);
+	/* the index_ in the child list */
+	iter->user_data3 = GINT_TO_POINTER(index_);
 
 	return TRUE;
 }
@@ -471,20 +483,26 @@ sq_archive_store_get_iter(GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreePa
 static GtkTreePath *
 sq_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+	LSQArchiveIter *entry;
+	gint pos;
+	GtkTreePath *path;
+
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), NULL);	
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
 
 	g_return_val_if_fail(archive, NULL);
 
-	LSQArchiveIter *entry = (LSQArchiveIter*)iter->user_data;
-	gint pos = GPOINTER_TO_INT(iter->user_data3);
+	entry = (LSQArchiveIter*)iter->user_data;
+	pos = GPOINTER_TO_INT(iter->user_data3);
 
 	if(store->props._show_up_dir && lsq_archive_iter_has_parent(entry))
 		pos++;
 
-	GtkTreePath *path = gtk_tree_path_new();
+	path = gtk_tree_path_new();
 	gtk_tree_path_append_index(path, pos);
 
 	return path;
@@ -494,11 +512,15 @@ sq_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 static void 
 sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint column, GValue *value)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+	LSQArchiveIter *parent, *entry;
+
 	g_return_if_fail (SQ_IS_ARCHIVE_STORE (tree_model));
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
-	LSQArchiveIter *parent, *entry = iter->user_data;
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
+	entry = iter->user_data;
 
 	g_return_if_fail(archive);
 
@@ -561,14 +583,18 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 static gboolean
 sq_archive_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 {
+	SQArchiveStore *store;
+	LSQArchiveIter *entry;
+	gint pos;
+
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), FALSE);
 	
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
+	store = SQ_ARCHIVE_STORE(tree_model);
 	if(iter->stamp != store->stamp)
 		return FALSE;
 
-	LSQArchiveIter *entry = iter->user_data;
-	gint pos = GPOINTER_TO_INT(iter->user_data3);
+	entry = iter->user_data;
+	pos = GPOINTER_TO_INT(iter->user_data3);
 	pos++;
 
 	if(store->sort_list)
@@ -589,19 +615,23 @@ sq_archive_store_iter_next (GtkTreeModel *tree_model, GtkTreeIter *iter)
 static gboolean
 sq_archive_store_iter_children (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+	LSQArchiveIter *entry;
+
 #ifdef DEBUG
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), FALSE);
 #endif
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
 
 #ifdef DEBUG
 	g_return_val_if_fail(store->navigation.present, FALSE);
 	g_return_val_if_fail(store->navigation.present->data, FALSE);
 #endif
 
-	LSQArchiveIter *entry = store->navigation.present->data;
+	entry = store->navigation.present->data;
 
 #ifdef DEBUG
 	g_return_val_if_fail(archive, FALSE);
@@ -643,19 +673,23 @@ sq_archive_store_iter_has_child (GtkTreeModel *tree_model, GtkTreeIter *iter)
 static gint
 sq_archive_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+	LSQArchiveIter *entry;
+
 #ifdef DEBUG
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), 0);
 #endif
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
 
 #ifdef DEBUG
 	g_return_val_if_fail(store->navigation.present, 0);
 	g_return_val_if_fail(store->navigation.present->data, 0);
 #endif
 
-	LSQArchiveIter *entry = store->navigation.present->data;
+	entry = store->navigation.present->data;
 
 #ifdef DEBUG
 	g_return_val_if_fail(archive, 0);
@@ -671,19 +705,23 @@ sq_archive_store_iter_n_children (GtkTreeModel *tree_model, GtkTreeIter *iter)
 static gboolean 
 sq_archive_store_iter_nth_child (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTreeIter *parent, gint n)
 {
+	SQArchiveStore *store;
+	LSQArchive *archive;
+	LSQArchiveIter *entry;
+
 #ifdef DEBUG
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(tree_model), FALSE);
 #endif
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(tree_model);
-	LSQArchive *archive = store->archive;
+	store = SQ_ARCHIVE_STORE(tree_model);
+	archive = store->archive;
 
 #ifdef DEBUG
 	g_return_val_if_fail(store->navigation.present, FALSE);
 	g_return_val_if_fail(store->navigation.present->data, FALSE);
 #endif
 
-	LSQArchiveIter *entry = store->navigation.present->data;
+	entry = store->navigation.present->data;
 
 #ifdef DEBUG
 	g_return_val_if_fail(archive, FALSE);
@@ -729,9 +767,11 @@ sq_archive_store_iter_parent (GtkTreeModel *tree_model, GtkTreeIter *iter, GtkTr
 static gboolean
 sq_archive_store_get_sort_column_id(GtkTreeSortable *sortable, gint *sort_col_id, GtkSortType *order)
 {
+	SQArchiveStore *store;
+
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(sortable), FALSE);
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(sortable);
+	store = SQ_ARCHIVE_STORE(sortable);
 
 	if(sort_col_id)
 		*sort_col_id = store->sort_column;
@@ -739,15 +779,17 @@ sq_archive_store_get_sort_column_id(GtkTreeSortable *sortable, gint *sort_col_id
 	if(order)
 		*order = store->sort_order;
 
-	return store->sort_order >= 0;
+	return TRUE; /*store->sort_order >= 0;*/
 }
 
 static void
 sq_archive_store_set_sort_column_id(GtkTreeSortable *sortable, gint sort_col_id, GtkSortType order)
 {
+	SQArchiveStore *store;
+
 	g_return_if_fail(SQ_IS_ARCHIVE_STORE(sortable));
 
-	SQArchiveStore *store = SQ_ARCHIVE_STORE(sortable);
+	store = SQ_ARCHIVE_STORE(sortable);
 
 	if(store->sort_column == sort_col_id && store->sort_order == order)
 		return;
@@ -791,6 +833,8 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 	gboolean cmp_b = 0;
 	GValue  prop_a;
 	GValue  prop_b;
+	LSQArchiveIter *swap;
+	LSQArchive *archive;
 	memset(&prop_a, 0, sizeof(GValue));
 	memset(&prop_b, 0, sizeof(GValue));
 	if(store->props._sort_folders_first)
@@ -804,14 +848,14 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 			return 1;
 	}
 
-	LSQArchiveIter *swap = b;
+	swap = b;
 	if(store->sort_order == GTK_SORT_DESCENDING)
 	{
 		b = a;
 		a = swap;
 	}
 
-	LSQArchive *archive = store->archive;
+	archive = store->archive;
 	column = store->sort_column - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT;
 
 	lsq_archive_iter_get_prop_value(a, column, &prop_a);
@@ -855,6 +899,10 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 static void
 sq_archive_store_sort(SQArchiveStore *store)
 {
+	LSQArchiveIter *pentry;
+	guint psize;
+	guint i = 0;
+
 	if(store->sort_list)
 	{
 		LSQArchiveIter **iter;
@@ -871,9 +919,8 @@ sq_archive_store_sort(SQArchiveStore *store)
 	g_return_if_fail(store->navigation.present->data);
 #endif
 
-	LSQArchiveIter *pentry = store->navigation.present->data;
-	guint psize = lsq_archive_iter_n_children(pentry);
-	guint i = 0;
+	pentry = store->navigation.present->data;
+	psize = lsq_archive_iter_n_children(pentry);
 
 	store->sort_list = g_new(LSQArchiveIter*, psize+1);
 
@@ -900,12 +947,16 @@ swap(LSQArchiveIter **left, LSQArchiveIter **right)
 static void
 sq_archive_quicksort(SQArchiveStore *store, gint left, gint right)
 {
+	gint i;
+	gint j;
+	LSQArchiveIter *value = NULL;
+	LSQArchiveIter **list;
+
 	if(right-left < 30)	return;
 
-	gint i = (left+right)/2;
-	gint j = right-1;
-	LSQArchiveIter *value = NULL;
-	LSQArchiveIter **list = store->sort_list;
+	i = (left+right)/2;
+	j = right-1;
+	list = store->sort_list;
 
 	if(sq_archive_entry_compare(store, list[left], list[i]) > 0)
 		swap(list+left, list+i);
@@ -997,6 +1048,12 @@ static void
 sq_archive_store_refresh(SQArchiveStore *store)
 {
 	LSQArchive *archive = store->archive;
+	LSQArchiveIter *entry;
+	guint prev_size;
+	guint new_size;
+	guint i = 0;
+	GtkTreePath *path_ = NULL;
+	GtkTreeIter iter;
 
 	if(!store->navigation.present)
 		return;
@@ -1004,16 +1061,13 @@ sq_archive_store_refresh(SQArchiveStore *store)
 	g_return_if_fail(store->navigation.present->data);
 #endif
 
-	LSQArchiveIter *entry = store->navigation.present->data;
+	entry = store->navigation.present->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
-	guint prev_size = store->list_size;
-	guint new_size = lsq_archive_iter_n_children(entry);
-	guint i = 0;
-	GtkTreePath *path_ = NULL;
-	GtkTreeIter iter;
+	prev_size = store->list_size;
+	new_size = lsq_archive_iter_n_children(entry);
 
 	/* if(store->treeview) */
 	{
@@ -1087,27 +1141,33 @@ cb_sq_archive_store_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkT
 static void
 sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 {
+	LSQArchive *archive;
+	LSQArchiveIter *entry;
+	gint *indices;
+	gint depth;
+	gint index_;
+
 	g_return_if_fail(store->navigation.present);
 	g_return_if_fail(store->navigation.present->data);
 
-	LSQArchive *archive = store->archive;
-	LSQArchiveIter *entry = store->navigation.present->data;
+	archive = store->archive;
+	entry = store->navigation.present->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
 
-	gint *indices = gtk_tree_path_get_indices(path);
-	gint depth = gtk_tree_path_get_depth(path) - 1;
+	indices = gtk_tree_path_get_indices(path);
+	depth = gtk_tree_path_get_depth(path) - 1;
 
 	/* only support list: depth is always 0 */
 	g_return_if_fail(depth == 0);
 
-	gint index = indices[depth];
+	index_ = indices[depth];
 
 	if(store->props._show_up_dir && lsq_archive_iter_has_parent(entry))
-		index--;
+		index_--;
 
-	if(index == -1)
+	if(index_ == -1)
 	{
 		entry = lsq_archive_iter_get_parent(entry);
 		sq_archive_store_append_history(store, entry);
@@ -1115,7 +1175,7 @@ sq_archive_store_file_activated(SQArchiveStore *store, GtkTreePath *path)
 	else
 	{
 		if(store->sort_list)
-			entry = store->sort_list[index];
+			entry = store->sort_list[index_];
 		else
 			entry = NULL;
 
@@ -1143,13 +1203,14 @@ void
 sq_archive_store_go_up(SQArchiveStore *store)
 {
 	LSQArchive *archive = store->archive;
+	LSQArchiveIter *entry;
 
 #ifdef DEBUG
 	g_return_if_fail(store->navigation.present);
 	g_return_if_fail(store->navigation.present->data);
 #endif
 
-	LSQArchiveIter *entry = store->navigation.present->data;
+	entry = store->navigation.present->data;
 
 	g_return_if_fail(archive);
 	g_return_if_fail(entry);
@@ -1166,24 +1227,24 @@ sq_archive_store_go_up(SQArchiveStore *store)
 void
 sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 {
-	g_return_if_fail(store);
-
-	if(store->archive == archive)
-		return;
-
 	guint i = 0;
 	GtkTreePath *path_ = NULL;
 	GtkTreeIter iter;
 	GList *list_iter;
 	LSQArchiveIter *root_entry;
 
+	g_return_if_fail(store);
+
+	if(store->archive == archive)
+		return;
+
 	/* free the sort data */
 	if(store->sort_list)
 	{
-		LSQArchiveIter **iter;
-		for(iter = store->sort_list; *iter; iter++)
+		LSQArchiveIter **_iter;
+		for(_iter = store->sort_list; *_iter; _iter++)
 		{
-			lsq_archive_iter_unref(*iter);
+			lsq_archive_iter_unref(*_iter);
 		}
 		g_free(store->sort_list);
 		store->sort_list = NULL;
@@ -1276,6 +1337,8 @@ sq_archive_store_set_archive(SQArchiveStore *store, LSQArchive *archive)
 LSQArchiveIter *
 sq_archive_store_get_pwd(SQArchiveStore *store)
 {
+	LSQArchiveIter *iter;
+
 #ifdef DEBUG
 	g_return_val_if_fail(store, NULL);
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(store), NULL);
@@ -1284,7 +1347,7 @@ sq_archive_store_get_pwd(SQArchiveStore *store)
 	if(!store->navigation.present)
 		return NULL;
 
-	LSQArchiveIter *iter = store->navigation.present->data;
+	iter = store->navigation.present->data;
 
 	return lsq_archive_iter_ref(iter);
 }
@@ -1555,12 +1618,14 @@ sq_archive_store_check_trailing(SQArchiveStore *store)
 LSQArchiveIter *
 sq_archive_store_get_trailing(SQArchiveStore *store)
 {
+	LSQArchiveIter *iter;
+
 #ifdef DEBUG
 	g_return_val_if_fail(store, NULL);
 	g_return_val_if_fail(SQ_IS_ARCHIVE_STORE(store), NULL);
 #endif
 
-	LSQArchiveIter *iter = store->navigation.trailing;
+	iter = store->navigation.trailing;
 
 	return lsq_archive_iter_ref(iter);
 }
@@ -1588,7 +1653,6 @@ sq_archive_store_dispose(GObject *object)
 static void
 cb_sq_archive_store_archive_refreshed(LSQArchive *archive, gpointer user_data)
 {
-    g_debug("%s", __FUNCTION__);
 	SQArchiveStore *store = SQ_ARCHIVE_STORE(user_data);
 	GList *iter;
 	LSQArchiveIter *aIter;

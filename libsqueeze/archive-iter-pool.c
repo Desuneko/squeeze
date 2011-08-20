@@ -36,7 +36,7 @@ struct _LSQArchiveIterPool
 };
 
 LSQArchiveIterPool *
-lsq_archive_iter_pool_new()
+lsq_archive_iter_pool_new(void)
 {
 	return g_new0(LSQArchiveIterPool, 1);
 }
@@ -61,7 +61,7 @@ lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
 #else
 		g_free(pool->pool[i]);
 #endif
-#elif USE_GSLICES
+#elif defined(USE_GSLICES)
 		g_slice_free(LSQArchiveIter, pool->pool[i]);
 #else
 		g_free(pool->pool[i]);
@@ -202,7 +202,7 @@ lsq_archive_iter_pool_get_reserved(LSQArchiveIterPool *pool)
 }
 
 LSQArchiveIter *
-lsq_archive_iter_pool_get_iter(LSQArchiveIterPool *pool, gint index)
+lsq_archive_iter_pool_get_iter(LSQArchiveIterPool *pool, gint index_)
 {
-	return pool->pool[index];
+	return pool->pool[index_];
 }

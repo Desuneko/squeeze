@@ -45,10 +45,11 @@ lsq_support_template_get_property_name(LSQSupportTemplate *templ, guint nr)
 guint
 lsq_support_template_get_n_properties (LSQSupportTemplate *templ)
 {
+  guint n_props;
 #ifdef DEBUG
 	g_return_val_if_fail(templ, 0);
 #endif
-  guint n_props = lsq_parser_n_properties(templ->parser);
+  n_props = lsq_parser_n_properties(templ->parser);
   if(templ->n_properties > n_props)
     n_props = templ->n_properties;
 	return n_props;

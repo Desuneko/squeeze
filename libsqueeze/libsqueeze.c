@@ -33,16 +33,18 @@
 #include "internals.h"
 
 void
-lsq_init()
+lsq_init(void)
 {
-	support_factory_list = NULL;
-
 	const gchar *filename = NULL;
+	gchar *data_squeeze;
+	GDir *data_dir;
+
+	support_factory_list = NULL;
 
 	lsq_opened_archive_list = NULL;
 
-	gchar *data_squeeze = g_strconcat(DATADIR, "/squeeze", NULL);
-	GDir *data_dir = g_dir_open(data_squeeze, 0, NULL);
+	data_squeeze = g_strconcat(DATADIR, "/squeeze", NULL);
+	data_dir = g_dir_open(data_squeeze, 0, NULL);
 	if(data_dir)
 	{
 		while((filename = g_dir_read_name(data_dir)) != NULL)
@@ -68,7 +70,7 @@ lsq_init()
 }
 
 void
-lsq_shutdown()
+lsq_shutdown(void)
 {
 	g_slist_foreach(lsq_opened_archive_list, (GFunc)lsq_close_archive, NULL);
 }
@@ -80,6 +82,8 @@ lsq_shutdown()
 gint
 lsq_new_archive(GFile *file, gboolean overwrite, LSQArchive **lp_archive)
 {
+	LSQArchive *archive;
+
 	if(overwrite)
     {
         g_file_trash (file, NULL, NULL);
@@ -91,7 +95,7 @@ lsq_new_archive(GFile *file, gboolean overwrite, LSQArchive **lp_archive)
 		return 1;
 	}
 
-	LSQArchive *archive = lsq_archive_new(file);
+	archive = lsq_archive_new(file);
 	(*lp_archive) = archive;
 	if(!archive)
 		return 1;
@@ -106,13 +110,14 @@ lsq_new_archive(GFile *file, gboolean overwrite, LSQArchive **lp_archive)
 gint
 lsq_open_archive(GFile *file, LSQArchive **lp_archive)
 {
+	LSQArchive *archive = NULL; /*lsq_opened_archive_get_archive(path); */
+
 	if(!g_file_query_exists (file, NULL))
 	{
 		(*lp_archive) = NULL;
 		return 1;
 	}
 
-	LSQArchive *archive = NULL; /*lsq_opened_archive_get_archive(path); */
 	if(!archive)
 	{
 		archive = lsq_archive_new(file);
@@ -153,7 +158,6 @@ lsq_iter_list_to_strv(GSList *list)
 
   while(list)
   {
-    g_debug(list->data);
     strv[i++] = lsq_archive_iter_get_filename(list->data);
     list = g_slist_next(list);
   }

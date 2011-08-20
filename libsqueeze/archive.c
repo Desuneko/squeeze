@@ -66,7 +66,7 @@ enum
 static gint lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COUNT];
 
 GType
-lsq_archive_get_type ()
+lsq_archive_get_type (void)
 {
 	static GType lsq_archive_type = 0;
 
@@ -137,8 +137,9 @@ lsq_archive_init(LSQArchive *archive)
 static void
 lsq_archive_finalize(GObject *object)
 {
+	LSQArchive *archive;
 	g_return_if_fail(LSQ_IS_ARCHIVE(object));
-	LSQArchive *archive = (LSQArchive *)(object);
+	archive = (LSQArchive *)(object);
 
 	lsq_archive_free_iter(archive);
 	lsq_tempfs_clean_root_dir(archive);
@@ -160,31 +161,31 @@ lsq_archive_new (GFile *file)
 	LSQArchive *archive;
     GFileInfo *file_info;
     const gchar *content_type;
+    GSList *iter;
 
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
 	if(file)
 	{
-        archive->priv->file = file;
-        g_object_ref (archive->priv->file);
+	  archive->priv->file = file;
+	  g_object_ref (archive->priv->file);
 	}
 	else
-    {
+	{
 		archive->priv->file= NULL;
-    }
+	}
 
 
     file_info = g_file_query_info (file, "standard::content-type,standard::type", 0, NULL, NULL);
 	if(file_info)
 	{
-        content_type = g_file_info_get_attribute_string (file_info, "standard::content-type");
-        archive->priv->content_type = g_strdup (content_type); 
+	  content_type = g_file_info_get_attribute_string (file_info, "standard::content-type");
+	  archive->priv->content_type = g_strdup (content_type); 
 	}
 #ifdef DEBUG
-	g_debug("mime: %s\n", thunar_vfs_mime_info_get_name(archive->priv->mime_info));
+	g_debug("mime: %s\n", archive->priv->content_type);
 #endif
 
-  GSList *iter;
   for(iter = lsq_mime_support_list; iter; iter = iter->next)
   {
     if(0 == strcmp(((LSQSupportTemplate*)iter->data)->content_type, archive->priv->content_type))
@@ -197,7 +198,7 @@ lsq_archive_new (GFile *file)
     }
   }
 
-	return archive;
+  return archive;
 }
 
 /*
@@ -356,9 +357,11 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
 gboolean
 lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **files, const gchar *directory)
 {
+    LSQSupportTemplate *s_template;
+
     g_return_val_if_fail(archive, FALSE);
 
-    LSQSupportTemplate *s_template = archive->priv->s_template;
+    s_template = archive->priv->s_template;
 
     switch (type)
     {

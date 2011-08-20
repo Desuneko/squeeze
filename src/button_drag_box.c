@@ -106,7 +106,7 @@ sq_button_drag_box_init(SQButtonDragBox *box)
 }
 
 GtkWidget *
-sq_button_drag_box_new()
+sq_button_drag_box_new(void)
 {
 	GtkWidget *box;
 

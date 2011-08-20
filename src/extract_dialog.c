@@ -39,7 +39,7 @@ void
 sq_extract_dialog_option_child_notify(GtkWidget *widget, GParamSpec *, gpointer data);
 
 GType
-sq_extract_archive_dialog_get_type ()
+sq_extract_archive_dialog_get_type (void)
 {
 	static GType sq_extract_archive_dialog_type = 0;
 
@@ -75,10 +75,11 @@ sq_extract_archive_dialog_init(SQExtractArchiveDialog *dialog)
 	GtkWidget *hbox = gtk_hbox_new(TRUE, 5);
 	GtkWidget *l_label = gtk_label_new(_("<b>Extract files:</b>"));
 	GtkWidget *r_label = gtk_label_new(_("<b>Options:</b>"));
+	GtkWidget *l_vbox;
 	gtk_label_set_use_markup(GTK_LABEL(l_label), TRUE);
 	gtk_label_set_use_markup(GTK_LABEL(r_label), TRUE);
 
-	GtkWidget *l_vbox = gtk_vbox_new(FALSE, 0);
+	l_vbox = gtk_vbox_new(FALSE, 0);
 
 	dialog->l_frame = gtk_frame_new( NULL );
 	gtk_frame_set_label_widget(GTK_FRAME(dialog->l_frame), l_label);
@@ -106,13 +107,15 @@ GtkWidget *
 sq_extract_archive_dialog_new(LSQArchive *archive, gboolean sel_option)
 {
 	SQExtractArchiveDialog *dialog;
+	GtkWidget *r_vbox;
+	gchar **filename_components;
 
 	dialog = g_object_new(sq_extract_archive_dialog_get_type(), "title", _("Extract archive"), "action", GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER, "do-overwrite-confirmation", TRUE, NULL);
 /* Handle 'extract selected files' option */
 	gtk_widget_set_sensitive(dialog->sel_files_radio, sel_option);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(dialog->sel_files_radio), sel_option);
 
-	GtkWidget *r_vbox = gtk_vbox_new(FALSE, 0);
+	r_vbox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(dialog->r_frame), r_vbox);
 
   if((dialog->command_options = lsq_archive_get_command_options(archive, LSQ_COMMAND_TYPE_EXTRACT)))
@@ -127,7 +130,7 @@ sq_extract_archive_dialog_new(LSQArchive *archive, gboolean sel_option)
   }
 
 	/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
-	gchar **filename_components = g_strsplit(g_file_get_basename(lsq_archive_get_file(archive)), ".", 2);
+	filename_components = g_strsplit(g_file_get_basename(lsq_archive_get_file(archive)), ".", 2);
 	gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
 	g_strfreev(filename_components);
 

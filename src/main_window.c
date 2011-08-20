@@ -114,7 +114,7 @@ sq_main_window_set_navigation(SQMainWindow *window);
 static GObjectClass *parent_class;
 
 GType
-sq_main_window_navigation_style_get_type()
+sq_main_window_navigation_style_get_type(void)
 {
 	static GType nav_style_type = 0;
 	guint i = 0;
@@ -146,7 +146,7 @@ sq_main_window_navigation_style_get_type()
 }
 
 GType
-sq_main_window_get_type ()
+sq_main_window_get_type (void)
 {
 	static GType sq_main_window_type = 0;
 
@@ -274,6 +274,7 @@ sq_main_window_init(SQMainWindow *window)
 	gboolean up_dir = TRUE;
 	gboolean use_tabs = TRUE;
 	gboolean show_menubar = TRUE;
+	GtkWidget *item;
 
 	window->accel_group = gtk_accel_group_new();
 	gtk_window_add_accel_group(GTK_WINDOW(window), window->accel_group);
@@ -413,7 +414,7 @@ sq_main_window_init(SQMainWindow *window)
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_view);
 		gtk_menu_bar_append(GTK_MENU_BAR(window->menu_bar), window->menubar.menu_item_help);
   
-		GtkWidget *item = gtk_menu_item_new ();
+		item = gtk_menu_item_new ();
 		gtk_widget_set_sensitive (item, FALSE);
 		gtk_menu_item_set_right_justified (GTK_MENU_ITEM (item), TRUE);
 		gtk_menu_shell_append (GTK_MENU_SHELL (window->menu_bar), item);
@@ -632,11 +633,12 @@ sq_main_window_find_image(gchar *filename, GtkIconSize size)
 	gint height = 0;
 	GtkWidget *file_image;
 	gchar *path;
+	GdkPixbuf *file_pixbuf;
 	path = g_strconcat(DATADIR, "/pixmaps/squeeze/", filename, NULL);
 
 	gtk_icon_size_lookup(size, &width, &height);
 
-	GdkPixbuf *file_pixbuf = gdk_pixbuf_new_from_file_at_size(path, width, height, &error);
+	file_pixbuf = gdk_pixbuf_new_from_file_at_size(path, width, height, &error);
 	if(file_pixbuf)
 	{
 		file_image = gtk_image_new_from_pixbuf(file_pixbuf);
@@ -827,8 +829,9 @@ cb_sq_main_extract_archive(GtkWidget *widget, gpointer userdata)
     strv = lsq_iter_list_to_strv(filenames);
 		if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, strv, extract_archive_path))
 		{
+			GtkWidget *warning_dialog;
       g_free(strv);
-			GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+			warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 															   GTK_DIALOG_DESTROY_WITH_PARENT, 
 																												 GTK_MESSAGE_WARNING,
 																												 GTK_BUTTONS_CLOSE,
@@ -879,8 +882,9 @@ cb_sq_main_add_files_to_archive(GtkWidget *widget, gpointer userdata)
       const gchar **strv = lsq_iter_list_to_strv(filenames);
 			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, strv, NULL))
 			{
+				GtkWidget *warning_dialog;
         g_free(strv);
-				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+				warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																													 GTK_MESSAGE_WARNING,
 																													 GTK_BUTTONS_CLOSE,
@@ -925,8 +929,9 @@ cb_sq_main_add_folders_to_archive(GtkWidget *widget, gpointer userdata)
       const gchar **strv = lsq_iter_list_to_strv(filenames);
 			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, strv, NULL))
 			{
+				GtkWidget *warning_dialog;
         g_free(strv);
-				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+				warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 									  GTK_DIALOG_DESTROY_WITH_PARENT, 
 									  GTK_MESSAGE_WARNING,
 									  GTK_BUTTONS_CLOSE,
@@ -964,8 +969,9 @@ cb_sq_main_remove_from_archive(GtkWidget *widget, gpointer userdata)
       strv = lsq_iter_list_to_strv(filenames);
 			if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_REMOVE, strv, NULL))
 			{
+				GtkWidget *warning_dialog;
         g_free(strv);
-				GtkWidget *warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
+				warning_dialog = gtk_message_dialog_new(GTK_WINDOW(window), 
 																													 GTK_DIALOG_DESTROY_WITH_PARENT, 
 																													 GTK_MESSAGE_WARNING,
 																													 GTK_BUTTONS_CLOSE,
@@ -1147,18 +1153,22 @@ static void
 cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *page, guint page_nr, gpointer data)
 {
 	LSQArchive *lp_archive;
-	sq_notebook_page_get_archive(notebook, &lp_archive, page_nr);
 	SQMainWindow *window = SQ_MAIN_WINDOW(data);
+	guint context_id;
+	const gchar *message;
+	GFile *file;
+	gchar *filename;
+	sq_notebook_page_get_archive(notebook, &lp_archive, page_nr);
 
-    GFile *file = lsq_archive_get_file(lp_archive);
-    gchar *filename = g_file_get_basename (file);
+    file = lsq_archive_get_file(lp_archive);
+    filename = g_file_get_basename (file);
 	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", filename , NULL));
     g_free (filename);
 
 	sq_main_window_new_action_menu(window, lp_archive);
 
-	guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
-	const gchar *message = lsq_archive_get_state_msg(lp_archive);
+	context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
+	message = lsq_archive_get_state_msg(lp_archive);
 	if(!message)
 	{
 		message = _("Done");
@@ -1207,6 +1217,7 @@ static void
 cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 {
 	SQMainWindow *window = SQ_MAIN_WINDOW(data);
+	guint context_id;
 
 	if(!gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)))
 	{
@@ -1231,7 +1242,7 @@ cb_sq_main_window_notebook_page_removed(SQNotebook *notebook, gpointer data)
 		}
 
 		gtk_window_set_title(GTK_WINDOW(window), PACKAGE_STRING);
-		guint context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
+		context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR(window->statusbar), "Window Statusbar");
 		gtk_statusbar_push(GTK_STATUSBAR(window->statusbar), context_id, _("Done"));
 	}
 }
@@ -1245,12 +1256,14 @@ cb_sq_main_window_notebook_file_activated(SQNotebook *notebook, LSQArchiveIter *
 	GtkWidget *label = gtk_label_new(_("Which action do you want to perform on the selected file(s)?"));
 	GtkWidget *dialog = gtk_dialog_new_with_buttons("",window,GTK_DIALOG_DESTROY_WITH_PARENT, _("Open"), GTK_RESPONSE_OK, _("Extract"), GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
 	GtkWidget *extr_dialog = NULL;
+	gint result;
+	const gchar **strv;
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE, TRUE, 20);
 	gtk_widget_show(label);
-	gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+	result = gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_hide(dialog);
 
-	const gchar **strv = g_new(const gchar*, 2);
+	strv = g_new(const gchar*, 2);
   strv[0] = lsq_archive_iter_get_filename(iter);
   strv[1] = NULL;
 

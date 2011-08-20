@@ -154,8 +154,8 @@ static gchar **lsq_command_entry_to_argv(LSQCommandEntry *entry, LSQExecuteConte
 
   for(iter = entry->args; iter; iter = iter->next)
   {
-    file = lsq_archive_get_file(ctx->archive);
     const gchar *arg = (const gchar*)iter->data;
+    file = lsq_archive_get_file(ctx->archive);
     if((arg[0] == '%') && (arg[2] == '\0'))
     {
       switch(arg[1])
@@ -303,6 +303,7 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
   gchar **argv;
   GPid pid;
   GSpawnFlags flags = G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL;
+  gchar **argvi;
   if(entry->redirect_out)
   {
     gchar *file = format_get_filename(entry->redirect_out, ctx);
@@ -326,7 +327,7 @@ static void lsq_command_entry_start(LSQCommandEntry *entry, LSQExecuteContext *c
 
   g_debug("command: %s", argv[0]);
 
-  gchar **argvi = argv;
+  argvi = argv;
   while (argvi[1])
   {
     g_debug("arg: '%s'", argvi[1]);

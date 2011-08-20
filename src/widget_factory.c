@@ -77,7 +77,7 @@ cb_sq_widget_factory_object_destroyed(GtkObject *obj, gpointer user_data);
 /* sq_widget_factory_notify(LSQCustomAction *action, const gchar *message); */
 
 GType
-sq_widget_factory_get_type()
+sq_widget_factory_get_type(void)
 {
 	static GType sq_widget_factory_type = 0;
 
@@ -117,7 +117,7 @@ sq_widget_factory_init(SQWidgetFactory *factory)
 }
 
 SQWidgetFactory*
-sq_widget_factory_new()
+sq_widget_factory_new(void)
 {
 	SQWidgetFactory *factory;
 
@@ -130,6 +130,8 @@ static GtkWidget*
 sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *check = gtk_check_button_new_with_label(g_param_spec_get_nick(pspec));
+	const gchar *large_tip;
+	gchar *small_tip = NULL;
 
 	g_object_set_data(G_OBJECT(check), SQ_PROPERTY_SPEC_DATA, pspec);
 	g_signal_connect(G_OBJECT(check), "toggled", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
@@ -142,8 +144,7 @@ sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, 
 	else
 		g_object_ref(obj);
 
-	const gchar *large_tip = g_param_spec_get_blurb(pspec);
-	gchar *small_tip = NULL;
+	large_tip = g_param_spec_get_blurb(pspec);
 	if(strchr(large_tip, '\n'))
 	{
 		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);
@@ -171,6 +172,8 @@ sq_widget_factory_create_numeric_widget(SQWidgetFactory *factory, GObject *obj, 
 	guint digits = 0;
 	GtkAdjustment *adjust;
 	GtkWidget *spin;
+	const gchar *large_tip;
+	gchar *small_tip = NULL;
 
 	memset(&double_value, 0, sizeof(GValue));
 
@@ -257,8 +260,7 @@ sq_widget_factory_create_numeric_widget(SQWidgetFactory *factory, GObject *obj, 
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, FALSE, 3);
 	gtk_box_pack_end(GTK_BOX(box), spin, TRUE, TRUE, 3);
 
-	const gchar *large_tip = g_param_spec_get_blurb(pspec);
-	gchar *small_tip = NULL;
+	large_tip = g_param_spec_get_blurb(pspec);
 	if(strchr(large_tip, '\n'))
 	{
 		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);
@@ -285,6 +287,8 @@ sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *ob
 	GtkWidget *radio = NULL;
 	guint i, n = G_PARAM_SPEC_ENUM(pspec)->enum_class->n_values;
 	GEnumValue *values = G_PARAM_SPEC_ENUM(pspec)->enum_class->values;
+	const gchar *large_tip;
+	gchar *small_tip = NULL;
 
 	for(i = 0; i < n; ++i)
 	{
@@ -308,8 +312,7 @@ sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *ob
 
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
-	const gchar *large_tip = g_param_spec_get_blurb(pspec);
-	gchar *small_tip = NULL;
+	large_tip = g_param_spec_get_blurb(pspec);
 	if(strchr(large_tip, '\n'))
 	{
 		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);
@@ -331,8 +334,10 @@ sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj
 	GtkWidget *box = gtk_hbox_new(FALSE, 3);
 	GtkWidget *label = gtk_label_new(g_param_spec_get_nick(pspec));
 	GtkWidget *combo = gtk_combo_box_new_text();
-	guint select = 0, i, n = G_PARAM_SPEC_ENUM(pspec)->enum_class->n_values;
+	guint select_ = 0, i, n = G_PARAM_SPEC_ENUM(pspec)->enum_class->n_values;
 	GEnumValue *values = G_PARAM_SPEC_ENUM(pspec)->enum_class->values;
+	const gchar *large_tip;
+	gchar *small_tip = NULL;
 
 	g_object_set_data(G_OBJECT(combo), SQ_PROPERTY_SPEC_DATA, pspec);
 	g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
@@ -349,16 +354,15 @@ sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj
 		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), values[i].value_nick);
 
 		if(g_value_get_enum(value) == values[i].value)
-			select = i;
+			select_ = i;
 	}
 
-	gtk_combo_box_set_active(GTK_COMBO_BOX(combo), select);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(combo), select_);
 
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, FALSE, 3);
 	gtk_box_pack_end(GTK_BOX(box), combo, TRUE, TRUE, 3);
 
-	const gchar *large_tip = g_param_spec_get_blurb(pspec);
-	gchar *small_tip = NULL;
+	large_tip = g_param_spec_get_blurb(pspec);
 	if(strchr(large_tip, '\n'))
 	{
 		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);
@@ -383,6 +387,8 @@ sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GP
 	GtkWidget *check;
 	guint i, n = G_PARAM_SPEC_FLAGS(pspec)->flags_class->n_values;
 	GFlagsValue *values = G_PARAM_SPEC_FLAGS(pspec)->flags_class->values;
+	const gchar *large_tip;
+	gchar *small_tip = NULL;
 
 	gtk_container_add(GTK_CONTAINER(frame), box);
 
@@ -405,8 +411,7 @@ sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GP
 		gtk_box_pack_start(GTK_BOX(box), check, FALSE, FALSE, 5);
 	}
 
-	const gchar *large_tip = g_param_spec_get_blurb(pspec);
-	gchar *small_tip = NULL;
+	large_tip = g_param_spec_get_blurb(pspec);
 	if(strchr(large_tip, '\n'))
 	{
 		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);
@@ -428,6 +433,8 @@ sq_widget_factory_create_string_widget(SQWidgetFactory *factory, GObject *obj, G
 	GtkWidget *box = gtk_hbox_new(FALSE, 3);
 	GtkWidget *label = gtk_label_new(g_param_spec_get_nick(pspec));
 	GtkWidget *entry = gtk_entry_new();
+	const gchar *large_tip;
+	gchar *small_tip = NULL;
 
 	g_object_set_data(G_OBJECT(entry), SQ_PROPERTY_SPEC_DATA, pspec);
 	g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(cb_sq_widget_factory_property_changed), obj);
@@ -444,8 +451,7 @@ sq_widget_factory_create_string_widget(SQWidgetFactory *factory, GObject *obj, G
 	gtk_box_pack_start(GTK_BOX(box), label, FALSE, FALSE, 3);
 	gtk_box_pack_end(GTK_BOX(box), entry, TRUE, TRUE, 3);
 
-	const gchar *large_tip = g_param_spec_get_blurb(pspec);
-	gchar *small_tip = NULL;
+	large_tip = g_param_spec_get_blurb(pspec);
 	if(strchr(large_tip, '\n'))
 	{
 		small_tip = g_strndup(large_tip, strchr(large_tip, '\n') - large_tip);

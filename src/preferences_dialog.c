@@ -43,7 +43,7 @@ static GtkWidget *
 sq_preferences_dialog_create_support_object_page(SQSupportTuple *tuple);
 
 GType
-sq_preferences_dialog_get_type ()
+sq_preferences_dialog_get_type (void)
 {
 	static GType sq_preferences_dialog_type = 0;
 
@@ -139,7 +139,7 @@ sq_preferences_dialog_init(SQPreferencesDialog *dialog)
 }
 
 GtkWidget *
-sq_preferences_dialog_new()
+sq_preferences_dialog_new(void)
 {
 	GtkWidget *dialog;
 

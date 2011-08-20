@@ -33,13 +33,13 @@ G_BEGIN_DECLS
  * void
  * lsq_init()
  */
-void lsq_init();
+void lsq_init(void);
 
 /*
  * void
  * lsq_shutdown()
  */
-void lsq_shutdown();
+void lsq_shutdown(void);
 
 /*
  * gint

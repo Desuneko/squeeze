@@ -47,7 +47,7 @@ enum {
 static GObjectClass *parent_class;
 
 GType
-sq_navigation_bar_get_type ()
+sq_navigation_bar_get_type (void)
 {
 	static GType sq_navigation_bar_type = 0;
 

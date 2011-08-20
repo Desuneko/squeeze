@@ -31,7 +31,7 @@ static void
 sq_properties_dialog_init(SQPropertiesDialog *archive);
 
 GType
-sq_properties_dialog_get_type ()
+sq_properties_dialog_get_type (void)
 {
 	static GType sq_properties_dialog_type = 0;
 

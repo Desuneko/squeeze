@@ -21,7 +21,7 @@ typedef struct _LSQArchiveIter LSQArchiveIter;
 typedef struct _LSQArchiveEntry LSQArchiveEntry;
 typedef struct _LSQArchiveIterPool LSQArchiveIterPool;
 
-LSQArchiveIterPool *lsq_archive_iter_pool_new();
+LSQArchiveIterPool *lsq_archive_iter_pool_new(void);
 void				lsq_archive_iter_pool_free(LSQArchiveIterPool *pool);
 
 gint				lsq_archive_iter_pool_get_size(LSQArchiveIterPool *);

@@ -95,7 +95,7 @@ static void
 cb_sq_path_bar_right_clicked(GtkWidget *widget, gpointer user_data);
 
 GType
-sq_path_bar_get_type ()
+sq_path_bar_get_type (void)
 {
 	static GType sq_path_bar_type = 0;
 
@@ -640,10 +640,12 @@ cb_sq_path_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *path, SQNaviga
 static void
 cb_sq_path_bar_path_button_clicked(GtkRadioButton *button, SQPathBar *path_bar)
 {
+	LSQArchiveIter *path;
+
 	if(path_bar->updating)
 		return;
 
-	LSQArchiveIter *path = g_object_get_data(G_OBJECT(button), SQ_PATH_BAR_PATH_BUTTON_ITER);
+	path = g_object_get_data(G_OBJECT(button), SQ_PATH_BAR_PATH_BUTTON_ITER);
 
 	sq_archive_store_set_pwd(SQ_NAVIGATION_BAR(path_bar)->store, path);
 }

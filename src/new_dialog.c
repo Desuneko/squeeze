@@ -33,7 +33,7 @@ static void
 sq_new_archive_dialog_init(SQNewArchiveDialog *archive);
 
 GType
-sq_new_archive_dialog_get_type ()
+sq_new_archive_dialog_get_type (void)
 {
 	static GType sq_new_archive_dialog_type = 0;
 
@@ -67,6 +67,7 @@ static void
 sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 {
 	GtkWidget *hbox = gtk_hbox_new(FALSE, 10);
+	GSList *_supported_mime_types;
 	gtk_box_pack_start (GTK_BOX (hbox),gtk_label_new (_("Archive type:")),FALSE, FALSE, 0);
 
 	dialog->archive_types_combo = gtk_combo_box_new_text();
@@ -75,7 +76,7 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 	gtk_widget_show_all(hbox);
 
 	dialog->supported_mime_types = lsq_get_supported_mime_types(LSQ_COMMAND_TYPE_ADD);
-	GSList *_supported_mime_types = dialog->supported_mime_types;
+	_supported_mime_types = dialog->supported_mime_types;
 
 	dialog->file_filter = gtk_file_filter_new();
 	gtk_file_filter_set_name(dialog->file_filter, _("Archives"));
@@ -101,7 +102,7 @@ sq_new_archive_dialog_init(SQNewArchiveDialog *dialog)
 }
 
 GtkWidget *
-sq_new_archive_dialog_new()
+sq_new_archive_dialog_new(void)
 {
 	GtkWidget *dialog;
 
@@ -122,14 +123,14 @@ sq_new_archive_dialog_get_file(SQNewArchiveDialog *dialog)
 
     if (file)
 	{
+		const gchar *mime_type = ""; //lsq_mime_support_get_name(((LSQMimeSupport *)_supported_mime_types->data));
+		gchar *suffix = NULL;
 		gint i;
 		GSList *_supported_mime_types = dialog->supported_mime_types;
 		for(i = 0; i < gtk_combo_box_get_active(GTK_COMBO_BOX(dialog->archive_types_combo)); i++)
 		{
 			_supported_mime_types = g_slist_next(_supported_mime_types);
 		}
-		const gchar *mime_type = ""; //lsq_mime_support_get_name(((LSQMimeSupport *)_supported_mime_types->data));
-		gchar *suffix = NULL;
 		if(!strcmp(mime_type, "application/x-tar")) suffix = ".tar";
 		if(!strcmp(mime_type, "application/x-compressed-tar")) suffix = ".tar.gz";
 		if(!strcmp(mime_type, "application/x-bzip-compressed-tar")) suffix = ".tar.bz2";

@@ -45,7 +45,7 @@ lsq_support_factory_finalize(GObject *object);
 static GObjectClass *parent_class;
 
 GType
-lsq_support_factory_get_type ()
+lsq_support_factory_get_type (void)
 {
 	static GType lsq_support_factory_type = 0;
 

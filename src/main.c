@@ -71,11 +71,13 @@ static GOptionEntry entries[] =
 	{ NULL }
 };
 
+#if 0
 void
 cb_main_window_destroy(SQMainWindow *window, gpointer data)
 {
 	gtk_main_quit();
 }
+#endif
 
 int main(int argc, char **argv)
 {
@@ -85,6 +87,7 @@ int main(int argc, char **argv)
 	GError *cli_error = NULL;
 	gint i = 0;
     GFile *file = NULL;
+	gchar *current_dir;
 
 	#ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -101,7 +104,7 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
-	gchar *current_dir = g_get_current_dir();
+	current_dir = g_get_current_dir();
 
 	lsq_init();
 

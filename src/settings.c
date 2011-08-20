@@ -35,7 +35,7 @@ static GObject *
 sq_settings_singleton_constuctor(GType, guint, GObjectConstructParam *);
 
 GType
-sq_settings_get_type ()
+sq_settings_get_type (void)
 {
 	static GType sq_settings_type = 0;
 
@@ -78,7 +78,7 @@ sq_settings_class_init(SQSettingsClass *object_class)
 }
 
 SQSettings *
-sq_settings_new()
+sq_settings_new(void)
 {
 	sq_global_settings = g_object_new(SQ_TYPE_SETTINGS, NULL);
 

@@ -136,10 +136,11 @@ lsq_command_option_create_list(XfceRc *rc, gchar **option_names)
   gchar **option_iter;
   for(option_iter = option_names; *option_iter; option_iter++)
   {
+    const gchar *type;
     gchar *option_group = g_strconcat("Squeeze-Option-", *option_iter, NULL);
     xfce_rc_set_group(rc, option_group);
 
-    const gchar *type = xfce_rc_read_entry(rc, "X-Squeeze-Type", "");
+    type = xfce_rc_read_entry(rc, "X-Squeeze-Type", "");
     if(0==g_ascii_strcasecmp("Bool", type))
     {
       *cmd_opt_iter = LSQ_COMMAND_OPTION(g_type_create_instance(LSQ_TYPE_COMMAND_OPTION_BOOL));
@@ -189,14 +190,16 @@ lsq_command_option_create_pair(LSQCommandOption **option_list)
 {
   int length = 0;
   LSQCommandOption **option_iter;
+  LSQCommandOptionPair **option_pair;
+  LSQCommandOptionPair **pair_iter;
 
   for(option_iter = option_list; *option_iter; option_iter++)
   {
     length++;
   }
 
-  LSQCommandOptionPair **option_pair = g_new0(LSQCommandOptionPair*, length);
-  LSQCommandOptionPair **pair_iter = option_pair;
+  option_pair = g_new0(LSQCommandOptionPair*, length);
+  pair_iter = option_pair;
 
   for(option_iter = option_list; *option_iter; option_iter++)
   {

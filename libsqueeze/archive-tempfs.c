@@ -48,11 +48,12 @@ typedef struct
 static void lsq_tempfs_clean_dir(const gchar *path)
 {
 	const gchar *file;
+	GDir *dir;
 
 	if(!path)
 		return;
 
-	GDir *dir = g_dir_open(path, 0, NULL);
+	dir = g_dir_open(path, 0, NULL);
 
 	if(dir)
 	{
@@ -74,6 +75,8 @@ static void lsq_tempfs_clean_dir(const gchar *path)
 
 void lsq_tempfs_clean_root_dir(LSQArchive *archive)
 {
+	GSList *iter;
+
 	if(!archive->temp_dir)
 		return;
 
@@ -83,7 +86,7 @@ void lsq_tempfs_clean_root_dir(LSQArchive *archive)
 	g_debug("clean %s", archive->temp_dir);
 #endif
 
-	GSList *iter = archive->monitor_list;
+	iter = archive->monitor_list;
 	while(iter)
 	{
 	/*	g_free(((LSQTempFileMonitor*)iter->data)->filename); */
@@ -108,11 +111,11 @@ const gchar* lsq_tempfs_get_root_dir(LSQArchive *archive)
 
 gboolean lsq_tempfs_make_root_dir(LSQArchive *archive)
 {
-	if(archive->temp_dir)
-		return TRUE;
-
 	gboolean error = FALSE;
 	gchar dirname[256];
+
+	if(archive->temp_dir)
+		return TRUE;
 
 	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name());
 	if(g_mkdir_with_parents(dirname, 0700))
@@ -134,7 +137,7 @@ gboolean lsq_tempfs_make_root_dir(LSQArchive *archive)
 	return FALSE;
 }
 
-gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *suffix)
+gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *sfx)
 {
 	gchar dirname[256];
 	gint handle;
@@ -143,7 +146,7 @@ gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *suffix)
 	if(g_mkdir_with_parents(dirname, 0700))
 		return FALSE;
 
-	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/file-XXXXXX%s", g_get_tmp_dir(), g_get_user_name(), suffix?suffix:"");
+	g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/file-XXXXXX%s", g_get_tmp_dir(), g_get_user_name(), sfx?sfx:"");
 
 	handle = g_mkstemp(dirname);
 	if(handle == -1)
@@ -155,13 +158,16 @@ gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *suffix)
 
 gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode)
 {
+	gchar *full_path;
+	gboolean error ;
+
 	if(!archive->temp_dir)
 		if(!lsq_tempfs_make_root_dir(archive))
 			return FALSE;
 
-	gchar *full_path = g_strconcat(archive->temp_dir, "/", path, NULL);
+	full_path = g_strconcat(archive->temp_dir, "/", path, NULL);
 
-	gboolean error = g_mkdir_with_parents(full_path, mode);
+	error = g_mkdir_with_parents(full_path, mode);
 
 	g_free(full_path);
 
@@ -170,13 +176,16 @@ gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode)
 
 gboolean lsq_tempfs_chmod(LSQArchive *archive, const gchar *path, gint mode)
 {
+	gchar *full_path;
+	gboolean error;
+
 	if(!archive->temp_dir)
 		if(!lsq_tempfs_make_root_dir(archive))
 			return FALSE;
 
-	gchar *full_path = g_strconcat(archive->temp_dir, "/", path, NULL);
+	full_path = g_strconcat(archive->temp_dir, "/", path, NULL);
 
-	gboolean error = g_chmod(full_path, mode);
+	error = g_chmod(full_path, mode);
 
 	g_free(full_path);
 

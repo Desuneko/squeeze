@@ -53,7 +53,7 @@ enum
 static gint sq_application_signals[SQ_APPLICATION_SIGNAL_COUNT];
 
 GType
-sq_application_get_type ()
+sq_application_get_type (void)
 {
 	static GType sq_application_type = 0;
 
@@ -150,6 +150,7 @@ sq_application_extract_archive(SQApplication *app, GFile *file, gchar *dest_path
 {
 	GtkWidget *dialog = NULL;
 	LSQArchive *lp_archive = NULL;
+	GtkWidget *message_dialog;
 	if(lsq_open_archive(file, &lp_archive))
 	{
 		/*
@@ -178,7 +179,7 @@ sq_application_extract_archive(SQApplication *app, GFile *file, gchar *dest_path
 		lsq_close_archive(lp_archive);
 		return 1;
 	}
-	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
+	message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
 	gtk_widget_show(message_dialog);
 	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_EXTRACT, NULL, dest_path))
 	{
@@ -204,12 +205,14 @@ sq_application_new_archive(SQApplication *app, GFile *file, GSList *files)
 	GtkWidget *dialog = NULL;
 	gint result = 0;
 	LSQArchive *lp_archive = NULL;
+	GtkWidget *message_dialog;
 
 	if(!file)
 	{
+		gchar **filename_components;
 		dialog = sq_new_archive_dialog_new();
 		/* FIXME, does not work correctly when there are more dots in a filename then the one identifying the extention */
-		gchar **filename_components = g_strsplit(files->data, ".", 2);
+		filename_components = g_strsplit(files->data, ".", 2);
 		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filename_components[0]);
 		g_strfreev(filename_components);
 		result = gtk_dialog_run (GTK_DIALOG (dialog) );
@@ -252,7 +255,7 @@ sq_application_new_archive(SQApplication *app, GFile *file, GSList *files)
 			return 1;
 		}
 	}
-	GtkWidget *message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
+	message_dialog = sq_message_dialog_new(GTK_WINDOW_TOPLEVEL, lp_archive);
 	gtk_widget_show(message_dialog);
 
 	if(!lsq_archive_operate(lp_archive, LSQ_COMMAND_TYPE_ADD, NULL, NULL))

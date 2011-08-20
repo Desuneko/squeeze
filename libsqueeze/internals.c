@@ -73,10 +73,11 @@ lsq_opened_archive_get_archive(gchar *path)
 static gint
 lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer uri)
 {
+    GFile *file;
 #ifdef DEBUG
 	g_return_val_if_fail(open_archive, 1);
 #endif
-    GFile *file = g_file_new_for_path (uri);
+    file = g_file_new_for_path (uri);
     
 	if(g_file_equal (lsq_archive_get_file(LSQ_ARCHIVE(open_archive)), file))
 	{

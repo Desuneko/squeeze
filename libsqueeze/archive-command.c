@@ -51,7 +51,7 @@ enum
 static gint lsq_archive_command_signals[LSQ_ARCHIVE_COMMAND_SIGNAL_COUNT];
 
 GType
-lsq_archive_command_get_type ()
+lsq_archive_command_get_type (void)
 {
 	static GType lsq_archive_command_type = 0;
 

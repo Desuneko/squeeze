@@ -49,7 +49,7 @@ lsq_support_reader_finalize(GObject *object);
 static GObjectClass *parent_class;
 
 GType
-lsq_support_reader_get_type ()
+lsq_support_reader_get_type (void)
 {
 	static GType lsq_support_reader_type = 0;
 
@@ -104,7 +104,7 @@ lsq_support_reader_finalize(GObject *object)
 }
 
 LSQSupportReader *
-lsq_support_reader_new()
+lsq_support_reader_new(void)
 {
 	LSQSupportReader *reader;
 
@@ -118,19 +118,29 @@ lsq_support_reader_parse_file(const gchar *filename)
 {
 	gint i = 0;
 	LSQSupportFactory *factory = g_object_new(LSQ_TYPE_SUPPORT_FACTORY, NULL);
+	const gchar *type, *name;
+	gchar **mime_types;
+	LSQCommandOption **add_options = NULL;
+	LSQCommandOption **remove_options = NULL;
+	LSQCommandOption **extract_options = NULL;
+	gchar **option_names;
+	gchar **column_names;
+	LSQParser *parser = NULL;
+	const gchar *parser_string;
+	gchar **_mime_types;
 
 	XfceRc *rc = xfce_rc_simple_open(filename, TRUE);
 
 	xfce_rc_set_group(rc, "Desktop Entry");
 
-	const gchar *type = xfce_rc_read_entry(rc, "Type", "");
+	type = xfce_rc_read_entry(rc, "Type", "");
 	if(strcmp(type, "X-Squeeze-Archiver"))
 	{
 		g_object_unref(factory);
 		return NULL;
 	}
 
-	const gchar *name = xfce_rc_read_entry(rc, "Name", NULL);
+	name = xfce_rc_read_entry(rc, "Name", NULL);
 	if(name)
 		factory->id = g_strdup(name);
 	else
@@ -139,12 +149,11 @@ lsq_support_reader_parse_file(const gchar *filename)
 		return NULL;
 	}
 
-	gchar **mime_types = xfce_rc_read_list_entry(rc, "MimeType", ";");
+	mime_types = xfce_rc_read_list_entry(rc, "MimeType", ";");
 
 	xfce_rc_set_group(rc, "Squeeze-Add");
 
-  LSQCommandOption **add_options = NULL;
-  gchar **option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
+  option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
   if(option_names)
   {
     add_options = lsq_command_option_create_list(rc, option_names);
@@ -153,7 +162,6 @@ lsq_support_reader_parse_file(const gchar *filename)
 
 	xfce_rc_set_group(rc, "Squeeze-Remove");
 
-  LSQCommandOption **remove_options = NULL;
   option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
   if(option_names)
   {
@@ -163,7 +171,6 @@ lsq_support_reader_parse_file(const gchar *filename)
 
 	xfce_rc_set_group(rc, "Squeeze-Extract");
 
-  LSQCommandOption **extract_options = NULL;
   option_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Options", ";");
   if(option_names)
   {
@@ -172,18 +179,22 @@ lsq_support_reader_parse_file(const gchar *filename)
   }
 
 	xfce_rc_set_group(rc, "Squeeze-Refresh");
-  gchar **column_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Headers", ";");
-  LSQParser *parser = NULL;
-  const gchar *parser_string = xfce_rc_read_entry(rc, "X-Squeeze-Parse", NULL);
+  column_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Headers", ";");
+  parser_string = xfce_rc_read_entry(rc, "X-Squeeze-Parse", NULL);
   if(parser_string)
   {
     parser = lsq_scanf_parser_new(parser_string);
   }
 
-	gchar **_mime_types = mime_types;
+	_mime_types = mime_types;
 	for(i = 0; _mime_types[i]; ++i)
 	{
 		LSQSupportTemplate *s_template = g_new(LSQSupportTemplate, 1);
+		const gchar *new_str_queue;
+		const gchar *add_str_queue;
+		const gchar *remove_str_queue;
+		const gchar *extract_str_queue;
+		const gchar *refresh_str_queue;
 
 		xfce_rc_set_group(rc, _mime_types[i]);
 		/* only add to builder->mime_types if all req. apps are found */
@@ -213,11 +224,11 @@ lsq_support_reader_parse_file(const gchar *filename)
 		s_template->content_type = g_strdup (_mime_types[i]);
 		s_template->id = (const gchar *)factory->id;
 
-        const gchar *new_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-New", NULL);
-        const gchar *add_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Add", NULL);
-        const gchar *remove_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Remove", NULL);
-        const gchar *extract_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Extract", NULL);
-        const gchar *refresh_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Refresh", NULL);
+        new_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-New", NULL);
+        add_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Add", NULL);
+        remove_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Remove", NULL);
+        extract_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Extract", NULL);
+        refresh_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-Refresh", NULL);
 
 	
         if (new_str_queue)    

@@ -71,7 +71,7 @@ static void
 cb_sq_tool_bar_path_field_activated(GtkWidget *entry, SQToolBar *tool_bar);
 
 GType
-sq_tool_bar_get_type ()
+sq_tool_bar_get_type (void)
 {
 	static GType sq_tool_bar_type = 0;
 
