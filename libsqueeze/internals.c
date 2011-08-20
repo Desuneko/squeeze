@@ -18,7 +18,9 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <glib-object.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
 #include "support-template.h"
@@ -29,8 +31,6 @@
 #include "libsqueeze-view.h"
 
 #include "internals.h"
-
-#define __USE_GNU
 
 #include <unistd.h>
 #include <stdio.h>
@@ -71,27 +71,18 @@ lsq_opened_archive_get_archive(gchar *path)
 
 
 static gint
-lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer path)
+lsq_opened_archives_lookup_archive(gconstpointer open_archive, gconstpointer uri)
 {
 #ifdef DEBUG
 	g_return_val_if_fail(open_archive, 1);
 #endif
-	ThunarVfsPath *path_info = NULL;
-	if(g_path_is_absolute(path))
-		path_info = thunar_vfs_path_new(path, NULL);
-	else
-		path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
-
-	if(thunar_vfs_path_equal(lsq_archive_get_path_info(LSQ_ARCHIVE(open_archive)), path_info))
+    GFile *file = g_file_new_for_path (uri);
+    
+	if(g_file_is_equal (lsq_archive_get_file(LSQ_ARCHIVE(open_archive)), file))
 	{
-		if(path_info)
-			thunar_vfs_path_unref(path_info);
+        g_object_unref (file);
 		return 0;
 	}
-	else
-	{
-		if(path_info)
-			thunar_vfs_path_unref(path_info);
-		return 1;
-	}
+    g_object_unref (file);
+    return 1;
 }

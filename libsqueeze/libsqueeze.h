@@ -50,9 +50,8 @@ void lsq_shutdown();
  * 0 -- success
  */
 gint
-lsq_new_archive( gchar *path,
+lsq_new_archive( GFile *,
 				 gboolean overwrite,
-				 gchar *mime,
 				 LSQArchive **lp_archive);
 
 /*
@@ -64,7 +63,7 @@ lsq_new_archive( gchar *path,
  * 0 -- success
  */
 gint
-lsq_open_archive( gchar *path, 
+lsq_open_archive( GFile *, 
 				  LSQArchive **lp_archive);
 
 /*

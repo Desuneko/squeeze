@@ -28,7 +28,8 @@ libsqueeze_1_la_CFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	$(GLIB_CFLAGS)  \
 	$(DBUS_CFLAGS)  \
-	$(THUNAR_VFS_CFLAGS)
+	$(GIO_CFLAGS)   \
+    $(LIBXFCE4UTIL_CFLAGS)
 
 libsqueeze_1_la_LIBADD =
 

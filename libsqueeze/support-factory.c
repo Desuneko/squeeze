@@ -22,7 +22,9 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
 #include "archive-iter.h"

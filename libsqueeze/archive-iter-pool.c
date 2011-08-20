@@ -18,9 +18,13 @@
 #include <string.h>
 #include <glib.h>
 #include <glib-object.h> 
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
+
 #include "libsqueeze.h"
 #include "libsqueeze-view.h"
+
 
 
 
@@ -93,7 +97,9 @@ lsq_archive_iter_pool_find_iter(LSQArchiveIterPool *ipool, LSQArchiveEntry *entr
 	while(size)
 	{
 		pos = size / 2;
-		cmp = (gint)entry - (gint)pool[off+pos]->entry;
+        /* FIXME */
+		//cmp = entry - pool[off+pos]->entry;
+        cmp = 0;
 		if(cmp == 0)
 		{
 			if(ret_iter)

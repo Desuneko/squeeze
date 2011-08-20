@@ -22,7 +22,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
 
 #include "libsqueeze-archive.h"
 #include "libsqueeze-command.h"

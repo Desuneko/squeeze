@@ -19,7 +19,10 @@
 #include <glib-object.h> 
 #include <signal.h>
 
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
+
 #include "libsqueeze.h"
 
 #include "parser-context.h"

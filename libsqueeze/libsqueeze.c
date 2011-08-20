@@ -20,7 +20,9 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
 #include "support-factory.h"
@@ -36,13 +38,8 @@ lsq_init()
 	support_factory_list = NULL;
 
 	const gchar *filename = NULL;
-	gchar *current_dir = g_get_current_dir();
 
-	lsq_mime_database = thunar_vfs_mime_database_get_default();
-
-	lsq_relative_base_path = thunar_vfs_path_new(current_dir, NULL);
 	lsq_opened_archive_list = NULL;
-	g_free(current_dir);
 
 	gchar *data_squeeze = g_strconcat(DATADIR, "/squeeze", NULL);
 	GDir *data_dir = g_dir_open(data_squeeze, 0, NULL);
@@ -74,9 +71,6 @@ void
 lsq_shutdown()
 {
 	g_slist_foreach(lsq_opened_archive_list, (GFunc)lsq_close_archive, NULL);
-
-	g_object_unref(lsq_mime_database);
-	thunar_vfs_path_unref(lsq_relative_base_path);
 }
 
 /*
@@ -84,18 +78,20 @@ lsq_shutdown()
  *
  */
 gint
-lsq_new_archive(gchar *path, gboolean overwrite, gchar *mime, LSQArchive **lp_archive)
+lsq_new_archive(GFile *file, gboolean overwrite, LSQArchive **lp_archive)
 {
 	if(overwrite)
-		g_unlink(path);
+    {
+        g_file_unlink (file);
+    }
 
-	if(g_file_test(path, G_FILE_TEST_EXISTS))
+	if(g_file_exists(file, NULL))
 	{
 		(*lp_archive) = NULL;
 		return 1;
 	}
 
-	LSQArchive *archive = lsq_archive_new(path, mime);
+	LSQArchive *archive = lsq_archive_new(file);
 	(*lp_archive) = archive;
 	if(!archive)
 		return 1;
@@ -108,9 +104,9 @@ lsq_new_archive(gchar *path, gboolean overwrite, gchar *mime, LSQArchive **lp_ar
  *
  */
 gint
-lsq_open_archive(gchar *path, LSQArchive **lp_archive)
+lsq_open_archive(GFile *file, LSQArchive **lp_archive)
 {
-	if(!g_file_test(path, G_FILE_TEST_EXISTS))
+	if(!g_file_exists (file, NULL))
 	{
 		(*lp_archive) = NULL;
 		return 1;
@@ -119,7 +115,7 @@ lsq_open_archive(gchar *path, LSQArchive **lp_archive)
 	LSQArchive *archive = NULL; /*lsq_opened_archive_get_archive(path); */
 	if(!archive)
 	{
-		archive = lsq_archive_new(path, NULL);
+		archive = lsq_archive_new(file);
 		if(archive)
 			lsq_opened_archive_list = g_slist_prepend(lsq_opened_archive_list, archive);
 	}

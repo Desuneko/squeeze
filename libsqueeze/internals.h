@@ -17,15 +17,7 @@
 GSList				 *support_factory_list;
 GSList				 *lsq_mime_support_list;
 GSList				 *lsq_opened_archive_list;
-ThunarVfsPath		  *lsq_relative_base_path;
-
-/*
- * gint
- * lsq_execute(gchar *command)
- *
- * general function for executing child-apps
- */
-ThunarVfsMimeDatabase  *lsq_mime_database;
+gchar                *lsq_relative_base_uri;
 
 gchar *
 lsq_concat_filenames(GSList *filenames);

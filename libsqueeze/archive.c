@@ -22,7 +22,9 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
 #include "libsqueeze-view.h"
@@ -153,40 +155,30 @@ lsq_archive_finalize(GObject *object)
  *
  */
 LSQArchive *
-lsq_archive_new(gchar *path, const gchar *mime)
+lsq_archive_new (GFile *file)
 {
 	LSQArchive *archive;
-	gchar *base = NULL;
+    GFileInfo *file_info;
+    const gchar *content_type;
 
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
-	if(path)
+	if(file)
 	{
-		if(g_path_is_absolute(path))
-			archive->priv->path_info = thunar_vfs_path_new(path, NULL);
-		else
-			archive->priv->path_info = thunar_vfs_path_relative(lsq_relative_base_path, path);
+        archive->priv->file = file;
+        g_object_ref (archive->priv->file);
 	}
 	else
-		archive->priv->path_info = NULL;
+    {
+		archive->priv->file= NULL;
+    }
 
 
-	archive->priv->file_info = thunar_vfs_info_new_for_path(archive->priv->path_info, NULL);
-	if(archive->priv->file_info)
+    file_info = g_file_query_info (file, "standard::content-type,standard::type", 0, NULL, NULL);
+	if(file_info)
 	{
-		archive->priv->mime_info = archive->priv->file_info->mime_info;
-		thunar_vfs_mime_info_ref(archive->priv->mime_info);
-	}
-	else
-	{
-		if(mime)
-			archive->priv->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, mime);
-		else
-		{
-			base = g_path_get_basename(path);
-			archive->priv->mime_info = thunar_vfs_mime_database_get_info_for_file(lsq_mime_database, path, base);
-			g_free(base);
-		}
+        content_type = g_file_info_get_attribute_string (file_info, "standard::content-type");
+        archive->priv->content_type = g_strdup (content_type); 
 	}
 #ifdef DEBUG
 	g_debug("mime: %s\n", thunar_vfs_mime_info_get_name(archive->priv->mime_info));
@@ -195,7 +187,7 @@ lsq_archive_new(gchar *path, const gchar *mime)
   GSList *iter;
   for(iter = lsq_mime_support_list; iter; iter = iter->next)
   {
-    if(((LSQSupportTemplate*)iter->data)->mime_info == archive->priv->mime_info)
+    if(0 == strcmp(((LSQSupportTemplate*)iter->data)->content_type, archive->priv->content_type))
     {
 #ifdef DEBUG
       g_debug("found template");
@@ -272,50 +264,10 @@ lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
  *
  * Return value: filename string
  */
-const gchar *
-lsq_archive_get_filename(const LSQArchive *archive)
+GFile *
+lsq_archive_get_file (LSQArchive *archive)
 {
-	return thunar_vfs_path_get_name(archive->priv->path_info);
-}
-
-/*
- * lsq_archive_get_path:
- * @archive: LSQArchive object
- *
- * Return value: newly allocated path string
- */
-gchar *
-lsq_archive_get_path(const LSQArchive *archive)
-{
-	return thunar_vfs_path_dup_string(archive->priv->path_info);
-}
-
-/*
- * lsq_archive_get_mimetype:
- *
- * @archive: LSQArchive object
- */
-const gchar *
-lsq_archive_get_mimetype(const LSQArchive *archive)
-{
-	return thunar_vfs_mime_info_get_name(archive->priv->mime_info);
-}
-
-/*
- * lsq_archive_exists:
- *
- * @archive: LSQArchive object
- */
-gboolean
-lsq_archive_exists(const LSQArchive *archive)
-{
-	if(!archive->priv->file_info)
-		archive->priv->file_info = thunar_vfs_info_new_for_path(archive->priv->path_info, NULL);
-
-	if(archive->priv->file_info)
-		return TRUE;
-
-	return FALSE;
+	return archive->priv->file;
 }
 
 void
@@ -349,12 +301,16 @@ lsq_close_archive(LSQArchive *archive)
 {
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
 
-	if(archive->priv->path_info)
-		thunar_vfs_path_unref(archive->priv->path_info);
-	if(archive->priv->file_info)
-		thunar_vfs_info_unref(archive->priv->file_info);
-	if(archive->priv->mime_info)
-		thunar_vfs_mime_info_unref(archive->priv->mime_info);
+	if(archive->priv->file)
+    {
+		g_object_unref (archive->priv->file);
+        archive->priv->file = NULL;
+    }
+	if(archive->priv->content_type)
+    {
+		g_free (archive->priv->content_type);
+        archive->priv->content_type = NULL;
+    }
 
 	lsq_archive_stop(archive);
 	g_object_unref(archive);
@@ -382,18 +338,6 @@ LSQArchiveState
 lsq_archive_get_state(const LSQArchive *archive)
 {
     return archive->priv->state;
-}
-
-/**
- * lsq_archive_get_path_info:
- * @archive: the archive
- *
- * Return value: the ThunarVfsPath information of the archive.
- */
-ThunarVfsPath *
-lsq_archive_get_path_info(LSQArchive *archive)
-{
-	return archive->priv->path_info;
 }
 
 LSQSupportType

@@ -22,7 +22,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
 #include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
@@ -210,7 +210,7 @@ lsq_support_reader_parse_file(const gchar *filename)
 		else
 			s_template->supported = FALSE;
 
-		s_template->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, _mime_types[i]);
+		s_template->content_type = g_strdup (_mime_types[i]);
 		s_template->id = (const gchar *)factory->id;
 
         const gchar *new_str_queue = xfce_rc_read_entry(rc, "X-Squeeze-New", NULL);

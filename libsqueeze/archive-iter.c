@@ -18,7 +18,9 @@
 #include <string.h>
 #include <glib.h>
 #include <glib-object.h> 
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
 #include "libsqueeze-view.h"
@@ -85,7 +87,7 @@ lsq_archive_entry_set_propsva(const LSQArchive *, LSQArchiveEntry *, va_list);
 struct _LSQArchiveEntry
 {
 	gchar *filename;
-	ThunarVfsMimeInfo *mime_info;
+    gchar *content_type;
 	gpointer props;
 	LSQArchiveEntry **children;
 	LSQSList *buffer;
@@ -852,11 +854,12 @@ lsq_archive_entry_new(const gchar *filename)
 	if(pos)
 	{
 		entry->filename = g_strndup(filename, (gsize)(pos - filename));
-		entry->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, LSQ_MIME_DIRECTORY);
+		/*entry->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, LSQ_MIME_DIRECTORY);*/
 	}
 	else
 	{
 		entry->filename = g_strdup(filename);
+        /*
 		if(g_utf8_validate (filename, -1, NULL))
 		{
 			entry->mime_info = thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, entry->filename);
@@ -867,6 +870,7 @@ lsq_archive_entry_new(const gchar *filename)
 			entry->mime_info = thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, utf8_file);
 			g_free(utf8_file);
 		}
+        */
 	}
 
 	return entry;
@@ -970,8 +974,11 @@ lsq_archive_entry_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 	lsq_archive_entry_props_free(archive, entry);
 
 	/* free the mime info */
-	if(entry->mime_info)
-		thunar_vfs_mime_info_unref(entry->mime_info);
+	if(entry->content_type)
+    {
+        g_free (entry->content_type);
+        entry->content_type = NULL;
+    }
 
 	/* free the entry */
 	g_free(entry->filename);
@@ -987,9 +994,7 @@ lsq_archive_entry_get_filename(const LSQArchiveEntry *entry)
 inline static const gchar *
 lsq_archive_entry_get_mimetype(const LSQArchiveEntry *entry)
 {
-	if(entry->mime_info)
-		return thunar_vfs_mime_info_get_name(entry->mime_info);
-	return NULL;
+	return entry->content_type;
 }
 
 inline static guint
@@ -1153,9 +1158,11 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 
 	if(!mime || strcmp(mime, LSQ_MIME_DIRECTORY))
 	{
-		if(parent->mime_info)
+        /*
+		if(parent->content_type)
 			thunar_vfs_mime_info_unref(parent->mime_info);
 		parent->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, LSQ_MIME_DIRECTORY);
+        */
 	}
 
 	parent->buffer = lsq_slist_insert_sorted_single(parent->buffer, child, (GCompareFunc)lsq_archive_entry_filename_compare);

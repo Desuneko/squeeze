@@ -46,9 +46,9 @@ typedef struct _LSQSupportTemplate LSQSupportTemplate;
 struct _LSQSupportTemplate
 {
 	const gchar *id;
-	ThunarVfsMimeInfo *mime_info;
 	gchar **required_apps;
 	gboolean supported;
+    gchar *content_type;
 
 	guint n_properties;
 	gchar **property_names;

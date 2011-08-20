@@ -54,9 +54,8 @@ typedef struct _LSQArchivePrivate LSQArchivePrivate;
 
 struct _LSQArchivePrivate
 {
-	ThunarVfsPath	  *path_info;
-	ThunarVfsInfo	  *file_info;
-	ThunarVfsMimeInfo  *mime_info;
+    GFile *file;
+    gchar *content_type;
 
 	LSQSupportTemplate *s_template;
 
@@ -101,12 +100,12 @@ gboolean		lsq_archive_exists(const LSQArchive *archive);
 LSQSupportType  lsq_archive_get_support_mask(const LSQArchive *archive);
 
 
-LSQArchive		 *lsq_archive_new(gchar *, const gchar *) G_GNUC_INTERNAL;
+LSQArchive		 *lsq_archive_new(GFile *) G_GNUC_INTERNAL;
 void				lsq_archive_state_changed(const LSQArchive *archive) G_GNUC_INTERNAL;
 void				lsq_archive_add_children(GSList *files);
 gboolean			lsq_archive_remove_file(LSQArchive *, const gchar *);
 
-ThunarVfsPath	  *lsq_archive_get_path_info(LSQArchive *);
+GFile *lsq_archive_get_file(LSQArchive *);
 
 gboolean		lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **, const gchar *);
 

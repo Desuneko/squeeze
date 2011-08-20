@@ -17,7 +17,9 @@
 #include <string.h>
 #include <glib.h>
 #include <glib-object.h>
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
 
 #include "libsqueeze.h"
 #include "support-factory.h"

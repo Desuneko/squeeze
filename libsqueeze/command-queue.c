@@ -20,7 +20,10 @@
 #include <signal.h>
 #include <string.h>
 
-#include <thunar-vfs/thunar-vfs.h>
+#include <gio/gio.h>
+
+#include <libxfce4util/libxfce4util.h>
+
 #include "libsqueeze.h"
 #include "archive-tempfs.h"
 #include "parser-context.h"
