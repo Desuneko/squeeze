@@ -93,13 +93,11 @@ lsq_archive_iter_pool_find_iter(LSQArchiveIterPool *ipool, LSQArchiveEntry *entr
 	guint size = ipool->size;
 	guint pos;
 	guint off = 0;
-	gint cmp;
+	gintptr cmp;
 	while(size)
 	{
 		pos = size / 2;
-        /* FIXME */
-		//cmp = entry - pool[off+pos]->entry;
-        cmp = 0;
+		cmp = (guintptr)entry - (guintptr)pool[off+pos]->entry;
 		if(cmp == 0)
 		{
 			if(ret_iter)
