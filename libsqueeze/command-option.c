@@ -193,6 +193,9 @@ lsq_command_option_create_pair(LSQCommandOption **option_list)
   LSQCommandOptionPair **option_pair;
   LSQCommandOptionPair **pair_iter;
 
+  g_return_val_if_fail (NULL != option_list, NULL);
+
+
   for(option_iter = option_list; *option_iter; option_iter++)
   {
     length++;
