@@ -570,6 +570,8 @@ static guint parse_string(gchar *str, guint lng, parse_part *part, LSQScanfParse
   if(!ptr)
     return 0;
 
+  ctx->props_store[part->index_] = g_strndup(str, ptr-str);
+
   return ptr - str;
 }
 
