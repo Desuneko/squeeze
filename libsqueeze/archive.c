@@ -194,6 +194,15 @@ lsq_archive_new (GFile *file)
     }
   }
 
+  if (!archive->priv->s_template)
+  {
+#ifdef DEBUG
+    g_debug("not supported");
+#endif
+    g_object_unref(archive);
+    archive = NULL;
+  }
+
   return archive;
 }
 
