@@ -776,7 +776,7 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 	}
 	if(result == GTK_RESPONSE_OK)
 	{
-		open_archive_paths = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dialog));
+		open_archive_paths = gtk_file_chooser_get_files(GTK_FILE_CHOOSER(dialog));
 		_open_archive_paths = open_archive_paths;
 		while(_open_archive_paths)
 		{
@@ -792,7 +792,7 @@ cb_sq_main_open_archive(GtkWidget *widget, gpointer userdata)
 			*/
 			_open_archive_paths = _open_archive_paths->next;
 		}
-		g_slist_foreach(open_archive_paths, (GFunc)g_free, NULL);
+		g_slist_foreach(open_archive_paths, (GFunc)g_object_unref, NULL);
 		g_slist_free(open_archive_paths);
 		gtk_widget_destroy(dialog);
 	}
