@@ -41,10 +41,6 @@
 #define LSQ_ENTRY_CHILD_BUFFER_SIZE 500
 #endif
 
-#ifndef LSQ_MIME_DIRECTORY
-#define LSQ_MIME_DIRECTORY "inode/directory"
-#endif
-
 static void
 lsq_archive_class_init(LSQArchiveClass *archive_class);
 
@@ -150,7 +146,6 @@ lsq_archive_finalize(GObject *object)
  * lsq_archive_new:
  *
  * @path: path to archive
- * @mime: mime-type (or NULL)
  *
  * Return value: LSQArchive object
  *
@@ -181,6 +176,7 @@ lsq_archive_new (GFile *file)
 	{
 	  content_type = g_file_info_get_attribute_string (file_info, "standard::content-type");
 	  archive->priv->content_type = g_strdup (content_type); 
+	  g_object_unref(file_info);
 	}
 #ifdef DEBUG
 	g_debug("mime: %s\n", archive->priv->content_type);

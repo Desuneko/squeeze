@@ -51,7 +51,7 @@ lsq_archive_entry_save_free(const LSQArchive *, LSQArchiveEntry *);
 inline static const gchar *
 lsq_archive_entry_get_filename(const LSQArchiveEntry *);
 inline static const gchar *
-lsq_archive_entry_get_mimetype(const LSQArchiveEntry *);
+lsq_archive_entry_get_contenttype(const LSQArchiveEntry *);
 
 inline static guint
 lsq_archive_entry_n_children(const LSQArchiveEntry *);
@@ -395,13 +395,14 @@ lsq_archive_iter_get_real_parent(LSQArchiveIter *iter)
 gboolean
 lsq_archive_iter_is_directory(const LSQArchiveIter *iter)
 {
+	const gchar *contenttype;
 #ifdef debug
 	g_return_val_if_fail(iter, FALSE);
 #endif
-	const gchar *mime = lsq_archive_entry_get_mimetype(iter->entry);
-	if(!mime)
+	contenttype = lsq_archive_entry_get_contenttype(iter->entry);
+	if(!contenttype)
 		return FALSE;
-	if(!strcmp(mime, LSQ_MIME_DIRECTORY))
+	if(!strcmp(contenttype, LSQ_MIME_DIRECTORY))
 		return TRUE;
 	return FALSE;
 }
@@ -591,12 +592,12 @@ lsq_archive_iter_get_filename(const LSQArchiveIter *iter)
 }
 
 const gchar*
-lsq_archive_iter_get_mime(const LSQArchiveIter *iter)
+lsq_archive_iter_get_contenttype(const LSQArchiveIter *iter)
 {
 #ifdef DEBUG
 	g_return_val_if_fail(iter, FALSE);
 #endif
-	return lsq_archive_entry_get_mimetype(iter->entry);
+	return lsq_archive_entry_get_contenttype(iter->entry);
 }
 
 gboolean
@@ -892,23 +893,21 @@ lsq_archive_entry_new(const gchar *filename)
 	if(pos)
 	{
 		entry->filename = g_strndup(filename, (gsize)(pos - filename));
-		/*entry->mime_info = thunar_vfs_mime_database_get_info(lsq_mime_database, LSQ_MIME_DIRECTORY);*/
+		entry->content_type = g_strdup(LSQ_MIME_DIRECTORY);
 	}
 	else
 	{
 		entry->filename = g_strdup(filename);
-        /*
 		if(g_utf8_validate (filename, -1, NULL))
 		{
-			entry->mime_info = thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, entry->filename);
+			entry->content_type = g_content_type_guess(entry->filename, NULL, 0, NULL);
 		}
 		else
 		{
 			gchar *utf8_file = g_convert(filename, -1, "UTF-8", "WINDOWS-1252", NULL, NULL, NULL);
-			entry->mime_info = thunar_vfs_mime_database_get_info_for_name(lsq_mime_database, utf8_file);
+			entry->content_type = g_content_type_guess(utf8_file, NULL, 0, NULL);
 			g_free(utf8_file);
 		}
-        */
 	}
 
 	return entry;
@@ -1011,7 +1010,7 @@ lsq_archive_entry_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 	/* free the properties */
 	lsq_archive_entry_props_free(archive, entry);
 
-	/* free the mime info */
+	/* free the content type */
 	if(entry->content_type)
     {
         g_free (entry->content_type);
@@ -1030,7 +1029,7 @@ lsq_archive_entry_get_filename(const LSQArchiveEntry *entry)
 }
 
 inline static const gchar *
-lsq_archive_entry_get_mimetype(const LSQArchiveEntry *entry)
+lsq_archive_entry_get_contenttype(const LSQArchiveEntry *entry)
 {
 	return entry->content_type;
 }
@@ -1196,9 +1195,9 @@ static LSQArchiveEntry *
 lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 {
 	LSQArchiveEntry *child = lsq_archive_entry_new(filename);
-	const gchar *mime = lsq_archive_entry_get_mimetype(parent);
+	const gchar *contenttype = lsq_archive_entry_get_contenttype(parent);
 
-	if(!mime || strcmp(mime, LSQ_MIME_DIRECTORY))
+	if(!contenttype || strcmp(contenttype, LSQ_MIME_DIRECTORY))
 	{
         /*
 		if(parent->content_type)
@@ -1299,7 +1298,7 @@ lsq_archive_entry_get_prop_str(const LSQArchive *archive, const LSQArchiveEntry 
 			retval = lsq_archive_entry_get_filename(entry);
 			break;
 		case LSQ_ARCHIVE_PROP_MIME_TYPE:
-			retval = lsq_archive_entry_get_mimetype(entry);
+			retval = lsq_archive_entry_get_contenttype(entry);
 			break;
 		default:
 			props_iter = entry->props;

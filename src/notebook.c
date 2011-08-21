@@ -710,7 +710,7 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 	renderer = gtk_cell_renderer_pixbuf_new();
 	g_object_set(G_OBJECT(renderer), "stock-size", GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
-	gtk_tree_view_column_set_attributes(column, renderer, "icon-name", SQ_ARCHIVE_STORE_EXTRA_PROP_ICON, NULL);
+	gtk_tree_view_column_set_attributes(column, renderer, "gicon", SQ_ARCHIVE_STORE_EXTRA_PROP_ICON, NULL);
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);

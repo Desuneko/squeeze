@@ -30,7 +30,7 @@ LSQArchiveIter	 *lsq_archive_iter_get_parent(LSQArchiveIter *);
 
 gboolean			lsq_archive_iter_get_prop_value(const LSQArchiveIter *iter, guint n, GValue *value);
 const gchar		*lsq_archive_iter_get_filename(const LSQArchiveIter *);
-const gchar		*lsq_archive_iter_get_mime(const LSQArchiveIter *);
+const gchar		*lsq_archive_iter_get_contenttype(const LSQArchiveIter *);
 gchar			  *lsq_archive_iter_get_path(const LSQArchiveIter *archive);
 
 LSQArchiveIter	 *lsq_archive_get_iter(LSQArchive *archive, const gchar *path);

@@ -124,7 +124,7 @@ sq_archive_insertionsort(SQArchiveStore *store, gint left, gint right);
 static void
 sq_archive_store_sort(SQArchiveStore *store);
 
-static const gchar *
+static GIcon *
 sq_archive_store_get_icon_name_for_iter(SQArchiveStore *store, LSQArchiveIter *iter);
 
 static void
@@ -411,8 +411,9 @@ sq_archive_store_get_column_type(GtkTreeModel *tree_model, gint index_)
 	switch(index_)
 	{
 		case SQ_ARCHIVE_STORE_EXTRA_PROP_PATH:
-		case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
 			return G_TYPE_STRING; 
+		case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
+			return G_TYPE_ICON; 
 		default:
 			return lsq_archive_get_entry_property_type(archive, index_ - SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);
 	}
@@ -536,10 +537,10 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 				lsq_archive_iter_unref(parent);
 			break;
 			case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
-				g_value_init(value, G_TYPE_STRING);
+				g_value_init(value, G_TYPE_ICON);
 
 				if(store->props._show_icons)
-					g_value_set_string(value, sq_archive_store_get_icon_name_for_iter(store, entry));
+					g_value_take_object(value, sq_archive_store_get_icon_name_for_iter(store, entry));
 			break;
 			case LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT:
 				if(store->props._show_full_path)
@@ -565,9 +566,9 @@ sq_archive_store_get_value (GtkTreeModel *tree_model, GtkTreeIter *iter, gint co
 		switch(column)
 		{
 			case SQ_ARCHIVE_STORE_EXTRA_PROP_ICON:
-				g_value_init(value, G_TYPE_STRING);
+				g_value_init(value, G_TYPE_ICON);
 				if(store->props._show_icons)
-					g_value_set_string(value, GTK_STOCK_GO_UP);
+					g_value_take_object(value, g_themed_icon_new(GTK_STOCK_GO_UP));
 			break;
 			case LSQ_ARCHIVE_PROP_FILENAME + SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT:
 				g_value_init(value, G_TYPE_STRING);
@@ -1003,19 +1004,10 @@ sq_archive_insertionsort(SQArchiveStore *store, gint left, gint right)
 	}
 }
 
-static const gchar *
+static GIcon *
 sq_archive_store_get_icon_name_for_iter(SQArchiveStore *store, LSQArchiveIter *iter)
 {
-    /*
-	ThunarVfsMimeInfo *mime_info = thunar_vfs_mime_database_get_info(mimedb, lsq_archive_iter_get_mime(iter));
-	const gchar *icon_name = thunar_vfs_mime_info_lookup_icon_name(mime_info, store->icon_theme);
-	if(icon_name && !gtk_icon_theme_has_icon(store->icon_theme, icon_name))
-		icon_name = NULL;
-	thunar_vfs_mime_info_unref(mime_info);
-	g_object_unref(mimedb);
-	return icon_name;
-    */
-    return NULL;
+	return g_content_type_get_icon(lsq_archive_iter_get_contenttype(iter));
 }
 
 GtkTreeModel *
