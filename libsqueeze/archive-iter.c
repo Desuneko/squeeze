@@ -73,24 +73,16 @@ lsq_archive_entry_get_prop_uint(const LSQArchive *, const LSQArchiveEntry *, gui
 inline static guint64
 lsq_archive_entry_get_prop_uint64(const LSQArchive *, const LSQArchiveEntry *, guint);
 
-#if 0
 static void
 lsq_archive_entry_set_prop_str(const LSQArchive *, LSQArchiveEntry *, guint, const gchar *);
-#endif
-#if 0
 static void
 lsq_archive_entry_set_prop_uint(const LSQArchive *, LSQArchiveEntry *, guint, guint);
-#endif
-#if 0
 static void
 lsq_archive_entry_set_prop_uint64(const LSQArchive *, LSQArchiveEntry *, guint, guint64);
-#endif
 static void
 lsq_archive_entry_set_propsv(const LSQArchive *, LSQArchiveEntry *, gpointer *);
-#if 0
 static void
 lsq_archive_entry_set_propsva(const LSQArchive *, LSQArchiveEntry *, va_list);
-#endif
 
 struct _LSQArchiveEntry
 {
@@ -462,23 +454,21 @@ lsq_archive_iter_get_child(LSQArchiveIter *parent, const gchar *filename)
 	return iter;
 }
 
-#if 0
 LSQArchiveIter *
 lsq_archive_iter_add_file(LSQArchiveIter *parent, const gchar *filename)
 {
+	LSQArchiveEntry *entry;
+	LSQArchiveIter *iter;
 #ifdef DEBUG
 	g_return_val_if_fail(parent, NULL);
 	g_return_val_if_fail(filename, NULL);
 #endif
-	LSQArchiveEntry *entry;
-	LSQArchiveIter *iter;
 	entry = lsq_archive_entry_get_child(parent->entry, filename);
 	if(!entry)
 		entry = lsq_archive_entry_add_child(parent->entry, filename);
 	iter = lsq_archive_iter_get_with_parent(entry, parent);
 	return iter;
 }
-#endif
 
 void
 lsq_archive_iter_remove(LSQArchiveIter *iter, gboolean recursive)
@@ -630,7 +620,6 @@ lsq_archive_iter_get_prop_value(const LSQArchiveIter *iter, guint n, GValue *val
 	return TRUE;
 }
 
-#if 0
 void
 lsq_archive_iter_set_prop_value(LSQArchiveIter *iter, guint n, const GValue *value)
 {
@@ -654,9 +643,7 @@ lsq_archive_iter_set_prop_value(LSQArchiveIter *iter, guint n, const GValue *val
 			break;
 	}
 }
-#endif
 
-#if 0
 void
 lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gconstpointer value)
 {
@@ -679,9 +666,7 @@ lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gconstpointer value)
 			break;
 	}
 }
-#endif
 
-#if 0
 void
 lsq_archive_iter_set_props(LSQArchiveIter *iter, ...)
 {
@@ -693,7 +678,6 @@ lsq_archive_iter_set_props(LSQArchiveIter *iter, ...)
 	lsq_archive_entry_set_propsva(iter->archive, iter->entry, ap);
 	va_end(ap);
 }
-#endif
 
 void
 lsq_archive_iter_set_propsv(LSQArchiveIter *iter, gpointer *props)
@@ -1406,7 +1390,6 @@ lsq_archive_entry_get_props(const LSQArchive *archive, LSQArchiveEntry *entry)
 	return entry->props;
 }
 
-#if 0
 static void
 lsq_archive_entry_set_prop_str(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, const gchar *str_val)
 {
@@ -1431,9 +1414,7 @@ lsq_archive_entry_set_prop_str(const LSQArchive *archive, LSQArchiveEntry *entry
 	g_free(*((gchar **)props_iter));
 	(*((gchar **)props_iter)) = g_strdup(str_val);
 }
-#endif
 
-#if 0
 static void
 lsq_archive_entry_set_prop_uint(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, guint int_val)
 {
@@ -1457,9 +1438,7 @@ lsq_archive_entry_set_prop_uint(const LSQArchive *archive, LSQArchiveEntry *entr
 	}
 	(*((guint *)props_iter)) = int_val;
 }
-#endif
 
-#if 0
 static void
 lsq_archive_entry_set_prop_uint64(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, guint64 int64_val)
 {
@@ -1483,7 +1462,6 @@ lsq_archive_entry_set_prop_uint64(const LSQArchive *archive, LSQArchiveEntry *en
 	}
 	(*((guint64 *)props_iter)) = int64_val;
 }
-#endif
 
 static void
 lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, gpointer *props)
@@ -1513,7 +1491,6 @@ lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, 
 	}
 }
 
-#if 0
 static void
 lsq_archive_entry_set_propsva(const LSQArchive *archive, LSQArchiveEntry *entry, va_list ap)
 {
@@ -1540,7 +1517,6 @@ lsq_archive_entry_set_propsva(const LSQArchive *archive, LSQArchiveEntry *entry,
 		}
 	}
 }
-#endif
 
 /******************************
  * Other iter/entry functions *
