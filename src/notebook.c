@@ -162,7 +162,7 @@ sq_notebook_class_init(SQNotebookClass *notebook_class)
 			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 0,
 			NULL, NULL,
 			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE, 1, G_TYPE_STRING, NULL);
+			G_TYPE_NONE, 1, G_TYPE_POINTER, NULL);
 
 	sq_notebook_signals[SQ_NOTEBOOK_SIGNAL_STATE_CHANGED] = g_signal_new("archive-state-changed",
 			G_TYPE_FROM_CLASS(notebook_class),

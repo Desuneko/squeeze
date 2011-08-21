@@ -313,7 +313,7 @@ sq_archive_store_class_init(SQArchiveStoreClass *as_class)
 		 g_cclosure_marshal_VOID__POINTER,
 		 G_TYPE_NONE,
 		 1,
-		 G_TYPE_STRING,
+		 G_TYPE_POINTER,
 		 NULL);
 }
 
