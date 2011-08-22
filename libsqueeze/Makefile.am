@@ -29,16 +29,14 @@ libsqueeze_2_la_CFLAGS = \
 	$(GLIB_CFLAGS)  \
 	$(DBUS_CFLAGS)  \
 	$(GIO_CFLAGS)   \
-    $(LIBXFCE4UTIL_CFLAGS)
+	$(LIBXFCE4UTIL_CFLAGS)
 
-libsqueeze_2_la_LIBADD = \
+libsqueeze_2_la_LDFLAGS = \
+	-version-info $(SQUEEZE_VERINFO) \
 	$(GLIB_LIBS)  \
 	$(DBUS_LIBS)  \
 	$(GIO_LIBS)   \
-    $(LIBXFCE4UTIL_LIBS)
-
-libsqueeze_2_la_LDFLAGS = \
-  -version-info $(SQUEEZE_VERINFO)
+	$(LIBXFCE4UTIL_LIBS)
 
 libsqueeze_includedir= \
 	$(includedir)/libsqueeze

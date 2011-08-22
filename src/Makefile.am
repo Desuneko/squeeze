@@ -31,31 +31,24 @@ squeeze_SOURCES = \
 #	location_entry.c location_entry.h
 
 squeeze_CFLAGS = \
+	-DDATADIR=\"$(datadir)\" \
+	-DSRCDIR=\"$(top_srcdir)\" \
+	-DLOCALEDIR=\"$(localedir)\" \
 	$(GTK_CFLAGS) \
 	$(GLIB_CFLAGS) \
 	$(DBUS_CFLAGS) \
-    $(GIO_CFLAGS) \
-	$(LIBXFCE4UTIL_CFLAGS) \
-	-DDATADIR=\"$(datadir)\" \
-	-DSRCDIR=\"$(top_srcdir)\" \
-	-DLOCALEDIR=\"$(localedir)\"
+	$(GIO_CFLAGS) \
+	$(LIBXFCE4UTIL_CFLAGS)
  
 squeeze_LDADD = \
-	$(top_builddir)/libsqueeze/libsqueeze-2.la \
-    $(GTK_LIBS) \
-    $(GLIB_LIBS) \
-    $(GTHREAD_LIBS) \
-    $(GIO_LIBS) \
-    $(LIBEXIF_LIBS) \
-    $(CAIRO_LIBS) \
-    $(XFCONF_LIBS) \
-    $(LIBXFCE4UTIL_LIBS) \
-    -lX11
+	$(top_builddir)/libsqueeze/libsqueeze-2.la
 
 squeeze_LDFLAGS = \
-    -no-undefined                           \
-    $(LIBSM_LDFLAGS)                        \
-    $(PLATFORM_LDFLAGS)
+	$(GTK_LIBS) \
+	$(GLIB_LIBS) \
+	$(GIO_LIBS) \
+	$(XFCONF_LIBS) \
+	$(LIBXFCE4UTIL_LIBS)
 
 
 INCLUDES = \
