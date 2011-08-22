@@ -242,6 +242,21 @@ lsq_archive_get_entry_property_type(const LSQArchive *archive, guint n)
 	}
 }
 
+guint
+lsq_archive_get_entry_property_offset(const LSQArchive *archive, guint n)
+{
+  switch(n)
+  {
+    case LSQ_ARCHIVE_PROP_FILENAME:
+    case LSQ_ARCHIVE_PROP_MIME_TYPE:
+      g_return_val_if_reached(0);
+      break;
+    default:
+      return lsq_support_template_get_property_offset(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
+      break;
+  }
+}
+
 /*
  * lsq_archive_get_entry_property_name:
  *
@@ -262,6 +277,15 @@ lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
 			return lsq_support_template_get_property_name(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
 			break;
 	}
+}
+
+guint
+lsq_archive_entry_properties_size(const LSQArchive *archive)
+{
+#ifdef DEBUG
+  g_return_val_if_fail(archive, 0);
+#endif
+  return lsq_support_template_get_properties_size(archive->priv->s_template);
 }
 
 /*

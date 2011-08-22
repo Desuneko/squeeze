@@ -285,7 +285,7 @@ lsq_support_reader_parse_file(const gchar *filename)
 		s_template->parser = parser;
 
 #ifdef DEBUG
-		if (NULL != s_template->supported)
+		if (s_template->supported)
 		{
 			g_debug("%s supported\n", _mime_types[i]);
 		}

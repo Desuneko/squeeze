@@ -67,10 +67,14 @@ struct _LSQSupportTemplate
 
 GType
 lsq_support_template_get_property_type(LSQSupportTemplate *s_template, guint n);
+guint
+lsq_support_template_get_property_offset(LSQSupportTemplate *s_template, guint n);
 const gchar *
 lsq_support_template_get_property_name(LSQSupportTemplate *s_template, guint n);
 guint
 lsq_support_template_get_n_properties (LSQSupportTemplate *s_template);
+guint
+lsq_support_template_get_properties_size (LSQSupportTemplate *s_template);
 
 
 #endif /* __SUPPORT_TEMPLATE_H__ */

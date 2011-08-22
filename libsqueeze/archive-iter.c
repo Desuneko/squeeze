@@ -901,6 +901,7 @@ static void
 lsq_archive_entry_props_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 {
 	guint i;
+	guint offset;
 	gpointer props_iter = entry->props;
 	/* free the properties */
 	if(props_iter)
@@ -912,15 +913,9 @@ lsq_archive_entry_props_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 			{
 				case(G_TYPE_STRING):
 					/* free only strings */
-					g_free(*(gchar **)props_iter);
-					*(gchar **)props_iter = NULL;
-					props_iter = ((gchar **)props_iter) + 1;
-					break;
-				case(G_TYPE_UINT):
-					props_iter = ((guint *)props_iter) + 1;
-					break;
-				case(G_TYPE_UINT64):
-					props_iter = ((guint64 *)props_iter) + 1;
+					offset = lsq_archive_get_entry_property_offset(archive, i+LSQ_ARCHIVE_PROP_USER);
+					g_free(((gchar **)props_iter)[offset]);
+					((gchar **)props_iter)[offset] = NULL;
 					break;
 			}
 		}
@@ -1274,7 +1269,7 @@ lsq_archive_entry_get_prop_str(const LSQArchive *archive, const LSQArchiveEntry 
 {
 	const gchar *retval = NULL;
 	gpointer props_iter = NULL;
-	guint n;
+	guint offset;
 
 	switch(i)
 	{
@@ -1288,22 +1283,12 @@ lsq_archive_entry_get_prop_str(const LSQArchive *archive, const LSQArchiveEntry 
 			props_iter = entry->props;
 			if(props_iter)
 			{
-				for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
-				{
-					switch(lsq_archive_get_entry_property_type(archive, n+LSQ_ARCHIVE_PROP_USER))
-					{
-						case G_TYPE_STRING:
-							props_iter = ((gchar **)props_iter) + 1;;
-							break;
-						case G_TYPE_UINT:
-							props_iter = ((guint *)props_iter) + 1;;
-							break;
-						case G_TYPE_UINT64:
-							props_iter = ((guint64 *)props_iter) + 1;;
-							break;
-					}
-				}
-				retval = (*((gchar **)props_iter));
+			  if (lsq_archive_get_entry_property_type(archive, i) == G_TYPE_STRING)
+			  {
+			    offset = lsq_archive_get_entry_property_offset(archive, i);
+
+			    retval = (((gchar **)props_iter)[offset]);
+			  }
 			}
 			break;
 	}
@@ -1314,75 +1299,42 @@ inline static guint
 lsq_archive_entry_get_prop_uint(const LSQArchive *archive, const LSQArchiveEntry *entry, guint i)
 {
 	gpointer props_iter = entry->props;
-	guint n;
+	guint offset;
 	if(!props_iter)
 		return 0;
-	for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
-	{
-		switch(lsq_archive_get_entry_property_type(archive, n))
-		{
-			case G_TYPE_STRING:
-				props_iter = ((gchar **)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT:
-				props_iter = ((guint *)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT64:
-				props_iter = ((guint64 *)props_iter) + 1;;
-				break;
-		}
-	}
-	return (*((guint *)props_iter));
+
+	if (lsq_archive_get_entry_property_type(archive, i) != G_TYPE_UINT)
+	  return 0;
+
+	offset = lsq_archive_get_entry_property_offset(archive, i);
+
+	return (((guint *)props_iter)[offset]);
 }
 
 inline static guint64
 lsq_archive_entry_get_prop_uint64(const LSQArchive *archive, const LSQArchiveEntry *entry, guint i)
 {
 	gpointer props_iter = entry->props;
-	guint n;
+	guint offset;
 	if(!props_iter)
 		return 0;
-	for(n = 0; n < (i-LSQ_ARCHIVE_PROP_USER); ++n)
-	{
-		switch(lsq_archive_get_entry_property_type(archive, n+LSQ_ARCHIVE_PROP_USER))
-		{
-			case G_TYPE_STRING:
-				props_iter = ((gchar **)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT:
-				props_iter = ((guint *)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT64:
-				props_iter = ((guint64 *)props_iter) + 1;;
-				break;
-		}
-	}
-	return (*((guint64 *)props_iter));
+
+	if (lsq_archive_get_entry_property_type(archive, i) != G_TYPE_UINT64)
+	  return 0;
+
+	offset = lsq_archive_get_entry_property_offset(archive, i);
+
+	return (((guint64 *)props_iter)[offset]);
 }
 
 static gpointer
 lsq_archive_entry_get_props(const LSQArchive *archive, LSQArchiveEntry *entry)
 {
 	guint size = 0;
-	guint i;
 
 	if(!entry->props)
 	{
-		for(i = 0; i < (lsq_archive_n_entry_properties(archive)-LSQ_ARCHIVE_PROP_USER); ++i)
-		{
-			switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
-			{
-				case G_TYPE_STRING:
-					size += sizeof(gchar *);
-					break;
-				case G_TYPE_UINT:
-					size += sizeof(guint);
-					break;
-				case G_TYPE_UINT64:
-					size += sizeof(guint64);
-					break;
-			}
-		}
+		size = lsq_archive_entry_properties_size(archive);
 
 		entry->props = g_malloc0(size);
 	}
@@ -1394,98 +1346,67 @@ static void
 lsq_archive_entry_set_prop_str(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, const gchar *str_val)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
-	guint i;
+	guint offset;
 
-	for(i = 0; i < (n-LSQ_ARCHIVE_PROP_USER); ++i)
-	{
-		switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
-		{
-			case G_TYPE_STRING:
-				props_iter = ((gchar **)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT:
-				props_iter = ((guint *)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT64:
-				props_iter = ((guint64 *)props_iter) + 1;;
-				break;
-		}
-	}
-	g_free(*((gchar **)props_iter));
-	(*((gchar **)props_iter)) = g_strdup(str_val);
+	if (lsq_archive_get_entry_property_type(archive, n) != G_TYPE_STRING)
+	  return;
+
+	offset = lsq_archive_get_entry_property_offset(archive, n);
+
+	g_free(((gchar **)props_iter)[offset]);
+	((gchar **)props_iter)[offset] = g_strdup(str_val);
 }
 
 static void
 lsq_archive_entry_set_prop_uint(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, guint int_val)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
-	guint i;
+	guint offset;
 
-	for(i = 0; i < (n-LSQ_ARCHIVE_PROP_USER); ++i)
-	{
-		switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
-		{
-			case G_TYPE_STRING:
-				props_iter = ((gchar **)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT:
-				props_iter = ((guint *)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT64:
-				props_iter = ((guint64 *)props_iter) + 1;;
-				break;
-		}
-	}
-	(*((guint *)props_iter)) = int_val;
+	if (lsq_archive_get_entry_property_type(archive, n) != G_TYPE_UINT)
+	  return;
+
+	offset = lsq_archive_get_entry_property_offset(archive, n);
+
+	((guint *)props_iter)[offset] = int_val;
 }
 
 static void
 lsq_archive_entry_set_prop_uint64(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, guint64 int64_val)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
-	guint i;
+	guint offset;
 
-	for(i = 0; i < (n-LSQ_ARCHIVE_PROP_USER); ++i)
-	{
-		switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
-		{
-			case G_TYPE_STRING:
-				props_iter = ((gchar **)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT:
-				props_iter = ((guint *)props_iter) + 1;;
-				break;
-			case G_TYPE_UINT64:
-				props_iter = ((guint64 *)props_iter) + 1;;
-				break;
-		}
-	}
-	(*((guint64 *)props_iter)) = int64_val;
+	if (lsq_archive_get_entry_property_type(archive, n) != G_TYPE_UINT64)
+	  return;
+
+	offset = lsq_archive_get_entry_property_offset(archive, n);
+
+	((guint64 *)props_iter)[offset] = int64_val;
 }
 
 static void
 lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, gpointer *props)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
+	guint offset;
 	guint i;
 
 	for(i=0; i < (lsq_archive_n_entry_properties(archive) - LSQ_ARCHIVE_PROP_USER); ++i)
 	{
+		offset = lsq_archive_get_entry_property_offset(archive, i+LSQ_ARCHIVE_PROP_USER);
 		switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
 		{
 			case G_TYPE_STRING:
-				g_free(*((gchar **)props_iter));
+				g_free(((gchar **)props_iter)[offset]);
 				//(*((gchar **)props_iter)) = g_strdup((const gchar*)props[i]);
-				(*((gchar **)props_iter)) = (gchar*)props[i];
-				props_iter = ((gchar **)props_iter) + 1;;
+				((gchar **)props_iter)[offset] = (gchar*)props[i];
 				break;
 			case G_TYPE_UINT:
-				(*((guint *)props_iter)) = *((const guint *)props[i]);
-				props_iter = ((guint *)props_iter) + 1;;
+				((guint *)props_iter)[offset] = *((const guint *)props[i]);
 				break;
 			case G_TYPE_UINT64:
-				(*((guint64 *)props_iter)) = *((const guint64 *)props[i]);
-				props_iter = ((guint64 *)props_iter) + 1;;
+				((guint64 *)props_iter)[offset] = *((const guint64 *)props[i]);
 				break;
 		}
 	}
@@ -1495,24 +1416,23 @@ static void
 lsq_archive_entry_set_propsva(const LSQArchive *archive, LSQArchiveEntry *entry, va_list ap)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
+	guint offset;
 	guint i;
 
 	for(i=0; i < (lsq_archive_n_entry_properties(archive) - LSQ_ARCHIVE_PROP_USER); ++i)
 	{
+		offset = lsq_archive_get_entry_property_offset(archive, i+LSQ_ARCHIVE_PROP_USER);
 		switch(lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER))
 		{
 			case G_TYPE_STRING:
-				g_free(*((gchar **)props_iter));
-				(*((gchar **)props_iter)) = g_strdup(va_arg(ap, gchar*));
-				props_iter = ((gchar **)props_iter) + 1;;
+				g_free(((gchar **)props_iter)[offset]);
+				((gchar **)props_iter)[offset] = g_strdup(va_arg(ap, gchar*));
 				break;
 			case G_TYPE_UINT:
-				(*((guint *)props_iter)) = va_arg(ap, guint);
-				props_iter = ((guint *)props_iter) + 1;;
+				((guint *)props_iter)[offset] = va_arg(ap, guint);
 				break;
 			case G_TYPE_UINT64:
-				(*((guint64 *)props_iter)) = va_arg(ap, guint64);
-				props_iter = ((guint64 *)props_iter) + 1;;
+				((guint64 *)props_iter)[offset] = va_arg(ap, guint64);
 				break;
 		}
 	}

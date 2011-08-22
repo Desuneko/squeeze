@@ -54,6 +54,8 @@ struct _LSQParser
 
   guint n_properties;
   GType *property_types;
+  guint *property_offset;
+  guint properties_size;
 };
 
 
@@ -77,6 +79,8 @@ void              lsq_parser_parse(LSQParser *, LSQParserContext *);
 guint             lsq_parser_n_properties(LSQParser *);
 GType             lsq_parser_get_property_type(LSQParser *, guint);
 void              lsq_parser_set_property_type(LSQParser *, guint, GType);
+guint		  lsq_parser_get_property_offset(LSQParser *, guint);
+guint		  lsq_parser_get_properties_size(LSQParser *);
 
 G_END_DECLS
 
