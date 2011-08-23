@@ -32,41 +32,68 @@
 
 #include "internals.h"
 
+static void
+lsq_read_squeeze_dir(const gchar *dir)
+{
+  const gchar *filename;
+  GDir *data_dir = g_dir_open(dir, 0, NULL);
+
+  if (data_dir)
+  {
+    while((filename = g_dir_read_name(data_dir)) != NULL)
+    {
+      if(g_str_has_suffix(filename, ".squeeze"))
+      {
+	/**
+	 * FIXME: factories should be per-mime-type, not per-template
+	 */
+	gchar *path = g_strconcat(dir, "/", filename, NULL);
+	LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
+	if(factory)
+	{
+	  support_factory_list = g_slist_append(support_factory_list, factory);
+	}
+	g_free(path);
+      }
+    }
+
+    g_dir_close(data_dir);
+  }
+}
+
 void
 lsq_init(void)
 {
-	const gchar *filename = NULL;
-	gchar *data_squeeze;
-	GDir *data_dir;
+  gchar *data_squeeze;
+  const gchar* const* system_dirs = g_get_system_data_dirs ();
+  const gchar* user_dir = g_get_user_data_dir ();
 
-	support_factory_list = NULL;
+  support_factory_list = NULL;
 
-	lsq_opened_archive_list = NULL;
+  lsq_opened_archive_list = NULL;
 
-	data_squeeze = g_strconcat(DATADIR, "/squeeze", NULL);
-	data_dir = g_dir_open(data_squeeze, 0, NULL);
-	if(data_dir)
-	{
-		while((filename = g_dir_read_name(data_dir)) != NULL)
-		{
+  data_squeeze = g_build_path("/", DATADIR, "squeeze", NULL);
+  lsq_read_squeeze_dir(data_squeeze);
+  g_free(data_squeeze);
 
-			if(g_str_has_suffix(filename, ".squeeze"))
-			{
-                /**
-                 * FIXME: factories should be per-mime-type, not per-template
-                 */
-				gchar *path = g_strconcat(data_squeeze, "/", filename, NULL);
-				LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
-				if(factory)
-				{
-					support_factory_list = g_slist_append(support_factory_list, factory);
-				}
-				g_free(path);
-			}
-		}
+  /* FIXME: compare filenames for overruling .squeeze file configurations */
+  if (0 != strcmp(DATADIR, user_dir) && 0 != strcmp(DATADIR "/", user_dir))
+  {
+    data_squeeze = g_build_path("/", user_dir, "squeeze", NULL);
+    lsq_read_squeeze_dir(data_squeeze);
+    g_free(data_squeeze);
+  }
 
-		g_dir_close(data_dir);
-	}
+  for (; NULL != *system_dirs; ++system_dirs)
+  {
+
+    if (0 != strcmp(DATADIR, *system_dirs) && 0 != strcmp(DATADIR "/", *system_dirs))
+    {
+      data_squeeze = g_build_path("/", *system_dirs, "squeeze", NULL);
+      lsq_read_squeeze_dir(data_squeeze);
+      g_free(data_squeeze);
+    }
+  }
 }
 
 void
