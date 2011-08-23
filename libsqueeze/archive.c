@@ -160,7 +160,7 @@ lsq_archive_new (GFile *file)
 
 	archive = g_object_new(lsq_archive_get_type(), NULL);
 
-	if(file)
+	if ( NULL != file )
 	{
 	  archive->priv->file = file;
 	  g_object_ref (archive->priv->file);
@@ -172,7 +172,7 @@ lsq_archive_new (GFile *file)
 
 
     file_info = g_file_query_info (file, "standard::content-type,standard::type", 0, NULL, NULL);
-	if(file_info)
+	if ( NULL != file_info )
 	{
 	  content_type = g_file_info_get_attribute_string (file_info, "standard::content-type");
 	  archive->priv->content_type = g_strdup (content_type); 
@@ -182,9 +182,9 @@ lsq_archive_new (GFile *file)
 	g_debug("mime: %s\n", archive->priv->content_type);
 #endif
 
-  for(iter = lsq_mime_support_list; iter; iter = iter->next)
+  for (iter = lsq_mime_support_list; NULL != iter; iter = iter->next)
   {
-    if(0 == strcmp(((LSQSupportTemplate*)iter->data)->content_type, archive->priv->content_type))
+    if ( 0 == strcmp(((LSQSupportTemplate*)iter->data)->content_type, archive->priv->content_type) )
     {
 #ifdef DEBUG
       g_debug("found template");
@@ -194,7 +194,7 @@ lsq_archive_new (GFile *file)
     }
   }
 
-  if (!archive->priv->s_template)
+  if (NULL == archive->priv->s_template)
   {
 #ifdef DEBUG
     g_debug("not supported");
@@ -328,7 +328,7 @@ lsq_archive_refreshed(const LSQArchive *archive)
 void lsq_archive_add_children(GSList *files)
 {
 	GSList *iter;
-	for(iter = files; iter; iter = iter->next)
+	for(iter = files; NULL != iter; iter = iter->next)
 	{
 		unsigned int i, size = lsq_archive_iter_n_children(iter->data);
 		for(i = 0; i < size; ++i)
@@ -349,12 +349,12 @@ lsq_close_archive(LSQArchive *archive)
 {
 	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
 
-	if(archive->priv->file)
+	if ( NULL != archive->priv->file )
     {
 		g_object_unref (archive->priv->file);
         archive->priv->file = NULL;
     }
-	if(archive->priv->content_type)
+	if ( NULL != archive->priv->content_type )
     {
 		g_free (archive->priv->content_type);
         archive->priv->content_type = NULL;
