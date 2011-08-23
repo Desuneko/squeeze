@@ -1156,12 +1156,10 @@ cb_sq_main_window_notebook_page_switched(SQNotebook *notebook, GtkNotebookPage *
 	SQMainWindow *window = SQ_MAIN_WINDOW(data);
 	guint context_id;
 	const gchar *message;
-	GFile *file;
 	gchar *filename;
 	sq_notebook_page_get_archive(notebook, &lp_archive, page_nr);
 
-    file = lsq_archive_get_file(lp_archive);
-    filename = g_file_get_basename (file);
+    filename = lsq_archive_get_filename(lp_archive);
 	gtk_window_set_title(GTK_WINDOW(window), g_strconcat(PACKAGE_NAME, " - ", filename , NULL));
     g_free (filename);
 

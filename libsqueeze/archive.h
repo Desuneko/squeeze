@@ -93,6 +93,8 @@ struct _LSQArchiveClass
 
 GType		   lsq_archive_get_type(void);
 
+gchar		*lsq_archive_get_filename(const LSQArchive *archive);
+gchar		*lsq_archive_get_path(const LSQArchive *archive);
 const gchar	*lsq_archive_get_mimetype(const LSQArchive *archive);
 gboolean		lsq_archive_exists(const LSQArchive *archive);
 LSQSupportType  lsq_archive_get_support_mask(const LSQArchive *archive);
@@ -103,7 +105,7 @@ void				lsq_archive_state_changed(const LSQArchive *archive) G_GNUC_INTERNAL;
 void				lsq_archive_add_children(GSList *files);
 gboolean			lsq_archive_remove_file(LSQArchive *, const gchar *);
 
-GFile *lsq_archive_get_file(LSQArchive *);
+GFile *lsq_archive_get_file(const LSQArchive *);
 
 gboolean		lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **, const gchar *);
 

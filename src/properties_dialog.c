@@ -114,6 +114,7 @@ GtkWidget *
 sq_properties_dialog_new(LSQArchive *archive, GtkIconTheme *icon_theme)
 {
 	GtkWidget *dialog;
+	gchar *filename;
 
 	dialog = g_object_new(sq_properties_dialog_get_type(),
 			"title", _("Properties"),
@@ -125,7 +126,9 @@ sq_properties_dialog_new(LSQArchive *archive, GtkIconTheme *icon_theme)
 	GdkPixbuf *icon = gtk_icon_theme_load_icon(icon_theme, thunar_vfs_mime_info_lookup_icon_name(archive->mime_info, icon_theme), 48, 0, NULL);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(((SQPropertiesDialog *)dialog)->icon_image), icon);
 
-	gtk_label_set_text(GTK_LABEL(((SQPropertiesDialog *)dialog)->filename_label), lsq_archive_get_filename(archive));
+	filename = lsq_archive_get_filename(archive);
+	gtk_label_set_text(GTK_LABEL(((SQPropertiesDialog *)dialog)->filename_label), filename);
+	g_free(filename);
 	gtk_label_set_text(GTK_LABEL(((SQPropertiesDialog *)dialog)->mimetype_label), lsq_archive_get_mimetype(archive));
 
 	return dialog;

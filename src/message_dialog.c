@@ -157,6 +157,7 @@ GtkWidget *
 sq_message_dialog_new(GtkWindowType type, LSQArchive *archive)
 {
 	SQMessageDialog *dialog;
+	gchar *filename;
 
 	dialog = g_object_new(sq_message_dialog_get_type(),
 			"title", _("Archive manager"),
@@ -172,7 +173,9 @@ sq_message_dialog_new(GtkWindowType type, LSQArchive *archive)
 
 	g_timeout_add(200, (GSourceFunc)sq_message_dialog_progressbar_pulse, dialog);
 
-	gtk_label_set_text(GTK_LABEL(dialog->message_label), g_file_get_path(lsq_archive_get_file(archive)));
+	filename = lsq_archive_get_filename(archive);
+	gtk_label_set_text(GTK_LABEL(dialog->message_label), filename);
+	g_free(filename);
 
 	return (GtkWidget*)dialog;
 }

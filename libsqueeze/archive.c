@@ -294,8 +294,26 @@ lsq_archive_entry_properties_size(const LSQArchive *archive)
  *
  * Return value: filename string
  */
+gchar *
+lsq_archive_get_filename (const LSQArchive *archive)
+{
+  return g_file_get_basename(archive->priv->file);
+}
+
+/*
+ * lsq_archive_get_path:
+ * @archive: LSQArchive object
+ *
+ * Return value: filename string
+ */
+gchar *
+lsq_archive_get_path (const LSQArchive *archive)
+{
+  return g_file_get_path(archive->priv->file);
+}
+
 GFile *
-lsq_archive_get_file (LSQArchive *archive)
+lsq_archive_get_file (const LSQArchive *archive)
 {
 	return archive->priv->file;
 }
