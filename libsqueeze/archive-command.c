@@ -116,7 +116,7 @@ lsq_archive_command_dispose(GObject *object)
 {
 	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(object);
 	g_signal_emit(object, lsq_archive_command_signals[LSQ_ARCHIVE_COMMAND_SIGNAL_TERMINATED], 0, command->error, NULL);
-	if(command->archive)
+	if ( NULL != command->archive )
 	{
 		g_object_unref(command->archive);
 		command->archive = NULL;
@@ -134,8 +134,10 @@ static void
 lsq_archive_command_finalize(GObject *object)
 {
 	LSQArchiveCommand *command = LSQ_ARCHIVE_COMMAND(object);
-	if(command->error)
+	if ( NULL != command->error )
+	{
 		g_error_free(command->error);
+	}
 }
 
 
@@ -149,8 +151,8 @@ gboolean
 lsq_archive_command_execute(LSQArchiveCommand *command)
 {
 #ifdef DEBUG
-	g_return_val_if_fail(command->archive, FALSE);
-	g_return_val_if_fail(LSQ_IS_ARCHIVE(command->archive), FALSE);
+	g_return_val_if_fail ( NULL != command->archive, FALSE );
+	g_return_val_if_fail ( LSQ_IS_ARCHIVE(command->archive), FALSE );
 #endif /* DEBUG */
 
 	return command->execute(command);
@@ -202,16 +204,18 @@ lsq_archive_command_new(const gchar *comment,
 	LSQArchiveCommand *archive_command;
 
 #ifdef DEBUG
-	g_return_val_if_fail(archive, NULL);
-	g_return_val_if_fail(LSQ_IS_ARCHIVE(archive), NULL);
+	g_return_val_if_fail ( NULL != archive, NULL );
+	g_return_val_if_fail ( LSQ_IS_ARCHIVE(archive), NULL );
 #endif
 
 	archive_command = g_object_new(LSQ_TYPE_ARCHIVE_COMMAND, NULL);
 
 	g_object_ref(G_OBJECT(archive));
 	archive_command->archive = archive;
-	if(comment)
+	if ( NULL != comment )
+	{
 		archive_command->comment = g_strdup(comment);
+	}
 
 	archive_command->execute = exec_command;
 

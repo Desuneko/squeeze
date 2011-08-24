@@ -134,7 +134,7 @@ static void
 lsq_archive_finalize(GObject *object)
 {
 	LSQArchive *archive;
-	g_return_if_fail(LSQ_IS_ARCHIVE(object));
+	g_return_if_fail ( LSQ_IS_ARCHIVE(object) );
 	archive = (LSQArchive *)(object);
 
 	lsq_archive_free_iter(archive);
@@ -182,7 +182,7 @@ lsq_archive_new (GFile *file)
 	g_debug("mime: %s\n", archive->priv->content_type);
 #endif
 
-  for (iter = lsq_mime_support_list; NULL != iter; iter = iter->next)
+  for ( iter = lsq_mime_support_list; NULL != iter; iter = iter->next )
   {
     if ( 0 == strcmp(((LSQSupportTemplate*)iter->data)->content_type, archive->priv->content_type) )
     {
@@ -216,7 +216,7 @@ guint
 lsq_archive_n_entry_properties(const LSQArchive *archive)
 {
 #ifdef DEBUG
-	g_return_val_if_fail(archive, 0);
+	g_return_val_if_fail ( NULL != archive, 0 );
 #endif
 	return lsq_support_template_get_n_properties(archive->priv->s_template) + LSQ_ARCHIVE_PROP_USER;
 }
@@ -249,7 +249,7 @@ lsq_archive_get_entry_property_offset(const LSQArchive *archive, guint n)
   {
     case LSQ_ARCHIVE_PROP_FILENAME:
     case LSQ_ARCHIVE_PROP_MIME_TYPE:
-      g_return_val_if_reached(0);
+      g_return_val_if_reached ( 0 );
       break;
     default:
       return lsq_support_template_get_property_offset(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
@@ -283,7 +283,7 @@ guint
 lsq_archive_entry_properties_size(const LSQArchive *archive)
 {
 #ifdef DEBUG
-  g_return_val_if_fail(archive, 0);
+  g_return_val_if_fail ( NULL != archive, 0 );
 #endif
   return lsq_support_template_get_properties_size(archive->priv->s_template);
 }
@@ -328,10 +328,10 @@ lsq_archive_refreshed(const LSQArchive *archive)
 void lsq_archive_add_children(GSList *files)
 {
 	GSList *iter;
-	for(iter = files; NULL != iter; iter = iter->next)
+	for ( iter = files; NULL != iter; iter = iter->next )
 	{
 		unsigned int i, size = lsq_archive_iter_n_children(iter->data);
-		for(i = 0; i < size; ++i)
+		for ( i = 0; i < size; ++i )
 		{
 			files = g_slist_append(iter, lsq_archive_iter_nth_child(iter->data, i));
 		}
@@ -406,7 +406,7 @@ lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **file
 {
     LSQSupportTemplate *s_template;
 
-    g_return_val_if_fail(archive, FALSE);
+    g_return_val_if_fail ( NULL != archive, FALSE );
 
     s_template = archive->priv->s_template;
 
