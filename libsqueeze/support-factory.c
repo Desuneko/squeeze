@@ -130,3 +130,9 @@ lsq_support_factory_add_template(LSQSupportFactory *factory, LSQSupportTemplate 
 
 }
 
+gint
+lsq_suport_factory_compare_filename(const LSQSupportFactory *factory, const gchar *filename)
+{
+  return strcmp(factory->filename, filename);
+}
+

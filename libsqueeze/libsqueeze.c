@@ -44,16 +44,22 @@ lsq_read_squeeze_dir(const gchar *dir)
     {
       if(g_str_has_suffix(filename, ".squeeze"))
       {
-	/**
-	 * FIXME: factories should be per-mime-type, not per-template
+	/* see if a file with this name was already loaded.
+	 * skip this file. configuration was overruled
 	 */
-	gchar *path = g_strconcat(dir, "/", filename, NULL);
-	LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
-	if(factory)
+	if ( NULL == g_slist_find_custom(support_factory_list, filename, (GCompareFunc)lsq_suport_factory_compare_filename) )
 	{
-	  support_factory_list = g_slist_append(support_factory_list, factory);
+	  /**
+	   * FIXME: factories should be per-mime-type, not per-template
+	   */
+	  gchar *path = g_strconcat(dir, "/", filename, NULL);
+	  LSQSupportFactory *factory = lsq_support_reader_parse_file(path);
+	  if(factory)
+	  {
+	    support_factory_list = g_slist_append(support_factory_list, factory);
+	  }
+	  g_free(path);
 	}
-	g_free(path);
       }
     }
 
@@ -72,27 +78,19 @@ lsq_init(void)
 
   lsq_opened_archive_list = NULL;
 
+  data_squeeze = g_build_path("/", user_dir, "squeeze", NULL);
+  lsq_read_squeeze_dir(data_squeeze);
+  g_free(data_squeeze);
+
   data_squeeze = g_build_path("/", DATADIR, "squeeze", NULL);
   lsq_read_squeeze_dir(data_squeeze);
   g_free(data_squeeze);
 
-  /* FIXME: compare filenames for overruling .squeeze file configurations */
-  if (0 != strcmp(DATADIR, user_dir) && 0 != strcmp(DATADIR "/", user_dir))
-  {
-    data_squeeze = g_build_path("/", user_dir, "squeeze", NULL);
-    lsq_read_squeeze_dir(data_squeeze);
-    g_free(data_squeeze);
-  }
-
   for (; NULL != *system_dirs; ++system_dirs)
   {
-
-    if (0 != strcmp(DATADIR, *system_dirs) && 0 != strcmp(DATADIR "/", *system_dirs))
-    {
-      data_squeeze = g_build_path("/", *system_dirs, "squeeze", NULL);
-      lsq_read_squeeze_dir(data_squeeze);
-      g_free(data_squeeze);
-    }
+    data_squeeze = g_build_path("/", *system_dirs, "squeeze", NULL);
+    lsq_read_squeeze_dir(data_squeeze);
+    g_free(data_squeeze);
   }
 }
 

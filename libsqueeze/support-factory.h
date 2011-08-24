@@ -27,6 +27,7 @@ typedef struct _LSQSupportFactory LSQSupportFactory;
 struct _LSQSupportFactory
 {
 	GObject		  parent;
+	gchar		   *filename;
 	gchar		   *id;
 	GSList		  *mime_support;
 };
@@ -41,5 +42,6 @@ struct _LSQSupportFactoryClass
 GType				lsq_support_factory_get_type(void);
 void				 lsq_support_factory_init_archive(LSQSupportFactory *builder, LSQArchive *archive);
 void				 lsq_support_factory_add_template(LSQSupportFactory *factory, LSQSupportTemplate *s_template);
+gint lsq_suport_factory_compare_filename(const LSQSupportFactory *factory, const gchar *filename);
 
 #endif /* __LIBSQUEEZE_SUPPORT_FACTORY_H__ */

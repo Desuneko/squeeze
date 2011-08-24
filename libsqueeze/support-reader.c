@@ -138,6 +138,8 @@ lsq_support_reader_parse_file(const gchar *filename)
 
 	XfceRc *rc = xfce_rc_simple_open(filename, TRUE);
 
+	factory->filename = g_path_get_basename(filename);
+
 	xfce_rc_set_group(rc, "Desktop Entry");
 
 	type = xfce_rc_read_entry(rc, "Type", "");
