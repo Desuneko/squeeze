@@ -1,0 +1,25 @@
+
+
+Coding Style:
+ * Indententation: four spaces, no tabs.
+ * Braces: On the lines below if,where,etc... statements.
+ * Function declarations: return type goes on the first line, function name
+    and first parameter on the second line.  Second and further parameters
+    each get their own line, and they should be aligned with the start of
+    the first parameter.  Please do not add spaces between the type and
+    variable name to line up the variable names.  As specified before, the
+    opening brace also gets its own line.
+    If the function has no arguments, specify (void) in the declaration.
+ * Comparisons: put constants on the left-side of the comparison, when the
+    comparison is accidently replaced by an assignment, the compiler will
+    warn about it.
+
+ * Parentheses: always put spaces around parentheses in for,while,switch
+    and if statements. Functions and macro's are different, only put spaces 
+    around the arguments, but keep the '(' against the function or macro
+    name.
+
+ * EXAMPLES:
+    if ( NULL == ptr )
+    {
+    }
