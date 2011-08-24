@@ -7,24 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-08-21 00:30+0200\n"
+"POT-Creation-Date: 2011-08-24 20:32+0200\n"
 "PO-Revision-Date: 2009-05-14 00:20+0500\n"
 "Last-Translator: Muhammad Ali Makki <makki.ma@gmail.com>\n"
 "Language-Team: Urdu <makki.ma@gmail.com>\n"
+"Language: ur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Urdu\n"
 "X-Poedit-Country: PAKISTAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../libsqueeze/archive.c:236
+#: ../libsqueeze/archive.c:272
 msgid "Name"
 msgstr "نام"
 
-#: ../libsqueeze/archive.c:238
+#: ../libsqueeze/archive.c:274
 msgid "Mime type"
 msgstr "Mime نوعیت"
 
@@ -44,14 +46,12 @@ msgstr "سکویز محفوظہ منیجر"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160
-#: ../src/application.c:250
+#: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "محفوظہ نہیں کھولی جاسکتی،  MIME قسم کی معاونت نہیں یار فائل موجود نہیں."
+msgstr ""
+"محفوظہ نہیں کھولی جاسکتی،  MIME قسم کی معاونت نہیں یار فائل موجود نہیں."
 
-#: ../src/application.c:191
-#: ../src/main_window.c:826
-#: ../src/main_window.c:1260
+#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -62,12 +62,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "محفوظہ نہیں بنائی جاسکتی، MIME قسم کی معاونت نہیں"
 
-#: ../src/application.c:268
-#: ../src/main_window.c:874
+#: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -75,50 +74,50 @@ msgstr ""
 "سکویز اس قسم کی محفوظہ میں فائلیں شامل نہیں کرسکتا\n"
 "معاونت رکھنے والا اطلاقیہ موجود نہیں."
 
-#: ../src/archive_store.c:249
-#: ../src/notebook.c:179
+#: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
 msgstr "پورا پاتھ ظاہر کریں"
 
-#: ../src/archive_store.c:250
-#: ../src/notebook.c:180
+#: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
 msgstr "ہر انٹری کا مکمل پاتھ سٹرنگ دکھائیں"
 
-#: ../src/archive_store.c:256
-#: ../src/notebook.c:186
+#: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
 msgstr "mime آئکن دکھائیں"
 
-#: ../src/archive_store.c:257
-#: ../src/notebook.c:187
+#: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
 msgstr "ہر انٹری کی mime قسم کی آئکن دکھائیں"
 
-#: ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Show up dir entry"
 msgstr "اوپر کی ڈائریکٹری دکھائیں"
 
-#: ../src/archive_store.c:264
+#: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
 msgstr "اوپری ڈائریکٹری میں جانے کے لیے '..' ظاہر کریں"
 
-#: ../src/archive_store.c:270
-#: ../src/notebook.c:193
+#: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
 msgstr "فولڈروں کو فائلوں سے پہلے مرتب کریں"
 
-#: ../src/archive_store.c:271
-#: ../src/notebook.c:194
+#: ../src/archive_store.c:272 ../src/notebook.c:196
 msgid "The folders will be put at the top of the list"
 msgstr "فولڈرز فہرست کے اوپر کردیے جائیں گے"
 
-#: ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-#: ../src/notebook.c:200
-#: ../src/notebook.c:201
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
+#: ../src/notebook.c:203
 msgid "Sort text case sensitive"
 msgstr "حساس متن ترتیب"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr ""
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr ""
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -128,45 +127,44 @@ msgstr "<b>فائلیں کھولی:</b>"
 msgid "<b>Options:</b>"
 msgstr "<b>اختیارات:</b>"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:88
 msgid "All files"
 msgstr "تمام فائلیں"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "Selected files"
 msgstr "منتخب فائلیں"
 
-#: ../src/extract_dialog.c:100
-#: ../src/main_window.c:451
-#: ../src/main_window.c:1219
+#: ../src/extract_dialog.c:101 ../src/main_window.c:457
+#: ../src/main_window.c:1255
 msgid "Extract"
 msgstr "کھولیں"
 
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:114
 msgid "Extract archive"
 msgstr "محفوظہ کھولیں"
 
-#: ../src/main.c:51
+#: ../src/main.c:53
 msgid "[destination path]"
 msgstr "[سمت پاتھ]"
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[محفوظہ کا پاتھ] [فائل1] [فائل2] ... [فائلN]"
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[فائل1] [فائل2] ... [فائلN]"
 
-#: ../src/main.c:66
+#: ../src/main.c:68
 msgid "Version information"
 msgstr "ورژن کی معلومات"
 
-#: ../src/main.c:92
+#: ../src/main.c:98
 msgid "[archive name]"
 msgstr "[محفوظہ کا نام]"
 
-#: ../src/main.c:96
+#: ../src/main.c:102
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -175,23 +173,23 @@ msgstr ""
 "%s: %s\n"
 "دستیاب کمانڈ لائن اختیارا کی مکمل فہرست کے لیے لکھیں %s --help\n"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:134
 msgid "Internal Style"
 msgstr "داخلی انداز"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:136
 msgid "Tool Bar Style"
 msgstr "اوزار پٹی کا انداز"
 
-#: ../src/main_window.c:135
+#: ../src/main_window.c:139
 msgid "Path Bar Style"
 msgstr "پاتھ پٹی کا انداز"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:187
 msgid "Navigation Style"
 msgstr "نیویگیشن کا انداز"
 
-#: ../src/main_window.c:183
+#: ../src/main_window.c:188
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -200,56 +198,54 @@ msgstr ""
 "محفوظہ میں نیویگیشن کا انداز"
 
 #. File menu
-#: ../src/main_window.c:295
+#: ../src/main_window.c:301
 msgid "_File"
 msgstr "_فائل"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:323
+#: ../src/main_window.c:329
 msgid "_Action"
 msgstr "_حرکت"
 
-#: ../src/main_window.c:328
+#: ../src/main_window.c:334
 msgid "_Add files"
 msgstr "_فائلیں شامل کریں"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:340
 msgid "_Add _folders"
 msgstr "_فولڈر _شامل کریں"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:346
 msgid "_Extract"
 msgstr "_کھولیں"
 
 #. View menu
-#: ../src/main_window.c:373
+#: ../src/main_window.c:379
 msgid "_View"
 msgstr "_منظر"
 
 #. Help menu
-#: ../src/main_window.c:397
+#: ../src/main_window.c:403
 msgid "_Help"
 msgstr "_ہدایات"
 
-#: ../src/main_window.c:443
-#: ../src/main_window.c:852
+#: ../src/main_window.c:449 ../src/main_window.c:866
 msgid "Add files"
 msgstr "فائلیں شامل کریں"
 
-#: ../src/main_window.c:447
-#: ../src/main_window.c:894
+#: ../src/main_window.c:453 ../src/main_window.c:913
 msgid "Add folders"
 msgstr "فولڈر شامل کریں"
 
-#: ../src/main_window.c:724
+#: ../src/main_window.c:731
 msgid "Open archive in new window"
 msgstr "محفوظہ نئی ونڈو میں کھولیں"
 
-#: ../src/main_window.c:730
+#: ../src/main_window.c:737
 msgid "Open archive"
 msgstr "محفوظ کھولیں"
 
-#: ../src/main_window.c:916
+#: ../src/main_window.c:938
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -257,11 +253,11 @@ msgstr ""
 "سکویز اس قسم کی محفوظہ میں فولڈر شامل نہیں کرسکتا\n"
 "معاونت رکھنے والا اطلاقیہ موجود نہیں."
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:962
 msgid "Are you sure you want to remove the selected files?"
 msgstr "کیا آپ واقعی منتخب کردہ فائلیں حذف کرنا چاہتے ہیں؟"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:978
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -269,7 +265,7 @@ msgstr ""
 "Squeeze اس قسم کی محفوظہ سے فائلیں حذف نہیں کرسکتا\n"
 "معاونت رکھنے والا اطلاقیہ مفقود ہے."
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1029
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -277,36 +273,39 @@ msgstr ""
 "کیا آپ واقعی یہ عمل منسوخ کرنا چاہتے ہیں؟\n"
 "اس سے محفوظہ خراب ہوسکتی ہے."
 
-#: ../src/main_window.c:1081
+#: ../src/main_window.c:1111
 msgid "Lead developer:"
 msgstr "سربراہ ڈیولپر:"
 
-#: ../src/main_window.c:1084
+#: ../src/main_window.c:1114
 msgid "Contributors:"
 msgstr "معاونین:"
 
-#: ../src/main_window.c:1087
+#: ../src/main_window.c:1117
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Xarchiver سے متاثر ہوکر Giuseppe Torelli نے لکھا"
 
-#: ../src/main_window.c:1089
+#: ../src/main_window.c:1119
 msgid "Application Icon:"
 msgstr "اطلاقیہ کی آئکن:"
 
-#: ../src/main_window.c:1092
+#: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
 msgstr "آئکن شامل / کھولیں:"
 
-#: ../src/main_window.c:1093
+#: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Andreas Nilsson کی بنائی ہوئی اصل ایکسٹریکٹ آئکن پر مبنی"
 
-#: ../src/main_window.c:1100
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "ایکسفس ڈیسک ٹاپ ماحول کے لیے سکویز ایک ہلکا پھلکا اور لچکدار محفوظہ منیجر ہے"
+#: ../src/main_window.c:1130
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+"ایکسفس ڈیسک ٹاپ ماحول کے لیے سکویز ایک ہلکا پھلکا اور لچکدار محفوظہ منیجر ہے"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1108
+#: ../src/main_window.c:1138
 msgid "translator-credits"
 msgstr ""
 "محمد علی مکی\n"
@@ -316,21 +315,20 @@ msgstr ""
 "مکی کا بلاگ\n"
 "http://makki.urducoder.com"
 
-#: ../src/main_window.c:1137
-#: ../src/main_window.c:1208
-#: ../src/main_window.c:1376
+#: ../src/main_window.c:1172 ../src/main_window.c:1244
+#: ../src/main_window.c:1403
 msgid "Done"
 msgstr "تمام"
 
-#: ../src/main_window.c:1218
+#: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "منتخب فائلوں پر کون سا عمل کرنا چاہتے ہیں؟"
 
-#: ../src/main_window.c:1219
+#: ../src/main_window.c:1255
 msgid "Open"
 msgstr "کھولیں"
 
-#: ../src/main_window.c:1233
+#: ../src/main_window.c:1274
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -338,11 +336,11 @@ msgstr ""
 "Squeeze اس فائل کو نہیں دیکھ سکتا.\n"
 "معاونت کا اطلاقیہ مفقود ہے."
 
-#: ../src/main_window.c:1301
+#: ../src/main_window.c:1341
 msgid "Failed to open file"
 msgstr "فائل کھولنے میں ناکامی"
 
-#: ../src/main_window.c:1302
+#: ../src/main_window.c:1342
 #, c-format
 msgid ""
 "'%s'\n"
@@ -351,102 +349,200 @@ msgstr ""
 "'%s'\n"
 "نہیں کھولی جاسکتی"
 
-#: ../src/new_dialog.c:69
+#: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "محفوظہ کی قسم:"
 
-#: ../src/new_dialog.c:80
+#: ../src/new_dialog.c:82
 msgid "Archives"
 msgstr "محفوظات"
 
-#: ../src/new_dialog.c:108
+#: ../src/new_dialog.c:110
 msgid "Create new archive"
 msgstr "نئی محفوظہ بنائیں"
 
-#: ../src/notebook.c:207
+#: ../src/notebook.c:209
 msgid "Rules hint"
 msgstr "قاعدہ ہنٹ"
 
-#: ../src/notebook.c:208
+#: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
 msgstr "سطر کے پس منظر کا رنگ متبادل کریں"
 
-#: ../src/path_bar.c:141
+#: ../src/path_bar.c:142
 msgid "Spacing"
 msgstr "خلا"
 
-#: ../src/path_bar.c:142
+#: ../src/path_bar.c:143
 msgid "The amount of space between the path buttons"
 msgstr "پاتھ بٹن کے درمیان خلا کی نسبت"
 
-#: ../src/tool_bar.c:167
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr ""
+
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "محفوظہ کی قسم:"
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "mime آئکن دکھائیں"
+
+#: ../src/preferences_dialog.c:100
+#, fuzzy
+msgid "_Rules Hint"
+msgstr "قاعدہ ہنٹ"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "حساس متن ترتیب"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "فولڈروں کو فائلوں سے پہلے مرتب کریں"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "نیویگیشن کا انداز"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.c:204
+#, fuzzy
+msgid "_Archivers"
+msgstr "محفوظات"
+
+#: ../src/preferences_dialog.c:281
+#, fuzzy
+msgid "Filename"
+msgstr "_فائل"
+
+#: ../src/properties_dialog.c:85
+#, fuzzy
+msgid "Name:"
+msgstr "نام"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr ""
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr ""
+
+#: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "مقام:"
 
-#: ../src/message_dialog.c:158
+#: ../src/message_dialog.c:163
 msgid "Archive manager"
 msgstr "محفوظہ منیجر"
 
 #~ msgid "Compressing"
 #~ msgstr "دبایا جا رہا ہے"
+
 #~ msgid "Decompressing"
 #~ msgstr "کھولا جارہا ہے"
+
 #~ msgid "Refresh"
 #~ msgstr "پھر تازہ"
+
 #~ msgid "Rights"
 #~ msgstr "حقوق"
+
 #~ msgid "Owner/Group"
 #~ msgstr "مالک/گروپ"
+
 #~ msgid "Size"
 #~ msgstr "حجم"
+
 #~ msgid "Date"
 #~ msgstr "تاریخ"
+
 #~ msgid "Time"
 #~ msgstr "تاریخ"
+
 #~ msgid "Cleanup"
 #~ msgstr "صفائی"
+
 #~ msgid "Removing files"
 #~ msgstr "فائلیں صاف کی جارہی ہیں"
+
 #~ msgid "Removing"
 #~ msgstr "صاف کی جارہی ہیں"
+
 #~ msgid "Extracting"
 #~ msgstr "کھولا جارہا ہے"
+
 #~ msgid "Compressed"
 #~ msgstr "دبی ہوئی"
+
 #~ msgid "Ratio"
 #~ msgstr "قدر"
+
 #~ msgid "Method"
 #~ msgstr "میتھڈ"
+
 #~ msgid "Version"
 #~ msgstr "ورژن"
+
 #~ msgid "Adding"
 #~ msgstr "شامل"
+
 #~ msgid "Execute"
 #~ msgstr "چلانا"
+
 #~ msgid "Command exited with status %d."
 #~ msgstr "حالت %d میں کمانڈ خارج ہوئی."
+
 #~ msgid "Command interrupted by user"
 #~ msgstr "کمانڈ میں صارف کی طرف سے دخل اندازی"
+
 #~ msgid "Command received SIGSEGV"
 #~ msgstr "کمانڈ کو SIGSEGV موصول ہوئی"
+
 #~ msgid "Command Terminated"
 #~ msgstr "کمانڈ موقوف کردی گئی"
+
 #~ msgid "Files and directories to add"
 #~ msgstr "شامل کرنے کے لیے فائلیں اور ڈائریکٹریاں"
+
 #~ msgid "Options:"
 #~ msgstr "اختیارات:"
+
 #~ msgid "Files"
 #~ msgstr "فائلیں"
+
 #~ msgid "Directories"
 #~ msgstr "ڈائریکٹریاں"
+
 #~ msgid "Add file(s) to archive"
 #~ msgstr "فائلیں محفوظہ میں شامل کریں"
+
 #~ msgid "Select files"
 #~ msgstr "فائلیں منتخب کریں"
+
 #~ msgid "Select folders"
 #~ msgstr "فولڈر منتخب کریں"
+
 #~ msgid "_Add"
 #~ msgstr "_شامل کریں"
+
 #~ msgid "Add"
 #~ msgstr "شامل کریں"
-

@@ -8,19 +8,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.9svn\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-08-21 00:30+0200\n"
+"POT-Creation-Date: 2011-08-24 20:32+0200\n"
 "PO-Revision-Date: 2008-06-08 21:26-0700\n"
 "Last-Translator: Stefan Miklosovic <miklosovic@gmail.com>\n"
 "Language-Team: Slovak <sk-i18n@linux.sk>\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:236
+#: ../libsqueeze/archive.c:272
 msgid "Name"
 msgstr "Názov"
 
-#: ../libsqueeze/archive.c:238
+#: ../libsqueeze/archive.c:274
 msgid "Mime type"
 msgstr "Typ MIME"
 
@@ -40,12 +41,12 @@ msgstr "Správca archívov Squeeze"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Nedá sa otvoriť archív, typ MIME nie je podporovaný alebo súbor neexistuje"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -56,11 +57,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Nejde vytvoriť archív, typ MIME nie je podporovaný"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -68,42 +69,50 @@ msgstr ""
 "Squeeze nemôže pridať súbory do archívu tohoto typu,\n"
 "potrebná aplikácia nie je dostupná."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
 msgstr "Zobraziť celú cestu"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
 msgstr "Zobrazí celú cestu pre každú položku"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
 msgstr "Zobraziť ikony typu MIME"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
 msgstr "Zobraziť ikony typu MIME pre každú položku"
 
-#: ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Show up dir entry"
 msgstr "Zobraziť položku pre nadradený adresár"
 
-#: ../src/archive_store.c:264
+#: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
 msgstr "Zobraziť '..' pre prechod do adresára vyššej úrovne"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
 msgstr "Zaradiť adresáre pred súbory"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:272 ../src/notebook.c:196
 msgid "The folders will be put at the top of the list"
 msgstr "Adresáre budú umiestnené na začiatku zoznamu"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
-#: ../src/notebook.c:201
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
+#: ../src/notebook.c:203
 msgid "Sort text case sensitive"
 msgstr "Rozlišovať veľkosti písmen pri triedení"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr ""
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr ""
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -113,44 +122,44 @@ msgstr "<>Rozbaliť súbory:</b>"
 msgid "<b>Options:</b>"
 msgstr "<>Voľby:</b>"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:88
 msgid "All files"
 msgstr "Všetky súbory"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "Selected files"
 msgstr "Vybrané súbory"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
-#: ../src/main_window.c:1219
+#: ../src/extract_dialog.c:101 ../src/main_window.c:457
+#: ../src/main_window.c:1255
 msgid "Extract"
 msgstr "Rozbaliť"
 
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:114
 msgid "Extract archive"
 msgstr "Rozbaliť archív"
 
-#: ../src/main.c:51
+#: ../src/main.c:53
 msgid "[destination path]"
 msgstr "[cieľová cesta]"
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[cesta archívu] [súbor1] [súbor2] ...[súborN]"
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[súbor1] [súbor2] ... [súborN]"
 
-#: ../src/main.c:66
+#: ../src/main.c:68
 msgid "Version information"
 msgstr "Informácie o verzii"
 
-#: ../src/main.c:92
+#: ../src/main.c:98
 msgid "[archive name]"
 msgstr "[názov archívu]"
 
-#: ../src/main.c:96
+#: ../src/main.c:102
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -160,23 +169,23 @@ msgstr ""
 "Príkazom %s --help zobrazíte kompletný zoznam dostupných volieb príkazového "
 "riadka\n"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:134
 msgid "Internal Style"
 msgstr "Vnútorný štýl"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:136
 msgid "Tool Bar Style"
 msgstr "Štýl panela nástrojov"
 
-#: ../src/main_window.c:135
+#: ../src/main_window.c:139
 msgid "Path Bar Style"
 msgstr "Štýl panela cesty"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:187
 msgid "Navigation Style"
 msgstr "Štýl navigácie"
 
-#: ../src/main_window.c:183
+#: ../src/main_window.c:188
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -185,54 +194,54 @@ msgstr ""
 "Štýl navigácie archívom"
 
 #. File menu
-#: ../src/main_window.c:295
+#: ../src/main_window.c:301
 msgid "_File"
 msgstr "_Súbor"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:323
+#: ../src/main_window.c:329
 msgid "_Action"
 msgstr "_Akcia"
 
-#: ../src/main_window.c:328
+#: ../src/main_window.c:334
 msgid "_Add files"
 msgstr "_Pridať súbory"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:340
 msgid "_Add _folders"
 msgstr "Pridať _zložky"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:346
 msgid "_Extract"
 msgstr "_Rozbaliť"
 
 #. View menu
-#: ../src/main_window.c:373
+#: ../src/main_window.c:379
 msgid "_View"
 msgstr "_Zobraziť"
 
 #. Help menu
-#: ../src/main_window.c:397
+#: ../src/main_window.c:403
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
+#: ../src/main_window.c:449 ../src/main_window.c:866
 msgid "Add files"
 msgstr "Pridať súbory"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
+#: ../src/main_window.c:453 ../src/main_window.c:913
 msgid "Add folders"
 msgstr "Pridať zložky"
 
-#: ../src/main_window.c:724
+#: ../src/main_window.c:731
 msgid "Open archive in new window"
 msgstr "Otvoriť archív v novom okne"
 
-#: ../src/main_window.c:730
+#: ../src/main_window.c:737
 msgid "Open archive"
 msgstr "Otvoriť archív"
 
-#: ../src/main_window.c:916
+#: ../src/main_window.c:938
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -240,11 +249,11 @@ msgstr ""
 "Squeeze nemôže pridať zložky do tohoto typu archívu,\n"
 "aplikácia, ktorá to podporuje, chýba."
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:962
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Ste si istý, že chcete odstrániť vybrané súbory?"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:978
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -252,7 +261,7 @@ msgstr ""
 "Squeeze nemôže odstrániť súbory z tohoto typu archívu,\n"
 "aplikácia, ktorá to podporuje, chýba."
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1029
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -260,31 +269,31 @@ msgstr ""
 "Ste si istý, že chcete zrušiť túto operáciu?\n"
 "Môže to poškodiť archív."
 
-#: ../src/main_window.c:1081
+#: ../src/main_window.c:1111
 msgid "Lead developer:"
 msgstr "Vedúci vývojár:"
 
-#: ../src/main_window.c:1084
+#: ../src/main_window.c:1114
 msgid "Contributors:"
 msgstr "Prispievatelia:"
 
-#: ../src/main_window.c:1087
+#: ../src/main_window.c:1117
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inšpirované aplikáciou Xarchiver od Giuseppe Torelliho"
 
-#: ../src/main_window.c:1089
+#: ../src/main_window.c:1119
 msgid "Application Icon:"
 msgstr "Ikona aplikácie:"
 
-#: ../src/main_window.c:1092
+#: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
 msgstr "Pridaj / Rozbaľ ikony:"
 
-#: ../src/main_window.c:1093
+#: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Založené na originálnej rozbaľovacej ikone od Andreasa Nilssona"
 
-#: ../src/main_window.c:1100
+#: ../src/main_window.c:1130
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -292,24 +301,24 @@ msgstr ""
 "Squeeze je odľahčený a flexibilný archivovací manažér pre prostredie Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1108
+#: ../src/main_window.c:1138
 msgid "translator-credits"
 msgstr "Štefan Miklošovič <miklosovic@gmail.com>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
-#: ../src/main_window.c:1376
+#: ../src/main_window.c:1172 ../src/main_window.c:1244
+#: ../src/main_window.c:1403
 msgid "Done"
 msgstr "Hotovo"
 
-#: ../src/main_window.c:1218
+#: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Akú aplikáciu si prajete previesť na vybraných súboroch?"
 
-#: ../src/main_window.c:1219
+#: ../src/main_window.c:1255
 msgid "Open"
 msgstr "Otvoriť"
 
-#: ../src/main_window.c:1233
+#: ../src/main_window.c:1274
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -317,11 +326,11 @@ msgstr ""
 "Squeeze nemôže zobraziť tento súbor.\n"
 "Aplikácia, ktorá to podporuje, chýba."
 
-#: ../src/main_window.c:1301
+#: ../src/main_window.c:1341
 msgid "Failed to open file"
 msgstr "Nepodarilo sa otvoriť súbor"
 
-#: ../src/main_window.c:1302
+#: ../src/main_window.c:1342
 #, c-format
 msgid ""
 "'%s'\n"
@@ -330,38 +339,107 @@ msgstr ""
 "'%s'\n"
 "Nejde otvoriť"
 
-#: ../src/new_dialog.c:69
+#: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Typ archívu:"
 
-#: ../src/new_dialog.c:80
+#: ../src/new_dialog.c:82
 msgid "Archives"
 msgstr "Archívy"
 
-#: ../src/new_dialog.c:108
+#: ../src/new_dialog.c:110
 msgid "Create new archive"
 msgstr "Vytvoriť nový archív"
 
-#: ../src/notebook.c:207
+#: ../src/notebook.c:209
 msgid "Rules hint"
 msgstr "Rada o pravidlách"
 
-#: ../src/notebook.c:208
+#: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
 msgstr "Zmení farbu pozadia riadka"
 
-#: ../src/path_bar.c:141
+#: ../src/path_bar.c:142
 msgid "Spacing"
 msgstr "Rozostupy"
 
-#: ../src/path_bar.c:142
+#: ../src/path_bar.c:143
 msgid "The amount of space between the path buttons"
 msgstr "Priestor medzi tlačidlami cesty"
 
-#: ../src/tool_bar.c:167
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr ""
+
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "Typ archívu:"
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "Zobraziť ikony typu MIME"
+
+#: ../src/preferences_dialog.c:100
+#, fuzzy
+msgid "_Rules Hint"
+msgstr "Rada o pravidlách"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "Rozlišovať veľkosti písmen pri triedení"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "Zaradiť adresáre pred súbory"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "Štýl navigácie"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.c:204
+#, fuzzy
+msgid "_Archivers"
+msgstr "Archívy"
+
+#: ../src/preferences_dialog.c:281
+#, fuzzy
+msgid "Filename"
+msgstr "_Súbor"
+
+#: ../src/properties_dialog.c:85
+#, fuzzy
+msgid "Name:"
+msgstr "Názov"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr ""
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr ""
+
+#: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Umiestnenie:"
 
-#: ../src/message_dialog.c:158
+#: ../src/message_dialog.c:163
 msgid "Archive manager"
 msgstr "Archivovací manažér"

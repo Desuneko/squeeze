@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-08-21 00:30+0200\n"
+"POT-Creation-Date: 2011-08-24 20:32+0200\n"
 "PO-Revision-Date: 2008-11-16 10:50+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,11 +19,11 @@ msgstr ""
 "X-Poedit-Language: Catalan\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../libsqueeze/archive.c:236
+#: ../libsqueeze/archive.c:272
 msgid "Name"
 msgstr "Nom"
 
-#: ../libsqueeze/archive.c:238
+#: ../libsqueeze/archive.c:274
 msgid "Mime type"
 msgstr "Tipus MIME"
 
@@ -42,13 +43,13 @@ msgstr "Gestor d'arxius squeeze"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "No es pot obrir l'arxiu,El tipus MIME no està implementat o el fitxer no "
 "existeix"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -59,11 +60,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "No s'ha pogut crear l'arxiu, el tipus MIME no està implementat"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -71,42 +72,50 @@ msgstr ""
 "Squeeze no pot afegir fitxers a aquest tipus d'arxiu,\n"
 "l'aplicació que permet aquest ús no hi és."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
 msgstr "Mostra el camí sencer"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
 msgstr "Per cadascuna de les entrades mostra la cadena sencera del camí"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
 msgstr "Mostra les icones MIME"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
 msgstr "Per cadascuna de les entrades mostra les icones dels tipus MIME"
 
-#: ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Show up dir entry"
 msgstr "Mostrar entrada de directori pare"
 
-#: ../src/archive_store.c:264
+#: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
 msgstr "Mostra «..» per anar al directori pare"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
 msgstr "Ordena carpetes abans que fitxers"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:272 ../src/notebook.c:196
 msgid "The folders will be put at the top of the list"
 msgstr "Es mostraran les carpetes al principi de la llista"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
-#: ../src/notebook.c:201
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
+#: ../src/notebook.c:203
 msgid "Sort text case sensitive"
 msgstr "L'ordenació distingeix majúscules/minúscules"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr ""
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr ""
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -116,44 +125,44 @@ msgstr "<b>Extreu fitxers:</b>"
 msgid "<b>Options:</b>"
 msgstr "<b>Opcions:</b>"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:88
 msgid "All files"
 msgstr "Tots els fitxers"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "Selected files"
 msgstr "Fitxers seleccionats"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
-#: ../src/main_window.c:1219
+#: ../src/extract_dialog.c:101 ../src/main_window.c:457
+#: ../src/main_window.c:1255
 msgid "Extract"
 msgstr "Extreu"
 
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:114
 msgid "Extract archive"
 msgstr "Extreu arxiu"
 
-#: ../src/main.c:51
+#: ../src/main.c:53
 msgid "[destination path]"
 msgstr "[camí del destí]"
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[camí de l'arxiu] [fitxer1] [fitxer2] ... [fitxerN]"
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[fitxer1] [fitxer2] ... [fitxerN]"
 
-#: ../src/main.c:66
+#: ../src/main.c:68
 msgid "Version information"
 msgstr "Informació de la versió"
 
-#: ../src/main.c:92
+#: ../src/main.c:98
 msgid "[archive name]"
 msgstr "[nom d'arxiu]"
 
-#: ../src/main.c:96
+#: ../src/main.c:102
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -163,23 +172,23 @@ msgstr ""
 "Feu %s --help per veure la llista complerta d'opcions disponibles \n"
 "de la línia d'ordres.\n"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:134
 msgid "Internal Style"
 msgstr "Propi"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:136
 msgid "Tool Bar Style"
 msgstr "De barra de d'eines"
 
-#: ../src/main_window.c:135
+#: ../src/main_window.c:139
 msgid "Path Bar Style"
 msgstr "De barra de camins"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:187
 msgid "Navigation Style"
 msgstr "Tipus de navegació"
 
-#: ../src/main_window.c:183
+#: ../src/main_window.c:188
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -188,54 +197,54 @@ msgstr ""
 "L'estil per navegat dins l'arxiu"
 
 #. File menu
-#: ../src/main_window.c:295
+#: ../src/main_window.c:301
 msgid "_File"
 msgstr "_Fitxer"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:323
+#: ../src/main_window.c:329
 msgid "_Action"
 msgstr "_Acció"
 
-#: ../src/main_window.c:328
+#: ../src/main_window.c:334
 msgid "_Add files"
 msgstr "_Afegeix fitxers…"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:340
 msgid "_Add _folders"
 msgstr "_Afegeix _carpetes"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:346
 msgid "_Extract"
 msgstr "_Extreu"
 
 #. View menu
-#: ../src/main_window.c:373
+#: ../src/main_window.c:379
 msgid "_View"
 msgstr "_Mostra"
 
 #. Help menu
-#: ../src/main_window.c:397
+#: ../src/main_window.c:403
 msgid "_Help"
 msgstr "A_juda"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
+#: ../src/main_window.c:449 ../src/main_window.c:866
 msgid "Add files"
 msgstr "Afegeix fitxers"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
+#: ../src/main_window.c:453 ../src/main_window.c:913
 msgid "Add folders"
 msgstr "Afegeix carpetes"
 
-#: ../src/main_window.c:724
+#: ../src/main_window.c:731
 msgid "Open archive in new window"
 msgstr "Obre l'arxiu en una finestra nova"
 
-#: ../src/main_window.c:730
+#: ../src/main_window.c:737
 msgid "Open archive"
 msgstr "Obre un arxiu"
 
-#: ../src/main_window.c:916
+#: ../src/main_window.c:938
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -243,11 +252,11 @@ msgstr ""
 "Squeeze no pot afegir carpetes a aquest tipus d'arxiu,\n"
 "l'aplicació que permet aquest ús no hi és."
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:962
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Voleu suprimir els fitxers seleccionats?"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:978
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -255,7 +264,7 @@ msgstr ""
 "Squeeze no pot suprimir fitxers d'aquest tipus d'arxiu,\n"
 "l'aplicació que permet aquest ús no hi és."
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1029
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -263,31 +272,31 @@ msgstr ""
 "Voleu canceŀlar aquesta acció?\n"
 "Això podria malmetre l'arxiu."
 
-#: ../src/main_window.c:1081
+#: ../src/main_window.c:1111
 msgid "Lead developer:"
 msgstr "Desenvolupador principal:"
 
-#: ../src/main_window.c:1084
+#: ../src/main_window.c:1114
 msgid "Contributors:"
 msgstr "Contribuïdors:"
 
-#: ../src/main_window.c:1087
+#: ../src/main_window.c:1117
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Basat en Xarchiver, escrit per Giuseppe Torelli"
 
-#: ../src/main_window.c:1089
+#: ../src/main_window.c:1119
 msgid "Application Icon:"
 msgstr "Icones de l'aplicació:"
 
-#: ../src/main_window.c:1092
+#: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
 msgstr "Afegir / extreure icones:"
 
-#: ../src/main_window.c:1093
+#: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Basat en el extreure icones original d'Andreas Nilsson"
 
-#: ../src/main_window.c:1100
+#: ../src/main_window.c:1130
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -296,24 +305,24 @@ msgstr ""
 "Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1108
+#: ../src/main_window.c:1138
 msgid "translator-credits"
 msgstr "Carles Muñoz Gorriz <carlesmu@internautas.org>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
-#: ../src/main_window.c:1376
+#: ../src/main_window.c:1172 ../src/main_window.c:1244
+#: ../src/main_window.c:1403
 msgid "Done"
 msgstr "Fet"
 
-#: ../src/main_window.c:1218
+#: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Quina acció voleu realitzar amb el(s) fitxer(s) seleccionats?"
 
-#: ../src/main_window.c:1219
+#: ../src/main_window.c:1255
 msgid "Open"
 msgstr "Obre"
 
-#: ../src/main_window.c:1233
+#: ../src/main_window.c:1274
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -321,11 +330,11 @@ msgstr ""
 "Squeeze no pot mostrar aquest fitxer,\n"
 "l'aplicació que permet aquest ús no hi és."
 
-#: ../src/main_window.c:1301
+#: ../src/main_window.c:1341
 msgid "Failed to open file"
 msgstr "No s'ha pogut obrir el fitxer"
 
-#: ../src/main_window.c:1302
+#: ../src/main_window.c:1342
 #, c-format
 msgid ""
 "'%s'\n"
@@ -334,39 +343,107 @@ msgstr ""
 "«%s»\n"
 "No s'ha pogut obrir"
 
-#: ../src/new_dialog.c:69
+#: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Tipus d'arxiu:"
 
-#: ../src/new_dialog.c:80
+#: ../src/new_dialog.c:82
 msgid "Archives"
 msgstr "Arxius"
 
-#: ../src/new_dialog.c:108
+#: ../src/new_dialog.c:110
 msgid "Create new archive"
 msgstr "Crea un arxiu nou"
 
-#: ../src/notebook.c:207
+#: ../src/notebook.c:209
 msgid "Rules hint"
 msgstr "Alternança de fons"
 
-#: ../src/notebook.c:208
+#: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
 msgstr "Alterna el color de fons de les files"
 
-#: ../src/path_bar.c:141
+#: ../src/path_bar.c:142
 msgid "Spacing"
 msgstr "Espaiat"
 
-#: ../src/path_bar.c:142
+#: ../src/path_bar.c:143
 msgid "The amount of space between the path buttons"
 msgstr "Estil de la barra de camins"
 
-#: ../src/tool_bar.c:167
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr ""
+
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "Tipus d'arxiu:"
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "Mostra les icones MIME"
+
+#: ../src/preferences_dialog.c:100
+#, fuzzy
+msgid "_Rules Hint"
+msgstr "Alternança de fons"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "L'ordenació distingeix majúscules/minúscules"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "Ordena carpetes abans que fitxers"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "Tipus de navegació"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.c:204
+#, fuzzy
+msgid "_Archivers"
+msgstr "Arxius"
+
+#: ../src/preferences_dialog.c:281
+#, fuzzy
+msgid "Filename"
+msgstr "_Fitxer"
+
+#: ../src/properties_dialog.c:85
+msgid "Name:"
+msgstr "Name:"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr "Kind:"
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr "Properties"
+
+#: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Ubicació:"
 
-#: ../src/message_dialog.c:158
+#: ../src/message_dialog.c:163
 msgid "Archive manager"
 msgstr "Gestor d'arxius"
 
@@ -539,12 +616,3 @@ msgstr "Gestor d'arxius"
 
 #~ msgid "Append extension to filename"
 #~ msgstr "Append extension to filename"
-
-#~ msgid "Name:"
-#~ msgstr "Name:"
-
-#~ msgid "Kind:"
-#~ msgstr "Kind:"
-
-#~ msgid "Properties"
-#~ msgstr "Properties"

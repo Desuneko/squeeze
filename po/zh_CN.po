@@ -4,24 +4,24 @@
 # Hunt Xu <huntxu@live.cn>, 2008, 2009.
 # Aron Xu <aronmalache@163.com>, 2009.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-08-21 00:30+0200\n"
+"POT-Creation-Date: 2011-08-24 20:32+0200\n"
 "PO-Revision-Date: 2009-06-14 02:36+0800\n"
 "Last-Translator: Hunt Xu <huntxu@live.cn>\n"
 "Language-Team: Chinese/Simplified\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:236
+#: ../libsqueeze/archive.c:272
 msgid "Name"
 msgstr "名称"
 
-#: ../libsqueeze/archive.c:238
+#: ../libsqueeze/archive.c:274
 msgid "Mime type"
 msgstr "Mime 类型"
 
@@ -41,14 +41,11 @@ msgstr "Squeeze 归档文件管理器"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160
-#: ../src/application.c:250
+#: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "无法打开归档文件，MIME 类型不支持或者文件不存在"
 
-#: ../src/application.c:191
-#: ../src/main_window.c:826
-#: ../src/main_window.c:1260
+#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -59,12 +56,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "无法创建归档文件，不支持的 MIME 类型"
 
-#: ../src/application.c:268
-#: ../src/main_window.c:874
+#: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -72,50 +68,50 @@ msgstr ""
 "Squeeze 无法添加文件到此归档文件，\n"
 "未找到支持此项操作的程序"
 
-#: ../src/archive_store.c:249
-#: ../src/notebook.c:179
+#: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
 msgstr "显示完整路径"
 
-#: ../src/archive_store.c:250
-#: ../src/notebook.c:180
+#: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
 msgstr "为每个项目显示完整路径"
 
-#: ../src/archive_store.c:256
-#: ../src/notebook.c:186
+#: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
 msgstr "显示 MIME 类型图标"
 
-#: ../src/archive_store.c:257
-#: ../src/notebook.c:187
+#: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
 msgstr "为每个项目显示 MIME 类型图标"
 
-#: ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Show up dir entry"
 msgstr "显示上级目录"
 
-#: ../src/archive_store.c:264
+#: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
 msgstr "显示 '..' 以便进入上层目录"
 
-#: ../src/archive_store.c:270
-#: ../src/notebook.c:193
+#: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
 msgstr "将文件夹排列在文件之前"
 
-#: ../src/archive_store.c:271
-#: ../src/notebook.c:194
+#: ../src/archive_store.c:272 ../src/notebook.c:196
 msgid "The folders will be put at the top of the list"
 msgstr "文件夹将会显示在列表最上方"
 
-#: ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-#: ../src/notebook.c:200
-#: ../src/notebook.c:201
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
+#: ../src/notebook.c:203
 msgid "Sort text case sensitive"
 msgstr "排列时对大小写敏感"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr ""
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr ""
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -125,45 +121,44 @@ msgstr "<b>解压文件:</b>"
 msgid "<b>Options:</b>"
 msgstr "<b>选项:</b>"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:88
 msgid "All files"
 msgstr "所有文件"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "Selected files"
 msgstr "已选择的文件"
 
-#: ../src/extract_dialog.c:100
-#: ../src/main_window.c:451
-#: ../src/main_window.c:1219
+#: ../src/extract_dialog.c:101 ../src/main_window.c:457
+#: ../src/main_window.c:1255
 msgid "Extract"
 msgstr "解压"
 
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:114
 msgid "Extract archive"
 msgstr "解压归档文件"
 
-#: ../src/main.c:51
+#: ../src/main.c:53
 msgid "[destination path]"
 msgstr "[目标路径]"
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[归档文件路径] [文件1] [文件2] ... [文件N]"
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[文件1] [文件2] ... [文件N]"
 
-#: ../src/main.c:66
+#: ../src/main.c:68
 msgid "Version information"
 msgstr "版本信息"
 
-#: ../src/main.c:92
+#: ../src/main.c:98
 msgid "[archive name]"
 msgstr "[归档文件名称]"
 
-#: ../src/main.c:96
+#: ../src/main.c:102
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -172,23 +167,23 @@ msgstr ""
 "%s: %s\n"
 "输入 %s --help 查看可用的命令行参数.\n"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:134
 msgid "Internal Style"
 msgstr "内置样式"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:136
 msgid "Tool Bar Style"
 msgstr "工具栏样式"
 
-#: ../src/main_window.c:135
+#: ../src/main_window.c:139
 msgid "Path Bar Style"
 msgstr "路径栏样式"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:187
 msgid "Navigation Style"
 msgstr "导航栏样式"
 
-#: ../src/main_window.c:183
+#: ../src/main_window.c:188
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -197,56 +192,54 @@ msgstr ""
 "查看归档文件时使用的样式"
 
 #. File menu
-#: ../src/main_window.c:295
+#: ../src/main_window.c:301
 msgid "_File"
 msgstr "文件(_F)"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:323
+#: ../src/main_window.c:329
 msgid "_Action"
 msgstr "动作(_A)"
 
-#: ../src/main_window.c:328
+#: ../src/main_window.c:334
 msgid "_Add files"
 msgstr "添加文件(_A)"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:340
 msgid "_Add _folders"
 msgstr "添加文件夹(_A _f)"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:346
 msgid "_Extract"
 msgstr "解压(_E)"
 
 #. View menu
-#: ../src/main_window.c:373
+#: ../src/main_window.c:379
 msgid "_View"
 msgstr "查看(_V)"
 
 #. Help menu
-#: ../src/main_window.c:397
+#: ../src/main_window.c:403
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: ../src/main_window.c:443
-#: ../src/main_window.c:852
+#: ../src/main_window.c:449 ../src/main_window.c:866
 msgid "Add files"
 msgstr "添加文件"
 
-#: ../src/main_window.c:447
-#: ../src/main_window.c:894
+#: ../src/main_window.c:453 ../src/main_window.c:913
 msgid "Add folders"
 msgstr "添加文件夹"
 
-#: ../src/main_window.c:724
+#: ../src/main_window.c:731
 msgid "Open archive in new window"
 msgstr "在新窗口中打开归档文件"
 
-#: ../src/main_window.c:730
+#: ../src/main_window.c:737
 msgid "Open archive"
 msgstr "打开归档文件"
 
-#: ../src/main_window.c:916
+#: ../src/main_window.c:938
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -254,11 +247,11 @@ msgstr ""
 "Squeeze 无法添加文件夹到此归档文件，\n"
 "未找到支持此项操作的程序"
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:962
 msgid "Are you sure you want to remove the selected files?"
 msgstr "是否确定删除所选择的文件？"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:978
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -266,7 +259,7 @@ msgstr ""
 "Squeeze 无法从此归档文件中删除文件，\n"
 "未找到支持此项操作的程序"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1029
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -274,56 +267,55 @@ msgstr ""
 "是否确定取消此项操作？\n"
 "这可能损坏此归档文件"
 
-#: ../src/main_window.c:1081
+#: ../src/main_window.c:1111
 msgid "Lead developer:"
 msgstr "主要开发者:"
 
-#: ../src/main_window.c:1084
+#: ../src/main_window.c:1114
 msgid "Contributors:"
 msgstr "贡献者:"
 
-#: ../src/main_window.c:1087
+#: ../src/main_window.c:1117
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "由 Giuseppe Torelli 基于 Xarchiver 所编写"
 
-#: ../src/main_window.c:1089
+#: ../src/main_window.c:1119
 msgid "Application Icon:"
 msgstr "程序图标："
 
-#: ../src/main_window.c:1092
+#: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
 msgstr "添加/解压图标："
 
-#: ../src/main_window.c:1093
+#: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "基于 Andreas Nilsson 创作的解压图标"
 
-#: ../src/main_window.c:1100
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+#: ../src/main_window.c:1130
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
 msgstr "Squeeze 是一款适用于 Xfce 桌面环境的灵活简便的归档文件管理器"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1108
+#: ../src/main_window.c:1138
 msgid "translator-credits"
-msgstr ""
-"Hunt Xu <huntxu@live.cn>"
-"Aron Xu <aronmalache@163.com>"
+msgstr "Hunt Xu <huntxu@live.cn>Aron Xu <aronmalache@163.com>"
 
-#: ../src/main_window.c:1137
-#: ../src/main_window.c:1208
-#: ../src/main_window.c:1376
+#: ../src/main_window.c:1172 ../src/main_window.c:1244
+#: ../src/main_window.c:1403
 msgid "Done"
 msgstr "完成"
 
-#: ../src/main_window.c:1218
+#: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "对所选择文件采取何种操作？"
 
-#: ../src/main_window.c:1219
+#: ../src/main_window.c:1255
 msgid "Open"
 msgstr "打开"
 
-#: ../src/main_window.c:1233
+#: ../src/main_window.c:1274
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -331,117 +323,217 @@ msgstr ""
 "Squeeze 无法查看此文件，\n"
 "未找到支持此项操作的程序"
 
-#: ../src/main_window.c:1301
+#: ../src/main_window.c:1341
 msgid "Failed to open file"
 msgstr "打开文件失败"
 
-#: ../src/main_window.c:1302
+#: ../src/main_window.c:1342
 #, c-format
 msgid ""
 "'%s'\n"
 "Could not be opened"
 msgstr "无法打开 '%s'"
 
-#: ../src/new_dialog.c:69
+#: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "归档类型："
 
-#: ../src/new_dialog.c:80
+#: ../src/new_dialog.c:82
 msgid "Archives"
 msgstr "归档文件"
 
-#: ../src/new_dialog.c:108
+#: ../src/new_dialog.c:110
 msgid "Create new archive"
 msgstr "创建新归档文件"
 
-#: ../src/notebook.c:207
+#: ../src/notebook.c:209
 msgid "Rules hint"
 msgstr "规则提示"
 
-#: ../src/notebook.c:208
+#: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
 msgstr "行背景使用交替颜色"
 
-#: ../src/path_bar.c:141
+#: ../src/path_bar.c:142
 msgid "Spacing"
 msgstr "间隔"
 
-#: ../src/path_bar.c:142
+#: ../src/path_bar.c:143
 msgid "The amount of space between the path buttons"
 msgstr "路径按钮之间的间隔"
 
-#: ../src/tool_bar.c:167
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr ""
+
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "归档类型："
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "显示 MIME 类型图标"
+
+#: ../src/preferences_dialog.c:100
+#, fuzzy
+msgid "_Rules Hint"
+msgstr "规则提示"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "排列时对大小写敏感"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "将文件夹排列在文件之前"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "导航栏样式"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.c:204
+#, fuzzy
+msgid "_Archivers"
+msgstr "归档文件"
+
+#: ../src/preferences_dialog.c:281
+#, fuzzy
+msgid "Filename"
+msgstr "文件(_F)"
+
+#: ../src/properties_dialog.c:85
+msgid "Name:"
+msgstr "Name:"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr "Kind:"
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr "Properties"
+
+#: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "位置："
 
-#: ../src/message_dialog.c:158
+#: ../src/message_dialog.c:163
 msgid "Archive manager"
 msgstr "归档文件管理器"
 
 #~ msgid "Compressing"
 #~ msgstr "Compressing"
+
 #~ msgid "Decompressing"
 #~ msgstr "Decompressing"
+
 #~ msgid "Refresh"
 #~ msgstr "Refresh"
+
 #~ msgid "Rights"
 #~ msgstr "Rights"
+
 #~ msgid "Owner/Group"
 #~ msgstr "Owner/Group"
+
 #~ msgid "Size"
 #~ msgstr "Size"
+
 #~ msgid "Date"
 #~ msgstr "Date"
+
 #~ msgid "Time"
 #~ msgstr "Time"
+
 #~ msgid "Cleanup"
 #~ msgstr "Cleanup"
+
 #~ msgid "Removing files"
 #~ msgstr "Removing files"
+
 #~ msgid "Removing"
 #~ msgstr "Removing"
+
 #~ msgid "Extracting"
 #~ msgstr "Extracting"
+
 #~ msgid "Compressed"
 #~ msgstr "Compressed"
+
 #~ msgid "Ratio"
 #~ msgstr "Ratio"
+
 #~ msgid "Method"
 #~ msgstr "Method"
+
 #~ msgid "Version"
 #~ msgstr "Version"
+
 #~ msgid "Adding"
 #~ msgstr "Adding"
+
 #~ msgid "Execute"
 #~ msgstr "Execute"
+
 #~ msgid "Command exited with status %d."
 #~ msgstr "Command exited with status %d."
+
 #~ msgid "Command interrupted by user"
 #~ msgstr "Command interrupted by user"
+
 #~ msgid "Command received SIGSEGV"
 #~ msgstr "Command received SIGSEGV"
+
 #~ msgid "Command Terminated"
 #~ msgstr "Command Terminated"
+
 #~ msgid "Files and directories to add"
 #~ msgstr "Files and directories to add"
+
 #~ msgid "Options:"
 #~ msgstr "Options:"
+
 #~ msgid "Files"
 #~ msgstr "Files"
+
 #~ msgid "Directories"
 #~ msgstr "Directories"
+
 #~ msgid "Add file(s) to archive"
 #~ msgstr "Add file(s) to archive"
+
 #~ msgid "Select files"
 #~ msgstr "Select files"
+
 #~ msgid "Select folders"
 #~ msgstr "Select folders"
+
 #~ msgid "_Add"
 #~ msgstr "_Add"
+
 #~ msgid "Add"
 #~ msgstr "Add"
+
 #~ msgid "Xfce archive manager"
 #~ msgstr "Xfce archive manager"
+
 #~ msgid "Artwork:"
 #~ msgstr "Artwork:"
 
@@ -452,52 +544,66 @@ msgstr "归档文件管理器"
 #, fuzzy
 #~ msgid "Owner"
 #~ msgstr "Owner/Group"
+
 #~ msgid "Overwrite existing files"
 #~ msgstr "Overwrite existing files"
+
 #~ msgid "Overwrite existing files on extraction"
 #~ msgstr "Overwrite existing files on extraction"
+
 #~ msgid "Touch files"
 #~ msgstr "Touch files"
+
 #~ msgid "Strip directories"
 #~ msgstr "Strip directories"
+
 #~ msgid "Keep newer files"
 #~ msgstr "Keep newer files"
+
 #~ msgid "Do not overwrite files newer than those in the archive"
 #~ msgstr "Do not overwrite files newer than those in the archive"
+
 #~ msgid "Override permissions"
 #~ msgstr "Override permissions"
+
 #~ msgid "View filesize"
 #~ msgstr "View filesize"
+
 #~ msgid "Permissions"
 #~ msgstr "Permissions"
+
 #~ msgid "View permissions"
 #~ msgstr "View permissions"
+
 #~ msgid "View date"
 #~ msgstr "View date"
+
 #~ msgid "View time"
 #~ msgstr "View time"
+
 #~ msgid "Password"
 #~ msgstr "Password"
+
 #~ msgid "View compressed filesize"
 #~ msgstr "View compressed filesize"
+
 #~ msgid "View ratio"
 #~ msgstr "View ratio"
+
 #~ msgid "View method"
 #~ msgstr "View method"
+
 #~ msgid "Checksum"
 #~ msgstr "Checksum"
+
 #~ msgid "View Checksum"
 #~ msgstr "View Checksum"
+
 #~ msgid "Compression version"
 #~ msgstr "Compression version"
+
 #~ msgid "View compression version"
 #~ msgstr "View compression version"
+
 #~ msgid "Append extension to filename"
 #~ msgstr "Append extension to filename"
-#~ msgid "Name:"
-#~ msgstr "Name:"
-#~ msgid "Kind:"
-#~ msgstr "Kind:"
-#~ msgid "Properties"
-#~ msgstr "Properties"
-

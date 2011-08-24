@@ -8,20 +8,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-08-21 00:30+0200\n"
+"POT-Creation-Date: 2011-08-24 20:32+0200\n"
 "PO-Revision-Date: 2008-05-27 09:24+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../libsqueeze/archive.c:236
+#: ../libsqueeze/archive.c:272
 msgid "Name"
 msgstr "İsim"
 
-#: ../libsqueeze/archive.c:238
+#: ../libsqueeze/archive.c:274
 msgid "Mime type"
 msgstr "Mime türü"
 
@@ -41,11 +42,11 @@ msgstr "Squeeze Arşiv Yöneticisi"
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
 #.
-#: ../src/application.c:160 ../src/application.c:250
+#: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Arşiv açılamıyor, MIME türü desteklenmior veya dosya yok"
 
-#: ../src/application.c:191 ../src/main_window.c:826 ../src/main_window.c:1260
+#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -56,11 +57,11 @@ msgstr ""
 #.
 #. * Could not create archive (mime type unsupported)
 #.
-#: ../src/application.c:233
+#: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Arşiv oluşturulamadı, MIME türü desteklenmiyor"
 
-#: ../src/application.c:268 ../src/main_window.c:874
+#: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -68,42 +69,50 @@ msgstr ""
 "Squeeze bu arşiv türüne dosya ekleyemiyor,\n"
 "bunu destekleyen uygulama kayıp."
 
-#: ../src/archive_store.c:249 ../src/notebook.c:179
+#: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
 msgstr "Tam yolu göster"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:180
+#: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
 msgstr "Her girdi için tam yolu göster"
 
-#: ../src/archive_store.c:256 ../src/notebook.c:186
+#: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
 msgstr "Mime simgelerini göster"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:187
+#: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
 msgstr "Her girdi için mime türü simgesini göster"
 
-#: ../src/archive_store.c:263
+#: ../src/archive_store.c:264
 msgid "Show up dir entry"
 msgstr "Üst dizin girdisini göster"
 
-#: ../src/archive_store.c:264
+#: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
 msgstr "Bir üst dizine girmek için '..' göster"
 
-#: ../src/archive_store.c:270 ../src/notebook.c:193
+#: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
 msgstr "Dosyalardan önce dizinleri sırala"
 
-#: ../src/archive_store.c:271 ../src/notebook.c:194
+#: ../src/archive_store.c:272 ../src/notebook.c:196
 msgid "The folders will be put at the top of the list"
 msgstr "Listenin en başına konulacak dizinler"
 
-#: ../src/archive_store.c:277 ../src/archive_store.c:278 ../src/notebook.c:200
-#: ../src/notebook.c:201
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
+#: ../src/notebook.c:203
 msgid "Sort text case sensitive"
 msgstr "Büyük küçük harf duyarlı olarak sırala"
+
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr ""
+
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr ""
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -113,44 +122,44 @@ msgstr "<b>Dosyaları dışa aktar:</b>"
 msgid "<b>Options:</b>"
 msgstr "<b>Seçenekler:</b>"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:88
 msgid "All files"
 msgstr "Tüm dosyalar"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "Selected files"
 msgstr "Seçilen dosyalar"
 
-#: ../src/extract_dialog.c:100 ../src/main_window.c:451
-#: ../src/main_window.c:1219
+#: ../src/extract_dialog.c:101 ../src/main_window.c:457
+#: ../src/main_window.c:1255
 msgid "Extract"
 msgstr "Dışa Aktar"
 
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:114
 msgid "Extract archive"
 msgstr "Arşivi dışa aktar"
 
-#: ../src/main.c:51
+#: ../src/main.c:53
 msgid "[destination path]"
 msgstr "[hedef yol]"
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
 msgstr "[arşiv yolu] [dosya1] [dosya2] ... [dosyaN]"
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
 msgstr "[dosya1] [dosya2] ... [dosyaN]"
 
-#: ../src/main.c:66
+#: ../src/main.c:68
 msgid "Version information"
 msgstr "Sürüm Bilgisi"
 
-#: ../src/main.c:92
+#: ../src/main.c:98
 msgid "[archive name]"
 msgstr "[arşiv adı]"
 
-#: ../src/main.c:96
+#: ../src/main.c:102
 #, c-format
 msgid ""
 "%s: %s\n"
@@ -160,23 +169,23 @@ msgstr ""
 "Kullanılabilir komutları ve parametreleri görmek için %s --help komutunu "
 "yazın.\n"
 
-#: ../src/main_window.c:133
+#: ../src/main_window.c:134
 msgid "Internal Style"
 msgstr "Düz Stil"
 
-#: ../src/main_window.c:134
+#: ../src/main_window.c:136
 msgid "Tool Bar Style"
 msgstr "Araç Çubuğu Stili"
 
-#: ../src/main_window.c:135
+#: ../src/main_window.c:139
 msgid "Path Bar Style"
 msgstr "Dosya Yolu Stili"
 
-#: ../src/main_window.c:182
+#: ../src/main_window.c:187
 msgid "Navigation Style"
 msgstr "Görüntüleme Stili"
 
-#: ../src/main_window.c:183
+#: ../src/main_window.c:188
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
@@ -186,54 +195,54 @@ msgstr ""
 "stil"
 
 #. File menu
-#: ../src/main_window.c:295
+#: ../src/main_window.c:301
 msgid "_File"
 msgstr "_Dosya"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:323
+#: ../src/main_window.c:329
 msgid "_Action"
 msgstr "_Eylem"
 
-#: ../src/main_window.c:328
+#: ../src/main_window.c:334
 msgid "_Add files"
 msgstr "_Dosya Ekle"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:340
 msgid "_Add _folders"
 msgstr "Dizin _ekle"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:346
 msgid "_Extract"
 msgstr "_Dışa Aktar"
 
 #. View menu
-#: ../src/main_window.c:373
+#: ../src/main_window.c:379
 msgid "_View"
 msgstr "_Görünüm"
 
 #. Help menu
-#: ../src/main_window.c:397
+#: ../src/main_window.c:403
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../src/main_window.c:443 ../src/main_window.c:852
+#: ../src/main_window.c:449 ../src/main_window.c:866
 msgid "Add files"
 msgstr "Dosya ekle"
 
-#: ../src/main_window.c:447 ../src/main_window.c:894
+#: ../src/main_window.c:453 ../src/main_window.c:913
 msgid "Add folders"
 msgstr "Dizin ekle"
 
-#: ../src/main_window.c:724
+#: ../src/main_window.c:731
 msgid "Open archive in new window"
 msgstr "Arşivi yeni pencerede aç"
 
-#: ../src/main_window.c:730
+#: ../src/main_window.c:737
 msgid "Open archive"
 msgstr "Arşivi aç"
 
-#: ../src/main_window.c:916
+#: ../src/main_window.c:938
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -241,11 +250,11 @@ msgstr ""
 "Squeeze bu arşiv türüne dizin ekleyemiyor,\n"
 "bunu destekleyen uygulama kayıp."
 
-#: ../src/main_window.c:937
+#: ../src/main_window.c:962
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Seçilen dosyaları gerçekten silmek istiyor musunuz?"
 
-#: ../src/main_window.c:950
+#: ../src/main_window.c:978
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -253,7 +262,7 @@ msgstr ""
 "Squeeze dosyaları bu arşiv türünden silemiyor,\n"
 "bunu destekleyen uygulama kayıp"
 
-#: ../src/main_window.c:999
+#: ../src/main_window.c:1029
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -261,57 +270,59 @@ msgstr ""
 "Bu işlemi gerçekten iptal etmek istiyor musunuz?\n"
 "Bu arşive zarar verebilir."
 
-#: ../src/main_window.c:1081
+#: ../src/main_window.c:1111
 msgid "Lead developer:"
 msgstr "Ana geliştirici:"
 
-#: ../src/main_window.c:1084
+#: ../src/main_window.c:1114
 msgid "Contributors:"
 msgstr "Katkıcılar:"
 
-#: ../src/main_window.c:1087
+#: ../src/main_window.c:1117
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Giuseppe Torelli tarafından yazılan Xarchiver'dan esinlenilmiştir."
 
-#: ../src/main_window.c:1089
+#: ../src/main_window.c:1119
 msgid "Application Icon:"
 msgstr "Uygulama Simgesi:"
 
-#: ../src/main_window.c:1092
+#: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
 msgstr "Simgeleri Ekle / Dışa Aktar:"
 
-#: ../src/main_window.c:1093
+#: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr ""
 "Andreas Nilsson tarafından oluşturulan orijinal dışa aktarma simgesi "
 "tabanlıdır"
 
-#: ../src/main_window.c:1100
+#: ../src/main_window.c:1130
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr "Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
+msgstr ""
+"Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1108
+#: ../src/main_window.c:1138
 msgid "translator-credits"
 msgstr "Eren Türkay <turkay.eren@gmail.com>"
 
-#: ../src/main_window.c:1137 ../src/main_window.c:1208
-#: ../src/main_window.c:1376
+#: ../src/main_window.c:1172 ../src/main_window.c:1244
+#: ../src/main_window.c:1403
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: ../src/main_window.c:1218
+#: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
+msgstr ""
+"Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
 
-#: ../src/main_window.c:1219
+#: ../src/main_window.c:1255
 msgid "Open"
 msgstr "Aç"
 
-#: ../src/main_window.c:1233
+#: ../src/main_window.c:1274
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -319,11 +330,11 @@ msgstr ""
 "Squeeze bu dosyayı görüntüleyemiyor,\n"
 "bunu destekleyen uygulama kayıp"
 
-#: ../src/main_window.c:1301
+#: ../src/main_window.c:1341
 msgid "Failed to open file"
 msgstr "Dosya açma başarısız"
 
-#: ../src/main_window.c:1302
+#: ../src/main_window.c:1342
 #, c-format
 msgid ""
 "'%s'\n"
@@ -332,39 +343,107 @@ msgstr ""
 "'%s'\n"
 "Açılamadı"
 
-#: ../src/new_dialog.c:69
+#: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Arşiv türü:"
 
-#: ../src/new_dialog.c:80
+#: ../src/new_dialog.c:82
 msgid "Archives"
 msgstr "Arşivler"
 
-#: ../src/new_dialog.c:108
+#: ../src/new_dialog.c:110
 msgid "Create new archive"
 msgstr "Yeni arşiv oluştur"
 
-#: ../src/notebook.c:207
+#: ../src/notebook.c:209
 msgid "Rules hint"
 msgstr "İpuçları"
 
-#: ../src/notebook.c:208
+#: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
 msgstr "Satır arkaplanlarını değişken yap"
 
-#: ../src/path_bar.c:141
+#: ../src/path_bar.c:142
 msgid "Spacing"
 msgstr "Aralık"
 
-#: ../src/path_bar.c:142
+#: ../src/path_bar.c:143
 msgid "The amount of space between the path buttons"
 msgstr "Yol butonları arasındaki boşluk miktarı"
 
-#: ../src/tool_bar.c:167
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr ""
+
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "Arşiv türü:"
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "Mime simgelerini göster"
+
+#: ../src/preferences_dialog.c:100
+#, fuzzy
+msgid "_Rules Hint"
+msgstr "İpuçları"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "Büyük küçük harf duyarlı olarak sırala"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "Dosyalardan önce dizinleri sırala"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "Görüntüleme Stili"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.c:204
+#, fuzzy
+msgid "_Archivers"
+msgstr "Arşivler"
+
+#: ../src/preferences_dialog.c:281
+#, fuzzy
+msgid "Filename"
+msgstr "_Dosya"
+
+#: ../src/properties_dialog.c:85
+#, fuzzy
+msgid "Name:"
+msgstr "İsim"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr ""
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr ""
+
+#: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Konum:"
 
-#: ../src/message_dialog.c:158
+#: ../src/message_dialog.c:163
 msgid "Archive manager"
 msgstr "Arşiv yöneticisi"
-
