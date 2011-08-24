@@ -411,7 +411,7 @@ lsq_archive_iter_is_directory(const LSQArchiveIter *iter)
 	g_return_val_if_fail(iter, FALSE);
 #endif
 	contenttype = lsq_archive_entry_get_contenttype(iter->entry);
-	if ( NULL != contenttype )
+	if ( NULL == contenttype )
 	{
 		return FALSE;
 	}
