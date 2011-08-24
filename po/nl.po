@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the squeeze package.
 # Stephan Arts, 2006.
 # Pjotr, 2011.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-24 20:18+0000\n"
 "PO-Revision-Date: 2011-07-20 12:22+0200\n"
 "Last-Translator: Pjotr\n"
 "Language-Team: Dutch (Flemish)\n"
-"Language: nl (Dutch)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl (Dutch)\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libsqueeze/archive.c:272
@@ -38,14 +38,12 @@ msgstr "Maak en beheer archieven met de archiefbeheerder"
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze Archiefbeheerder"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Kon archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
+msgstr "Kon archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -55,9 +53,8 @@ msgstr ""
 "Squeeze kan dit archieftype niet uitpakken,\n"
 "want de toepassing om dit te ondersteunen ontbreekt."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type niet ondersteund"
@@ -109,11 +106,11 @@ msgstr "Tekst hoofdlettergevoelig sorteren"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Zichtbaar:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Beschikbaar:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -167,8 +164,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Probeer %s --help voor een volledige lijst van beschikbare opdrachtregel-"
-"opties.\n"
+"Probeer %s --help voor een volledige lijst van beschikbare opdrachtregel-opties.\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -292,17 +288,11 @@ msgstr "Pictogrammen voor Toevoegen / Uitpakken:"
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
-"Gebaseerd op het oorspronkelijke uitpakken-pictogram gemaakt door Andreas "
-"Nilsson"
+msgstr "Gebaseerd op het oorspronkelijke uitpakken-pictogram gemaakt door Andreas Nilsson"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze is een lichtgewicht flexibele archiefbeheerder voor de Xfce "
-"Werkomgeving"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze is een lichtgewicht flexibele archiefbeheerder voor de Xfce Werkomgeving"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -345,6 +335,10 @@ msgstr ""
 "'%s'\n"
 "Kon niet worden geopend"
 
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Archiefbeheerder"
+
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Archieftype:"
@@ -375,80 +369,67 @@ msgstr "De hoeveelheid ruimte tussen de padknoppen"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "Algemeen"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Archieftype:"
+msgstr "Archiefkijker:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Mime-pictogrammen weergeven"
+msgstr "Pictogrammen weergeven"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Regel hints"
+msgstr "Regeltoespeling"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Aan het sorteren:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Tekst hoofdlettergevoelig sorteren"
+msgstr "Hoofdlettergevoelig sorteren"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Mappen voor bestanden sorteren"
+msgstr "Mappen eerst sorteren"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Navigatiestijl"
+msgstr "Navigatiebalk:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "Gedrag"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Voorkeuren"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Archieven"
+msgstr "Archiveerders"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Bestand"
+msgstr "Bestandnaam"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "Naam"
+msgstr "Naam:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Soort:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschappen"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Locatie:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Archiefbeheerder"
 
 #~ msgid "Compressing"
 #~ msgstr "Comprimeren"
