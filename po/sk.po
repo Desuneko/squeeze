@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the Squeeze package.
 # <miklosovic@gmail.com>, 2008.
 # Tomáš Vadina <kyberdev@gmail.com>, 2011.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.9svn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-25 04:07+0000\n"
+"POT-Creation-Date: 2011-08-25 10:07+0000\n"
 "PO-Revision-Date: 2011-08-25 10:50+0200\n"
 "Last-Translator: Tomáš Vadina <kyberdev@gmail.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -38,14 +38,12 @@ msgstr "Vytvára a spravuje archívy správcom archívov"
 msgid "Squeeze Archive Manager"
 msgstr "Správca archívov Squeeze"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Nedá sa otvoriť archív, typ MIME nie je podporovaný alebo súbor neexistuje"
+msgstr "Nedá sa otvoriť archív, typ MIME nie je podporovaný alebo súbor neexistuje"
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -55,9 +53,8 @@ msgstr ""
 "Aplikácia Squeeze nemôže rozbaliť archív tohoto typu,\n"
 "potrebná aplikácia nie je dostupná."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Nejde vytvoriť archív, typ MIME nie je podporovaný"
@@ -105,7 +102,7 @@ msgstr "Adresáre budú umiestnené na začiatku zoznamu"
 #: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
 #: ../src/notebook.c:203
 msgid "Sort text case sensitive"
-msgstr "Rozlišovať veľkosti písmen pri triedení"
+msgstr "Rozlišovať veľkosti písmen pri zoradení"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
@@ -167,8 +164,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Príkazom %s --help zobrazíte kompletný zoznam dostupných volieb príkazového "
-"riadka\n"
+"Príkazom %s --help zobrazíte kompletný zoznam dostupných volieb príkazového riadka\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -295,9 +291,7 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Založené na originálnej rozbaľovacej ikone od Andreasa Nilssona"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
 msgstr "Squeeze je odľahčený a pružný správca archívov pre prostredie Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
@@ -391,11 +385,11 @@ msgstr "_Rada o pravidlách"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr "Triedenie:"
+msgstr "Zoradenie:"
 
 #: ../src/preferences_dialog.c:112
 msgid "Sort _Case Sensitive "
-msgstr "Rozlišovať _veľkosť písmen pri triedení"
+msgstr "Rozlišovať _veľkosť písmen pri zoradení"
 
 #: ../src/preferences_dialog.c:115
 msgid "Sort _Folders First"
