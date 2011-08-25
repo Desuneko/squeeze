@@ -2,20 +2,21 @@
 # Copyright (C) 2008 THE Squeeze'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Squeeze package.
 # <miklosovic@gmail.com>, 2008.
-#
+# Tomáš Vadina <kyberdev@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.9svn\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
-"PO-Revision-Date: 2008-06-08 21:26-0700\n"
-"Last-Translator: Stefan Miklosovic <miklosovic@gmail.com>\n"
-"Language-Team: Slovak <sk-i18n@linux.sk>\n"
-"Language: sk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-25 04:07+0000\n"
+"PO-Revision-Date: 2011-08-25 10:50+0200\n"
+"Last-Translator: Tomáš Vadina <kyberdev@gmail.com>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sk\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
 #: ../libsqueeze/archive.c:272
 msgid "Name"
@@ -27,7 +28,7 @@ msgstr "Typ MIME"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
-msgstr "Archive Manager"
+msgstr "Správca archívov"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
@@ -108,19 +109,19 @@ msgstr "Rozlišovať veľkosti písmen pri triedení"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Viditeľné:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Dostupné:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
-msgstr "<>Rozbaliť súbory:</b>"
+msgstr "<b>Rozbaliť súbory:</b>"
 
 #: ../src/extract_dialog.c:77
 msgid "<b>Options:</b>"
-msgstr "<>Voľby:</b>"
+msgstr "<b>Možnosti:</b>"
 
 #: ../src/extract_dialog.c:88
 msgid "All files"
@@ -209,7 +210,7 @@ msgstr "_Pridať súbory"
 
 #: ../src/main_window.c:340
 msgid "_Add _folders"
-msgstr "Pridať _zložky"
+msgstr "_Pridať _adresáre"
 
 #: ../src/main_window.c:346
 msgid "_Extract"
@@ -231,7 +232,7 @@ msgstr "Pridať súbory"
 
 #: ../src/main_window.c:453 ../src/main_window.c:913
 msgid "Add folders"
-msgstr "Pridať zložky"
+msgstr "Pridať adresáre"
 
 #: ../src/main_window.c:731
 msgid "Open archive in new window"
@@ -287,7 +288,7 @@ msgstr "Ikona aplikácie:"
 
 #: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
-msgstr "Pridaj / Rozbaľ ikony:"
+msgstr "Pridať / Rozbaliť ikony:"
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
@@ -297,13 +298,14 @@ msgstr "Založené na originálnej rozbaľovacej ikone od Andreasa Nilssona"
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
-"Squeeze je odľahčený a flexibilný archivovací manažér pre prostredie Xfce"
+msgstr "Squeeze je odľahčený a pružný správca archívov pre prostredie Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
 msgid "translator-credits"
-msgstr "Štefan Miklošovič <miklosovic@gmail.com>"
+msgstr ""
+"Štefan Miklošovič <miklosovic@gmail.com>\n"
+"Tomáš Vadina <kyberdev@gmail.com>"
 
 #: ../src/main_window.c:1172 ../src/main_window.c:1244
 #: ../src/main_window.c:1403
@@ -337,7 +339,11 @@ msgid ""
 "Could not be opened"
 msgstr ""
 "'%s'\n"
-"Nejde otvoriť"
+"Nie je možné otvoriť"
+
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Správca archívov"
 
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
@@ -369,77 +375,64 @@ msgstr "Priestor medzi tlačidlami cesty"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "_Všeobecné"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Typ archívu:"
+msgstr "Prehliadač archívov:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Zobraziť ikony typu MIME"
+msgstr "_Zobraziť ikony"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Rada o pravidlách"
+msgstr "_Rada o pravidlách"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Triedenie:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Rozlišovať veľkosti písmen pri triedení"
+msgstr "Rozlišovať _veľkosť písmen pri triedení"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Zaradiť adresáre pred súbory"
+msgstr "Zaradiť a_dresáre pred súbory"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Štýl navigácie"
+msgstr "Navigačný panel:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Správanie"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Predvoľby"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Archívy"
+msgstr "_Archívy"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Súbor"
+msgstr "Názov súboru"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "Názov"
+msgstr "Názov:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Druh:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Vlastnosti"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Umiestnenie:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Archivovací manažér"
