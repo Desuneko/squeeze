@@ -2,19 +2,19 @@
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 # Andhika Padmawan <andhika.padmawan@gmail.com>, 2008.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-27 22:07+0000\n"
 "PO-Revision-Date: 2008-10-11 17:42+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
-"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
 
 #: ../libsqueeze/archive.c:272
 msgid "Name"
@@ -36,14 +36,12 @@ msgstr "Buat dan atur arsip dengan manajer arsip"
 msgid "Squeeze Archive Manager"
 msgstr "Manajer Arsip Squeeze"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Tak dapat membuka arsip, tipe MIME tidak didukung atau berkas tidak ada"
+msgstr "Tak dapat membuka arsip, tipe MIME tidak didukung atau berkas tidak ada"
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -53,9 +51,8 @@ msgstr ""
 "Squeeze tak dapat mengekstrak tipe arsip\n"
 "ini, aplikasi untuk mendukung ini hilang."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Tak dapat membuat arsip, tipe MIME tidak didukung"
@@ -107,11 +104,11 @@ msgstr "Urutkan teks huruf sensitif"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Terlihat:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Tersedia:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -165,8 +162,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Coba %s --help untuk melihat senarai lengkap opsi baris perintah yang "
-"tersedia.\n"
+"Coba %s --help untuk melihat senarai lengkap opsi baris perintah yang tersedia.\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -293,12 +289,8 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Berdasarkan ikon ekstrak asli yang dibuat oleh Andreas Nilsson"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze adalah manajer arsip yang ringan dan fleksibel untuk Lingkungan "
-"Destop Xfce"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze adalah manajer arsip yang ringan dan fleksibel untuk Lingkungan Destop Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -342,6 +334,10 @@ msgstr ""
 "'%s'\n"
 "Tak dapat dibuka"
 
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Manajer arsip"
+
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Tipe arsip:"
@@ -372,77 +368,64 @@ msgstr "Besar ruangan antara tombol alamat"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "_Umum"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Tipe arsip:"
+msgstr "Penampil arsip:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Tampilkan ikon mime"
+msgstr "Tampilkan _Ikon"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Petunjuk aturan"
+msgstr "_Petunjuk Aturan"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Urutan:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Urutkan teks huruf sensitif"
+msgstr "Urutkan Teks Huruf _Sensitif"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Urutkan folder sebelum berkas"
+msgstr "Urutkan _Folder sebelum Berkas"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Gaya Navigasi"
+msgstr "Batang Navigasi:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Perilaku"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Preferensi"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Arsip"
+msgstr "_Pengarsip"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Berkas"
+msgstr "Nama Berkas"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "Nama"
+msgstr "Nama:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Jenis:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Properti"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Lokasi:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Manajer arsip"
