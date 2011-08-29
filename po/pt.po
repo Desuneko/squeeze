@@ -389,7 +389,7 @@ msgstr "Ordenar texto sensível à _capitalização"
 
 #: ../src/preferences_dialog.c:115
 msgid "Sort _Folders First"
-msgstr "Ordenar primeiro as p_astas"
+msgstr "Orde_nar primeiro as pastas"
 
 #: ../src/preferences_dialog.c:118
 msgid "Navigation bar:"
@@ -397,7 +397,7 @@ msgstr "Barra de navegação:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr "_Comportamento"
+msgstr "Co_mportamento"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
