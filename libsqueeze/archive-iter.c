@@ -696,13 +696,13 @@ lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gconstpointer value)
 	switch(lsq_archive_get_entry_property_type(iter->archive, n))
 	{
 		case G_TYPE_STRING:
-			lsq_archive_entry_set_prop_str(iter->archive, iter->entry, n, g_value_get_string(value));
+			lsq_archive_entry_set_prop_str(iter->archive, iter->entry, n, value);
 			break;
 		case G_TYPE_UINT:
-			lsq_archive_entry_set_prop_uint(iter->archive, iter->entry, n, g_value_get_uint(value));
+			lsq_archive_entry_set_prop_uint(iter->archive, iter->entry, n, *(const guint*)value);
 			break;
 		case G_TYPE_UINT64:
-			lsq_archive_entry_set_prop_uint64(iter->archive, iter->entry, n, g_value_get_uint64(value));
+			lsq_archive_entry_set_prop_uint64(iter->archive, iter->entry, n, *(const guint64*)value);
 			break;
 	}
 }

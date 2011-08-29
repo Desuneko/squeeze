@@ -32,6 +32,9 @@
 #include "parser-context.h"
 #include "parser.h"
 #include "scanf-parser.h"
+#ifdef HAVE_PCRE
+#include "pcre-parser.h"
+#endif
 #include "command-queue.h"
 #include "support-reader.h"
 
@@ -134,7 +137,11 @@ lsq_support_reader_parse_file(const gchar *filename)
 	gchar **column_names;
 	LSQParser *parser = NULL;
 	const gchar *parser_string;
+	const gchar *parser_regex;
 	gchar **_mime_types;
+#ifdef HAVE_PCRE
+	gchar **regex_types;
+#endif
 
 	XfceRc *rc = xfce_rc_simple_open(filename, TRUE);
 
@@ -194,11 +201,20 @@ lsq_support_reader_parse_file(const gchar *filename)
 	xfce_rc_set_group(rc, "Squeeze-Refresh");
 	column_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Headers", ";");
 	parser_string = xfce_rc_read_entry(rc, "X-Squeeze-Parse", NULL);
+	parser_regex = xfce_rc_read_entry(rc, "X-Squeeze-Parse-Regex", NULL);
 
 	if (NULL != parser_string)
 	{
 	    parser = lsq_scanf_parser_new(parser_string);
 	}
+#ifdef HAVE_PCRE
+	else if ( NULL != parser_regex )
+	{
+	    regex_types = xfce_rc_read_list_entry(rc, "X-Squeeze-Types", ";");
+	    parser = lsq_pcre_parser_new( parser_regex, regex_types );
+	    g_strfreev( regex_types );
+	}
+#endif
 
 	_mime_types = mime_types;
 	for(i = 0; _mime_types[i]; ++i)

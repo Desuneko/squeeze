@@ -18,6 +18,10 @@ libsqueeze_2_la_SOURCES =  \
 	support-template.c support-template.h \
 	support-factory.c support-factory.h
 
+if HAVE_PCRE
+libsqueeze_2_la_SOURCES += pcre-parser.c pcre-parser.h
+endif
+
 # archive-command.c archive-command.h
 # spawn-command.c spawn-command.h
 # macro-command.c macro-command.h
