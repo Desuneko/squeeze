@@ -34,7 +34,7 @@ msgstr "Criar e gerir arquivos com o gestor de arquivos"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Gestor de arquivos Squeeze"
+msgstr "Squeeze - Gestor de Arquivos"
 
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
@@ -63,7 +63,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "O Squeeze não pode adicionar ficheiros ao arquivo,\n"
-"a aplicação de suporte está em falta."
+"a aplicação de suporte não existe."
 
 #: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
@@ -79,11 +79,11 @@ msgstr "Mostrar ícones mime"
 
 #: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
-msgstr "Mostrar os ícones tipo mime para cada entrada"
+msgstr "Mostrar os ícones mime para cada entrada"
 
 #: ../src/archive_store.c:264
 msgid "Show up dir entry"
-msgstr "Mostrar a entrada de pasta"
+msgstr "Mostrar a entrada do directório"
 
 #: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
@@ -141,7 +141,7 @@ msgstr "[caminho de destino]"
 
 #: ../src/main.c:61
 msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr "[arquivo caminho] [ficheiro1] [ficheiro2] ... [ficheiroN]"
+msgstr "[caminho do arquivo] [ficheiro1] [ficheiro2] ... [ficheiroN]"
 
 #: ../src/main.c:65
 msgid "[file1] [file2] ... [fileN]"
@@ -186,7 +186,7 @@ msgid ""
 "The style to navigate trough the archive"
 msgstr ""
 "Estilo de navegação\n"
-"O estilo de navegação no arquivo"
+"O estilo de navegação nos arquivos"
 
 #. File menu
 #: ../src/main_window.c:301
@@ -230,7 +230,7 @@ msgstr "Adicionar pastas"
 
 #: ../src/main_window.c:731
 msgid "Open archive in new window"
-msgstr "Abrir o diretório seleccionado numa nova janela"
+msgstr "Abrir arquivo numa nova janela"
 
 #: ../src/main_window.c:737
 msgid "Open archive"
@@ -242,7 +242,7 @@ msgid ""
 "the application to support this is missing."
 msgstr ""
 "O Squeeze não pode adicionar ficheiros a este tipo de arquivo,\n"
-"a aplicação de suporte está em falta."
+"a aplicação de suporte não existe."
 
 #: ../src/main_window.c:962
 msgid "Are you sure you want to remove the selected files?"
@@ -261,8 +261,8 @@ msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
 msgstr ""
-"Tem a certeza que quer cancelar esta operação?\n"
-"Isto pode danificar o arquivo."
+"Tem a certeza de que quer cancelar esta operação?\n"
+"Pode danificar o arquivo."
 
 #: ../src/main_window.c:1111
 msgid "Lead developer:"
@@ -300,11 +300,11 @@ msgstr "Nuno Miguel <nunis@netcabo.pt>"
 #: ../src/main_window.c:1172 ../src/main_window.c:1244
 #: ../src/main_window.c:1403
 msgid "Done"
-msgstr "Terminado"
+msgstr "Concluído"
 
 #: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Qual a acção que pretende executar para o ficheiro(s) seleccionado(s)?"
+msgstr "Qual a acção que pretende executar para o(s) ficheiro(s) seleccionado(s)?"
 
 #: ../src/main_window.c:1255
 msgid "Open"
@@ -389,7 +389,7 @@ msgstr "Ordenar texto sensível à _capitalização"
 
 #: ../src/preferences_dialog.c:115
 msgid "Sort _Folders First"
-msgstr "Ordenar em primeiro as p_astas"
+msgstr "Ordenar primeiro as p_astas"
 
 #: ../src/preferences_dialog.c:118
 msgid "Navigation bar:"
@@ -409,7 +409,7 @@ msgstr "_Arquivadores"
 
 #: ../src/preferences_dialog.c:281
 msgid "Filename"
-msgstr "Nome do _ficheiro"
+msgstr "Nome do ficheiro"
 
 #: ../src/properties_dialog.c:85
 msgid "Name:"
@@ -425,7 +425,7 @@ msgstr "Propriedades"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
-msgstr "Localização"
+msgstr "Localização:"
 
 #~ msgid "Compressing"
 #~ msgstr "Comprimindo"
