@@ -47,6 +47,8 @@ struct _type_parser
 struct _LSQPcreParserContext
 {
     LSQParserContext parent;
+
+    gchar *lines;
 };
 
 struct _LSQPcreParserContextClass
@@ -66,6 +68,8 @@ struct _LSQPcreParser
     type_parser *types_list;
 
     int filename_index;
+
+    gboolean multiline;
 };
 
 struct _LSQPcreParserClass
@@ -203,6 +207,11 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
     gint i = 0;
     gchar **iter;
     gchar *name;
+
+    /* TODO: Should we use g_strstr instead? */
+    /* If we want to support multiline matching without the (?m) flag we need to remove the starting lines one by one if no match was found.
+     * This is not to difficult, we could just pass the middle of the string to pcre_exec. And this will improve speed. */
+    parser->multiline = g_str_has_prefix( parser_string, "(?m)" );
 
     /* Compile the regex */
     parser->parser = pcre_compile(
@@ -438,8 +447,9 @@ static void
 lsq_pcre_parser_parse ( LSQPcreParser *parser, LSQPcreParserContext *ctx )
 {
     gchar *line;
+    gchar *lines;
     gsize line_length;
-    int ovector[30];
+    int ovector[60];
     int match_count;
     const char *string;
     guint i = 0;
@@ -447,33 +457,59 @@ lsq_pcre_parser_parse ( LSQPcreParser *parser, LSQPcreParserContext *ctx )
     LSQArchive *archive;
     LSQArchiveIter *iter;
     int start, end;
+    int options = 0;
 
     if ( FALSE == lsq_parser_context_get_line( LSQ_PARSER_CONTEXT( ctx ), &line, &line_length ) )
     {
         return;
     }
 
+    if ( FALSE != parser->multiline )
+    {
+        options |= PCRE_PARTIAL_SOFT;
+
+        if ( NULL != ctx->lines )
+	{
+	    line_length += strlen( ctx->lines );
+
+	    /* TODO: use some big buffer to prevent allocation? */
+	    lines = g_strconcat( ctx->lines, line, NULL );
+	    g_free (ctx->lines);
+	    ctx->lines = NULL;
+
+	    g_free( line );
+	    line = lines;
+	}
+    }
+
     /* Run the regex */
+    /* TODO: Switch to pcre_dfa_exec for better performance? */
     match_count = pcre_exec(
             parser->parser,
             parser->study,
             line,
             line_length,
             0,
-            0,
+            options,
             ovector,
-            30
+            60
         );
 
-    if ( 0 > match_count )
+    if ( PCRE_ERROR_PARTIAL == match_count )
+    {
+	/* TODO: could store the partial match location for speed improvement and decrease memory consumption */
+	ctx->lines = line;
+	line = NULL;
+    }
+    else if ( 0 > match_count )
     {
         g_debug( "prce error: %d", match_count );
     }
-    if ( 0 == match_count )
+    else if ( 0 == match_count )
     {
         g_debug( "prce out of match space" );
     }
-    if ( 0 < match_count )
+    else if ( 0 < match_count )
     {
         /* Get the filename */
         pcre_get_substring(
