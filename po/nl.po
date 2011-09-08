@@ -1,4 +1,4 @@
-# Dutch translation for the squeeze package.
+# Dutch translation of the squeeze package.
 # Copyright (C) The Xfce development team.
 # This file is distributed under the same license as the squeeze package.
 # Stephan Arts, 2006.
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-24 20:18+0000\n"
-"PO-Revision-Date: 2011-07-20 12:22+0200\n"
+"POT-Creation-Date: 2011-09-08 10:07+0000\n"
+"PO-Revision-Date: 2011-09-08 12:22+0200\n"
 "Last-Translator: Pjotr\n"
 "Language-Team: Dutch (Flemish)\n"
 "MIME-Version: 1.0\n"
@@ -36,14 +36,16 @@ msgstr "Maak en beheer archieven met de archiefbeheerder"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
-msgstr "Squeeze Archiefbeheerder"
+msgstr "Squeeze archiefbeheerder"
 
+#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#. 
+#.
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Kon archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
+msgstr ""
+"Kon archief niet openen, MIME-type niet ondersteund of bestand bestaat niet"
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -53,8 +55,9 @@ msgstr ""
 "Squeeze kan dit archieftype niet uitpakken,\n"
 "want de toepassing om dit te ondersteunen ontbreekt."
 
+#.
 #. * Could not create archive (mime type unsupported)
-#. 
+#.
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Kan archief niet maken, MIME-type niet ondersteund"
@@ -164,7 +167,8 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Probeer %s --help voor een volledige lijst van beschikbare opdrachtregel-opties.\n"
+"Probeer %s --help voor een volledige lijst van beschikbare opdrachtregel-"
+"opties.\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -280,19 +284,25 @@ msgstr "Geinspireerd door Xarchiver, geschreven door Giuseppe Torelli"
 
 #: ../src/main_window.c:1119
 msgid "Application Icon:"
-msgstr "Toepassingpictogram:"
+msgstr "Toepassingspictogram:"
 
 #: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
-msgstr "Pictogrammen voor Toevoegen / Uitpakken:"
+msgstr "Pictogrammen voor toevoegen / uitpakken:"
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Gebaseerd op het oorspronkelijke uitpakken-pictogram gemaakt door Andreas Nilsson"
+msgstr ""
+"Gebaseerd op het oorspronkelijke uitpakken-pictogram gemaakt door Andreas "
+"Nilsson"
 
 #: ../src/main_window.c:1130
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "Squeeze is een lichtgewicht flexibele archiefbeheerder voor de Xfce Werkomgeving"
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+"Squeeze is een lichtgewicht flexibele archiefbeheerder voor de Xfce "
+"Werkomgeving"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
