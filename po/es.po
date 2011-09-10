@@ -2,20 +2,20 @@
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 # Abel Martín <abel.martin.ruiz@gmail.com>, 2008-2009.
-#
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-10 10:07+0000\n"
 "PO-Revision-Date: 2009-03-19 12:28+0100\n"
 "Last-Translator: Abel Martín <abel.martin.ruiz@gmail.com>\n"
 "Language-Team: Spanish/ES <xfce-i18n@xfce.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libsqueeze/archive.c:272
@@ -32,21 +32,18 @@ msgstr "Gestor de archivos comprimidos"
 
 #: ../squeeze.desktop.in.h:2
 msgid "Create and manage archives with the archive manager"
-msgstr ""
-"Cree y administre archivos comprimidos con el gestor de archivos comprimidos"
+msgstr "Cree y administre archivos comprimidos con el gestor de archivos comprimidos"
 
 #: ../squeeze.desktop.in.h:3
 msgid "Squeeze Archive Manager"
 msgstr "Gestor de archivos comprimidos Squeeze"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"No se pudo abrir el archivo: tipo MIME no soportado o archivo inexistente."
+msgstr "No se pudo abrir el archivo: tipo MIME no soportado o archivo inexistente."
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -56,9 +53,8 @@ msgstr ""
 "Squeeze no puede extraer de este tipo de archivo:\n"
 "falta la aplicación que lo soporta."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "No se pudo crear archivo: tipo MIME no soportado"
@@ -110,11 +106,11 @@ msgstr "Ordenar por texto teniendo en cuenta mayúsculas y minúsculas"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Visible:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Disponible:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -168,8 +164,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Pruebe %s --help para ver una lista completa de opciones de línea de "
-"comando.\n"
+"Pruebe %s --help para ver una lista completa de opciones de línea de comando.\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -296,12 +291,8 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Basado en el icono original de extracción creado por Andreas Nilsson"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze es un gestor de archivos comprimidos ligero y flexible para el "
-"entorno de escritorio Xfce"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze es un gestor de archivos comprimidos ligero y flexible para el entorno de escritorio Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -342,6 +333,10 @@ msgstr ""
 "No se pudo abrir\n"
 "'%s'"
 
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Gestor de archivos comprimidos"
+
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Tipo de archivo:"
@@ -372,17 +367,15 @@ msgstr "La cantidad de espacio entre los botones de ruta"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "_General"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Tipo de archivo:"
+msgstr "Visor de archivos:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Mostrar iconos MIME"
+msgstr "_Mostrar Iconos"
 
 #: ../src/preferences_dialog.c:100
 #, fuzzy
@@ -391,7 +384,7 @@ msgstr "Filas coloreadas"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Ordenamiento:"
 
 #: ../src/preferences_dialog.c:112
 #, fuzzy
@@ -404,27 +397,24 @@ msgid "Sort _Folders First"
 msgstr "Ordenar directorios antes que archivos"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Estilo de navegación"
+msgstr "Barra de navegación:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Comportamiento"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Archivos"
+msgstr "_Archivadores"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Archivo"
+msgstr "Nombre de archivo"
 
 #: ../src/properties_dialog.c:85
 msgid "Name:"
@@ -441,10 +431,6 @@ msgstr "Properties"
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Lugar:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Gestor de archivos comprimidos"
 
 #~ msgid "Compressing"
 #~ msgstr "Compressing"
@@ -545,11 +531,9 @@ msgstr "Gestor de archivos comprimidos"
 #~ msgid "Artwork:"
 #~ msgstr "Artwork:"
 
-#, fuzzy
 #~ msgid "idle"
 #~ msgstr "_File"
 
-#, fuzzy
 #~ msgid "Owner"
 #~ msgstr "Owner/Group"
 
