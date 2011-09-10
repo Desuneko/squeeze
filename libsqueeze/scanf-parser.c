@@ -185,7 +185,7 @@ static guint skip_char(gchar *str, guint lng, parse_part *part, LSQScanfParserCo
   if(!delim && !part->next)
     delim = "\n";
 
-  if(!delim)
+  if(!delim[0])
     return 1;
 
   //for(ptr = str; g_ascii_isspace(*ptr); ptr++);

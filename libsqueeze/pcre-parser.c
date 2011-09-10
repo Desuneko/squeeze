@@ -206,7 +206,6 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
     int error_pos;
     gint i = 0;
     gchar **iter;
-    gchar *name;
 
     /* TODO: Should we use g_strstr instead? */
     /* If we want to support multiline matching without the (?m) flag we need to remove the starting lines one by one if no match was found.
@@ -247,6 +246,7 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
 
     for ( iter = parser_types; *iter; ++iter, ++i)
     {
+        gchar *name;
         gchar *ptr;
         GType type = G_TYPE_INVALID;
         type_parser *type_iter;
@@ -256,7 +256,7 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
             SIZE_SHORT,
             SIZE_LONG,
             SIZE_LONGLONG
-        } size_flag;
+        } size_flag = SIZE_NORMAL;
 
         type_iter = &parser->types_list[i];
 
