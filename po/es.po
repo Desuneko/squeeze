@@ -393,7 +393,7 @@ msgstr "Ordenar sensible _Case"
 
 #: ../src/preferences_dialog.c:115
 msgid "Sort _Folders First"
-msgstr "Ordernar _Carpetas Primero"
+msgstr "Ordenar _Carpetas Primero"
 
 #: ../src/preferences_dialog.c:118
 msgid "Navigation bar:"
