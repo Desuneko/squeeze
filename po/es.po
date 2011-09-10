@@ -380,7 +380,7 @@ msgstr "_Mostrar Iconos"
 #: ../src/preferences_dialog.c:100
 #, fuzzy
 msgid "_Rules Hint"
-msgstr "Filas coloreadas"
+msgstr "Sugerencia _Rules"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
@@ -389,12 +389,11 @@ msgstr "Ordenamiento:"
 #: ../src/preferences_dialog.c:112
 #, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Ordenar por texto teniendo en cuenta mayúsculas y minúsculas"
+msgstr "Ordenar sensible _Case"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Ordenar directorios antes que archivos"
+msgstr "Ordernar _Carpetas Primero"
 
 #: ../src/preferences_dialog.c:118
 msgid "Navigation bar:"
