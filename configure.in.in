@@ -130,6 +130,27 @@ if test "$lsq_gslices" = "yes"; then
 	AC_DEFINE([USE_GSLICES], [1], [Define if we should use GSlices])
 fi
 
+AC_ARG_ENABLE([profiling],
+   [AC_HELP_STRING([--enable-profiling=no|prof|gprof|instrument],
+        [Build with profiler support (default=disabled)])],
+        [enable_profiling=$enableval], 
+        [enable_profiling=no])
+
+case "$enable_profiling" in
+    no) ;;
+    prof)
+        AC_DEFINE([WANT_PROFILING_PROF], [1], [Define if --enable-profiling=prof])
+	CFLAGS="$CFLAGS -p" ;;
+    gprof)
+        AC_DEFINE([WANT_PROFILING_GPROF], [1], [Define if --enable-profiling=gprof])
+	CFLAGS="$CFLAGS -pg" ;;
+    instrument)
+        AC_DEFINE([WANT_PROFILING_INSTRUMENT], [1], [Define if --enable-profiling=instrument])
+	CFLAGS="$CFLAGS -finstrument-functions" ;;
+    *)
+        AC_MSG_ERROR([Bad value $enableval for --enable-profiling, need no/prof/gprof/instrument]) ;;
+esac
+
 dnl check for debugging support
 XDT_FEATURE_DEBUG([squeeze_debug_default])
 
@@ -140,6 +161,7 @@ Makefile
 po/Makefile.in
 src/Makefile
 libsqueeze/Makefile
+squeeze-cli/Makefile
 icons/Makefile
 icons/16x16/Makefile
 icons/48x48/Makefile

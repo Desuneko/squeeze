@@ -34,6 +34,7 @@ po/.intltool-merge-cache
 po/Makefile.in.in
 po/POTFILES
 po/stamp-it
+squeeze-cli/squeeze-cli
 squeeze.desktop
 src/squeeze
 src/throbber-fallback.c

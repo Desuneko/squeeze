@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = pixmaps libsqueeze po docs src icons data
+SUBDIRS = pixmaps libsqueeze po docs src icons data squeeze-cli
 
 wrapperdir = $(libexecdir)/thunar-archive-plugin
 wrapper_SCRIPTS = squeeze.tap
