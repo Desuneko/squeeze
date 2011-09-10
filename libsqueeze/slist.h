@@ -33,4 +33,17 @@ lsq_slist_length(LSQSList *list) G_GNUC_INTERNAL;
 void
 lsq_slist_free(LSQSList *list) G_GNUC_INTERNAL;
 
+typedef struct _LSQSIndexList LSQSIndexList;
+
+struct _LSQSIndexList {
+	LSQSList *index;
+	LSQSIndexList *next;
+};
+
+LSQSIndexList *
+lsq_slist_index_new(void);
+
+void
+lsq_slist_index_free(LSQSIndexList *list);
+
 #endif /* __LSQ_SLIST_H__ */

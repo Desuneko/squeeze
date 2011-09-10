@@ -81,3 +81,20 @@ lsq_slist_free(LSQSList *list)
 	}
 }
 
+LSQSIndexList *
+lsq_slist_index_new(void)
+{
+	return g_new0(LSQSIndexList, 1);
+}
+
+void
+lsq_slist_index_free(LSQSIndexList *list)
+{
+	LSQSIndexList *next;
+	for(; list; list = next)
+	{
+		next = list->next;
+		g_free(list);
+	}
+}
+
