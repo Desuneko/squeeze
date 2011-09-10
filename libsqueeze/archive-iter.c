@@ -33,6 +33,16 @@
 #define LSQ_ENTRY_CHILD_BUFFER_SIZE 500
 #endif
 
+#ifdef LSQ_ENTRY_CHILD_BUFFER_DYNAMIC_SIZE
+guint buffer_flush_size = LSQ_ENTRY_CHILD_BUFFER_SIZE;
+#undef LSQ_ENTRY_CHILD_BUFFER_SIZE
+#define LSQ_ENTRY_CHILD_BUFFER_SIZE buffer_flush_size
+#endif
+
+#ifndef LSQ_ENTRY_BUFFER_INTERVALSIZE
+#define LSQ_ENTRY_BUFFER_INTERVALSIZE 20
+#endif
+
 #ifndef LSQ_MIME_DIRECTORY
 #define LSQ_MIME_DIRECTORY "inode/directory"
 #endif
