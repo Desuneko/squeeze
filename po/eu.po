@@ -2,20 +2,20 @@
 # Basque translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-#
+# 
 # Piarres Beobide <pi@beobide.net>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-11 22:07+0000\n"
 "PO-Revision-Date: 2008-11-06 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <Librezale@librezale.org>\n"
-"Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 1.2.0\n"
 
@@ -39,14 +39,12 @@ msgstr "Pakete kudeatzailearekin paketeak kudeatu eta sortu"
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze Pakete kudeatzailea"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
+msgstr "Ezinda paketea ireki, edo ez da MIME-mota onartzen edo fitxategia ez dago"
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -56,9 +54,8 @@ msgstr ""
 "Squeeze ez da pakete mota hau ateratzeko gai,\n"
 "hau onartzeko aplikazioa ez da aurkitzen."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Ezinda paketea sortu, ez da MIME-mota onartzen"
@@ -110,11 +107,11 @@ msgstr "Ordenatu minuskula/maiuskulaz"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Ikusgarria:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Eskuragarria:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -295,11 +292,8 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Andreas Nilsson-ek sorturiko atera ikonoan oinarriturik"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze Xfce Idazmahai ingurunearentzat pakete kudeatzaile arin eta malgua da"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -340,6 +334,10 @@ msgstr ""
 "'%s'\n"
 "Ezin da ireki"
 
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Pakete kudeatzaileak"
+
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Pakete mota:"
@@ -370,77 +368,64 @@ msgstr "Bide botoien arteko leku kopurua"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "_Orokorra"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Pakete mota:"
+msgstr "Pakete ikustatzaiklea:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Mime ikonoak ikusi"
+msgstr "_Ikusi ikonoak"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Arau gomedioa"
+msgstr "_Arau gomedioa"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Ordena;"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Ordenatu minuskula/maiuskulaz"
+msgstr "Ordenatu _minuskula/maiuskulaz"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Kareptak ordenatu fitxategien aurretik"
+msgstr "_Karpetak ordenatu fitxategien aurretik"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Nabigazio estiloa"
+msgstr "Nabigazio-barra"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Portamoldea"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Hobespenak"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Paketeak"
+msgstr "_Paketeak"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Fitxategia"
+msgstr "Fitxategia-izena"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "Izena"
+msgstr "Izena:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Mota:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Propietateak"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Kokalekua:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Pakete kudeatzaileak"
