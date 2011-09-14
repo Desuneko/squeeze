@@ -2,20 +2,20 @@
 # Turkish translation of the squeeze package.
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-#
+# 
 # Eren Türkay <turkay.eren@gmail.com>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-14 10:07+0000\n"
 "PO-Revision-Date: 2008-05-27 09:24+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
-"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
 "X-Generator: KBabel 1.11.4\n"
 
 #: ../libsqueeze/archive.c:272
@@ -38,10 +38,9 @@ msgstr "Arşiv yöneticisi ile arşivlerinizi oluşturun ve yönetin"
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze Arşiv Yöneticisi"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Arşiv açılamıyor, MIME türü desteklenmior veya dosya yok"
@@ -54,9 +53,8 @@ msgstr ""
 "Squeeze bu arşiv türünü dışarı aktaramıyor,\n"
 "bunu destekleyen uygulama kayıp."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Arşiv oluşturulamadı, MIME türü desteklenmiyor"
@@ -166,8 +164,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Kullanılabilir komutları ve parametreleri görmek için %s --help komutunu "
-"yazın.\n"
+"Kullanılabilir komutları ve parametreleri görmek için %s --help komutunu yazın.\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -191,8 +188,7 @@ msgid ""
 "The style to navigate trough the archive"
 msgstr ""
 "Görüntüleme stili\n"
-"Arşiv yöneticisi içerisinde dosyaları görüntülemek için kullanılacak olan "
-"stil"
+"Arşiv yöneticisi içerisinde dosyaları görüntülemek için kullanılacak olan stil"
 
 #. File menu
 #: ../src/main_window.c:301
@@ -292,16 +288,11 @@ msgstr "Simgeleri Ekle / Dışa Aktar:"
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
-"Andreas Nilsson tarafından oluşturulan orijinal dışa aktarma simgesi "
-"tabanlıdır"
+msgstr "Andreas Nilsson tarafından oluşturulan orijinal dışa aktarma simgesi tabanlıdır"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze Xfce Masaüstü Ortamı için hafif ve kullanılabilir arşiv yöneticisidir"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -315,8 +306,7 @@ msgstr "Tamamlandı"
 
 #: ../src/main_window.c:1254
 msgid "Which action do you want to perform on the selected file(s)?"
-msgstr ""
-"Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
+msgstr "Seçilen dosya(lar) üzerinde hangi işlemin gerçekleşmesini istiyorsunuz?"
 
 #: ../src/main_window.c:1255
 msgid "Open"
@@ -342,6 +332,10 @@ msgid ""
 msgstr ""
 "'%s'\n"
 "Açılamadı"
+
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Arşiv yöneticisi"
 
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
@@ -373,7 +367,7 @@ msgstr "Yol butonları arasındaki boşluk miktarı"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "_Genel"
 
 #: ../src/preferences_dialog.c:88
 #, fuzzy
@@ -381,9 +375,8 @@ msgid "Archive viewer:"
 msgstr "Arşiv türü:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Mime simgelerini göster"
+msgstr "Simgeleri _Göster"
 
 #: ../src/preferences_dialog.c:100
 #, fuzzy
@@ -392,7 +385,7 @@ msgstr "İpuçları"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Sıralama:"
 
 #: ../src/preferences_dialog.c:112
 #, fuzzy
@@ -405,9 +398,8 @@ msgid "Sort _Folders First"
 msgstr "Dosyalardan önce dizinleri sırala"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Görüntüleme Stili"
+msgstr "Gezinti Çubuğu"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
@@ -415,35 +407,28 @@ msgstr ""
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Tercihler"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Arşivler"
+msgstr "_Arşivler"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Dosya"
+msgstr "Dosya İsmi"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "İsim"
+msgstr "İsim:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Tür:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Özellikler"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Konum:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Arşiv yöneticisi"
