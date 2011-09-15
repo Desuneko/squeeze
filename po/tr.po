@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 10:07+0000\n"
+"POT-Creation-Date: 2011-09-15 16:07+0000\n"
 "PO-Revision-Date: 2008-05-27 09:24+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -106,11 +106,11 @@ msgstr "Büyük küçük harf duyarlı olarak sırala"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Görünür:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Uygun:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -370,9 +370,8 @@ msgid "_General"
 msgstr "_Genel"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Arşiv türü:"
+msgstr "Arşiv gösterici:"
 
 #: ../src/preferences_dialog.c:97
 msgid "_Show Icons"
@@ -388,14 +387,12 @@ msgid "Sorting:"
 msgstr "Sıralama:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Büyük küçük harf duyarlı olarak sırala"
+msgstr "_Büyük Küçük Harf Duyarlı Olarak Sırala"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Dosyalardan önce dizinleri sırala"
+msgstr "Önce _Dizinleri Sırala"
 
 #: ../src/preferences_dialog.c:118
 msgid "Navigation bar:"
@@ -403,7 +400,7 @@ msgstr "Gezinti Çubuğu"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Davranış"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
