@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-04 04:07+0000\n"
+"POT-Creation-Date: 2011-09-22 04:07+0000\n"
 "PO-Revision-Date: 2009-03-31 20:46+0200\n"
 "Last-Translator: gianluca foddis <gianluca.foddis@gmail.com>\n"
 "Language-Team: Italian Translation Team <xfce-it-translators@googlegroups.com>\n"
@@ -378,9 +378,8 @@ msgstr "_Mostra icone"
 
 # preso esempio da trad.es.po e fr.po
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Righe colorate"
+msgstr "_Righe colorate"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
@@ -407,9 +406,8 @@ msgid "Preferences"
 msgstr "Preferenze"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Archivi"
+msgstr "_Archiviatori"
 
 #: ../src/preferences_dialog.c:281
 msgid "Filename"
