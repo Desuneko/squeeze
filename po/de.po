@@ -4,20 +4,20 @@
 # Björn Martensen <bjoern.martensen@gmail.com>, 2007.
 # Jeff Bailes <thepizzaking@gmail.com>, 2007.
 # Fabian Nowak <timstery@arcor.de>, 2007, 2008.
-#
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-24 04:07+0000\n"
 "PO-Revision-Date: 2008-08-21 21:46+0200\n"
 "Last-Translator: Fabian Nowak <timstery@arcor.de>\n"
 "Language-Team: German <xfce-i18n@xfce.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 
 #: ../libsqueeze/archive.c:272
 msgid "Name"
@@ -39,15 +39,12 @@ msgstr "Erzeugen und verwalten Sie Archive mit dem Archivmanager"
 msgid "Squeeze Archive Manager"
 msgstr "Archivmanager Squeeze"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"Konnte das Archiv nicht öffnen, da der MIME-Typ nicht unterstützt wird oder "
-"die Datei nicht existiert."
+msgstr "Konnte das Archiv nicht öffnen, da der MIME-Typ nicht unterstützt wird oder die Datei nicht existiert."
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -57,13 +54,11 @@ msgstr ""
 "Squeeze kann Archive dieses Archivtyps nicht entpacken,\n"
 "die dafür benötigte Anwendung ist nicht installiert."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
-msgstr ""
-"Konnte das Archiv nicht erstellen, da der MIME-Typ nicht unterstützt wird."
+msgstr "Konnte das Archiv nicht erstellen, da der MIME-Typ nicht unterstützt wird."
 
 #: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
@@ -111,12 +106,14 @@ msgid "Sort text case sensitive"
 msgstr "Großbuchstaben beim Sortieren beachten"
 
 #: ../src/button_drag_box.c:85
+#, fuzzy
 msgid "Visible:"
-msgstr ""
+msgstr "Sichtbar:"
 
 #: ../src/button_drag_box.c:96
+#, fuzzy
 msgid "Available:"
-msgstr ""
+msgstr "Verfügbar:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -170,8 +167,7 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Versuchen Sie %s --help, um eine komplette Liste der möglichen Befehlszeilen-"
-"Optionen zu sehen .\n"
+"Versuchen Sie %s --help, um eine komplette Liste der möglichen Befehlszeilen-Optionen zu sehen .\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -295,16 +291,11 @@ msgstr "Symbole fürs Hinzufügen/Entpacken:"
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr ""
-"Basiert auf dem originalen Entpacken-Symbol (erstellt von Andreas Nilsson)"
+msgstr "Basiert auf dem originalen Entpacken-Symbol (erstellt von Andreas Nilsson)"
 
 #: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr ""
-"Squeeze ist ein schlanker und flexibler Archivmanager für die Xfce-"
-"Arbeitsumgebung"
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr "Squeeze ist ein schlanker und flexibler Archivmanager für die Xfce-Arbeitsumgebung"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -345,6 +336,10 @@ msgid ""
 "Could not be opened"
 msgstr "Die Datei »%s« konnte nicht geöffnet werden"
 
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Archivmanager"
+
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Archivtyp:"
@@ -378,14 +373,12 @@ msgid "_General"
 msgstr ""
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Archivtyp:"
+msgstr "Archivbetrachter:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "MIME-Symbole anzeigen"
+msgstr "_Symbole anzeigen"
 
 #: ../src/preferences_dialog.c:100
 #, fuzzy
@@ -393,18 +386,17 @@ msgid "_Rules Hint"
 msgstr "Regelhinweis"
 
 #: ../src/preferences_dialog.c:103
+#, fuzzy
 msgid "Sorting:"
-msgstr ""
+msgstr "Sortierung:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Großbuchstaben beim Sortieren beachten"
+msgstr "_Großbuchstaben beim Sortieren beachten"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Verzeichnisse vor Dateien sortieren"
+msgstr "_Verzeichnisse vor Dateien sortieren"
 
 #: ../src/preferences_dialog.c:118
 #, fuzzy
@@ -413,11 +405,11 @@ msgstr "Navigations-Stil"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "Ver_halten"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellungen"
 
 #: ../src/preferences_dialog.c:204
 #, fuzzy
@@ -425,9 +417,8 @@ msgid "_Archivers"
 msgstr "Archive"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Datei"
+msgstr "Dateiname"
 
 #: ../src/properties_dialog.c:85
 msgid "Name:"
@@ -444,10 +435,6 @@ msgstr "Properties"
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Ort:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Archivmanager"
 
 #~ msgid "Execute"
 #~ msgstr "Ausführen"
