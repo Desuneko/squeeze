@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-15 16:07+0000\n"
+"POT-Creation-Date: 2011-09-25 22:07+0000\n"
 "PO-Revision-Date: 2008-05-27 09:24+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -378,9 +378,8 @@ msgid "_Show Icons"
 msgstr "Simgeleri _Göster"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "İpuçları"
+msgstr "_Kural İpucu"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
