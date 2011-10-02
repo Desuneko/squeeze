@@ -25,7 +25,10 @@ struct _LSQSList {
 };
 
 LSQSList *
-lsq_slist_insert_sorted_single(LSQSList *list, LSQArchiveEntry *entry, GCompareFunc) G_GNUC_INTERNAL;
+lsq_slist_insert_sorted_single (
+        LSQSList *list,
+        LSQArchiveEntry *entry,
+        GCompareFunc) G_GNUC_INTERNAL;
 
 guint
 lsq_slist_length(LSQSList *list) G_GNUC_INTERNAL;
@@ -36,8 +39,8 @@ lsq_slist_free(LSQSList *list) G_GNUC_INTERNAL;
 typedef struct _LSQSIndexList LSQSIndexList;
 
 struct _LSQSIndexList {
-	LSQSList *index;
-	LSQSIndexList *next;
+    LSQSList *index;
+    LSQSIndexList *next;
 };
 
 LSQSIndexList *

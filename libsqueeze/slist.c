@@ -27,74 +27,83 @@
 #include "slist.h"
 
 LSQSList *
-lsq_slist_insert_sorted_single(LSQSList *list, LSQArchiveEntry *entry, GCompareFunc cmp_func)
+lsq_slist_insert_sorted_single ( 
+        LSQSList *list,
+        LSQArchiveEntry *entry,
+        GCompareFunc cmp_func)
 {
-	gint cmp = 1;
-	LSQSList *iter = list;
-	LSQSList *prev_entry = NULL;
-	LSQSList *new_entry = NULL;
+    gint cmp = 1;
+    LSQSList *iter = list;
+    LSQSList *prev_entry = NULL;
+    LSQSList *new_entry = NULL;
 
-	for(; iter; iter = iter->next)
-	{
-		/* archive can be NULL */
-		cmp = cmp_func(entry, (LSQArchiveEntry*)iter->entry);
+    for(; iter; iter = iter->next)
+    {
+        /* archive can be NULL */
+        cmp = cmp_func(entry, (LSQArchiveEntry*)iter->entry);
 
-		if(!cmp)
-		{
-			g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
-			return NULL;
-		}
-		if(cmp < 0)
-			break;
+        if ( 0 == cmp )
+        {
+            g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
+            return NULL;
+        }
+        if ( 0 > cmp )
+        {
+            break;
+        }
 
-		prev_entry = iter;
-	}
+        prev_entry = iter;
+    }
 
-	new_entry = g_new0(LSQSList, 1);
-	new_entry->next = iter;
-	new_entry->entry = entry;
+    new_entry = g_new0(LSQSList, 1);
+    new_entry->next = iter;
+    new_entry->entry = entry;
 
-	if(!prev_entry)
-		return new_entry;
-	
-	prev_entry->next = new_entry;
-	return list;
+    if ( NULL == prev_entry )
+    {
+        return new_entry;
+    }
+    
+    prev_entry->next = new_entry;
+    return list;
 }
 
 guint
-lsq_slist_length(LSQSList *list)
+lsq_slist_length ( LSQSList *list )
 {
-	guint size = 0;
-	for(; list; list = list->next)
-		size++;
-	return size;
+    guint size = 0;
+    for(; list; list = list->next)
+    {
+        size++;
+    }
+    return size;
 }
 
 void
-lsq_slist_free(LSQSList *list)
+lsq_slist_free ( LSQSList *list )
 {
-	LSQSList *next;
-	for(; list; list = next)
-	{
-		next = list->next;
-		g_free(list);
-	}
+    LSQSList *next;
+    for(; list; list = next)
+    {
+        next = list->next;
+        g_free(list);
+    }
 }
 
 LSQSIndexList *
 lsq_slist_index_new(void)
 {
-	return g_new0(LSQSIndexList, 1);
+    return g_new0(LSQSIndexList, 1);
 }
 
 void
-lsq_slist_index_free(LSQSIndexList *list)
+lsq_slist_index_free ( LSQSIndexList *list )
 {
-	LSQSIndexList *next;
-	for(; list; list = next)
-	{
-		next = list->next;
-		g_free(list);
-	}
+    LSQSIndexList *next;
+    for(; list; list = next)
+    {
+        next = list->next;
+        g_free(list);
+    }
 }
 
