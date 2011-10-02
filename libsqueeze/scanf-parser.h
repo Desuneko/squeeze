@@ -48,9 +48,11 @@ typedef struct _LSQScanfParser LSQScanfParser;
 
 typedef struct _LSQScanfParserClass LSQScanfParserClass;
 
-GType		   lsq_scanf_parser_get_type(void);
+GType
+lsq_scanf_parser_get_type ( void );
 
-LSQParser *lsq_scanf_parser_new(const gchar *);
+LSQParser *
+lsq_scanf_parser_new ( const gchar * );
 
 G_END_DECLS
 
