@@ -31,7 +31,7 @@
 #include "support-template.h"
 #include "support-factory.h"
 
-#include "slist.h"
+#include "btree.h"
 #include "archive-tempfs.h"
 #include "command-queue.h"
 

@@ -13,7 +13,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
 #include <config.h>
 #include <string.h>
 #include <glib.h>
@@ -25,7 +24,7 @@
 #include "libsqueeze.h"
 #include "libsqueeze-view.h"
 #include "support-factory.h"
-#include "slist.h"
+#include "btree.h"
 
 #include "internals.h"
 
@@ -37,10 +36,6 @@
 guint buffer_flush_size = LSQ_ENTRY_CHILD_BUFFER_SIZE;
 #undef LSQ_ENTRY_CHILD_BUFFER_SIZE
 #define LSQ_ENTRY_CHILD_BUFFER_SIZE buffer_flush_size
-#endif
-
-#ifndef LSQ_ENTRY_BUFFER_INTERVALSIZE
-#define LSQ_ENTRY_BUFFER_INTERVALSIZE 20
 #endif
 
 #ifndef LSQ_MIME_DIRECTORY
@@ -69,8 +64,6 @@ inline static LSQArchiveEntry*
 lsq_archive_entry_nth_child(const LSQArchiveEntry *, guint);
 inline static void
 lsq_archive_entry_flush_buffer(LSQArchiveEntry *);
-inline static void
-lsq_archive_entry_build_buffer_index(LSQArchiveEntry *);
 static LSQArchiveEntry *
 lsq_archive_entry_get_child(const LSQArchiveEntry *, const gchar *);
 static LSQArchiveEntry *
@@ -102,8 +95,8 @@ struct _LSQArchiveEntry
 	gchar *content_type;
 	gpointer props;
 	LSQArchiveEntry **children;
-	LSQSList *buffer;
-	LSQSIndexList *buffer_index;
+	LSQBTree *buffer;
+        guint buffer_length;
 };
 
 
@@ -989,7 +982,10 @@ static void
 lsq_archive_entry_save_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 {
 	guint i = 0; 
-	LSQSList *buffer_iter = entry->buffer;
+	LSQBTree *buffer_iter;
+
+	entry->buffer = lsq_btree_flatten(entry->buffer);
+	buffer_iter = entry->buffer;
 
 	/* free the buffer */
 	for ( ; NULL != buffer_iter ; buffer_iter = buffer_iter->next )
@@ -999,8 +995,9 @@ lsq_archive_entry_save_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 		else
 			lsq_archive_entry_save_free(archive, buffer_iter->entry);
 	}
-	lsq_slist_free(entry->buffer);
+	lsq_btree_free(entry->buffer);
 	entry->buffer = NULL;
+        entry->buffer_length = 0;
 
 	/* free the sorted list */
 	if ( NULL != entry->children )
@@ -1026,15 +1023,19 @@ static void
 lsq_archive_entry_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 {
 	guint i = 0; 
-	LSQSList *buffer_iter = entry->buffer;
+	LSQBTree *buffer_iter;
+
+	entry->buffer = lsq_btree_flatten(entry->buffer);
+	buffer_iter = entry->buffer;
 
 	/* free the buffer */
 	for ( ; NULL != buffer_iter; buffer_iter = buffer_iter->next )
 	{
 		lsq_archive_entry_free(archive, buffer_iter->entry);
 	}
-	lsq_slist_free(entry->buffer);
+	lsq_btree_free(entry->buffer);
 	entry->buffer = NULL;
+        entry->buffer_length = 0;
 
 	/* free the sorted list */
 	if ( NULL != entry->children )
@@ -1078,7 +1079,7 @@ inline static guint
 lsq_archive_entry_n_children(const LSQArchiveEntry *entry)
 {
 	/* the first element of the array (*entry->children) contains the size of the array */
-	return ((entry->children?GPOINTER_TO_UINT(*entry->children):0) + lsq_slist_length(entry->buffer));
+	return ((entry->children?GPOINTER_TO_UINT(*entry->children):0) + lsq_btree_length(entry->buffer));
 }
 
 inline static LSQArchiveEntry*
@@ -1099,7 +1100,7 @@ lsq_archive_entry_flush_buffer(LSQArchiveEntry *entry)
 	guint new_i = 1;
 	guint size;
 	guint n_children;
-	LSQSList *buffer_iter = NULL;
+	LSQBTree *buffer_iter = NULL;
 	LSQArchiveEntry **children_old;
 
 	if ( NULL == entry->buffer )
@@ -1107,12 +1108,17 @@ lsq_archive_entry_flush_buffer(LSQArchiveEntry *entry)
 		return;
 	}
 
+	//lsq_btree_print(entry->buffer);
+
+	/* Flatten the btree so we can iterate */
+	entry->buffer = lsq_btree_flatten(entry->buffer);
+
 	/* the first element of the array (*entry->children) contains the size of the array */
 	size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
 	n_children = size;
 	children_old = (LSQArchiveEntry **)entry->children;
 
-	max_children = (n_children + lsq_slist_length(entry->buffer));
+	max_children = (n_children + lsq_btree_length(entry->buffer));
 	
 	/* do all elements of the buffer */
 	entry->children = g_new(LSQArchiveEntry *, max_children+1);
@@ -1164,44 +1170,17 @@ lsq_archive_entry_flush_buffer(LSQArchiveEntry *entry)
 	*entry->children = GUINT_TO_POINTER(n_children);
 	
 	/* free the buffer */
-	lsq_slist_free(entry->buffer);
+	lsq_btree_free(entry->buffer);
 	entry->buffer = NULL;
-	lsq_slist_index_free(entry->buffer_index);
-	entry->buffer_index = NULL;
+        entry->buffer_length = 0;
 
 	g_free(children_old);
-}
-
-inline static void
-lsq_archive_entry_build_buffer_index(LSQArchiveEntry *entry)
-{
-	guint i = 0;
-	LSQSList *buffer_iter = NULL;
-	LSQSIndexList **index_iter = &entry->buffer_index;
-	for ( buffer_iter = entry->buffer ; NULL != buffer_iter ; buffer_iter = buffer_iter->next )
-	{
-		++i;
-		if ( 0 == ( i % LSQ_ENTRY_BUFFER_INTERVALSIZE ) )
-		{
-			if ( NULL == *index_iter )
-			{
-				*index_iter = lsq_slist_index_new();
-			}
-
-			(*index_iter)->index = buffer_iter;
-
-			index_iter = &((*index_iter)->next);
-		}
-	}
-	lsq_slist_index_free(*index_iter);
-	*index_iter = NULL;
 }
 
 static LSQArchiveEntry *
 lsq_archive_entry_get_child(const LSQArchiveEntry *entry, const gchar *filename)
 {
-	LSQSList *entry_buffer, *buffer_iter = NULL;
-	LSQSIndexList *index_iter = NULL;
+	LSQBTree *buffer_iter = NULL;
 	/* the first element of the array (*entry->children) contains the size of the array */
 	guint size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
 	guint pos = 0;
@@ -1240,37 +1219,25 @@ lsq_archive_entry_get_child(const LSQArchiveEntry *entry, const gchar *filename)
 		}
 	}
 
-	/* find a start index into the buffer */
-	entry_buffer = entry->buffer;
-	for ( index_iter = entry->buffer_index; NULL != index_iter; index_iter = index_iter->next )
-	{
-		cmp = strcmp(filename, index_iter->index->entry->filename);
-
-		if ( 0 == cmp )
-		{
-			g_free(_filename);
-			return index_iter->index->entry;
-		}
-		if ( 0 > cmp )
-		{
-			break;
-		}
-		entry_buffer = index_iter->index;
-	}
-
 	/* search the buffer */
-	for ( buffer_iter = entry_buffer; NULL != buffer_iter; buffer_iter = buffer_iter->next )
+	buffer_iter = entry->buffer;
+	while ( NULL != buffer_iter )
 	{
+		/* archive can be NULL */
 		cmp = strcmp(filename, buffer_iter->entry->filename);
 
-		if ( 0 == cmp )
+		if ( cmp < 0 )
 		{
-			g_free(_filename);
-			return buffer_iter->entry;
+		    buffer_iter = buffer_iter->left;
 		}
-		if ( 0 > cmp )
+		else if ( cmp > 0 )
 		{
-			break;
+		    buffer_iter = buffer_iter->right;
+		}
+		else
+		{
+		    g_free(_filename);
+		    return buffer_iter->entry;
 		}
 	}
 
@@ -1289,7 +1256,6 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 {
 	LSQArchiveEntry *child = lsq_archive_entry_new(filename);
 	const gchar *contenttype = lsq_archive_entry_get_contenttype(parent);
-	guint length;
 
 	if ( ( NULL == contenttype ) || ( 0 != strcmp ( contenttype, LSQ_MIME_DIRECTORY ) ) )
 	{
@@ -1300,18 +1266,15 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 		*/
 	}
 
-	parent->buffer = lsq_slist_insert_sorted_single(parent->buffer, child, (GCompareFunc)lsq_archive_entry_filename_compare);
+	//g_debug("i: %s", filename);
+	parent->buffer = lsq_btree_insert_sorted_single(parent->buffer, child, (GCompareFunc)lsq_archive_entry_filename_compare);
 
-	/* TODO: cache the length so we doen't have to check every time? */
-	length = lsq_slist_length(parent->buffer);
+	/* Cache the length so we doen't have to check every time */
+	parent->buffer_length++;
 
-	if ( LSQ_ENTRY_CHILD_BUFFER_SIZE == length )
+	if ( LSQ_ENTRY_CHILD_BUFFER_SIZE == parent->buffer_length )
 	{
 		lsq_archive_entry_flush_buffer(parent);
-	}
-	else if ( 0 == ( length % LSQ_ENTRY_BUFFER_INTERVALSIZE ) )
-	{
-		lsq_archive_entry_build_buffer_index(parent);
 	}
 	
 	return child;
@@ -1320,7 +1283,7 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 static gboolean
 lsq_archive_entry_remove_child(LSQArchiveEntry *entry, const gchar *filename)
 {
-	LSQSList *buffer_iter = NULL, *prev_iter = NULL;
+	LSQBTree *buffer_iter = NULL, **prev_iter = NULL;
 
 	/* the first element of the array (*entry->children) contains the size of the array */
 	guint total_size, size = total_size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
@@ -1370,28 +1333,47 @@ lsq_archive_entry_remove_child(LSQArchiveEntry *entry, const gchar *filename)
 	}
 
 	/* search the buffer */
-	for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
-	{
-		cmp = strcmp(_filename, buffer_iter->entry->filename);
+        prev_iter = &entry->buffer;
+        if ( NULL == entry->buffer || NULL != entry->buffer->next )
+        {
+            for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
+            {
+                cmp = strcmp(_filename, buffer_iter->entry->filename);
 
-		if ( 0 == cmp )
-		{
-			g_free(_filename);
-			if ( NULL != prev_iter )
-			{
-				prev_iter->next = buffer_iter->next;
-			}
-			else
-			{
-				entry->buffer = buffer_iter->next;
-			}
-			g_free(buffer_iter);
-			return TRUE;
-		}
-		if(cmp < 0)
-			break;
-		prev_iter = buffer_iter;
-	}
+                if ( 0 == cmp )
+                {
+                    g_free(_filename);
+                    *prev_iter = buffer_iter->next;
+                    g_free(buffer_iter);
+                    return TRUE;
+                }
+                if(cmp < 0)
+                    break;
+                prev_iter = &buffer_iter->next;
+            }
+        }
+        else
+        {
+            for ( buffer_iter = entry->buffer; NULL != buffer_iter; buffer_iter = *prev_iter )
+            {
+                /* archive can be NULL */
+                cmp = strcmp(filename, buffer_iter->entry->filename);
+
+                if ( cmp < 0 )
+                {
+                    prev_iter = &buffer_iter->left;
+                }
+                else if ( cmp > 0 )
+                {
+                    prev_iter = &buffer_iter->right;
+                }
+                else
+                {
+                    g_critical("todo");
+                    return TRUE;
+                }
+            }
+        }
 
 	g_free(_filename);
 	return FALSE;

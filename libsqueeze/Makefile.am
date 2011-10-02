@@ -5,6 +5,7 @@ libsqueeze_2_la_SOURCES =  \
 	archive-iter-pool.c archive-iter-pool.h \
 	archive-iter.c archive-iter.h \
 	archive-tempfs.c archive-tempfs.h \
+	btree.c btree.h \
 	command-queue.c command-queue.h \
 	command-option.c command-option.h \
 	internals.c internals.h \
@@ -13,7 +14,6 @@ libsqueeze_2_la_SOURCES =  \
 	parser-context.c parser-context.h \
 	parser.c parser.h \
 	scanf-parser.c scanf-parser.h \
-	slist.c slist.h \
 	support-reader.c support-reader.h \
 	support-template.c support-template.h \
 	support-factory.c support-factory.h

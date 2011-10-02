@@ -14,39 +14,31 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __LSQ_SLIST_H__
-#define __LSQ_SLIST_H__
+#ifndef __LSQ_BTREE_H__
+#define __LSQ_BTREE_H__
 
-typedef struct _LSQSList LSQSList;
+typedef struct _LSQBTree LSQBTree;
 
-struct _LSQSList {
-	LSQArchiveEntry *entry;
-	LSQSList *next;
+struct _LSQBTree {
+    LSQArchiveEntry *entry;
+    LSQBTree *next;
+    LSQBTree *left;
+    LSQBTree *right;
 };
 
-LSQSList *
-lsq_slist_insert_sorted_single (
-        LSQSList *list,
+LSQBTree *
+lsq_btree_insert_sorted_single (
+        LSQBTree *list,
         LSQArchiveEntry *entry,
-        GCompareFunc) G_GNUC_INTERNAL;
+        GCompareFunc ) G_GNUC_INTERNAL;
 
 guint
-lsq_slist_length(LSQSList *list) G_GNUC_INTERNAL;
+lsq_btree_length ( LSQBTree *list ) G_GNUC_INTERNAL;
 
 void
-lsq_slist_free(LSQSList *list) G_GNUC_INTERNAL;
+lsq_btree_free ( LSQBTree *list ) G_GNUC_INTERNAL;
 
-typedef struct _LSQSIndexList LSQSIndexList;
+LSQBTree *
+lsq_btree_flatten ( LSQBTree *list ) G_GNUC_INTERNAL;
 
-struct _LSQSIndexList {
-    LSQSList *index;
-    LSQSIndexList *next;
-};
-
-LSQSIndexList *
-lsq_slist_index_new(void);
-
-void
-lsq_slist_index_free(LSQSIndexList *list);
-
-#endif /* __LSQ_SLIST_H__ */
+#endif /* __LSQ_BTREE_H__ */
