@@ -29,42 +29,58 @@
 #include "support-template.h"
 
 GType
-lsq_support_template_get_property_type(LSQSupportTemplate *templ, guint nr)
+lsq_support_template_get_property_type (
+        LSQSupportTemplate *templ,
+        guint nr)
 {
-  g_return_val_if_fail(templ->parser, G_TYPE_NONE);
+    g_return_val_if_fail(templ->parser, G_TYPE_NONE);
+
 	return lsq_parser_get_property_type(templ->parser, nr);
 }
 
 guint
-lsq_support_template_get_property_offset(LSQSupportTemplate *templ, guint nr)
+lsq_support_template_get_property_offset (
+        LSQSupportTemplate *templ,
+        guint nr )
 {
-  g_return_val_if_fail(templ->parser, 0);
-  return lsq_parser_get_property_offset(templ->parser, nr);
+    g_return_val_if_fail(templ->parser, 0);
+
+    return lsq_parser_get_property_offset(templ->parser, nr);
 }
 
 const gchar *
-lsq_support_template_get_property_name(LSQSupportTemplate *templ, guint nr)
+lsq_support_template_get_property_name (
+        LSQSupportTemplate *templ,
+        guint nr )
 {
 	g_return_val_if_fail(nr < templ->n_properties, NULL);
+
 	return templ->property_names[nr];
 }
 
 guint
-lsq_support_template_get_n_properties (LSQSupportTemplate *templ)
+lsq_support_template_get_n_properties (
+        LSQSupportTemplate *templ )
 {
-  guint n_props;
+    guint n_props;
+
 #ifdef DEBUG
-	g_return_val_if_fail(templ, 0);
+    g_return_val_if_fail(templ, 0);
 #endif
-  n_props = lsq_parser_n_properties(templ->parser);
-  if(templ->n_properties > n_props)
-    n_props = templ->n_properties;
-	return n_props;
+
+    n_props = lsq_parser_n_properties ( templ->parser );
+
+    if ( templ->n_properties > n_props )
+    {
+        n_props = templ->n_properties;
+    }
+    return n_props;
 }
 
 guint
-lsq_support_template_get_properties_size(LSQSupportTemplate *templ)
+lsq_support_template_get_properties_size (
+        LSQSupportTemplate *templ )
 {
-  g_return_val_if_fail(templ->parser, 0);
-  return lsq_parser_get_properties_size(templ->parser);
+    g_return_val_if_fail ( templ->parser, 0 );
+    return lsq_parser_get_properties_size ( templ->parser );
 }

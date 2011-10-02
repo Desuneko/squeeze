@@ -19,62 +19,67 @@
 
 typedef enum
 {
-	LSQ_SUPPORT_FILES	= 1 << 0x0,
-	LSQ_SUPPORT_FOLDERS  = 1 << 0x1,
-	LSQ_SUPPORT_MANY	 = 1 << 0x2
+    LSQ_SUPPORT_FILES    = 1 << 0x0,
+    LSQ_SUPPORT_FOLDERS  = 1 << 0x1,
+    LSQ_SUPPORT_MANY     = 1 << 0x2
 } LSQSupportType;
 
 typedef enum
 {
-	LSQ_COMMAND_TYPE_ADD,
-	LSQ_COMMAND_TYPE_REMOVE,
-	LSQ_COMMAND_TYPE_EXTRACT,
-	LSQ_COMMAND_TYPE_REFRESH,
-	LSQ_COMMAND_TYPE_OPEN,
-	LSQ_COMMAND_TYPE_TEST
+    LSQ_COMMAND_TYPE_ADD,
+    LSQ_COMMAND_TYPE_REMOVE,
+    LSQ_COMMAND_TYPE_EXTRACT,
+    LSQ_COMMAND_TYPE_REFRESH,
+    LSQ_COMMAND_TYPE_OPEN,
+    LSQ_COMMAND_TYPE_TEST
 } LSQCommandType;
 
-#ifndef LSQParser
 typedef struct _LSQParser LSQParser;
-#endif
-#ifndef LSQCommandQueue
+
 typedef struct _LSQCommandQueue LSQCommandQueue;
-#endif
 
 typedef struct _LSQSupportTemplate LSQSupportTemplate;
 
 struct _LSQSupportTemplate
 {
-	const gchar *id;
-	gchar **required_apps;
-	gboolean supported;
-    gchar *content_type;
+    const gchar        *id;
+    gchar             **required_apps;
+    gboolean            supported;
+    gchar              *content_type;
 
-	guint n_properties;
-	gchar **property_names;
-  LSQParser *parser;
+    guint               n_properties;
+    gchar             **property_names;
+    LSQParser          *parser;
 
-	LSQCommandQueue *new_cmd_queue;
-	LSQCommandQueue *add_cmd_queue;
-  LSQCommandOption **add_options;
-	LSQCommandQueue *remove_cmd_queue;
-  LSQCommandOption **remove_options;
-	LSQCommandQueue *extract_cmd_queue;
-  LSQCommandOption **extract_options;
-	LSQCommandQueue *refresh_cmd_queue;
-	LSQSupportType   support_mask;
+    LSQCommandQueue    *new_cmd_queue;
+    LSQCommandQueue    *add_cmd_queue;
+    LSQCommandOption  **add_options;
+    LSQCommandQueue    *remove_cmd_queue;
+    LSQCommandOption  **remove_options;
+    LSQCommandQueue    *extract_cmd_queue;
+    LSQCommandOption  **extract_options;
+    LSQCommandQueue    *refresh_cmd_queue;
+    LSQSupportType      support_mask;
 };
 
 GType
-lsq_support_template_get_property_type(LSQSupportTemplate *s_template, guint n);
+lsq_support_template_get_property_type (
+        LSQSupportTemplate *s_template,
+        guint n);
 guint
-lsq_support_template_get_property_offset(LSQSupportTemplate *s_template, guint n);
+lsq_support_template_get_property_offset (
+        LSQSupportTemplate *s_template,
+        guint n);
 const gchar *
-lsq_support_template_get_property_name(LSQSupportTemplate *s_template, guint n);
+lsq_support_template_get_property_name (
+        LSQSupportTemplate *s_template,
+        guint n );
 guint
-lsq_support_template_get_n_properties (LSQSupportTemplate *s_template);
+lsq_support_template_get_n_properties (
+        LSQSupportTemplate *s_template );
 guint
-lsq_support_template_get_properties_size (LSQSupportTemplate *s_template);
+lsq_support_template_get_properties_size (
+        LSQSupportTemplate *s_template );
 
 
 #endif /* __SUPPORT_TEMPLATE_H__ */
