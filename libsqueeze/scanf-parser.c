@@ -399,27 +399,41 @@ skip_string (
     gchar *ptr;
     const gchar *delim;
 
-    if(!lng)
+    if ( 0 == lng )
+    {
         return 0;
+    }
 
     delim = part->delimiter;
-    if(!delim && !part->next)
+    if ( ( NULL == delim ) && ( NULL == part->next )
+    {
         delim = "\n";
+    }
 
-    if(!delim[0])
+
+    if ( '\0' == delim[0] )
+    {
         return 0;
+    }
 
     for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-    ptr = g_strstr_len(ptr, lng, delim);
+    ptr = g_strstr_len ( ptr, lng, delim );
 
-    if(!ptr)
+    if ( NULL == ptr )
+    {
         return 0;
+    }
     
     return ptr - str;
 }
 
-static guint skip_unsigned(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx)
+static guint
+skip_unsigned (
+        gchar *str,
+        guint lng,
+        parse_part *part,
+        LSQScanfParserContext *ctx )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -427,33 +441,48 @@ static guint skip_unsigned(gchar *str, guint lng, parse_part *part, LSQScanfPars
 #endif
     const gchar *delim;
 
-    if(!lng)
+    if ( 0 == lng )
+    {
         return 0;
+    }
 
     delim = part->delimiter;
-    if(!delim && !part->next)
-        delim = "\n";
-
-    if(!delim[0])
+    if ( ( NULL == delim ) && ( NULL == part->next ) )
     {
-        g_ascii_strtoull(str, &ptr, 10);
+        delim = "\n";
+    }
+
+    if ( '\0' == delim[0] )
+    {
+        g_ascii_strtoull ( str, &ptr, 10);
         return ptr - str;
     }
 
-    ptr = g_strstr_len(str, lng, delim);
+    ptr = g_strstr_len ( str, lng, delim );
 
-    if(!ptr)
+    if ( NULL == ptr )
+    {
         return 0;
+    }
 #ifdef DO_EXSTENSIVE_CHECKING
-    g_ascii_strtoull(str, &ptr2, 10);
-    if(ptr > ptr2)
+
+    g_ascii_strtoull ( str, &ptr2, 10 );
+
+    if ( ptr > ptr2)
+    {
         return 0;
+    }
 #endif
     
     return ptr - str;
 }
 
-static guint skip_hexadecimal(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx)
+static guint
+skip_hexadecimal (
+        gchar *str,
+        guint lng,
+        parse_part *part,
+        LSQScanfParserContext *ctx )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -461,27 +490,35 @@ static guint skip_hexadecimal(gchar *str, guint lng, parse_part *part, LSQScanfP
 #endif
     const gchar *delim;
 
-    if(!lng)
+    if ( 0 == lng )
+    {
         return 0;
+    }
 
     delim = part->delimiter;
-    if(!delim && !part->next)
-        delim = "\n";
-
-    if(!delim[0])
+    if ( ( NULL == delim ) && ( NULL == part->next ) )
     {
-        g_ascii_strtoll(str, &ptr, 0x10);
+        delim = "\n";
+    }
+
+    if ( '\0' == delim[0] )
+    {
+        g_ascii_strtoll ( str, &ptr, 0x10 );
         return ptr - str;
     }
 
-    ptr = g_strstr_len(str, lng, delim);
+    ptr = g_strstr_len ( str, lng, delim );
 
-    if(!ptr)
+    if ( NULL == ptr )
+    {
         return 0;
+    }
 #ifdef DO_EXSTENSIVE_CHECKING
-    g_ascii_strtoll(str, &ptr2, 0x10);
-    if(ptr > ptr2)
+    g_ascii_strtoll ( str, &ptr2, 0x10 );
+    if ( ptr > ptr2 )
+    {
         return 0;
+    }
 #endif
     
     return ptr - str;
