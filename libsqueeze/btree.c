@@ -27,7 +27,7 @@
 #include "btree.h"
 
 #ifndef LSQ_BTREE_MAX_DEPTH
-#define LSQ_BTREE_MAX_DEPTH 500
+#define LSQ_BTREE_MAX_DEPTH 20
 #endif
 
 LSQBTree *
@@ -42,13 +42,19 @@ lsq_btree_insert_sorted_single (
     LSQBTree *new_entry = NULL;
     LSQBTree *stack[LSQ_BTREE_MAX_DEPTH];
     guint stack_i = 0;
+    LSQArchiveEntry *swap_entry;
+    LSQBTree *swap_iter;
+    gint swap_balance;
+    gboolean short_side;
 
+    /* Check for a flat list */
     if ( NULL != list && NULL != list->next )
     {
         g_critical("Cannot insert into a flattened tree");
         return NULL;
     }
 
+    /* Walk the btree */
     for ( iter = list; NULL != iter; iter = *next )
     {
         /* archive can be NULL */
@@ -56,31 +62,174 @@ lsq_btree_insert_sorted_single (
 
         if ( 0 > cmp )
         {
+            /* Go the the left */
             next = &iter->left;
         }
         else if ( 0 < cmp )
         {
+            /* Go to the right */
             next = &iter->right;
         }
         else
         {
+            /* Logic outside this routine dictates we should never find a match */
             g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
             return NULL;
         }
 
+        /* Keep a stack of the path we followed */
+        g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
         stack[stack_i++] = iter;
-	g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
     }
 
+    /* Create a new tree element */
     new_entry = g_new0(LSQBTree, 1);
     new_entry->entry = entry;
 
+    /* Check it this is a new tree */
     if ( NULL == next )
     {
         return new_entry;
     }
 
+    /* Store ourself in the parent */
     *next = new_entry;
+
+    /* Balance the tree */
+    while ( 0 < stack_i )
+    {
+        iter = stack[--stack_i];
+
+        /* Calculate new the balance for the parent */
+        if ( iter->left == new_entry )
+        {
+            short_side = iter->balance > 0;
+            --iter->balance;
+        }
+        else
+        {
+            short_side = iter->balance < 0;
+            ++iter->balance;
+        }
+
+        /* The balance in the higher parents doesn't change when the short side changed */
+        if ( FALSE != short_side )
+        {
+            break;
+        }
+
+        if ( 1 < iter->balance )
+        {
+            /* Rotate left */
+            /* The code could be easier if we would just overwrite our parent left or right value.
+             * But instead we move that data from our right to our self and use the right tree link to be placed in the tree as if it was ourself.
+             */
+            /* Letters are tree nodes, numbers are the data. This illustrates a rotate right.
+             *
+             *        A:4     |     A:2
+             *       /   \    |    /   \
+             *     B:2   C:5  |  D:1   B:4
+             *    /   \       |       /   \
+             *  D:1   E:3     |     E:3   C:5
+             */
+            /* Swap the data */
+            swap_iter = iter->right;
+            swap_entry = iter->entry;
+            iter->entry = swap_iter->entry;
+            swap_iter->entry = swap_entry;
+
+            /* Reformat the tree links */
+            iter->right = swap_iter->right;
+            swap_iter->right = swap_iter->left;
+            swap_iter->left = iter->left;
+            iter->left = swap_iter;
+
+            /* Fix the balance values
+             *
+             * if B > 0
+             *   A = A - 1 - B
+             * else
+             *   A = A - 1
+             *
+             * diff = A - 1 - B
+             * if diff < 0
+             *   B = B - 1 + diff
+             * else
+             *   B = B - 1
+             */
+            swap_balance = swap_iter->balance;
+            swap_iter->balance = iter->balance - 1;
+            if ( 0 < swap_balance )
+            {
+                swap_iter->balance -= swap_balance;
+            }
+            iter->balance = iter->balance - 1 - swap_balance;
+            if ( 0 < iter->balance )
+            {
+                iter->balance = 0;
+            }
+            iter->balance += swap_balance - 1;
+
+            /* We added a child so our depth was increased, but we also saved depth by rotation so our parents depth stays the same */
+            if ( 0 < swap_balance )
+            {
+                break;
+            }
+        }
+        else if ( -1 > iter->balance )
+        {
+            /* Rotate right */
+            /* The code could be easier if we would just overwrite our parent left or right value.
+             * But instead we move that data from our left to our self and use the left tree link to be placed in the tree as if it was ourself.
+             */
+            /* Swap the data */
+            swap_iter = iter->left;
+            swap_entry = iter->entry;
+            iter->entry = swap_iter->entry;
+            swap_iter->entry = swap_entry;
+
+            /* Reformat the tree links */
+            iter->left = swap_iter->left;
+            swap_iter->left = swap_iter->right;
+            swap_iter->right = iter->right;
+            iter->right = swap_iter;
+
+            /* Fix the balance values
+             *
+             * if B < 0
+             *   A = A + 1 - B
+             * else
+             *   A = A + 1
+             *
+             * diff = A + 1 - B
+             * if diff > 0
+             *   B = B + 1 + diff
+             * else
+             *   B = B + 1
+             */
+            swap_balance = swap_iter->balance;
+            swap_iter->balance = iter->balance + 1;
+            if ( 0 > swap_balance )
+            {
+                swap_iter->balance -= swap_balance;
+            }
+            iter->balance = iter->balance + 1 - swap_balance;
+            if ( 0 > iter->balance )
+            {
+                iter->balance = 0;
+            }
+            iter->balance += swap_balance + 1;
+
+            /* We added a child so our depth was increased, but we also saved depth by rotation so our parents depth stays the same */
+            if ( 0 > swap_balance )
+            {
+                break;
+            }
+        }
+
+        /* Store ourself in new_entry for the check in the next parent */
+        new_entry = iter;
+    }
 
     return list;
 }

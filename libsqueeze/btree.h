@@ -24,6 +24,7 @@ struct _LSQBTree {
     LSQBTree *next;
     LSQBTree *left;
     LSQBTree *right;
+    gint balance;
 };
 
 LSQBTree *
