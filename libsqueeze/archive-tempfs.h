@@ -22,21 +22,39 @@
  * check modify
  */
 
-void lsq_tempfs_clean_root_dir(LSQArchive *archive);
+void
+lsq_tempfs_clean_root_dir ( LSQArchive *archive );
 
-const gchar* lsq_tempfs_get_root_dir(LSQArchive *archive);
-
-gboolean lsq_tempfs_make_root_dir(LSQArchive *archive);
-
-gboolean lsq_tempfs_make_dir(LSQArchive *archive, const gchar *path, gint mode);
-
-gboolean lsq_tempfs_chmod(LSQArchive *archive, const gchar *path, gint mode);
+const gchar*
+lsq_tempfs_get_root_dir ( LSQArchive *archive );
 
 gboolean
-lsq_tempfs_monitor_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
+lsq_tempfs_make_root_dir ( LSQArchive *archive );
 
 gboolean
-lsq_tempfs_changed_file(LSQArchive *archive, const gchar *path) G_GNUC_INTERNAL;
+lsq_tempfs_make_dir (
+        LSQArchive *archive,
+        const gchar *path,
+        gint mode );
 
-gchar *lsq_archive_request_temp_file(LSQArchive *archive, const gchar *suffix);
+gboolean
+lsq_tempfs_chmod (
+        LSQArchive *archive,
+        const gchar *path,
+        gint mode );
+
+gboolean
+lsq_tempfs_monitor_file (
+        LSQArchive *archive,
+        const gchar *path) G_GNUC_INTERNAL;
+
+gboolean
+lsq_tempfs_changed_file (
+        LSQArchive *archive,
+        const gchar *path) G_GNUC_INTERNAL;
+
+gchar *
+lsq_archive_request_temp_file (
+        LSQArchive *archive,
+        const gchar *suffix);
 
