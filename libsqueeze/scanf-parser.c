@@ -405,7 +405,7 @@ skip_string (
     }
 
     delim = part->delimiter;
-    if ( ( NULL == delim ) && ( NULL == part->next )
+    if ( ( NULL == delim ) && ( NULL == part->next ) )
     {
         delim = "\n";
     }
