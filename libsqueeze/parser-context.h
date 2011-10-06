@@ -20,56 +20,66 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_PARSER_CONTEXT lsq_parser_context_get_type()
 
-#define LSQ_PARSER_CONTEXT(obj) (			   \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			LSQ_TYPE_PARSER_CONTEXT,				  \
+#define LSQ_PARSER_CONTEXT(obj) ( \
+		G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+			LSQ_TYPE_PARSER_CONTEXT, \
 			LSQParserContext))
 
-#define LSQ_IS_PARSER_CONTEXT(obj) (			\
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
+#define LSQ_IS_PARSER_CONTEXT(obj) ( \
+		G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
 			LSQ_TYPE_PARSER_CONTEXT))
 
-#define LSQ_PARSER_CONTEXT_CLASS(class) (	  \
-		G_TYPE_CHECK_CLASS_CAST ((class),  \
-			LSQ_TYPE_PARSER_CONTEXT,				 \
+#define LSQ_PARSER_CONTEXT_CLASS(class) ( \
+		G_TYPE_CHECK_CLASS_CAST ((class), \
+			LSQ_TYPE_PARSER_CONTEXT, \
 			LSQParserContextClass))
 
-#define LSQ_IS_PARSER_CONTEXT_CLASS(class) (   \
-		G_TYPE_CHECK_CLASS_TYPE ((class),  \
+#define LSQ_IS_PARSER_CONTEXT_CLASS(class) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((class), \
 			LSQ_TYPE_PARSER_CONTEXT))
 
 typedef struct _LSQParserContext LSQParserContext;
 
 struct _LSQParserContext
 {
-	GObject parent;
+    GObject parent;
 
-	LSQArchive *archive;
+    LSQArchive *archive;
 
-  GIOChannel *channel;
-  GIOStatus last_stat;
+    GIOChannel *channel;
+    GIOStatus last_stat;
 };
 
 typedef struct _LSQParserContextClass LSQParserContextClass;
 
 struct _LSQParserContextClass
 {
-	GObjectClass parent;
+    GObjectClass parent;
 };
 
-GType			 lsq_parser_context_get_type (void);
+GType
+lsq_parser_context_get_type ( void);
 
-LSQParserContext *lsq_parser_context_new	  (LSQArchive *archive);
+LSQParserContext *
+lsq_parser_context_new ( LSQArchive *archive );
 
-gboolean		  lsq_parser_context_get_line (LSQParserContext *, gchar **, gsize *);
+gboolean
+lsq_parser_context_get_line (
+        LSQParserContext *,
+        gchar **,
+        gsize * );
 
-gboolean      lsq_parser_context_is_good  (LSQParserContext *);
+gboolean
+lsq_parser_context_is_good  ( LSQParserContext * );
 
-gboolean      lsq_parser_context_read_again(LSQParserContext *);
+gboolean
+lsq_parser_context_read_again ( LSQParserContext *);
 
-void          lsq_parser_context_set_channel(LSQParserContext *, GIOChannel *);
+void
+lsq_parser_context_set_channel (
+        LSQParserContext *,
+        GIOChannel * );
 
 G_END_DECLS
 
 #endif /* __LIBSQUEEZE_PARSER_CONTEXT_H__ */
-
