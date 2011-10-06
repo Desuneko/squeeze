@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: trunk\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-06 04:04+0000\n"
 "PO-Revision-Date: 2009-07-09 16:10+0600\n"
 "Last-Translator: Baurzhan M. <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
-"Language: kk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: kk\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../libsqueeze/archive.c:272
@@ -37,10 +37,9 @@ msgstr "Архивтерді басқарушы көмегімен архивт�
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze архивтерді басқарушысы"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "Архивті ашу мүмкін емес, MIME түріне қолдау жоқ не файл табылмады"
@@ -53,9 +52,8 @@ msgstr ""
 "Squeeze архивтердің осы түрін тарқата алмайды,\n"
 "оған қолдау көрсететін қолданба жоқ болып тұр."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Архивті жасау мүмкін емес, MIME түріне қолдау жоқ"
@@ -107,11 +105,11 @@ msgstr "Мәтінді регистрді ескеріп сұрыптау"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Көрінетін:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Қолжетерлік:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -338,6 +336,10 @@ msgstr ""
 "'%s'\n"
 "Ашу мүмкін емес"
 
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Архивтерді басқарушысы"
+
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
 msgstr "Архив түрі:"
@@ -368,17 +370,16 @@ msgstr "Жол батырмалар арасындағы аралықтар со
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "Жал_пы"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Архив түрі:"
+msgstr "Архив қараушысы:"
 
 #: ../src/preferences_dialog.c:97
 #, fuzzy
 msgid "_Show Icons"
-msgstr "MIME таңбашаларын көрсету"
+msgstr "Таңба_шаларды көрсету"
 
 #: ../src/preferences_dialog.c:100
 #, fuzzy
@@ -387,58 +388,48 @@ msgstr "Ережелер туралы"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Сұрыптау:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Мәтінді регистрді ескеріп сұрыптау"
+msgstr "Регистрді е_скеріп сұрыптау"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Бумаларды файлдар алдында сұрыптау"
+msgstr "Алдымен бум_аларды сұрыптау"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Навигация стилі"
+msgstr "Навигация панелі:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "_Мінез-құлығы"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Баптаулар"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Архивтер"
+msgstr "_Архивтеушілер"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Файл"
+msgstr "Файл аты"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "Аты"
+msgstr "Аты:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Түрі:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Қасиеттері"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Орналасуы:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Архивтерді басқарушысы"
