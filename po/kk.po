@@ -377,14 +377,12 @@ msgid "Archive viewer:"
 msgstr "Архив қараушысы:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
 msgstr "Таңба_шаларды көрсету"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Ережелер туралы"
+msgstr "_Ережелер кеңесі"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
