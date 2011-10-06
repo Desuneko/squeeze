@@ -19,7 +19,10 @@
 
 typedef struct _LSQMimeSupport LSQMimeSupport;
 
-const gchar *		lsq_mime_support_get_comment(LSQMimeSupport *);
-const gchar *		lsq_mime_support_get_name(LSQMimeSupport *);
+const gchar *
+lsq_mime_support_get_comment ( LSQMimeSupport * );
+
+const gchar *
+lsq_mime_support_get_name ( LSQMimeSupport * );
 
 #endif /* __LIBSQUEEZE_MIME_SUPPORT_H__ */
