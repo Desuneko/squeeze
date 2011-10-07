@@ -103,6 +103,7 @@ lsq_storage_group_has_type (
 static void
 lsq_parser_init ( LSQParser *self )
 {
+    self->datetime_format = g_strdup( "%c" );
 }
 
 static void
@@ -120,6 +121,7 @@ lsq_parser_class_init ( LSQParserClass *klass )
     lsq_storage_group_add(G_TYPE_UINT, sizeof(guint));
     lsq_storage_group_add(G_TYPE_UINT64, sizeof(guint64));
     lsq_storage_group_add(G_TYPE_ULONG, sizeof(gulong));
+    lsq_storage_group_add(LSQ_TYPE_DATETIME, sizeof(LSQDateTime*));
 }
 
 LSQParserContext*
@@ -229,3 +231,11 @@ lsq_parser_get_properties_size ( LSQParser *parser )
     return parser->properties_size;
 }
 
+void
+lsq_parser_set_datetime_format (
+        LSQParser *parser,
+        const gchar *format )
+{
+    g_free( parser->datetime_format );
+    parser->datetime_format = g_strdup( format );
+}

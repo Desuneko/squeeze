@@ -56,6 +56,8 @@ struct _LSQParser
     GType *property_types;
     guint *property_offset;
     guint properties_size;
+
+    gchar *datetime_format;
 };
 
 
@@ -111,6 +113,11 @@ lsq_parser_get_property_offset (
 
 guint
 lsq_parser_get_properties_size ( LSQParser * );
+
+void
+lsq_parser_set_datetime_format (
+        LSQParser *,
+        const gchar * );
 
 G_END_DECLS
 

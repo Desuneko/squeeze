@@ -74,6 +74,8 @@ lsq_init(void)
   const gchar* const* system_dirs = g_get_system_data_dirs ();
   const gchar* user_dir = g_get_user_data_dir ();
 
+  lsq_datetime_register_type();
+
   support_factory_list = NULL;
 
   lsq_opened_archive_list = NULL;

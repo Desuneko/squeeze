@@ -729,6 +729,14 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 		{
 			switch(lsq_archive_get_entry_property_type(archive, x))
 			{
+                                default:
+                                        if ( LSQ_TYPE_DATETIME != lsq_archive_get_entry_property_type(archive, x) )
+                                        {
+#ifdef DEBUG
+                                            g_debug("Should not be reached");
+#endif
+                                            continue;
+                                        }
         case(G_TYPE_CHAR):
 				case(G_TYPE_DOUBLE):
 				case(G_TYPE_FLOAT):
@@ -742,11 +750,6 @@ sq_notebook_treeview_reset_columns(LSQArchive *archive, GtkTreeView *treeview)
 					renderer = gtk_cell_renderer_text_new();
 					column = gtk_tree_view_column_new_with_attributes(lsq_archive_get_entry_property_name(archive, x), renderer, "text", x+SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT, NULL);
 					break;
-        default:
-#ifdef DEBUG
-          g_debug("Should not be reached");
-#endif
-          continue;
 			}
 			gtk_tree_view_column_set_resizable(column, TRUE);
 			gtk_tree_view_column_set_sort_column_id(column, x+SQ_ARCHIVE_STORE_EXTRA_PROP_COUNT);

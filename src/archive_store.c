@@ -867,7 +867,7 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 		case G_TYPE_STRING:
 			if(g_value_get_string(&prop_a) == NULL)
 			{
-				retval = -1;
+				retval = ( NULL == g_value_get_string( &prop_b ) ) ? 0 : -1;
 				break;
 			}
 			if(g_value_get_string(&prop_b) == NULL)
@@ -890,6 +890,23 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 			break;
 		case G_TYPE_UINT:
 			retval = g_value_get_uint(&prop_a) - g_value_get_uint(&prop_b);
+			break;
+		default:
+			if ( LSQ_TYPE_DATETIME == lsq_archive_get_entry_property_type(archive, column) )
+                        {
+                            if(g_value_get_datetime(&prop_a) == NULL)
+                            {
+                                retval = ( NULL == g_value_get_datetime( &prop_b ) ) ? 0 : -1;
+                                break;
+                            }
+                            if(g_value_get_datetime(&prop_b) == NULL)
+                            {
+                                retval = 1;
+                                break;
+                            }
+                            retval = lsq_datetime_cmp( g_value_get_datetime(&prop_a), g_value_get_datetime(&prop_b) );
+                            break;
+                        }
 			break;
 	}
 	g_value_unset(&prop_a);
