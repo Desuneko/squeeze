@@ -13,6 +13,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #include <config.h>
 #include <string.h>
 #include <glib.h>
@@ -247,8 +248,12 @@ lsq_btree_remove_sorted_single (
     LSQBTree *del_entry;
     LSQBTree *stack[LSQ_BTREE_MAX_DEPTH];
     guint stack_i = 0;
-    LSQBTree *swap_iter;
     gboolean short_side;
+    LSQBTree *swap_iter;
+#ifdef BALANCE_ON_REMOVE
+    LSQArchiveEntry *swap_entry;
+    gint swap_balance;
+#endif
 
     if ( NULL != found )
     {
@@ -407,7 +412,122 @@ lsq_btree_remove_sorted_single (
             /* The balance in the higher parents doesn't change when the short side changed */
             if ( FALSE != short_side )
             {
+#ifdef BALANCE_ON_REMOVE
+                if ( 1 < iter->balance )
+                {
+                    /* Rotate left */
+                    /* The code could be easier if we would just overwrite our parent left or right value.
+                     * But instead we move that data from our right to our self and use the right tree link to be placed in the tree as if it was ourself.
+                     */
+                    /* Letters are tree nodes, numbers are the data. This illustrates a rotate right.
+                     *
+                     *        A:4     |     A:2
+                     *       /   \    |    /   \
+                     *     B:2   C:5  |  D:1   B:4
+                     *    /   \       |       /   \
+                     *  D:1   E:3     |     E:3   C:5
+                     */
+                    /* Swap the data */
+                    swap_iter = iter->right;
+                    swap_entry = iter->entry;
+                    iter->entry = swap_iter->entry;
+                    swap_iter->entry = swap_entry;
+
+                    /* Reformat the tree links */
+                    iter->right = swap_iter->right;
+                    swap_iter->right = swap_iter->left;
+                    swap_iter->left = iter->left;
+                    iter->left = swap_iter;
+
+                    /* Fix the balance values
+                     *
+                     * if B > 0
+                     *   A = A - 1 - B
+                     * else
+                     *   A = A - 1
+                     *
+                     * diff = A - 1 - B
+                     * if diff < 0
+                     *   B = B - 1 + diff
+                     * else
+                     *   B = B - 1
+                     */
+                    swap_balance = swap_iter->balance;
+                    swap_iter->balance = iter->balance - 1;
+                    if ( 0 < swap_balance )
+                    {
+                        swap_iter->balance -= swap_balance;
+                    }
+                    iter->balance = iter->balance - 1 - swap_balance;
+                    if ( 0 < iter->balance )
+                    {
+                        iter->balance = 0;
+                    }
+                    iter->balance += swap_balance - 1;
+
+                    /* Saved depth by rotation so our parents depth also changes */
+                    if ( 0 >= swap_balance )
+                    {
+                        break;
+                    }
+                }
+                else if ( -1 > iter->balance )
+                {
+                    /* Rotate right */
+                    /* The code could be easier if we would just overwrite our parent left or right value.
+                     * But instead we move that data from our left to our self and use the left tree link to be placed in the tree as if it was ourself.
+                     */
+                    /* Swap the data */
+                    swap_iter = iter->left;
+                    swap_entry = iter->entry;
+                    iter->entry = swap_iter->entry;
+                    swap_iter->entry = swap_entry;
+
+                    /* Reformat the tree links */
+                    iter->left = swap_iter->left;
+                    swap_iter->left = swap_iter->right;
+                    swap_iter->right = iter->right;
+                    iter->right = swap_iter;
+
+                    /* Fix the balance values
+                     *
+                     * if B < 0
+                     *   A = A + 1 - B
+                     * else
+                     *   A = A + 1
+                     *
+                     * diff = A + 1 - B
+                     * if diff > 0
+                     *   B = B + 1 + diff
+                     * else
+                     *   B = B + 1
+                     */
+                    swap_balance = swap_iter->balance;
+                    swap_iter->balance = iter->balance + 1;
+                    if ( 0 > swap_balance )
+                    {
+                        swap_iter->balance -= swap_balance;
+                    }
+                    iter->balance = iter->balance + 1 - swap_balance;
+                    if ( 0 > iter->balance )
+                    {
+                        iter->balance = 0;
+                    }
+                    iter->balance += swap_balance + 1;
+
+                    /* Saved depth by rotation so our parents depth also changes */
+                    if ( 0 <= swap_balance )
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+#else
                 break;
+#endif
             }
 
             /* Store ourself in new_entry for the check in the next parent */
