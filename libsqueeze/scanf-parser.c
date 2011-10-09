@@ -60,6 +60,7 @@ struct _LSQScanfParserContext
         guint64 ull;
         gfloat  f;
         gdouble d;
+        LSQDateTime dt;
     } *data_store;
     gpointer *props_store;
     parse_part *parse_loc;
@@ -476,7 +477,6 @@ skip_datetime (
     gchar *ptr;
     gchar *cur;
     const gchar *delim;
-    LSQDateTime val;
 
     if ( 0 == lng )
     {
@@ -493,7 +493,7 @@ skip_datetime (
     {
     }
 
-    ptr = lsq_datetime_from_string(&val, cur, LSQ_PARSER(parser)->datetime_format);
+    lsq_datetime_from_string(cur, LSQ_PARSER(parser)->datetime_format, &ptr);
     if ( NULL == ptr )
     {
         return 0;
@@ -845,7 +845,7 @@ parse_datetime (
     gchar *ptr;
     gchar *cur;
     const gchar *delim;
-    LSQDateTime *val;
+    LSQDateTime *pval;
 
     if ( 0 == lng )
     {
@@ -862,17 +862,17 @@ parse_datetime (
     {
     }
 
-    val = lsq_datetime_new_from_string( cur, LSQ_PARSER(parser)->datetime_format, &ptr );
-    if ( NULL == val )
+    pval = &ctx->data_store[part->index_].dt;
+    ctx->props_store[part->index_] = pval;
+
+    *pval = lsq_datetime_from_string( cur, LSQ_PARSER(parser)->datetime_format, &ptr );
+    if ( LSQ_DATETIME_NULL == *pval )
         return 0;
 
     if ( ( ptr - str ) > lng )
     {
-        g_free( val );
         return 0;
     }
-
-    ctx->props_store[ part->index_ ] = val;
 
     if ( '\0' == delim[0] )
     {
@@ -880,7 +880,6 @@ parse_datetime (
         ptr = g_strstr_len ( ptr, lng, delim );
         if ( NULL == ptr )
         {
-            g_free( val );
             return 0;
         }
     }

@@ -894,16 +894,6 @@ sq_archive_entry_compare(SQArchiveStore *store, LSQArchiveIter *a, LSQArchiveIte
 		default:
 			if ( LSQ_TYPE_DATETIME == lsq_archive_get_entry_property_type(archive, column) )
                         {
-                            if(g_value_get_datetime(&prop_a) == NULL)
-                            {
-                                retval = ( NULL == g_value_get_datetime( &prop_b ) ) ? 0 : -1;
-                                break;
-                            }
-                            if(g_value_get_datetime(&prop_b) == NULL)
-                            {
-                                retval = 1;
-                                break;
-                            }
                             retval = lsq_datetime_cmp( g_value_get_datetime(&prop_a), g_value_get_datetime(&prop_b) );
                             break;
                         }

@@ -190,21 +190,20 @@ parse_string( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParse
 static void
 parse_datetime( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
 {
-    LSQDateTime *val;
+    LSQDateTime val;
 
 #ifdef DO_EXSTENSIVE_CHECKING
     gchar *end;
-    val = lsq_datetime_new_from_string( str, LSQ_PARSER(parser)->datetime_format, *end);
-    if ( val && ( end - str ) > lng )
+    val = lsq_datetime_from_string( str, LSQ_PARSER(parser)->datetime_format, *end);
+    if ( LSQ_DATETIME_NULL != val && ( end - str ) > lng )
     {
-        g_free( val );
-        val = NULL;
+        val = LSQ_DATETIME_NULL;
     }
 #else
-    val = lsq_datetime_new_from_string( str, LSQ_PARSER(parser)->datetime_format, NULL);
+    val = lsq_datetime_from_string( str, LSQ_PARSER(parser)->datetime_format, NULL);
 #endif
 
-    lsq_archive_iter_set_prop( iter, n, val );
+    lsq_archive_iter_set_prop( iter, n, &val );
 }
 
 DEF_PARSE_UNS(unsigned, 10, guint)

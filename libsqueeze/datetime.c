@@ -32,19 +32,35 @@
 
 #include "internals.h"
 
+#define TM_SEC_SIZE     (6)
+#define TM_MIN_SIZE     (6)
+#define TM_HOUR_SIZE    (5)
+#define TM_MDAY_SIZE    (5)
+#define TM_MON_SIZE     (4)
+#define TM_YEAR_SIZE    (64 - TM_SEC_SIZE - TM_MIN_SIZE - TM_HOUR_SIZE - TM_MDAY_SIZE - TM_MON_SIZE - TM_WDAY_SIZE - TM_YDAY_SIZE - TM_ISDST_SIZE)
+#define TM_WDAY_SIZE    (3)
+#define TM_YDAY_SIZE    (9)
+#define TM_ISDST_SIZE   (2)
+
+#define TM_SEC_OFFSET   (0)
+#define TM_MIN_OFFSET   (TM_SEC_OFFSET + TM_SEC_SIZE)
+#define TM_HOUR_OFFSET  (TM_MIN_OFFSET + TM_MIN_SIZE)
+#define TM_MDAY_OFFSET  (TM_HOUR_OFFSET + TM_HOUR_SIZE)
+#define TM_MON_OFFSET   (TM_MDAY_OFFSET + TM_MDAY_SIZE)
+#define TM_YEAR_OFFSET  (TM_MON_OFFSET + TM_MON_SIZE)
+#define TM_WDAY_OFFSET  (TM_YEAR_OFFSET + TM_YEAR_SIZE)
+#define TM_YDAY_OFFSET  (TM_WDAY_OFFSET + TM_WDAY_SIZE)
+#define TM_ISDST_OFFSET (TM_YDAY_OFFSET + TM_YDAY_SIZE)
+
+#define TM_X_MAKE(x,v) (((guint64)((v) & ((1<<(TM_##x##_SIZE)) - 1))) << (TM_##x##_OFFSET))
+#define TM_X_GET(x,v) (((v) >> (TM_##x##_OFFSET)) & ((1<<(TM_##x##_SIZE)) - 1))
+#define TM_X_MASK(x) (((guint64)((1<<(TM_##x##_SIZE)) - 1)) << (TM_##x##_OFFSET))
+#define LSQ_DATETIME_CMP_MASK(v) ((v)&(TM_X_MASK(YEAR)|TM_X_MASK(MON)|TM_X_MASK(MDAY)|TM_X_MASK(HOUR)|TM_X_MASK(MIN)|TM_X_MASK(SEC)))
+
 static void
 value_init_datetime ( GValue *value )
 {
-    value->data[0].v_pointer = NULL;
-}
-
-static void
-value_free_datetime ( GValue *value )
-{
-    if ( ! ( value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS ) )
-    {
-        g_free( value->data[0].v_pointer );
-    }
+    value->data[0].v_int64 = LSQ_DATETIME_NULL;
 }
 
 static void
@@ -52,19 +68,7 @@ value_copy_datetime (
         const GValue *src_value,
         GValue *dest_value )
 {
-    LSQDateTime *copy = NULL;
-    if ( NULL != src_value->data[0].v_pointer )
-    {
-        copy = g_new( LSQDateTime, 1 );
-        *copy = *LSQ_DATETIME(src_value->data[0].v_pointer);
-    }
-    dest_value->data[0].v_pointer = copy;
-}
-
-static gpointer
-value_peek_datetime ( const GValue *value )
-{
-    return value->data[0].v_pointer;
+    dest_value->data[0].v_int64 = src_value->data[0].v_int64;
 }
 
 static gchar *
@@ -74,25 +78,7 @@ value_collect_datetime (
         GTypeCValue *collect_values,
         guint collect_flags )
 {
-    if ( NULL == collect_values[0].v_pointer )
-    {
-        value->data[0].v_pointer = NULL;
-    }
-    else if ( collect_flags & G_VALUE_NOCOPY_CONTENTS )
-    {
-        value->data[0].v_pointer = collect_values[0].v_pointer;
-        value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
-    }
-    else
-    {
-        LSQDateTime *copy = NULL;
-        if ( NULL != collect_values[0].v_pointer )
-        {
-            copy = g_new( LSQDateTime, 1 );
-            *copy = *LSQ_DATETIME(collect_values[0].v_pointer);
-        }
-        value->data[0].v_pointer = copy;
-    }
+    value->data[0].v_int64 = collect_values[0].v_int64;
 
     return NULL;
 }
@@ -104,31 +90,12 @@ value_lcopy_datetime (
         GTypeCValue *collect_values,
         guint collect_flags )
 {
-    LSQDateTime **dt_p = collect_values[0].v_pointer;
+    gint64 *int64_p = collect_values[0].v_pointer;
 
-    if ( NULL == dt_p )
-    {
+    if (!int64_p)
         return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-    }
 
-    if ( NULL == value->data[0].v_pointer)
-    {
-        *dt_p = NULL;
-    }
-    else if ( collect_flags & G_VALUE_NOCOPY_CONTENTS )
-    {
-        *dt_p = value->data[0].v_pointer;
-    }
-    else
-    {
-        LSQDateTime *copy = NULL;
-        if ( NULL != value->data[0].v_pointer )
-        {
-            copy = g_new( LSQDateTime, 1 );
-            *copy = *LSQ_DATETIME(value->data[0].v_pointer);
-        }
-        *dt_p = copy;
-    }
+    *int64_p = value->data[0].v_int64;
 
     return NULL;
 }
@@ -138,11 +105,14 @@ value_datetime_to_string (
         const GValue *src_value,
         GValue *dest_value )
 {
-    gchar buffer[200]; /* An abitrary size to fit the time string in */
-    const LSQDateTime *dt = g_value_get_datetime( src_value );
-    if ( NULL != dt )
+    gchar buffer[80]; /* An abitrary size to fit the time string in */
+    struct tm timeval;
+    LSQDateTime dt = g_value_get_datetime( src_value );
+
+    if ( LSQ_DATETIME_NULL != dt )
     {
-        strftime( buffer, sizeof(buffer), "%c", dt );
+        lsq_datetime_to_tm( dt, &timeval );
+        strftime( buffer, sizeof(buffer), "%c", &timeval );
         g_value_set_string( dest_value, buffer );
     }
 }
@@ -156,10 +126,10 @@ lsq_datetime_get_type ( void )
     {
         GTypeValueTable value_table = {
             value_init_datetime,
-            value_free_datetime,
+            NULL,
             value_copy_datetime,
-            value_peek_datetime,
-            "p",
+            NULL,
+            "q",
             value_collect_datetime,
             "p",
             value_lcopy_datetime
@@ -204,141 +174,107 @@ lsq_datetime_register_type ( void )
     type  = lsq_datetime_get_type();
 }
 
-LSQDateTime *
-lsq_datetime_new_from_string (
+LSQDateTime
+lsq_datetime_from_tm ( const struct tm *timeval )
+{
+    g_return_val_if_fail( NULL != timeval, LSQ_DATETIME_NULL );
+
+    return (
+            TM_X_MAKE( SEC, timeval->tm_sec ) |
+            TM_X_MAKE( MIN, timeval->tm_min ) |
+            TM_X_MAKE( HOUR, timeval->tm_hour ) |
+            TM_X_MAKE( MDAY, timeval->tm_mday ) |
+            TM_X_MAKE( MON, timeval->tm_mon ) |
+            TM_X_MAKE( YEAR, timeval->tm_year ) |
+            TM_X_MAKE( WDAY, timeval->tm_wday ) |
+            TM_X_MAKE( YDAY, timeval->tm_yday ) |
+            TM_X_MAKE( ISDST, timeval->tm_isdst ));
+}
+
+LSQDateTime
+lsq_datetime_from_string (
         const gchar *str,
         const gchar *format,
         gchar **endp )
 {
-    LSQDateTime *dt;
+    struct tm timeval;
+    LSQDateTime dt = LSQ_DATETIME_NULL;
 
-    g_return_val_if_fail( NULL != str, NULL );
-    g_return_val_if_fail( NULL != format, NULL );
+    g_return_val_if_fail( NULL != str, LSQ_DATETIME_NULL );
+    g_return_val_if_fail( NULL != format, LSQ_DATETIME_NULL );
 
-    /* we don't expect it to fail, so the chance of an unnecessary alloc isn't high,
-     * if it would fail most of the time, a read to stack and copy to a alloc on success would be better. */
-    dt = g_new0( LSQDateTime, 1 );
+    str = strptime( str, format, &timeval );
 
-    str = strptime( str, format, dt );
-
-    if ( G_UNLIKELY( NULL == str ) )
+    if ( G_LIKELY( NULL != str ) )
     {
-        g_free( dt );
-        dt = NULL;
-    }
-    else if ( NULL != endp )
-    {
-        *endp = (gchar*)str;
+        if ( NULL != endp )
+        {
+            *endp = (gchar*)str;
+        }
+
+        dt = lsq_datetime_from_tm( &timeval );
     }
 
     return dt;
 }
 
-gchar *
-lsq_datetime_from_string (
-        LSQDateTime *dt,
-        const gchar *str,
-        const gchar *format )
+void
+lsq_datetime_to_tm ( LSQDateTime dt, struct tm *timeval )
 {
-    g_return_val_if_fail( NULL != dt, NULL );
-    g_return_val_if_fail( NULL != str, NULL );
-    g_return_val_if_fail( NULL != format, NULL );
+    g_return_if_fail( LSQ_DATETIME_NULL!= dt );
+    g_return_if_fail( NULL != timeval );
 
-    return strptime( str, format, dt );
+    memset( timeval, 0, sizeof(struct tm) );
+
+    timeval->tm_sec = TM_X_GET( SEC, dt );
+    timeval->tm_min = TM_X_GET( MIN, dt );
+    timeval->tm_hour = TM_X_GET( HOUR, dt );
+    timeval->tm_mday = TM_X_GET( MDAY, dt );
+    timeval->tm_mon = TM_X_GET( MON, dt );
+    timeval->tm_year = TM_X_GET( YEAR, dt );
+    timeval->tm_wday = TM_X_GET( WDAY, dt );
+    timeval->tm_yday = TM_X_GET( YDAY, dt );
+    timeval->tm_isdst = TM_X_GET( ISDST, dt );
 }
 
 gint
 lsq_datetime_cmp (
-        const LSQDateTime *a,
-        const LSQDateTime *b )
+        LSQDateTime a,
+        LSQDateTime b )
 {
-    g_return_val_if_fail( NULL != a, 0 );
-    g_return_val_if_fail( NULL != b, 0 );
+    gint cmp;
+
+    if ( a == b )
+        return 0;
+
+    if ( LSQ_DATETIME_NULL == a )
+        return -1;
+    if ( LSQ_DATETIME_NULL == b )
+        return 1;
+
+    /* Ignoring daylight saveing */
+    cmp = LSQ_DATETIME_CMP_MASK( a ) - LSQ_DATETIME_CMP_MASK( b );
+    if ( 0 != cmp )
+        return cmp;
 
     return difftime( mktime( (struct tm*)a ), mktime( (struct tm*)b ) );
 }
 
-const LSQDateTime *
+LSQDateTime
 g_value_get_datetime ( const GValue *value )
 {
-    g_return_val_if_fail( G_VALUE_HOLDS_DATETIME( value ), NULL );
+    g_return_val_if_fail( G_VALUE_HOLDS_DATETIME( value ), LSQ_DATETIME_NULL );
 
-    return value->data[0].v_pointer;
-}
-
-LSQDateTime *
-g_value_dup_datetime ( const GValue *value )
-{
-    LSQDateTime *copy = NULL;
-
-    g_return_val_if_fail( G_VALUE_HOLDS_DATETIME( value ), NULL );
-
-    if ( NULL != value->data[0].v_pointer )
-    {
-        copy = g_new( LSQDateTime, 1 );
-        *copy = *LSQ_DATETIME(value->data[0].v_pointer);
-    }
-
-    return copy;
+    return value->data[0].v_int64;
 }
 
 void
 g_value_set_datetime (
         GValue *value,
-        const LSQDateTime *dt )
+        LSQDateTime v_dt )
 {
-    LSQDateTime *new_val = NULL;
-
     g_return_if_fail( G_VALUE_HOLDS_DATETIME( value ) );
 
-    if ( NULL != dt )
-    {
-        new_val = g_new( LSQDateTime, 1 );
-        *new_val = *LSQ_DATETIME(dt);
-    }
-
-    if ( value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS )
-    {
-        value->data[1].v_uint = 0;
-    }
-    else
-    {
-        g_free( value->data[0].v_pointer );
-    }
-
-    value->data[0].v_pointer = new_val;
-}
-
-void
-g_value_set_static_datetime (
-        GValue *value,
-        const gchar *dt )
-{
-    g_return_if_fail( G_VALUE_HOLDS_STRING( value ) );
-
-    if ( ! ( value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS ) )
-    {
-        g_free (value->data[0].v_pointer);
-    }
-    value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
-    value->data[0].v_pointer = LSQ_DATETIME(dt);
-}
-
-void
-g_value_take_datetime (
-        GValue *value,
-        LSQDateTime *dt )
-{
-    g_return_if_fail( G_VALUE_HOLDS_STRING( value ) );
-
-    if ( value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS) 
-    {
-        value->data[1].v_uint = 0;
-    }
-    else
-    {
-        g_free( value->data[0].v_pointer );
-    }
-    value->data[0].v_pointer = dt;
+    value->data[0].v_int64 = v_dt;
 }
 

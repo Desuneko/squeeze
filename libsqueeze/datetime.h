@@ -20,11 +20,13 @@ G_BEGIN_DECLS
 
 
 #define LSQ_TYPE_DATETIME lsq_datetime_get_type()
-#define LSQ_DATETIME(p) ((LSQDateTime*)(p))
+#define LSQ_DATETIME(v) ((LSQDateTime)(v))
+
+#define LSQ_DATETIME_NULL (LSQ_DATETIME(0))
 
 #define G_VALUE_HOLDS_DATETIME(value) (G_TYPE_CHECK_VALUE_TYPE((value), LSQ_TYPE_DATETIME))
 
-typedef struct tm LSQDateTime;
+typedef gint64 LSQDateTime;
 
 GType
 lsq_datetime_get_type ( void ) G_GNUC_CONST;
@@ -32,43 +34,30 @@ lsq_datetime_get_type ( void ) G_GNUC_CONST;
 void
 lsq_datetime_register_type ( void );
 
-LSQDateTime *
-lsq_datetime_new_from_string (
+LSQDateTime
+lsq_datetime_from_tm ( const struct tm * );
+
+LSQDateTime
+lsq_datetime_from_string (
         const gchar *,
         const gchar *,
         gchar ** );
 
-gchar *
-lsq_datetime_from_string (
-        LSQDateTime *,
-        const gchar *,
-        const gchar * );
+void
+lsq_datetime_to_tm ( LSQDateTime, struct tm * );
 
 gint
 lsq_datetime_cmp (
-        const LSQDateTime *,
-        const LSQDateTime * );
+        LSQDateTime,
+        LSQDateTime );
 
-const LSQDateTime *
+LSQDateTime
 g_value_get_datetime ( const GValue * );
-
-LSQDateTime *
-g_value_dup_datetime ( const GValue * );
 
 void
 g_value_set_datetime (
         GValue *,
-        const LSQDateTime * );
-
-void
-g_value_set_static_datetime (
-        GValue *,
-        const gchar * );
-
-void
-g_value_take_datetime (
-        GValue *,
-        LSQDateTime * );
+        LSQDateTime );
 
 
 G_END_DECLS
