@@ -1246,7 +1246,7 @@ lsq_archive_entry_get_child(const LSQArchiveEntry *entry, const gchar *filename)
 }
 
 static gint
-lsq_archive_entry_filename_compare(LSQArchiveEntry *a, LSQArchiveEntry *b)
+lsq_archive_entry_compare(LSQArchiveEntry *a, LSQArchiveEntry *b)
 {
 	return strcmp(a->filename, b->filename);
 }
@@ -1267,7 +1267,7 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 	}
 
 	//g_debug("i: %s", filename);
-	parent->buffer = lsq_btree_insert_sorted_single(parent->buffer, child, (GCompareFunc)lsq_archive_entry_filename_compare);
+	parent->buffer = lsq_btree_insert_sorted_single(parent->buffer, child, (GCompareFunc)lsq_archive_entry_compare);
 
 	/* Cache the length so we doen't have to check every time */
 	parent->buffer_length++;
@@ -1280,11 +1280,15 @@ lsq_archive_entry_add_child(LSQArchiveEntry *parent, const gchar *filename)
 	return child;
 }
 
+static gint
+lsq_archive_entry_filename_compare(const gchar *a_filename, LSQArchiveEntry *b)
+{
+	return strcmp(a_filename, b->filename);
+}
+
 static gboolean
 lsq_archive_entry_remove_child(LSQArchiveEntry *entry, const gchar *filename)
 {
-	LSQBTree *buffer_iter = NULL, **prev_iter = NULL;
-
 	/* the first element of the array (*entry->children) contains the size of the array */
 	guint total_size, size = total_size = entry->children?GPOINTER_TO_UINT(*entry->children):0;
 	guint pos = 0;
@@ -1292,6 +1296,7 @@ lsq_archive_entry_remove_child(LSQArchiveEntry *entry, const gchar *filename)
 	gint cmp = 0;
 	const gchar *_pos = strchr(filename, '/');
 	gchar *_filename;
+	LSQArchiveEntry *found = NULL;
 
 	if ( 0 != _pos )
 	{
@@ -1333,50 +1338,10 @@ lsq_archive_entry_remove_child(LSQArchiveEntry *entry, const gchar *filename)
 	}
 
 	/* search the buffer */
-        prev_iter = &entry->buffer;
-        if ( NULL == entry->buffer || NULL != entry->buffer->next )
-        {
-            for(buffer_iter = entry->buffer; buffer_iter; buffer_iter = buffer_iter->next)
-            {
-                cmp = strcmp(_filename, buffer_iter->entry->filename);
-
-                if ( 0 == cmp )
-                {
-                    g_free(_filename);
-                    *prev_iter = buffer_iter->next;
-                    g_free(buffer_iter);
-                    return TRUE;
-                }
-                if(cmp < 0)
-                    break;
-                prev_iter = &buffer_iter->next;
-            }
-        }
-        else
-        {
-            for ( buffer_iter = entry->buffer; NULL != buffer_iter; buffer_iter = *prev_iter )
-            {
-                /* archive can be NULL */
-                cmp = strcmp(filename, buffer_iter->entry->filename);
-
-                if ( cmp < 0 )
-                {
-                    prev_iter = &buffer_iter->left;
-                }
-                else if ( cmp > 0 )
-                {
-                    prev_iter = &buffer_iter->right;
-                }
-                else
-                {
-                    g_critical("todo");
-                    return TRUE;
-                }
-            }
-        }
+	entry->buffer = lsq_btree_remove_sorted_single(entry->buffer, _filename, (GCompareFunc)lsq_archive_entry_filename_compare, &found);
 
 	g_free(_filename);
-	return FALSE;
+	return NULL != found;
 }
 
 inline static const gchar*

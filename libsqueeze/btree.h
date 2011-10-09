@@ -33,6 +33,13 @@ lsq_btree_insert_sorted_single (
         LSQArchiveEntry *entry,
         GCompareFunc ) G_GNUC_INTERNAL;
 
+LSQBTree *
+lsq_btree_remove_sorted_single (
+        LSQBTree *list,
+        gchar *filename,
+        GCompareFunc cmp_func,
+        LSQArchiveEntry **found ) G_GNUC_INTERNAL;
+
 guint
 lsq_btree_length ( LSQBTree *list ) G_GNUC_INTERNAL;
 

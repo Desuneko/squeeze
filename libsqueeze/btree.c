@@ -234,6 +234,190 @@ lsq_btree_insert_sorted_single (
     return list;
 }
 
+LSQBTree *
+lsq_btree_remove_sorted_single (
+        LSQBTree *list,
+        gchar *filename,
+        GCompareFunc cmp_func,
+        LSQArchiveEntry **found )
+{
+    gint cmp;
+    LSQBTree *iter;
+    LSQBTree **next = &list;
+    LSQBTree *del_entry;
+    LSQBTree *stack[LSQ_BTREE_MAX_DEPTH];
+    guint stack_i = 0;
+    LSQBTree *swap_iter;
+    gboolean short_side;
+
+    if ( NULL != found )
+    {
+        *found = NULL;
+    }
+
+    /* The tree is flattened */
+    if ( NULL == list || NULL != list->next )
+    {
+        for ( iter = list; NULL != iter; iter = iter->next)
+        {
+            cmp = cmp_func( filename, iter->entry );
+
+            if ( 0 == cmp )
+            {
+                if ( NULL != found )
+                {
+                    *found = iter->entry;
+                }
+
+                /* remove it */
+                *next = iter->next;
+                g_free ( iter );
+                return list;
+            }
+            else if ( 0 > cmp )
+            {
+                return list;
+            }
+
+            next = &iter->next;
+        }
+    }
+    else
+    {
+        /* Walk the btree */
+        for ( iter = list; NULL != iter; iter = *next )
+        {
+            /* archive can be NULL */
+            cmp = cmp_func( filename, iter->entry );
+
+            if ( 0 > cmp )
+            {
+                /* Go the the left */
+                next = &iter->left;
+            }
+            else if ( 0 < cmp )
+            {
+                /* Go to the right */
+                next = &iter->right;
+            }
+            else
+            {
+                if ( NULL != found )
+                {
+                    *found = iter->entry;
+                }
+                break;
+            }
+
+            /* Keep a stack of the path we followed */
+            g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+            stack[stack_i++] = iter;
+        }
+
+        /* Not found */
+        if ( NULL == iter )
+        {
+            return list;
+        }
+
+        if ( NULL == iter->left )
+        {
+            *next = iter->right;
+            g_free ( iter );
+        }
+        else if ( NULL == iter->right )
+        {
+            *next = iter->left;
+            g_free ( iter );
+        }
+        else
+        {
+            /* Find either the most right or most left element in the tree and replace iter with it.
+             * We do this by replaceing the content of the iter, not the iter itself.
+             *
+             * We that the longest of the two paths, i the hope to be better balanced. */
+            
+            /* Keep a stack of the path we followed */
+            g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+            stack[stack_i++] = iter;
+
+            /* Right it the longest */
+            if ( 0 < iter->balance )
+            {
+                /* Go right */
+                for ( swap_iter = iter->right; NULL != swap_iter->left; swap_iter = *next )
+                {
+                    next = &swap_iter->left;
+
+                    /* Keep a stack of the path we followed */
+                    g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+                    stack[stack_i++] = iter;
+                }
+
+                /* remove the iter from the list */
+                *next = swap_iter->right;
+
+                /* copy the iter to our current location */
+                iter->entry = swap_iter->entry;
+
+                g_free ( swap_iter );
+            }
+            else
+            {
+                /* Go left */
+                for ( swap_iter = iter->right; NULL != iter->left; iter = iter->left )
+                {
+                    next = &swap_iter->right;
+
+                    /* Keep a stack of the path we followed */
+                    g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+                    stack[stack_i++] = iter;
+                }
+
+                /* remove the iter from the list */
+                *next = swap_iter->left;
+
+                /* copy the iter to our current location */
+                iter->entry = swap_iter->entry;
+
+                g_free ( swap_iter );
+            }
+        }
+
+        /* Get the new pointer for balancing */
+        del_entry = *next;
+
+        /* Balance the tree */
+        while ( 0 < stack_i )
+        {
+            iter = stack[--stack_i];
+
+            /* Calculate new the balance for the parent */
+            if ( iter->left == del_entry )
+            {
+                short_side = 0 <= iter->balance;
+                ++iter->balance;
+            }
+            else
+            {
+                short_side = 0 >= iter->balance;
+                --iter->balance;
+            }
+
+            /* The balance in the higher parents doesn't change when the short side changed */
+            if ( FALSE != short_side )
+            {
+                break;
+            }
+
+            /* Store ourself in new_entry for the check in the next parent */
+            del_entry = iter;
+        }
+    }
+
+    return list;
+}
+
 guint
 lsq_btree_length ( LSQBTree *list )
 {
