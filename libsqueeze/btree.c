@@ -133,47 +133,48 @@ lsq_btree_insert_sorted_single (
              *    /   \       |       /   \
              *  D:1   E:3     |     E:3   C:5
              */
-            /* Swap the data */
             swap_iter = iter->right;
-            swap_entry = iter->entry;
-            iter->entry = swap_iter->entry;
-            swap_iter->entry = swap_entry;
-
-            /* Reformat the tree links */
-            iter->right = swap_iter->right;
-            swap_iter->right = swap_iter->left;
-            swap_iter->left = iter->left;
-            iter->left = swap_iter;
-
-            /* Fix the balance values
-             *
-             * if B > 0
-             *   A = A - 1 - B
-             * else
-             *   A = A - 1
-             *
-             * diff = A - 1 - B
-             * if diff < 0
-             *   B = B - 1 + diff
-             * else
-             *   B = B - 1
-             */
             swap_balance = swap_iter->balance;
-            swap_iter->balance = iter->balance - 1;
+            /* Only balance if it helps */
             if ( 0 < swap_balance )
             {
-                swap_iter->balance -= swap_balance;
-            }
-            iter->balance = iter->balance - 1 - swap_balance;
-            if ( 0 < iter->balance )
-            {
-                iter->balance = 0;
-            }
-            iter->balance += swap_balance - 1;
+                /* Swap the data */
+                swap_entry = iter->entry;
+                iter->entry = swap_iter->entry;
+                swap_iter->entry = swap_entry;
 
-            /* We added a child so our depth was increased, but we also saved depth by rotation so our parents depth stays the same */
-            if ( 0 < swap_balance )
-            {
+                /* Reformat the tree links */
+                iter->right = swap_iter->right;
+                swap_iter->right = swap_iter->left;
+                swap_iter->left = iter->left;
+                iter->left = swap_iter;
+
+                /* Fix the balance values
+                 *
+                 * if B > 0
+                 *   A = A - 1 - B
+                 * else
+                 *   A = A - 1
+                 *
+                 * diff = A - 1 - B
+                 * if diff < 0
+                 *   B = B - 1 + diff
+                 * else
+                 *   B = B - 1
+                 */
+                swap_iter->balance = iter->balance - 1;
+                if ( 0 < swap_balance )
+                {
+                    swap_iter->balance -= swap_balance;
+                }
+                iter->balance = iter->balance - 1 - swap_balance;
+                if ( 0 < iter->balance )
+                {
+                    iter->balance = 0;
+                }
+                iter->balance += swap_balance - 1;
+
+                /* We added a child so our depth was increased, but we also saved depth by rotation so our parents depth stays the same */
                 break;
             }
         }
@@ -183,47 +184,48 @@ lsq_btree_insert_sorted_single (
             /* The code could be easier if we would just overwrite our parent left or right value.
              * But instead we move that data from our left to our self and use the left tree link to be placed in the tree as if it was ourself.
              */
-            /* Swap the data */
             swap_iter = iter->left;
-            swap_entry = iter->entry;
-            iter->entry = swap_iter->entry;
-            swap_iter->entry = swap_entry;
-
-            /* Reformat the tree links */
-            iter->left = swap_iter->left;
-            swap_iter->left = swap_iter->right;
-            swap_iter->right = iter->right;
-            iter->right = swap_iter;
-
-            /* Fix the balance values
-             *
-             * if B < 0
-             *   A = A + 1 - B
-             * else
-             *   A = A + 1
-             *
-             * diff = A + 1 - B
-             * if diff > 0
-             *   B = B + 1 + diff
-             * else
-             *   B = B + 1
-             */
             swap_balance = swap_iter->balance;
-            swap_iter->balance = iter->balance + 1;
+            /* Only balance if it helps */
             if ( 0 > swap_balance )
             {
-                swap_iter->balance -= swap_balance;
-            }
-            iter->balance = iter->balance + 1 - swap_balance;
-            if ( 0 > iter->balance )
-            {
-                iter->balance = 0;
-            }
-            iter->balance += swap_balance + 1;
+                /* Swap the data */
+                swap_entry = iter->entry;
+                iter->entry = swap_iter->entry;
+                swap_iter->entry = swap_entry;
 
-            /* We added a child so our depth was increased, but we also saved depth by rotation so our parents depth stays the same */
-            if ( 0 > swap_balance )
-            {
+                /* Reformat the tree links */
+                iter->left = swap_iter->left;
+                swap_iter->left = swap_iter->right;
+                swap_iter->right = iter->right;
+                iter->right = swap_iter;
+
+                /* Fix the balance values
+                 *
+                 * if B < 0
+                 *   A = A + 1 - B
+                 * else
+                 *   A = A + 1
+                 *
+                 * diff = A + 1 - B
+                 * if diff > 0
+                 *   B = B + 1 + diff
+                 * else
+                 *   B = B + 1
+                 */
+                swap_iter->balance = iter->balance + 1;
+                if ( 0 > swap_balance )
+                {
+                    swap_iter->balance -= swap_balance;
+                }
+                iter->balance = iter->balance + 1 - swap_balance;
+                if ( 0 > iter->balance )
+                {
+                    iter->balance = 0;
+                }
+                iter->balance += swap_balance + 1;
+
+                /* We added a child so our depth was increased, but we also saved depth by rotation so our parents depth stays the same */
                 break;
             }
         }
