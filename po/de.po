@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-24 04:07+0000\n"
+"POT-Creation-Date: 2011-10-30 11:04+0000\n"
 "PO-Revision-Date: 2008-08-21 21:46+0200\n"
 "Last-Translator: Fabian Nowak <timstery@arcor.de>\n"
 "Language-Team: German <xfce-i18n@xfce.org>\n"
@@ -44,7 +44,9 @@ msgstr "Archivmanager Squeeze"
 #. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Konnte das Archiv nicht öffnen, da der MIME-Typ nicht unterstützt wird oder die Datei nicht existiert."
+msgstr ""
+"Konnte das Archiv nicht öffnen, da der MIME-Typ nicht unterstützt wird oder "
+"die Datei nicht existiert."
 
 #: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
 msgid ""
@@ -58,7 +60,8 @@ msgstr ""
 #. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "Konnte das Archiv nicht erstellen, da der MIME-Typ nicht unterstützt wird."
+msgstr ""
+"Konnte das Archiv nicht erstellen, da der MIME-Typ nicht unterstützt wird."
 
 #: ../src/application.c:269 ../src/main_window.c:891
 msgid ""
@@ -106,12 +109,10 @@ msgid "Sort text case sensitive"
 msgstr "Großbuchstaben beim Sortieren beachten"
 
 #: ../src/button_drag_box.c:85
-#, fuzzy
 msgid "Visible:"
 msgstr "Sichtbar:"
 
 #: ../src/button_drag_box.c:96
-#, fuzzy
 msgid "Available:"
 msgstr "Verfügbar:"
 
@@ -167,7 +168,8 @@ msgid ""
 "Try %s --help to see a full list of available command line options.\n"
 msgstr ""
 "%s: %s\n"
-"Versuchen Sie %s --help, um eine komplette Liste der möglichen Befehlszeilen-Optionen zu sehen .\n"
+"Versuchen Sie %s --help, um eine komplette Liste der möglichen Befehlszeilen-"
+"Optionen zu sehen .\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -291,11 +293,16 @@ msgstr "Symbole fürs Hinzufügen/Entpacken:"
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Basiert auf dem originalen Entpacken-Symbol (erstellt von Andreas Nilsson)"
+msgstr ""
+"Basiert auf dem originalen Entpacken-Symbol (erstellt von Andreas Nilsson)"
 
 #: ../src/main_window.c:1130
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "Squeeze ist ein schlanker und flexibler Archivmanager für die Xfce-Arbeitsumgebung"
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr ""
+"Squeeze ist ein schlanker und flexibler Archivmanager für die Xfce-"
+"Arbeitsumgebung"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1138
@@ -370,7 +377,7 @@ msgstr "Der Abstand zwischen den Pfadknöpfen"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "All_gemein"
 
 #: ../src/preferences_dialog.c:88
 msgid "Archive viewer:"
@@ -386,7 +393,6 @@ msgid "_Rules Hint"
 msgstr "Regelhinweis"
 
 #: ../src/preferences_dialog.c:103
-#, fuzzy
 msgid "Sorting:"
 msgstr "Sortierung:"
 
@@ -399,9 +405,8 @@ msgid "Sort _Folders First"
 msgstr "_Verzeichnisse vor Dateien sortieren"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Navigations-Stil"
+msgstr "Navigationsleiste:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
