@@ -115,7 +115,7 @@ msgstr "可用："
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
-msgstr "<b>解压缩文件：</b>"
+msgstr "<b>解压文件：</b>"
 
 #: ../src/extract_dialog.c:77
 msgid "<b>Options:</b>"
@@ -132,11 +132,11 @@ msgstr "选中的文件"
 #: ../src/extract_dialog.c:101 ../src/main_window.c:457
 #: ../src/main_window.c:1255
 msgid "Extract"
-msgstr "解压缩"
+msgstr "解压"
 
 #: ../src/extract_dialog.c:114
 msgid "Extract archive"
-msgstr "解压缩归档文件"
+msgstr "解压归档文件"
 
 #: ../src/main.c:53
 msgid "[destination path]"
@@ -211,7 +211,7 @@ msgstr "添加文件夹(_A _f)"
 
 #: ../src/main_window.c:346
 msgid "_Extract"
-msgstr "解压缩(_E)"
+msgstr "解压(_E)"
 
 #. View menu
 #: ../src/main_window.c:379
@@ -285,11 +285,11 @@ msgstr "应用程序图标："
 
 #: ../src/main_window.c:1122
 msgid "Add / Extract icons:"
-msgstr "添加/解压缩图标："
+msgstr "添加/解压图标："
 
 #: ../src/main_window.c:1123
 msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "基于 Andreas Nilsson 创建的原解压缩图标"
+msgstr "基于 Andreas Nilsson 创建的原解压图标"
 
 #: ../src/main_window.c:1130
 msgid ""
@@ -345,7 +345,7 @@ msgstr "归档文件管理器"
 
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
-msgstr "归档类型："
+msgstr "归档文件类型："
 
 #: ../src/new_dialog.c:82
 msgid "Archives"
