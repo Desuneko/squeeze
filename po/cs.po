@@ -1,646 +1,581 @@
-# Czech translation of the squeeze package.
-# Copyright (C) 2006-2007 Stephan Arts.
-# This file is distributed under the same license as the squeeze package.
-# Michal Várady <miko.vaji@gmail.com>, 2006-2008.
+# Czech translation of the xfce4-dict-plugin package.
+# Copyright (C) 2006-2007 Enrico Tröger
+# This file is distributed under the same license as the xfce4-dict-plugin package.
+# Michal Várady <miko.vaji@gmail.com>, 2006-2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
-"PO-Revision-Date: 2008-12-22 21:30+0100\n"
+"Project-Id-Version: xfce4-dict 0.5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-12-18 09:39+0000\n"
+"PO-Revision-Date: 2011-12-18 12:01+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <xfce-i18n@xfce.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../libsqueeze/archive.c:272
-msgid "Name"
-msgstr "Název"
+#: ../panel-plugin/xfce4-dict-plugin.desktop.in.in.h:1
+msgid "A plugin to query different dictionaries."
+msgstr "Zásuvný modul pro získávání dat za slovníků."
 
-#: ../libsqueeze/archive.c:274
-msgid "Mime type"
-msgstr "Typ MIME"
+#: ../panel-plugin/xfce4-dict-plugin.desktop.in.in.h:2
+#: ../src/xfce4-dict.desktop.in.h:2
+#: ../lib/gui.c:734
+#: ../lib/prefs.c:270
+msgid "Dictionary"
+msgstr "Slovník"
 
-#: ../squeeze.desktop.in.h:1
-msgid "Archive Manager"
-msgstr "Správce archivů"
+#: ../panel-plugin/xfce4-dict-plugin.c:347
+#: ../panel-plugin/xfce4-dict-plugin.c:473
+#: ../src/xfce4-dict.c:200
+#: ../lib/spell.c:243
+#: ../lib/gui.c:517
+msgid "Ready"
+msgstr "Připraven"
 
-#: ../squeeze.desktop.in.h:2
-msgid "Create and manage archives with the archive manager"
-msgstr "Vytváří a spravuje archivy správcem archivů"
+#: ../panel-plugin/xfce4-dict-plugin.c:413
+msgid "Look up a word"
+msgstr "Vyhledat slovo"
 
-#: ../squeeze.desktop.in.h:3
-msgid "Squeeze Archive Manager"
-msgstr "Správce archivů Squeeze"
+#: ../panel-plugin/xfce4-dict-plugin.c:444
+#: ../lib/gui.c:758
+msgid "Search term"
+msgstr "Hledat pojem"
 
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:160 ../src/application.c:251
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "Nelze otevřít archiv, typ MIME není podporován nebo soubor neexistuje"
+#: ../src/xfce4-dict.c:51
+msgid "Search the given text using a Dict server(RFC 2229)"
+msgstr "Hledat zadaný text pomocí serveru Dict (RFC 2229)"
 
-#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
-msgid ""
-"Squeeze cannot extract this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Aplikace Squeeze nemůže rozbalit archiv tohoto typu,\n"
-"potřebná aplikace není dostupná."
+#: ../src/xfce4-dict.c:52
+msgid "Search the given text using a web-based search engine"
+msgstr "Hledat zadaný text pomocí enginu založeného na webovém vyhledávání"
 
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:234
-msgid "Could not create archive, MIME-type unsupported"
-msgstr "Nelze vytvořit archiv, Typ MIME není podporován"
+#: ../src/xfce4-dict.c:53
+msgid "Check the given text with a spell checker"
+msgstr "Zkontrolovat zadaný text kontrolou pravopisu"
 
-#: ../src/application.c:269 ../src/main_window.c:891
-msgid ""
-"Squeeze cannot add files to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Aplikace Squeeze nemůže přidat soubory do archivu tohoto typu,\n"
-"potřebná aplikace není dostupná."
+#: ../src/xfce4-dict.c:54
+msgid "Grab the focus on the text field in the panel"
+msgstr "Umístit kurzor do textového pole v panelu"
 
-#: ../src/archive_store.c:250 ../src/notebook.c:181
-msgid "Show full path"
-msgstr "Zobrazit celou cestu"
+#: ../src/xfce4-dict.c:55
+msgid "Start stand-alone application even if the panel plugin is loaded"
+msgstr "Spustit samostatnou aplikaci přestože je spuštěn zásuvný modul panelu"
 
-#: ../src/archive_store.c:251 ../src/notebook.c:182
-msgid "Show the full path strings for each entry"
-msgstr "Zobrazí celou cestou pro každou položku"
+#: ../src/xfce4-dict.c:56
+msgid "Grabs the PRIMARY selection content and uses it as search text"
+msgstr "Použije obsah PRIMÁRNÍHO výběru pro hledání"
 
-#: ../src/archive_store.c:257 ../src/notebook.c:188
-msgid "Show mime icons"
-msgstr "Zobrazit ikony typu MIME"
+#: ../src/xfce4-dict.c:57
+msgid "Be verbose"
+msgstr "Podrobný výpis"
 
-#: ../src/archive_store.c:258 ../src/notebook.c:189
-msgid "Show the mime type icons for each entry"
-msgstr "Zobrazit ikony typu MIME pro každou položku"
+#: ../src/xfce4-dict.c:58
+msgid "Show version information"
+msgstr "Zobrazí informaci o verzi"
 
-#: ../src/archive_store.c:264
-msgid "Show up dir entry"
-msgstr "Zobrazit položku pro nadřazený adresář"
+#: ../src/xfce4-dict.c:131
+msgid "[TEXT]"
+msgstr "[TEXT]"
 
-#: ../src/archive_store.c:265
-msgid "Show '..' to go to the parent directory"
-msgstr "Zobrazit '..' pro přechod do adresáře vyšší úrovně"
-
-#: ../src/archive_store.c:271 ../src/notebook.c:195
-msgid "Sort folders before files"
-msgstr "Zařadit složky před soubory"
-
-#: ../src/archive_store.c:272 ../src/notebook.c:196
-msgid "The folders will be put at the top of the list"
-msgstr "Složky budou umístěny na začátku seznamu"
-
-#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
-#: ../src/notebook.c:203
-msgid "Sort text case sensitive"
-msgstr "Rozlišovat velikost písmen při řazení"
-
-#: ../src/button_drag_box.c:85
-msgid "Visible:"
-msgstr "Viditelné:"
-
-#: ../src/button_drag_box.c:96
-msgid "Available:"
-msgstr "Dostupné:"
-
-#: ../src/extract_dialog.c:76
-msgid "<b>Extract files:</b>"
-msgstr "<b>Rozbalit soubory:</b>"
-
-#: ../src/extract_dialog.c:77
-msgid "<b>Options:</b>"
-msgstr "<b>Volby:</b>"
-
-#: ../src/extract_dialog.c:88
-msgid "All files"
-msgstr "Všechny soubory"
-
-#: ../src/extract_dialog.c:89
-msgid "Selected files"
-msgstr "Vybrané soubory"
-
-#: ../src/extract_dialog.c:101 ../src/main_window.c:457
-#: ../src/main_window.c:1255
-msgid "Extract"
-msgstr "Rozbalit"
-
-#: ../src/extract_dialog.c:114
-msgid "Extract archive"
-msgstr "Rozbalit archiv"
-
-#: ../src/main.c:53
-msgid "[destination path]"
-msgstr "[cílová cesta]"
-
-#: ../src/main.c:61
-msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr "[cesta archivu] [soubor1] [soubor2] ... [souborN]"
-
-#: ../src/main.c:65
-msgid "[file1] [file2] ... [fileN]"
-msgstr "[soubor1] [soubor2] ... [souborN]"
-
-#: ../src/main.c:68
-msgid "Version information"
-msgstr "Informace o verzi"
-
-#: ../src/main.c:98
-msgid "[archive name]"
-msgstr "[název archivu]"
-
-#: ../src/main.c:102
+#: ../src/xfce4-dict.c:147
 #, c-format
+msgid "Please report bugs to <%s>."
+msgstr "Prosíme, abyste chyby hlásili na adresu <%s>."
+
+#: ../src/xfce4-dict.desktop.in.h:1
+#: ../lib/gui.c:957
+msgid "A client program to query different dictionaries."
+msgstr "Klientský program pro získávání dat z různých slovníků."
+
+#: ../src/xfce4-dict.desktop.in.h:3
+msgid "Dictionary Client"
+msgstr "Klient slovníku"
+
+#: ../lib/spell.c:75
+msgid "Spell Checker Results:"
+msgstr "Výsledky kontroly pravopisu:"
+
+#: ../lib/spell.c:101
+#, c-format
+msgid "%d suggestion found."
+msgid_plural "%d suggestions found."
+msgstr[0] "Nalezena %d definice."
+msgstr[1] "Nalezeny %d definice."
+msgstr[2] "Nalezeno %d definicí."
+
+#: ../lib/spell.c:105
+#, c-format
+msgid "Suggestions for \"%s\" (%s):"
+msgstr "Návrhy pro řetězec „%s“ (%s):"
+
+#: ../lib/spell.c:122
+#, c-format
+msgid "\"%s\" is spelled correctly (%s)."
+msgstr "Výraz „%s“ je zapsán správně (%s)."
+
+#: ../lib/spell.c:134
+#, c-format
+msgid "No suggestions could be found for \"%s\" (%s)."
+msgstr "Pro řetězec „%s“ nebyly nalezeny žádné návrhy (%s)."
+
+#. translation hint:
+#. * Error while executing <spell command, e.g. "aspell"> (<error message>)
+#: ../lib/spell.c:164
+#, c-format
+msgid "Error while executing \"%s\" (%s)."
+msgstr "Chyba při spouštění „%s“ (%s)."
+
+#: ../lib/spell.c:202
+msgid "Please set the spell check command in the preferences dialog."
+msgstr "Nastavte příkaz pro kontrolu pravopisu v dialogovém okně Předvolby."
+
+#: ../lib/spell.c:208
+#: ../lib/common.c:224
+msgid "Invalid input"
+msgstr "Neplatný vstup"
+
+#: ../lib/spell.c:247
+#, c-format
+msgid "Process failed (%s)"
+msgstr "Proces skončil chybou (%s)"
+
+#: ../lib/speedreader.c:80
+#: ../lib/speedreader.c:683
+msgid "P_ause"
+msgstr "Po_zastavit"
+
+#: ../lib/speedreader.c:81
+msgid "_Resume"
+msgstr "_Pokračovat"
+
+#: ../lib/speedreader.c:263
+msgid "Running"
+msgstr "Spuštěno"
+
+#: ../lib/speedreader.c:266
+msgid "Finished"
+msgstr "Dokončeno"
+
+#: ../lib/speedreader.c:274
+msgid "Speed Reader"
+msgstr "Rychločtení"
+
+#: ../lib/speedreader.c:369
+msgid "You must enter a text."
+msgstr "Zadejte text."
+
+#: ../lib/speedreader.c:506
+msgid "Choose a file to load"
+msgstr "Zvolte soubor pro načtení"
+
+#: ../lib/speedreader.c:535
+#, c-format
+msgid "The file '%s' could not be loaded."
+msgstr "Soubor '%s' nelze načíst."
+
+#: ../lib/speedreader.c:561
+#, c-format
+msgid "(display %d word at a time)"
+msgid_plural "(display %d words at a time)"
+msgstr[0] "(zobrazit %d slovo najednou)"
+msgstr[1] "(zobrazit %d slova najednou)"
+msgstr[2] "(zobrazit %d slov najednou)"
+
+#: ../lib/speedreader.c:586
+msgid "This is an easy speed reading utility to help train you to read faster. It does this by flashing words at a rapid rate on the screen."
+msgstr "Toto je jednoduchý nástroj pro rychločtení, který vám pomůže se cvičením rychlého čtení. Pracuje na principu rychle se zobrazujících slov na obrazovce."
+
+#: ../lib/speedreader.c:589
+msgid "_Words per Minute:"
+msgstr "_Slov za minutu:"
+
+#: ../lib/speedreader.c:595
+msgid "_Mark Paragraphs"
+msgstr "_Označovat odstavce"
+
+#: ../lib/speedreader.c:602
+msgid "Word _Grouping:"
+msgstr "Ses_kupování slov:"
+
+#: ../lib/speedreader.c:618
+msgid "_Font Size:"
+msgstr "_Velikost písma:"
+
+#: ../lib/speedreader.c:638
 msgid ""
-"%s: %s\n"
-"Try %s --help to see a full list of available command line options.\n"
+"Enter some text here you would like to read.\n"
+"\n"
+"Be relaxed and make yourself comfortable, then press Start to begin speed reading."
 msgstr ""
-"%s: %s\n"
-"Úplný seznam dostupných voleb příkazové řádky získáte příkazem %s --help.\n"
+"Zadejte text, který chcete číst.\n"
+"\n"
+"Uvolněte se, pohodlně se usaďte a poté stiksněte tlačítko Start pro spuštění rychločtení."
 
-#: ../src/main_window.c:134
-msgid "Internal Style"
-msgstr "Vnitřní styl"
+#: ../lib/speedreader.c:654
+msgid "Load the contents of a file"
+msgstr "Načíst obsah ze souboru"
 
-#: ../src/main_window.c:136
-msgid "Tool Bar Style"
-msgstr "Styl panelu nástrojů"
+#: ../lib/speedreader.c:663
+msgid "Clear the contents of the text field and paste the contents of the clipboard"
+msgstr "Vymazat obsah textového pole a vložit obsah schránky"
 
-#: ../src/main_window.c:139
-msgid "Path Bar Style"
-msgstr "Styl panelu cesty"
+#: ../lib/speedreader.c:671
+msgid "Clear the contents of the text field"
+msgstr "Vymazat obsah textového pole"
 
-#: ../src/main_window.c:187
-msgid "Navigation Style"
-msgstr "Styl navigace"
+#: ../lib/speedreader.c:684
+msgid "_Start"
+msgstr "_Spustit"
 
-#: ../src/main_window.c:188
-msgid ""
-"Style of navigation\n"
-"The style to navigate trough the archive"
-msgstr ""
-"Styl navigace\n"
-"Styl navigace archivem"
+#: ../lib/common.c:189
+msgid "The search URL is empty. Please check your preferences."
+msgstr "Adresa URL pro vyhladávání je prázdná. Ověřte nastavení."
 
-#. File menu
-#: ../src/main_window.c:301
+#: ../lib/common.c:195
+msgid "Browser could not be opened. Please check your preferences."
+msgstr "Nelze otevřít prohlížeč. Ověřte nastavení."
+
+#: ../lib/common.c:234
+msgid "Invalid non-UTF8 input"
+msgstr "Neplatný vstup v kódování jiném než UTF8"
+
+#: ../lib/common.c:608
+msgid "Error"
+msgstr "Chyba"
+
+#: ../lib/common.c:611
+msgid "warning"
+msgstr "varování"
+
+#: ../lib/dictd.c:379
+#: ../lib/dictd.c:698
+#: ../lib/dictd.c:707
+#: ../lib/dictd.c:795
+#: ../lib/dictd.c:804
+msgid "Could not connect to server."
+msgstr "Nelze se připojit k serveru"
+
+#: ../lib/dictd.c:385
+msgid "The server is not ready."
+msgstr "Server není připraven."
+
+#: ../lib/dictd.c:392
+msgid "Invalid dictionary specified. Please check your preferences."
+msgstr "Zvolili jste naplatný slovník. Ověřte nastavení."
+
+#: ../lib/dictd.c:400
+#: ../lib/dictd.c:456
+#: ../lib/dictd.c:829
+msgid "Unknown error while querying the server."
+msgstr "Při dotazu na server nastala neznámá chyba."
+
+#: ../lib/dictd.c:415
+msgid "Dictionary Results:"
+msgstr "Výsledky slovníku:"
+
+#: ../lib/dictd.c:418
+#, c-format
+msgid "No matches could be found for \"%s\"."
+msgstr "Pro „%s“ nebyly nalezeny žádné shody."
+
+#. for translators: the first wildcard is the search term, the second wildcard
+#. * is the name of the preferred web search engine
+#: ../lib/dictd.c:434
+#, c-format
+msgid "Search \"%s\" using \"%s\""
+msgstr "Hledat „%s“ pomocí „%s“"
+
+#: ../lib/dictd.c:439
+msgid "Web Search:"
+msgstr "Hledání na webu:"
+
+#: ../lib/dictd.c:461
+#, c-format
+msgid "%d definition found."
+msgid_plural "%d definitions found."
+msgstr[0] "Nalezena %d definice."
+msgstr[1] "Nalezeny %d definice."
+msgstr[2] "Nalezeno %d definicí."
+
+#: ../lib/dictd.c:669
+#, c-format
+msgid "Querying %s..."
+msgstr "Posílám dotaz na server %s..."
+
+#: ../lib/dictd.c:728
+msgid "An error occured while querying server information."
+msgstr "Při dotazu na informaci serveru nastala neznámá chyba."
+
+#: ../lib/dictd.c:741
+#, c-format
+msgid "Server Information for \"%s\""
+msgstr "Informace serveru pro „%s“"
+
+#: ../lib/dictd.c:824
+msgid "The server doesn't offer any databases."
+msgstr "Server nenabízí žádné databáze."
+
+#: ../lib/gui.c:344
+msgid "Copy Link"
+msgstr "Kopírovat odkaz"
+
+#: ../lib/gui.c:672
 msgid "_File"
 msgstr "_Soubor"
 
-#. Action menu: ref all the childs
-#: ../src/main_window.c:329
-msgid "_Action"
-msgstr "_Akce"
+#: ../lib/gui.c:677
+#: ../lib/gui.c:782
+msgid "Speed _Reader"
+msgstr "_Rychločtení"
 
-#: ../src/main_window.c:334
-msgid "_Add files"
-msgstr "_Přidat soubory"
-
-#: ../src/main_window.c:340
-msgid "_Add _folders"
-msgstr "Přidat _složky"
-
-#: ../src/main_window.c:346
-msgid "_Extract"
-msgstr "_Rozbalit"
-
-#. View menu
-#: ../src/main_window.c:379
-msgid "_View"
-msgstr "_Zobrazit"
-
-#. Help menu
-#: ../src/main_window.c:403
+#: ../lib/gui.c:698
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: ../src/main_window.c:449 ../src/main_window.c:866
-msgid "Add files"
-msgstr "Přidat soubory"
+#: ../lib/gui.c:803
+msgid "Search with:"
+msgstr "Hledat pomocí:"
 
-#: ../src/main_window.c:453 ../src/main_window.c:913
-msgid "Add folders"
-msgstr "Přidat složky"
+#: ../lib/gui.c:807
+msgid "_Dictionary Server"
+msgstr "_Server slovníku"
 
-#: ../src/main_window.c:731
-msgid "Open archive in new window"
-msgstr "Otevřít archiv v novém okně"
+#: ../lib/gui.c:813
+msgid "_Web Service"
+msgstr "_Webová služba"
 
-#: ../src/main_window.c:737
-msgid "Open archive"
-msgstr "Otevřít archiv"
+#: ../lib/gui.c:821
+msgid "_Spell Checker"
+msgstr "_Kontrola pravopisu"
 
-#: ../src/main_window.c:938
-msgid ""
-"Squeeze cannot add folders to this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Aplikace Squeeze nemůže přidat složky do archivu\n"
-"tohoto typu, potřebná aplikace není dostupná."
+#: ../lib/gui.c:949
+msgid "Xfce4 Dictionary"
+msgstr "Slovník Xfce4"
 
-#: ../src/main_window.c:962
-msgid "Are you sure you want to remove the selected files?"
-msgstr "Opravdu chcete odstranit vybrané soubory?"
+#: ../lib/gui.c:958
+msgid "Copyright © 2006-2011 Enrico Tröger"
+msgstr "Copyright © 2006-2011 Enrico Tröger"
 
-#: ../src/main_window.c:978
-msgid ""
-"Squeeze cannot remove files from this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"Aplikace Squeeze nemůže odstranit soubory z archivu tohoto typu,\n"
-"potřebná aplikace není dostupná."
-
-#: ../src/main_window.c:1029
-msgid ""
-"Are you sure you want to cancel this operation?\n"
-"This could damage the archive."
-msgstr ""
-"Opravdu chcete zrušit tuto operaci?\n"
-"Tímto můžete poškodit archiv."
-
-#: ../src/main_window.c:1111
-msgid "Lead developer:"
-msgstr "Vedoucí vývojář:"
-
-#: ../src/main_window.c:1114
-msgid "Contributors:"
-msgstr "Přispěvatelé:"
-
-#: ../src/main_window.c:1117
-msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr "Inspirováno aplikací Xarchiver od Giuseppe Torelliho"
-
-#: ../src/main_window.c:1119
-msgid "Application Icon:"
-msgstr "Ikona aplikace:"
-
-#: ../src/main_window.c:1122
-msgid "Add / Extract icons:"
-msgstr "Přidat nebo odebrat ikony:"
-
-#: ../src/main_window.c:1123
-msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "Založeno na původní rozbalovací ikoně, kterou vytvořil Andreas Nilsson"
-
-#: ../src/main_window.c:1130
-msgid ""
-"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
-"Environment"
-msgstr "Squeeze je odlehčený a pružný správce archivů pro prostředí Xfce."
-
-#. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1138
+#: ../lib/gui.c:961
 msgid "translator-credits"
 msgstr "Michal Várady <miko.vaji@gmail.com>"
 
-#: ../src/main_window.c:1172 ../src/main_window.c:1244
-#: ../src/main_window.c:1403
-msgid "Done"
-msgstr "Hotovo"
+#: ../lib/prefs.c:55
+msgid "dict.leo.org - German <-> English"
+msgstr "dict.leo.org - Němčina <-> Angličtina"
 
-#: ../src/main_window.c:1254
-msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "Jakou akci si přejete provést na vybraných souborech?"
+#: ../lib/prefs.c:56
+msgid "dict.leo.org - German <-> French"
+msgstr "dict.leo.org - Němčina <-> Francouzština"
 
-#: ../src/main_window.c:1255
-msgid "Open"
-msgstr "Otevřít"
+#: ../lib/prefs.c:57
+msgid "dict.leo.org - German <-> Spanish"
+msgstr "dict.leo.org - Němčina <-> Španělstina"
 
-#: ../src/main_window.c:1274
+#: ../lib/prefs.c:58
+msgid "dict.leo.org - German <-> Italian"
+msgstr "dict.leo.org - Němčina <-> Italština"
+
+#: ../lib/prefs.c:59
+msgid "dict.leo.org - German <-> Chinese"
+msgstr "dict.leo.org - Němčina <-> Čínština"
+
+#: ../lib/prefs.c:60
+msgid "dist.cc - Dictionary"
+msgstr "dist.cc - Slovník"
+
+#: ../lib/prefs.c:61
+msgid "Dictionary.com"
+msgstr "Dictionary.com"
+
+#: ../lib/prefs.c:62
+msgid "TheFreeDictionary.com"
+msgstr "TheFreeDictionary.com"
+
+#: ../lib/prefs.c:63
+msgid "Wikipedia, the free encyclopedia (EN)"
+msgstr "Wikipedie, otevřená encyklopedie (EN)"
+
+#: ../lib/prefs.c:64
+msgid "Wiktionary, the free dictionary (EN)"
+msgstr "Wikislovník, slovník s otevřeným obsahem (EN)"
+
+#: ../lib/prefs.c:65
+msgid "Merriam-Webster Online Dictionary"
+msgstr "Online slovník Merriam-Webster"
+
+#: ../lib/prefs.c:66
+msgid "Clear"
+msgstr "Čistý"
+
+#: ../lib/prefs.c:101
+msgid "You have chosen an invalid dictionary."
+msgstr "Zvolili jste neplatný slovník."
+
+#: ../lib/prefs.c:303
+msgid "General"
+msgstr "Obecné"
+
+#: ../lib/prefs.c:305
+msgid "<b>Default search method:</b>"
+msgstr "<b>Výchozí metoda pro hledání:</b>"
+
+#: ../lib/prefs.c:311
+#: ../lib/prefs.c:472
+msgid "Dictionary Server"
+msgstr "Server slovníku"
+
+#: ../lib/prefs.c:320
+#: ../lib/prefs.c:593
+msgid "Web Service"
+msgstr "Webová služba"
+
+#: ../lib/prefs.c:329
+#: ../lib/prefs.c:643
+msgid "Spell Checker"
+msgstr "Kontrola pravopisu"
+
+#: ../lib/prefs.c:338
+msgid "Last used method"
+msgstr "Poslední použitá metoda"
+
+#: ../lib/prefs.c:347
+msgid "<b>Colors:</b>"
+msgstr "<b>Barvy:</b>"
+
+#: ../lib/prefs.c:353
+msgid "Links:"
+msgstr "Odkazy:"
+
+#: ../lib/prefs.c:354
+msgid "Phonetics:"
+msgstr "Výslovnost:"
+
+#: ../lib/prefs.c:355
+msgid "Spelled correctly:"
+msgstr "Správná výslovnost:"
+
+#: ../lib/prefs.c:356
+msgid "Spelled incorrectly:"
+msgstr "Nesprávná výslovnost:"
+
+#: ../lib/prefs.c:416
+msgid "<b>Panel Text Field:</b>"
+msgstr "<b>Textové pole panelu:</b>"
+
+#: ../lib/prefs.c:422
+msgid "Show text field in the panel"
+msgstr "Zobrazit textové pole v panelu"
+
+#. panel entry size
+#: ../lib/prefs.c:429
+msgid "Text field size:"
+msgstr "Velikost textového pole:"
+
+#. server address
+#: ../lib/prefs.c:475
+msgid "Server:"
+msgstr "Server:"
+
+#. server port
+#: ../lib/prefs.c:487
+msgid "Server Port:"
+msgstr "Port serveru:"
+
+#. dictionary
+#: ../lib/prefs.c:495
+#: ../lib/prefs.c:668
+msgid "Dictionary:"
+msgstr "Slovník:"
+
+#: ../lib/prefs.c:499
+msgid "* (use all)"
+msgstr "* (použít vše)"
+
+#: ../lib/prefs.c:501
+msgid "! (use all, stop after first match)"
+msgstr "! (použít vše, zastavit při první shodě)"
+
+#: ../lib/prefs.c:595
+msgid "<b>Web search URL:</b>"
+msgstr "<b>Hledání na webové stránce URL:</b>"
+
+#: ../lib/prefs.c:601
+msgid "URL:"
+msgstr "Adresa URL:"
+
+#: ../lib/prefs.c:621
+msgid "Enter the URL of a web site which offers translation or dictionary services. Use {word} as placeholder for the searched word."
+msgstr "Zadejte adresu URL webové stránky, která nabízí překlady nebo slovníkové služby. Použijte {word} jako zástupný řetězec pro hledané slovo."
+
+#: ../lib/prefs.c:645
+msgid "Spell Check Program:"
+msgstr "Aplikace pro kontrolu pravopisu:"
+
+#: ../lib/prefs.c:662
 msgid ""
-"Squeeze cannot view this file.\n"
-"the application to support this is missing."
+"<i>The spell check program can be 'enchant', 'aspell', 'ispell' or any other spell check program which is compatible to the ispell command.\n"
+"The icon shows whether the entered command exists.</i>"
 msgstr ""
-"Aplikace Squeeze nemůže zobrazit tento soubor.\n"
-"potřebná aplikace není dostupná."
-
-#: ../src/main_window.c:1341
-msgid "Failed to open file"
-msgstr "Nepodařilo se otevřít soubor"
-
-#: ../src/main_window.c:1342
-#, c-format
-msgid ""
-"'%s'\n"
-"Could not be opened"
-msgstr ""
-"'%s'\n"
-"Nelze otevřít"
-
-#: ../src/new_dialog.c:71
-msgid "Archive type:"
-msgstr "Typ archivu:"
-
-#: ../src/new_dialog.c:82
-msgid "Archives"
-msgstr "Archivy"
-
-#: ../src/new_dialog.c:110
-msgid "Create new archive"
-msgstr "Vytvořit nový archiv"
-
-#: ../src/notebook.c:209
-msgid "Rules hint"
-msgstr "Rada o pravidlech"
+"<i>Aplikace pro kontrolu pravopisu může být například 'enchant', 'aspell', 'ispell' nebo jakákoliv jiná aplikace kontroly pravopisu kompatibilní s příkazem ispell.\n"
+"Ikona zobrazuje zda zadaný příkaz existuje.</i>"
 
-#: ../src/notebook.c:210
-msgid "Make the row background colors alternate"
-msgstr "Změní barvu pozadí řádku"
+#~ msgid "You must set a valid search URL."
+#~ msgstr "Nastavte platnou vyhledávací adresu URL."
 
-#: ../src/path_bar.c:142
-msgid "Spacing"
-msgstr "Rozestupy"
+#~ msgid "Link Color:"
+#~ msgstr "Barva odkazu:"
 
-#: ../src/path_bar.c:143
-msgid "The amount of space between the path buttons"
-msgstr "Velikost rozestupů mezi tlačítky cesty"
+#~ msgid "(built on %s with GTK %d.%d.%d, GLib %d.%d.%d)"
+#~ msgstr "(sestaveno na %s s GTK %d.%d.%d, GLib %d.%d.%d)"
 
-#: ../src/preferences_dialog.c:85
-msgid "_General"
-msgstr "_Obecné"
+#~ msgid "Do you want to search \"%s\" on the Web using "
+#~ msgstr "Chcete hledat \"%s\" na webu pomocí "
 
-#: ../src/preferences_dialog.c:88
-msgid "Archive viewer:"
-msgstr "Prohlížeč archivů"
+#~ msgid "_Dict"
+#~ msgstr "Slo_vníku"
 
-#: ../src/preferences_dialog.c:97
-msgid "_Show Icons"
-msgstr "_Zobrazit ikony"
+#~ msgid "_Web"
+#~ msgstr "_Webu"
 
-#: ../src/preferences_dialog.c:100
-msgid "_Rules Hint"
-msgstr "_Rada o pravidlech"
+#~ msgid "Dict"
+#~ msgstr "Dict"
 
-#: ../src/preferences_dialog.c:103
-msgid "Sorting:"
-msgstr "Řazení:"
+#~ msgid "Web"
+#~ msgstr "Web"
 
-#: ../src/preferences_dialog.c:112
-msgid "Sort _Case Sensitive "
-msgstr "Rozlišovat _velikost písmen při řazení"
+#~ msgid "Show help options"
+#~ msgstr "Zobrazit volby nápovědy"
 
-#: ../src/preferences_dialog.c:115
-msgid "Sort _Folders First"
-msgstr "Zařadit a_dresáře před soubory"
+#~ msgid "Xfce4 Dictionary Preferences"
+#~ msgstr "Předvolby slovníku Xfce4"
 
-#: ../src/preferences_dialog.c:118
-msgid "Navigation bar:"
-msgstr "Navigační panel:"
+#~ msgid "Developer"
+#~ msgstr "Vývojář"
 
-#: ../src/preferences_dialog.c:130
-msgid "_Behaviour"
-msgstr "_Chování"
+#~ msgid "Text to search:"
+#~ msgstr "Text pro vyhledání:"
 
-#: ../src/preferences_dialog.c:147
-msgid "Preferences"
-msgstr "Předvolby"
+#~ msgid "Aspell"
+#~ msgstr "Aspell"
 
-#: ../src/preferences_dialog.c:204
-#, fuzzy
-msgid "_Archivers"
-msgstr "Archivy"
+#~ msgid "Properties"
+#~ msgstr "Vlastnosti"
 
-#: ../src/preferences_dialog.c:281
-msgid "Filename"
-msgstr "Název souboru"
+#~ msgid "Use a DICT server"
+#~ msgstr "Použít server DICT"
 
-#: ../src/properties_dialog.c:85
-msgid "Name:"
-msgstr "Název:"
+#~ msgid "Use another website"
+#~ msgstr "Použít jinou webovou stránku"
 
-#: ../src/properties_dialog.c:98
-msgid "Kind:"
-msgstr "Druh:"
-
-#: ../src/properties_dialog.c:120
-msgid "Properties"
-msgstr "Vlastnosti"
-
-#: ../src/tool_bar.c:169
-msgid "Location:"
-msgstr "Umístění:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Správce archivů"
-
-#~ msgid "Compressing"
-#~ msgstr "Komprimuji"
-
-#~ msgid "Decompressing"
-#~ msgstr "Rozbaluji"
-
-#~ msgid "Refresh"
-#~ msgstr "Obnovit"
-
-#~ msgid "Rights"
-#~ msgstr "Práva"
-
-#~ msgid "Owner/Group"
-#~ msgstr "Vlastník/skupina"
-
-#~ msgid "Size"
-#~ msgstr "Velikost"
-
-#~ msgid "Date"
-#~ msgstr "Datum"
-
-#~ msgid "Time"
-#~ msgstr "Čas"
-
-#~ msgid "Cleanup"
-#~ msgstr "Vyčistit"
-
-#~ msgid "Removing files"
-#~ msgstr "Odebírám soubory"
-
-#~ msgid "Removing"
-#~ msgstr "Odebírám"
-
-#~ msgid "Extracting"
-#~ msgstr "Rozbaluji"
-
-#~ msgid "Compressed"
-#~ msgstr "Komprimovaný"
-
-#~ msgid "Ratio"
-#~ msgstr "Poměr"
-
-#~ msgid "Method"
-#~ msgstr "Metoda"
-
-#~ msgid "Version"
-#~ msgstr "Verze"
-
-#~ msgid "Adding"
-#~ msgstr "Přidávám"
-
-#~ msgid "Execute"
-#~ msgstr "Spustit"
-
-#~ msgid "Command exited with status %d."
-#~ msgstr "Příkaz skončil se stavem %d."
-
-#~ msgid "Command interrupted by user"
-#~ msgstr "Příkaz byl přerušen uživatelem"
-
-#~ msgid "Command received SIGSEGV"
-#~ msgstr "Příkaz obdržel signál SIGSEGV"
-
-#~ msgid "Command Terminated"
-#~ msgstr "Příkaz byl ukončen"
-
-#~ msgid "Files and directories to add"
-#~ msgstr "Soubory a adresáře pro přidání"
-
-#~ msgid "Options:"
-#~ msgstr "Volby:"
-
-#~ msgid "Files"
-#~ msgstr "Soubory"
-
-#~ msgid "Directories"
-#~ msgstr "Adresáře"
-
-#~ msgid "Add file(s) to archive"
-#~ msgstr "Přidat soubor(y) do archivu"
-
-#~ msgid "Select files"
-#~ msgstr "Vybrat soubory"
-
-#~ msgid "Select folders"
-#~ msgstr "Vybrat adresáře"
-
-#~ msgid "_Add"
-#~ msgstr "_Přidat"
-
-#~ msgid "Add"
-#~ msgstr "Přidat"
-
-#~ msgid "Xfce archive manager"
-#~ msgstr "Správce archivů Xfce"
-
-#, fuzzy
-#~ msgid "idle"
-#~ msgstr "_Soubor"
-
-#, fuzzy
-#~ msgid "Owner"
-#~ msgstr "Vlastník/skupina"
-
-#~ msgid "Overwrite existing files"
-#~ msgstr "Přepsat existující soubory"
-
-#~ msgid "Overwrite existing files on extraction"
-#~ msgstr "Přepsat existující soubory při rozbalování"
-
-#~ msgid "Touch files"
-#~ msgstr "Dotknout se souborů"
-
-#~ msgid "Strip directories"
-#~ msgstr "Nevytvářet adresáře"
-
-#~ msgid "Keep newer files"
-#~ msgstr "Ponechat novější soubory"
-
-#, fuzzy
-#~ msgid "Do not overwrite files newer than those in the archive"
-#~ msgstr "Nepřepisovat soubory novější než v archivu"
-
-#~ msgid "Override permissions"
-#~ msgstr "Přepsat přístupová práva"
-
-#~ msgid "View filesize"
-#~ msgstr "Zobrazit velikost souboru"
-
-#~ msgid "Permissions"
-#~ msgstr "Přístupová práva"
-
-#~ msgid "View permissions"
-#~ msgstr "Zobrazit přístupová práva"
-
-#~ msgid "View date"
-#~ msgstr "Zobrazit datum"
-
-#~ msgid "View time"
-#~ msgstr "Zobrazit čas"
-
-#~ msgid "Password"
-#~ msgstr "Heslo"
-
-#~ msgid "View compressed filesize"
-#~ msgstr "Zobrazit komprimovanou velikost souboru"
-
-#~ msgid "View ratio"
-#~ msgstr "Zobrazit poměr"
-
-#~ msgid "View method"
-#~ msgstr "Zobrazit metodu"
-
-#~ msgid "Checksum"
-#~ msgstr "Kontrolní součet"
-
-#~ msgid "View Checksum"
-#~ msgstr "Zobrazit kontrolní součet"
-
-#~ msgid "Compression version"
-#~ msgstr "Verze komprese"
-
-#~ msgid "View compression version"
-#~ msgstr "Zobrazí verzi komprese"
-
-#~ msgid "Append extension to filename"
-#~ msgstr "Přidat za název souboru příponu"
-
-#~ msgid "Initializing archive"
-#~ msgstr "Inicializuji archiv"
-
-#~ msgid "Refreshing archive contents"
-#~ msgstr "Znovu načítám obsah archivu"
-
-#~ msgid "Adding file(s) to archive"
-#~ msgstr "Přidávám soubor(y) z archivu"
-
-#~ msgid "Extracting file(s) from archive"
-#~ msgstr "Rozbaluji soubor(y) z archivu"
-
-#, fuzzy
-#~ msgid "Extracting file(s) to temporary directory"
-#~ msgstr "Rozbaluji soubor(y) z archivu"
-
-#~ msgid "Performing an extended action"
-#~ msgstr "Provádí se rozšířená funkce"
-
-#~ msgid "Cancelled"
-#~ msgstr "Zrušeno"
-
-#~ msgid "Error"
-#~ msgstr "Chyba"
-
-#~ msgid "Failed to open archive '%s'."
-#~ msgstr "Nepodařilo se otevřít archiv '%s'"
-
-#~ msgid "Failed to extract contents of archive '%s'."
-#~ msgstr "Nepodařilo se rozbalit obsah archivu '%s'."
-
-#~ msgid "View"
-#~ msgstr "Zobrazit"
-
-#~ msgid "Test"
-#~ msgstr "Test"
+#~ msgid "Use a web site"
+#~ msgstr "Použít webovou stránku"
 
 #~ msgid ""
-#~ "Test archive integrity\n"
-#~ "Test the integrity of the archive"
+#~ "This option can only be used when the panel has a horizontal orientation."
 #~ msgstr ""
-#~ "Otestovat integritu archivu\n"
-#~ "Otestuje integritu archivu"
+#~ "Tuto možnost lze použít pouze tehdy, je-li panel ve vodorovné pozici."
