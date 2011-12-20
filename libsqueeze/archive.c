@@ -31,15 +31,11 @@
 #include "support-template.h"
 #include "support-factory.h"
 
-#include "slist.h"
+#include "btree.h"
 #include "archive-tempfs.h"
 #include "command-queue.h"
 
 #include "internals.h"
-
-#ifndef LSQ_ENTRY_CHILD_BUFFER_SIZE
-#define LSQ_ENTRY_CHILD_BUFFER_SIZE 500
-#endif
 
 static void
 lsq_archive_class_init(LSQArchiveClass *archive_class);
