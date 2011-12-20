@@ -138,6 +138,7 @@ lsq_support_reader_parse_file(const gchar *filename)
 	LSQParser *parser = NULL;
 	const gchar *parser_string;
 	const gchar *parser_regex;
+	const gchar *parser_datetime;
 	gchar **_mime_types;
 #ifdef HAVE_PCRE
 	gchar **regex_types;
@@ -202,6 +203,7 @@ lsq_support_reader_parse_file(const gchar *filename)
 	column_names = xfce_rc_read_list_entry(rc, "X-Squeeze-Headers", ";");
 	parser_string = xfce_rc_read_entry(rc, "X-Squeeze-Parse", NULL);
 	parser_regex = xfce_rc_read_entry(rc, "X-Squeeze-Parse-Regex", NULL);
+	parser_datetime = xfce_rc_read_entry(rc, "X-Squeeze-Parse-DateTime", NULL);
 
 	if (NULL != parser_string)
 	{
@@ -215,6 +217,10 @@ lsq_support_reader_parse_file(const gchar *filename)
 	    g_strfreev( regex_types );
 	}
 #endif
+        if ( NULL != parser_datetime )
+        {
+            lsq_parser_set_datetime_format( parser, parser_datetime );
+        }
 
 	_mime_types = mime_types;
 	for(i = 0; _mime_types[i]; ++i)

@@ -36,7 +36,7 @@ typedef struct _type_parser type_parser;
 typedef struct _LSQPcreParserContext LSQPcreParserContext;
 typedef struct _LSQPcreParserContextClass LSQPcreParserContextClass;
 
-typedef void (*LSQParseFunc)( gchar*, guint, LSQArchiveIter*, guint );
+typedef void (*LSQParseFunc)( gchar*, guint, LSQArchiveIter*, guint, LSQPcreParser* );
 
 struct _type_parser
 {
@@ -132,28 +132,28 @@ lsq_pcre_parser_new ( const gchar *parser_string, gchar **parser_types )
 }
 
 #define DEF_PARSE_NUM(func, base, type) \
-static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n) {  \
+static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser) {  \
     type val; \
     val = g_ascii_strtoll( str, NULL, base ); \
     lsq_archive_iter_set_prop( iter, n, &val ); \
 }
 
 #define DEF_PARSE_FLOAT(func, type)  \
-static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n) {  \
+static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser) {  \
     type  val;  \
     val = g_ascii_strtod(str, NULL);  \
     lsq_archive_iter_set_prop( iter, n, &val ); \
 }
 
 #define DEF_PARSE_UNS(func, base, type) \
-static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n) {  \
+static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser) {  \
     type val; \
     val = g_ascii_strtoull( str, NULL, base ); \
     lsq_archive_iter_set_prop( iter, n, &val ); \
 }
 
 static void
-parse_char( gchar *str, guint lng, LSQArchiveIter *iter, guint n )
+parse_char( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
 {
     gchar val;
 
@@ -177,7 +177,7 @@ DEF_PARSE_UNS(octal32, 010, gulong)
 DEF_PARSE_UNS(octal64, 010, guint64)
 
 static void
-parse_string( gchar *str, guint lng, LSQArchiveIter *iter, guint n )
+parse_string( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
 {
     gchar *val;
 
@@ -185,8 +185,25 @@ parse_string( gchar *str, guint lng, LSQArchiveIter *iter, guint n )
     val = g_strndup( str, lng );
 
     lsq_archive_iter_set_prop( iter, n, val );
+}
 
-    g_free( val );
+static void
+parse_datetime( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
+{
+    LSQDateTime val;
+
+#ifdef DO_EXSTENSIVE_CHECKING
+    gchar *end;
+    val = lsq_datetime_from_string( str, LSQ_PARSER(parser)->datetime_format, *end);
+    if ( LSQ_DATETIME_NULL != val && ( end - str ) > lng )
+    {
+        val = LSQ_DATETIME_NULL;
+    }
+#else
+    val = lsq_datetime_from_string( str, LSQ_PARSER(parser)->datetime_format, NULL);
+#endif
+
+    lsq_archive_iter_set_prop( iter, n, &val );
 }
 
 DEF_PARSE_UNS(unsigned, 10, guint)
@@ -380,6 +397,11 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
                 type = G_TYPE_STRING;
                 break;
 
+            case 't':   /* DateTime */
+                type_iter->function = parse_datetime;
+                type = LSQ_TYPE_DATETIME;
+                break;
+
             case 'u':   /* Unsigned integer */
                 switch(size_flag)
                 {
@@ -536,7 +558,7 @@ lsq_pcre_parser_parse ( LSQPcreParser *parser, LSQPcreParserContext *ctx )
             end = ovector[( index_ * 2 ) + 1];
 
             /* Parse the subfield */
-            parser->types_list[i].function( line + start, end - start, iter, LSQ_ARCHIVE_PROP_USER +  i );
+            parser->types_list[i].function( line + start, end - start, iter, LSQ_ARCHIVE_PROP_USER +  i, parser );
         }
 
         lsq_archive_iter_unref( iter );

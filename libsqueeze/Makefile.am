@@ -8,6 +8,7 @@ libsqueeze_2_la_SOURCES =  \
 	btree.c btree.h \
 	command-queue.c command-queue.h \
 	command-option.c command-option.h \
+	datetime.c datetime.h \
 	internals.c internals.h \
 	libsqueeze.c libsqueeze.h \
 	libsqueeze-view.h \

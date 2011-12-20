@@ -50,7 +50,7 @@ LSQArchiveIter *lsq_archive_add_file(LSQArchive *archive, const gchar *path);
 LSQArchiveIter *lsq_archive_iter_add_file(LSQArchiveIter *parent, const gchar *filename);
 
 void  lsq_archive_iter_set_prop_value(LSQArchiveIter *iter, guint n, const GValue *value);
-void  lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gconstpointer value);
+void  lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gpointer value);
 void  lsq_archive_iter_set_props(LSQArchiveIter *iter, ...);
 void  lsq_archive_iter_set_propsv(LSQArchiveIter *iter, gpointer *props);
 

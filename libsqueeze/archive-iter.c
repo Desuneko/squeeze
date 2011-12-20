@@ -77,13 +77,17 @@ inline static guint
 lsq_archive_entry_get_prop_uint(const LSQArchive *, const LSQArchiveEntry *, guint);
 inline static guint64
 lsq_archive_entry_get_prop_uint64(const LSQArchive *, const LSQArchiveEntry *, guint);
+inline static LSQDateTime
+lsq_archive_entry_get_prop_datetime(const LSQArchive *, const LSQArchiveEntry *, guint);
 
 static void
-lsq_archive_entry_set_prop_str(const LSQArchive *, LSQArchiveEntry *, guint, const gchar *);
+lsq_archive_entry_set_prop_str(const LSQArchive *, LSQArchiveEntry *, guint, gchar *);
 static void
 lsq_archive_entry_set_prop_uint(const LSQArchive *, LSQArchiveEntry *, guint, guint);
 static void
 lsq_archive_entry_set_prop_uint64(const LSQArchive *, LSQArchiveEntry *, guint, guint64);
+static void
+lsq_archive_entry_set_prop_datetime(const LSQArchive *, LSQArchiveEntry *, guint, LSQDateTime);
 static void
 lsq_archive_entry_set_propsv(const LSQArchive *, LSQArchiveEntry *, gpointer *);
 static void
@@ -660,6 +664,11 @@ lsq_archive_iter_get_prop_value(const LSQArchiveIter *iter, guint n, GValue *val
 			g_value_set_uint64(value, lsq_archive_entry_get_prop_uint64(iter->archive, iter->entry, n));
 			break;
 		default:
+			if ( LSQ_TYPE_DATETIME == G_VALUE_TYPE(value) )
+			{
+                            g_value_set_datetime(value, lsq_archive_entry_get_prop_datetime(iter->archive, iter->entry, n));
+                            break;
+			}
 			return FALSE;
 	}
 
@@ -679,7 +688,7 @@ lsq_archive_iter_set_prop_value(LSQArchiveIter *iter, guint n, const GValue *val
 	switch(G_VALUE_TYPE(value))
 	{
 		case G_TYPE_STRING:
-			lsq_archive_entry_set_prop_str(iter->archive, iter->entry, n, g_value_get_string(value));
+			lsq_archive_entry_set_prop_str(iter->archive, iter->entry, n, g_value_dup_string(value));
 			break;
 		case G_TYPE_UINT:
 			lsq_archive_entry_set_prop_uint(iter->archive, iter->entry, n, g_value_get_uint(value));
@@ -687,11 +696,18 @@ lsq_archive_iter_set_prop_value(LSQArchiveIter *iter, guint n, const GValue *val
 		case G_TYPE_UINT64:
 			lsq_archive_entry_set_prop_uint64(iter->archive, iter->entry, n, g_value_get_uint64(value));
 			break;
+		default:
+			if ( LSQ_TYPE_DATETIME == G_VALUE_TYPE(value) )
+			{
+                            lsq_archive_entry_set_prop_datetime(iter->archive, iter->entry, n, g_value_get_datetime(value));
+                            break;
+                        }
+                        break;
 	}
 }
 
 void
-lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gconstpointer value)
+lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gpointer value)
 {
 #ifdef DEBUG
 	g_return_if_fail(iter);
@@ -705,11 +721,18 @@ lsq_archive_iter_set_prop(LSQArchiveIter *iter, guint n, gconstpointer value)
 			lsq_archive_entry_set_prop_str(iter->archive, iter->entry, n, value);
 			break;
 		case G_TYPE_UINT:
-			lsq_archive_entry_set_prop_uint(iter->archive, iter->entry, n, *(const guint*)value);
+			lsq_archive_entry_set_prop_uint(iter->archive, iter->entry, n, *(guint*)value);
 			break;
 		case G_TYPE_UINT64:
-			lsq_archive_entry_set_prop_uint64(iter->archive, iter->entry, n, *(const guint64*)value);
+			lsq_archive_entry_set_prop_uint64(iter->archive, iter->entry, n, *(guint64*)value);
 			break;
+		default:
+			if ( LSQ_TYPE_DATETIME == lsq_archive_get_entry_property_type(iter->archive, n) )
+			{
+                            lsq_archive_entry_set_prop_datetime(iter->archive, iter->entry, n, *(LSQDateTime*)value);
+                            break;
+                        }
+                        break;
 	}
 }
 
@@ -965,7 +988,7 @@ lsq_archive_entry_props_free(const LSQArchive *archive, LSQArchiveEntry *entry)
 		{
 			switch ( lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER) )
 			{
-				case ( G_TYPE_STRING ):
+				case G_TYPE_STRING:
 					/* free only strings */
 					offset = lsq_archive_get_entry_property_offset(archive, i+LSQ_ARCHIVE_PROP_USER);
 					g_free(((gchar **)props_iter)[offset]);
@@ -1415,6 +1438,26 @@ lsq_archive_entry_get_prop_uint64(const LSQArchive *archive, const LSQArchiveEnt
 	return (((guint64 *)props_iter)[offset]);
 }
 
+inline static LSQDateTime
+lsq_archive_entry_get_prop_datetime(const LSQArchive *archive, const LSQArchiveEntry *entry, guint i)
+{
+	gpointer props_iter = entry->props;
+	guint offset;
+	if ( NULL == props_iter )
+	{
+		return 0;
+	}
+
+	if ( LSQ_TYPE_DATETIME != lsq_archive_get_entry_property_type(archive, i) )
+	{
+		return 0;
+	}
+
+	offset = lsq_archive_get_entry_property_offset(archive, i);
+
+	return (((LSQDateTime *)props_iter)[offset]);
+}
+
 static gpointer
 lsq_archive_entry_get_props(const LSQArchive *archive, LSQArchiveEntry *entry)
 {
@@ -1431,7 +1474,7 @@ lsq_archive_entry_get_props(const LSQArchive *archive, LSQArchiveEntry *entry)
 }
 
 static void
-lsq_archive_entry_set_prop_str(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, const gchar *str_val)
+lsq_archive_entry_set_prop_str(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, gchar *str_val)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
 	guint offset;
@@ -1444,7 +1487,7 @@ lsq_archive_entry_set_prop_str(const LSQArchive *archive, LSQArchiveEntry *entry
 	offset = lsq_archive_get_entry_property_offset(archive, n);
 
 	g_free(((gchar **)props_iter)[offset]);
-	((gchar **)props_iter)[offset] = g_strdup(str_val);
+	((gchar **)props_iter)[offset] = str_val; /* We take ownership */
 }
 
 static void
@@ -1480,6 +1523,22 @@ lsq_archive_entry_set_prop_uint64(const LSQArchive *archive, LSQArchiveEntry *en
 }
 
 static void
+lsq_archive_entry_set_prop_datetime(const LSQArchive *archive, LSQArchiveEntry *entry, guint n, LSQDateTime dt_val)
+{
+	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
+	guint offset;
+
+	if ( LSQ_TYPE_DATETIME != lsq_archive_get_entry_property_type(archive, n) )
+	{
+		return;
+	}
+
+	offset = lsq_archive_get_entry_property_offset(archive, n);
+
+	((LSQDateTime *)props_iter)[offset] = dt_val; /* We take ownership */
+}
+
+static void
 lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, gpointer *props)
 {
 	gpointer props_iter = lsq_archive_entry_get_props(archive, entry);
@@ -1494,13 +1553,20 @@ lsq_archive_entry_set_propsv(const LSQArchive *archive, LSQArchiveEntry *entry, 
 			case G_TYPE_STRING:
 				g_free(((gchar **)props_iter)[offset]);
 				//(*((gchar **)props_iter)) = g_strdup((const gchar*)props[i]);
-				((gchar **)props_iter)[offset] = (gchar*)props[i];
+				((gchar **)props_iter)[offset] = (gchar*)props[i]; /* We take ownership */
 				break;
 			case G_TYPE_UINT:
 				((guint *)props_iter)[offset] = *((const guint *)props[i]);
 				break;
 			case G_TYPE_UINT64:
 				((guint64 *)props_iter)[offset] = *((const guint64 *)props[i]);
+				break;
+                        default:
+                                if ( LSQ_TYPE_DATETIME == lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER) )
+                                {
+                                    ((LSQDateTime *)props_iter)[offset] = *(LSQDateTime*)props[i];
+                                    break;
+                                }
 				break;
 		}
 	}
@@ -1520,13 +1586,20 @@ lsq_archive_entry_set_propsva(const LSQArchive *archive, LSQArchiveEntry *entry,
 		{
 			case G_TYPE_STRING:
 				g_free(((gchar **)props_iter)[offset]);
-				((gchar **)props_iter)[offset] = g_strdup(va_arg(ap, gchar*));
+				((gchar **)props_iter)[offset] = va_arg(ap, gchar*); /* We take ownership */
 				break;
 			case G_TYPE_UINT:
 				((guint *)props_iter)[offset] = va_arg(ap, guint);
 				break;
 			case G_TYPE_UINT64:
 				((guint64 *)props_iter)[offset] = va_arg(ap, guint64);
+				break;
+                        default:
+                                if ( LSQ_TYPE_DATETIME == lsq_archive_get_entry_property_type(archive, i+LSQ_ARCHIVE_PROP_USER) )
+                                {
+                                    ((LSQDateTime *)props_iter)[offset] = va_arg(ap, LSQDateTime);
+                                    break;
+                                }
 				break;
 		}
 	}

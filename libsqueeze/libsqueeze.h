@@ -24,6 +24,7 @@
 #include <libsqueeze/archive-iter-pool.h>
 #include <libsqueeze/archive.h>
 #include <libsqueeze/archive-iter.h>
+#include <libsqueeze/datetime.h>
 
 #include <libsqueeze/libsqueeze-view.h>
 

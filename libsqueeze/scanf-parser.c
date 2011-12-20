@@ -35,7 +35,7 @@ typedef struct _parse_part parse_part;
 typedef struct _LSQScanfParserContext LSQScanfParserContext;
 typedef struct _LSQScanfParserContextClass LSQScanfParserContextClass;
 
-typedef guint (*LSQParseFunc)(gchar*, guint, parse_part*, LSQScanfParserContext*);
+typedef guint (*LSQParseFunc)(gchar*, guint, parse_part*, LSQScanfParserContext*, LSQScanfParser*);
 
 struct _parse_part
 {
@@ -60,6 +60,7 @@ struct _LSQScanfParserContext
         guint64 ull;
         gfloat  f;
         gdouble d;
+        LSQDateTime dt;
     } *data_store;
     gpointer *props_store;
     parse_part *parse_loc;
@@ -147,7 +148,8 @@ skip_byte (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     if ( 1 > lng )
     {
@@ -162,7 +164,8 @@ skip_word (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     if ( 2 > lng )
     {
@@ -177,7 +180,8 @@ skip_dword (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     if ( 4 > lng )
     {
@@ -192,7 +196,8 @@ skip_qword (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     if ( 8 > lng )
     {
@@ -207,7 +212,8 @@ skip_char (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     const gchar *ptr;
     const gchar *delim;
@@ -245,7 +251,8 @@ skip_decimal (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -270,7 +277,14 @@ skip_decimal (
         return ptr - str;
     }
 
-    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr );
+    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
 
     ptr = g_strstr_len(ptr, lng, delim);
 
@@ -295,7 +309,8 @@ skip_floatingpoint (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -320,7 +335,14 @@ skip_floatingpoint (
         return ptr - str;
     }
 
-    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr );
+    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
 
     ptr = g_strstr_len(ptr, lng, delim);
 
@@ -344,7 +366,8 @@ skip_octal (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx ,
+        LSQScanfParser *parser)
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -369,7 +392,14 @@ skip_octal (
         return ptr - str;
     }
 
-    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr );
+    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
 
     ptr = g_strstr_len(ptr, lng, delim);
 
@@ -394,7 +424,8 @@ skip_string (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     gchar *ptr;
     const gchar *delim;
@@ -416,7 +447,14 @@ skip_string (
         return 0;
     }
 
-    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr );
+    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
 
     ptr = g_strstr_len ( ptr, lng, delim );
 
@@ -429,11 +467,63 @@ skip_string (
 }
 
 static guint
+skip_datetime (
+        gchar *str,
+        guint lng,
+        parse_part *part,
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
+{
+    gchar *ptr;
+    gchar *cur;
+    const gchar *delim;
+
+    if ( 0 == lng )
+    {
+        return 0;
+    }
+
+    delim = part->delimiter;
+    if ( ( NULL == delim ) && ( NULL == part->next ) )
+    {
+        delim = "\n";
+    }
+
+    for ( cur = str; g_ascii_isspace( *cur ); ++cur )
+    {
+    }
+
+    lsq_datetime_from_string(cur, LSQ_PARSER(parser)->datetime_format, &ptr);
+    if ( NULL == ptr )
+    {
+        return 0;
+    }
+
+    if ( ( ptr - str ) > lng )
+    {
+        return 0;
+    }
+
+    if ( '\0' == delim[0] )
+    {
+        lng -= ptr - str;
+        ptr = g_strstr_len( ptr, lng, delim );
+        if ( NULL == ptr )
+        {
+            return 0;
+        }
+    }
+
+    return ptr - str;
+}
+
+static guint
 skip_unsigned (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -458,7 +548,16 @@ skip_unsigned (
         return ptr - str;
     }
 
-    ptr = g_strstr_len ( str, lng, delim );
+    for ( ptr = str; g_ascii_isspace(*ptr); ++ptr )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
+
+    ptr = g_strstr_len(ptr, lng, delim);
 
     if ( NULL == ptr )
     {
@@ -482,7 +581,8 @@ skip_hexadecimal (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -507,7 +607,16 @@ skip_hexadecimal (
         return ptr - str;
     }
 
-    ptr = g_strstr_len ( str, lng, delim );
+    for ( ptr = str; g_ascii_isspace(*ptr); ++ptr )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
+
+    ptr = g_strstr_len(ptr, lng, delim);
 
     if ( NULL == ptr )
     {
@@ -527,7 +636,7 @@ skip_hexadecimal (
 
 /*{{{ parse functions*/
 #define DEF_PARSE_BIN(func, bytes, type, ptype, pname)    \
-static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx) { \
+static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx, LSQScanfParser *parser) { \
     type    val;    \
     ptype *pval;    \
     if(bytes > lng) return 0; \
@@ -539,7 +648,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
 }
 
 #define DEF_PARSE_NUM(func, base, type, ptype, pname) \
-static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx) {    \
+static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx, LSQScanfParser *parser) {    \
     gchar *ptr;     \
     gchar *ptr2;    \
     type    val;    \
@@ -555,7 +664,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
         *pval = val;    \
         return ptr - str; \
     } \
-    for(ptr = str; g_ascii_isspace(*ptr); ++ptr);     \
+    for(ptr = str; g_ascii_isspace(*ptr); ++ptr) --lng; \
     ptr = g_strstr_len(ptr, lng, delim);    \
     if(NULL == ptr) return 0;   \
     val = g_ascii_strtoll(str, &ptr2, base);    \
@@ -565,7 +674,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
 }
 
 #define DEF_PARSE_FLOAT(func, type, pname)    \
-static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx) {    \
+static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx, LSQScanfParser *parser) {    \
     gchar *ptr;     \
     gchar *ptr2;    \
     type    val;    \
@@ -581,7 +690,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
         *pval = val;    \
         return ptr - str; \
     } \
-    for(ptr = str; g_ascii_isspace(*ptr); ++ptr);     \
+    for(ptr = str; g_ascii_isspace(*ptr); ++ptr) --lng; \
     ptr = g_strstr_len(ptr, lng, delim);    \
     if(NULL == ptr) return 0;   \
     val = g_ascii_strtod(str, &ptr2); \
@@ -591,7 +700,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
 }
 
 #define DEF_PARSE_UNS(func, base, type, ptype, pname) \
-static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx) {    \
+static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParserContext *ctx, LSQScanfParser *parser) {    \
     gchar *ptr;     \
     gchar *ptr2;    \
     type    val;    \
@@ -607,7 +716,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
         *pval = val;    \
         return ptr - str; \
     } \
-    for(ptr = str; g_ascii_isspace(*ptr); ++ptr);     \
+    for(ptr = str; g_ascii_isspace(*ptr); ++ptr) --lng; \
     ptr = g_strstr_len(ptr, lng, delim);    \
     if(NULL == ptr) return 0;   \
     val = g_ascii_strtoull(str, &ptr2, base);    \
@@ -626,7 +735,8 @@ parse_char (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+	LSQScanfParser *parser )
 {
     const gchar *ptr;
     gchar val;
@@ -688,7 +798,8 @@ parse_string (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+	LSQScanfParser *parser )
 {
     gchar *ptr;
     gchar *cur;
@@ -704,7 +815,14 @@ parse_string (
     if ( '\0' == delim[0] )
         return 0;
 
-    for ( cur = str; g_ascii_isspace( *cur ); ++cur );
+    for ( cur = str; g_ascii_isspace( *cur ); ++cur )
+    {
+        --lng;
+        if ( 0 == lng )
+        {
+            return 0;
+        }
+    }
 
     ptr = g_strstr_len(cur, lng, delim);
 
@@ -712,6 +830,59 @@ parse_string (
         return 0;
 
     ctx->props_store[part->index_] = g_strndup(str, ptr-str);
+
+    return ptr - str;
+}
+
+static guint
+parse_datetime (
+        gchar *str,
+        guint lng,
+        parse_part *part,
+        LSQScanfParserContext *ctx,
+        LSQScanfParser *parser )
+{
+    gchar *ptr;
+    gchar *cur;
+    const gchar *delim;
+    LSQDateTime *pval;
+
+    if ( 0 == lng )
+    {
+        return 0;
+    }
+
+    delim = part->delimiter;
+    if ( ( NULL == delim ) && ( NULL == part->next ) )
+    {
+        delim = "\n";
+    }
+
+    for ( cur = str; g_ascii_isspace( *cur ); ++cur)
+    {
+    }
+
+    pval = &ctx->data_store[part->index_].dt;
+    ctx->props_store[part->index_] = pval;
+
+    *pval = lsq_datetime_from_string( cur, LSQ_PARSER(parser)->datetime_format, &ptr );
+    if ( LSQ_DATETIME_NULL == *pval )
+        return 0;
+
+    if ( ( ptr - str ) > lng )
+    {
+        return 0;
+    }
+
+    if ( '\0' == delim[0] )
+    {
+        lng -= ptr - str;
+        ptr = g_strstr_len ( ptr, lng, delim );
+        if ( NULL == ptr )
+        {
+            return 0;
+        }
+    }
 
     return ptr - str;
 }
@@ -731,7 +902,8 @@ parse_filename (
         gchar *str,
         guint lng,
         parse_part *part,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx,
+	LSQScanfParser *parser )
 {
     gchar *ptr;
     const gchar *delim;
@@ -1124,7 +1296,7 @@ build_parser (
                     }
                 break;
                 /*}}}*/
-                /*{{{ floating point %d*/
+                /*{{{ floating point %f*/
                 case 'f':
                     g_return_if_fail( SIZE_NORMAL == size_flag || SIZE_LONGLONG == size_flag );
                     part->next = g_new0(parse_part, 1);
@@ -1205,6 +1377,25 @@ build_parser (
                         part->index_ = index_;
                         part->function = parse_string;
                         lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_STRING);
+                    }
+                break;
+                /*}}}*/
+                /*{{{ datetime %t*/
+                case 't':
+                    g_return_if_fail(!size_flag);
+                    part->next = g_new0(parse_part, 1);
+                    part = part->next;
+                    part->width = width_flag;
+                    if(skip_flag)
+                    {
+                        part->function = skip_datetime;
+                    }
+                    else
+                    {
+                        part_count++;
+                        part->index_ = index_;
+                        part->function = parse_datetime;
+                        lsq_parser_set_property_type(LSQ_PARSER(parser), index_, LSQ_TYPE_DATETIME);
                     }
                 break;
                 /*}}}*/
@@ -1327,7 +1518,7 @@ lsq_scanf_parser_parse (
         //parse
         if ( NULL != part->function )
         {
-            size = part->function(ptr, lng, part, ctx);
+            size = part->function(ptr, lng, part, ctx, parser);
             if ( 0 == size )
             {
                 //no match
