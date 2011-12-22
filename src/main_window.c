@@ -271,7 +271,6 @@ sq_main_window_init(SQMainWindow *window)
 	GtkWidget	 *tmp_image;
 	const gchar   *nav_bar;
 	GSList		*list, *iter;
-	gboolean up_dir = TRUE;
 	gboolean use_tabs = TRUE;
 	gboolean show_menubar = TRUE;
 	GtkWidget *item;
@@ -486,14 +485,12 @@ sq_main_window_init(SQMainWindow *window)
 	nav_bar = sq_settings_read_entry(window->settings, "NavigationBar", "None");
 	window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_INTERNAL;
 	window->navigationbar = NULL;
-	up_dir = TRUE;
 
 #ifdef ENABLE_TOOLBAR
 	if(!strcmp(nav_bar, "ToolBar"))
 	{
 		window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR;
 		window->navigationbar = sq_tool_bar_new(NULL); 
-		up_dir = FALSE;
 	}
 #endif
 #ifdef ENABLE_PATHBAR
@@ -502,7 +499,6 @@ sq_main_window_init(SQMainWindow *window)
 		window->nav_style = SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR;
 		window->navigationbar = sq_path_bar_new(NULL);
 		gtk_container_set_border_width(GTK_CONTAINER(window->navigationbar), 3);
-		up_dir = FALSE;
 	}
 #endif
 
@@ -1350,7 +1346,6 @@ static void
 sq_main_window_set_navigation(SQMainWindow *window)
 {
 	SQNavigationBar *nav_bar = NULL; 
-	gboolean up_dir = TRUE;
 
 	switch(window->nav_style)
 	{
@@ -1359,13 +1354,11 @@ sq_main_window_set_navigation(SQMainWindow *window)
 #ifdef ENABLE_TOOLBAR
 		case SQ_MAIN_WINDOW_NAVIGATION_TOOL_BAR:
 			nav_bar = sq_tool_bar_new(NULL);
-			up_dir = FALSE;
 			break;
 #endif
 #ifdef ENABLE_PATHBAR
 		case SQ_MAIN_WINDOW_NAVIGATION_PATH_BAR:
 			nav_bar = sq_path_bar_new(NULL);
-			up_dir = FALSE;
 			break;
 #endif
 		default:

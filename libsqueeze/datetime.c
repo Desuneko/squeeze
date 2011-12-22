@@ -172,6 +172,7 @@ lsq_datetime_register_type ( void )
     /* Force lsq_datetime_get_type to get called, and not optimized by G_GNUC_CONST */
     volatile GType type;
     type  = lsq_datetime_get_type();
+    type;
 }
 
 LSQDateTime

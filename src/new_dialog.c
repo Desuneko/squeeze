@@ -123,6 +123,7 @@ sq_new_archive_dialog_get_file(SQNewArchiveDialog *dialog)
 
     if (file)
 	{
+		/*
 		const gchar *mime_type = ""; //lsq_mime_support_get_name(((LSQMimeSupport *)_supported_mime_types->data));
 		gchar *suffix = NULL;
 		gint i;
@@ -146,6 +147,7 @@ sq_new_archive_dialog_get_file(SQNewArchiveDialog *dialog)
 		if(!strcmp(mime_type, "application/x-bzip"))  suffix = ".bz2";
 		if(!strcmp(mime_type, "application/x-lzop"))  suffix = ".lzo";
 		if(!strcmp(mime_type, "application/x-compress"))  suffix = ".Z";
+		*/
 	}
     return file;
 }
