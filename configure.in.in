@@ -32,6 +32,7 @@ Written for Xfce by Stephan Arts <stephan@xfce.org>
 
 AC_INIT([Squeeze], [squeeze_version], [http://bugzilla.xfce.org/])
 AC_PREREQ([2.50])
+AC_CONFIG_MACRO_DIR([m4])
 
 SQUEEZE_VERSION=squeeze_version
 AM_INIT_AUTOMAKE([1.8 dist-bzip2 tar-ustar])
@@ -51,12 +52,15 @@ AM_CONDITIONAL([HAVE_CYGWIN], [test "`uname | grep \"CYGWIN\"`" != ""])
 dnl check for standard header files
 AC_PROG_CC
 AM_PROG_CC_C_O
-AC_PROG_LIBTOOL
 AC_PROG_INTLTOOL([0.31], [no-xml])
 
 AC_HEADER_STDC
 AC_SYS_LARGEFILE
 CPPFLAGS="$CPPFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES"
+
+dnl Check for libtool
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
 
 
 GTK_DOC_CHECK([1.0])
