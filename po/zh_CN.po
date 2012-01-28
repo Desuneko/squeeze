@@ -78,7 +78,7 @@ msgstr "显示完整路径"
 
 #: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
-msgstr "为每个条目显示完整路径系列"
+msgstr "为每个条目显示完整路径序列"
 
 #: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
