@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: squeeze master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-29 06:30+0000\n"
-"PO-Revision-Date: 2012-01-29 20:23+0800\n"
+"PO-Revision-Date: 2012-01-29 20:24+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: chinese-l10n <chinese-l10n@googlegroups.com>\n"
 "Language: \n"
@@ -368,7 +368,7 @@ msgstr "建立新封存檔"
 
 #: ../src/notebook.c:209
 msgid "Rules hint"
-msgstr ""
+msgstr "規則提示"
 
 #: ../src/notebook.c:210
 #, fuzzy
@@ -397,7 +397,7 @@ msgstr "顯示圖示(_S)"
 
 #: ../src/preferences_dialog.c:100
 msgid "_Rules Hint"
-msgstr ""
+msgstr "規則提示(_R)"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
