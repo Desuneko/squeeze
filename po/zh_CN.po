@@ -4,13 +4,13 @@
 # the squeeze package.
 # Hunt Xu <huntxu@live.cn>, 2008, 2009.
 # Aron Xu <aronmalache@163.com>, 2009.
-# Chipong Luo <chipong_l@yahoo.com>, 2011, 2012.
+# Chipong Luo <chipong.luo@yahoo.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-28 01:30+0000\n"
+"POT-Creation-Date: 2012-02-08 04:18+0000\n"
 "PO-Revision-Date: 2009-06-14 02:36+0800\n"
 "Last-Translator: Chipong Luo <chipong_l@yahoo.com>\n"
 "Language-Team: Chinese (Simplified) <xfce-i18n@xfce.org>\n"
@@ -45,9 +45,7 @@ msgstr "Squeeze 归档文件管理器"
 #.
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"未能打开归档文件，不支持 MIME 类型或文件"
-"不存在"
+msgstr "未能打开归档文件，不支持 MIME 类型或文件不存在"
 
 #: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
@@ -300,9 +298,7 @@ msgstr "基于 Andreas Nilsson 创建的原解压图标"
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
-"Squeeze 是一款 Xfce 桌面环境下的轻便"
-"灵活的归档文件管理器"
+msgstr "Squeeze 是一款 Xfce 桌面环境下的轻便灵活的归档文件管理器"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1134
