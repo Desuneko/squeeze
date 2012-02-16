@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-30 11:30+0000\n"
+"POT-Creation-Date: 2012-02-16 21:18+0000\n"
 "PO-Revision-Date: 2008-08-21 21:46+0200\n"
 "Last-Translator: Fabian Nowak <timstery@arcor.de>\n"
 "Language-Team: German <xfce-i18n@xfce.org>\n"
@@ -388,7 +388,6 @@ msgid "_Show Icons"
 msgstr "_Symbole anzeigen"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
 msgstr "_Regelhinweis"
 
@@ -417,7 +416,6 @@ msgid "Preferences"
 msgstr "Einstellungen"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
 msgstr "_Archivierungsprogramme"
 
