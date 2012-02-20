@@ -1,0 +1,474 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: squeeze\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-20 13:03+0000\n"
+"PO-Revision-Date: 2012-02-20 23:15+0600\n"
+"Last-Translator: Urmas D. <davian818@gmail.com>\n"
+"Language-Team: none <none>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Esperanto\n"
+
+#: ../libsqueeze/archive.c:268
+msgid "Name"
+msgstr "Nomo"
+
+#: ../libsqueeze/archive.c:270
+msgid "Mime type"
+msgstr "MIME-tipo"
+
+#: ../squeeze.desktop.in.h:1
+msgid "Archive Manager"
+msgstr "Arkivadministrilo"
+
+#: ../squeeze.desktop.in.h:2
+msgid "Create and manage archives with the archive manager"
+msgstr ""
+
+#: ../squeeze.desktop.in.h:3
+msgid "Squeeze Archive Manager"
+msgstr "Skŭiz, la arkivadministrilo"
+
+#.
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#.
+#: ../src/application.c:160
+#: ../src/application.c:251
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr ""
+
+#: ../src/application.c:190
+#: ../src/main_window.c:834
+#: ../src/main_window.c:1297
+msgid ""
+"Squeeze cannot extract this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#.
+#. * Could not create archive (mime type unsupported)
+#.
+#: ../src/application.c:234
+msgid "Could not create archive, MIME-type unsupported"
+msgstr ""
+
+#: ../src/application.c:269
+#: ../src/main_window.c:887
+msgid ""
+"Squeeze cannot add files to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/archive_store.c:250
+#: ../src/notebook.c:181
+#, fuzzy
+msgid "Show full path"
+msgstr "Montri plenan liston de dokumentoj"
+
+#: ../src/archive_store.c:251
+#: ../src/notebook.c:182
+msgid "Show the full path strings for each entry"
+msgstr ""
+
+#: ../src/archive_store.c:257
+#: ../src/notebook.c:188
+#, fuzzy
+msgid "Show mime icons"
+msgstr "_Teksto apud piktogramo"
+
+#: ../src/archive_store.c:258
+#: ../src/notebook.c:189
+msgid "Show the mime type icons for each entry"
+msgstr ""
+
+#: ../src/archive_store.c:264
+#, fuzzy
+msgid "Show up dir entry"
+msgstr ""
+"%s: eraro dum purigado de ĉio:\n"
+" %s\n"
+
+#: ../src/archive_store.c:265
+#, fuzzy
+msgid "Show '..' to go to the parent directory"
+msgstr "malsukceso dum kreo de provizora dosierujo"
+
+#: ../src/archive_store.c:271
+#: ../src/notebook.c:195
+#, fuzzy
+msgid "Sort folders before files"
+msgstr "Ordigu _dosierujojn antaŭ dosieroj"
+
+#: ../src/archive_store.c:272
+#: ../src/notebook.c:196
+msgid "The folders will be put at the top of the list"
+msgstr ""
+
+#: ../src/archive_store.c:278
+#: ../src/archive_store.c:279
+#: ../src/notebook.c:202
+#: ../src/notebook.c:203
+#, fuzzy
+msgid "Sort text case sensitive"
+msgstr "Ŝanĝi la usklecon de la elektita teksto"
+
+#: ../src/button_drag_box.c:85
+#, fuzzy
+msgid "Visible:"
+msgstr "Videbla"
+
+#: ../src/button_drag_box.c:96
+#, fuzzy
+msgid "Available:"
+msgstr "&Disponeblaj prezentoj:"
+
+#: ../src/extract_dialog.c:76
+msgid "<b>Extract files:</b>"
+msgstr "<b>Aldoni dosierojn:</b>"
+
+#: ../src/extract_dialog.c:77
+#, fuzzy
+msgid "<b>Options:</b>"
+msgstr "Opcioj:"
+
+#: ../src/extract_dialog.c:88
+#, fuzzy
+msgid "All files"
+msgstr "Ĉiuj dosieroj"
+
+#: ../src/extract_dialog.c:89
+#, fuzzy
+msgid "Selected files"
+msgstr "Aldonu dosierojn"
+
+#: ../src/extract_dialog.c:101
+#: ../src/main_window.c:456
+#: ../src/main_window.c:1251
+msgid "Extract"
+msgstr ""
+
+#: ../src/extract_dialog.c:114
+#, fuzzy
+msgid "Extract archive"
+msgstr "ne povas atingi arkivon"
+
+#: ../src/main.c:53
+#, fuzzy
+msgid "[destination path]"
+msgstr "duobligita vojo %s"
+
+#: ../src/main.c:61
+msgid "[archive path] [file1] [file2] ... [fileN]"
+msgstr ""
+
+#: ../src/main.c:65
+msgid "[file1] [file2] ... [fileN]"
+msgstr ""
+
+#: ../src/main.c:68
+#, fuzzy
+msgid "Version information"
+msgstr "Debian %s versio %s.\n"
+
+#: ../src/main.c:98
+#, fuzzy
+msgid "[archive name]"
+msgstr "--%s bezonas <nomo>"
+
+#: ../src/main.c:102
+#, c-format
+msgid ""
+"%s: %s\n"
+"Try %s --help to see a full list of available command line options.\n"
+msgstr ""
+
+#: ../src/main_window.c:134
+#, fuzzy
+msgid "Internal Style"
+msgstr "Butona stilo"
+
+#: ../src/main_window.c:136
+#, fuzzy
+msgid "Tool Bar Style"
+msgstr "Montri &statbreton"
+
+#: ../src/main_window.c:139
+#, fuzzy
+msgid "Path Bar Style"
+msgstr "Montri &statbreton"
+
+#: ../src/main_window.c:187
+#, fuzzy
+msgid "Navigation Style"
+msgstr "Butona stilo"
+
+#: ../src/main_window.c:188
+msgid ""
+"Style of navigation\n"
+"The style to navigate trough the archive"
+msgstr ""
+
+#. File menu
+#: ../src/main_window.c:300
+msgid "_File"
+msgstr "_Dosiero"
+
+#. Action menu: ref all the childs
+#: ../src/main_window.c:328
+msgid "_Action"
+msgstr "_Ago"
+
+#: ../src/main_window.c:333
+msgid "_Add files"
+msgstr "_Aldonu dosierojn"
+
+#: ../src/main_window.c:339
+msgid "_Add _folders"
+msgstr "Aldonu do_sierujojn"
+
+#: ../src/main_window.c:345
+msgid "_Extract"
+msgstr ""
+
+#. View menu
+#: ../src/main_window.c:378
+msgid "_View"
+msgstr "_Montru"
+
+#. Help menu
+#: ../src/main_window.c:402
+msgid "_Help"
+msgstr "_Helpo"
+
+#: ../src/main_window.c:448
+#: ../src/main_window.c:862
+msgid "Add files"
+msgstr "Aldoni dosierojn"
+
+#: ../src/main_window.c:452
+#: ../src/main_window.c:909
+msgid "Add folders"
+msgstr "Aldoni dosierujojn"
+
+#: ../src/main_window.c:727
+#, fuzzy
+msgid "Open archive in new window"
+msgstr "Malfermu elektitan dosierujon en nova fenestro"
+
+#: ../src/main_window.c:733
+#, fuzzy
+msgid "Open archive"
+msgstr "Malfermi katalogon"
+
+#: ../src/main_window.c:934
+msgid ""
+"Squeeze cannot add folders to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:958
+#, fuzzy
+msgid "Are you sure you want to remove the selected files?"
+msgstr ""
+"Ĉu vi estas certa definitive forviŝi\n"
+"la elektitan dosieron?"
+
+#: ../src/main_window.c:974
+msgid ""
+"Squeeze cannot remove files from this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:1025
+msgid ""
+"Are you sure you want to cancel this operation?\n"
+"This could damage the archive."
+msgstr ""
+
+#: ../src/main_window.c:1107
+msgid "Lead developer:"
+msgstr ""
+
+#: ../src/main_window.c:1110
+#, fuzzy
+msgid "Contributors:"
+msgstr "Kontribuantoj:"
+
+#: ../src/main_window.c:1113
+msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
+msgstr "Inspirita de Xarhiver, estinta estigita de Ĝuzepe TORELI"
+
+#: ../src/main_window.c:1115
+#, fuzzy
+msgid "Application Icon:"
+msgstr "Piktograma vido"
+
+#: ../src/main_window.c:1118
+#, fuzzy
+msgid "Add / Extract icons:"
+msgstr "_Teksto apud piktogramo"
+
+#: ../src/main_window.c:1119
+msgid "Based on the original extract icon created by Andreas Nilsson"
+msgstr ""
+
+#: ../src/main_window.c:1126
+msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgstr ""
+
+#. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
+#: ../src/main_window.c:1134
+msgid "translator-credits"
+msgstr "(c) 2012 dummy text"
+
+#: ../src/main_window.c:1168
+#: ../src/main_window.c:1240
+#: ../src/main_window.c:1396
+#, fuzzy
+msgid "Done"
+msgstr "farite\n"
+
+#: ../src/main_window.c:1250
+msgid "Which action do you want to perform on the selected file(s)?"
+msgstr ""
+
+#: ../src/main_window.c:1251
+msgid "Open"
+msgstr "Malfermi"
+
+#: ../src/main_window.c:1270
+msgid ""
+"Squeeze cannot view this file.\n"
+"the application to support this is missing."
+msgstr ""
+
+#: ../src/main_window.c:1337
+#, fuzzy
+msgid "Failed to open file"
+msgstr "Ne eblas malfermi la dosieron \"%s\""
+
+#: ../src/main_window.c:1338
+#, fuzzy, c-format
+msgid ""
+"'%s'\n"
+"Could not be opened"
+msgstr "ne povas esti malplena ĉeno"
+
+#: ../src/message_dialog.c:163
+#, fuzzy
+msgid "Archive manager"
+msgstr "Katalog&administrilo"
+
+#: ../src/new_dialog.c:71
+#, fuzzy
+msgid "Archive type:"
+msgstr "&Stilo de numerado:"
+
+#: ../src/new_dialog.c:82
+msgid "Archives"
+msgstr "Arkivoj"
+
+#: ../src/new_dialog.c:110
+#, fuzzy
+msgid "Create new archive"
+msgstr "Krei novan dokumenton"
+
+#: ../src/notebook.c:209
+msgid "Rules hint"
+msgstr ""
+
+#: ../src/notebook.c:210
+msgid "Make the row background colors alternate"
+msgstr ""
+
+#: ../src/path_bar.c:142
+#, fuzzy
+msgid "Spacing"
+msgstr "Spaco"
+
+#: ../src/path_bar.c:143
+#, fuzzy
+msgid "The amount of space between the path buttons"
+msgstr "Amplekso de spaco inter butonoj de voj-montrilo"
+
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr "_Ĝeneralaj"
+
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "ne povas atingi arkivon"
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "&Vidigi referencojn"
+
+#: ../src/preferences_dialog.c:100
+msgid "_Rules Hint"
+msgstr ""
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "Usklo-sentem_a serĉo"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "Ordigu _dosierujojn antaŭ dosieroj"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "&Statbreto"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+#, fuzzy
+msgid "Preferences"
+msgstr "Preferoj"
+
+#: ../src/preferences_dialog.c:204
+msgid "_Archivers"
+msgstr ""
+
+#: ../src/preferences_dialog.c:281
+msgid "Filename"
+msgstr "Dosiernomo"
+
+#: ../src/properties_dialog.c:85
+msgid "Name:"
+msgstr "Nomo:"
+
+#: ../src/properties_dialog.c:98
+#, fuzzy
+msgid "Kind:"
+msgstr "Kvalito:"
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr "Ecoj"
+
+#: ../src/tool_bar.c:169
+#, fuzzy
+msgid "Location:"
+msgstr "_Lokvojo:"
+
