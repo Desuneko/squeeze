@@ -2,20 +2,21 @@
 # Copyright (C) 2007 THE squeeze'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the squeeze package.
 # Isratine Citizen <genghiskhan@gmx.ca>, 2012.
-# , fuzzy
-#
-#
+#, fuzzy
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.3\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2007-04-22 23:04+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-06 03:45+0000\n"
 "PO-Revision-Date: 2012-03-02 17:17+0200\n"
 "Last-Translator: my name <email@address.org>\n"
 "Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: ../libsqueeze/archive.c:268
 msgid "Name"
@@ -25,235 +26,28 @@ msgstr "שם"
 msgid "Mime type"
 msgstr "סוג MIME"
 
-#: ../libsqueeze/command-builder.c:122
-msgid "Execute"
-msgstr "Execute"
+#: ../squeeze.desktop.in.h:1
+#, fuzzy
+msgid "Archive Manager"
+msgstr "מנהל ארכיונים"
 
-#: ../libsqueeze/command-builder-zip.c:116
-#: ../libsqueeze/command-builder-rar.c:127
-msgid "Compressed"
-msgstr "דחוס"
+#: ../squeeze.desktop.in.h:2
+msgid "Create and manage archives with the archive manager"
+msgstr "יצירה וניהול של ארכיונים בעזרת מנהל הארכיונים"
 
-#: ../libsqueeze/command-builder-zip.c:118
-#: ../libsqueeze/command-builder-rar.c:141
-msgid "Method"
-msgstr "שיטה"
+#: ../squeeze.desktop.in.h:3
+#, fuzzy
+msgid "Squeeze Archive Manager"
+msgstr "מנהל ארכיונים"
 
-#: ../libsqueeze/command-builder-zip.c:120
-#: ../libsqueeze/command-builder-gnu-tar.c:149
-#: ../libsqueeze/command-builder-rar.c:129
-msgid "Size"
-msgstr "גודל"
+#. * Could not open archive (mime type not supported or file did not exist)
+#. * Should be a more specific error message.
+#. 
+#: ../src/application.c:160 ../src/application.c:251
+msgid "Could not open archive, MIME-type unsupported or file did not exist"
+msgstr "לא ניתן היה לפתוח ארכיון, סוג MIME אינו נתמך או שהקובץ לא קיים"
 
-#: ../libsqueeze/command-builder-zip.c:122
-#: ../libsqueeze/command-builder-rar.c:131
-msgid "Ratio"
-msgstr "יחס"
-
-#: ../libsqueeze/command-builder-zip.c:124
-#: ../libsqueeze/command-builder-gnu-tar.c:151
-#: ../libsqueeze/command-builder-rar.c:133
-msgid "Date"
-msgstr "תאריך"
-
-#: ../libsqueeze/command-builder-zip.c:126
-#: ../libsqueeze/command-builder-gnu-tar.c:153
-#: ../libsqueeze/command-builder-rar.c:135
-msgid "Time"
-msgstr "זמן"
-
-#: ../libsqueeze/command-builder-zip.c:166
-#: ../libsqueeze/command-builder-rar.c:181
-msgid "Adding"
-msgstr "מוסיף כעת"
-
-#: ../libsqueeze/command-builder-zip.c:183
-#: ../libsqueeze/command-builder-zip.c:185
-#: ../libsqueeze/command-builder-gnu-tar.c:370
-#: ../libsqueeze/command-builder-gnu-tar.c:392
-#: ../libsqueeze/command-builder-rar.c:197
-#: ../libsqueeze/command-builder-rar.c:199
-msgid "Removing"
-msgstr "מסיר כעת"
-
-#: ../libsqueeze/command-builder-zip.c:203
-#: ../libsqueeze/command-builder-gnu-tar.c:413
-#: ../libsqueeze/command-builder-gnu-tar.c:415
-#: ../libsqueeze/command-builder-rar.c:216
-msgid "Extracting"
-msgstr "מחלץ כעת"
-
-#: ../libsqueeze/command-builder-zip.c:214
-#: ../libsqueeze/command-builder-gnu-tar.c:428
-#: ../libsqueeze/command-builder-gnu-tar.c:430
-#: ../libsqueeze/command-builder-rar.c:226
-#: ../libsqueeze/command-builder-compr.c:253
-msgid "Refresh"
-msgstr "רענון"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:145
-#: ../libsqueeze/command-builder-rar.c:137
-msgid "Rights"
-msgstr "הרשאות"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:147
-msgid "Owner/Group"
-msgstr "בעלים/קבוצה"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:236
-#: ../libsqueeze/command-builder-gnu-tar.c:356
-#: ../libsqueeze/command-builder-compr.c:198
-msgid "Compressing"
-msgstr "מכווץ כעת"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:269
-#: ../libsqueeze/command-builder-gnu-tar.c:347
-#: ../libsqueeze/command-builder-compr.c:222
-msgid "Decompressing"
-msgstr "מרחיב כעת"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:283
-msgid "Adding files"
-msgstr "נוספים קבצים כעת"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:303
-#: ../libsqueeze/command-builder-gnu-tar.c:374
-msgid "Cleanup"
-msgstr "ניקוי"
-
-#: ../libsqueeze/command-builder-gnu-tar.c:334
-msgid "Removing files"
-msgstr "מוסרים קבצים כעת"
-
-#: ../libsqueeze/command-builder-rar.c:143
-msgid "Version"
-msgstr "גרסה"
-
-#: ../libsqueeze/spawn-command.c:270
-#, c-format
-msgid "Command exited with status %d."
-msgstr "הפקודה הסתיימה עם סטטוס %d."
-
-#: ../libsqueeze/spawn-command.c:280
-msgid "Command interrupted by user"
-msgstr "הפקודה נקטעה על-ידי המשתמש"
-
-#: ../libsqueeze/spawn-command.c:284
-msgid "Command received SIGSEGV"
-msgstr "הפקודה קיבלה SIGSEGV"
-
-#: ../libsqueeze/spawn-command.c:289
-msgid "Command Terminated"
-msgstr "הפקודה הסתיימה"
-
-#: ../src/main.c:51
-msgid "[destination path]"
-msgstr "[נתיב יעד]"
-
-#: ../src/main.c:59
-msgid "[archive path] [file1] [file2] ... [fileN]"
-msgstr "[נתיב ארכיון] [קובץ1] [קובץ2] ... [קובץN]"
-
-#: ../src/main.c:63
-msgid "[file1] [file2] ... [fileN]"
-msgstr "[קובץ1] [קובץ2] ... [קובץN]"
-
-#: ../src/main.c:66
-msgid "Version information"
-msgstr "מידע על הגרסה הנוכחית"
-
-#: ../src/main.c:92
-msgid "[archive name]"
-msgstr "[שם ארכיון]"
-
-#: ../src/main.c:96
-#, c-format
-msgid ""
-"%s: %s\n"
-"Try %s --help to see a full list of available command line options.\n"
-msgstr ""
-"%s: %s\n"
-"נא לעיין %s --help כדי לראות רשימה מלאה של הפקודות הזמינות.\n"
-
-#: ../src/main_window.c:133
-msgid "Internal Style"
-msgstr "עיצוב פנימי"
-
-#: ../src/main_window.c:134
-msgid "Tool Bar Style"
-msgstr "עיצוב סרגל הכלים"
-
-#: ../src/main_window.c:135
-msgid "Path Bar Style"
-msgstr "עיצוב סרגל הניווט"
-
-#: ../src/main_window.c:182
-msgid "Navigation Style"
-msgstr "סגנון ניווט"
-
-# Should not this be through?
-#: ../src/main_window.c:183
-msgid ""
-"Style of navigation\n"
-"The style to navigate trough the archive"
-msgstr ""
-"סגנון הניווט\n"
-"אופן הניווט בתוך ארכיון"
-
-#. File menu
-#: ../src/main_window.c:283
-msgid "_File"
-msgstr "_קובץ"
-
-#. Action menu: ref all the childs
-#: ../src/main_window.c:311
-msgid "_Action"
-msgstr "_פעולות"
-
-#: ../src/main_window.c:316
-msgid "_Add"
-msgstr "_הוספה"
-
-#: ../src/main_window.c:322
-msgid "_Extract"
-msgstr "_חילוץ"
-
-#. View menu
-#: ../src/main_window.c:354
-msgid "_View"
-msgstr "_תצוגה"
-
-#. Help menu
-#: ../src/main_window.c:378
-msgid "_Help"
-msgstr "_עזרה"
-
-#: ../src/main_window.c:424
-msgid "Add"
-msgstr "הוספה"
-
-#: ../src/main_window.c:428
-#: ../src/main_window.c:1126
-#: ../src/extract_dialog.c:100
-msgid "Extract"
-msgstr "חילוץ"
-
-#: ../src/main_window.c:689
-msgid "Open archive in new window"
-msgstr "פתיחת ארכיון בחלון חדש"
-
-#: ../src/main_window.c:695
-msgid "Open archive"
-msgstr "פתיחת ארכיון"
-
-#: ../src/main_window.c:707
-#: ../src/new_dialog.c:80
-msgid "Archives"
-msgstr "ארכיונים"
-
-#: ../src/main_window.c:789
-#: ../src/main_window.c:1167
-#: ../src/application.c:193
+#: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -261,8 +55,13 @@ msgstr ""
 "‏Squeeze לא יכול לחלץ את סוג ארכיון זה,\n"
 "היישום שיכול לתומך בפעולה זו חסר."
 
-#: ../src/main_window.c:829
-#: ../src/application.c:268
+#. * Could not create archive (mime type unsupported)
+#. 
+#: ../src/application.c:234
+msgid "Could not create archive, MIME-type unsupported"
+msgstr "לא ניתן היה ליצור ארכיון, סוג MIME אינו נתמך"
+
+#: ../src/application.c:269 ../src/main_window.c:887
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -270,147 +69,51 @@ msgstr ""
 "‏Squeeze לא יכול להוסיף קבצים אל סוג ארכיון זה,\n"
 "היישום שיכול לתומך בפעולה זו חסר."
 
-#: ../src/main_window.c:849
-msgid "Are you sure you want to remove the selected files?"
-msgstr "האם עדיין ברצונך להסיר את הקבצים הנבחרים?"
+#: ../src/archive_store.c:250 ../src/notebook.c:181
+msgid "Show full path"
+msgstr "הצגה של הנתיב המלא"
 
-#: ../src/main_window.c:862
-msgid ""
-"Squeeze cannot remove files from this archive type,\n"
-"the application to support this is missing."
-msgstr ""
-"‏Squeeze לא יכול להסיר קבצים מסוג ארכיון זה,\n"
-"היישום שיכול לתומך בפעולה זו חסר."
+#: ../src/archive_store.c:251 ../src/notebook.c:182
+msgid "Show the full path strings for each entry"
+msgstr "הצגת מחרוזות  עם הנתיב המלא עבור כל רשומה"
 
-#: ../src/main_window.c:909
-msgid ""
-"Are you sure you want to cancel this operation?\n"
-"This could damage the archive."
-msgstr ""
-"האם עדיין ברצונך לבטל את פעולה זו?\n"
-"הארכיון עלול להינזק עקב ביטול הפעולה."
+#: ../src/archive_store.c:257 ../src/notebook.c:188
+msgid "Show mime icons"
+msgstr "הצגת סמלילי MIME"
 
-#: ../src/main_window.c:991
-msgid "Lead developer:"
-msgstr "מפתח ראשי:"
+#: ../src/archive_store.c:258 ../src/notebook.c:189
+msgid "Show the mime type icons for each entry"
+msgstr "הצגת סמלילי סוג MIME עבור כל רשומה"
 
-#: ../src/main_window.c:994
-msgid "Contributors:"
-msgstr "תורמים:"
+#: ../src/archive_store.c:264
+msgid "Show up dir entry"
+msgstr "הצגת רשומות ספרייה"
 
-#: ../src/main_window.c:997
-msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
-msgstr "הושרה על-ידי Xarchiver, נכתב על-ידי Giuseppe Torelli"
+#: ../src/archive_store.c:265
+msgid "Show '..' to go to the parent directory"
+msgstr "הצגת '..' למעבר אל ספריית האם"
 
-#: ../src/main_window.c:999
-msgid "Application Icon:"
-msgstr "סמליל היישום:"
+#: ../src/archive_store.c:271 ../src/notebook.c:195
+msgid "Sort folders before files"
+msgstr "מיון התיקיות לפני הקבצים"
 
-#: ../src/main_window.c:1002
-msgid "Add / Extract icons:"
-msgstr "הוספה / חילוץ סמלילים:"
+#: ../src/archive_store.c:272 ../src/notebook.c:196
+msgid "The folders will be put at the top of the list"
+msgstr "התיקיות יושמו בראש הרשימה"
 
-#: ../src/main_window.c:1003
-msgid "Based on the original extract icon created by Andreas Nilsson"
-msgstr "מבוסס על סמליל החילוץ המקורי שנוצר על-ידי Andreas Nilsson"
+# תמליל
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
+#: ../src/notebook.c:203
+msgid "Sort text case sensitive"
+msgstr "מיון טקסט באופן תלוי רישיות"
 
-#: ../src/main_window.c:1010
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
-msgstr "‏Squeeze הנו מנהל ארכיונים גמיש וקל משקל עבור סביבת העבודה Xfce"
+#: ../src/button_drag_box.c:85
+msgid "Visible:"
+msgstr "גלוי:"
 
-#. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1018
-msgid "translator-credits"
-msgstr "Isratine Citizen <genghiskhan@gmx.ca>"
-
-#: ../src/main_window.c:1047
-#: ../src/main_window.c:1115
-#: ../src/main_window.c:1282
-msgid "Done"
-msgstr "הפעולה הסתיימה"
-
-#: ../src/main_window.c:1125
-msgid "Which action do you want to perform on the selected file(s)?"
-msgstr "איזו פעולה ברצונך לבצע על הקובץ או הקבצים הנבחרים?"
-
-#: ../src/main_window.c:1126
-msgid "Open"
-msgstr "פתיחה"
-
-#: ../src/main_window.c:1140
-msgid ""
-"Squeeze cannot view this file.\n"
-"the application to support this is missing."
-msgstr ""
-"‏Squeeze לא יכול לצפות בקובץ זה.\n"
-"היישום שיכול לתומך בפעולה זו חסר."
-
-#: ../src/main_window.c:1208
-msgid "Failed to open file"
-msgstr "כשל בפתיחת הקובץ"
-
-#: ../src/main_window.c:1209
-#, c-format
-msgid ""
-"'%s'\n"
-"Could not be opened"
-msgstr ""
-"'%s'\n"
-"לא יכול להיפתח"
-
-#.
-#. * Could not open archive (mime type not supported or file did not exist)
-#. * Should be a more specific error message.
-#.
-#: ../src/application.c:162
-#: ../src/application.c:252
-msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "לא ניתן היה לפתוח ארכיון, סוג MIME אינו נתמך או שהקובץ לא קיים"
-
-#.
-#. * Could not create archive (mime type unsupported)
-#.
-#: ../src/application.c:235
-msgid "Could not create archive, MIME-type unsupported"
-msgstr "לא ניתן היה ליצור ארכיון, סוג MIME אינו נתמך"
-
-#: ../src/new_dialog.c:69
-msgid "Archive type:"
-msgstr "סוג ארכיון:"
-
-#: ../src/new_dialog.c:107
-msgid "Create new archive"
-msgstr "יצירת ארכיון חדש"
-
-#: ../src/add_dialog.c:73
-msgid "Files and directories to add"
-msgstr "קבצים וספריות להוספה"
-
-#: ../src/add_dialog.c:74
-msgid "Options:"
-msgstr "אפשרויות:"
-
-#: ../src/add_dialog.c:107
-msgid "Files"
-msgstr "קבצים"
-
-#: ../src/add_dialog.c:111
-msgid "Directories"
-msgstr "ספריות"
-
-#: ../src/add_dialog.c:144
-msgid "Add file(s) to archive"
-msgstr "הוספת קובץ או קבצים לארכיון"
-
-#. Select Files Dialog
-#: ../src/add_dialog.c:164
-msgid "Select files"
-msgstr "בחירת קבצים"
-
-#. Select Folder Dialog
-#: ../src/add_dialog.c:170
-msgid "Select folders"
-msgstr "בחירת תיקיות"
+#: ../src/button_drag_box.c:96
+msgid "Available:"
+msgstr "זמין:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -420,102 +123,428 @@ msgstr "<b>חילוץ קבצים:</b>"
 msgid "<b>Options:</b>"
 msgstr "<b>אפשרויות:</b>"
 
-#: ../src/extract_dialog.c:87
+#: ../src/extract_dialog.c:88
 msgid "All files"
 msgstr "כל הקבצים"
 
-#: ../src/extract_dialog.c:88
+#: ../src/extract_dialog.c:89
 msgid "Selected files"
 msgstr "הקבצים הנבחרים"
 
-#: ../src/extract_dialog.c:110
+#: ../src/extract_dialog.c:101 ../src/main_window.c:456
+#: ../src/main_window.c:1251
+msgid "Extract"
+msgstr "חילוץ"
+
+#: ../src/extract_dialog.c:114
 msgid "Extract archive"
 msgstr "חילוץ ארכיון"
 
-#: ../src/tool_bar.c:167
-msgid "Location:"
-msgstr "מיקום:"
+#: ../src/main.c:53
+msgid "[destination path]"
+msgstr "[נתיב יעד]"
 
-#: ../src/path_bar.c:141
-msgid "Spacing"
-msgstr "ריווח"
+#: ../src/main.c:61
+msgid "[archive path] [file1] [file2] ... [fileN]"
+msgstr "[נתיב ארכיון] [קובץ1] [קובץ2] ... [קובץN]"
 
-#: ../src/path_bar.c:142
-msgid "The amount of space between the path buttons"
-msgstr "גודל המרווח שבין לחצני הנתיב"
+#: ../src/main.c:65
+msgid "[file1] [file2] ... [fileN]"
+msgstr "[קובץ1] [קובץ2] ... [קובץN]"
 
-#: ../src/notebook.c:179
-#: ../src/archive_store.c:249
-msgid "Show full path"
-msgstr "הצגה של הנתיב המלא"
+#: ../src/main.c:68
+msgid "Version information"
+msgstr "מידע על הגרסה הנוכחית"
 
-#: ../src/notebook.c:180
-#: ../src/archive_store.c:250
-msgid "Show the full path strings for each entry"
-msgstr "הצגת מחרוזות  עם הנתיב המלא עבור כל רשומה"
+#: ../src/main.c:98
+msgid "[archive name]"
+msgstr "[שם ארכיון]"
 
-#: ../src/notebook.c:186
-#: ../src/archive_store.c:256
-msgid "Show mime icons"
-msgstr "הצגת סמלילי MIME"
+#: ../src/main.c:102
+#, c-format
+msgid ""
+"%s: %s\n"
+"Try %s --help to see a full list of available command line options.\n"
+msgstr ""
+"%s: %s\n"
+"נא לעיין %s --help כדי לראות רשימה מלאה של הפקודות הזמינות.\n"
 
-#: ../src/notebook.c:187
-#: ../src/archive_store.c:257
-msgid "Show the mime type icons for each entry"
-msgstr "הצגת סמלילי סוג MIME עבור כל רשומה"
+#: ../src/main_window.c:134
+msgid "Internal Style"
+msgstr "עיצוב פנימי"
 
-#: ../src/notebook.c:193
-#: ../src/archive_store.c:270
-msgid "Sort folders before files"
-msgstr "מיון התיקיות לפני הקבצים"
+#: ../src/main_window.c:136
+msgid "Tool Bar Style"
+msgstr "עיצוב סרגל הכלים"
 
-#: ../src/notebook.c:194
-#: ../src/archive_store.c:271
-msgid "The folders will be put at the top of the list"
-msgstr "התיקיות יושמו בראש הרשימה"
+#: ../src/main_window.c:139
+msgid "Path Bar Style"
+msgstr "עיצוב סרגל הניווט"
 
-# תמליל
-#: ../src/notebook.c:200
-#: ../src/notebook.c:201
-#: ../src/archive_store.c:277
-#: ../src/archive_store.c:278
-msgid "Sort text case sensitive"
-msgstr "מיון טקסט באופן תלוי רישיות"
+#: ../src/main_window.c:187
+msgid "Navigation Style"
+msgstr "סגנון ניווט"
 
-#: ../src/notebook.c:207
+# Should not this be through?
+#: ../src/main_window.c:188
+msgid ""
+"Style of navigation\n"
+"The style to navigate trough the archive"
+msgstr ""
+"סגנון הניווט\n"
+"אופן הניווט בתוך ארכיון"
+
+#. File menu
+#: ../src/main_window.c:300
+msgid "_File"
+msgstr "_קובץ"
+
+#. Action menu: ref all the childs
+#: ../src/main_window.c:328
+msgid "_Action"
+msgstr "_פעולות"
+
+#: ../src/main_window.c:333
+msgid "_Add files"
+msgstr "הו_ספת קבצים"
+
+#: ../src/main_window.c:339
+msgid "_Add _folders"
+msgstr "הוספת _תיקיות"
+
+#: ../src/main_window.c:345
+msgid "_Extract"
+msgstr "_חילוץ"
+
+#. View menu
+#: ../src/main_window.c:378
+msgid "_View"
+msgstr "_תצוגה"
+
+#. Help menu
+#: ../src/main_window.c:402
+msgid "_Help"
+msgstr "_עזרה"
+
+#: ../src/main_window.c:448 ../src/main_window.c:862
+msgid "Add files"
+msgstr "הוספת קבצים"
+
+#: ../src/main_window.c:452 ../src/main_window.c:909
+msgid "Add folders"
+msgstr "הוספת תיקיות"
+
+#: ../src/main_window.c:727
+msgid "Open archive in new window"
+msgstr "פתיחת ארכיון בחלון חדש"
+
+#: ../src/main_window.c:733
+msgid "Open archive"
+msgstr "פתיחת ארכיון"
+
+#: ../src/main_window.c:934
+#, fuzzy
+msgid ""
+"Squeeze cannot add folders to this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"‏Squeeze לא יכול להוסיף קבצים אל סוג ארכיון זה,\n"
+"היישום שיכול לתומך בפעולה זו חסר."
+
+#: ../src/main_window.c:958
+msgid "Are you sure you want to remove the selected files?"
+msgstr "האם עדיין ברצונך להסיר את הקבצים הנבחרים?"
+
+#: ../src/main_window.c:974
+msgid ""
+"Squeeze cannot remove files from this archive type,\n"
+"the application to support this is missing."
+msgstr ""
+"‏Squeeze לא יכול להסיר קבצים מסוג ארכיון זה,\n"
+"היישום שיכול לתומך בפעולה זו חסר."
+
+#: ../src/main_window.c:1025
+msgid ""
+"Are you sure you want to cancel this operation?\n"
+"This could damage the archive."
+msgstr ""
+"האם עדיין ברצונך לבטל את פעולה זו?\n"
+"הארכיון עלול להינזק עקב ביטול הפעולה."
+
+#: ../src/main_window.c:1107
+msgid "Lead developer:"
+msgstr "מפתח ראשי:"
+
+#: ../src/main_window.c:1110
+msgid "Contributors:"
+msgstr "תורמים:"
+
+#: ../src/main_window.c:1113
+msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
+msgstr "הושרה על-ידי Xarchiver, נכתב על-ידי Giuseppe Torelli"
+
+#: ../src/main_window.c:1115
+msgid "Application Icon:"
+msgstr "סמליל היישום:"
+
+#: ../src/main_window.c:1118
+msgid "Add / Extract icons:"
+msgstr "הוספה / חילוץ סמלילים:"
+
+#: ../src/main_window.c:1119
+msgid "Based on the original extract icon created by Andreas Nilsson"
+msgstr "מבוסס על סמליל החילוץ המקורי שנוצר על-ידי Andreas Nilsson"
+
+#: ../src/main_window.c:1126
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
+msgstr "‏Squeeze הנו מנהל ארכיונים גמיש וקל משקל עבור סביבת העבודה Xfce"
+
+#. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
+#: ../src/main_window.c:1134
+msgid "translator-credits"
+msgstr "Isratine Citizen <genghiskhan@gmx.ca>"
+
+#: ../src/main_window.c:1168 ../src/main_window.c:1240
+#: ../src/main_window.c:1396
+msgid "Done"
+msgstr "הפעולה הסתיימה"
+
+#: ../src/main_window.c:1250
+msgid "Which action do you want to perform on the selected file(s)?"
+msgstr "איזו פעולה ברצונך לבצע על הקובץ או הקבצים הנבחרים?"
+
+#: ../src/main_window.c:1251
+msgid "Open"
+msgstr "פתיחה"
+
+#: ../src/main_window.c:1270
+msgid ""
+"Squeeze cannot view this file.\n"
+"the application to support this is missing."
+msgstr ""
+"‏Squeeze לא יכול לצפות בקובץ זה.\n"
+"היישום שיכול לתומך בפעולה זו חסר."
+
+#: ../src/main_window.c:1337
+msgid "Failed to open file"
+msgstr "כשל בפתיחת הקובץ"
+
+#: ../src/main_window.c:1338
+#, c-format
+msgid ""
+"'%s'\n"
+"Could not be opened"
+msgstr ""
+"'%s'\n"
+"לא יכול להיפתח"
+
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "מנהל ארכיונים"
+
+#: ../src/new_dialog.c:71
+msgid "Archive type:"
+msgstr "סוג ארכיון:"
+
+#: ../src/new_dialog.c:82
+msgid "Archives"
+msgstr "ארכיונים"
+
+#: ../src/new_dialog.c:110
+msgid "Create new archive"
+msgstr "יצירת ארכיון חדש"
+
+#: ../src/notebook.c:209
 #, fuzzy
 msgid "Rules hint"
 msgstr "Rules hint"
 
-#: ../src/notebook.c:208
+#: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
 msgstr "הצגת צבעי רקע השורות לסירוגין"
 
-#: ../src/archive_store.c:263
-msgid "Show up dir entry"
-msgstr "הצגת רשומות ספרייה"
+#: ../src/path_bar.c:142
+msgid "Spacing"
+msgstr "ריווח"
 
-#: ../src/archive_store.c:264
-msgid "Show '..' to go to the parent directory"
-msgstr "הצגת '..' למעבר אל ספריית האם"
+#: ../src/path_bar.c:143
+msgid "The amount of space between the path buttons"
+msgstr "גודל המרווח שבין לחצני הנתיב"
 
-#: ../src/message_dialog.c:155
-#: ../squeeze.desktop.in.h:1
-msgid "Archive manager"
-msgstr "מנהל ארכיונים"
+#: ../src/preferences_dialog.c:85
+msgid "_General"
+msgstr ""
 
-#: ../squeeze.desktop.in.h:2
-msgid "Xfce archive manager"
-msgstr "מנהל ארכיונים עבור Xfce"
+#: ../src/preferences_dialog.c:88
+#, fuzzy
+msgid "Archive viewer:"
+msgstr "סוג ארכיון:"
+
+#: ../src/preferences_dialog.c:97
+#, fuzzy
+msgid "_Show Icons"
+msgstr "הצגת סמלילי MIME"
+
+#: ../src/preferences_dialog.c:100
+#, fuzzy
+msgid "_Rules Hint"
+msgstr "Rules hint"
+
+#: ../src/preferences_dialog.c:103
+msgid "Sorting:"
+msgstr ""
+
+# תמליל
+#: ../src/preferences_dialog.c:112
+#, fuzzy
+msgid "Sort _Case Sensitive "
+msgstr "מיון טקסט באופן תלוי רישיות"
+
+#: ../src/preferences_dialog.c:115
+#, fuzzy
+msgid "Sort _Folders First"
+msgstr "מיון התיקיות לפני הקבצים"
+
+#: ../src/preferences_dialog.c:118
+#, fuzzy
+msgid "Navigation bar:"
+msgstr "סגנון ניווט"
+
+#: ../src/preferences_dialog.c:130
+msgid "_Behaviour"
+msgstr ""
+
+#: ../src/preferences_dialog.c:147
+msgid "Preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.c:204
+#, fuzzy
+msgid "_Archivers"
+msgstr "ארכיונים"
+
+#: ../src/preferences_dialog.c:281
+#, fuzzy
+msgid "Filename"
+msgstr "_קובץ"
+
+#: ../src/properties_dialog.c:85
+msgid "Name:"
+msgstr "Name:"
+
+#: ../src/properties_dialog.c:98
+msgid "Kind:"
+msgstr "Kind:"
+
+#: ../src/properties_dialog.c:120
+msgid "Properties"
+msgstr "Properties"
+
+#: ../src/tool_bar.c:169
+msgid "Location:"
+msgstr "מיקום:"
+
+#~ msgid "Execute"
+#~ msgstr "Execute"
+
+#~ msgid "Compressed"
+#~ msgstr "דחוס"
+
+#~ msgid "Method"
+#~ msgstr "שיטה"
+
+#~ msgid "Size"
+#~ msgstr "גודל"
+
+#~ msgid "Ratio"
+#~ msgstr "יחס"
+
+#~ msgid "Date"
+#~ msgstr "תאריך"
+
+#~ msgid "Time"
+#~ msgstr "זמן"
+
+#~ msgid "Adding"
+#~ msgstr "מוסיף כעת"
+
+#~ msgid "Removing"
+#~ msgstr "מסיר כעת"
+
+#~ msgid "Extracting"
+#~ msgstr "מחלץ כעת"
+
+#~ msgid "Refresh"
+#~ msgstr "רענון"
+
+#~ msgid "Rights"
+#~ msgstr "הרשאות"
+
+#~ msgid "Owner/Group"
+#~ msgstr "בעלים/קבוצה"
+
+#~ msgid "Compressing"
+#~ msgstr "מכווץ כעת"
+
+#~ msgid "Decompressing"
+#~ msgstr "מרחיב כעת"
+
+#~ msgid "Cleanup"
+#~ msgstr "ניקוי"
+
+#~ msgid "Removing files"
+#~ msgstr "מוסרים קבצים כעת"
+
+#~ msgid "Version"
+#~ msgstr "גרסה"
+
+#~ msgid "Command exited with status %d."
+#~ msgstr "הפקודה הסתיימה עם סטטוס %d."
+
+#~ msgid "Command interrupted by user"
+#~ msgstr "הפקודה נקטעה על-ידי המשתמש"
+
+#~ msgid "Command received SIGSEGV"
+#~ msgstr "הפקודה קיבלה SIGSEGV"
+
+#~ msgid "Command Terminated"
+#~ msgstr "הפקודה הסתיימה"
+
+#~ msgid "_Add"
+#~ msgstr "_הוספה"
+
+#~ msgid "Add"
+#~ msgstr "הוספה"
+
+#~ msgid "Files and directories to add"
+#~ msgstr "קבצים וספריות להוספה"
+
+#~ msgid "Options:"
+#~ msgstr "אפשרויות:"
+
+#~ msgid "Files"
+#~ msgstr "קבצים"
+
+#~ msgid "Directories"
+#~ msgstr "ספריות"
+
+#~ msgid "Add file(s) to archive"
+#~ msgstr "הוספת קובץ או קבצים לארכיון"
+
+#~ msgid "Select files"
+#~ msgstr "בחירת קבצים"
+
+#~ msgid "Xfce archive manager"
+#~ msgstr "מנהל ארכיונים עבור Xfce"
 
 #~ msgid "Artwork:"
 #~ msgstr "Artwork:"
 
-#, fuzzy
 #~ msgid "idle"
 #~ msgstr "_File"
 
-#, fuzzy
 #~ msgid "Owner"
 #~ msgstr "Owner/Group"
 
@@ -581,12 +610,3 @@ msgstr "מנהל ארכיונים עבור Xfce"
 
 #~ msgid "Append extension to filename"
 #~ msgstr "Append extension to filename"
-
-#~ msgid "Name:"
-#~ msgstr "Name:"
-
-#~ msgid "Kind:"
-#~ msgstr "Kind:"
-
-#~ msgid "Properties"
-#~ msgstr "Properties"
