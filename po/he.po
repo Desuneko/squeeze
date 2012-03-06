@@ -3,8 +3,6 @@
 # This file is distributed under the same license as the squeeze package.
 # Isratine Citizen <genghiskhan@gmx.ca>, 2012.
 #, fuzzy
-# 
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.3\n"
@@ -59,7 +57,7 @@ msgstr ""
 #. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "לא ניתן היה ליצור ארכיון, סוג MIME אינו נתמך"
+msgstr "לא ניתן ליצור ארכיון, סוג MIME אינו נתמך"
 
 #: ../src/application.c:269 ../src/main_window.c:887
 msgid ""
@@ -79,19 +77,19 @@ msgstr "הצגת מחרוזות  עם הנתיב המלא עבור כל רשומ
 
 #: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
-msgstr "הצגת סמלילי MIME"
+msgstr "הצגת סמלי MIME"
 
 #: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
-msgstr "הצגת סמלילי סוג MIME עבור כל רשומה"
+msgstr "הצגת סמלי סוג MIME עבור כל רשומה"
 
 #: ../src/archive_store.c:264
 msgid "Show up dir entry"
-msgstr "הצגת רשומות ספרייה"
+msgstr "הצגת רשומות תיקייה"
 
 #: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
-msgstr "הצגת '..' למעבר אל ספריית האם"
+msgstr "הצגת '..' למעבר אל תיקיית האם"
 
 #: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
@@ -113,7 +111,7 @@ msgstr "גלוי:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr "זמין:"
+msgstr "זמינות:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
