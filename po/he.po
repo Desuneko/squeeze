@@ -392,7 +392,7 @@ msgstr "Rules hint"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "מיון:"
 
 # תמליל
 #: ../src/preferences_dialog.c:112
@@ -406,17 +406,16 @@ msgid "Sort _Folders First"
 msgstr "מיון התיקיות לפני הקבצים"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "סגנון ניווט"
+msgstr "סרגל ניווט:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "הת_נהגות"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "העדפות"
 
 #: ../src/preferences_dialog.c:204
 #, fuzzy
@@ -424,9 +423,8 @@ msgid "_Archivers"
 msgstr "ארכיונים"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_קובץ"
+msgstr "שם קובץ"
 
 #: ../src/properties_dialog.c:85
 msgid "Name:"
