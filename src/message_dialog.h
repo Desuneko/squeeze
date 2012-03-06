@@ -27,13 +27,13 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_message_dialog_get_type()))
 
-#define SQ_MESSAGE_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+#define SQ_MESSAGE_DIALOG_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
 			sq_message_dialog_get_type(),	  \
 			SQMessageDialogClass))
 
-#define SQ_IS_MESSAGE_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_MESSAGE_DIALOG_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			sq_message_dialog_get_type()))
 
 typedef struct _SQMessageDialog SQMessageDialog;

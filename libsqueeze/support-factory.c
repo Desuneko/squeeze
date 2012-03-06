@@ -34,70 +34,21 @@
 #include "internals.h"
 
 static void
-lsq_support_factory_class_init(LSQSupportFactoryClass *);
-static void
-lsq_support_factory_init(LSQSupportFactory *);
-static void
-lsq_support_factory_dispose(GObject *object);
-static void
-lsq_support_factory_finalize(GObject *object);
+lsq_support_factory_finalize ( GObject *object );
 
-static GObjectClass *parent_class;
+G_DEFINE_TYPE ( LSQSupportFactory, lsq_support_factory, G_TYPE_OBJECT );
 
-GType
-lsq_support_factory_get_type (void)
+static void
+lsq_support_factory_class_init ( LSQSupportFactoryClass *support_factory_class )
 {
-	static GType lsq_support_factory_type = 0;
+    GObjectClass *object_class = G_OBJECT_CLASS(support_factory_class);
 
-	if (!lsq_support_factory_type)
-	{
-		static const GTypeInfo lsq_support_factory_info = 
-		{
-			sizeof (LSQSupportFactoryClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) lsq_support_factory_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (LSQSupportFactory),
-			0,
-			(GInstanceInitFunc) lsq_support_factory_init,
-			NULL
-		};
-
-		lsq_support_factory_type = g_type_register_static (G_TYPE_OBJECT, "LSQSupportFactory", &lsq_support_factory_info, 0);
-	}
-	return lsq_support_factory_type;
+    object_class->finalize = lsq_support_factory_finalize;
 }
 
 static void
-lsq_support_factory_class_init(LSQSupportFactoryClass *support_factory_class)
+lsq_support_factory_init ( LSQSupportFactory *support_factory )
 {
-	GObjectClass *object_class = G_OBJECT_CLASS(support_factory_class);
-
-	object_class->dispose = lsq_support_factory_dispose;
-	object_class->finalize = lsq_support_factory_finalize;
-
-	parent_class = g_type_class_peek(G_TYPE_OBJECT); 
-
-}
-
-static void
-lsq_support_factory_init(LSQSupportFactory *support_factory)
-{
-}
-
-/**
- * lsq_support_factory_dispose:
- *
- * @object: LSQSupportFactory object
- *
- */
-static void
-lsq_support_factory_dispose(GObject *object)
-{
-
-	parent_class->dispose(object);
 }
 
 /**
@@ -107,32 +58,45 @@ lsq_support_factory_dispose(GObject *object)
  *
  */
 static void
-lsq_support_factory_finalize(GObject *object)
+lsq_support_factory_finalize ( GObject *object )
 {
-	parent_class->finalize(object);
+    LSQSupportFactory *factory = LSQ_SUPPORT_FACTORY(object);
+
+    g_free( factory->filename );
+    g_free( factory->id );
+    g_slist_free( factory->mime_support );
+
+    G_OBJECT_CLASS(lsq_support_factory_parent_class)->finalize( object );
 }
 
 static gint
-lsq_lookup_mime_support(gconstpointer a, gconstpointer b)
+lsq_lookup_mime_support ( gconstpointer a, gconstpointer b )
 {
-	return 1;
+    return 1;
 }
 
 void
-lsq_support_factory_add_template(LSQSupportFactory *factory, LSQSupportTemplate *s_template)
+lsq_support_factory_add_template ( LSQSupportFactory *factory, LSQSupportTemplate *s_template )
 {
-	GSList *result = g_slist_find_custom(lsq_mime_support_list, s_template, lsq_lookup_mime_support);
-	if(!result)
-	{
-		factory->mime_support = g_slist_prepend(factory->mime_support, s_template);
-		lsq_mime_support_list = g_slist_prepend(lsq_mime_support_list, s_template);
-	}
+    GSList *result;
+   
+    g_return_if_fail( LSQ_IS_SUPPORT_FACTORY( factory ) );
+    g_return_if_fail( NULL != s_template );
 
+    result = g_slist_find_custom( lsq_mime_support_list, s_template, lsq_lookup_mime_support );
+    if ( NULL == result )
+    {
+        factory->mime_support = g_slist_prepend( factory->mime_support, s_template );
+        lsq_mime_support_list = g_slist_prepend( lsq_mime_support_list, s_template );
+    }
 }
 
 gint
-lsq_suport_factory_compare_filename(const LSQSupportFactory *factory, const gchar *filename)
+lsq_suport_factory_compare_filename ( const LSQSupportFactory *factory, const gchar *filename )
 {
-  return strcmp(factory->filename, filename);
+    g_return_val_if_fail( LSQ_IS_SUPPORT_FACTORY( factory ), 1 );
+    g_return_val_if_fail( NULL != filename, 1 );
+
+    return strcmp( factory->filename, filename );
 }
 

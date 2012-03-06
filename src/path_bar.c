@@ -126,8 +126,8 @@ sq_path_bar_class_init(SQPathBarClass *path_bar_class)
 	GtkWidgetClass *widget_class;
 	GtkContainerClass *container_class;
 
-	widget_class = (GtkWidgetClass*)path_bar_class;
-	container_class = (GtkContainerClass*)path_bar_class;
+	widget_class = (GtkWidgetClass *)path_bar_class;
+	container_class = (GtkContainerClass *)path_bar_class;
 
 	widget_class->size_request = sq_path_bar_size_request;
 	widget_class->size_allocate = sq_path_bar_size_allocate;
@@ -367,7 +367,7 @@ sq_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 			}
 		}
 
-		iter = (GSList*)first_display->data;
+		iter = (GSList *)first_display->data;
 
 		/* are there parent maps visible? */
 		while(iter)
@@ -382,7 +382,7 @@ sq_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 		/* which parent map is visible? */
 		while(iter)
 		{
-			gtk_widget_get_child_requisition(GTK_WIDGET(((GSList*)iter->data)->data), &child_requisition);
+			gtk_widget_get_child_requisition(GTK_WIDGET(((GSList *)iter->data)->data), &child_requisition);
 			width += child_requisition.width + spacing;
 			if(width > allocation->width)
 				break;
@@ -443,7 +443,7 @@ sq_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 		width += left_width + spacing;
 	if(right_width)
 		width += spacing + right_width;
-	iter = (GSList*)first_display->data;
+	iter = (GSList *)first_display->data;
 	while(iter)
 	{
 		gtk_widget_get_child_requisition(GTK_WIDGET(iter->data), &child_requisition);
@@ -513,7 +513,7 @@ sq_path_bar_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 
 	while(iter)
 	{
-		gtk_widget_set_child_visible(GTK_WIDGET(((GSList*)iter->data)->data), FALSE);
+		gtk_widget_set_child_visible(GTK_WIDGET(((GSList *)iter->data)->data), FALSE);
 		iter = iter->next;
 	}
 

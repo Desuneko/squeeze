@@ -34,8 +34,8 @@ G_BEGIN_DECLS
 			SQ_TYPE_APPLICATION,	  \
 			SQApplicationClass))
 
-#define SQ_IS_APPLICATION_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_APPLICATION_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			SQ_TYPE_APPLICATION()))	
 
 typedef struct _SQApplication SQApplication;

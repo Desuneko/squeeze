@@ -36,7 +36,7 @@ typedef struct _type_parser type_parser;
 typedef struct _LSQPcreParserContext LSQPcreParserContext;
 typedef struct _LSQPcreParserContextClass LSQPcreParserContextClass;
 
-typedef void (*LSQParseFunc)( gchar*, guint, LSQArchiveIter*, guint, LSQPcreParser* );
+typedef void (*LSQParseFunc)( gchar *, guint, LSQArchiveIter *, guint, LSQPcreParser * );
 
 struct _type_parser
 {
@@ -56,7 +56,9 @@ struct _LSQPcreParserContextClass
     LSQParserContextClass parent;
 };
 
-GType lsq_pcre_parser_context_get_type ( void );
+GType
+lsq_pcre_parser_context_get_type ( void );
+#define LSQ_IS_PCRE_PARSER_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), lsq_pcre_parser_context_get_type()))
 
 struct _LSQPcreParser
 {
@@ -77,7 +79,10 @@ struct _LSQPcreParserClass
     LSQParserClass parent;
 };
 
-G_DEFINE_TYPE( LSQPcreParserContext, lsq_pcre_parser_context, LSQ_TYPE_PARSER_CONTEXT );
+static void
+lsq_pcre_parser_finalize ( GObject *object );
+
+G_DEFINE_TYPE ( LSQPcreParserContext, lsq_pcre_parser_context, LSQ_TYPE_PARSER_CONTEXT );
 
 static void
 lsq_pcre_parser_context_init ( LSQPcreParserContext *self )
@@ -99,11 +104,13 @@ lsq_pcre_parser_context_new ( LSQPcreParser *parser, LSQArchive *archive )
     return LSQ_PARSER_CONTEXT( ctx );
 }
 
-static void build_parser ( LSQPcreParser *, const gchar *, gchar ** );
+static gboolean
+build_parser ( LSQPcreParser *, const gchar *, gchar ** );
 
-static void lsq_pcre_parser_parse ( LSQPcreParser *, LSQPcreParserContext * );
+static void
+lsq_pcre_parser_parse ( LSQPcreParser *, LSQPcreParserContext * );
 
-G_DEFINE_TYPE( LSQPcreParser, lsq_pcre_parser, LSQ_TYPE_PARSER );
+G_DEFINE_TYPE ( LSQPcreParser, lsq_pcre_parser, LSQ_TYPE_PARSER );
 
 static void
 lsq_pcre_parser_init ( LSQPcreParser *self )
@@ -114,8 +121,23 @@ static void
 lsq_pcre_parser_class_init ( LSQPcreParserClass *klass )
 {
     LSQParserClass *parser_class = LSQ_PARSER_CLASS( klass );
-    parser_class->get_context = (LSQParserContext*(*)(LSQParser*,LSQArchive*))lsq_pcre_parser_context_new;
-    parser_class->parse = (void(*)(LSQParser*,LSQParserContext*))lsq_pcre_parser_parse;
+
+    G_OBJECT_CLASS(klass)->finalize = lsq_pcre_parser_finalize;
+
+    parser_class->get_context = (LSQParserContext *(*)(LSQParser *,LSQArchive *))lsq_pcre_parser_context_new;
+    parser_class->parse = (void(*)(LSQParser *,LSQParserContext *))lsq_pcre_parser_parse;
+}
+
+static void
+lsq_pcre_parser_finalize ( GObject *object )
+{
+    LSQPcreParser *parser = LSQ_PCRE_PARSER(object);
+
+    pcre_free( parser->study );
+    pcre_free( parser->parser );
+    g_free( parser->types_list );
+
+    G_OBJECT_CLASS(lsq_pcre_parser_parent_class)->finalize( object );
 }
 
 LSQParser *
@@ -126,7 +148,11 @@ lsq_pcre_parser_new ( const gchar *parser_string, gchar **parser_types )
     parser = g_object_new( LSQ_TYPE_PCRE_PARSER, NULL );
 
     /* Build the parser base on the provided configuration */
-    build_parser( parser, parser_string, parser_types );
+    if ( FALSE == build_parser( parser, parser_string, parser_types ) )
+    {
+        g_object_unref( parser );
+        return NULL;
+    }
 
     return LSQ_PARSER( parser );
 }
@@ -153,7 +179,7 @@ static void parse_##func(gchar *str, guint lng, LSQArchiveIter *iter, guint n, L
 }
 
 static void
-parse_char( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
+parse_char ( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
 {
     gchar val;
 
@@ -163,21 +189,21 @@ parse_char( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser 
     lsq_archive_iter_set_prop( iter, n, &val );
 }
 
-DEF_PARSE_NUM(decimal, 10, gint)
-DEF_PARSE_NUM(decimal16, 10, gint)
-DEF_PARSE_NUM(decimal32, 10, glong)
-DEF_PARSE_NUM(decimal64, 10, gint64)
+DEF_PARSE_NUM ( decimal, 10, gint )
+DEF_PARSE_NUM ( decimal16, 10, gint )
+DEF_PARSE_NUM ( decimal32, 10, glong )
+DEF_PARSE_NUM ( decimal64, 10, gint64 )
 
-DEF_PARSE_FLOAT(floatingpoint, gfloat)
-DEF_PARSE_FLOAT(double, gdouble)
+DEF_PARSE_FLOAT ( floatingpoint, gfloat )
+DEF_PARSE_FLOAT ( double, gdouble )
 
-DEF_PARSE_UNS(octal, 010, guint)
-DEF_PARSE_UNS(octal16, 010, guint)
-DEF_PARSE_UNS(octal32, 010, gulong)
-DEF_PARSE_UNS(octal64, 010, guint64)
+DEF_PARSE_UNS ( octal, 010, guint )
+DEF_PARSE_UNS ( octal16, 010, guint )
+DEF_PARSE_UNS ( octal32, 010, gulong )
+DEF_PARSE_UNS ( octal64, 010, guint64 )
 
 static void
-parse_string( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
+parse_string ( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
 {
     gchar *val;
 
@@ -188,7 +214,7 @@ parse_string( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParse
 }
 
 static void
-parse_datetime( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
+parse_datetime ( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcreParser *parser )
 {
     LSQDateTime val;
 
@@ -206,23 +232,27 @@ parse_datetime( gchar *str, guint lng, LSQArchiveIter *iter, guint n, LSQPcrePar
     lsq_archive_iter_set_prop( iter, n, &val );
 }
 
-DEF_PARSE_UNS(unsigned, 10, guint)
-DEF_PARSE_UNS(unsigned16, 10, guint)
-DEF_PARSE_UNS(unsigned32, 10, gulong)
-DEF_PARSE_UNS(unsigned64, 10, guint64)
+DEF_PARSE_UNS ( unsigned, 10, guint )
+DEF_PARSE_UNS ( unsigned16, 10, guint )
+DEF_PARSE_UNS ( unsigned32, 10, gulong )
+DEF_PARSE_UNS ( unsigned64, 10, guint64 )
 
-DEF_PARSE_UNS(hexadecimal, 0x10, guint)
-DEF_PARSE_UNS(hexadecimal16, 0x10, guint)
-DEF_PARSE_UNS(hexadecimal32, 0x10, gulong)
-DEF_PARSE_UNS(hexadecimal64, 0x10, guint64)
+DEF_PARSE_UNS ( hexadecimal, 0x10, guint )
+DEF_PARSE_UNS ( hexadecimal16, 0x10, guint )
+DEF_PARSE_UNS ( hexadecimal32, 0x10, gulong )
+DEF_PARSE_UNS ( hexadecimal64, 0x10, guint64 )
 
-static void
+static gboolean
 build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser_types )
 {
     const char *error;
     int error_pos;
     gint i = 0;
     gchar **iter;
+
+    g_return_val_if_fail( LSQ_IS_PCRE_PARSER( parser ), FALSE );
+    g_return_val_if_fail( NULL != parser_string, FALSE );
+    g_return_val_if_fail( NULL != parser_types, FALSE );
 
     /* TODO: Should we use g_strstr instead? */
     /* If we want to support multiline matching without the (?m) flag we need to remove the starting lines one by one if no match was found.
@@ -240,8 +270,8 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
 
     if ( NULL == parser->parser )
     {
-        g_error( "%s at %d in '%s'", error, error_pos, parser_string );
-        return;
+        g_warning( "%s at %d in '%s'", error, error_pos, parser_string );
+        return FALSE;
     }
 
     /* Study the regex for optimizations */
@@ -253,15 +283,21 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
 
     if ( NULL != error )
     {
-        g_error( "%s during study of '%s'", error, parser_string );
+        g_warning( "%s during study of '%s'", error, parser_string );
+        return FALSE;
     }
 
     parser->filename_index = pcre_get_stringnumber( parser->parser, "F" );
+    if ( PCRE_ERROR_NOSUBSTRING == parser->filename_index )
+    {
+        g_warning( "Named substring '%s' not found in '%s'", "F", parser_string );
+        return FALSE;
+    }
 
     /* Create a list for type conversion for the found substrings */
     parser->types_list = g_new( type_parser, g_strv_length( parser_types ) );
 
-    for ( iter = parser_types; *iter; ++iter, ++i)
+    for ( iter = parser_types; *iter; ++iter, ++i )
     {
         gchar *name;
         gchar *ptr;
@@ -283,12 +319,19 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
         ptr = strchr( *iter, '=' );
         if ( NULL == ptr )
         {
-            return;
+            g_warning( "No type in '%s'", *iter );
+            return FALSE;
         }
 
         /* Store the index of the <submatch name> to retrieve the value during parsing */
         name = g_strndup( *iter, ptr - *iter );
         type_iter->index = pcre_get_stringnumber( parser->parser, name );
+        if ( PCRE_ERROR_NOSUBSTRING == type_iter->index )
+        {
+            g_warning( "Named substring '%s' not found in '%s'", name, parser_string );
+            g_free( name );
+            return FALSE;
+        }
         g_free( name );
 
         ++ptr;          /* Move past the '=' */
@@ -317,7 +360,11 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
         switch ( ch )
         {
             case 'c':   /* Single character */
-                g_return_if_fail( SIZE_NORMAL == size_flag );
+                if ( SIZE_NORMAL != size_flag )
+                {
+                    g_warning( "Unexpected size flag near character %"G_GSIZE_FORMAT" in '%s'", (gsize)(ptr - *iter - 1), *iter );
+                    return FALSE;
+                }
                 type_iter->function = parse_char;
                 type = G_TYPE_CHAR;
                 break;
@@ -349,7 +396,11 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
                 break;
 
             case 'f':   /* Floating point */
-                g_return_if_fail( SIZE_NORMAL == size_flag || SIZE_LONGLONG == size_flag );
+                if ( SIZE_NORMAL != size_flag && SIZE_LONGLONG != size_flag )
+                {
+                    g_warning( "Unexpected size flag near character %"G_GSIZE_FORMAT" in '%s'", (gsize)(ptr - *iter - 1), *iter );
+                    return FALSE;
+                }
                 switch(size_flag)
                 {
                     case SIZE_NORMAL:
@@ -393,11 +444,21 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
                 break;
 
             case 's':   /* String */
+                if ( SIZE_NORMAL != size_flag )
+                {
+                    g_warning( "Unexpected size flag near character %"G_GSIZE_FORMAT" in '%s'", (gsize)(ptr - *iter - 1), *iter );
+                    return FALSE;
+                }
                 type_iter->function = parse_string;
                 type = G_TYPE_STRING;
                 break;
 
             case 't':   /* DateTime */
+                if ( SIZE_NORMAL != size_flag )
+                {
+                    g_warning( "Unexpected size flag near character %"G_GSIZE_FORMAT" in '%s'", (gsize)(ptr - *iter - 1), *iter );
+                    return FALSE;
+                }
                 type_iter->function = parse_datetime;
                 type = LSQ_TYPE_DATETIME;
                 break;
@@ -454,15 +515,21 @@ build_parser ( LSQPcreParser *parser, const gchar *parser_string, gchar **parser
                 break;
 
             default:
-                g_return_if_reached();
+                g_warning( "Unexpected type near character %"G_GSIZE_FORMAT" in \'%s\'", (gsize)(ptr - *iter - 1), *iter );
+                return FALSE;
         }
 
-        g_return_if_fail( G_TYPE_INVALID != type );
+        g_return_val_if_fail( G_TYPE_INVALID != type, FALSE );
 
         lsq_parser_set_property_type( LSQ_PARSER( parser ), i, type );
     }
 
-    g_return_if_fail( lsq_parser_n_properties( LSQ_PARSER( parser ) ) == g_strv_length( parser_types ) );
+    if ( lsq_parser_n_properties( LSQ_PARSER( parser ) ) != g_strv_length( parser_types ) )
+    {
+        g_warning( "Parser expression and type list mismatch" );
+        return FALSE;
+    }
+    return TRUE;
 }
 
 static void
@@ -481,6 +548,11 @@ lsq_pcre_parser_parse ( LSQPcreParser *parser, LSQPcreParserContext *ctx )
     int start, end;
     int options = 0;
 
+#ifdef DEBUG
+    g_return_if_fail( LSQ_IS_PCRE_PARSER( parser ) );
+    g_return_if_fail( LSQ_IS_PCRE_PARSER_CONTEXT( ctx ) );
+#endif
+
     if ( FALSE == lsq_parser_context_get_line( LSQ_PARSER_CONTEXT( ctx ), &line, &line_length ) )
     {
         return;
@@ -496,7 +568,7 @@ lsq_pcre_parser_parse ( LSQPcreParser *parser, LSQPcreParserContext *ctx )
 
 	    /* TODO: use some big buffer to prevent allocation? */
 	    lines = g_strconcat( ctx->lines, line, NULL );
-	    g_free (ctx->lines);
+	    g_free( ctx->lines );
 	    ctx->lines = NULL;
 
 	    g_free( line );

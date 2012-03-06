@@ -27,13 +27,13 @@
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			SQ_TYPE_ARCHIVE_STORE))
 
-#define SQ_ARCHIVE_STORE_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+#define SQ_ARCHIVE_STORE_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
 			SQ_TYPE_ARCHIVE_STORE,	  \
 			SQArchiveStoreClass))
 
-#define SQ_IS_ARCHIVE_STORE_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_ARCHIVE_STORE_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			SQ_TYPE_ARCHIVE_STORE))
 
 typedef struct _SQArchiveStore SQArchiveStore;

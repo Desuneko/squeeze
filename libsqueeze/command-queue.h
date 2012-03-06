@@ -20,28 +20,28 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_COMMAND_QUEUE lsq_command_queue_get_type()
 
-#define LSQ_COMMAND_QUEUE(obj) (			   \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			LSQ_TYPE_COMMAND_QUEUE,				  \
-			LSQCommandQueue))
+#define LSQ_COMMAND_QUEUE(obj) ( \
+        G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+            LSQ_TYPE_COMMAND_QUEUE, \
+            LSQCommandQueue))
 
-#define LSQ_IS_COMMAND_QUEUE(obj) (			\
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
-			LSQ_TYPE_COMMAND_QUEUE))
+#define LSQ_IS_COMMAND_QUEUE(obj) ( \
+        G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            LSQ_TYPE_COMMAND_QUEUE))
 
-#define LSQ_COMMAND_QUEUE_CLASS(class) (	  \
-		G_TYPE_CHECK_CLASS_CAST ((class),  \
-			LSQ_TYPE_COMMAND_QUEUE,				 \
-			LSQCommandQueueClass))
+#define LSQ_COMMAND_QUEUE_CLASS(klass) ( \
+        G_TYPE_CHECK_CLASS_CAST ((klass), \
+            LSQ_TYPE_COMMAND_QUEUE, \
+            LSQCommandQueueClass))
 
-#define LSQ_IS_COMMAND_QUEUE_CLASS(class) (   \
-		G_TYPE_CHECK_CLASS_TYPE ((class),  \
-			LSQ_TYPE_COMMAND_QUEUE))
+#define LSQ_IS_COMMAND_QUEUE_CLASS(klass) ( \
+        G_TYPE_CHECK_CLASS_TYPE ((klass), \
+            LSQ_TYPE_COMMAND_QUEUE))
 
-#define LSQ_COMMAND_QUEUE_GET_CLASS(obj) (	\
-		G_TYPE_INSTANCE_GET_CLASS ((obj),  \
-			LSQ_TYPE_COMMAND_QUEUE,				 \
-	  LSQCommandQueueClass))
+#define LSQ_COMMAND_QUEUE_GET_CLASS(obj) ( \
+        G_TYPE_INSTANCE_GET_CLASS ((obj), \
+            LSQ_TYPE_COMMAND_QUEUE, \
+            LSQCommandQueueClass))
 
 #if 0
 typedef struct _LSQCommandQueue LSQCommandQueue;
@@ -52,11 +52,20 @@ typedef struct _LSQCommandQueueClass LSQCommandQueueClass;
 typedef struct _LSQExecuteContext LSQExecuteContext;
 
 
-GType		   lsq_command_queue_get_type(void);
+GType
+lsq_command_queue_get_type ( void ) G_GNUC_CONST;
 
-LSQCommandQueue *lsq_command_queue_new(const gchar *command_string);
+LSQCommandQueue *
+lsq_command_queue_new ( const gchar *command_string ) G_GNUC_WARN_UNUSED_RESULT;
 
-LSQExecuteContext *lsq_command_queue_execute(LSQCommandQueue *queue, LSQArchive *archive, const gchar **files, const gchar *direcotry, LSQParser *parser);
+LSQExecuteContext *
+lsq_command_queue_execute (
+        LSQCommandQueue *queue,
+        LSQArchive *archive,
+        gchar **files,
+        const gchar *direcotry,
+        LSQParser *parser
+    ) G_GNUC_WARN_UNUSED_RESULT;
 
 
 G_END_DECLS

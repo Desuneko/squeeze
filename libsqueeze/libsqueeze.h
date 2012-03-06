@@ -34,13 +34,13 @@ G_BEGIN_DECLS
  * void
  * lsq_init()
  */
-void lsq_init(void);
+void lsq_init ( void );
 
 /*
  * void
  * lsq_shutdown()
  */
-void lsq_shutdown(void);
+void lsq_shutdown ( void );
 
 /*
  * gint
@@ -53,9 +53,11 @@ void lsq_shutdown(void);
  * 0 -- success
  */
 gint
-lsq_new_archive( GFile *,
-				 gboolean overwrite,
-				 LSQArchive **lp_archive);
+lsq_new_archive (
+        GFile *,
+        gboolean overwrite,
+        LSQArchive **lp_archive
+    );
 
 /*
  * gint 
@@ -66,8 +68,10 @@ lsq_new_archive( GFile *,
  * 0 -- success
  */
 gint
-lsq_open_archive( GFile *, 
-				  LSQArchive **lp_archive);
+lsq_open_archive (
+        GFile *, 
+        LSQArchive **lp_archive
+    );
 
 /*
  * void 
@@ -75,16 +79,16 @@ lsq_open_archive( GFile *,
  *
  */
 void 
-lsq_close_archive( LSQArchive *archive );
+lsq_close_archive ( LSQArchive *archive );
 
 GSList *
-lsq_get_supported_mime_types(LSQCommandType type);
+lsq_get_supported_mime_types ( LSQCommandType type );
 
 gboolean
-lsq_is_supported(const gchar *filename);
+lsq_is_supported ( const gchar *filename );
 
-const gchar **
-lsq_iter_list_to_strv(GSList *list);
+gchar **
+lsq_iter_list_to_strv ( GSList *list ) G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
 

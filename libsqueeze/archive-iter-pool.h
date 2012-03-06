@@ -21,20 +21,40 @@ typedef struct _LSQArchiveIter LSQArchiveIter;
 typedef struct _LSQArchiveEntry LSQArchiveEntry;
 typedef struct _LSQArchiveIterPool LSQArchiveIterPool;
 
-LSQArchiveIterPool *lsq_archive_iter_pool_new(void);
-void				lsq_archive_iter_pool_free(LSQArchiveIterPool *pool);
+LSQArchiveIterPool *
+lsq_archive_iter_pool_new ( void ) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+void
+lsq_archive_iter_pool_free ( LSQArchiveIterPool *pool );
 
-gint				lsq_archive_iter_pool_get_size(LSQArchiveIterPool *);
-gint				lsq_archive_iter_pool_get_reserved(LSQArchiveIterPool *);
-LSQArchiveIter	 *lsq_archive_iter_pool_get_iter(LSQArchiveIterPool *, gint index);
+guint
+lsq_archive_iter_pool_get_size ( LSQArchiveIterPool * ) G_GNUC_PURE;
+guint
+lsq_archive_iter_pool_get_reserved ( LSQArchiveIterPool * ) G_GNUC_PURE;
+LSQArchiveIter *
+lsq_archive_iter_pool_get_iter (
+        LSQArchiveIterPool *,
+        guint index
+    );
 
 gboolean
-lsq_archive_iter_pool_find_iter(LSQArchiveIterPool *ipool, LSQArchiveEntry *entry, LSQArchiveIter **ret_iter, guint *ret_pos);
+lsq_archive_iter_pool_find_iter (
+        LSQArchiveIterPool *ipool,
+        LSQArchiveEntry *entry,
+        LSQArchiveIter **ret_iter,
+        guint *ret_pos
+    );
 void
-lsq_archive_iter_pool_insert_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *iter, guint pos);
+lsq_archive_iter_pool_insert_iter (
+        LSQArchiveIterPool *ipool,
+        LSQArchiveIter *iter,
+        guint pos
+    );
 void
-lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *iter);
+lsq_archive_iter_pool_remove_iter (
+        LSQArchiveIterPool *ipool,
+        LSQArchiveIter *iter
+    );
 
 G_END_DECLS
 
-#endif /* __ARCHIVE_H__ */
+#endif /* __ARCHIVE_ITER_POOL_H__ */

@@ -35,7 +35,7 @@ typedef struct _parse_part parse_part;
 typedef struct _LSQScanfParserContext LSQScanfParserContext;
 typedef struct _LSQScanfParserContextClass LSQScanfParserContextClass;
 
-typedef guint (*LSQParseFunc)(gchar*, guint, parse_part*, LSQScanfParserContext*, LSQScanfParser*);
+typedef guint (*LSQParseFunc)( gchar *, guint, parse_part *, LSQScanfParserContext *, LSQScanfParser * );
 
 struct _parse_part
 {
@@ -72,7 +72,8 @@ struct _LSQScanfParserContextClass
     LSQParserContextClass parent;
 };
 
-GType lsq_scanf_parser_context_get_type(void);
+GType lsq_scanf_parser_context_get_type ( void );
+#define LSQ_IS_SCANF_PARSER_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), lsq_scanf_parser_context_get_type()))
 
 struct _LSQScanfParser
 {
@@ -86,48 +87,76 @@ struct _LSQScanfParserClass
     LSQParserClass parent;
 };
 
-G_DEFINE_TYPE(LSQScanfParserContext, lsq_scanf_parser_context, LSQ_TYPE_PARSER_CONTEXT);
+static void
+lsq_scanf_parser_finalize ( GObject *object );
+static void
+parse_part_free ( parse_part *part );
+
+G_DEFINE_TYPE ( LSQScanfParserContext, lsq_scanf_parser_context, LSQ_TYPE_PARSER_CONTEXT );
 
 static void
-lsq_scanf_parser_context_init(LSQScanfParserContext *self)
+lsq_scanf_parser_context_init ( LSQScanfParserContext *self )
 {
 }
 
 static void
-lsq_scanf_parser_context_class_init(LSQScanfParserContextClass *klass)
+lsq_scanf_parser_context_class_init ( LSQScanfParserContextClass *klass )
 {
 }
 
-static LSQParserContext *lsq_scanf_parser_context_new(LSQScanfParser *parser, LSQArchive *archive)
+static LSQParserContext *
+lsq_scanf_parser_context_new ( LSQScanfParser *parser, LSQArchive *archive )
 {
     LSQScanfParserContext *ctx;
     guint n_props;
 
-	ctx = g_object_new(lsq_scanf_parser_context_get_type(), "archive", archive, NULL);
-    n_props = lsq_parser_n_properties(LSQ_PARSER(parser));
-    ctx->data_store = g_new0(union _data_store, n_props);
-    ctx->props_store = g_new0(gpointer, n_props+1);
+    g_return_val_if_fail( LSQ_IS_SCANF_PARSER( parser ), NULL );
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
+    ctx = g_object_new( lsq_scanf_parser_context_get_type(), "archive", archive, NULL );
+    n_props = lsq_parser_n_properties( LSQ_PARSER(parser) );
+    ctx->data_store = g_new0( union _data_store, n_props );
+    ctx->props_store = g_new0( gpointer, n_props + 1 );
 
     return LSQ_PARSER_CONTEXT(ctx);
 }
 
-static void build_parser(LSQScanfParser *, const gchar *);
-
-static void lsq_scanf_parser_parse(LSQScanfParser *, LSQScanfParserContext *);
-
-G_DEFINE_TYPE(LSQScanfParser, lsq_scanf_parser, LSQ_TYPE_PARSER);
+static gboolean
+build_parser ( LSQScanfParser *, const gchar * );
 
 static void
-lsq_scanf_parser_init(LSQScanfParser *self)
+lsq_scanf_parser_parse ( LSQScanfParser *, LSQScanfParserContext * );
+
+G_DEFINE_TYPE ( LSQScanfParser, lsq_scanf_parser, LSQ_TYPE_PARSER );
+
+static void
+lsq_scanf_parser_init ( LSQScanfParser *self )
 {
 }
 
 static void
-lsq_scanf_parser_class_init(LSQScanfParserClass *klass)
+lsq_scanf_parser_class_init ( LSQScanfParserClass *klass )
 {
     LSQParserClass *parser_class = LSQ_PARSER_CLASS(klass);
-    parser_class->get_context = (LSQParserContext*(*)(LSQParser*,LSQArchive*))lsq_scanf_parser_context_new;
-    parser_class->parse = (void(*)(LSQParser*,LSQParserContext*))lsq_scanf_parser_parse;
+
+    G_OBJECT_CLASS(klass)->finalize = lsq_scanf_parser_finalize;
+
+    parser_class->get_context = (LSQParserContext *(*)(LSQParser *,LSQArchive *))lsq_scanf_parser_context_new;
+    parser_class->parse = (void(*)(LSQParser *,LSQParserContext *))lsq_scanf_parser_parse;
+}
+
+static void
+lsq_scanf_parser_finalize ( GObject *object )
+{
+    LSQScanfParser *parser = LSQ_SCANF_PARSER( object );
+    parse_part *iter, *next;
+
+    for ( iter = parser->parser; NULL != iter; iter = next )
+    {
+        next = iter->next;
+
+        parse_part_free( iter );
+    }
 }
 
 LSQParser *
@@ -135,9 +164,15 @@ lsq_scanf_parser_new ( const gchar *parser_string )
 {
     LSQScanfParser *parser;
 
-    parser = g_object_new(LSQ_TYPE_SCANF_PARSER, NULL);
+    g_return_val_if_fail( NULL != parser_string, NULL );
 
-    build_parser(parser, parser_string);
+    parser = g_object_new( LSQ_TYPE_SCANF_PARSER, NULL );
+
+    if ( FALSE == build_parser( parser, parser_string ) )
+    {
+        g_object_unref( parser );
+        return NULL;
+    }
 
     return LSQ_PARSER(parser);
 }
@@ -149,7 +184,8 @@ skip_byte (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     if ( 1 > lng )
     {
@@ -165,7 +201,8 @@ skip_word (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     if ( 2 > lng )
     {
@@ -181,7 +218,8 @@ skip_dword (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     if ( 4 > lng )
     {
@@ -197,7 +235,8 @@ skip_qword (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     if ( 8 > lng )
     {
@@ -213,7 +252,8 @@ skip_char (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     const gchar *ptr;
     const gchar *delim;
@@ -236,7 +276,7 @@ skip_char (
 
     //for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-    ptr = g_strstr_len(str, lng, delim);
+    ptr = g_strstr_len( str + 1, lng - 1, delim );
 
     if ( NULL == ptr )
     {
@@ -252,7 +292,8 @@ skip_decimal (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -273,7 +314,7 @@ skip_decimal (
 
     if ( '\0' == delim[0] )
     {
-        g_ascii_strtoll(str, &ptr, 10);
+        g_ascii_strtoll( str, &ptr, 10 );
         return ptr - str;
     }
 
@@ -286,7 +327,7 @@ skip_decimal (
         }
     }
 
-    ptr = g_strstr_len(ptr, lng, delim);
+    ptr = g_strstr_len( ptr, lng, delim );
 
     if ( NULL == ptr )
     {
@@ -294,7 +335,7 @@ skip_decimal (
     }
 
 #ifdef DO_EXSTENSIVE_CHECKING
-    g_ascii_strtoll(str, &ptr2, 10);
+    g_ascii_strtoll( str, &ptr2, 10 );
     if ( ptr > ptr2 )
     {
         return 0;
@@ -310,7 +351,8 @@ skip_floatingpoint (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -331,7 +373,7 @@ skip_floatingpoint (
 
     if( '\0' == delim[0] )
     {
-        g_ascii_strtod(str, &ptr);
+        g_ascii_strtod( str, &ptr );
         return ptr - str;
     }
 
@@ -344,14 +386,14 @@ skip_floatingpoint (
         }
     }
 
-    ptr = g_strstr_len(ptr, lng, delim);
+    ptr = g_strstr_len( ptr, lng, delim );
 
     if ( NULL == ptr )
     {
         return 0;
     }
 #ifdef DO_EXSTENSIVE_CHECKING
-    g_ascii_strtod(str, &ptr2);
+    g_ascii_strtod( str, &ptr2 );
     if ( ptr > ptr2 )
     {
         return 0;
@@ -367,7 +409,8 @@ skip_octal (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx ,
-        LSQScanfParser *parser)
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -388,7 +431,7 @@ skip_octal (
 
     if( '\0' == delim[0] )
     {
-        g_ascii_strtoll(str, &ptr, 010);
+        g_ascii_strtoll( str, &ptr, 010 );
         return ptr - str;
     }
 
@@ -401,7 +444,7 @@ skip_octal (
         }
     }
 
-    ptr = g_strstr_len(ptr, lng, delim);
+    ptr = g_strstr_len( ptr, lng, delim );
 
     if ( NULL == ptr )
     {
@@ -409,7 +452,7 @@ skip_octal (
     }
 
 #ifdef DO_EXSTENSIVE_CHECKING
-    g_ascii_strtoll(str, &ptr2, 010);
+    g_ascii_strtoll( str, &ptr2, 010 );
     if ( ptr > ptr2 )
     {
         return 0;
@@ -425,7 +468,8 @@ skip_string (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
     const gchar *delim;
@@ -441,7 +485,6 @@ skip_string (
         delim = "\n";
     }
 
-
     if ( '\0' == delim[0] )
     {
         return 0;
@@ -456,7 +499,7 @@ skip_string (
         }
     }
 
-    ptr = g_strstr_len ( ptr, lng, delim );
+    ptr = g_strstr_len( ptr, lng, delim );
 
     if ( NULL == ptr )
     {
@@ -472,7 +515,8 @@ skip_datetime (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
     gchar *cur;
@@ -493,7 +537,7 @@ skip_datetime (
     {
     }
 
-    lsq_datetime_from_string(cur, LSQ_PARSER(parser)->datetime_format, &ptr);
+    lsq_datetime_from_string( cur, LSQ_PARSER(parser)->datetime_format, &ptr );
     if ( NULL == ptr )
     {
         return 0;
@@ -523,7 +567,8 @@ skip_unsigned (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -544,11 +589,11 @@ skip_unsigned (
 
     if ( '\0' == delim[0] )
     {
-        g_ascii_strtoull ( str, &ptr, 10);
+        g_ascii_strtoull( str, &ptr, 10);
         return ptr - str;
     }
 
-    for ( ptr = str; g_ascii_isspace(*ptr); ++ptr )
+    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr )
     {
         --lng;
         if ( 0 == lng )
@@ -557,7 +602,7 @@ skip_unsigned (
         }
     }
 
-    ptr = g_strstr_len(ptr, lng, delim);
+    ptr = g_strstr_len( ptr, lng, delim );
 
     if ( NULL == ptr )
     {
@@ -565,7 +610,7 @@ skip_unsigned (
     }
 #ifdef DO_EXSTENSIVE_CHECKING
 
-    g_ascii_strtoull ( str, &ptr2, 10 );
+    g_ascii_strtoull( str, &ptr2, 10 );
 
     if ( ptr > ptr2)
     {
@@ -582,7 +627,8 @@ skip_hexadecimal (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
 #ifdef DO_EXSTENSIVE_CHECKING
@@ -603,11 +649,11 @@ skip_hexadecimal (
 
     if ( '\0' == delim[0] )
     {
-        g_ascii_strtoll ( str, &ptr, 0x10 );
+        g_ascii_strtoll( str, &ptr, 0x10 );
         return ptr - str;
     }
 
-    for ( ptr = str; g_ascii_isspace(*ptr); ++ptr )
+    for ( ptr = str; g_ascii_isspace( *ptr ); ++ptr )
     {
         --lng;
         if ( 0 == lng )
@@ -616,14 +662,14 @@ skip_hexadecimal (
         }
     }
 
-    ptr = g_strstr_len(ptr, lng, delim);
+    ptr = g_strstr_len( ptr, lng, delim );
 
     if ( NULL == ptr )
     {
         return 0;
     }
 #ifdef DO_EXSTENSIVE_CHECKING
-    g_ascii_strtoll ( str, &ptr2, 0x10 );
+    g_ascii_strtoll( str, &ptr2, 0x10 );
     if ( ptr > ptr2 )
     {
         return 0;
@@ -678,7 +724,7 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
     gchar *ptr;     \
     gchar *ptr2;    \
     type    val;    \
-    type    *pval;    \
+    type  *pval;    \
     const gchar *delim; \
     if(0 == lng) return 0;   \
     delim = part->delimiter; \
@@ -725,10 +771,10 @@ static guint parse_##func(gchar *str, guint lng, parse_part *part, LSQScanfParse
     return ptr - str; \
 }
 
-DEF_PARSE_BIN(byte, 1, gchar, guint, u)
-DEF_PARSE_BIN(word, 2, gushort, guint, u)
-DEF_PARSE_BIN(dword, 4, gulong, gulong, ul)
-DEF_PARSE_BIN(qword, 8, guint64, guint64, ull)
+DEF_PARSE_BIN ( byte, 1, gchar, guint, u )
+DEF_PARSE_BIN ( word, 2, gushort, guint, u )
+DEF_PARSE_BIN ( dword, 4, gulong, gulong, ul )
+DEF_PARSE_BIN ( qword, 8, guint64, guint64, ull )
 
 static guint
 parse_char (
@@ -736,7 +782,8 @@ parse_char (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-	LSQScanfParser *parser )
+	LSQScanfParser *parser
+    )
 {
     const gchar *ptr;
     gchar val;
@@ -766,7 +813,7 @@ parse_char (
 
     //for(ptr = str; g_ascii_isspace(*ptr); ptr++);
 
-    ptr = g_strstr_len(str, lng, delim);
+    ptr = g_strstr_len( str + 1, lng - 1, delim );
 
     if ( NULL == ptr )
     {
@@ -780,18 +827,18 @@ parse_char (
     return ptr - str;
 }
 
-DEF_PARSE_NUM(decimal, 10, gint, gint, i)
-DEF_PARSE_NUM(decimal16, 10, gshort, gint, i)
-DEF_PARSE_NUM(decimal32, 10, glong, glong, l)
-DEF_PARSE_NUM(decimal64, 10, gint64, gint64, ll)
+DEF_PARSE_NUM ( decimal, 10, gint, gint, i )
+DEF_PARSE_NUM ( decimal16, 10, gshort, gint, i )
+DEF_PARSE_NUM ( decimal32, 10, glong, glong, l )
+DEF_PARSE_NUM ( decimal64, 10, gint64, gint64, ll )
 
-DEF_PARSE_FLOAT(floatingpoint, gfloat, f)
-DEF_PARSE_FLOAT(double, gdouble, d)
+DEF_PARSE_FLOAT ( floatingpoint, gfloat, f )
+DEF_PARSE_FLOAT ( double, gdouble, d )
 
-DEF_PARSE_UNS(octal, 010, guint, guint, u)
-DEF_PARSE_UNS(octal16, 010, gushort, guint, u)
-DEF_PARSE_UNS(octal32, 010, gulong, gulong, ul)
-DEF_PARSE_UNS(octal64, 010, guint64, guint64, ull)
+DEF_PARSE_UNS ( octal, 010, guint, guint, u )
+DEF_PARSE_UNS ( octal16, 010, gushort, guint, u )
+DEF_PARSE_UNS ( octal32, 010, gulong, gulong, ul )
+DEF_PARSE_UNS ( octal64, 010, guint64, guint64, ull )
 
 static guint
 parse_string (
@@ -799,14 +846,17 @@ parse_string (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-	LSQScanfParser *parser )
+	LSQScanfParser *parser
+    )
 {
     gchar *ptr;
     gchar *cur;
     const gchar *delim;
 
     if ( 0 == lng )
+    {
         return 0;
+    }
 
     delim = part->delimiter;
     if ( NULL == delim && NULL == part->next )
@@ -824,12 +874,12 @@ parse_string (
         }
     }
 
-    ptr = g_strstr_len(cur, lng, delim);
+    ptr = g_strstr_len( cur, lng, delim );
 
     if ( NULL == ptr )
         return 0;
 
-    ctx->props_store[part->index_] = g_strndup(str, ptr-str);
+    ctx->props_store[part->index_] = g_strndup( str, ptr - str );
 
     return ptr - str;
 }
@@ -840,7 +890,8 @@ parse_datetime (
         guint lng,
         parse_part *part,
         LSQScanfParserContext *ctx,
-        LSQScanfParser *parser )
+        LSQScanfParser *parser
+    )
 {
     gchar *ptr;
     gchar *cur;
@@ -867,7 +918,9 @@ parse_datetime (
 
     *pval = lsq_datetime_from_string( cur, LSQ_PARSER(parser)->datetime_format, &ptr );
     if ( LSQ_DATETIME_NULL == *pval )
+    {
         return 0;
+    }
 
     if ( ( ptr - str ) > lng )
     {
@@ -909,20 +962,28 @@ parse_filename (
     const gchar *delim;
 
     if ( 0 == lng )
+    {
         return 0;
+    }
 
     delim = part->delimiter;
 
     if ( NULL == delim &&  NULL == part->next )
+    {
         delim = "\n";
+    }
 
     if ( '\0' == delim[0] )
+    {
         return 0;
+    }
 
     ptr = g_strstr_len(str, lng, delim);
 
     if ( NULL == ptr )
+    {
         return 0;
+    }
 
     ctx->filename = g_strndup(str, ptr-str);
 
@@ -1031,11 +1092,11 @@ strdup_escaped (/*{{{*/
                         if ( g_ascii_isxdigit( str[i+1] ) )
                         {
                             ++i;
-                            ch = g_ascii_xdigit_value(str[i]);
+                            ch = g_ascii_xdigit_value( str[i] );
                             if ( g_ascii_isxdigit( str[i+1] ) )
                             {
                                 ++i;
-                                ch = (ch*0x10) + g_ascii_xdigit_value( str[i] );
+                                ch = ( ch * 0x10 ) + g_ascii_xdigit_value( str[i] );
                             }
                         }
                     break;
@@ -1047,13 +1108,13 @@ strdup_escaped (/*{{{*/
                             if ( '0' <= str[i+1] && '8' > str[i+1] )
                             {
                                 ++i;
-                                ch = (ch*010) + (str[i]-'0');
+                                ch = ( ch * 010 ) + (str[i]-'0');
                                 if ( 040 > ch )
                                 {
                                     if ( '0' <= str[i+1] && '8' > str[i+1] )
                                     {
                                         ++i;
-                                        ch = (ch*010) + (str[i]-'0');
+                                        ch = ( ch * 010 ) + ( str[i] - '0' );
                                     }
                                 }
                             }
@@ -1068,10 +1129,11 @@ strdup_escaped (/*{{{*/
     return new_str;
 }/*}}}*/
 
-static void
+static gboolean
 build_parser (
         LSQScanfParser *parser,
-        const gchar *parser_string )
+        const gchar *parser_string
+    )
 {
     const gchar *ptr;
     const gchar *cur;
@@ -1087,10 +1149,15 @@ build_parser (
     guint width_flag;
     guint index_flag;
     guint index_;
-
-    parse_part *part = g_new0(parse_part, 1);
-    parse_part *parts = part;
+    parse_part *part;
+    parse_part *parts;
     guint part_count = 0;
+
+    g_return_val_if_fail( LSQ_IS_SCANF_PARSER( parser ), FALSE );
+    g_return_val_if_fail( NULL !=  parser_string, FALSE );
+
+    part = g_new0( parse_part, 1 );
+    parts = part;
 
     cur = ptr = parser_string;
 
@@ -1098,8 +1165,8 @@ build_parser (
     {
         if ( '\\' == ch && 'n' == *ptr )
         {
-            part->delimiter = strdup_escaped(cur, ptr-cur);
-            part->next = g_new0(parse_part, 1);
+            part->delimiter = strdup_escaped( cur, ptr - cur );
+            part->next = g_new0( parse_part, 1 );
             part = part->next;
             cur = ++ptr;
             continue;
@@ -1122,16 +1189,16 @@ build_parser (
                 continue;
             }
 
-            part->delimiter = strdup_escaped(cur, ptr-cur-2);
+            part->delimiter = strdup_escaped( cur, ptr - cur - 2 );
 
             /*{{{ check differend index_ %.$*/
             if ( g_ascii_isdigit( ch ) )
             {
-                index_flag = g_ascii_strtoull(ptr-1, &pos, 10);
+                index_flag = g_ascii_strtoull( ptr - 1, &pos, 10 );
                 if ( '$' == *pos )
                 {
                     ptr = pos+1;
-                    index_ = index_flag-1;
+                    index_ = index_flag - 1;
                     ch = *ptr++;
                     if ( '\0' == ch )
                     {
@@ -1146,7 +1213,7 @@ build_parser (
             {
                 skip_flag = TRUE;
                 ch = *ptr++;
-                if ( '\0' == *ptr++ )
+                if ( '\0' == ch )
                 {
                     break;
                 }
@@ -1157,7 +1224,7 @@ build_parser (
             //ignored for now
             if ( g_ascii_isdigit( ch ) )
             {
-                width_flag = g_ascii_strtoull(ptr-1, (gchar **)&ptr, 10);
+                width_flag = g_ascii_strtoull( ptr - 1, (gchar **)&ptr, 10 );
                 ch = *ptr++;
                 if ( '\0' == ch )
                 {
@@ -1195,10 +1262,14 @@ build_parser (
             {
                 /*{{{ byte %b*/
                 case 'b':
-                    g_return_if_fail( 0 == width_flag );
-                    part->next = g_new0(parse_part, 1);
+                    if ( 0 != width_flag )
+                    {
+                        g_warning( "Unexpected %s flag near character %"G_GSIZE_FORMAT" in \'%s\'", "width", (gsize)(ptr - parser_string - 1), parser_string );
+                        return FALSE;
+                    }
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         switch ( size_flag )
                         {
@@ -1224,19 +1295,19 @@ build_parser (
                         {
                             case SIZE_NORMAL:
                                 part->function = parse_byte;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_SHORT:
                                 part->function = parse_word;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_LONG:
                                 part->function = parse_dword;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_ULONG);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_ULONG );
                             break;
                             case SIZE_LONGLONG:
                                 part->function = parse_qword;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT64);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT64 );
                             break;
                         }
                     }
@@ -1244,10 +1315,14 @@ build_parser (
                 /*}}}*/
                 /*{{{ character %c*/
                 case 'c':
-                    g_return_if_fail( SIZE_NORMAL == size_flag && 0 == width_flag);
-                    part->next = g_new0(parse_part, 1);
+                    if ( SIZE_NORMAL != size_flag || 0 != width_flag )
+                    {
+                        g_warning( "Unexpected %s flag near character %"G_GSIZE_FORMAT" in \'%s\'", ( 0 != width_flag ) ? "width" : "size",  (gsize)(ptr - parser_string - 1), parser_string );
+                        return FALSE;
+                    }
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_char;
                     }
@@ -1256,17 +1331,17 @@ build_parser (
                         ++part_count;
                         part->index_ = index_;
                         part->function = parse_char;
-                        lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_CHAR);
+                        lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_CHAR );
                     }
                 break;
                 /*}}}*/
                 /*{{{ decimal %d*/
                 case 'd':
                 case 'i':
-                    part->next = g_new0(parse_part, 1);
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_decimal;
                     }
@@ -1278,19 +1353,19 @@ build_parser (
                         {
                             case SIZE_NORMAL:
                                 part->function = parse_decimal;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_INT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_INT );
                             break;
                             case SIZE_SHORT:
                                 part->function = parse_decimal16;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_INT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_INT );
                             break;
                             case SIZE_LONG:
                                 part->function = parse_decimal32;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_LONG);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_LONG );
                             break;
                             case SIZE_LONGLONG:
                                 part->function = parse_decimal64;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_INT64);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_INT64 );
                             break;
                         }
                     }
@@ -1298,11 +1373,15 @@ build_parser (
                 /*}}}*/
                 /*{{{ floating point %f*/
                 case 'f':
-                    g_return_if_fail( SIZE_NORMAL == size_flag || SIZE_LONGLONG == size_flag );
-                    part->next = g_new0(parse_part, 1);
+                    if ( SIZE_NORMAL != size_flag && SIZE_LONGLONG != size_flag )
+                    {
+                        g_warning( "Unexpected %s flag near character %"G_GSIZE_FORMAT" in \'%s\'", "size",  (gsize)(ptr - parser_string - 1), parser_string );
+                        return FALSE;
+                    }
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_floatingpoint;
                     }
@@ -1314,11 +1393,11 @@ build_parser (
                         {
                             case SIZE_NORMAL:
                                 part->function = parse_floatingpoint;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_FLOAT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_FLOAT );
                             break;
                             case SIZE_LONGLONG:
                                 part->function = parse_double;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_DOUBLE);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_DOUBLE );
                             break;
                             default:
                             break;
@@ -1328,10 +1407,10 @@ build_parser (
                 /*}}}*/
                 /*{{{ octal %o*/
                 case 'o':
-                    part->next = g_new0(parse_part, 1);
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_octal;
                     }
@@ -1343,19 +1422,19 @@ build_parser (
                         {
                             case SIZE_NORMAL:
                                 part->function = parse_octal;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_SHORT:
                                 part->function = parse_octal16;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_LONG:
                                 part->function = parse_octal32;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_ULONG);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_ULONG );
                             break;
                             case SIZE_LONGLONG:
                                 part->function = parse_octal64;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT64);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT64 );
                             break;
                         }
                     }
@@ -1363,11 +1442,15 @@ build_parser (
                 /*}}}*/
                 /*{{{ string %s*/
                 case 's':
-                    g_return_if_fail( SIZE_NORMAL == size_flag );
-                    part->next = g_new0(parse_part, 1);
+                    if ( SIZE_NORMAL != size_flag )
+                    {
+                        g_warning( "Unexpected %s flag near character %"G_GSIZE_FORMAT" in \'%s\'", "size",  (gsize)(ptr - parser_string - 1), parser_string );
+                        return FALSE;
+                    }
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_string;
                     }
@@ -1376,17 +1459,21 @@ build_parser (
                         ++part_count;
                         part->index_ = index_;
                         part->function = parse_string;
-                        lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_STRING);
+                        lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_STRING );
                     }
                 break;
                 /*}}}*/
                 /*{{{ datetime %t*/
                 case 't':
-                    g_return_if_fail(!size_flag);
-                    part->next = g_new0(parse_part, 1);
+                    if ( SIZE_NORMAL != size_flag )
+                    {
+                        g_warning( "Unexpected %s flag near character %"G_GSIZE_FORMAT" in \'%s\'", "size",  (gsize)(ptr - parser_string - 1), parser_string );
+                        return FALSE;
+                    }
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if(skip_flag)
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_datetime;
                     }
@@ -1395,16 +1482,16 @@ build_parser (
                         part_count++;
                         part->index_ = index_;
                         part->function = parse_datetime;
-                        lsq_parser_set_property_type(LSQ_PARSER(parser), index_, LSQ_TYPE_DATETIME);
+                        lsq_parser_set_property_type( LSQ_PARSER(parser), index_, LSQ_TYPE_DATETIME );
                     }
                 break;
                 /*}}}*/
                 /*{{{ unsigned decimal %u*/
                 case 'u':
-                    part->next = g_new0(parse_part, 1);
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_unsigned;
                     }
@@ -1416,19 +1503,19 @@ build_parser (
                         {
                             case SIZE_NORMAL:
                                 part->function = parse_unsigned;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_SHORT:
                                 part->function = parse_unsigned16;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_LONG:
                                 part->function = parse_unsigned32;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_ULONG);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_ULONG );
                             break;
                             case SIZE_LONGLONG:
                                 part->function = parse_unsigned64;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT64);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT64 );
                             break;
                         }
                     }
@@ -1437,10 +1524,10 @@ build_parser (
                 /*{{{ hexadecimal %x %X*/
                 case 'x':
                 case 'X':
-                    part->next = g_new0(parse_part, 1);
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->width = width_flag;
-                    if ( skip_flag )
+                    if ( TRUE == skip_flag )
                     {
                         part->function = skip_hexadecimal;
                     }
@@ -1452,19 +1539,19 @@ build_parser (
                         {
                             case SIZE_NORMAL:
                                 part->function = parse_hexadecimal;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_SHORT:
                                 part->function = parse_hexadecimal16;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT );
                             break;
                             case SIZE_LONG:
                                 part->function = parse_hexadecimal32;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_ULONG);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_ULONG );
                             break;
                             case SIZE_LONGLONG:
                                 part->function = parse_hexadecimal64;
-                                lsq_parser_set_property_type(LSQ_PARSER(parser), index_, G_TYPE_UINT64);
+                                lsq_parser_set_property_type( LSQ_PARSER(parser), index_, G_TYPE_UINT64 );
                             break;
                         }
                     }
@@ -1472,31 +1559,55 @@ build_parser (
                 /*}}}*/
                 /*{{{ filename %F*/
                 case 'F':
-                    g_return_if_fail( FALSE == skip_flag && SIZE_NORMAL == size_flag && 0 == width_flag);
-                    part->next = g_new0(parse_part, 1);
+                    if ( TRUE == skip_flag || SIZE_NORMAL != size_flag || 0 != width_flag)
+                    {
+                        g_warning( "Unexpected %s flag near character %"G_GSIZE_FORMAT" in \'%s\'", ( FALSE == skip_flag ) ? ( 0 != width_flag ) ? "width" : "size" : "skip",  (gsize)(ptr - parser_string - 1), parser_string );
+                        return FALSE;
+                    }
+                    part->next = g_new0( parse_part, 1 );
                     part = part->next;
                     part->function = parse_filename;
                 break;
                 /*}}}*/
                 default:
-                    g_return_if_reached();
+                    g_warning( "Unexpected type near character %"G_GSIZE_FORMAT" in \'%s\'", (gsize)(ptr - parser_string - 1), parser_string );
+                    return FALSE;
             }
             cur = ptr;
         }
     }
 
     parser->parser = parts;
+
+    return TRUE;
+}
+
+static void
+parse_part_free ( parse_part *part )
+{
+    g_return_if_fail( NULL != part );
+
+    g_free( part->delimiter );
+
+    g_free( part );
 }
 
 static void
 lsq_scanf_parser_parse (
         LSQScanfParser *parser,
-        LSQScanfParserContext *ctx )
+        LSQScanfParserContext *ctx
+    )
 {
     gchar *line, *ptr;
     gsize line_length, lng;
     guint size, line_nr;
     parse_part *part;
+
+#ifdef DEBUG
+    g_return_if_fail( LSQ_IS_SCANF_PARSER( parser ) );
+    g_return_if_fail( LSQ_IS_SCANF_PARSER_CONTEXT( ctx ) );
+#endif
+
     if ( FALSE == lsq_parser_context_get_line( LSQ_PARSER_CONTEXT(ctx), &line, &line_length ) )
     {
         return;
@@ -1518,30 +1629,8 @@ lsq_scanf_parser_parse (
         //parse
         if ( NULL != part->function )
         {
-            size = part->function(ptr, lng, part, ctx, parser);
+            size = part->function( ptr, lng, part, ctx, parser );
             if ( 0 == size )
-            {
-                //no match
-                if(line_nr)
-                {
-                    ptr = line;
-                    lng = line_length;
-                    part = parser->parser;
-                    line_nr = 0;
-                    continue;
-                }
-                ctx->parse_loc = parser->parser;
-                ctx->parse_line = 0;
-                g_free(line);
-                return;
-            }
-            ptr += size;
-            lng -= size;
-        }
-
-        if ( NULL != part->delimiter )
-        {
-            if ( !g_str_has_prefix( ptr, part->delimiter ) )
             {
                 //no match
                 if ( 0 != line_nr )
@@ -1554,27 +1643,51 @@ lsq_scanf_parser_parse (
                 }
                 ctx->parse_loc = parser->parser;
                 ctx->parse_line = 0;
-                g_free(line);
+                g_free( line );
                 return;
             }
-
-            size = strlen(part->delimiter);
-            if ( size > lng )
-                size = lng;
             ptr += size;
             lng -= size;
         }
 
         if ( NULL != part->delimiter )
         {
-            if ( g_str_has_suffix( part->delimiter, "\n" ) )
+            if ( FALSE == g_str_has_prefix( ptr, part->delimiter ) )
+            {
+                //no match
+                if ( 0 != line_nr )
+                {
+                    ptr = line;
+                    lng = line_length;
+                    part = parser->parser;
+                    line_nr = 0;
+                    continue;
+                }
+                ctx->parse_loc = parser->parser;
+                ctx->parse_line = 0;
+                g_free( line );
+                return;
+            }
+
+            size = strlen(part->delimiter);
+            if ( size > lng )
+            {
+                size = lng;
+            }
+            ptr += size;
+            lng -= size;
+        }
+
+        if ( NULL != part->delimiter )
+        {
+            if ( TRUE == g_str_has_suffix( part->delimiter, "\n" ) )
             {
                 //next line
                 if ( NULL != part->next )
                 {
                     ctx->parse_loc = part->next;
-                    ctx->parse_line = line_nr+1;
-                    g_free(line);
+                    ctx->parse_line = line_nr + 1;
+                    g_free( line );
                     return;
                 }
             }
@@ -1583,13 +1696,13 @@ lsq_scanf_parser_parse (
         part = part->next;
     }
 
-    g_free(line);
+    g_free( line );
 
     if ( NULL == part )
     {
-        LSQArchiveIter *iter = lsq_archive_add_file(LSQ_PARSER_CONTEXT(ctx)->archive, ctx->filename);
-        lsq_archive_iter_set_propsv(iter, ctx->props_store);
-        lsq_archive_iter_unref(iter);
+        LSQArchiveIter *iter = lsq_archive_add_file( LSQ_PARSER_CONTEXT(ctx)->archive, ctx->filename );
+        lsq_archive_iter_set_propsv( iter, ctx->props_store );
+        lsq_archive_iter_unref( iter );
 
         ctx->parse_loc = parser->parser;
         ctx->parse_line = 0;

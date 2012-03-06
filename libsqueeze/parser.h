@@ -20,27 +20,27 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_PARSER lsq_parser_get_type()
 
-#define LSQ_PARSER(obj) (               \
-        G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-            LSQ_TYPE_PARSER,                  \
+#define LSQ_PARSER(obj) ( \
+        G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+            LSQ_TYPE_PARSER, \
             LSQParser))
 
-#define LSQ_IS_PARSER(obj) (            \
-        G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
+#define LSQ_IS_PARSER(obj) ( \
+        G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
             LSQ_TYPE_PARSER))
 
-#define LSQ_PARSER_CLASS(class) (      \
-        G_TYPE_CHECK_CLASS_CAST ((class),  \
-            LSQ_TYPE_PARSER,                 \
+#define LSQ_PARSER_CLASS(klass) ( \
+        G_TYPE_CHECK_CLASS_CAST ((klass), \
+            LSQ_TYPE_PARSER, \
             LSQParserClass))
 
-#define LSQ_IS_PARSER_CLASS(class) (   \
-        G_TYPE_CHECK_CLASS_TYPE ((class),  \
+#define LSQ_IS_PARSER_CLASS(klass) ( \
+        G_TYPE_CHECK_CLASS_TYPE ((klass), \
             LSQ_TYPE_PARSER))
 
-#define LSQ_PARSER_GET_CLASS(obj) (    \
-        G_TYPE_INSTANCE_GET_CLASS ((obj),  \
-            LSQ_TYPE_PARSER,                 \
+#define LSQ_PARSER_GET_CLASS(obj) ( \
+        G_TYPE_INSTANCE_GET_CLASS ((obj), \
+            LSQ_TYPE_PARSER, \
             LSQParserClass))
 
 
@@ -67,7 +67,7 @@ struct _LSQParserClass
 {
     GObjectClass parent;
 
-    LSQParserContext*
+    LSQParserContext *
     (*get_context)(
             LSQParser *,
             LSQArchive * );
@@ -80,44 +80,50 @@ struct _LSQParserClass
 
 
 GType
-lsq_parser_get_type ( void );
+lsq_parser_get_type ( void ) G_GNUC_CONST;
 
-LSQParserContext*
+LSQParserContext *
 lsq_parser_get_context (
         LSQParser *,
-        LSQArchive * );
+        LSQArchive *
+    ) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 
 void
 lsq_parser_parse (
         LSQParser *,
-        LSQParserContext * );
+        LSQParserContext *
+    );
 
 guint
-lsq_parser_n_properties ( LSQParser * );
+lsq_parser_n_properties ( LSQParser * ) G_GNUC_PURE;
 
 GType
 lsq_parser_get_property_type (
         LSQParser *,
-        guint );
+        guint
+    ) G_GNUC_PURE;
 
 void
 lsq_parser_set_property_type (
         LSQParser *,
         guint,
-        GType );
+        GType
+    );
 
-guint
+gsize
 lsq_parser_get_property_offset (
         LSQParser *,
-        guint );
+        guint
+    ) G_GNUC_PURE;
 
-guint
-lsq_parser_get_properties_size ( LSQParser * );
+gsize
+lsq_parser_get_properties_size ( LSQParser * ) G_GNUC_PURE;
 
 void
 lsq_parser_set_datetime_format (
         LSQParser *,
-        const gchar * );
+        const gchar *
+    );
 
 G_END_DECLS
 

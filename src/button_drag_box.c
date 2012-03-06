@@ -29,7 +29,7 @@
 #define SQ_BUTTON_USER_DATA "sq-user-data"
 #define SQ_DRAG_TARGET_ID "_SQ_BUTTON_DRAG_BOX"
 
-static GdkPixbuf*
+static GdkPixbuf *
 sq_create_icon_from_widget(GtkWidget *widget);
 
 static void
@@ -195,7 +195,7 @@ sq_button_drag_box_get_hidden(SQButtonDragBox *box)
 	return list;
 }
 
-static GdkPixbuf*
+static GdkPixbuf *
 sq_create_icon_from_widget(GtkWidget *widget)
 {
 	GdkWindow *drawable = GDK_DRAWABLE(gtk_widget_get_parent_window(widget));

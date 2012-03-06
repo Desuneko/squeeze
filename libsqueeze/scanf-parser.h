@@ -20,28 +20,28 @@ G_BEGIN_DECLS
 
 #define LSQ_TYPE_SCANF_PARSER lsq_scanf_parser_get_type()
 
-#define LSQ_SCANF_PARSER(obj) (			   \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-			LSQ_TYPE_SCANF_PARSER,				  \
-			LSQScanfParser))
+#define LSQ_SCANF_PARSER(obj) ( \
+        G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+            LSQ_TYPE_SCANF_PARSER, \
+            LSQScanfParser))
 
-#define LSQ_IS_SCANF_PARSER(obj) (			\
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
-			LSQ_TYPE_SCANF_PARSER))
+#define LSQ_IS_SCANF_PARSER(obj) ( \
+        G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+            LSQ_TYPE_SCANF_PARSER))
 
-#define LSQ_SCANF_PARSER_CLASS(class) (	  \
-		G_TYPE_CHECK_CLASS_CAST ((class),  \
-			LSQ_TYPE_SCANF_PARSER,				 \
-			LSQScanfParserClass))
+#define LSQ_SCANF_PARSER_CLASS(klass) ( \
+        G_TYPE_CHECK_CLASS_CAST ((klass), \
+            LSQ_TYPE_SCANF_PARSER, \
+            LSQScanfParserClass))
 
-#define LSQ_IS_SCANF_PARSER_CLASS(class) (   \
-		G_TYPE_CHECK_CLASS_TYPE ((class),  \
-			LSQ_TYPE_SCANF_PARSER))
+#define LSQ_IS_SCANF_PARSER_CLASS(klass) ( \
+        G_TYPE_CHECK_CLASS_TYPE ((klass), \
+            LSQ_TYPE_SCANF_PARSER))
 
-#define LSQ_SCANF_PARSER_GET_CLASS(obj) (	\
-		G_TYPE_INSTANCE_GET_CLASS ((obj),  \
-			LSQ_TYPE_SCANF_PARSER,				 \
-	  LSQScanfParserClass))
+#define LSQ_SCANF_PARSER_GET_CLASS(obj) ( \
+        G_TYPE_INSTANCE_GET_CLASS ((obj), \
+            LSQ_TYPE_SCANF_PARSER, \
+            LSQScanfParserClass))
 
 
 typedef struct _LSQScanfParser LSQScanfParser;
@@ -49,10 +49,10 @@ typedef struct _LSQScanfParser LSQScanfParser;
 typedef struct _LSQScanfParserClass LSQScanfParserClass;
 
 GType
-lsq_scanf_parser_get_type ( void );
+lsq_scanf_parser_get_type ( void ) G_GNUC_CONST;
 
 LSQParser *
-lsq_scanf_parser_new ( const gchar * );
+lsq_scanf_parser_new ( const gchar * ) G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
 

@@ -14,18 +14,19 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-GSList  *support_factory_list;
-GSList  *lsq_mime_support_list;
-GSList  *lsq_opened_archive_list;
-gchar   *lsq_relative_base_uri;
+GSList *support_factory_list;
+GSList *lsq_mime_support_list;
+GSList *lsq_opened_archive_list;
+gchar  *lsq_relative_base_uri;
 
 gchar *
-lsq_concat_filenames ( GSList *filenames );
+lsq_concat_filenames ( GSList *filenames ) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 
 gchar *
 lsq_concat_iter_filenames (
         GSList *file_iters,
-        gboolean );
+        gboolean
+    ) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 
 LSQArchive *
-lsq_opened_archive_get_archive ( gchar *path );
+lsq_opened_archive_get_archive ( gchar *path ) G_GNUC_WARN_UNUSED_RESULT;

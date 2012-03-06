@@ -497,7 +497,7 @@ sq_archive_store_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter)
 
 	g_return_val_if_fail(archive, NULL);
 
-	entry = (LSQArchiveIter*)iter->user_data;
+	entry = (LSQArchiveIter *)iter->user_data;
 	pos = GPOINTER_TO_INT(iter->user_data3);
 
 	if(store->props._show_up_dir && lsq_archive_iter_has_parent(entry))
@@ -930,7 +930,7 @@ sq_archive_store_sort(SQArchiveStore *store)
 	pentry = store->navigation.present->data;
 	psize = lsq_archive_iter_n_children(pentry);
 
-	store->sort_list = g_new(LSQArchiveIter*, psize+1);
+	store->sort_list = g_new(LSQArchiveIter *, psize+1);
 
 	for(i = 0; i < psize; ++i)
 	{

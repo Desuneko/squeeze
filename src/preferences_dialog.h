@@ -27,13 +27,13 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_preferences_dialog_get_type()))
 
-#define SQ_PREFERENCES_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+#define SQ_PREFERENCES_DIALOG_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
 			sq_preferences_dialog_get_type(),	  \
 			SQPreferencesDialogClass))
 
-#define SQ_IS_PREFERENCES_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_PREFERENCES_DIALOG_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			sq_preferences_dialog_get_type()))
 
 typedef struct

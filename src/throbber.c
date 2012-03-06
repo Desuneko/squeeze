@@ -337,7 +337,7 @@ sq_throbber_timer_destroy (gpointer user_data)
  *
  * Return value: the newly allocated #SQThrobber.
  **/
-GtkWidget*
+GtkWidget *
 sq_throbber_new (void)
 {
 	return g_object_new (SQ_TYPE_THROBBER, NULL);

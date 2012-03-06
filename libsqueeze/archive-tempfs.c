@@ -44,36 +44,30 @@ lsq_tempfs_clean_dir ( const gchar *path )
     const gchar *file;
     GDir *dir;
 
-    /* Is this a valid use-case?
-     * Shouldn't this be replaced with an assert?
-     */
-    if ( NULL == path )
-    {
-        return;
-    }
+    g_return_if_fail( NULL != path );
 
     dir = g_dir_open ( path, 0, NULL );
 
     if ( NULL != dir )
     {
-        file = g_dir_read_name ( dir );
+        file = g_dir_read_name( dir );
 
         while ( NULL != file )
         {
-            file = g_strconcat (
+            file = g_build_filename(
                     path,   
-                    "/",
                     file,
-                    NULL);
-            lsq_tempfs_clean_dir ( file );
-            g_free ( (gchar*)file );
-            file = g_dir_read_name ( dir );
+                    NULL
+                );
+            lsq_tempfs_clean_dir( file );
+            g_free( (gchar *)file );
+            file = g_dir_read_name( dir );
         }
 
-        g_dir_close ( dir );
+        g_dir_close( dir );
     }
 
-    g_remove(path);
+    g_remove( path );
 }
 
 void
@@ -81,37 +75,41 @@ lsq_tempfs_clean_root_dir ( LSQArchive *archive )
 {
     GSList *iter;
 
-    if ( NULL != archive->temp_dir )
+    g_return_if_fail( LSQ_IS_ARCHIVE( archive ) );
+
+    if ( NULL == archive->temp_dir )
     {
         return;
     }
 
-    lsq_tempfs_clean_dir ( archive->temp_dir );
+    lsq_tempfs_clean_dir( archive->temp_dir );
 
 #ifdef DEBUG
-    g_debug("clean %s", archive->temp_dir);
+    g_debug( "clean %s", archive->temp_dir );
 #endif
 
     iter = archive->monitor_list;
     while ( NULL != iter )
     {
     /*    g_free(((LSQTempFileMonitor*)iter->data)->filename); */
-        g_free ( iter->data );
-        iter = g_slist_next ( iter );
+        g_free( iter->data );
+        iter = g_slist_next( iter );
     }
-    g_slist_free ( archive->monitor_list );
+    g_slist_free( archive->monitor_list );
     archive->monitor_list = NULL;
 
-    g_free ( archive->temp_dir );
+    g_free( archive->temp_dir );
     archive->temp_dir = NULL;
 }
 
-const gchar*
+const gchar *
 lsq_tempfs_get_root_dir ( LSQArchive *archive )
 {
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
     if ( NULL != archive->temp_dir )
     {
-        if ( FALSE == lsq_tempfs_make_root_dir ( archive ) )
+        if ( FALSE == lsq_tempfs_make_root_dir( archive ) )
         {
             return NULL;
         }
@@ -123,28 +121,32 @@ lsq_tempfs_get_root_dir ( LSQArchive *archive )
 gboolean
 lsq_tempfs_make_root_dir ( LSQArchive *archive )
 {
-    gboolean error = FALSE;
+    gint error = 0;
     gchar dirname[256];
+
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), FALSE );
 
     if ( NULL != archive->temp_dir )
     {
         return TRUE;
     }
 
-    g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name());
-    if(g_mkdir_with_parents(dirname, 0700))
+    g_snprintf( dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name() );
+    if ( 0 != g_mkdir_with_parents( dirname, 0700 ) )
+    {
         return FALSE;
+    }
 
     do
     {
-        g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/cache-%d/", g_get_tmp_dir(), g_get_user_name(), suffix++);
-        error = g_mkdir(dirname, 0700);
+        g_snprintf( dirname, 256, "%s/" PACKAGE "-%s/cache-%d/", g_get_tmp_dir(), g_get_user_name(), suffix++ );
+        error = g_mkdir( dirname, 0700 );
     }
-    while(error && errno == EEXIST);
+    while ( 0 != error && EEXIST == errno );
 
-    if ( FALSE == error )
+    if ( 0 == error )
     {
-        archive->temp_dir = g_strdup ( dirname );
+        archive->temp_dir = g_strdup( dirname );
         return TRUE;
     }
 
@@ -154,60 +156,68 @@ lsq_tempfs_make_root_dir ( LSQArchive *archive )
 gchar *
 lsq_archive_request_temp_file (
         LSQArchive *archive,
-        const gchar *sfx )
+        const gchar *sfx
+    )
 {
     gchar dirname[256];
     gint handle;
 
-    g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name());
-    if ( 0 != g_mkdir_with_parents ( dirname, 0700 ) )
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
+    g_snprintf( dirname, 256, "%s/" PACKAGE "-%s/", g_get_tmp_dir(), g_get_user_name() );
+    if ( 0 != g_mkdir_with_parents( dirname, 0700 ) )
     {
-        return FALSE;
+        return NULL;
     }
 
-    g_snprintf(dirname, 256, "%s/" PACKAGE "-%s/file-XXXXXX%s", g_get_tmp_dir(), g_get_user_name(), sfx?sfx:"");
+    g_snprintf( dirname, 256, "%s/" PACKAGE "-%s/file-XXXXXX%s", g_get_tmp_dir(), g_get_user_name(), ( NULL != sfx ) ? sfx : "" );
 
-    handle = g_mkstemp ( dirname );
+    handle = g_mkstemp( dirname );
     if ( -1 == handle )
     {
         return NULL;
     }
 
-    close ( handle );
+    close( handle );
 
-    return strdup ( dirname );
+    return g_strdup( dirname );
 }
 
 gboolean
 lsq_tempfs_make_dir (
         LSQArchive *archive,
         const gchar *path,
-        gint mode )
+        gint mode
+    )
 {
     gchar *full_path;
-    gboolean error;
+    gint error;
+
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), FALSE );
+    g_return_val_if_fail( NULL == path, FALSE );
 
     if ( NULL == archive->temp_dir )
     {
-        if ( FALSE == lsq_tempfs_make_root_dir ( archive ) )
+        if ( FALSE == lsq_tempfs_make_root_dir( archive ) )
         {
             return FALSE;
         }
     }
 
-    full_path = g_strconcat (
+    full_path = g_build_filename(
             archive->temp_dir,
-            "/",
             path,
-            NULL);
+            NULL
+        );
 
-    error = g_mkdir_with_parents (
+    error = g_mkdir_with_parents(
             full_path,
-            mode );
+            mode
+        );
 
-    g_free ( full_path );
+    g_free( full_path );
 
-    if (FALSE == error)
+    if ( 0 == error )
     {
         return TRUE;
     }
@@ -224,27 +234,29 @@ lsq_tempfs_chmod (
         gint mode )
 {
     gchar *full_path;
-    gboolean error;
+    gint error;
+
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), FALSE );
+    g_return_val_if_fail( NULL == path, FALSE );
 
     if ( NULL == archive->temp_dir)
     {
-        if ( FALSE == lsq_tempfs_make_root_dir ( archive ) )
+        if ( FALSE == lsq_tempfs_make_root_dir( archive ) )
         {
             return FALSE;
         }
     }
 
-    full_path = g_strconcat (
+    full_path = g_build_filename(
             archive->temp_dir,
-            "/",
             path,
             NULL);
 
-    error = g_chmod ( full_path, mode );
+    error = g_chmod( full_path, mode );
 
-    g_free ( full_path );
+    g_free( full_path );
 
-    if ( FALSE == error )
+    if ( 0 == error )
     {
         return TRUE;
     }

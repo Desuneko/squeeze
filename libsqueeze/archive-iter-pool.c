@@ -30,177 +30,229 @@
 
 struct _LSQArchiveIterPool
 {
-	LSQArchiveIter **pool;
-	guint size;
-	guint reserved;
+    LSQArchiveIter **pool;
+    guint size;
+    guint reserved;
 };
 
 LSQArchiveIterPool *
-lsq_archive_iter_pool_new(void)
+lsq_archive_iter_pool_new ( void )
 {
-	return g_new0(LSQArchiveIterPool, 1);
+    return g_new0( LSQArchiveIterPool, 1 );
 }
 
 void
-lsq_archive_iter_pool_free(LSQArchiveIterPool *pool)
+lsq_archive_iter_pool_free ( LSQArchiveIterPool *pool )
 {
-	/* lsq_archive_iter_pool_print();*/
-	/* free the pool of iters */
-	guint i;
-	for(i = 0; i < pool->size; ++i)
-	{
-		lsq_archive_iter_unref(pool->pool[i]);
-	}
-	for(i = 0; i < pool->size; ++i)
-	{
+    /* lsq_archive_iter_pool_print();*/
+    /* free the pool of iters */
+    guint i;
+
+    g_return_if_fail( NULL != pool );
+
+    for ( i = 0; i < pool->size; ++i )
+    {
+        lsq_archive_iter_unref( pool->pool[i] );
+    }
+    for ( i = 0; i < pool->size; ++i )
+    {
 #ifdef USE_LSQITER_SLICES
-		/* Cleaning up the whole pool */
-		/* Now we can free the iters  */
+        /* Cleaning up the whole pool */
+        /* Now we can free the iters  */
 #ifdef USE_GSLICES
-		g_slice_free(LSQArchiveIter, pool->pool[i]);
+        g_slice_free( LSQArchiveIter, pool->pool[i] );
 #else
-		g_free(pool->pool[i]);
+        g_free( pool->pool[i] );
 #endif
 #elif defined(USE_GSLICES)
-		g_slice_free(LSQArchiveIter, pool->pool[i]);
+        g_slice_free( LSQArchiveIter, pool->pool[i] );
 #else
-		g_free(pool->pool[i]);
+        g_free( pool->pool[i] );
 #endif
-	}
+    }
 #ifdef USE_LSQITER_SLICES
-	for(; i < pool->reserved; ++i)
-	{
-		/* Cleaning up the whole pool */
-		/* Now we can free the iters  */
-		if(!pool->pool[i])
-			break;
+    for ( ; i < pool->reserved; ++i )
+    {
+        /* Cleaning up the whole pool */
+        /* Now we can free the iters  */
+        if ( NULL == pool->pool[i] )
+        {
+            break;
+        }
 #ifdef USE_GSLICES
-		g_slice_free(LSQArchiveIter, pool->pool[i]);
+        g_slice_free( LSQArchiveIter, pool->pool[i] );
 #else
-		g_free(pool->pool[i]);
+        g_free( pool->pool[i] );
 #endif
-	}
+    }
 #endif
-	g_free(pool->pool);
-	g_free(pool);
+    g_free( pool->pool );
+    g_free( pool );
 }
 
 gboolean
-lsq_archive_iter_pool_find_iter(LSQArchiveIterPool *ipool, LSQArchiveEntry *entry, LSQArchiveIter **ret_iter, guint *ret_pos)
+lsq_archive_iter_pool_find_iter ( LSQArchiveIterPool *ipool, LSQArchiveEntry *entry, LSQArchiveIter **ret_iter, guint *ret_pos )
 {
-	/* binary search */
-	LSQArchiveIter **pool = ipool->pool;
-	guint size = ipool->size;
-	guint pos;
-	guint off = 0;
-	gintptr cmp;
-	while(size)
-	{
-		pos = size / 2;
-		cmp = (guintptr)entry - (guintptr)pool[off+pos]->entry;
-		if(cmp == 0)
-		{
-			if(ret_iter)
-				(*ret_iter) = pool[off+pos];
-			if(ret_pos)
-				(*ret_pos) = off+pos;
-			return TRUE;
-		}
-		if(cmp > 0)
-		{
-			size -= ++pos;
-			off += pos;
-		}
-		if(cmp < 0)
-		{
-			size = pos;
-		}
-	}
-	if(ret_pos)
-		(*ret_pos) = off;
-	return FALSE;
+    /* binary search */
+    LSQArchiveIter **pool = ipool->pool;
+    guint size = ipool->size;
+    guint pos;
+    guint off = 0;
+    gintptr cmp;
+
+#if DEBUG
+    g_return_val_if_fail( NULL != ipool, FALSE );
+    g_return_val_if_fail( NULL != entry, FALSE );
+#endif
+
+    while ( 0 < size )
+    {
+        pos = size / 2;
+        cmp = (guintptr)entry - (guintptr)pool[off+pos]->entry;
+        if ( cmp == 0 )
+        {
+            if ( NULL != ret_iter )
+            {
+                (*ret_iter) = pool[off+pos];
+            }
+            if ( NULL != ret_pos )
+            {
+                (*ret_pos) = off+pos;
+            }
+            return TRUE;
+        }
+        if ( 0 < cmp )
+        {
+            size -= ++pos;
+            off += pos;
+        }
+        if ( 0 > cmp )
+        {
+            size = pos;
+        }
+    }
+    if ( NULL != ret_pos )
+    {
+        (*ret_pos) = off;
+    }
+    return FALSE;
 }
 
 void
-lsq_archive_iter_pool_insert_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *iter, guint pos)
+lsq_archive_iter_pool_insert_iter ( LSQArchiveIterPool *ipool, LSQArchiveIter *iter, guint pos )
 {
-	LSQArchiveIter **pool, **old_pool = pool = ipool->pool;
-	guint i;
+    LSQArchiveIter **pool, **old_pool = pool = ipool->pool;
+    guint i;
 
-	/* make space for new iter */
-	if(ipool->size >= ipool->reserved)
-	{
-		pool = g_new(LSQArchiveIter*, ipool->reserved + ipool->size + 1);
-		for(i = 0; i < pos; ++i)
-		{
-			pool[i] = old_pool[i];
-		}
-	}
-
-	/* move all behind the iter */
-	for(i = ipool->size; i > pos; --i)
-	{
-		pool[i] = old_pool[i-1];
-	}
-
-	/* finish up the new pool */
-	ipool->size++;
-	if(ipool->size > ipool->reserved)
-	{
-		ipool->reserved += ipool->size;
-		ipool->pool = pool;
-		g_free(old_pool);
-#ifdef USE_LSQITER_SLICES
-		/* We need to know if there are still allocations left */
-		/* Make all unallocated NULL						   */
-		for(i = ipool->size; i < ipool->reserved; ++i)
-		{
-			pool[i] = NULL;
-		}
+#if DEBUG
+    g_return_if_fail( NULL != ipool );
+    g_return_if_fail( NULL != iter );
+    g_return_if_fail( ipool->size >= pos );
 #endif
-	}
 
-	/* insert the iter */
-	pool[pos] = iter;
+    /* make space for new iter */
+    if ( ipool->size >= ipool->reserved )
+    {
+        pool = g_new( LSQArchiveIter *, ipool->reserved + ipool->size + 1 );
+        for ( i = 0; i < pos; ++i )
+        {
+            pool[i] = old_pool[i];
+        }
+    }
+
+#ifdef USE_LSQITER_SLICES
+    /* If we USE_LSQITER_SLICES we overwrite the first reserved pointer.
+     * But we just picked that one out of the pool and use that as our current iter.
+     */
+#ifdef PADENTIC
+    g_return_if_fail( NULL == old_pool[ipool->size] || old_pool[ipool->size] == iter );
+#endif
+#endif
+    /* move all behind the iter */
+    for ( i = ipool->size; i > pos; --i )
+    {
+        pool[i] = old_pool[i-1];
+    }
+
+    /* finish up the new pool */
+    ipool->size++;
+    if ( ipool->size > ipool->reserved )
+    {
+        ipool->reserved += ipool->size;
+        ipool->pool = pool;
+        g_free( old_pool );
+#ifdef USE_LSQITER_SLICES
+        /* We need to know if there are still allocations left */
+        /* Make all unallocated NULL                           */
+        for ( i = ipool->size; i < ipool->reserved; ++i )
+        {
+            pool[i] = NULL;
+        }
+#endif
+    }
+
+    /* insert the iter */
+    pool[pos] = iter;
 }
 
 void
-lsq_archive_iter_pool_remove_iter(LSQArchiveIterPool *ipool, LSQArchiveIter *iter)
+lsq_archive_iter_pool_remove_iter ( LSQArchiveIterPool *ipool, LSQArchiveIter *iter )
 {
-	LSQArchiveIter **pool = ipool->pool;
-	guint pos;
+    LSQArchiveIter **pool = ipool->pool;
+    guint pos;
 
-	/* iter has been found (should allways) */
-	if(G_LIKELY(lsq_archive_iter_pool_find_iter(ipool, iter->entry, NULL, &pos)))
-	{
-		ipool->size--;
-
-		for(; pos < ipool->size; ++pos)
-		{
-			pool[pos] = pool[pos+1];
-		}
-#ifdef USE_LSQITER_SLICES
-		/* We don't free the pointer so move it */
-		/* Place it at the end om the pool	  */
-		pool[ipool->size] = iter;
+#if DEBUG
+    g_return_if_fail( NULL != ipool );
+    g_return_if_fail( NULL != iter );
 #endif
-	}
+
+    /* iter has been found (should allways) */
+    if ( G_LIKELY ( TRUE == lsq_archive_iter_pool_find_iter(ipool, iter->entry, NULL, &pos ) ) )
+    {
+        ipool->size--;
+
+        for ( ; pos < ipool->size; ++pos )
+        {
+            pool[pos] = pool[pos+1];
+        }
+#ifdef USE_LSQITER_SLICES
+        /* We don't free the pointer so move it */
+        /* Place it at the end om the pool	  */
+        pool[ipool->size] = iter;
+#endif
+    }
+#if DEBUG
+    else
+    {
+        g_return_if_reached();
+    }
+#endif
 }
 
-gint
-lsq_archive_iter_pool_get_size(LSQArchiveIterPool *pool)
+guint
+lsq_archive_iter_pool_get_size ( LSQArchiveIterPool *pool )
 {
-	return pool->size;
+#if DEBUG
+    g_return_val_if_fail( NULL != pool, 0 );
+#endif
+    return pool->size;
 }
 
-gint
-lsq_archive_iter_pool_get_reserved(LSQArchiveIterPool *pool)
+guint
+lsq_archive_iter_pool_get_reserved ( LSQArchiveIterPool *pool )
 {
-	return pool->reserved;
+#if DEBUG
+    g_return_val_if_fail( NULL != pool, 0 );
+#endif
+    return pool->reserved;
 }
 
 LSQArchiveIter *
-lsq_archive_iter_pool_get_iter(LSQArchiveIterPool *pool, gint index_)
+lsq_archive_iter_pool_get_iter ( LSQArchiveIterPool *pool, guint index_ )
 {
-	return pool->pool[index_];
+#if DEBUG
+    g_return_val_if_fail( NULL != pool, NULL );
+    g_return_val_if_fail( pool->reserved > index_, NULL );
+#endif
+    return pool->pool[index_];
 }

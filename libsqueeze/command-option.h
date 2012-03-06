@@ -46,63 +46,79 @@ typedef struct _LSQCommandOptionInt     LSQCommandOptionInt;
 typedef struct _LSQCommandOptionUint    LSQCommandOptionUint;
 
 GType
-lsq_command_option_get_type(gint);
+lsq_command_option_get_type ( guint ) G_GNUC_CONST;
 
 LSQCommandOptionPair **
-lsq_command_option_create_pair(LSQCommandOption **option_list);
+lsq_command_option_create_pair ( LSQCommandOption **option_list ) G_GNUC_WARN_UNUSED_RESULT;
 
 LSQCommandOption **
-lsq_command_option_create_list(XfceRc *rc, gchar **option_names);
+lsq_command_option_create_list (
+        XfceRc *rc,
+        gchar **option_names
+    ) G_GNUC_WARN_UNUSED_RESULT;
 
 gchar **
-lsq_command_option_pair_get_args(LSQCommandOptionPair **pair);
+lsq_command_option_pair_get_args ( LSQCommandOptionPair **pair ) G_GNUC_WARN_UNUSED_RESULT;
 
 void
-lsq_command_option_get_default(const LSQCommandOption *option, GValue *value);
+lsq_command_option_get_default (
+        const LSQCommandOption *option,
+        GValue *value
+    );
 
 gint
-lsq_command_option_get_args(const LSQCommandOption *option, GValue *value, gchar **argv);
+lsq_command_option_get_args (
+        const LSQCommandOption *option,
+        GValue *value,
+        gchar **argv
+    );
 
-struct _LSQCommandOptionPair {
-  GValue value;
-  const LSQCommandOption *option;
+struct _LSQCommandOptionPair
+{
+    GValue value;
+    const LSQCommandOption *option;
 };
 
-struct _LSQCommandOption {
-  GTypeInstance parent;
-  const gchar *name;
-  const gchar *flag;
-  const gchar *blurb;
-  GType value_type;
+struct _LSQCommandOption
+{
+    GTypeInstance parent;
+    const gchar *name;
+    const gchar *flag;
+    const gchar *blurb;
+    GType value_type;
 };
 
-struct _LSQCommandOptionString {
-  LSQCommandOption parent;
+struct _LSQCommandOptionString
+{
+    LSQCommandOption parent;
 
-	const gchar *default_value;
-	const gchar *filter;
+    const gchar *default_value;
+    const gchar *filter;
 };
 
-struct _LSQCommandOptionBool {
-  LSQCommandOption parent;
+struct _LSQCommandOptionBool
+{
+    LSQCommandOption parent;
 
-	gboolean default_value;
+    gboolean default_value;
 };
 
-struct _LSQCommandOptionInt {
-  LSQCommandOption parent;
+struct _LSQCommandOptionInt
+{
+    LSQCommandOption parent;
 
-	gint default_value;
-	gint min_value;
-	gint max_value;
+    gint default_value;
+    gint min_value;
+    gint max_value;
 };
 
-struct _LSQCommandOptionUint {
-  LSQCommandOption parent;
+struct _LSQCommandOptionUint
+{
+    LSQCommandOption parent;
 
-	guint default_value;
-	guint min_value;
-	guint max_value;
+    guint default_value;
+    guint min_value;
+    guint max_value;
 };
 
 #endif /* __LSQ_COMMAND_OPTION_H__ */

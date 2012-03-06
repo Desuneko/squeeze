@@ -35,29 +35,35 @@ void
 lsq_datetime_register_type ( void );
 
 LSQDateTime
-lsq_datetime_from_tm ( const struct tm * );
+lsq_datetime_from_tm ( const struct tm * ) G_GNUC_PURE;
 
 LSQDateTime
 lsq_datetime_from_string (
         const gchar *,
         const gchar *,
-        gchar ** );
+        gchar **
+    ) G_GNUC_PURE;
 
 void
-lsq_datetime_to_tm ( LSQDateTime, struct tm * );
+lsq_datetime_to_tm (
+        LSQDateTime,
+        struct tm *
+    );
 
 gint
 lsq_datetime_cmp (
         LSQDateTime,
-        LSQDateTime );
+        LSQDateTime
+    ) G_GNUC_CONST;
 
 LSQDateTime
-g_value_get_datetime ( const GValue * );
+g_value_get_datetime ( const GValue * ) G_GNUC_PURE;
 
 void
 g_value_set_datetime (
         GValue *,
-        LSQDateTime );
+        LSQDateTime
+    );
 
 
 G_END_DECLS

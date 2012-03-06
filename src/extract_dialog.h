@@ -27,13 +27,13 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_extract_archive_dialog_get_type()))
 
-#define SQ_EXTRACT_ARCHIVE_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+#define SQ_EXTRACT_ARCHIVE_DIALOG_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
 			sq_extract_archive_dialog_get_type(),	  \
 			SQExtractArchiveDialogClass))
 
-#define SQ_IS_EXTRACT_ARCHIVE_DIALOG_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_EXTRACT_ARCHIVE_DIALOG_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			sq_extract_archive_dialog_get_type()))
 
 typedef struct _SQExtractArchiveDialog SQExtractArchiveDialog;

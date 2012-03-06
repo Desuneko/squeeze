@@ -66,7 +66,8 @@ value_init_datetime ( GValue *value )
 static void
 value_copy_datetime (
         const GValue *src_value,
-        GValue *dest_value )
+        GValue *dest_value
+    )
 {
     dest_value->data[0].v_int64 = src_value->data[0].v_int64;
 }
@@ -76,7 +77,8 @@ value_collect_datetime (
         GValue *value,
         guint n_collect_values,
         GTypeCValue *collect_values,
-        guint collect_flags )
+        guint collect_flags
+    )
 {
     value->data[0].v_int64 = collect_values[0].v_int64;
 
@@ -88,7 +90,8 @@ value_lcopy_datetime (
         const GValue *value,
         guint n_collect_values,
         GTypeCValue *collect_values,
-        guint collect_flags )
+        guint collect_flags
+    )
 {
     gint64 *int64_p = collect_values[0].v_pointer;
 
@@ -103,7 +106,8 @@ value_lcopy_datetime (
 static void
 value_datetime_to_string (
         const GValue *src_value,
-        GValue *dest_value )
+        GValue *dest_value
+    )
 {
     gchar buffer[80]; /* An abitrary size to fit the time string in */
     struct tm timeval;
@@ -122,7 +126,7 @@ lsq_datetime_get_type ( void )
 {
     static GType type = G_TYPE_INVALID;
 
-    if ( G_UNLIKELY( G_TYPE_INVALID == type ) )
+    if ( G_UNLIKELY ( G_TYPE_INVALID == type ) )
     {
         GTypeValueTable value_table = {
             value_init_datetime,
@@ -171,14 +175,16 @@ lsq_datetime_register_type ( void )
 {
     /* Force lsq_datetime_get_type to get called, and not optimized by G_GNUC_CONST */
     volatile GType type;
-    type  = lsq_datetime_get_type();
+    type = lsq_datetime_get_type();
     type;
 }
 
 LSQDateTime
 lsq_datetime_from_tm ( const struct tm *timeval )
 {
+#ifdef DEBUG
     g_return_val_if_fail( NULL != timeval, LSQ_DATETIME_NULL );
+#endif
 
     return (
             TM_X_MAKE( SEC, timeval->tm_sec ) |
@@ -189,20 +195,24 @@ lsq_datetime_from_tm ( const struct tm *timeval )
             TM_X_MAKE( YEAR, timeval->tm_year ) |
             TM_X_MAKE( WDAY, timeval->tm_wday ) |
             TM_X_MAKE( YDAY, timeval->tm_yday ) |
-            TM_X_MAKE( ISDST, timeval->tm_isdst ));
+            TM_X_MAKE( ISDST, timeval->tm_isdst )
+        );
 }
 
 LSQDateTime
 lsq_datetime_from_string (
         const gchar *str,
         const gchar *format,
-        gchar **endp )
+        gchar **endp
+    )
 {
     struct tm timeval;
     LSQDateTime dt = LSQ_DATETIME_NULL;
 
+#ifdef DEBUG
     g_return_val_if_fail( NULL != str, LSQ_DATETIME_NULL );
     g_return_val_if_fail( NULL != format, LSQ_DATETIME_NULL );
+#endif
 
     str = strptime( str, format, &timeval );
 
@@ -210,7 +220,7 @@ lsq_datetime_from_string (
     {
         if ( NULL != endp )
         {
-            *endp = (gchar*)str;
+            *endp = (gchar *)str;
         }
 
         dt = lsq_datetime_from_tm( &timeval );
@@ -222,8 +232,10 @@ lsq_datetime_from_string (
 void
 lsq_datetime_to_tm ( LSQDateTime dt, struct tm *timeval )
 {
+#ifdef DEBUG
     g_return_if_fail( LSQ_DATETIME_NULL!= dt );
     g_return_if_fail( NULL != timeval );
+#endif
 
     memset( timeval, 0, sizeof(struct tm) );
 
@@ -255,16 +267,15 @@ lsq_datetime_cmp (
 
     /* Ignoring daylight saveing */
     cmp = LSQ_DATETIME_CMP_MASK( a ) - LSQ_DATETIME_CMP_MASK( b );
-    if ( 0 != cmp )
-        return cmp;
-
-    return difftime( mktime( (struct tm*)a ), mktime( (struct tm*)b ) );
+    return cmp;
 }
 
 LSQDateTime
 g_value_get_datetime ( const GValue *value )
 {
+#ifdef DEBUG
     g_return_val_if_fail( G_VALUE_HOLDS_DATETIME( value ), LSQ_DATETIME_NULL );
+#endif
 
     return value->data[0].v_int64;
 }
@@ -274,7 +285,9 @@ g_value_set_datetime (
         GValue *value,
         LSQDateTime v_dt )
 {
+#ifdef DEBUG
     g_return_if_fail( G_VALUE_HOLDS_DATETIME( value ) );
+#endif
 
     value->data[0].v_int64 = v_dt;
 }

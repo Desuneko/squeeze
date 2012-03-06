@@ -18,43 +18,9 @@
 
 G_BEGIN_DECLS
 
-#define LSQ_TYPE_SUPPORT_READER lsq_support_reader_get_type()
 
-#define LSQ_SUPPORT_READER(obj)		 ( \
-		G_TYPE_CHECK_INSTANCE_CAST ((obj),	\
-			LSQ_TYPE_SUPPORT_READER,	  \
-			LSQSupportReader))
-
-#define LSQ_IS_SUPPORT_READER(obj)	  ( \
-		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
-			LSQ_TYPE_SUPPORT_READER))
-
-#define LSQ_SUPPORT_READER_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
-			LSQ_TYPE_SUPPORT_READER,	  \
-			LSQSupportReaderClass))
-
-#define LSQ_IS_SUPPORT_READER_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
-			LSQ_TYPE_SUPPORT_READER))
-
-typedef struct _LSQSupportReader LSQSupportReader;
-
-struct _LSQSupportReader
-{
-	GObject		parent;
-};
-
-typedef struct _LSQSupportReaderClass LSQSupportReaderClass;
-
-struct _LSQSupportReaderClass
-{
-	GObjectClass parent;
-}; 
-
-GType			  lsq_support_reader_get_type(void);
-LSQSupportReader  *lsq_support_reader_new();
-LSQSupportFactory *lsq_support_reader_parse_file(const gchar *filename);
+LSQSupportFactory *
+lsq_support_reader_parse_file ( const gchar *filename ) G_GNUC_WARN_UNUSED_RESULT;
 
 
 G_END_DECLS

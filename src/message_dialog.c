@@ -177,5 +177,5 @@ sq_message_dialog_new(GtkWindowType type, LSQArchive *archive)
 	gtk_label_set_text(GTK_LABEL(dialog->message_label), filename);
 	g_free(filename);
 
-	return (GtkWidget*)dialog;
+	return (GtkWidget *)dialog;
 }

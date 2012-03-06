@@ -37,28 +37,28 @@ sq_widget_factory_class_init(SQWidgetFactoryClass *factory_class);
 static void
 sq_widget_factory_init(SQWidgetFactory *factory);
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_numeric_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_string_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
 
-static GSList*
+static GSList *
 sq_widget_factory_create_boolean_menu(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GSList*
+static GSList *
 sq_widget_factory_create_enum_menu_group(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GSList*
+static GSList *
 sq_widget_factory_create_enum_menu_list(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GSList*
+static GSList *
 sq_widget_factory_create_flags_menu_group(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
-static GSList*
+static GSList *
 sq_widget_factory_create_flags_menu_list(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value);
 
 static void
@@ -116,7 +116,7 @@ sq_widget_factory_init(SQWidgetFactory *factory)
 	/* factory->custom_callback->notify_func = (LSQCustomActionNotifyFunc)sq_widget_factory_notify; */
 }
 
-SQWidgetFactory*
+SQWidgetFactory *
 sq_widget_factory_new(void)
 {
 	SQWidgetFactory *factory;
@@ -126,7 +126,7 @@ sq_widget_factory_new(void)
 	return factory;
 }
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *check = gtk_check_button_new_with_label(g_param_spec_get_nick(pspec));
@@ -162,7 +162,7 @@ sq_widget_factory_create_boolean_widget(SQWidgetFactory *factory, GObject *obj, 
 	return check;
 }
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_numeric_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *box = gtk_hbox_new(FALSE, 3);
@@ -279,7 +279,7 @@ sq_widget_factory_create_numeric_widget(SQWidgetFactory *factory, GObject *obj, 
 	return box;
 }
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *frame = gtk_frame_new(g_param_spec_get_nick(pspec));
@@ -328,7 +328,7 @@ sq_widget_factory_create_enum_widget_group(SQWidgetFactory *factory, GObject *ob
 	return frame;
 }
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *box = gtk_hbox_new(FALSE, 3);
@@ -379,7 +379,7 @@ sq_widget_factory_create_enum_widget_list(SQWidgetFactory *factory, GObject *obj
 	return box;
 }
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *frame = gtk_frame_new(g_param_spec_get_nick(pspec));
@@ -427,7 +427,7 @@ sq_widget_factory_create_flags_widget(SQWidgetFactory *factory, GObject *obj, GP
 	return frame;
 }
 
-static GtkWidget*
+static GtkWidget *
 sq_widget_factory_create_string_widget(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GtkWidget *box = gtk_hbox_new(FALSE, 3);
@@ -468,7 +468,7 @@ sq_widget_factory_create_string_widget(SQWidgetFactory *factory, GObject *obj, G
 	return box;
 }
 
-GtkWidget*
+GtkWidget *
 sq_widget_factory_create_property_widget(SQWidgetFactory *factory, GObject *obj, const gchar *prop)
 {
 	GtkWidget *widget = NULL;
@@ -525,7 +525,7 @@ sq_widget_factory_create_property_widget(SQWidgetFactory *factory, GObject *obj,
 	return widget;
 }
 
-static GSList*
+static GSList *
 sq_widget_factory_create_boolean_menu(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GSList *menu = NULL;
@@ -550,7 +550,7 @@ sq_widget_factory_create_boolean_menu(SQWidgetFactory *factory, GObject *obj, GP
 	return menu;
 }
 
-static GSList*
+static GSList *
 sq_widget_factory_create_enum_menu_group(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GSList *menu = NULL;
@@ -584,7 +584,7 @@ sq_widget_factory_create_enum_menu_group(SQWidgetFactory *factory, GObject *obj,
 	return menu;
 }
 
-static GSList*
+static GSList *
 sq_widget_factory_create_enum_menu_list(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GSList *menu = NULL;
@@ -628,7 +628,7 @@ sq_widget_factory_create_enum_menu_list(SQWidgetFactory *factory, GObject *obj, 
 	return menu;
 }
 
-static GSList*
+static GSList *
 sq_widget_factory_create_flags_menu_group(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GSList *menu = NULL;
@@ -661,7 +661,7 @@ sq_widget_factory_create_flags_menu_group(SQWidgetFactory *factory, GObject *obj
 	return menu;
 }
 
-static GSList*
+static GSList *
 sq_widget_factory_create_flags_menu_list(SQWidgetFactory *factory, GObject *obj, GParamSpec *pspec, const GValue *value)
 {
 	GSList *menu = NULL;
@@ -701,7 +701,7 @@ sq_widget_factory_create_flags_menu_list(SQWidgetFactory *factory, GObject *obj,
 	return menu;
 }
 
-GSList*
+GSList *
 sq_widget_factory_create_property_menu(SQWidgetFactory *factory, GObject *obj, const gchar *prop)
 {
 	GSList *menu = NULL;

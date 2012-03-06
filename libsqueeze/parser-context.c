@@ -37,14 +37,16 @@ lsq_parser_context_set_property (
         GObject *,
         guint,
         const GValue *,
-        GParamSpec * );
+        GParamSpec *
+    );
 
 static void
 lsq_parser_context_get_property (
         GObject *,
         guint,
         GValue *,
-        GParamSpec * );
+        GParamSpec *
+    );
 
 G_DEFINE_TYPE ( LSQParserContext, lsq_parser_context, G_TYPE_OBJECT );
 
@@ -65,8 +67,8 @@ lsq_parser_context_class_init ( LSQParserContextClass *klass )
     object_class->set_property = lsq_parser_context_set_property;
     object_class->get_property = lsq_parser_context_get_property;
 
-    pspec = g_param_spec_object("archive", NULL, NULL, LSQ_TYPE_ARCHIVE, G_PARAM_READABLE|G_PARAM_WRITABLE|G_PARAM_CONSTRUCT_ONLY);
-    g_object_class_install_property(object_class, LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE, pspec);
+    pspec = g_param_spec_object( "archive", NULL, NULL, LSQ_TYPE_ARCHIVE, G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY );
+    g_object_class_install_property( object_class, LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE, pspec );
 }
 
 static void
@@ -74,12 +76,13 @@ lsq_parser_context_set_property (
         GObject *object,
         guint property_id,  
         const GValue *value,
-        GParamSpec *pspec )
+        GParamSpec *pspec
+    )
 {
     switch ( property_id )
     {
         case LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE:
-            LSQ_PARSER_CONTEXT ( object )->archive = g_value_get_object ( value );
+            LSQ_PARSER_CONTEXT ( object )->archive = g_value_get_object( value );
             break;
     }
 }
@@ -89,28 +92,30 @@ lsq_parser_context_get_property (
         GObject *object,
         guint property_id,
         GValue *value,
-        GParamSpec *pspec )
+        GParamSpec *pspec
+    )
 {
     switch ( property_id )
     {
         case LSQ_PARSER_CONTEXT_PROPERTY_ARCHIVE:
-            g_value_set_object ( value, LSQ_PARSER_CONTEXT ( object )->archive );
+            g_value_set_object( value, LSQ_PARSER_CONTEXT ( object )->archive );
             break;
     }
 }
 
-LSQParserContext*
+LSQParserContext *
 lsq_parser_context_new ( LSQArchive *archive )
 {
     LSQParserContext *ctx;
 
-    g_return_val_if_fail ( LSQ_IS_ARCHIVE ( archive ), NULL );
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
 
-    ctx = g_object_new (
+    ctx = g_object_new(
             LSQ_TYPE_PARSER_CONTEXT,
             "archive",
             archive,
-            NULL);
+            NULL
+        );
        
     return ctx;
 }
@@ -118,8 +123,12 @@ lsq_parser_context_new ( LSQArchive *archive )
 void
 lsq_parser_context_set_channel (
         LSQParserContext *ctx,
-        GIOChannel *channel )
+        GIOChannel *channel
+    )
 {
+    g_return_if_fail( LSQ_IS_PARSER_CONTEXT( ctx ) );
+    g_return_if_fail( NULL != ctx );
+
     ctx->channel = channel;
     ctx->last_stat = G_IO_STATUS_AGAIN;
 }
@@ -128,11 +137,17 @@ gboolean
 lsq_parser_context_get_line (
         LSQParserContext *ctx,
         gchar **line,
-        gsize *length )
+        gsize *length
+    )
 {
     GIOStatus stat;
 
-    g_return_val_if_fail(ctx->channel, FALSE);
+#if DEBUG
+    g_return_val_if_fail( LSQ_IS_PARSER_CONTEXT( ctx ), FALSE);
+    g_return_val_if_fail( NULL != line, FALSE);
+    g_return_val_if_fail( NULL != length, FALSE);
+    g_return_val_if_fail( NULL != ctx->channel, FALSE);
+#endif
 
     stat = g_io_channel_read_line(ctx->channel, line, length, NULL, NULL);
 
@@ -144,11 +159,19 @@ lsq_parser_context_get_line (
 gboolean
 lsq_parser_context_is_good ( LSQParserContext *ctx )
 {
+#if DEBUG
+    g_return_val_if_fail( LSQ_IS_PARSER_CONTEXT( ctx ), FALSE);
+#endif
+
     return ctx->last_stat == G_IO_STATUS_NORMAL || ctx->last_stat == G_IO_STATUS_AGAIN;
 }
 
 gboolean
 lsq_parser_context_read_again ( LSQParserContext *ctx )
 {
+#if DEBUG
+    g_return_val_if_fail( LSQ_IS_PARSER_CONTEXT( ctx ), FALSE);
+#endif
+
     return ctx->last_stat == G_IO_STATUS_NORMAL;
 }

@@ -34,8 +34,8 @@ G_BEGIN_DECLS
 			SQ_TYPE_PATH_BAR,	  \
 			SQPathBarClass))
 
-#define SQ_IS_PATH_BAR_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_PATH_BAR_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			SQ_TYPE_PATH_BAR()))	
 
 typedef struct _SQPathBar SQPathBar;

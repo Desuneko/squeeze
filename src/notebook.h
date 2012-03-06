@@ -29,13 +29,13 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_notebook_get_type()))
 
-#define SQ_NOTEBOOK_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+#define SQ_NOTEBOOK_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
 			sq_notebook_get_type(),	  \
 			SQNotebookClass))
 
-#define SQ_IS_NOTEBOOK_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_NOTEBOOK_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			sq_notebook_get_type()))
 
 typedef struct _SQNotebook SQNotebook;

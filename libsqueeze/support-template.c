@@ -31,44 +31,54 @@
 GType
 lsq_support_template_get_property_type (
         LSQSupportTemplate *templ,
-        guint nr)
+        guint nr
+    )
 {
-    g_return_val_if_fail(templ->parser, G_TYPE_NONE);
-
-	return lsq_parser_get_property_type(templ->parser, nr);
+#ifdef DEBUG
+    g_return_val_if_fail( NULL != templ, G_TYPE_NONE );
+    g_return_val_if_fail( templ->n_properties > nr, G_TYPE_NONE );
+    g_return_val_if_fail( LSQ_IS_PARSER( templ->parser ), G_TYPE_NONE);
+#endif
+    return lsq_parser_get_property_type( templ->parser, nr );
 }
 
 guint
 lsq_support_template_get_property_offset (
         LSQSupportTemplate *templ,
-        guint nr )
+        guint nr
+    )
 {
-    g_return_val_if_fail(templ->parser, 0);
-
-    return lsq_parser_get_property_offset(templ->parser, nr);
+#ifdef DEBUG
+    g_return_val_if_fail( NULL != templ, 0 );
+    g_return_val_if_fail( templ->n_properties > nr, 0 );
+    g_return_val_if_fail( LSQ_IS_PARSER( templ->parser ), 0 );
+#endif
+    return lsq_parser_get_property_offset( templ->parser, nr );
 }
 
 const gchar *
 lsq_support_template_get_property_name (
         LSQSupportTemplate *templ,
-        guint nr )
+        guint nr
+    )
 {
-	g_return_val_if_fail(nr < templ->n_properties, NULL);
+    g_return_val_if_fail( NULL != templ, NULL );
+    g_return_val_if_fail( templ->n_properties > nr, NULL );
 
-	return templ->property_names[nr];
+    return templ->property_names[nr];
 }
 
 guint
-lsq_support_template_get_n_properties (
-        LSQSupportTemplate *templ )
+lsq_support_template_get_n_properties ( LSQSupportTemplate *templ )
 {
     guint n_props;
 
 #ifdef DEBUG
-    g_return_val_if_fail(templ, 0);
+    g_return_val_if_fail( NULL != templ, 0 );
+    g_return_val_if_fail( LSQ_IS_PARSER( templ->parser ), 0 );
 #endif
 
-    n_props = lsq_parser_n_properties ( templ->parser );
+    n_props = lsq_parser_n_properties( templ->parser );
 
     if ( templ->n_properties > n_props )
     {
@@ -78,9 +88,11 @@ lsq_support_template_get_n_properties (
 }
 
 guint
-lsq_support_template_get_properties_size (
-        LSQSupportTemplate *templ )
+lsq_support_template_get_properties_size ( LSQSupportTemplate *templ )
 {
-    g_return_val_if_fail ( templ->parser, 0 );
-    return lsq_parser_get_properties_size ( templ->parser );
+#ifdef DEBUG
+    g_return_val_if_fail( NULL != templ, 0 );
+    g_return_val_if_fail( LSQ_IS_PARSER( templ->parser ), 0 );
+#endif
+    return lsq_parser_get_properties_size( templ->parser );
 }

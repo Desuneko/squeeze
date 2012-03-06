@@ -38,87 +38,61 @@
 #include "internals.h"
 
 static void
-lsq_archive_class_init(LSQArchiveClass *archive_class);
-
-static void
-lsq_archive_init(LSQArchive *archive);
-
-static void
-lsq_archive_finalize(GObject *object);
+lsq_archive_finalize ( GObject *object );
 
 
 enum
 {
-	LSQ_ARCHIVE_SIGNAL_STATE_CHANGED = 0,
-	LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED,
-	LSQ_ARCHIVE_SIGNAL_REFRESHED,
-	LSQ_ARCHIVE_SIGNAL_COUNT
+    LSQ_ARCHIVE_SIGNAL_STATE_CHANGED = 0,
+    LSQ_ARCHIVE_SIGNAL_COMMAND_TERMINATED,
+    LSQ_ARCHIVE_SIGNAL_REFRESHED,
+    LSQ_ARCHIVE_SIGNAL_COUNT
 };
 
 static gint lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_COUNT];
 
-GType
-lsq_archive_get_type (void)
+G_DEFINE_TYPE ( LSQArchive, lsq_archive, G_TYPE_OBJECT );
+
+static void
+lsq_archive_class_init ( LSQArchiveClass *archive_class )
 {
-	static GType lsq_archive_type = 0;
+    GObjectClass *object_class = G_OBJECT_CLASS( archive_class );
 
- 	if (!lsq_archive_type)
-	{
- 		static const GTypeInfo lsq_archive_info = 
-		{
-			sizeof (LSQArchiveClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) lsq_archive_class_init,
-			(GClassFinalizeFunc) NULL,
-			NULL,
-			sizeof (LSQArchive),
-			0,
-			(GInstanceInitFunc) lsq_archive_init,
-			NULL
-		};
-
-		lsq_archive_type = g_type_register_static (G_TYPE_OBJECT, "LSQArchive", &lsq_archive_info, 0);
-	}
-	return lsq_archive_type;
+    object_class->finalize = lsq_archive_finalize;
+    lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED] = g_signal_new(
+            "state-changed",
+            G_TYPE_FROM_CLASS( archive_class ),
+            G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+            0,
+            NULL,
+            NULL,
+            g_cclosure_marshal_VOID__VOID,
+            G_TYPE_NONE,
+            0,
+            NULL
+        );
+    lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED] = g_signal_new(
+            "refreshed",
+            G_TYPE_FROM_CLASS( archive_class ),
+            G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+            0,
+            NULL,
+            NULL,
+            g_cclosure_marshal_VOID__VOID,
+            G_TYPE_NONE,
+            0,
+            NULL
+        );
 }
 
 static void
-lsq_archive_class_init(LSQArchiveClass *archive_class)
+lsq_archive_init ( LSQArchive *archive )
 {
-	GObjectClass *object_class = G_OBJECT_CLASS(archive_class);
-
-	object_class->finalize = lsq_archive_finalize;
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED] = g_signal_new("state-changed",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__VOID,
-			G_TYPE_NONE,
-			0,
-			NULL);
-	lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED] = g_signal_new("refreshed",
-			G_TYPE_FROM_CLASS(archive_class),
-			G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			0,
-			NULL,
-			NULL,
-			g_cclosure_marshal_VOID__VOID,
-			G_TYPE_NONE,
-			0,
-			NULL);
-}
-
-static void
-lsq_archive_init(LSQArchive *archive)
-{
-	lsq_archive_init_iter(archive);
+    lsq_archive_init_iter( archive );
 #ifdef LSQ_THREADSAFE
-	g_static_rw_lock_init(&archive->rw_lock);
+    g_static_rw_lock_init( &archive->rw_lock );
 #endif /* LSQ_THREADSAFE */
-	archive->priv = g_new0(LSQArchivePrivate, 1);
+    archive->priv = g_new0( LSQArchivePrivate, 1 );
 }
 
 /** static void
@@ -127,15 +101,15 @@ lsq_archive_init(LSQArchive *archive)
  * 
  */
 static void
-lsq_archive_finalize(GObject *object)
+lsq_archive_finalize ( GObject *object )
 {
-	LSQArchive *archive;
-	g_return_if_fail ( LSQ_IS_ARCHIVE(object) );
-	archive = (LSQArchive *)(object);
+    LSQArchive *archive = LSQ_ARCHIVE( object );
 
-	lsq_archive_free_iter(archive);
-	lsq_tempfs_clean_root_dir(archive);
-	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, object);
+    lsq_archive_free_iter( archive );
+    lsq_tempfs_clean_root_dir( archive );
+    lsq_opened_archive_list = g_slist_remove( lsq_opened_archive_list, object );
+
+    G_OBJECT_CLASS(lsq_archive_parent_class)->finalize( object );
 }
 
 /**
@@ -147,59 +121,74 @@ lsq_archive_finalize(GObject *object)
  *
  */
 LSQArchive *
-lsq_archive_new (GFile *file)
+lsq_archive_new ( GFile *file )
 {
-	LSQArchive *archive;
+    LSQArchive *archive;
     GFileInfo *file_info;
     const gchar *content_type;
     GSList *iter;
+    gchar *_basename;
 
-	archive = g_object_new(lsq_archive_get_type(), NULL);
+    /* We don't support no file. We can't get a content type of a NULL pointer */
+    g_return_val_if_fail( G_IS_FILE( file ), NULL );
 
-	if ( NULL != file )
-	{
-	  archive->priv->file = file;
-	  g_object_ref (archive->priv->file);
-	}
-	else
-	{
-		archive->priv->file= NULL;
-	}
+    archive = g_object_new( lsq_archive_get_type(), NULL );
 
+    archive->priv->file = file;
+    g_object_ref( archive->priv->file );
 
-    file_info = g_file_query_info (file, "standard::content-type,standard::type", 0, NULL, NULL);
-	if ( NULL != file_info )
-	{
-	  content_type = g_file_info_get_attribute_string (file_info, "standard::content-type");
-	  archive->priv->content_type = g_strdup (content_type); 
-	  g_object_unref(file_info);
-	}
+    file_info = g_file_query_info( file, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, 0, NULL, NULL );
+    if ( NULL != file_info )
+    {
+        content_type = g_file_info_get_attribute_string( file_info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE );
+        archive->priv->content_type = g_strdup( content_type ); 
+        g_object_unref( file_info );
+    }
+    else
+    {
+        /* The file might not exist yet. Get the content type from the file name */
+        _basename = g_file_get_basename( file );
+        if ( NULL != _basename )
+        {
+            archive->priv->content_type = g_content_type_guess( _basename, NULL, 0, NULL );
+        }
+        g_free( _basename );
+    }
 #ifdef DEBUG
-	g_debug("mime: %s\n", archive->priv->content_type);
+    g_debug( "mime: %s\n", archive->priv->content_type );
 #endif
+    if ( NULL == archive->priv->content_type )
+    {
+        /* Setting the content_type later on is not supported */
+#ifdef DEBUG
+        g_debug( "not supported" );
+#endif
+        g_object_unref( archive );
+        return NULL;
+    }
 
-  for ( iter = lsq_mime_support_list; NULL != iter; iter = iter->next )
-  {
-    if ( 0 == strcmp(((LSQSupportTemplate*)iter->data)->content_type, archive->priv->content_type) )
+    for ( iter = lsq_mime_support_list; NULL != iter; iter = iter->next )
+    {
+        if ( 0 == strcmp( ((LSQSupportTemplate *)iter->data)->content_type, archive->priv->content_type ) )
+        {
+#ifdef DEBUG
+            g_debug( "found template" );
+#endif
+            archive->priv->s_template = iter->data;
+            break;
+        }
+    }
+
+    if ( NULL == archive->priv->s_template )
     {
 #ifdef DEBUG
-      g_debug("found template");
+        g_debug( "not supported" );
 #endif
-      archive->priv->s_template = iter->data;
-      break;
+        g_object_unref( archive );
+        archive = NULL;
     }
-  }
 
-  if (NULL == archive->priv->s_template)
-  {
-#ifdef DEBUG
-    g_debug("not supported");
-#endif
-    g_object_unref(archive);
-    archive = NULL;
-  }
-
-  return archive;
+    return archive;
 }
 
 /*
@@ -209,12 +198,12 @@ lsq_archive_new (GFile *file)
  *
  */
 guint
-lsq_archive_n_entry_properties(const LSQArchive *archive)
+lsq_archive_n_entry_properties ( const LSQArchive *archive )
 {
 #ifdef DEBUG
-	g_return_val_if_fail ( NULL != archive, 0 );
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), 0 );
 #endif
-	return lsq_support_template_get_n_properties(archive->priv->s_template) + LSQ_ARCHIVE_PROP_USER;
+    return lsq_support_template_get_n_properties( archive->priv->s_template ) + LSQ_ARCHIVE_PROP_USER;
 }
 
 /*
@@ -224,33 +213,39 @@ lsq_archive_n_entry_properties(const LSQArchive *archive)
  *
  */
 GType
-lsq_archive_get_entry_property_type(const LSQArchive *archive, guint n)
+lsq_archive_get_entry_property_type ( const LSQArchive *archive, guint n )
 {
-	switch(n)
-	{
-		case LSQ_ARCHIVE_PROP_FILENAME:
-		case LSQ_ARCHIVE_PROP_MIME_TYPE:
-			return G_TYPE_STRING;
-			break;
-		default:
-			return lsq_support_template_get_property_type(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
-			break;
-	}
+#ifdef DEBUG
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), G_TYPE_NONE );
+    g_return_val_if_fail( lsq_archive_n_entry_properties( archive ) > n , G_TYPE_NONE );
+#endif
+    switch ( n )
+    {
+        case LSQ_ARCHIVE_PROP_FILENAME:
+        case LSQ_ARCHIVE_PROP_MIME_TYPE:
+            return G_TYPE_STRING;
+
+        default:
+            return lsq_support_template_get_property_type( archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER );
+    }
 }
 
 guint
-lsq_archive_get_entry_property_offset(const LSQArchive *archive, guint n)
+lsq_archive_get_entry_property_offset ( const LSQArchive *archive, guint n )
 {
-  switch(n)
-  {
-    case LSQ_ARCHIVE_PROP_FILENAME:
-    case LSQ_ARCHIVE_PROP_MIME_TYPE:
-      g_return_val_if_reached ( 0 );
-      break;
-    default:
-      return lsq_support_template_get_property_offset(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
-      break;
-  }
+#ifdef DEBUG
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), 0 );
+    g_return_val_if_fail( lsq_archive_n_entry_properties( archive ) > n , 0 );
+#endif
+    switch ( n )
+    {
+        case LSQ_ARCHIVE_PROP_FILENAME:
+        case LSQ_ARCHIVE_PROP_MIME_TYPE:
+            g_return_val_if_reached( 0 );
+
+        default:
+            return lsq_support_template_get_property_offset( archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER );
+    }
 }
 
 /*
@@ -260,28 +255,31 @@ lsq_archive_get_entry_property_offset(const LSQArchive *archive, guint n)
  *
  */
 const gchar *
-lsq_archive_get_entry_property_name(const LSQArchive *archive, guint n)
+lsq_archive_get_entry_property_name ( const LSQArchive *archive, guint n )
 {
-	switch(n)
-	{
-		case LSQ_ARCHIVE_PROP_FILENAME:
-			return _("Name");
-		case LSQ_ARCHIVE_PROP_MIME_TYPE:
-			return _("Mime type");
-			break;
-		default:
-			return lsq_support_template_get_property_name(archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER);
-			break;
-	}
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+    g_return_val_if_fail( lsq_archive_n_entry_properties( archive ) > n , NULL );
+
+    switch( n )
+    {
+        case LSQ_ARCHIVE_PROP_FILENAME:
+            return _("Name");
+
+        case LSQ_ARCHIVE_PROP_MIME_TYPE:
+            return _("Mime type");
+
+        default:
+            return lsq_support_template_get_property_name( archive->priv->s_template, n - LSQ_ARCHIVE_PROP_USER );
+    }
 }
 
 guint
-lsq_archive_entry_properties_size(const LSQArchive *archive)
+lsq_archive_entry_properties_size ( const LSQArchive *archive )
 {
 #ifdef DEBUG
-  g_return_val_if_fail ( NULL != archive, 0 );
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), 0 );
 #endif
-  return lsq_support_template_get_properties_size(archive->priv->s_template);
+    return lsq_support_template_get_properties_size( archive->priv->s_template );
 }
 
 /*
@@ -291,9 +289,11 @@ lsq_archive_entry_properties_size(const LSQArchive *archive)
  * Return value: filename string
  */
 gchar *
-lsq_archive_get_filename (const LSQArchive *archive)
+lsq_archive_get_filename ( const LSQArchive *archive )
 {
-  return g_file_get_basename(archive->priv->file);
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
+    return g_file_get_basename( archive->priv->file );
 }
 
 /*
@@ -303,91 +303,110 @@ lsq_archive_get_filename (const LSQArchive *archive)
  * Return value: filename string
  */
 gchar *
-lsq_archive_get_path (const LSQArchive *archive)
+lsq_archive_get_path ( const LSQArchive *archive )
 {
-  return g_file_get_path(archive->priv->file);
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
+    return g_file_get_path( archive->priv->file );
 }
 
 GFile *
-lsq_archive_get_file (const LSQArchive *archive)
+lsq_archive_get_file ( const LSQArchive *archive )
 {
-	return archive->priv->file;
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
+    return archive->priv->file;
 }
 
 void
-lsq_archive_refreshed(const LSQArchive *archive)
+lsq_archive_refreshed ( const LSQArchive *archive )
 {
-    g_debug("%s", __FUNCTION__);
-	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL);
+    g_return_if_fail( LSQ_IS_ARCHIVE( archive ) );
+
+    g_signal_emit( G_OBJECT( archive ), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_REFRESHED], 0, NULL );
 }
 
-void lsq_archive_add_children(GSList *files)
+void lsq_archive_add_children ( GSList *files )
 {
-	GSList *iter;
-	for ( iter = files; NULL != iter; iter = iter->next )
-	{
-		unsigned int i, size = lsq_archive_iter_n_children(iter->data);
-		for ( i = 0; i < size; ++i )
-		{
-			files = g_slist_append(iter, lsq_archive_iter_nth_child(iter->data, i));
-		}
-	}
-}
-
-void
-lsq_archive_state_changed(const LSQArchive *archive)
-{
-	g_signal_emit(G_OBJECT(archive), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED], 0, NULL);
-}
-
-void
-lsq_close_archive(LSQArchive *archive)
-{
-	lsq_opened_archive_list = g_slist_remove(lsq_opened_archive_list, archive);
-
-	if ( NULL != archive->priv->file )
+    GSList *iter;
+    for ( iter = files; NULL != iter; iter = iter->next )
     {
-		g_object_unref (archive->priv->file);
+        unsigned int i, size = lsq_archive_iter_n_children( iter->data );
+        for ( i = 0; i < size; ++i )
+        {
+            files = g_slist_append( iter, lsq_archive_iter_nth_child( iter->data, i ) );
+        }
+    }
+}
+
+void
+lsq_archive_state_changed ( const LSQArchive *archive )
+{
+    g_return_if_fail( LSQ_IS_ARCHIVE( archive ) );
+
+    g_signal_emit( G_OBJECT( archive ), lsq_archive_signals[LSQ_ARCHIVE_SIGNAL_STATE_CHANGED], 0, NULL );
+}
+
+void
+lsq_close_archive ( LSQArchive *archive )
+{
+    g_return_if_fail( LSQ_IS_ARCHIVE( archive ) );
+
+    lsq_opened_archive_list = g_slist_remove( lsq_opened_archive_list, archive );
+
+    if ( NULL != archive->priv->file )
+    {
+        g_object_unref( archive->priv->file );
         archive->priv->file = NULL;
     }
-	if ( NULL != archive->priv->content_type )
+    if ( NULL != archive->priv->content_type )
     {
-		g_free (archive->priv->content_type);
+        g_free( archive->priv->content_type );
         archive->priv->content_type = NULL;
     }
 
-	lsq_archive_stop(archive);
-	g_object_unref(archive);
+    lsq_archive_stop( archive );
+    g_object_unref( archive );
 }
 
 gboolean
-lsq_archive_can_stop(const LSQArchive *archive)
+lsq_archive_can_stop ( const LSQArchive *archive )
 {
-	return FALSE;
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), FALSE );
+
+    return FALSE;
 }
 
 gboolean
-lsq_archive_stop(const LSQArchive *archive)
+lsq_archive_stop ( const LSQArchive *archive )
 {
-	return FALSE;
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), FALSE );
+
+    return FALSE;
 }
 
 const gchar *
-lsq_archive_get_state_msg(const LSQArchive *archive)
+lsq_archive_get_state_msg ( const LSQArchive *archive )
 {
-	return archive->priv->state_msg;
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
+
+    return archive->priv->state_msg;
 }
 
 LSQArchiveState
-lsq_archive_get_state(const LSQArchive *archive)
+lsq_archive_get_state ( const LSQArchive *archive )
 {
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), LSQ_ARCHIVE_STATE_IDLE );
+
     return archive->priv->state;
 }
 
 LSQSupportType
-lsq_archive_get_support_mask(const LSQArchive *archive)
+lsq_archive_get_support_mask ( const LSQArchive *archive )
 {
-	return archive->priv->s_template->support_mask;
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), 0 );
+
+    return archive->priv->s_template->support_mask;
 }
 
 /**
@@ -398,53 +417,69 @@ lsq_archive_get_support_mask(const LSQArchive *archive)
  * Return value: TRUE on success
  */
 gboolean
-lsq_archive_operate(LSQArchive *archive, LSQCommandType type, const gchar **files, const gchar *directory)
+lsq_archive_operate ( LSQArchive *archive, LSQCommandType type, gchar **files, const gchar *directory )
 {
     LSQSupportTemplate *s_template;
+    LSQExecuteContext *leaked = NULL; /* FIXME */
 
-    g_return_val_if_fail ( NULL != archive, FALSE );
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), FALSE );
 
     s_template = archive->priv->s_template;
 
-    switch (type)
+    switch ( type )
     {
         case LSQ_COMMAND_TYPE_ADD:
-            lsq_command_queue_execute(s_template->add_cmd_queue, archive, files, NULL, NULL);
+            g_return_val_if_fail( files, FALSE );
+            leaked = lsq_command_queue_execute( s_template->add_cmd_queue, archive, files, NULL, NULL );
             break;
+
         case LSQ_COMMAND_TYPE_REMOVE:
-            lsq_command_queue_execute(s_template->remove_cmd_queue, archive, files, NULL, NULL);
+            g_return_val_if_fail( files, FALSE );
+            leaked = lsq_command_queue_execute( s_template->remove_cmd_queue, archive, files, NULL, NULL );
             break;
+
         case LSQ_COMMAND_TYPE_EXTRACT:
-            lsq_command_queue_execute(s_template->extract_cmd_queue, archive, files, directory, NULL);
+            g_return_val_if_fail( directory, FALSE );
+            leaked = lsq_command_queue_execute( s_template->extract_cmd_queue, archive, files, directory, NULL );
             break;
+
         case LSQ_COMMAND_TYPE_REFRESH:
-            lsq_command_queue_execute(s_template->refresh_cmd_queue, archive, files, NULL, s_template->parser);
+            leaked = lsq_command_queue_execute( s_template->refresh_cmd_queue, archive, NULL, NULL, s_template->parser );
             break;
+
         default:
-            return FALSE;
-            break;
+            g_return_val_if_reached( FALSE );
     }
+
+    (void)leaked;
+
     return TRUE;
 }
 
 LSQCommandOptionPair **
-lsq_archive_get_command_options(LSQArchive *archive, LSQCommandType type)
+lsq_archive_get_command_options ( LSQArchive *archive, LSQCommandType type )
 {
     LSQCommandOptionPair **option_list = NULL;
+    LSQSupportTemplate *s_template;
 
-    LSQSupportTemplate *s_template = archive->priv->s_template;
+    g_return_val_if_fail( LSQ_IS_ARCHIVE( archive ), NULL );
 
-    switch (type)
+    s_template = archive->priv->s_template;
+
+    switch ( type )
     {
         case LSQ_COMMAND_TYPE_ADD:
-            option_list = lsq_command_option_create_pair(s_template->add_options);
+            option_list = lsq_command_option_create_pair( s_template->add_options );
             break;
+
         case LSQ_COMMAND_TYPE_REMOVE:
-            option_list = lsq_command_option_create_pair(s_template->remove_options);
+            option_list = lsq_command_option_create_pair( s_template->remove_options );
             break;
+
         case LSQ_COMMAND_TYPE_EXTRACT:
-            option_list = lsq_command_option_create_pair(s_template->extract_options);
+            option_list = lsq_command_option_create_pair( s_template->extract_options );
             break;
+
         default:
             break;
     }

@@ -49,7 +49,7 @@ static void
 sq_tool_bar_forall(GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
 static void
-cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter*, SQNavigationBar *bar);
+cb_sq_tool_bar_pwd_changed(SQArchiveStore *store, LSQArchiveIter *, SQNavigationBar *bar);
 static void
 cb_sq_tool_bar_new_archive(SQArchiveStore *store, SQNavigationBar *bar);
 static void
@@ -102,8 +102,8 @@ sq_tool_bar_class_init(SQToolBarClass *tool_bar_class)
 	GtkWidgetClass *widget_class;
 	GtkContainerClass *container_class;
 
-	widget_class = (GtkWidgetClass*)tool_bar_class;
-	container_class = (GtkContainerClass*)tool_bar_class;
+	widget_class = (GtkWidgetClass *)tool_bar_class;
+	container_class = (GtkContainerClass *)tool_bar_class;
 
 	widget_class->size_request = sq_tool_bar_size_request;
 	widget_class->size_allocate = sq_tool_bar_size_allocate;
@@ -281,7 +281,7 @@ sq_tool_bar_add(GtkContainer *container, GtkWidget *child)
 
 	g_return_if_fail(GTK_IS_WIDGET(child));
 
-	if(((GtkWidget*)tool_bar->bar) != child)
+	if(((GtkWidget *)tool_bar->bar) != child)
 	{
 		g_warning("DON'T set another child as toolbar");
 		return;
@@ -297,7 +297,7 @@ sq_tool_bar_remove(GtkContainer *container, GtkWidget *child)
 	gboolean widget_was_visible;
 
 	g_return_if_fail(GTK_IS_WIDGET(child));
-	g_return_if_fail(((GtkWidget*)tool_bar->bar) == child);
+	g_return_if_fail(((GtkWidget *)tool_bar->bar) == child);
 
 	widget_was_visible = GTK_WIDGET_VISIBLE(child);
 

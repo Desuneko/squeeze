@@ -34,8 +34,8 @@ G_BEGIN_DECLS
 			SQ_TYPE_TOOL_BAR,	  \
 			SQToolBarClass))
 
-#define SQ_IS_TOOL_BAR_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_TOOL_BAR_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			SQ_TYPE_TOOL_BAR()))	
 
 typedef struct _SQToolBar SQToolBar;

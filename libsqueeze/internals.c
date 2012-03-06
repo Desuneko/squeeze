@@ -41,26 +41,28 @@
 static gint
 lsq_opened_archives_lookup_archive (
         gconstpointer open_archive,
-        gconstpointer path);
+        gconstpointer path
+    );
 
 gchar *
 lsq_concat_filenames ( GSList *filenames )
 {
     GSList *_filenames = filenames;
-    gchar *concat_str = g_strdup(" "), *_concat_str;
+    gchar *concat_str = g_strdup( " " ), *_concat_str;
 
     while ( NULL != _filenames )
     {
         _concat_str = concat_str;
-        concat_str = g_strconcat (
+        concat_str = g_strconcat(
                 concat_str,
                 " ",
-                g_shell_quote ( _filenames->data ),
-                NULL );
+                g_shell_quote( _filenames->data ),
+                NULL
+            );
 
         _filenames = _filenames->next;
 
-        g_free ( _concat_str );
+        g_free( _concat_str );
     }
     return concat_str;
 }
@@ -68,15 +70,19 @@ lsq_concat_filenames ( GSList *filenames )
 LSQArchive *
 lsq_opened_archive_get_archive ( gchar *path )
 {
-    GSList *result = g_slist_find_custom (
+    GSList *result;
+
+    g_return_val_if_fail( NULL != path, NULL );
+
+    result = g_slist_find_custom(
             lsq_opened_archive_list,
             path,
-            lsq_opened_archives_lookup_archive );
+            lsq_opened_archives_lookup_archive
+        );
 
     if ( NULL != result )
     {
-        g_object_ref ( result->data );
-        return result->data;
+        return g_object_ref( result->data );
     }
     return NULL;
 }
@@ -85,24 +91,26 @@ lsq_opened_archive_get_archive ( gchar *path )
 static gint
 lsq_opened_archives_lookup_archive (
         gconstpointer open_archive,
-        gconstpointer uri )
+        gconstpointer uri
+    )
 {
     GFile *file;
     GFile *archive_file;
-#ifdef DEBUG
-    g_return_val_if_fail ( NULL != open_archive, 1 );
-#endif
-    file = g_file_new_for_path ( uri );
-    archive_file = lsq_archive_get_file ( LSQ_ARCHIVE ( open_archive ) );
+
+    g_return_val_if_fail( NULL != open_archive, 1 );
+    g_return_val_if_fail( NULL != uri, 1 );
+
+    file = g_file_new_for_path( uri );
+    archive_file = lsq_archive_get_file( LSQ_ARCHIVE( open_archive ) );
     
-    if ( TRUE == g_file_equal (archive_file , file) )
+    if ( TRUE == g_file_equal( archive_file , file ) )
     {
-        g_object_unref ( file );
+        g_object_unref( file );
 
         return 0;
     }
 
-    g_object_unref ( file );
+    g_object_unref( file );
 
     return 1;
 }

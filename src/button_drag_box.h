@@ -36,8 +36,8 @@ G_BEGIN_DECLS
 			SQ_TYPE_BUTTON_DRAG_BOX,	  \
 			SQButtonDragBoxClass))
 
-#define SQ_IS_BUTTON_DRAG_BOX_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_BUTTON_DRAG_BOX_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			SQ_TYPE_BUTTON_DRAG_BOX()))	
 
 typedef struct _SQButtonDragBox SQButtonDragBox;

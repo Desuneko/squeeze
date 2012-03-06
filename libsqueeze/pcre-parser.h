@@ -21,27 +21,27 @@ G_BEGIN_DECLS
 #define LSQ_TYPE_PCRE_PARSER lsq_pcre_parser_get_type()
 
 #define LSQ_PCRE_PARSER(obj) (		    \
-	G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
-	    LSQ_TYPE_PCRE_PARSER,	    \
-	    LSQPcreParser))
+        G_TYPE_CHECK_INSTANCE_CAST ((obj),  \
+            LSQ_TYPE_PCRE_PARSER,	    \
+            LSQPcreParser))
 
 #define LSQ_IS_PCRE_PARSER(obj) (	    \
-	G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
-	    LSQ_TYPE_PCRE_PARSER))
+        G_TYPE_CHECK_INSTANCE_TYPE ((obj),  \
+            LSQ_TYPE_PCRE_PARSER))
 
 #define LSQ_PCRE_PARSER_CLASS(klass) (	    \
-	G_TYPE_CHECK_CLASS_CAST ((klass),   \
-	    LSQ_TYPE_PCRE_PARSER,	    \
-	    LSQPcreParserClass))
+        G_TYPE_CHECK_CLASS_CAST ((klass),   \
+            LSQ_TYPE_PCRE_PARSER,	    \
+            LSQPcreParserClass))
 
 #define LSQ_IS_PCRE_PARSER_CLASS(klass) (   \
-	G_TYPE_CHECK_CLASS_TYPE ((klass),   \
-	    LSQ_TYPE_PCRE_PARSER))
+        G_TYPE_CHECK_CLASS_TYPE ((klass),   \
+            LSQ_TYPE_PCRE_PARSER))
 
 #define LSQ_PCRE_PARSER_GET_CLASS(obj) (    \
-	G_TYPE_INSTANCE_GET_CLASS ((obj),   \
-	    LSQ_TYPE_PCRE_PARSER,	    \
-	    LSQPcreParserClass))
+        G_TYPE_INSTANCE_GET_CLASS ((obj),   \
+            LSQ_TYPE_PCRE_PARSER,	    \
+            LSQPcreParserClass))
 
 
 typedef struct _LSQPcreParser LSQPcreParser;
@@ -49,10 +49,13 @@ typedef struct _LSQPcreParser LSQPcreParser;
 typedef struct _LSQPcreParserClass LSQPcreParserClass;
 
 GType
-lsq_pcre_parser_get_type ( void );
+lsq_pcre_parser_get_type ( void ) G_GNUC_CONST;
 
 LSQParser *
-lsq_pcre_parser_new ( const gchar * , gchar ** );
+lsq_pcre_parser_new (
+        const gchar *,
+        gchar **
+    ) G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
 

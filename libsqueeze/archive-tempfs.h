@@ -25,7 +25,7 @@
 void
 lsq_tempfs_clean_root_dir ( LSQArchive *archive );
 
-const gchar*
+const gchar *
 lsq_tempfs_get_root_dir ( LSQArchive *archive );
 
 gboolean
@@ -35,26 +35,31 @@ gboolean
 lsq_tempfs_make_dir (
         LSQArchive *archive,
         const gchar *path,
-        gint mode );
+        gint mode
+    );
 
 gboolean
 lsq_tempfs_chmod (
         LSQArchive *archive,
         const gchar *path,
-        gint mode );
+        gint mode
+    );
 
 gboolean
 lsq_tempfs_monitor_file (
         LSQArchive *archive,
-        const gchar *path) G_GNUC_INTERNAL;
+        const gchar *path
+    );
 
 gboolean
 lsq_tempfs_changed_file (
         LSQArchive *archive,
-        const gchar *path) G_GNUC_INTERNAL;
+        const gchar *path
+    );
 
 gchar *
 lsq_archive_request_temp_file (
         LSQArchive *archive,
-        const gchar *suffix);
+        const gchar *suffix
+    ) G_GNUC_WARN_UNUSED_RESULT;
 

@@ -29,13 +29,13 @@ G_BEGIN_DECLS
 		G_TYPE_CHECK_INSTANCE_TYPE ((obj),	\
 			sq_settings_get_type()))
 
-#define SQ_SETTINGS_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_CAST ((class),	 \
+#define SQ_SETTINGS_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_CAST ((klass),	 \
 			sq_settings_get_type(),	  \
 			SQSettingsClass))
 
-#define SQ_IS_SETTINGS_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_SETTINGS_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			sq_settings_get_type()))
 
 typedef struct _SQSettings SQSettings;

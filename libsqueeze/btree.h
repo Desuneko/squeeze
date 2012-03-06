@@ -31,22 +31,24 @@ LSQBTree *
 lsq_btree_insert_sorted_single (
         LSQBTree *list,
         LSQArchiveEntry *entry,
-        GCompareFunc ) G_GNUC_INTERNAL;
+        GCompareFunc
+    ) G_GNUC_WARN_UNUSED_RESULT G_GNUC_INTERNAL;
 
 LSQBTree *
 lsq_btree_remove_sorted_single (
         LSQBTree *list,
         gchar *filename,
         GCompareFunc cmp_func,
-        LSQArchiveEntry **found ) G_GNUC_INTERNAL;
+        LSQArchiveEntry **found
+    ) G_GNUC_WARN_UNUSED_RESULT G_GNUC_INTERNAL;
 
 guint
-lsq_btree_length ( LSQBTree *list ) G_GNUC_INTERNAL;
+lsq_btree_length ( LSQBTree *list ) G_GNUC_PURE G_GNUC_INTERNAL;
 
 void
 lsq_btree_free ( LSQBTree *list ) G_GNUC_INTERNAL;
 
 LSQBTree *
-lsq_btree_flatten ( LSQBTree *list ) G_GNUC_INTERNAL;
+lsq_btree_flatten ( LSQBTree *list ) G_GNUC_WARN_UNUSED_RESULT G_GNUC_INTERNAL;
 
 #endif /* __LSQ_BTREE_H__ */

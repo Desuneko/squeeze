@@ -34,8 +34,8 @@ G_BEGIN_DECLS
 			SQ_TYPE_NAVIGATION_BAR,	  \
 			SQNavigationBarClass))
 
-#define SQ_IS_NAVIGATION_BAR_CLASS(class) ( \
-		G_TYPE_CHECK_CLASS_TYPE ((class),		\
+#define SQ_IS_NAVIGATION_BAR_CLASS(klass) ( \
+		G_TYPE_CHECK_CLASS_TYPE ((klass),		\
 			SQ_TYPE_NAVIGATION_BAR()))	
 
 typedef struct _SQNavigationBar SQNavigationBar;

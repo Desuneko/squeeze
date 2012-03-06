@@ -35,7 +35,8 @@ LSQBTree *
 lsq_btree_insert_sorted_single (
         LSQBTree *list,
         LSQArchiveEntry *entry,
-        GCompareFunc cmp_func )
+        GCompareFunc cmp_func
+    )
 {
     gint cmp;
     LSQBTree *iter;
@@ -48,10 +49,15 @@ lsq_btree_insert_sorted_single (
     gint swap_balance;
     gboolean short_side;
 
+#if DEBUG
+    g_return_val_if_fail( NULL != entry, NULL );
+    g_return_val_if_fail( NULL != cmp_func, NULL );
+#endif
+
     /* Check for a flat list */
-    if ( NULL != list && NULL != list->next )
+    if ( G_UNLIKELY ( NULL != list && NULL != list->next ) )
     {
-        g_critical("Cannot insert into a flattened tree");
+        g_error( "Cannot insert into a flattened tree" );
         return NULL;
     }
 
@@ -74,17 +80,17 @@ lsq_btree_insert_sorted_single (
         else
         {
             /* Logic outside this routine dictates we should never find a match */
-            g_critical("THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)");
+            g_error( "THIS SHOULD NOT HAPPEN!!! (the universe has just collapsed)" );
             return NULL;
         }
 
         /* Keep a stack of the path we followed */
-        g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+        g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, NULL );
         stack[stack_i++] = iter;
     }
 
     /* Create a new tree element */
-    new_entry = g_new0(LSQBTree, 1);
+    new_entry = g_new0( LSQBTree, 1 );
     new_entry->entry = entry;
 
     /* Check it this is a new tree */
@@ -257,6 +263,11 @@ lsq_btree_remove_sorted_single (
     gint swap_balance;
 #endif
 
+#if DEBUG
+    g_return_val_if_fail( NULL != filename, NULL );
+    g_return_val_if_fail( NULL != cmp_func, NULL );
+#endif
+
     if ( NULL != found )
     {
         *found = NULL;
@@ -317,7 +328,7 @@ lsq_btree_remove_sorted_single (
             }
 
             /* Keep a stack of the path we followed */
-            g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+            g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, NULL );
             stack[stack_i++] = iter;
         }
 
@@ -345,7 +356,7 @@ lsq_btree_remove_sorted_single (
              * We that the longest of the two paths, i the hope to be better balanced. */
             
             /* Keep a stack of the path we followed */
-            g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+            g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, NULL );
             stack[stack_i++] = iter;
 
             /* Right it the longest */
@@ -357,7 +368,7 @@ lsq_btree_remove_sorted_single (
                     next = &swap_iter->left;
 
                     /* Keep a stack of the path we followed */
-                    g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+                    g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, NULL );
                     stack[stack_i++] = iter;
                 }
 
@@ -377,7 +388,7 @@ lsq_btree_remove_sorted_single (
                     next = &swap_iter->right;
 
                     /* Keep a stack of the path we followed */
-                    g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+                    g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, NULL );
                     stack[stack_i++] = iter;
                 }
 
@@ -563,7 +574,7 @@ lsq_btree_length ( LSQBTree *list )
             for ( iter = list; NULL != iter; iter = iter->left )
             {
                 stack[stack_i++] = iter;
-		g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, 0);
+                g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, 0 );
 
                 size++;
             }
@@ -599,7 +610,7 @@ lsq_btree_free ( LSQBTree *list )
             for ( iter = list; NULL != iter; iter = iter->left )
             {
                 stack[stack_i++] = iter;
-		g_return_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH);
+		g_return_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i );
             }
 
             list = stack[--stack_i]->right;
@@ -629,7 +640,7 @@ lsq_btree_flatten ( LSQBTree *list )
         for ( iter = next; NULL != iter; iter = iter->left )
         {
             stack[stack_i++] = iter;
-	    g_return_val_if_fail(stack_i < LSQ_BTREE_MAX_DEPTH, NULL);
+            g_return_val_if_fail( LSQ_BTREE_MAX_DEPTH > stack_i, NULL );
         }
 
         next = stack[--stack_i];
