@@ -84,7 +84,7 @@ msgstr ""
 #: ../src/archive_store.c:250
 #: ../src/notebook.c:181
 msgid "Show full path"
-msgstr "전체 경로 보이기"
+msgstr "전체 경로 보기"
 
 #: ../src/archive_store.c:251
 #: ../src/notebook.c:182
@@ -94,7 +94,7 @@ msgstr "각각의 목록에 대한 전체 경로 문자열을 보입니다"
 #: ../src/archive_store.c:257
 #: ../src/notebook.c:188
 msgid "Show mime icons"
-msgstr "MIME 아이콘 보이기"
+msgstr "MIME 아이콘 보기"
 
 #: ../src/archive_store.c:258
 #: ../src/notebook.c:189
@@ -103,11 +103,11 @@ msgstr "각각의 목록에 대한 MIME 유형 아이콘을 보입니다"
 
 #: ../src/archive_store.c:264
 msgid "Show up dir entry"
-msgstr "디렉토리 목록 보이기"
+msgstr "디렉토리 목록 보기"
 
 #: ../src/archive_store.c:265
 msgid "Show '..' to go to the parent directory"
-msgstr "부모 디렉터리로 이동하기 위한 '..' 보이기"
+msgstr "부모 디렉터리로 이동하기 위한 '..' 보기"
 
 #: ../src/archive_store.c:271
 #: ../src/notebook.c:195
@@ -401,7 +401,7 @@ msgstr "압축 파일 보기:"
 
 #: ../src/preferences_dialog.c:97
 msgid "_Show Icons"
-msgstr "아이콘 보이기(_S)"
+msgstr "아이콘 보기(_S)"
 
 #: ../src/preferences_dialog.c:100
 msgid "_Rules Hint"
