@@ -136,7 +136,7 @@ msgstr "사용가능한 것:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
-msgstr "<b>압축풀 파일들:</b>"
+msgstr "<b>압축 풀 파일:</b>"
 
 #: ../src/extract_dialog.c:77
 msgid "<b>Options:</b>"
@@ -273,7 +273,7 @@ msgstr ""
 
 #: ../src/main_window.c:958
 msgid "Are you sure you want to remove the selected files?"
-msgstr "정말로 선택한 파일들을 제거하시렵니까?"
+msgstr "정말로 선택한 파일을 제거하시렵니까?"
 
 #: ../src/main_window.c:974
 msgid ""
