@@ -70,7 +70,7 @@ msgstr ""
 #.
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "MIME 유형이 지원되지 않아 압축파일을 만들 수 없습니다."
+msgstr "MIME 유형을 지원하지 않아 압축파일을 만들 수 없습니다."
 
 #: ../src/application.c:269
 #: ../src/main_window.c:887
