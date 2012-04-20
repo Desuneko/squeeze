@@ -9,22 +9,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-11 05:33+0000\n"
+"Report-Msgid-Bugs-To: <xfce-i18n-cn@xfce.org>\n"
+"POT-Creation-Date: 2012-04-20 05:15+0000\n"
 "PO-Revision-Date: 2009-06-14 02:36+0800\n"
 "Last-Translator: Chipong Luo <chipong.luo@yahoo.com>\n"
-"Language-Team: Chinese (Simplified) <xfce-i18n@xfce.org>\n"
+"Language-Team: Chinese (Simplified) <xfce-i18n-cn@xfce.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../libsqueeze/archive.c:268
+#: ../libsqueeze/archive.c:266
 msgid "Name"
 msgstr "名称"
 
-#: ../libsqueeze/archive.c:270
+#: ../libsqueeze/archive.c:269
 msgid "Mime type"
 msgstr "Mime 类型"
 
