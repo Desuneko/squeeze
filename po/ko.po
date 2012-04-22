@@ -32,7 +32,7 @@ msgstr "이름"
 
 #: ../libsqueeze/archive.c:270
 msgid "Mime type"
-msgstr "MIME 유형"
+msgstr "MIME 형식"
 
 #: ../squeeze.desktop.in.h:1
 msgid "Archive Manager"
@@ -53,7 +53,7 @@ msgstr "스퀴즈 압축 관리자"
 #: ../src/application.c:160
 #: ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr "MIME 유형을 지원하지 않거나 파일이 존재하지 않아 압축 파일을 열 수 없습니다."
+msgstr "MIME 형식을 지원하지 않거나 파일이 존재하지 않아 압축 파일을 열 수 없습니다."
 
 #: ../src/application.c:190
 #: ../src/main_window.c:834
@@ -70,7 +70,7 @@ msgstr ""
 #.
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
-msgstr "MIME 유형을 지원하지 않아 압축파일을 만들 수 없습니다."
+msgstr "MIME 형식을 지원하지 않아 압축파일을 만들 수 없습니다."
 
 #: ../src/application.c:269
 #: ../src/main_window.c:887
@@ -99,7 +99,7 @@ msgstr "MIME 아이콘 표시"
 #: ../src/archive_store.c:258
 #: ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
-msgstr "각각의 목록에 대한 MIME 유형 아이콘을 보입니다"
+msgstr "각각의 목록에 대한 MIME 형식 아이콘을 보입니다"
 
 #: ../src/archive_store.c:264
 msgid "Show up dir entry"
