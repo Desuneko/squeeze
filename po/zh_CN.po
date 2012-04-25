@@ -5,19 +5,19 @@
 # Hunt Xu <huntxu@live.cn>, 2008, 2009.
 # Aron Xu <aronmalache@163.com>, 2009.
 # Chipong Luo <chipong.luo@yahoo.com>, 2011, 2012.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-23 13:45+0000\n"
+"POT-Creation-Date: 2012-04-25 06:00+0000\n"
 "PO-Revision-Date: 2009-06-14 02:36+0800\n"
 "Last-Translator: Chipong Luo <chipong.luo@yahoo.com>\n"
 "Language-Team: Chinese (Simplified) <xfce-i18n-cn@xfce.org>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../libsqueeze/archive.c:266
@@ -40,9 +40,10 @@ msgstr "使用归档文件管理器创建和管理归档文件"
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze 归档文件管理器"
 
+#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#. 
+#.
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "未能打开归档文件，不支持 MIME 类型或文件不存在"
@@ -55,8 +56,9 @@ msgstr ""
 "Squeeze 未能解压此归档文件类型，\n"
 "支持此操作的应用程序丢失。"
 
+#.
 #. * Could not create archive (mime type unsupported)
-#. 
+#.
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "未能创建归档文件，不支持的 MIME 类型"
@@ -218,7 +220,7 @@ msgstr "解压(_E)"
 #. View menu
 #: ../src/main_window.c:378
 msgid "_View"
-msgstr "查看(_V)"
+msgstr "视图(_V)"
 
 #. Help menu
 #: ../src/main_window.c:402
