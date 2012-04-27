@@ -1,14 +1,14 @@
 # Finnish translation of the squeeze package.
-# Copyright (C) 2006-2007 Stephan Arts.
+# Copyright (C) 2006-2012 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
-# Jari Rahkonen <jari.rahkonen@pp1.inet.fi>, 2006-2008.
+# Jari Rahkonen <jari.rahkonen@pp1.inet.fi>, 2006-2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
-"PO-Revision-Date: 2008-10-31 13:38+0200\n"
+"Project-Id-Version: squeeze\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-27 11:09+0000\n"
+"PO-Revision-Date: 2012-04-27 14:39+0300\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <xfce-i18n@xfce.org>\n"
 "Language: fi\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libsqueeze/archive.c:272
+#: ../libsqueeze/archive.c:266
 msgid "Name"
 msgstr "Nimi"
 
-#: ../libsqueeze/archive.c:274
+#: ../libsqueeze/archive.c:269
 msgid "Mime type"
 msgstr "MIME-tyyppi"
 
@@ -45,7 +45,7 @@ msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Arkistoa ei voi avata, MIME-tyyppiä ei tueta tai tiedostoa ei ole olemassa"
 
-#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
+#: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Arkistoa ei voi luoda, MIME-tyyppiä ei tueta"
 
-#: ../src/application.c:269 ../src/main_window.c:891
+#: ../src/application.c:269 ../src/main_window.c:887
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -107,11 +107,11 @@ msgstr "Huomioi kirjainkoko järjestäessä"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Näkyvä:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Käytettävissä:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -129,8 +129,8 @@ msgstr "Kaikki tiedostot"
 msgid "Selected files"
 msgstr "Valitut tiedostot"
 
-#: ../src/extract_dialog.c:101 ../src/main_window.c:457
-#: ../src/main_window.c:1255
+#: ../src/extract_dialog.c:101 ../src/main_window.c:456
+#: ../src/main_window.c:1251
 msgid "Extract"
 msgstr "Pura"
 
@@ -192,54 +192,54 @@ msgstr ""
 "Tapa, jolla navigoit arkistossa"
 
 #. File menu
-#: ../src/main_window.c:301
+#: ../src/main_window.c:300
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:329
+#: ../src/main_window.c:328
 msgid "_Action"
 msgstr "Toi_minto"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:333
 msgid "_Add files"
 msgstr "_Lisää tiedostoja"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:339
 msgid "_Add _folders"
 msgstr "Lisää _kansioita"
 
-#: ../src/main_window.c:346
+#: ../src/main_window.c:345
 msgid "_Extract"
 msgstr "P_ura"
 
 #. View menu
-#: ../src/main_window.c:379
+#: ../src/main_window.c:378
 msgid "_View"
 msgstr "_Näytä"
 
 #. Help menu
-#: ../src/main_window.c:403
+#: ../src/main_window.c:402
 msgid "_Help"
 msgstr "_Ohje"
 
-#: ../src/main_window.c:449 ../src/main_window.c:866
+#: ../src/main_window.c:448 ../src/main_window.c:862
 msgid "Add files"
 msgstr "Lisää tiedostoja"
 
-#: ../src/main_window.c:453 ../src/main_window.c:913
+#: ../src/main_window.c:452 ../src/main_window.c:909
 msgid "Add folders"
 msgstr "Lisää kansioita"
 
-#: ../src/main_window.c:731
+#: ../src/main_window.c:727
 msgid "Open archive in new window"
 msgstr "Avaa arkisto uuteen ikkunaan"
 
-#: ../src/main_window.c:737
+#: ../src/main_window.c:733
 msgid "Open archive"
 msgstr "Avaa arkisto"
 
-#: ../src/main_window.c:938
+#: ../src/main_window.c:934
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -247,11 +247,11 @@ msgstr ""
 "Squeeze ei voi lisätä kansioita tähän arkistotyyppiin,\n"
 "koska tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:958
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Haluatko varmasti poistaa valitut tiedostot?"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:974
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -259,7 +259,7 @@ msgstr ""
 "Squeeze ei voi poistaa tiedostoja tästä arkistotyypistä,\n"
 "koska tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:1029
+#: ../src/main_window.c:1025
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -267,31 +267,31 @@ msgstr ""
 "Haluatko varmasti peruuttaa toiminnon?\n"
 "Arkisto saattaa vahingoittua."
 
-#: ../src/main_window.c:1111
+#: ../src/main_window.c:1107
 msgid "Lead developer:"
 msgstr "Pääkehittäjä:"
 
-#: ../src/main_window.c:1114
+#: ../src/main_window.c:1110
 msgid "Contributors:"
 msgstr "Avustavat kehittäjät:"
 
-#: ../src/main_window.c:1117
+#: ../src/main_window.c:1113
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiraatio Giuseppe Torellin sovelluksesta Xarchiver"
 
-#: ../src/main_window.c:1119
+#: ../src/main_window.c:1115
 msgid "Application Icon:"
 msgstr "Sovelluskuvake:"
 
-#: ../src/main_window.c:1122
+#: ../src/main_window.c:1118
 msgid "Add / Extract icons:"
 msgstr "Lisäys- ja purkukuvakkeet:"
 
-#: ../src/main_window.c:1123
+#: ../src/main_window.c:1119
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Perustuu Andreas Nilssonin luomaan purkukuvakkeeseen"
 
-#: ../src/main_window.c:1130
+#: ../src/main_window.c:1126
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -299,24 +299,24 @@ msgstr ""
 "Squeeze on kevyt ja joustava arkistointisovellus Xfce-työpöytäympäristöön"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1138
+#: ../src/main_window.c:1134
 msgid "translator-credits"
 msgstr "Jari Rahkonen <jari.rahkonen@pp1.inet.fi>"
 
-#: ../src/main_window.c:1172 ../src/main_window.c:1244
-#: ../src/main_window.c:1403
+#: ../src/main_window.c:1168 ../src/main_window.c:1240
+#: ../src/main_window.c:1396
 msgid "Done"
 msgstr "Valmis"
 
-#: ../src/main_window.c:1254
+#: ../src/main_window.c:1250
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Mitä haluat tehdä valitu(i)lle tiedosto(i)lle?"
 
-#: ../src/main_window.c:1255
+#: ../src/main_window.c:1251
 msgid "Open"
 msgstr "Avaa"
 
-#: ../src/main_window.c:1274
+#: ../src/main_window.c:1270
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -324,11 +324,11 @@ msgstr ""
 "Squeeze ei voi näyttää tiedostoa.\n"
 "Tarvittava sovellus puuttuu."
 
-#: ../src/main_window.c:1341
+#: ../src/main_window.c:1337
 msgid "Failed to open file"
 msgstr "Linkin avaaminen epäonnistui"
 
-#: ../src/main_window.c:1342
+#: ../src/main_window.c:1338
 #, c-format
 msgid ""
 "'%s'\n"
@@ -336,6 +336,10 @@ msgid ""
 msgstr ""
 "Kohdetta \"%s\"\n"
 "ei voi avata"
+
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Arkistonhallinta"
 
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
@@ -367,77 +371,64 @@ msgstr "Polkupainikkeiden välinen tyhjä tila"
 
 #: ../src/preferences_dialog.c:85
 msgid "_General"
-msgstr ""
+msgstr "_Yleiset"
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Arkiston tyyppi:"
+msgstr "Arkistokatselin:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Näytä MIME-kuvakkeet"
+msgstr "_Näytä kuvakkeet"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "Vuorottele rivivärejä"
+msgstr "_Rivivärit"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Järjestys:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Huomioi kirjainkoko järjestäessä"
+msgstr "Huomioi _kirjainkoko"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Kansiot ennen tiedostoja"
+msgstr "K_ansiot ensin"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Navigointityyli"
+msgstr "Navigointipalkki:"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "K_äytös"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Asetukset"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Arkistonhallinta"
+msgstr "_Pakkaajat"
 
 #: ../src/preferences_dialog.c:281
-#, fuzzy
 msgid "Filename"
-msgstr "_Tiedosto"
+msgstr "Tiedostonimi"
 
 #: ../src/properties_dialog.c:85
-#, fuzzy
 msgid "Name:"
-msgstr "Nimi"
+msgstr "Nimi:"
 
 #: ../src/properties_dialog.c:98
 msgid "Kind:"
-msgstr ""
+msgstr "Tyyppi:"
 
 #: ../src/properties_dialog.c:120
 msgid "Properties"
-msgstr ""
+msgstr "Ominaisuudet"
 
 #: ../src/tool_bar.c:169
 msgid "Location:"
 msgstr "Sijainti:"
-
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Arkistonhallinta"
