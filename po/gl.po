@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-10 09:30+0000\n"
+"POT-Creation-Date: 2012-05-04 06:54+0000\n"
 "PO-Revision-Date: 2010-10-20 09:51+0100\n"
 "Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -400,14 +400,12 @@ msgid "Sorting:"
 msgstr "Ordenación"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
-msgstr "Ordenar o texto diferenciando maiúsculas de minúsculas"
+msgstr "Ordenar _diferenciando maiúsculas de minúsculas"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
-msgstr "Mostrar os cartafoles antes que os ficheiros"
+msgstr "Mostrar os carta_foles antes que os ficheiros"
 
 #: ../src/preferences_dialog.c:118
 msgid "Navigation bar:"
@@ -422,9 +420,8 @@ msgid "Preferences"
 msgstr "Preferencias"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
-msgstr "Arquivos"
+msgstr "_Arquivadores"
 
 #: ../src/preferences_dialog.c:281
 msgid "Filename"
