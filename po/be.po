@@ -105,11 +105,11 @@ msgstr "Упарадкаваць згодна з рэгістрам"
 
 #: ../src/button_drag_box.c:85
 msgid "Visible:"
-msgstr ""
+msgstr "Бачны:"
 
 #: ../src/button_drag_box.c:96
 msgid "Available:"
-msgstr ""
+msgstr "Даступны:"
 
 #: ../src/extract_dialog.c:76
 msgid "<b>Extract files:</b>"
@@ -375,12 +375,10 @@ msgid "Archive viewer:"
 msgstr "Праглядальнік архіва:"
 
 #: ../src/preferences_dialog.c:97
-#, fuzzy
 msgid "_Show Icons"
-msgstr "Паказваць значкі mime-тыпаў"
+msgstr "Паказваць іконкі"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
 msgstr "Падказкі"
 
@@ -397,9 +395,8 @@ msgid "Sort _Folders First"
 msgstr "Зьмяшчаць тэчкі перад файламі"
 
 #: ../src/preferences_dialog.c:118
-#, fuzzy
 msgid "Navigation bar:"
-msgstr "Стыль навігацыі"
+msgstr "Панэль навігацыі"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
@@ -410,7 +407,6 @@ msgid "Preferences"
 msgstr "Перавагі"
 
 #: ../src/preferences_dialog.c:204
-#, fuzzy
 msgid "_Archivers"
 msgstr "Архівы"
 
