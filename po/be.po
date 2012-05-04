@@ -2,25 +2,25 @@
 # Copyright (C) 2006-2007 Stephan Arts.
 # This file is distributed under the same license as the squeeze package.
 # Alexander Nyakhaychyk <nyakhaychyk@gmail.com>, 2007.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.0\n"
-"Report-Msgid-Bugs-To: stephan@xfce.org\n"
-"POT-Creation-Date: 2011-08-24 20:32+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-04 17:42+0000\n"
 "PO-Revision-Date: 2007-09-17 04:23+0300\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <xfce-i18n@xfce.org>\n"
-"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: be\n"
 
-#: ../libsqueeze/archive.c:272
+#: ../libsqueeze/archive.c:266
 msgid "Name"
 msgstr "Назва"
 
-#: ../libsqueeze/archive.c:274
+#: ../libsqueeze/archive.c:269
 msgid "Mime type"
 msgstr "Тып MIME"
 
@@ -36,16 +36,15 @@ msgstr "Стварэньне й кірваньне архівамі"
 msgid "Squeeze Archive Manager"
 msgstr "Кіраўнік архіваў Squeeze"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
+#. 
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr ""
 "Немагчыма адкрыць архіў: MIME-тып не падтрымліваецца альбо файл не існуе"
 
-#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
+#: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -53,14 +52,13 @@ msgstr ""
 "Squeeze ня можа распакоўваць архівы гэтага тыпу,\n"
 "адсутнічае дастасаваньне для яго падтрымкі."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Немагчыма стварыць архіў, MIME-тып не падтрымліваецца"
 
-#: ../src/application.c:269 ../src/main_window.c:891
+#: ../src/application.c:269 ../src/main_window.c:887
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -129,8 +127,8 @@ msgstr "Усе файлы"
 msgid "Selected files"
 msgstr "Вылучаныя файлы"
 
-#: ../src/extract_dialog.c:101 ../src/main_window.c:457
-#: ../src/main_window.c:1255
+#: ../src/extract_dialog.c:101 ../src/main_window.c:456
+#: ../src/main_window.c:1251
 msgid "Extract"
 msgstr "Распакаваць"
 
@@ -192,54 +190,54 @@ msgstr ""
 "Стыль навігацыі праз архіў"
 
 #. File menu
-#: ../src/main_window.c:301
+#: ../src/main_window.c:300
 msgid "_File"
 msgstr "_Файл"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:329
+#: ../src/main_window.c:328
 msgid "_Action"
 msgstr "_Дзеяньне"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:333
 msgid "_Add files"
 msgstr "Дадаць _файлы"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:339
 msgid "_Add _folders"
 msgstr "Дадаць _тэчкі"
 
-#: ../src/main_window.c:346
+#: ../src/main_window.c:345
 msgid "_Extract"
 msgstr "Рас_пакаваць"
 
 #. View menu
-#: ../src/main_window.c:379
+#: ../src/main_window.c:378
 msgid "_View"
 msgstr "_Выгляд"
 
 #. Help menu
-#: ../src/main_window.c:403
+#: ../src/main_window.c:402
 msgid "_Help"
 msgstr "_Даведка"
 
-#: ../src/main_window.c:449 ../src/main_window.c:866
+#: ../src/main_window.c:448 ../src/main_window.c:862
 msgid "Add files"
 msgstr "Дадаць файлы"
 
-#: ../src/main_window.c:453 ../src/main_window.c:913
+#: ../src/main_window.c:452 ../src/main_window.c:909
 msgid "Add folders"
 msgstr "Дадаць тэчкі"
 
-#: ../src/main_window.c:731
+#: ../src/main_window.c:727
 msgid "Open archive in new window"
 msgstr "Адкрыць архіў у новым акне"
 
-#: ../src/main_window.c:737
+#: ../src/main_window.c:733
 msgid "Open archive"
 msgstr "Адкрыць архіў"
 
-#: ../src/main_window.c:938
+#: ../src/main_window.c:934
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -247,11 +245,11 @@ msgstr ""
 "Squeeze ня можа дадаць тэчкі ў архіў гэтага тыпу:\n"
 "адсутнічае дастасаваньне для яго падтрымкі."
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:958
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Вы насамрэч жадаеце выдаліць вылучаныя файлы?"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:974
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -259,7 +257,7 @@ msgstr ""
 "Squeeze ня можа выдаліць файлы з архіву гэтага тыпу:\n"
 "адсутнічае дастасаваньне для яго падтрымкі."
 
-#: ../src/main_window.c:1029
+#: ../src/main_window.c:1025
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -267,55 +265,55 @@ msgstr ""
 "Вы насамрэч жадаеце скасаваць дзеяньне?\n"
 "Гэта можа пашкодзіць архіў."
 
-#: ../src/main_window.c:1111
+#: ../src/main_window.c:1107
 msgid "Lead developer:"
 msgstr "Асноўны распрацоўнік:"
 
-#: ../src/main_window.c:1114
+#: ../src/main_window.c:1110
 msgid "Contributors:"
 msgstr "Укладальнікі:"
 
-#: ../src/main_window.c:1117
+#: ../src/main_window.c:1113
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "У натхненьні ад Xarchiver, напісана Giuseppe Torelli"
 
-#: ../src/main_window.c:1119
+#: ../src/main_window.c:1115
 msgid "Application Icon:"
 msgstr "Значка дастасаваньня:"
 
-#: ../src/main_window.c:1122
+#: ../src/main_window.c:1118
 msgid "Add / Extract icons:"
 msgstr "Дадаць / Распакаваць значкі:"
 
-#: ../src/main_window.c:1123
+#: ../src/main_window.c:1119
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Заснаваны на арыгінальнай значцы распакоўкі, створанай Andreas Nilsson"
 
-#: ../src/main_window.c:1130
+#: ../src/main_window.c:1126
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
 msgstr "Squeeze - гэта лёгкі і гнуткі кіраўнік архіваў для асяродзьдзя Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1138
+#: ../src/main_window.c:1134
 msgid "translator-credits"
 msgstr "Alexander Nyakhaychyk <nyakhaychyk@gmail.com>"
 
-#: ../src/main_window.c:1172 ../src/main_window.c:1244
-#: ../src/main_window.c:1403
+#: ../src/main_window.c:1168 ../src/main_window.c:1240
+#: ../src/main_window.c:1396
 msgid "Done"
 msgstr "Зроблена"
 
-#: ../src/main_window.c:1254
+#: ../src/main_window.c:1250
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr "Якое дзеяньне вы жадаеце выканаць над вылучанымі файламі?"
 
-#: ../src/main_window.c:1255
+#: ../src/main_window.c:1251
 msgid "Open"
 msgstr "Адкрыць"
 
-#: ../src/main_window.c:1274
+#: ../src/main_window.c:1270
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -323,11 +321,11 @@ msgstr ""
 "Squeeze ня можа паказаць гэты файл:\n"
 "адсутнічае дастасаваньне для яго падтрымкі."
 
-#: ../src/main_window.c:1341
+#: ../src/main_window.c:1337
 msgid "Failed to open file"
 msgstr "Немагчыма адкрыць файл"
 
-#: ../src/main_window.c:1342
+#: ../src/main_window.c:1338
 #, c-format
 msgid ""
 "'%s'\n"
@@ -335,6 +333,10 @@ msgid ""
 msgstr ""
 "\"%s\"\n"
 "Немагчыма адчыніць"
+
+#: ../src/message_dialog.c:163
+msgid "Archive manager"
+msgstr "Кіраўнік архіваў"
 
 #: ../src/new_dialog.c:71
 msgid "Archive type:"
@@ -369,9 +371,8 @@ msgid "_General"
 msgstr ""
 
 #: ../src/preferences_dialog.c:88
-#, fuzzy
 msgid "Archive viewer:"
-msgstr "Тып архіва:"
+msgstr "Праглядальнік архіва:"
 
 #: ../src/preferences_dialog.c:97
 #, fuzzy
@@ -385,15 +386,13 @@ msgstr "Падказкі"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
-msgstr ""
+msgstr "Сартаваць:"
 
 #: ../src/preferences_dialog.c:112
-#, fuzzy
 msgid "Sort _Case Sensitive "
 msgstr "Упарадкаваць згодна з рэгістрам"
 
 #: ../src/preferences_dialog.c:115
-#, fuzzy
 msgid "Sort _Folders First"
 msgstr "Зьмяшчаць тэчкі перад файламі"
 
@@ -404,11 +403,11 @@ msgstr "Стыль навігацыі"
 
 #: ../src/preferences_dialog.c:130
 msgid "_Behaviour"
-msgstr ""
+msgstr "Паводзіны"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Перавагі"
 
 #: ../src/preferences_dialog.c:204
 #, fuzzy
@@ -435,15 +434,9 @@ msgstr "Уласьцівасьці"
 msgid "Location:"
 msgstr "Месца:"
 
-#: ../src/message_dialog.c:163
-msgid "Archive manager"
-msgstr "Кіраўнік архіваў"
-
-#, fuzzy
 #~ msgid "Compressing"
 #~ msgstr "Сьціснуты памер"
 
-#, fuzzy
 #~ msgid "Owner/Group"
 #~ msgstr "Прагляд уладальніка/групы"
 
@@ -456,15 +449,12 @@ msgstr "Кіраўнік архіваў"
 #~ msgid "Time"
 #~ msgstr "Час"
 
-#, fuzzy
 #~ msgid "Removing files"
 #~ msgstr "Выдаленьне файлаў з архіва"
 
-#, fuzzy
 #~ msgid "Extracting"
 #~ msgstr "Распакаваць"
 
-#, fuzzy
 #~ msgid "Compressed"
 #~ msgstr "Сьціснуты памер"
 
@@ -477,7 +467,6 @@ msgstr "Кіраўнік архіваў"
 #~ msgid "Version"
 #~ msgstr "Вэрсія"
 
-#, fuzzy
 #~ msgid "Adding"
 #~ msgstr "Дадаць"
 
@@ -511,11 +500,9 @@ msgstr "Кіраўнік архіваў"
 #~ msgid "Xfce archive manager"
 #~ msgstr "Кіраўнік архіваў Xfce"
 
-#, fuzzy
 #~ msgid "idle"
 #~ msgstr "_Файл"
 
-#, fuzzy
 #~ msgid "Owner"
 #~ msgstr "Уладальнік/група"
 
@@ -534,7 +521,6 @@ msgstr "Кіраўнік архіваў"
 #~ msgid "Keep newer files"
 #~ msgstr "Пакінуць навейшыя файлы"
 
-#, fuzzy
 #~ msgid "Do not overwrite files newer than those in the archive"
 #~ msgstr "Не перазапісваць файлы, навейшыя за файлы з архіву"
 
@@ -595,7 +581,6 @@ msgstr "Кіраўнік архіваў"
 #~ msgid "Extracting file(s) from archive"
 #~ msgstr "Распакоўка файлаў з архіва"
 
-#, fuzzy
 #~ msgid "Extracting file(s) to temporary directory"
 #~ msgstr "Распакоўка файлаў з архіва"
 
