@@ -195,7 +195,7 @@ msgstr "내부 형태"
 
 #: ../src/main_window.c:136
 msgid "Tool Bar Style"
-msgstr "도구 막대 형태"
+msgstr "도구 모음 형태"
 
 #: ../src/main_window.c:139
 msgid "Path Bar Style"
