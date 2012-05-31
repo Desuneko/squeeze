@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gheyret T.Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Japanese\n"
 
@@ -163,12 +163,12 @@ msgstr "ئىچكى ئۇسلۇب"
 # Navigation style: Should be coordinated with Thunar's location selector
 #: ../src/main_window.c:134
 msgid "Tool Bar Style"
-msgstr "قورال تاياقچىسى ئۇسلۇبى"
+msgstr "قورال بالدىقى ئۇسلۇبى"
 
 # Navigation style: Should be coordinated with Thunar's location selector
 #: ../src/main_window.c:135
 msgid "Path Bar Style"
-msgstr "يول تاياقچىسى ئۇسلۇبى"
+msgstr "يول بالدىقى ئۇسلۇبى"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
