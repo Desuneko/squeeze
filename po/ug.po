@@ -83,7 +83,7 @@ msgstr "ھەر بىر entry نىڭ mime تىپى سىنبەلگىسىنى كۆر
 
 #: ../src/archive_store.c:263
 msgid "Show up dir entry"
-msgstr ""
+msgstr "مۇندەرىجە كىرگۈسىنى كۆرسەت"
 
 #: ../src/archive_store.c:264
 msgid "Show '..' to go to the parent directory"
@@ -172,13 +172,14 @@ msgstr "يول بالدىقى ئۇسلۇبى"
 
 #: ../src/main_window.c:182
 msgid "Navigation Style"
-msgstr "Navigation ئۇسلۇبى"
+msgstr "يېتەكچى ئۇسلۇبى"
 
 #: ../src/main_window.c:183
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
-msgstr ""
+msgstr "يېتەكچى ئۇسلۇبى\n"
+"ئارخىپلىنىدىغان يېتەكچىنىڭ ئۇسلۇبى"
 
 #. File menu
 #: ../src/main_window.c:295
@@ -318,12 +319,12 @@ msgstr "ھۆججەت ئېچىش مەغلۇپ بولدى"
 msgid ""
 "'%s'\n"
 "Could not be opened"
-msgstr "'%s'\n"
-"ئېچىش مۇمكىن بولمىدى"
+msgstr "‹%s›\n"
+"ئاچقىلى بولمىدى"
 
 #: ../src/new_dialog.c:69
 msgid "Archive type:"
-msgstr "ئارخىپ تىپى"
+msgstr "ئارخىپ تىپى:"
 
 #: ../src/new_dialog.c:80
 msgid "Archives"
@@ -336,11 +337,11 @@ msgstr "يېڭى ئارخىپ قۇر"
 
 #: ../src/notebook.c:207
 msgid "Rules hint"
-msgstr ""
+msgstr "قائىدە بېشارىتى"
 
 #: ../src/notebook.c:208
 msgid "Make the row background colors alternate"
-msgstr ""
+msgstr "قۇر تەگلىك رەڭگىنى ئۆزگىرىدىغان قىلسۇن"
 
 #: ../src/path_bar.c:141
 msgid "Spacing"
