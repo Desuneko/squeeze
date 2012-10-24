@@ -1,13 +1,13 @@
 # Uyghur translation for squeeze.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Gheyret Kenji <gheyret@gmail.com>, 2012.
+# Gheyret Kenji <gheyret@gmail.com>, YEAR.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: squeeze\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-19 23:36+0000\n"
+"POT-Creation-Date: 2012-10-24 01:27+0000\n"
 "PO-Revision-Date: 2011-11-09 16:10+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -42,15 +42,13 @@ msgstr "سىكىۋىز(Squeeze) ئارخىپ باشقۇرغۇ"
 #.
 #: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
-msgstr ""
-"ئارخىپنى ئاچقىلى بولمىدى، MIME تىپىنى قوللىمايدۇ ياكى ھۆججەت مەۋجۇت ئەمەس"
+msgstr "ئارخىپنى ئاچقىلى بولمىدى، MIME تىپىنى قوللىمايدۇ ياكى ھۆججەت مەۋجۇت ئەمەس"
 
 #: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
-msgstr ""
-"سىكىۋىز(Squeeze) بۇ تىپتىكى ئارخىپنى يايالمىدى،\n"
+msgstr "سىكىۋىز(Squeeze) بۇ تىپتىكى ئارخىپنى يايالمىدى،\n"
 "بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #.
@@ -64,8 +62,7 @@ msgstr "ئارخىپنى ئاچقىلى بولمىدى، MIME تىپىنى قو�
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
-msgstr ""
-"سىكىۋىز(Squeeze) بۇ ھۆججەتنى ئارخىپقا قوشالمىدى،\n"
+msgstr "سىكىۋىز(Squeeze) بۇ ھۆججەتنى ئارخىپقا قوشالمىدى،\n"
 "بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/archive_store.c:250 ../src/notebook.c:181
@@ -163,10 +160,8 @@ msgstr "[ئارخىپ ئاتى]"
 msgid ""
 "%s: %s\n"
 "Try %s --help to see a full list of available command line options.\n"
-msgstr ""
-"%s: %s\n"
-"%s --help نى كىرگۈزسە، بۇيرۇق قۇرىدا ئىشلەتكىلى بولىدىغان بارلىق تاللانمىلار "
-"كۆرسىتىلىدۇ.\n"
+msgstr "%s: %s\n"
+"بۇيرۇق قۇرىدا ئىشلەتكىلى بولىدىغان بارلىق تاللانمىلارنى كۆرۈش ئۈچۈن %s --help نى كىرگۈزسە بولىدۇ.\n"
 
 #: ../src/main_window.c:134
 msgid "Internal Style"
@@ -188,8 +183,7 @@ msgstr "يولباشچى ئۇسلۇبى"
 msgid ""
 "Style of navigation\n"
 "The style to navigate trough the archive"
-msgstr ""
-"يولباشچى ئۇسلۇبى\n"
+msgstr "يولباشچى ئۇسلۇبى\n"
 "ئارخىپلانغۇچە بولغان يولباشچىنىڭ ئۇسلۇبى"
 
 #. File menu
@@ -244,8 +238,7 @@ msgstr "ئارخىپنى ئاچ"
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
-msgstr ""
-"سىكىۋىز(Squeeze) بۇ مۇندەرىجىنى ئارخىپقا قوشالمىدى،\n"
+msgstr "سىكىۋىز(Squeeze) بۇ مۇندەرىجىنى ئارخىپقا قوشالمىدى،\n"
 "بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/main_window.c:958
@@ -256,16 +249,14 @@ msgstr "تاللانغان ھۆججەتلەرنى ئۆچۈرەمسىز؟"
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
-msgstr ""
-"سىكىۋىز(Squeeze) بۇ خىل ئارخىپ تىپىدىن ھۆججەتلەرنى ئۆچۈرەلمىدى،\n"
+msgstr "سىكىۋىز(Squeeze) بۇ خىل ئارخىپ تىپىدىن ھۆججەتلەرنى ئۆچۈرەلمىدى،\n"
 "بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/main_window.c:1025
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
-msgstr ""
-"مەشغۇلاتنى توختىتامسىز؟\n"
+msgstr "مەشغۇلاتنى توختىتامسىز؟\n"
 "بۇنداقتا ئارخىپ بۇزۇلۇپ كېتىدۇ."
 
 #: ../src/main_window.c:1107
@@ -296,14 +287,12 @@ msgstr "بۇ Andreas Nilsson ياسىغان يېيىش سىنبەلگىلىرى�
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
-msgstr ""
-"سىكىۋىز(Squeeze) بولسا Xfce ئۈستەل يۈزى مۇھىتىدىكى يېنىك ۋە ئەپچىل بولغان ئارخىپ "
-"باشقۇرغۇدۇر"
+msgstr "سىكىۋىز(Squeeze) بولسا Xfce ئۈستەل يۈزى مۇھىتىدىكى يېنىك ۋە ئەپچىل بولغان ئارخىپ باشقۇرغۇدۇر"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
 #: ../src/main_window.c:1134
 msgid "translator-credits"
-msgstr "غەيرەت ت.كەنجى <gheyret@gmail.com> 2010"
+msgstr "غەيرەت ت.كەنجى <gheyret@gmail.com>"
 
 #: ../src/main_window.c:1168 ../src/main_window.c:1240
 #: ../src/main_window.c:1396
@@ -322,8 +311,7 @@ msgstr "ئاچ"
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
-msgstr ""
-"سىكىۋىز(Squeeze) بۇ ھۆججەتنى كۆرسىتەلمىدى،\n"
+msgstr "سىكىۋىز(Squeeze) بۇ ھۆججەتنى كۆرسىتەلمىدى،\n"
 "بۇ تېخى پروگراممىدا ئەمەلگە ئاشۇرۇلمىغان."
 
 #: ../src/main_window.c:1337
@@ -335,8 +323,7 @@ msgstr "ھۆججەت ئېچىش مەغلۇپ بولدى"
 msgid ""
 "'%s'\n"
 "Could not be opened"
-msgstr ""
-"‹%s›\n"
+msgstr "‹%s›\n"
 "ئاچقىلى بولمىدى"
 
 #: ../src/message_dialog.c:163
