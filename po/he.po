@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: squeeze 0.2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-29 07:57+0000\n"
+"POT-Creation-Date: 2012-11-30 12:15+0000\n"
 "PO-Revision-Date: 2012-08-29 12:21+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: ../libsqueeze/archive.c:266
 msgid "Name"
@@ -36,18 +36,14 @@ msgstr "יצירה וניהול של ארכיונים בעזרת מנהל האר
 msgid "Squeeze Archive Manager"
 msgstr "Squeeze Archive Manager"
 
-#.
 #. * Could not open archive (mime type not supported or file did not exist)
 #. * Should be a more specific error message.
-#.
-#: ../src/application.c:160
-#: ../src/application.c:251
+#. 
+#: ../src/application.c:160 ../src/application.c:251
 msgid "Could not open archive, MIME-type unsupported or file did not exist"
 msgstr "לא ניתן היה לפתוח ארכיון, סוג MIME אינו נתמך או שהקובץ לא קיים"
 
-#: ../src/application.c:190
-#: ../src/main_window.c:834
-#: ../src/main_window.c:1297
+#: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -55,15 +51,13 @@ msgstr ""
 "‏Squeeze לא יכול לחלץ את סוג ארכיון זה,\n"
 "היישום שיכול לתומך בפעולה זו הינו חסר."
 
-#.
 #. * Could not create archive (mime type unsupported)
-#.
+#. 
 #: ../src/application.c:234
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "לא ניתן ליצור ארכיון, סוג MIME אינו נתמך"
 
-#: ../src/application.c:269
-#: ../src/main_window.c:887
+#: ../src/application.c:269 ../src/main_window.c:887
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -71,23 +65,19 @@ msgstr ""
 "‏Squeeze לא יכול להוסיף קבצים אל סוג ארכיון זה,\n"
 "היישום שיכול לתומך בפעולה זו הינו חסר."
 
-#: ../src/archive_store.c:250
-#: ../src/notebook.c:181
+#: ../src/archive_store.c:250 ../src/notebook.c:181
 msgid "Show full path"
 msgstr "הצגת נתיב מלא"
 
-#: ../src/archive_store.c:251
-#: ../src/notebook.c:182
+#: ../src/archive_store.c:251 ../src/notebook.c:182
 msgid "Show the full path strings for each entry"
 msgstr "הצגת מחרוזות עם הנתיב המלא עבור כל רשומה"
 
-#: ../src/archive_store.c:257
-#: ../src/notebook.c:188
+#: ../src/archive_store.c:257 ../src/notebook.c:188
 msgid "Show mime icons"
 msgstr "הצגת צלמיות MIME"
 
-#: ../src/archive_store.c:258
-#: ../src/notebook.c:189
+#: ../src/archive_store.c:258 ../src/notebook.c:189
 msgid "Show the mime type icons for each entry"
 msgstr "הצגת צלמיות סוג MIME עבור כל רשומה"
 
@@ -99,19 +89,15 @@ msgstr "הצגת רשומות מדור"
 msgid "Show '..' to go to the parent directory"
 msgstr "הצגת '..' למעבר אל מדור האם"
 
-#: ../src/archive_store.c:271
-#: ../src/notebook.c:195
+#: ../src/archive_store.c:271 ../src/notebook.c:195
 msgid "Sort folders before files"
 msgstr "מיון תיקיות לפני קבצים"
 
-#: ../src/archive_store.c:272
-#: ../src/notebook.c:196
+#: ../src/archive_store.c:272 ../src/notebook.c:196
 msgid "The folders will be put at the top of the list"
 msgstr "התיקיות יושמו בראש הרשימה"
 
-#: ../src/archive_store.c:278
-#: ../src/archive_store.c:279
-#: ../src/notebook.c:202
+#: ../src/archive_store.c:278 ../src/archive_store.c:279 ../src/notebook.c:202
 #: ../src/notebook.c:203
 msgid "Sort text case sensitive"
 msgstr "מיון תמליל באופן תלוי רישיות"
@@ -140,8 +126,7 @@ msgstr "כל הקבצים"
 msgid "Selected files"
 msgstr "קבצים נבחרים"
 
-#: ../src/extract_dialog.c:101
-#: ../src/main_window.c:456
+#: ../src/extract_dialog.c:101 ../src/main_window.c:456
 #: ../src/main_window.c:1251
 msgid "Extract"
 msgstr "חילוץ"
@@ -236,13 +221,11 @@ msgstr "_תצוגה"
 msgid "_Help"
 msgstr "_עזרה"
 
-#: ../src/main_window.c:448
-#: ../src/main_window.c:862
+#: ../src/main_window.c:448 ../src/main_window.c:862
 msgid "Add files"
 msgstr "הוספת קבצים"
 
-#: ../src/main_window.c:452
-#: ../src/main_window.c:909
+#: ../src/main_window.c:452 ../src/main_window.c:909
 msgid "Add folders"
 msgstr "הוספת תיקיות"
 
@@ -307,7 +290,9 @@ msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "מבוסס על צלמית החילוץ המקורית שנוצרה על ידי Andreas Nilsson"
 
 #: ../src/main_window.c:1126
-msgid "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop Environment"
+msgid ""
+"Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
+"Environment"
 msgstr "‏Squeeze הינו מנהל ארכיונים גמיש וקל משקל עבור סביבת העבודה Xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
@@ -315,8 +300,7 @@ msgstr "‏Squeeze הינו מנהל ארכיונים גמיש וקל משקל �
 msgid "translator-credits"
 msgstr "Isratine Citizen <genghiskhan@gmx.ca>"
 
-#: ../src/main_window.c:1168
-#: ../src/main_window.c:1240
+#: ../src/main_window.c:1168 ../src/main_window.c:1240
 #: ../src/main_window.c:1396
 msgid "Done"
 msgstr "הפעולה הסתיימה"
@@ -367,9 +351,8 @@ msgid "Create new archive"
 msgstr "יצירת ארכיון חדש"
 
 #: ../src/notebook.c:209
-#, fuzzy
 msgid "Rules hint"
-msgstr "כללי עצה"
+msgstr "צבעי שורות מתחלפים"
 
 #: ../src/notebook.c:210
 msgid "Make the row background colors alternate"
@@ -396,9 +379,8 @@ msgid "_Show Icons"
 msgstr "הצגת _צלמיות"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
-msgstr "כללי _עצה"
+msgstr "_צבעי שורות מתחלפים"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
