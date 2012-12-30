@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Squeeze 0.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-06 17:04+0000\n"
+"POT-Creation-Date: 2012-12-30 19:51+0000\n"
 "PO-Revision-Date: 2007-10-31 18:17+0100\n"
 "Last-Translator: Maximilian Schleiss <maximilian@xfce.org>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 
-#: ../libsqueeze/archive.c:272
+#: ../libsqueeze/archive.c:266
 msgid "Name"
 msgstr "Nom"
 
-#: ../libsqueeze/archive.c:274
+#: ../libsqueeze/archive.c:269
 msgid "Mime type"
 msgstr "Type MIME"
 
@@ -45,7 +45,7 @@ msgstr ""
 "Échec à l'ouverture de l'archive, type MIME non supporté ou fichier "
 "inexistant"
 
-#: ../src/application.c:190 ../src/main_window.c:838 ../src/main_window.c:1301
+#: ../src/application.c:190 ../src/main_window.c:834 ../src/main_window.c:1297
 msgid ""
 "Squeeze cannot extract this archive type,\n"
 "the application to support this is missing."
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Could not create archive, MIME-type unsupported"
 msgstr "Échec à la création de l'archive, type MIME non supporté"
 
-#: ../src/application.c:269 ../src/main_window.c:891
+#: ../src/application.c:269 ../src/main_window.c:887
 msgid ""
 "Squeeze cannot add files to this archive type,\n"
 "the application to support this is missing."
@@ -128,8 +128,8 @@ msgstr "Tous les fichiers"
 msgid "Selected files"
 msgstr "Fichiers sélectionnés"
 
-#: ../src/extract_dialog.c:101 ../src/main_window.c:457
-#: ../src/main_window.c:1255
+#: ../src/extract_dialog.c:101 ../src/main_window.c:456
+#: ../src/main_window.c:1251
 msgid "Extract"
 msgstr "Extraire"
 
@@ -191,54 +191,54 @@ msgstr ""
 "La manière de naviguer dans l'archive"
 
 #. File menu
-#: ../src/main_window.c:301
+#: ../src/main_window.c:300
 msgid "_File"
 msgstr "_Fichier"
 
 #. Action menu: ref all the childs
-#: ../src/main_window.c:329
+#: ../src/main_window.c:328
 msgid "_Action"
 msgstr "_Action"
 
-#: ../src/main_window.c:334
+#: ../src/main_window.c:333
 msgid "_Add files"
 msgstr "_Ajout de fichiers"
 
-#: ../src/main_window.c:340
+#: ../src/main_window.c:339
 msgid "_Add _folders"
 msgstr "Ajout de _dossiers"
 
-#: ../src/main_window.c:346
+#: ../src/main_window.c:345
 msgid "_Extract"
 msgstr "_Extraire"
 
 #. View menu
-#: ../src/main_window.c:379
+#: ../src/main_window.c:378
 msgid "_View"
 msgstr "Afficha_ge"
 
 #. Help menu
-#: ../src/main_window.c:403
+#: ../src/main_window.c:402
 msgid "_Help"
 msgstr "_Aide"
 
-#: ../src/main_window.c:449 ../src/main_window.c:866
+#: ../src/main_window.c:448 ../src/main_window.c:862
 msgid "Add files"
 msgstr "Ajout de fichiers"
 
-#: ../src/main_window.c:453 ../src/main_window.c:913
+#: ../src/main_window.c:452 ../src/main_window.c:909
 msgid "Add folders"
 msgstr "Ajout de dossiers"
 
-#: ../src/main_window.c:731
+#: ../src/main_window.c:727
 msgid "Open archive in new window"
 msgstr "Ouvrir l'archive dans une nouvelle fenêtre"
 
-#: ../src/main_window.c:737
+#: ../src/main_window.c:733
 msgid "Open archive"
 msgstr "Ouvrir l'archive"
 
-#: ../src/main_window.c:938
+#: ../src/main_window.c:934
 msgid ""
 "Squeeze cannot add folders to this archive type,\n"
 "the application to support this is missing."
@@ -246,11 +246,11 @@ msgstr ""
 "Squeeze ne peut pas ajouter de dossiers dans ce type d'archive,\n"
 "l'application nécessaire n'est pas présente."
 
-#: ../src/main_window.c:962
+#: ../src/main_window.c:958
 msgid "Are you sure you want to remove the selected files?"
 msgstr "Êtes-vous certain de vouloir supprimer les fichiers sélectionnés ?"
 
-#: ../src/main_window.c:978
+#: ../src/main_window.c:974
 msgid ""
 "Squeeze cannot remove files from this archive type,\n"
 "the application to support this is missing."
@@ -258,7 +258,7 @@ msgstr ""
 "Squeeze ne peut pas supprimer de fichier dans ce type d'archive,\n"
 "l'application nécessaire n'est pas présente."
 
-#: ../src/main_window.c:1029
+#: ../src/main_window.c:1025
 msgid ""
 "Are you sure you want to cancel this operation?\n"
 "This could damage the archive."
@@ -266,31 +266,31 @@ msgstr ""
 "Êtes-vous sûr de vouloir annuler cette opération ?\n"
 "Ceci pourrait endommager l'archive."
 
-#: ../src/main_window.c:1111
+#: ../src/main_window.c:1107
 msgid "Lead developer:"
 msgstr "Développeur principal :"
 
-#: ../src/main_window.c:1114
+#: ../src/main_window.c:1110
 msgid "Contributors:"
 msgstr "Contributeurs :"
 
-#: ../src/main_window.c:1117
+#: ../src/main_window.c:1113
 msgid "Inspired by Xarchiver, written by Giuseppe Torelli"
 msgstr "Inspiré de Xarchiver, écrit par Giuseppe Torelli"
 
-#: ../src/main_window.c:1119
+#: ../src/main_window.c:1115
 msgid "Application Icon:"
 msgstr "Icône de l'application :"
 
-#: ../src/main_window.c:1122
+#: ../src/main_window.c:1118
 msgid "Add / Extract icons:"
 msgstr "Icônes ajouter / extraire :"
 
-#: ../src/main_window.c:1123
+#: ../src/main_window.c:1119
 msgid "Based on the original extract icon created by Andreas Nilsson"
 msgstr "Basés sur les icônes d'extraction de Andreas Nilsson"
 
-#: ../src/main_window.c:1130
+#: ../src/main_window.c:1126
 msgid ""
 "Squeeze is a lightweight and flexible archive manager for the Xfce Desktop "
 "Environment"
@@ -299,25 +299,25 @@ msgstr ""
 "l'environnement de bureau xfce"
 
 #. Translator credits as shown in the about dialog: NAME <E-MAIL> YEAR
-#: ../src/main_window.c:1138
+#: ../src/main_window.c:1134
 msgid "translator-credits"
 msgstr "Maximilian Schleiss <maximilian@xfce.org>"
 
-#: ../src/main_window.c:1172 ../src/main_window.c:1244
-#: ../src/main_window.c:1403
+#: ../src/main_window.c:1168 ../src/main_window.c:1240
+#: ../src/main_window.c:1396
 msgid "Done"
 msgstr "Terminé"
 
-#: ../src/main_window.c:1254
+#: ../src/main_window.c:1250
 msgid "Which action do you want to perform on the selected file(s)?"
 msgstr ""
 "Quelle action voulez-vous effectuer sur le(s) fichier(s) sélectionné(s) ?"
 
-#: ../src/main_window.c:1255
+#: ../src/main_window.c:1251
 msgid "Open"
 msgstr "Ouvrir"
 
-#: ../src/main_window.c:1274
+#: ../src/main_window.c:1270
 msgid ""
 "Squeeze cannot view this file.\n"
 "the application to support this is missing."
@@ -325,11 +325,11 @@ msgstr ""
 "Squeeze ne peut pas visionner ce fichier,\n"
 "l'application nécessaire n'est pas présente."
 
-#: ../src/main_window.c:1341
+#: ../src/main_window.c:1337
 msgid "Failed to open file"
 msgstr "Échec à l'ouverture du fichier"
 
-#: ../src/main_window.c:1342
+#: ../src/main_window.c:1338
 #, c-format
 msgid ""
 "'%s'\n"
@@ -385,7 +385,7 @@ msgstr "_Afficher les icônes"
 #: ../src/preferences_dialog.c:100
 #, fuzzy
 msgid "_Rules Hint"
-msgstr "_Règles de trace ?"
+msgstr "_Règles proposées"
 
 #: ../src/preferences_dialog.c:103
 msgid "Sorting:"
