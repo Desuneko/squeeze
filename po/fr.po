@@ -383,7 +383,6 @@ msgid "_Show Icons"
 msgstr "_Afficher les icônes"
 
 #: ../src/preferences_dialog.c:100
-#, fuzzy
 msgid "_Rules Hint"
 msgstr "_Règles proposées"
 
