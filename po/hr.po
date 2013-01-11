@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hr.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-19 21:42+0000\n"
+"POT-Creation-Date: 2013-01-11 15:24+0000\n"
 "PO-Revision-Date: 2011-01-04 02:50+0100\n"
 "Last-Translator: Ivica Kolić <ikoli@yahoo.com>\n"
 "Language-Team: Croatian\n"
@@ -409,7 +409,7 @@ msgstr "_Ponašanje"
 
 #: ../src/preferences_dialog.c:147
 msgid "Preferences"
-msgstr ""
+msgstr "Osobitosti"
 
 #: ../src/preferences_dialog.c:204
 msgid "_Archivers"
