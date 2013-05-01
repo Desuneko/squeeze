@@ -36,7 +36,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 SQUEEZE_VERSION=squeeze_version
 AM_INIT_AUTOMAKE([1.8 dist-bzip2 tar-ustar])
-AM_CONFIG_HEADER([config.h])
+AM_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 
 SQUEEZE_VERINFO=squeeze_verinfo
